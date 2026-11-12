@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090b18">
+  <meta name="description" content="NEXUS Application Gateway — open an installed Sonic Reactor II from an authorized launch link.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'; connect-src 'none'">
+  <title>NEXUS | Sonic Reactor II Launcher</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:22px; color:#f7f5ff; background: radial-gradient(ellipse at 50% -8%, #3b247d 0%, #17152f 43%, #070914 79%); }
+    .panel { width:min(510px,100%); padding:34px; border:1px solid #7970b452; border-radius:22px; background:linear-gradient(160deg,#1b1b3fe8,#0a0e21f0); box-shadow:0 22px 100px #0009; }
+    .eyebrow { text-transform:uppercase; font-size:11px; font-weight:800; letter-spacing:2.3px; color:#b6a4ff; }
+    h1 { margin:14px 0 8px; font-size:clamp(26px,5vw,33px); line-height:1.12; letter-spacing:.2px; }
+    h1 span { color:#b59aff; }
+    .sub { color:#b9bbd6; font-size:14px; line-height:1.65; margin:0; }
+    .reactor { height:156px; margin:22px 0; position:relative; border-radius:16px; overflow:hidden; display:grid;place-items:center; background:radial-gradient(circle,#4b39a673,#171c40 50%,#101125); border:1px solid #665da85a; }
+    .ring { width:98px;height:98px;border:2px solid #a48aff;border-radius:50%;box-shadow:0 0 16px #a98bffb8,0 0 55px #835bff70,inset 0 0 24px #7a60ff40;animation:spin 9s linear infinite; }
+    .ring:after,.ring:before {content:"";position:absolute;inset:13px;border:2px solid #58d4e5;border-radius:50%;box-shadow:0 0 13px #50d1fa7d;}
+    .ring:before{inset:31px;background:#ecdcff;box-shadow:0 0 23px #efc7ff;}
+    @keyframes spin {to{transform:rotate(360deg)}}
+    @media (prefers-reduced-motion: reduce){.ring{animation:none}}
+    .status {display:flex;align-items:flex-start;gap:11px;padding:14px 15px;border:1px solid #7162ab66;background:#1e1d3e;border-radius:11px;margin-bottom:15px;}
+    .dot { flex:none;width:10px;height:10px;border-radius:50%;background:#a28aff;box-shadow:0 0 12px #9c85ff;margin-top:5px; }
+    .status strong{display:block;font-size:13px;margin-bottom:3px}
+    .status p{margin:0;color:#babbdb;font-size:12px;line-height:1.6}
+    button{width:100%;cursor:pointer;border:0;border-radius:11px;min-height:52px;background:linear-gradient(100deg,#7252e3,#a472f2);font-weight:850;color:#fff;letter-spacing:.5px;font-size:13px}
+    button:hover{filter:brightness(1.1)}button:focus-visible{outline:3px solid #d2e3ff;outline-offset:3px}
+    .help{margin:15px 0 0;padding:13px 14px;border:1px solid #68618352;border-radius:10px;background:#16182f;font-size:12px;color:#c0bedb;line-height:1.7}
+    .help b{color:#fff}.foot{text-align:center;font-size:10px;letter-spacing:1.4px;color:#9a91b6;margin-top:23px}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <div class="eyebrow">NEXUS // APPLICATION GATEWAY</div>
+    <h1>SONIC REACTOR <span>II</span></h1>
+    <p class="sub">Launch the immersive audio engine already installed on your Windows computer.</p>
+    <div class="reactor" aria-hidden="true"><div class="ring"></div></div>
+    <div class="status" role="status" aria-live="polite">
+      <span class="dot" aria-hidden="true"></span>
+      <div><strong id="status-title">Ready to launch</strong><p id="status-detail">Click below to request opening your installed application.</p></div>
+    </div>
+    <button id="launch" type="button">OPEN SONIC REACTOR II</button>
+    <div class="help">
+      <b>If you're coming from Discord:</b> the gateway may open in your default browser behind Discord. Check your browser or taskbar and accept any request to open NEXUS Desktop Bridge.<br>
+      <b>If nothing starts:</b> use the large button above. Ensure Sonic Reactor II and Desktop Bridge are installed and the bridge's link handler is registered.
+    </div>
+    <div class="foot">POWERED BY ZEVRO | NEXUS</div>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      const FIXED_PROTOCOL_URL = 'nexus-launch://open/sonic-reactor-ii';
+      const params = new URLSearchParams(window.location.search);
+      const launchRequested = params.get('launch') === '1';
+      const title = document.getElementById('status-title');
+      const detail = document.getElementById('status-detail');
+      const button = document.getElementById('launch');
+      let attempted = false;
+      function setStatus(t,d) { title.textContent=t;detail.textContent=d; }
+      function requestLaunch(userInitiated) {
+        attempted = true;
+        setStatus('Launch request sent', 'If Windows or your browser asks for confirmation, approve it. If the app does not open, use the button below.');
+        // This is a user-registered, fixed application handler. It contains no untrusted parameters.
+        // Browser policy may block a programmatic request without a fresh user gesture.
+        try { window.location.assign(FIXED_PROTOCOL_URL); }
+        catch (_error) { setStatus('Browser blocked the launch', 'Please click the button below to retry with a direct user gesture.'); }
+      }
+      button.addEventListener('click', () => requestLaunch(true));
+      if (launchRequested) {
+        setStatus('Opening your installed app…', 'Your browser may request permission, or block automatic external-app launching.');
+        // Only run when the visitor explicitly follows the ?launch=1 Discord link.
+        // Defer one frame so the fallback interface paints even if the browser blocks the navigation.
+        window.addEventListener('load', () => {
+          if (!attempted) window.requestAnimationFrame(() => requestLaunch(false));
+        }, {once:true});
+      }
+    })();
+  </script>
+</body>
+</html>
