@@ -170,8 +170,10 @@ function refresh(){
   if(!holder)continue;
   const visible=!card.hidden&&!card.closest('[hidden]')&&document.querySelector('[data-panel="command"]')?.hidden===false;
   // For video, use a common decoded poster across all dashboard cards.
-  const animate=record&&!isVideo(record);
-  setDisplay(holder,record,{animated:!!animate&&visible,signature:'card-'+studio});
+  const iphone=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const videoLive=visible&&isVideo(record)&&record.motion==='live'&&cardCount<(iphone?1:4);
+  const animate=visible&&(record&&!isVideo(record)||videoLive);
+  setDisplay(holder,record,{animated:!!animate,signature:'card-'+studio});
   cardCount++;
  }
  const masterLabel=$('mediaMasterStatus');
