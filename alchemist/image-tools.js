@@ -2,7 +2,7 @@ import {$,safe,stem,bytes,number,clamp,notice,download,blobCanvas,createCanvas,i
 const fileLabel = f=>f?.name||'asset';
 const getFile=id=>$(id)?.files?.[0];
 export function initImage(app){
- let source=null,last=null,sourceName='NEXUS-original-art';
+ let source=null,last=null,sourceName='PROXIMUS-original-art';
  const ids=['imgW','imgH','imgFit','imgRotate','imgFlipX','imgFlipY','imgBg','imgBright','imgContrast','imgSat','imgHue','imgBlur','imgGray','imgSepia','imgChroma','imgKey','imgTolerance','imgText','imgTextSize','imgTextColor','imgTextPos','imgFormat','imgQuality'];
  const canvas=$('imgCanvas');
  const defaults={imgBright:100,imgContrast:100,imgSat:100,imgHue:0,imgBlur:0,imgGray:0,imgSepia:0,imgChroma:false,imgText:'',imgRotate:'0',imgFlipX:false,imgFlipY:false};
@@ -83,7 +83,7 @@ export function initImage(app){
   }
   g.globalAlpha=1;g.globalCompositeOperation='source-over';
   const vignette=g.createRadialGradient(480,270,90,480,270,600);vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#000000a9');g.fillStyle=vignette;g.fillRect(0,0,960,540);
-  source=art;sourceName='NEXUS-'+style+'-'+$('imgArtSeed').value; 
+  source=art;sourceName='PROXIMUS-'+style+'-'+$('imgArtSeed').value; 
   $('imgW').value='1920';$('imgH').value='1080';schedule();
   notice('Generated original '+style+' background. Adjust filters or export to PNG/WebP.');
  }));
@@ -117,8 +117,8 @@ export function initBatch(app){
    }catch(e){failures++;console.warn('Batch skipped '+f.name,e)}
   }
   if(!results.length)throw Error('All images failed conversion. Check source formats and dimensions.');
-  results.push({name:'README.txt',data:'NEXUS Asset Alchemist batch export\nProcessed: '+results.length+'\nFailures: '+failures+'\nAll files re-encoded locally; original EXIF metadata is not retained.'});
-  download(await makeZip(results),'NEXUS-BATCH-FORGE.zip');
+  results.push({name:'README.txt',data:'PROXIMUS Asset Alchemist batch export\nProcessed: '+results.length+'\nFailures: '+failures+'\nAll files re-encoded locally; original EXIF metadata is not retained.'});
+  download(await makeZip(results),'PROXIMUS-BATCH-FORGE.zip');
   notice('Batch complete: '+(results.length-1)+' images. '+failures+' skipped.');
  }));
 }
@@ -131,8 +131,8 @@ export function initIcons(app){
   const sizes=[...document.querySelectorAll('.iconSize:checked')].map(x=>Number(x.value));if(!sizes.length)throw Error('Select at least one icon size.');
   const entries=[];for(const sz of sizes){const canvas=createCanvas(sz,sz),ctx=canvas.getContext('2d');ctx.imageSmoothingQuality='high';ctx.save();ctx.beginPath();ctx.rect(0,0,sz,sz);ctx.clip();fitDraw(ctx,img,sz,sz,'cover');ctx.restore();
    entries.push({name:'icon-'+sz+'x'+sz+'.png',data:await blobCanvas(canvas)});}
-  entries.push({name:'manifest.json',data:textFile({generator:'NEXUS Asset Alchemist',sizes,format:'PNG',note:'No Windows ICO binary included'})});
-  download(await makeZip(entries),'NEXUS-ICON-FOUNDRY.zip');notice(sizes.length+' PNG icon sizes exported');
+  entries.push({name:'manifest.json',data:textFile({generator:'PROXIMUS Asset Alchemist',sizes,format:'PNG',note:'No Windows ICO binary included'})});
+  download(await makeZip(entries),'PROXIMUS-ICON-FOUNDRY.zip');notice(sizes.length+' PNG icon sizes exported');
  }));render();
 }
 export function initSprites(app){
@@ -143,7 +143,7 @@ export function initSprites(app){
   const cols=number('spriteCols',4,1,24),sz=number('spriteSize',128,16,1024),pad=number('spritePad',4,0,128),rows=Math.ceil(imgs.length/cols);
   const w=cols*sz+(cols+1)*pad,h=rows*sz+(rows+1)*pad;atlas=createCanvas(w,h);
   const ctx=atlas.getContext('2d');if($('spriteBg').value!=='transparent'){ctx.fillStyle=$('spriteBg').value;ctx.fillRect(0,0,w,h)}
-  manifest={generator:'NEXUS Asset Alchemist',width:w,height:h,sprites:[]};
+  manifest={generator:'PROXIMUS Asset Alchemist',width:w,height:h,sprites:[]};
   for(let i=0;i<imgs.length;i++){
    const col=i%cols,row=Math.floor(i/cols),x=pad+col*(sz+pad),y=pad+row*(sz+pad);
    ctx.save();ctx.beginPath();ctx.rect(x,y,sz,sz);ctx.clip();fitDraw(ctx,imgs[i],sz,sz,$('spriteFit').value,x,y);ctx.restore();
@@ -162,7 +162,7 @@ export function initSprites(app){
  for(const id of ['spriteCols','spriteSize','spritePad','spriteBg','spriteFit'])$(id).addEventListener('input',wrap(render));
  $('spriteExport').addEventListener('click',wrap(async()=>{if(!imgs.length)throw Error('Import sprites first.');await render();
   const entries=[{name:'sprite-atlas.png',data:await blobCanvas(atlas)},{name:'atlas-manifest.json',data:textFile(manifest)}];
-  download(await makeZip(entries),'NEXUS-SPRITE-ATLAS.zip');notice('Atlas and manifest exported');
+  download(await makeZip(entries),'PROXIMUS-SPRITE-ATLAS.zip');notice('Atlas and manifest exported');
  }));
 }
 export function initTextures(app){
@@ -196,7 +196,7 @@ export function initTextures(app){
  }
  $('textureBuild').addEventListener('click',wrap(build));
  async function entries(){if(!maps)await build();return await Promise.all(Object.entries(maps).map(async([key,c])=>({name:'texture-'+key+'.png',data:await blobCanvas(c)})))}
- $('textureExport').addEventListener('click',wrap(async()=>{download(await makeZip(await entries()),'NEXUS-TEXTURE-LAB.zip');notice('3 maps exported')}));
+ $('textureExport').addEventListener('click',wrap(async()=>{download(await makeZip(await entries()),'PROXIMUS-TEXTURE-LAB.zip');notice('3 maps exported')}));
  $('textureAdd').addEventListener('click',wrap(async()=>{for(const f of await entries())app.addAsset(f.name,f.data,'Texture Lab');}));
 }
 export function initPalette(app){
@@ -230,17 +230,17 @@ export function initPalette(app){
  }));
  $('gradCss').addEventListener('click',()=>{
   const css='background: linear-gradient('+number('gradAngle',135,0,360)+'deg, '+$('gradStart').value+', '+$('gradEnd').value+');\n';
-  download(new Blob([css],{type:'text/css'}),'NEXUS-gradient.css');notice('CSS downloaded');
+  download(new Blob([css],{type:'text/css'}),'PROXIMUS-gradient.css');notice('CSS downloaded');
  });
  $('gradSvg').addEventListener('click',()=>{
   const a=number('gradAngle',135,0,360)*Math.PI/180,dx=Math.sin(a)*50,dy=Math.cos(a)*50;
   const svg='<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><defs><linearGradient id="g" x1="'+(50-dx)+'%" y1="'+(50+dy)+'%" x2="'+(50+dx)+'%" y2="'+(50-dy)+'%"><stop stop-color="'+$('gradStart').value+'"/><stop offset="1" stop-color="'+$('gradEnd').value+'"/></linearGradient></defs><rect width="1920" height="1080" fill="url(#g)"/></svg>';
-  download(new Blob([svg],{type:'image/svg+xml'}),'NEXUS-gradient.svg');notice('SVG downloaded');
+  download(new Blob([svg],{type:'image/svg+xml'}),'PROXIMUS-gradient.svg');notice('SVG downloaded');
  });
  $('gradPng').addEventListener('click',wrap(async()=>{
   const c=createCanvas(1920,1080),ctx=c.getContext('2d'),a=number('gradAngle',135,0,360)*Math.PI/180;
   const radius=Math.hypot(960,540),dx=Math.sin(a)*radius,dy=Math.cos(a)*radius;
   const g=ctx.createLinearGradient(960-dx,540+dy,960+dx,540-dy);g.addColorStop(0,$('gradStart').value);g.addColorStop(1,$('gradEnd').value);ctx.fillStyle=g;ctx.fillRect(0,0,c.width,c.height);
-  download(await blobCanvas(c),'NEXUS-gradient-1920x1080.png');notice('Gradient PNG downloaded');
+  download(await blobCanvas(c),'PROXIMUS-gradient-1920x1080.png');notice('Gradient PNG downloaded');
  }));
 }
