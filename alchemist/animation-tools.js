@@ -217,7 +217,7 @@ export function initAnimationForge(app){
   const f=e.target.files[0];if(!f)return;
   if(busy)throw Error('Finish or cancel the current export first');
   const type=sourceType(f);if(f.size>MAX_BYTES)throw Error('Media exceeds 250 MB.');
-  cleanup();file=f;url=URL.createObjectURL(file);
+  cleanup();file=f;lastGif=null;lastGifName='';$('animUseBg').hidden=true;$('animUseThumb').hidden=true;preview.hidden=true;if(resultURL){URL.revokeObjectURL(resultURL);resultURL=null;}url=URL.createObjectURL(file);
   video.hidden=type!=='video';gif.hidden=type!=='gif';
   if(type==='video'){
    video.onloadedmetadata=()=>{
@@ -245,7 +245,7 @@ export function initAnimationForge(app){
    src=await openSource(file);
    const opts=quality();
    let width,height;
-   if(kind==='icons'){width=256;height=256;}else{
+   if(kind==='icons'||kind==='iconPack'){width=256;height=256;}else{
     ({width,height}=dimensionsForGif(src.width,src.height,{
      preset:$('animSizePreset').value,
      customWidth:Number($('animCustomWidth').value),
