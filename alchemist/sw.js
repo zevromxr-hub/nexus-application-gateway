@@ -1,7 +1,7 @@
-/* PROXIMUS Asset Alchemist v2.1.0 — controlled offline application cache.
+/* PROXIMUS Asset Alchemist v2.2.0 — controlled offline application cache.
  * Browser source only. Never caches a user's imported files. */
-const CACHE='proximus-alchemist-v2.1.0';
-const ASSETS=['./','./index.html','./style.css','./app.js','./core.js','./image-tools.js','./media-tools.js','./pro-tools.js','./creator-tools.js','./version.json','./icon.svg','./manifest.webmanifest'];
+const CACHE='proximus-alchemist-v2.2.0';
+const ASSETS=['./','./index.html','./style.css','./app.js','./core.js','./image-tools.js','./media-tools.js','./pro-tools.js','./creator-tools.js','./animation-tools.js','./gif-codec.js','./version.json','./icon.svg','./manifest.webmanifest'];
 const SCOPE=new URL('./',self.location.href).pathname;
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
