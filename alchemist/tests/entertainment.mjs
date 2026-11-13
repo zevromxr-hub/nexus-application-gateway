@@ -1,0 +1,22 @@
+// PROXIMUS entertainment engines: pure-function smoke checks for mobile/desktop sessions.
+import assert from 'node:assert/strict';
+import {mediaKind,formatTime,playlistManifest} from '../media-theater.js';
+import {pulseGrade,cometPoints,memoryResult} from '../arcade-chamber.js';
+assert.equal(mediaKind({name:'song.MP3',type:''}),'audio');
+assert.equal(mediaKind({name:'clip.MP4',type:'video/mp4'}),'video');
+assert.equal(mediaKind({name:'loop.gif',type:'image/gif'}),'image');
+assert.equal(mediaKind({name:'wrong.exe',type:''}),null);
+assert.equal(formatTime(0),'0:00');assert.equal(formatTime(65),'1:05');assert.equal(formatTime(3665),'61:05');
+assert.equal(pulseGrade(.5).points,100);
+assert.equal(pulseGrade(.45).points,55);
+assert.equal(pulseGrade(.38).points,20);
+assert.equal(pulseGrade(.1).points,0);
+assert.ok(cometPoints('gold',9)>cometPoints('purple',9));
+assert.equal(cometPoints('bomb',7),-30);
+assert.ok(memoryResult(8,20)>memoryResult(17,100));
+assert.equal(memoryResult(0,20),0);
+const manifest=playlistManifest([{file:{name:'sample.mp3',size:8},kind:'audio'},{file:{name:'video.mp4',size:24},kind:'video'}]);
+assert.equal(manifest.items.length,2);
+assert.equal(manifest.items[0].name,'sample.mp3');
+assert.equal(manifest.items[1].type,'video');
+console.log('PASS: Local media playlist classification, playback labels, pulse/comet/memory scoring and export manifest');
