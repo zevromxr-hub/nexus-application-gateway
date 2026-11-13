@@ -1,0 +1,57 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.2.0",
+  "release_date": "2026-11-12",
+  "status": "published-source",
+  "channel": "stable",
+  "studios": 15,
+  "delivery": "GitHub Pages, no installer",
+  "branch": "main",
+  "path": "alchemist/",
+  "compatibility": "Unchanged /nexus-application-gateway/alchemist/ Discord button URL; no changes to other launchers",
+  "modules": [
+    "core",
+    "image-tools",
+    "media-tools",
+    "pro-tools",
+    "creator-tools",
+    "gif-codec",
+    "animation-tools",
+    "application-shell",
+    "offline-service-worker",
+    "version-metadata"
+  ],
+  "privacy": "All sources processed locally in browser, never uploaded; resulting file saved by user or persisted in browser Pack Vault",
+  "features": [
+    "Native GIF89a LZW encoder",
+    "Video/GIF to GIF conversion",
+    "Animated icon ZIPs with PNG fallbacks",
+    "Icon Foundry GIF support",
+    "All prior 14 studios preserved",
+    "Offline cache and validation"
+  ],
+  "known_limits": [
+    "Browser must decode original video codec (typically MP4 H.264 or WebM VP8/VP9).",
+    "Animated GIF import requires Chromium ImageDecoder.",
+    "GIF output is silent, up to 8 seconds, 96 frames and maximum 512px long side.",
+    "GIF icons do not animate in Windows .ico; platform-specific animation restrictions may apply."
+  ],
+  "changed": [
+    "alchemist/index.html",
+    "alchemist/image-tools.js",
+    "alchemist/app.js",
+    "alchemist/style.css",
+    "alchemist/animation-tools.js",
+    "alchemist/gif-codec.js",
+    "alchemist/sw.js",
+    "alchemist/version.json",
+    "alchemist/README.md",
+    "alchemist/CHANGELOG.md",
+    "alchemist/tests/validate.mjs",
+    "alchemist/tests/gif-roundtrip.mjs"
+  ],
+  "test_command": "node alchemist/tests/validate.mjs",
+  "development_verification": "Automated Node validation and GIF roundtrip; live GitHub Pages runtime requires browser testing."
+}
