@@ -1,5 +1,28 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v2.9.0 — Sovereign Workspace & Media Dominion (2026-11-13)
+
+### Media Publisher — Master Thumbnail Engine
+- Added a global Master Thumbnail setting for applying one GIF/MP4/WebM across all studio thumbnail positions, the home hero and Command Center cards.
+- Added master-first and individual-thumbnail-first priority modes, saved fit settings and adaptive live/poster video playback for PC and iPhone.
+- Added direct Master Thumbnail media handoff from Media Theater, Project Hub and Asset Packager.
+
+### New studio 28 — Sovereign Command Center
+- Added a customizable live dashboard with searchable studio cards, animated thumbnail support, favorites, recent asset activity, quick navigation and interface layout preferences.
+
+### New studio 29 — Sync Bridge
+- Added a complete portable workspace ZIP with saved projects, real media files, Master Thumbnail settings, Reactor layers, collected assets and personal preferences.
+- Added import preview, selective export, merge-or-replace restore and iPhone/PC Save/Share workflows.
+
+### Sovereign Reactor III
+- Added a second independent animated media layer with configurable opacity and blending.
+- Added timed Scene Director, rolling bass/mid/treble history and adaptive low-power rendering.
+
+### Recovery & Release Guard
+- Added online release-file checks, a local-cache inspection, exportable diagnostic reports and saved-build fallback controls.
+- Added offline cache retention of the latest and preceding app releases for safer updates.
+
+
 ## v2.8.0 — Token Foundry & Owner Vault Edition (2026-11-13)
 
 ### New studio 27: Token Foundry
