@@ -1,0 +1,44 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.0.0",
+  "release_date": "2026-11-12",
+  "status": "published-source",
+  "channel": "stable",
+  "studios": 12,
+  "delivery": "GitHub Pages, no installer",
+  "branch": "main",
+  "path": "alchemist/",
+  "compatibility": "Existing Discord /alchemist/ URL maintained",
+  "modules": [
+    "core",
+    "image-tools",
+    "media-tools",
+    "pro-tools",
+    "application-shell",
+    "offline-service-worker",
+    "version-metadata"
+  ],
+  "privacy": "User imports processed inside browser only; pack data stored locally in IndexedDB",
+  "features": [
+    "Production Lab",
+    "Asset Audit",
+    "IndexedDB Pack Vault",
+    "Release Checks",
+    "Existing 10 Studios"
+  ],
+  "changed": [
+    "alchemist/index.html",
+    "alchemist/app.js",
+    "alchemist/style.css",
+    "alchemist/pro-tools.js",
+    "alchemist/sw.js",
+    "alchemist/manifest.webmanifest",
+    "alchemist/README.md",
+    "alchemist/version.json",
+    "alchemist/CHANGELOG.md"
+  ],
+  "test_command": "node alchemist/tests/validate.mjs",
+  "development_verification": "Static/source validation; deployed browser runtime should be tested separately"
+}
