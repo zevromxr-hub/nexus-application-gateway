@@ -1,59 +1,45 @@
-# PROXIMUS | ASSET ALCHEMIST v3.0.2
-**OMNIVERSE IDENTITY & REACTOR IV — 30 studios · PC + iPhone**
+# PROXIMUS | ASSET ALCHEMIST v3.1.0
+
+**CINEMATIC CONTINUITY & VIDEO VAULT — 31 studios · PC + iPhone**
 
 Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-## PATCH v3.0.2 — BLANK GIF EXPORT CORRECTION
+## NEW STUDIO 31 — VIDEO VAULT
 
-Fixed the actual GIF89a encoder: an off-by-one dictionary code-width change produced invalid LZW compressed data. This could create GIFs that appeared blank or only displayed the first few rows in standard image viewers, although the application reported success. The Safari fallback decoder has been aligned with standards-compliant streams too.
+Video Vault is a permanent-in-app *device-local* library for videos you personally import from your PC or iPhone.
 
-GIF exports now include an independent, externally decoded golden fixture test at **480 × 270**, as well as several frame sizes and transparent colors. The existing **v3.0.1** dimensions/decoded-frame fix remains included. All 30 studios remain available.
+**Start:** Open **Videos** in the top bar, iPhone navigation dock or studio list. Choose **Import new videos** or the file-picker area, select MP4/MOV/M4V/WebM/OGV video files from Files or Photos, and wait for "Saved" in Video Vault.
 
-**Try:** Animation Forge → Regular animated GIF → Automatic dimensions → import video → Create regular GIF. After deployment, use Check Updates to load v3.0.2.
+The video bytes are copied into **this browser's IndexedDB**, under a dedicated video store. Filenames and small poster previews live in a separate metadata store, so showing hundreds of video cards does not load every full video file into memory. Videos remain visible after page reload, closing the app, and ordinary return visits, as long as browser storage is retained.
 
+- Watch and resume from the stored position. Native inline iPhone playback and full-screen controls.
+- Favorite videos, search titles and collections, organize each entry into a collection, browse latest watched or added.
+- Save current video queue from **Media Theater → Save queue videos to Vault**.
+- Save/share original imported video copies back to device Files, where supported.
+- Optional picture-in-picture and generated cover snapshots (captured during first playback).
+- Storage estimate, capacity warnings and optional request for persistent storage.
+- Up to 500 library entries; individual files up to 450 MB on iPhone/iPad or 750 MB on PC, subject to browser quota.
 
-## PATCH v3.0.1 — ANIMATION FORGE GIF FRAME PRECISION
+**Important storage expectations:** The Video Vault is NOT an online media server and does not sync iPhone and PC files. Device/browser storage may be lost if you clear website data, delete the web app or the OS/browser evicts data. The storage API can request persistence, but it can be denied. Keep original videos in Files/Photos or your PC. The existing Sync Bridge workspace ZIP deliberately does not include these large Video Vault files.
 
-**Fixed:** Regular MP4/WebM → GIF conversions no longer lose browser ImageData width, height or pixel buffers before encoding. The prior bug incorrectly displayed "Frame sizes do not match GIF dimensions" even with automatic dimensions selected.
+iPhone .MOV playback works when its video codec is supported by the browser. Unsupported codecs remain saved locally and can be exported.
 
-This fix also covers animated GIF resizing and GIF icon packs. No exact-width requirement is imposed on normal GIFs. Select **Regular animated GIF** + **Automatic · source proportions** for hands-free sizing, or Custom to choose your output dimensions.
+## SMOOTHER ANIMATION FORGE GIF EXPORTS
 
-All 30 studios remain available and all personal data stays local. Use **Check Updates** after GitHub Pages finishes publishing the new release.
+Regular MP4/MOV/M4V/WebM → GIF conversion now provides **15 FPS (smoother), 20 FPS (fluid)** and **24 FPS (cinematic)** in addition to the previous 6/8/12 FPS choices.
 
+GIF89a records per-frame delays in 10-millisecond units; v3.1 distributes the rounding over the sequence so playback duration and pacing match the chosen frame rate more accurately. Supported browsers also get a best-effort presented-frame synchronization after video seeks to reduce duplicate frames.
 
-## NEW STUDIO 30 — MASTER VISUAL IDENTITY
+To avoid mobile memory exhaustion, a GIF has a **120-frame maximum** and existing frame-pixel budgets still apply. At ordinary 1× playback: 15 FPS supports up to 8 seconds, 20 FPS up to 6 seconds, 24 FPS up to 5 seconds. For a fluid short GIF, start with **20 FPS and a 3–5 second clip**. A 24 FPS or larger export can still be heavy for older iPhones.
 
-The master design controller applies a cohesive appearance to the entire local Asset Alchemist browser UI.
+## NEW — IPHONE NAVIGATION
 
-- Choose Sovereign Violet, Solar Dominion, Abyssal Cyan, Crimson Ember, Emerald Ascendant, or Frost Sentinel.
-- Edit six safe custom hex-color channels: primary, secondary, emissive glow, background base, panel surface, and borders.
-- Tune glow, interface sizing, border geometry, and motion intensity. Exempt any selected studio's local appearance from the global theme.
-- Optional time-of-day switching between two color universes, activated when the application is in use or regains focus.
-- Choose whether to show the existing master GIF/video thumbnail everywhere. The identity preference never deletes uploaded media.
-- Continue to use Media Publisher's existing GIF/MP4/WebM master thumbnail and full-screen background publisher; dedicated buttons open them directly.
-- Link currently chosen identity colors to Sovereign Reactor IV *only if enabled*.
-- Save up to twelve named appearances, import/export portable visual identity JSON, or transfer all media bytes with Sync Bridge.
+A touch-friendly navigation dock appears on screen widths up to 760px with direct shortcuts to Home and Videos, Back/Forward studio history and a searchable All Studios drawer. Pin frequently used studios, see Recent visits and browse without losing the current local project state. The dock respects iPhone bottom safe-area spacing, and offers a careful left-edge back gesture that ignores media/interactive surfaces.
 
-This feature changes browser-local cosmetics, not server permissions, GitHub source, customer licensing, or another user's appearance.
+Desktop navigation remains unchanged. If JavaScript fails before the dock initializes, the original horizontal mobile studio navigation remains available.
 
-## SOVEREIGN REACTOR IV — AUDIO-REACTIVE CINEMATIC STUDIO
+## PRESERVED
 
-Reactor IV extends the existing working Web Audio visualization with:
-- Five original effect compositions: Dominion Impact, Celestial Radiance, Hyperspace Reactor, Frost Precision, and Abyssal Singularity.
-- A visual frequency routing matrix mapping sub-bass to atmosphere, bass to shockwaves, mids to emissive wing effects, and treble to particles.
-- Independent controls for each frequency band and for shockwave/particle intensity.
-- Custom animated GIF/video/image layers with clipped masks: halo, wings, kinetic equalizer bars, and eclipse.
-- Flash, fade, and cinematic sweep scene transitions, four custom ordered scenes, timed or beat-triggered switching.
-- Real detected-beat timeline markers and portable effect JSON backups.
-- Optional Visual Identity system color synchronization.
-- All pre-existing microphone, local audio file, desktop tab-audio capture, custom backdrop, GIF export, PNG, and supported silent video capture continue to work.
-
-Note: iPhone webpages still cannot directly read protected system audio playing inside another app. Use local audio files or a permissioned microphone to drive music reactions. Audio-reactive measurements represent actual input, not generated guesses.
-
-## PC/iPhone and offline reliability
-
-The existing 29 studios and Token Foundry are retained. Custom Identity preferences are included in Sync Bridge workspace ZIP transfer and ordinary Recovery Center settings backups. Uploaded GIFs, videos, and other binary assets remain in their original local IndexedDB stores and require an archive that includes media.
-
-The application's original GitHub Pages site, Discord button, PWA installation route, Check Updates flow and rollback support remain unchanged.
+All previous 30 studios, your original Token Foundry, Sovereign Reactor IV, Visual Identity, Master Thumbnail Publisher, existing PWA/GitHub Pages URL and Discord launchers remain present. No customer credentials or tokens are included in Video Vault.
 
 POWERED BY ZEVRO | PROXIMUS
