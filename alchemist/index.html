@@ -666,6 +666,16 @@
    <p class="hint">Current Asset Packager files: <strong id="recoveryPackCount">0</strong></p>
   </div>
  </div>
+ <div class="panel release-guard-panel">
+  <h3>RELEASE GUARD · DEPLOYMENT DIAGNOSTICS & FALLBACK</h3>
+  <p class="hint">Verify release metadata, required application files, offline readiness and the prior cached build. The GitHub release workflow validates source changes before publishing.</p>
+  <div class="buttons"><button id="releaseGuardScan" class="primary">◈ Run release health scan</button><button id="releaseGuardExport" class="small-btn">↓ Export diagnostic report</button><button id="releaseGuardUpdate" class="small-btn">Check latest release</button><button id="releaseGuardOpenSync" class="small-btn">⇄ Backup whole workspace</button></div>
+  <div class="release-rollback-actions"><label>Offline fallback version<select id="releaseGuardRollbackSelect"><option value="">No previous cached build detected</option></select></label>
+   <button id="releaseGuardRollback" class="small-btn">↶ Restore selected cached version</button>
+   <button id="releaseGuardLatest" class="small-btn">↻ Return to latest build</button></div>
+  <div id="releaseGuardResults" class="release-guard-results"></div>
+  <p id="releaseGuardStatus" class="hint" role="status">Run a health scan to inspect this installation.</p>
+ </div>
 </section>
 
 <section class="studio" data-panel="tokens" hidden>
