@@ -36,19 +36,19 @@ const manifest={
    item:{id:'p1',title:'Test Project',notes:'Saved between devices',items:[]}},
   {database:'proximus-alchemist-personal-media',store:'media',key:'master',
    item:{slot:'master',name:'all.gif',mime:'image/gif',mode:'force',fit:'contain',
-    blob:{$blob:'blobs/0001.bin',mime:'image/gif',size:bin.byteLength}}}
+    blob:{$blob:'blobs_0001.bin',mime:'image/gif',size:bin.byteLength}}}
  ],
  settings:{'proximus-command-layout-v1':'creator'}
 };
 assert.equal(validateSyncManifest(manifest).records.length,2);
 const archive=await makeZip([
  {name:'workspace.json',data:new Blob([JSON.stringify(manifest)],{type:'application/json'})},
- {name:'blobs/0001.bin',data:new Blob([bin],{type:'image/gif'})}
+ {name:'blobs_0001.bin',data:new Blob([bin],{type:'image/gif'})}
 ]);
 const opened=openSyncArchive(await archive.arrayBuffer());
 assert.equal(opened.manifest.records.length,2);
 assert.equal(opened.bytes,6);
-assert.equal(opened.manifest.records[1].item.blob.$blob,'blobs/0001.bin');
+assert.equal(opened.manifest.records[1].item.blob.$blob,'blobs_0001.bin');
 assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus-token-foundry-private-v1',store:'vault',key:'owner',item:{}}]}),/unsupported data store/);
 assert.throws(()=>validateSyncManifest({...manifest,settings:{'discord-bot-token':'SECRET'}}),/unexpected settings key/);
 assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus-alchemist-personal-media',store:'media',key:'master',item:{blob:{$blob:'../secret.bin',mime:'image/gif',size:10}}}]}),/invalid media path/);
