@@ -36,7 +36,10 @@ export function decodeLzw(data,minCode,count){
   if(prev&&next<4096){
    const pair=new Uint8Array(prev.length+1);pair.set(prev);pair[prev.length]=item[0];table[next++]=pair;
    // GIF decoder observes dictionary growth one code after the encoder.
-   if(next===(1<<bits)-1&&bits<12)bits++;
+   // Standard GIF LZW code-size transition. The encoder advances one
+   // phrase later; the decoder increases width when its next free
+   // dictionary code reaches the current bit capacity.
+   if(next===(1<<bits)&&bits<12)bits++;
   }
   prev=item;
  }

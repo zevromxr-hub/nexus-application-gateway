@@ -36,9 +36,8 @@ function unzipFrame(codes,minCodeSize,w,h){
   pixels.push(...entry);
   if(old&&next<4096){
    dict[next++]=[...old,entry[0]];
-   // GIF's code-size transition on the decoder is one code later
-   // than the encoder dictionary insertion.
-   if(next===(1<<bits)-1&&bits<12)bits++;
+   // Independent standards-aligned GIF decoder transition.
+   if(next===(1<<bits)&&bits<12)bits++;
   }
   old=entry;
   if(pixels.length>expected+100)throw Error('Decoded GIF contains too many pixels.');
