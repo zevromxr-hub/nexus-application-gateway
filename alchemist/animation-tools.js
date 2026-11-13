@@ -4,15 +4,15 @@ import {$,safe,stem,bytes,notice,download,makeZip,textFile,blobCanvas,wrap} from
 import {encodeGif} from './gif-codec.js';
 import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
 import {saveOrShare,mobileFileSupport} from './portable-kit.js';
-const MAX_BYTES=250000000,MAX_FRAMES=96,MAX_GIF_FRAMES=400,MAX_GIF_PIXELS=360000,MAX_FRAME_BUDGET=17000000;
+const MAX_BYTES=250000000,MAX_FRAMES=120,MAX_GIF_FRAMES=400,MAX_GIF_PIXELS=360000,MAX_FRAME_BUDGET=17000000;
 const ICON_SIZES=[32,64,128,256];
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 const delay=()=>new Promise(resolve=>setTimeout(resolve,0));
 function sourceType(file){
  const name=String(file?.name||'').toLowerCase();
  if(file?.type==='image/gif'||name.endsWith('.gif'))return 'gif';
- if(['video/mp4','video/webm'].includes(file?.type)||/\.(?:mp4|webm)$/.test(name))return 'video';
- throw Error('Use a local GIF, MP4 or WebM. Other formats require a browser-supported decoder.');
+ if(['video/mp4','video/webm','video/quicktime','video/x-m4v'].includes(file?.type)||/\.(?:mp4|webm|mov|m4v)$/.test(name))return 'video';
+ throw Error('Use a local GIF, MP4, MOV, M4V or WebM. Other formats require a browser-supported decoder.');
 }
 // Default GIF mode keeps the original aspect ratio with no exact-size requirement.
 export function dimensionsForGif(w,h,{preset='auto',customWidth=0,customHeight=0,keepRatio=true}={}){
@@ -39,6 +39,15 @@ export function dimensionsForGif(w,h,{preset='auto',customWidth=0,customHeight=0
 // ImageData exposes width/height/data through prototype getters, which are NOT
 // copied by object spread. Always extract them explicitly before GIF encoding.
 // This fixes regular video→GIF, GIF resize, and derived animated icon output.
+// GIF89a stores frame delays in 1/100 second units. Distributing
+// rounding over the sequence prevents drift: e.g. 15 FPS alternates
+// 60/70 ms and 24 FPS alternates 40/50 ms instead of running too fast.
+export function gifDelayMs(fps,frameIndex){
+ const rate=Number(fps),index=Number(frameIndex);
+ if(!Number.isFinite(rate)||rate<1||rate>50||!Number.isInteger(index)||index<0)throw Error('Invalid GIF frame timing.');
+ const t0=Math.round(index*100/rate),t1=Math.round((index+1)*100/rate);
+ return Math.max(20,(t1-t0)*10);
+}
 export function frameForGif(image,delayMs=100){
  const width=Number(image?.width),height=Number(image?.height),data=image?.data;
  if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||
@@ -118,21 +127,36 @@ async function seek(video,time){
   video.addEventListener('seeked',onSeek,{once:true});video.addEventListener('error',onError,{once:true});
   try{video.currentTime=time;}catch(err){cleanup();reject(err)}
  });
+ // The 'seeked' event can precede compositor presentation, especially on
+ // iPhone. Give the decoder an opportunity to present the target frame
+ // before reading its pixels into our GIF Canvas.
+ if(typeof video.requestVideoFrameCallback==='function'){
+  await new Promise(resolve=>{
+   let done=false;let requestId=null;
+   const finish=()=>{if(done)return;done=true;clearTimeout(timer);resolve();};
+   const timer=setTimeout(finish,65);
+   try{requestId=video.requestVideoFrameCallback((now,metadata)=>{
+    if(Math.abs((metadata?.mediaTime??time)-time)>.2){finish();return;}
+    finish();
+   });}catch(e){finish();}
+  });
+ }else if(typeof requestAnimationFrame==='function'){
+  await new Promise(resolve=>requestAnimationFrame(()=>resolve()));
+ }
 }
 async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg='#111020',transparent=false,
  speed=1,reverse=false,caption='',captionColor='#ffffff',progress=()=>{},isCancelled=()=>false}){
  if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start||start<0)throw Error('End time must be greater than start time.');
  if(end-start>8.01)throw Error('Maximum GIF clip length is 8 seconds.');
  fps=Math.floor(fps);
- if(![6,8,12].includes(fps))throw Error('FPS must be 6, 8 or 12.');
+ if(![6,8,12,15,20,24].includes(fps))throw Error('FPS must be 6, 8, 12, 15, 20 or 24.');
  speed=Number(speed);
  if(![.5,1,1.5,2].includes(speed))throw Error('Choose a supported GIF playback speed.');
  const count=Math.ceil((end-start)*fps/speed);
- if(count>MAX_FRAMES)throw Error('GIF export limit is 96 frames. Reduce duration or FPS.');
+ if(count>MAX_FRAMES)throw Error('GIF export supports up to 120 frames. At 24 FPS choose 5 seconds or less; at 20 FPS choose 6 seconds or less, or select lower FPS.');
  if(count*width*height>MAX_FRAME_BUDGET)throw Error('The GIF would use too much browser memory. Choose a smaller size, shorter clip, or lower FPS.');
  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
  const ctx=canvas.getContext('2d',{willReadFrequently:true}),frames=[];
- const durationMs=Math.round(1000/fps);
  const stamp=frame=>{
   if(!caption.trim())return frame;
   const cc=document.createElement('canvas');cc.width=width;cc.height=height;
@@ -151,7 +175,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
    if(isCancelled())throw Error('Conversion cancelled.');
    const time=start+k*speed/fps;if(time>=realEnd-.0001)break;
    await seek(source.video,time);
-   frames.push(frameForGif(stamp(drawFrame(ctx,source.video,width,height,mode,bg,transparent)),durationMs));
+   frames.push(frameForGif(stamp(drawFrame(ctx,source.video,width,height,mode,bg,transparent)),gifDelayMs(fps,k)));
    if(k%2===0){progress('Extracting video frame '+(k+1)+' of '+count);await delay();}
   }
  }else{
@@ -170,7 +194,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
      index++;loops++;
      if(loops>3000)throw Error('Invalid GIF timing metadata.');
     }
-    frames.push(frameForGif(stamp(drawFrame(ctx,current,width,height,mode,bg,transparent)),durationMs));
+    frames.push(frameForGif(stamp(drawFrame(ctx,current,width,height,mode,bg,transparent)),gifDelayMs(fps,k)));
     if(k%2===0){progress('Sampling animated GIF '+(k+1)+' of '+count);await delay();}
    }
   }finally{current?.close?.();}
