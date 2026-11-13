@@ -1,4 +1,4 @@
-// PROXIMUS Asset Alchemist v2.9 — offline, dependency-free release checks.
+// PROXIMUS Asset Alchemist v3.0 — offline, dependency-free release checks.
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 const ROOT=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(ROOT,f),'utf8');
 const version=JSON.parse(read('version.json')),release=JSON.parse(read('releases/v'+version.version+'.json'));
 const html=read('index.html'),app=read('app.js'),service=read('sw.js');
-const modules=['app.js','core.js','image-tools.js','media-tools.js','pro-tools.js','creator-tools.js','gif-codec.js','gif-reader.js','animation-tools.js','media-publisher.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','sw.js'];
+const modules=['app.js','core.js','image-tools.js','media-tools.js','pro-tools.js','creator-tools.js','gif-codec.js','gif-reader.js','animation-tools.js','media-publisher.js','visual-identity-core.js','visual-identity.js','reactor-iv.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','sw.js'];
 for(const f of modules){
  const r=spawnSync(process.execPath,['--check',path.join(ROOT,f)],{encoding:'utf8'});
  assert.equal(r.status,0,f+': '+r.stderr);
@@ -14,21 +14,22 @@ for(const f of modules){
 assert.match(version.version,/^\d+\.\d+\.\d+$/);
 assert.equal(version.product,'PROXIMUS | ASSET ALCHEMIST');
 assert.equal(release.version,version.version);
-assert.equal(version.studio_count,29);
+assert.equal(version.studio_count,30);
 assert.ok(html.includes('v'+version.version),'Page version must match manifest');
 assert.ok(app.includes("LOCAL='"+version.version+"'"),'Client version must match manifest');
 assert.ok(service.includes('proximus-alchemist-v'+version.version),'Service worker cache must match manifest');
 assert.ok(html.includes('PROXIMUS'),'Branded user interface required');
-for(const label of ['production','audit','layers','motiongraphics','animation','theater','reactor','arcade','workflow','utility','projects','automation','capture','documents','qr','recovery','tokens','command','sync','releases','creator','pack','model','image','batch','icons','sprites','textures','palette','audio','motion']){
+for(const label of ['production','audit','layers','motiongraphics','animation','theater','reactor','arcade','workflow','utility','projects','automation','capture','documents','qr','recovery','tokens','command','identity','sync','releases','creator','pack','model','image','batch','icons','sprites','textures','palette','audio','motion']){
  assert.ok(html.includes('data-panel="'+label+'"'),'Missing studio: '+label);
  assert.ok(html.includes('data-view="'+label+'"'),'Missing navigation: '+label);
 }
+for(const id of ["identityStudio","identityPresetGallery","identityColorAccent","identityColorSecondary","identityColorGlow","identityColorBase","identityColorPanel","identityColorBorder","identityEnabled","identityMasterEnabled","identityReactorLinked","identityScheduleEnabled","identityScheduleStart","identityScheduleEnd","identityDay","identityNight","identityGlow","identityFontScale","identityBorder","identityMotion","identitySavedProfiles","identitySaveProfile","identityImport","identityExport","identityExceptionsPanel","identityStudioExceptions","identityOpenMedia","identityOpenBackground","identityShareToReactor","reactorFxPreset","reactorFxSub","reactorFxBass","reactorFxMid","reactorFxTreble","reactorFxShock","reactorFxParticles","reactorFxMask","reactorFxTransition","reactorFxScene0","reactorFxScene1","reactorFxScene2","reactorFxScene3","reactorFxReactiveOverlay","reactorFxBeatMarkers","reactorFxBeatScene","reactorFxExport","reactorFxImport","reactorFxShare","reactorFxReset"])assert.ok(html.includes('id="'+id+'"'),'Missing v3.0 UI control: '+id);
 for(const id of ['prodCanvas','prodExport','prodAdd','prodRecipe','auditFiles','auditRun','auditJSON','auditCSV','vaultStatus','vaultReload','vaultInfo','versionInfo','versionCheck','layerCanvas','layerFiles','layerSave','layerLoad','layerExport','layerAdd','graphicsCanvas','graphicsPreview','graphicsRecord','graphicsAdd','animFile','animVideo','animGif','animResult','animConvert','animToPack','animIcons','animFPS','animMode','animSizePreset','animCustomWidth','animCustomHeight','animKeepRatio','animUseBg','animUseThumb','mediaOpen','mediaDialog','mediaFile','mediaTarget','mediaSave','mediaClear','heroOrb','ambientMedia','iconGifExport','iconGifStatus','theaterFiles','theaterVideo','theaterAudio','theaterImage','theaterPlaylist','theaterPlay','theaterCanvas','theaterEnableAudio','theaterVizPack','theaterMakeBg','theaterToReactor','theaterReactorBg','reactorCanvas','reactorStage','reactorSourceStatus','reactorInputFile','reactorFilePlay','reactorMic','reactorTab','reactorStop','reactorBgFile','reactorBgName','reactorBgPlay','reactorBgRemove','reactorTheme','reactorMode','reactorQuality','reactorSensitivity','reactorImpact','reactorAutoShift','reactorPNG','reactorPNGPack','reactorPNGShare','reactorMakeGif','reactorSaveGif','reactorGifPack','reactorRecord','reactorStopRecord','reactorSaveRecord','reactorRecordPack','reactorPresetSave','reactorPresetExport','reactorPresetImport','reactorPresetList','reactorDevice','cometCanvas','cometStart','pulseTrack','pulseHit','memoryCards','memoryReset','arcadeBest','releaseCards','releaseSearch','releaseCenterStatus','releaseLiveVersion','releaseRefresh','releaseUpdateShortcut','deskNoteList','deskAddNote','deskTitle','deskBody','deskTaskAdd','deskTasks','deskTimer','deskTimerButton','deskBackup','deskImport','utilTextIn','utilAction','utilTextOut','utilRun','utilPassGenerate','utilFiles','utilFilePreview','utilZip','projectSave','projectExport','projectImport','projectList','projectShortcuts','projectAssetList','automationFiles','automationRun','automationPack','automationSaved','captureFile','captureCamera','captureCanvas','captureShare','documentFiles','documentList','documentExport','documentToPack','qrCanvas','qrGenerate','qrCard','recoveryDiagnostics','recoveryRefresh','recoveryClearCache','animExtract','animSaveShare','animOpenGif','animSpeed','animReverse','animCaption','theaterFavorite','theaterExportFavorites','arcadeAchievements','packSearch','tokenVaultSetup','tokenVaultUnlock','tokenVaultRestore','tokenVaultMain','tokenSecurityState','tokenPassSetup','tokenPassConfirm','tokenInitialize','tokenPassUnlock','tokenUnlockGo','tokenGenerate','tokenStrength','tokenQuantity','tokenPrefix','tokenProduct','tokenKind','tokenInventory','tokenSearch','tokenFilter','tokenBatch','tokenCopyBatch','tokenExportBatch','tokenExportEncrypted','tokenImportFile','tokenRestoreFile','tokenRestorePass','tokenRestoreGo','tokenValidate','tokenValidationInput','tokenValidationResult','tokenBulkDisable','tokenBulkRevoke','tokenLock','tokenAudit','commandCards','commandSearch','commandMode','commandOnlyPinned','commandOpenMedia','commandRecent','commandGreeting','syncPrepare','syncShare','syncDownload','syncImport','syncImportPreview','syncRestore','syncReplace','syncProjects','syncMedia','syncPack','syncSettings','mediaMasterApply','mediaMasterRow','mediaMasterMode','mediaMasterMotion','mediaMasterStatus','theaterSetMaster','reactorOverlayVideo','reactorOverlayImage','reactorOverlayFile','reactorOverlayBlend','reactorOverlayOpacity','reactorSceneDirector','reactorSceneSeconds','reactorHistoryCanvas','reactorAutoPerformance','releaseGuardScan','releaseGuardExport','releaseGuardRollback','releaseGuardRollbackSelect','releaseGuardLatest']){
  assert.ok(html.includes('id="'+id+'"'),'Missing functional control: '+id);
 }
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,'Duplicate UI IDs found');
-for(const file of ['./index.html','./style.css','./app.js','./core.js','./image-tools.js','./media-tools.js','./pro-tools.js','./creator-tools.js','./animation-tools.js','./gif-codec.js','./gif-reader.js','./media-publisher.js','./command-center.js','./workspace-sync.js','./release-guard.js','./media-theater.js','./reactor-dsp.js','./reactor-studio.js','./token-crypto.js','./token-foundry.js','./arcade-chamber.js','./release-center.js','./workflow-desk.js','./utility-forge.js','./portable-kit.js','./project-hub.js','./automation-lab.js','./capture-studio.js','./document-forge.js','./qr-studio.js','./recovery-center.js','./version.json','./icon.svg','./manifest.webmanifest']){
+for(const file of ['./index.html','./style.css','./app.js','./core.js','./image-tools.js','./media-tools.js','./pro-tools.js','./creator-tools.js','./animation-tools.js','./gif-codec.js','./gif-reader.js','./media-publisher.js','./visual-identity-core.js','./visual-identity.js','./reactor-iv.js','./command-center.js','./workspace-sync.js','./release-guard.js','./media-theater.js','./reactor-dsp.js','./reactor-studio.js','./token-crypto.js','./token-foundry.js','./arcade-chamber.js','./release-center.js','./workflow-desk.js','./utility-forge.js','./portable-kit.js','./project-hub.js','./automation-lab.js','./capture-studio.js','./document-forge.js','./qr-studio.js','./recovery-center.js','./version.json','./icon.svg','./manifest.webmanifest']){
  assert.ok(service.includes(file),'Cache missing '+file);
  assert.ok(fs.existsSync(path.join(ROOT,file)),'Source missing '+file);
 }
@@ -64,12 +65,20 @@ assert.ok(read('reactor-studio.js').includes('encodeGif('),'Real GIF loop encode
 assert.ok(read('reactor-studio.js').includes('reactorBgVideo'),'Reactor animated video backdrop required');
 assert.ok(read('media-theater.js').includes("'theaterToReactor'"),'Media Theater Reactor link required');
 assert.ok(read('reactor-dsp.js').includes('detectBeat'),'Bass peak detector required');
+assert.ok(app.includes('initVisualIdentity(app)'),'Master Visual Identity must initialize');
+assert.ok(read('visual-identity.js').includes('proximus-identity-changed'),'Cross-studio visual identity event required');
+assert.ok(read('visual-identity-core.js').includes('identityForHour'),'Day/night identity scheduling required');
+assert.ok(read('workspace-sync.js').includes('proximus-visual-identity-v1'),'Visual identity must transfer between devices');
+assert.ok(read('reactor-iv.js').includes('effectLevels'),'Reactor IV must use measured frequency inputs');
+assert.ok(read('reactor-studio.js').includes('pulseDecay'),'Reactor IV real beat shockwave required');
+assert.ok(read('reactor-studio.js').includes('nextSceneInOrder'),'Custom scene sequence required');
+assert.ok(read('media-publisher.js').includes('proximus-identity-changed'),'Global thumbnail theme controls required');
 assert.ok(read('token-crypto.js').includes('AES-GCM'),'Token vault must use authenticated AES-GCM encryption');
 assert.ok(read('token-crypto.js').includes('getRandomValues'),'Tokens must use cryptographic randomness');
 assert.ok(read('token-crypto.js').includes('PBKDF2'),'Token owner passphrase must derive an encryption key');
 assert.ok(read('token-foundry.js').includes('export function initTokenFoundry'));
 assert.ok(app.includes('initTokenFoundry(app)'),'Token Foundry must initialize');
-for(const init of ['initCommandCenter(app)','initSyncBridge(app)','initReleaseGuard(app)'])assert.ok(app.includes(init),'v2.9 studio/support hook missing: '+init);
+for(const init of ['initCommandCenter(app)','initSyncBridge(app)','initReleaseGuard(app)'])assert.ok(app.includes(init),'v3.0 studio/support hook missing: '+init);
 assert.ok(read('media-publisher.js').includes("s==='master'"),'Master media slot required');
 assert.ok(read('media-publisher.js').includes('chooseThumbnail('),'Master and studio priorities required');
 assert.ok(read('media-publisher.js').includes('generatePoster'),'One shared preview for all dashboard video cards required');
@@ -88,7 +97,7 @@ assert.ok(read('utility-forge.js').includes('export function initUtilityForge'))
 assert.ok(app.includes('initWorkflowDesk(app)')&&app.includes('initUtilityForge(app)'));
 assert.ok(app.includes('initReleaseCenter()'));
 for(const name of ['initProjectHub(app)','initAutomationLab(app)','initCaptureStudio(app)','initDocumentForge(app)','initQRStudio(app)','initRecoveryCenter(app)']){
- assert.ok(app.includes(name),'Missing v2.9 initialization: '+name);
+ assert.ok(app.includes(name),'Missing v3.0 initialization: '+name);
 }
 assert.ok(read('animation-tools.js').includes("run('frames')"),'Frame ZIP extraction must be present');
 assert.ok(read('animation-tools.js').includes('saveOrShare(lastGif'),'Mobile GIF share action must retain user click');
@@ -116,8 +125,10 @@ const tokenTest=spawnSync(process.execPath,[path.join(ROOT,'tests/token-foundry.
 assert.equal(tokenTest.status,0,'Encrypted Token Foundry: '+tokenTest.stderr+' '+tokenTest.stdout);
 const masterTest=spawnSync(process.execPath,[path.join(ROOT,'tests/master-workspace.mjs')],{encoding:'utf8'});
 assert.equal(masterTest.status,0,'Master thumbnails / Sync Bridge / Reactor III / Release Guard: '+masterTest.stderr+' '+masterTest.stdout);
+const identityTest=spawnSync(process.execPath,[path.join(ROOT,'tests/identity-reactor-iv.mjs')],{encoding:'utf8'});
+assert.equal(identityTest.status,0,'Visual Identity / Reactor IV: '+identityTest.stderr+' '+identityTest.stdout);
 assert.ok(app.includes('initProduction(app)')&&app.includes('initAudit(app)'));
 assert.ok(app.includes('indexedDB'),'Persistent pack vault must be wired');
 assert.ok(app.includes('setupVersion()'),'Release check must be wired');
 assert.ok(fs.existsSync(path.join(ROOT,'CHANGELOG.md')));
-console.log('PASS: Proximus Alchemist '+version.version+' — 29 studios + Master Thumbnail Dominion + Sync Bridge + Reactor III + cached release fallback, imports, versions, PWA assets, vault, audit and production controls');
+console.log('PASS: Proximus Alchemist '+version.version+' — 30 studios + Master Visual Identity + Reactor IV + cached release fallback, imports, versions, PWA assets, vault, audit and production controls');
