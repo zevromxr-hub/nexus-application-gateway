@@ -344,11 +344,17 @@
    <div class="video-vault-player-actions">
     <button id="videoVaultPrevious" class="small-btn">⏮ Previous</button>
     <button id="videoVaultNext" class="small-btn">Next ⏭</button>
+    <button id="videoVaultBack10" class="small-btn">↶ 10s</button>
+    <button id="videoVaultForward30" class="small-btn">30s ↷</button>
     <button id="videoVaultCinema" class="small-btn">⛶ Full screen</button>
     <button id="videoVaultPiP" class="small-btn" disabled>▣ Picture-in-picture</button>
     <button id="videoVaultDownload" class="small-btn" disabled>↓ Save original file</button>
+    <button id="videoVaultSendTheater" class="small-btn" disabled>♫ Open in Media Theater</button>
    </div>
-   <p class="hint">On iPhone, tap Play in the native video controls if autoplay is blocked. Your saved copies remain available offline after this app has loaded, subject to browser storage retention.</p>
+   <div class="checks companion-cinema-settings">
+    <label><input id="videoVaultAutoNext" type="checkbox"> Automatically play the next saved video</label>
+   </div>
+   <p class="hint">On iPhone, tap Play in the native video controls if autoplay is blocked. Auto-next is optional and may require a user tap. Original video copies remain stored locally, subject to browser storage retention.</p>
   </div>
  </div>
  <div class="panel video-vault-library"><h3>04 / YOUR VIDEO COLLECTIONS</h3>
