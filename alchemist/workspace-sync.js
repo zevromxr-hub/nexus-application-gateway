@@ -96,7 +96,7 @@ export async function buildSyncArchive({projects=true,media=true,pack=true,setti
    const row={database:spec.name,store:spec.store,key,item:{}};
    for(const [field,value] of Object.entries(cloneItem(item))){
     if(value instanceof Blob){
-     const file='blobs/'+String(++blobs).padStart(4,'0')+'.bin';
+     const file='blobs_'+String(++blobs).padStart(4,'0')+'.bin';
      row.item[field]={$blob:file,mime:value.type||'application/octet-stream',size:value.size,
       name:typeof value.name==='string'?value.name:''};
      entries.push({name:file,data:value});total+=value.size;
