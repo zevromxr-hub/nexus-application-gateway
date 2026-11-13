@@ -1,0 +1,31 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.8.0",
+  "release_date": "2026-11-13",
+  "title": "Token Foundry & Owner Vault Edition",
+  "subtitle": "Token Foundry & Owner Vault Edition",
+  "channel": "stable",
+  "studios": 27,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Studio 27 Token Foundry: cryptographically random access, license, redemption, voucher and testing codes",
+    "128-bit, 192-bit and 256-bit token generation with batch issuing, labels, assigned recipients and product identity",
+    "Encrypted local token inventory protected by an owner passphrase using AES-256-GCM and PBKDF2-SHA256",
+    "Live token search, filtering, masked/reveal controls, code copying and active/disabled/revoked/expired/used states",
+    "On-device token validation with optional local redemption, usage limits, product matching and expiration",
+    "Individual enable/disable/revoke actions, bulk disabling/revocation and encrypted audit history",
+    "Device-friendly export of encrypted JSON backups, owner CSV inventories, TXT code lists and newly generated batches",
+    "Portable encrypted vault restore between PC and iPhone without creating a new vault first",
+    "Added a noindex request for search engines while preserving the existing GitHub Pages/Discord application link"
+  ],
+  "added_studios": [
+    "Token Foundry"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
