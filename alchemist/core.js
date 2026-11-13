@@ -1,4 +1,4 @@
-// NEXUS Asset Alchemist v1.0 — browser-only utility primitives.
+// PROXIMUS Asset Alchemist v1.0 — browser-only utility primitives.
 export const $ = id => document.getElementById(id);
 export const safe = name => String(name || 'asset').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').replace(/^\.+/,'_').slice(0,160) || 'asset';
 export const stem = name => safe(String(name).replace(/\.[^.]*$/,''));
