@@ -1,5 +1,29 @@
 # PROXIMUS | ASSET ALCHEMIST — Changelog
 
+## v2.4.0 — Entertainment Expansion Edition (2026-11-12)
+
+### New: Media Theater — Studio 16
+- Build a personal playlist using locally selected music, videos and animated GIFs.
+- Play, pause, skip, shuffle, repeat and adjust playback speed with the native media controls.
+- Expand videos to cinema mode and capture video or GIF poster frames as PNG.
+- Enable live music-reactive visualizers: neon spectrum bars, waveforms and resonance rings.
+- Personalize visualizer colors with violet, cyan, solar gold, crimson and emerald themes.
+- Download visualizer artwork or collect it in your Asset Packager.
+- Send supported theater media directly to the application background or hero thumbnail.
+- Export a portable JSON list of the playlist's file names and order.
+
+### New: Arcade Chamber — Studio 17
+- **Comet Catch:** 45-second comet-catching game with combos, gold rewards and hazards.
+- **Pulse Reflex:** timing challenge with perfect-hit scoring, streak bonuses and 12-hit rounds.
+- **Memory Matrix:** 16-card matching challenge with move/time scoring and eight unique pairs.
+- Responsive touch/mouse controls, browser-local best scores and score JSON exports.
+- Export a Comet Catch screenshot to the existing Asset Packager.
+
+### Integration
+- Added both studios to Quick Navigation, desktop/mobile studio menus and the offline application cache.
+- Preserved existing fifteen studios, Asset Packager, local media personalization, GitHub Pages URL, Discord button and Check Updates flow.
+
+
 ## v2.3.0 — Media Fusion Edition (2026-11-12)
 
 ### GIF conversion fixes
