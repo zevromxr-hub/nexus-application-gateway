@@ -367,7 +367,10 @@ export function initVideoVault(app){
  video.addEventListener('ended',()=>{
   if(active()){active().position=0;active().watched=Date.now();void updateStoredVideo(active());}
   render();updateMini();
-  if(autoNext.checked)nextVideo(1);
+  if(autoNext.checked){
+   const queue=getVisible(),index=queue.findIndex(item=>item.id===activeId);
+   if(index>=0&&index<queue.length-1)void watch(queue[index+1].id,true);
+  }
  });
  video.addEventListener('error',()=>{
   const item=active();if(item)say('This browser cannot decode '+item.name+'. The original saved file is still in Video Vault. Try MP4/H.264 or a device-native MOV.',true);
