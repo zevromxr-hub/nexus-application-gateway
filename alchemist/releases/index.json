@@ -1,0 +1,42 @@
+{
+  "schema": "proximus.alchemist.release-index/1",
+  "updated": "2026-11-13",
+  "product": "PROXIMUS | ASSET ALCHEMIST",
+  "releases": [
+    {
+      "version": "2.5.0",
+      "title": "Creator & Productivity Expansion",
+      "date": "2026-11-13"
+    },
+    {
+      "version": "2.4.0",
+      "title": "Entertainment Expansion Edition",
+      "date": "2026-11-12"
+    },
+    {
+      "version": "2.3.0",
+      "title": "Media Fusion Edition",
+      "date": "2026-11-12"
+    },
+    {
+      "version": "2.2.0",
+      "title": "Motion & GIF Dominion Edition",
+      "date": "2026-11-12"
+    },
+    {
+      "version": "2.1.0",
+      "title": "Dominion Workflow Edition",
+      "date": "2026-11-12"
+    },
+    {
+      "version": "2.0.0",
+      "title": "Supreme Creator Edition",
+      "date": "2026-11-12"
+    },
+    {
+      "version": "1.0.0",
+      "title": "Genesis Edition",
+      "date": ""
+    }
+  ]
+}
