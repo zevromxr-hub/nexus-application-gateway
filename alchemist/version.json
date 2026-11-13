@@ -1,20 +1,21 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Animation Forge — GIF Frame Precision Patch",
+  "subtitle": "GIF Playback & Standards Compliance Patch",
   "studio_count": 30,
-  "previous_version": "3.0.0",
+  "previous_version": "3.0.1",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Fixed video-to-GIF exports reporting frame dimension mismatches in regular GIF mode even when custom dimensions were disabled",
-    "Preserve the browser ImageData width, height and RGBA buffer explicitly before GIF89a encoding",
-    "Apply the same frame metadata fix to animated GIF resizing and animated icon-pack generation",
-    "Preserve Auto sizing, aspect-ratio controls and custom width/height settings without imposing icon dimensions on standard GIFs",
-    "Retain all 30 studios, visual identity, Reactor IV, offline PWA, and unchanged Token Foundry"
+    "Fixed exported video-to-GIF animations appearing blank or partially corrupted in native browser viewers",
+    "Corrected the GIF89a LZW dictionary code-width transition so generated images decode correctly in standard viewers",
+    "Updated the Safari fallback GIF decoder to read standard-compliant GIF LZW streams, including external GIFs",
+    "Added multi-resolution pixel roundtrip, transparent GIF, and an independently Pillow-verified 480×270 golden GIF fixture",
+    "Preserved automatic GIF dimensions, animated icon packs and the v3.0.1 decoded-frame metadata fix",
+    "Preserved all 30 studios, Token Foundry, Master Visual Identity, Reactor IV and the current website address"
   ]
 }
