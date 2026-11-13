@@ -1,20 +1,22 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "channel": "stable",
   "release_date": "2026-11-12",
-  "subtitle": "Dominion Workflow Edition",
-  "studio_count": 14,
-  "previous_version": "2.0.0",
+  "subtitle": "Motion & GIF Dominion Edition",
+  "studio_count": 15,
+  "previous_version": "2.1.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Layer Forge with draggable image and text layers, blending, 4K canvases and portable self-contained JSON projects",
-    "Motion Graphics with themed animated title sequences, particle scenes and real-time silent WebM export",
-    "Both new studios export to persistent Asset Packager",
-    "Preserved all 12 prior studios and original Discord GitHub Pages launch link",
-    "Versioned browser cache and source checks updated for 14 studios"
+    "New Animation Forge: local MP4/WebM to genuine animated GIF89a file conversion",
+    "Trim, resize, frame rate (6/8/12 FPS), contain/cover, background, transparency and dithering",
+    "Animated GIF resizing and re-encoding using Chromium ImageDecoder",
+    "Animated GIF icon ZIP (32–256px) plus real static PNG fallback assets",
+    "Icon Foundry accepts GIF input and can export animated GIF icon packs",
+    "Existing 14 studios, Discord button URL, repository and offline features retained",
+    "Independent animated GIF LZW round-trip test and updated offline cache"
   ]
 }

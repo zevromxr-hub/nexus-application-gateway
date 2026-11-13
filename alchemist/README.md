@@ -1,6 +1,6 @@
-# PROXIMUS | ASSET ALCHEMIST v2.1.0
+# PROXIMUS | ASSET ALCHEMIST v2.2.0
 
-**DOMINION WORKFLOW EDITION — 14 creative studios**
+**MOTION & GIF DOMINION EDITION — 15 creative studios**
 
 **SUPREME CREATOR EDITION — Powered by ZevRo | Proximus**
 
@@ -44,12 +44,18 @@ All transforms run in the browser; source media stays on the machine and is not 
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
 ## Release discipline
-- Publish v2.1.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
+- Publish v2.2.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
 - Run \`node alchemist/tests/validate.mjs\` and JS syntax checks.
 - Keep existing gateway HTML, desktop protocols and paths compatible.
 - After merge, validate Pages deployment separately, since a GitHub commit alone does not guarantee the CDN has updated.
 
 POWERED BY ZEVRO | PROXIMUS
 
-## v2.1.0 studios
+## v2.2.0 studios
 Layer Forge creates portable image/text compositions with reorderable layers, drag transforms, blend modes and full-resolution PNG/WebP exports. Save a portable JSON project to preserve design and image layers. Motion Graphics creates procedural particle/portal sequences, preview playback, PNG keyframes and locally recorded silent WebM clips. Both support Add to Pack. Browser support for MediaRecorder varies; Chromium is recommended.
+
+## v2.2.0: Animation Forge & animated icons
+
+Import MP4, WebM and GIF files using the new **Animation Forge**. Browser-decodable videos are sampled frame by frame and encoded as genuine GIF89a animations with LZW, palette quantization, and repeat-loop information. You can trim clips, resize (max 512px longest side, max 8 seconds / 96 frames), change FPS (6, 8, 12), change cover/contain behavior, enable ordered dithering or transparency, download GIFs or add them to the existing Asset Packager. Animation Forge also builds an animated GIF icon ZIP (32/64/128/256) including PNG still fallbacks. **Icon Foundry** now imports GIFs and offers a separate animated icon ZIP export.
+
+**Browser requirements:** GIF decoding uses Chromium ImageDecoder; use recent Chrome, Edge or Opera. MP4/WebM input decoding depends on installed browser codec support. Unsupported codecs produce an error instead of a fake conversion. GIF files have no audio; animated GIF icons are not Windows ICO files. No media is uploaded to a server. Automated validation runs `node alchemist/tests/validate.mjs` and an independent GIF LZW round-trip test.
