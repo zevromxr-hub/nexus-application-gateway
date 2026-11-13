@@ -158,6 +158,22 @@ export function initMediaTheater(app){
   app.changeView('videos');
  });
  $('theaterOpenVault').addEventListener('click',()=>app.changeView('videos'));
+ document.addEventListener('proximus-video-vault-send-theater',e=>{
+  const {blob,name}=e.detail||{};
+  if(!(blob instanceof Blob)||!blob.size){showStatus('Selected Video Vault file is unavailable.');return;}
+  if(playlist.length>=MAX_QUEUE){showStatus('Media Theater queue is full.');return;}
+  // Preserve the original browser Blob rather than copying hundreds of MB.
+  if(!blob.name)try{Object.defineProperty(blob,'name',{value:String(name||'Saved video.mp4'),configurable:true});}
+  catch(err){showStatus('Cannot label this stored video for Theater playback.');return;}
+  playlist.push({file:blob,kind:'video'});
+  void select(playlist.length-1,true);
+  showStatus('Video Vault file added to the current session queue without duplicating its stored data.');
+ });
+ document.addEventListener('proximus-companion-playing',e=>{
+  if(e.detail?.origin==='videos'&&playing){
+   stopMedia();showInfo();updateMini();
+  }
+ });
  $('theaterPlay').addEventListener('click',wrap(togglePlay));
  $('theaterNext').addEventListener('click',wrap(()=>next(1)));
  $('theaterPrev').addEventListener('click',wrap(()=>next(-1)));
@@ -167,7 +183,10 @@ export function initMediaTheater(app){
  $('theaterSpeed').addEventListener('change',e=>{video.playbackRate=Number(e.target.value);audio.playbackRate=Number(e.target.value);});
  for(const el of [audio,video]){
   el.addEventListener('ended',()=>{playing=false;void next(1,true);});
-  el.addEventListener('play',()=>{playing=true;showInfo();});
+  el.addEventListener('play',()=>{
+   playing=true;showInfo();
+   document.dispatchEvent(new CustomEvent('proximus-companion-playing',{detail:{origin:'theater'}}));
+  });
   el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();}});
   el.addEventListener('loadedmetadata',showInfo);
   el.addEventListener('error',()=>{showStatus('Could not decode '+(currentItem()?.file.name||'file')+' in this browser');playing=false;showInfo();});
