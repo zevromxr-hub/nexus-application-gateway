@@ -2,6 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090916">
+<meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="description" content="PROXIMUS Asset Alchemist — private browser-based visual, audio, motion, model, and asset transformation workshop">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
@@ -40,6 +41,7 @@
     <button class="nav" data-view="documents"><span>▣</span> Document Forge <small>23</small></button>
     <button class="nav" data-view="qr"><span>⌗</span> QR & Branding <small>24</small></button>
     <button class="nav" data-view="recovery"><span>⚙</span> Recovery Center <small>25</small></button>
+    <button class="nav" data-view="tokens"><span>⌑</span> Token Foundry <small>27</small></button>
     <button class="nav" data-view="releases"><span>⟳</span> Release Center <small>INFO</small></button>
     <button class="nav" data-view="creator"><span>✧</span> Creator Story <small>ABOUT</small></button>
   </nav>
@@ -52,11 +54,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.7.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-six functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>26</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.8.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-seven functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>27</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.7.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.8.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -427,7 +429,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.7.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.8.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -580,6 +582,98 @@
    <div class="buttons"><button id="recoveryCheckUpdates" class="small-btn">Check Updates</button><button id="recoveryClearCache" class="small-btn">Clear app cache</button></div>
    <p class="hint">Current Asset Packager files: <strong id="recoveryPackCount">0</strong></p>
   </div>
+ </div>
+</section>
+
+<section class="studio" data-panel="tokens" hidden>
+ <div class="section-heading"><div><div class="eyebrow">27 / OWNER TOKEN MANAGEMENT</div><h2>Token Foundry <span class="subtitle">Create · secure · validate · export · revoke</span></h2></div></div>
+ <div class="token-lead">
+  <div><span class="eyebrow">PROXIMUS PRIVATE INVENTORY</span><h3>Owner Token Control Center</h3><p>Secure codes for your own tools, licenses, redemption campaigns and trusted customers. Cryptographically random keys and encrypted device-local storage.</p></div>
+  <span id="tokenSecurityState" class="token-security-state">LOCKED · PASSPHRASE REQUIRED</span>
+ </div>
+ <p id="tokenStatus" class="hint" role="status">Preparing encrypted token storage…</p>
+ <div id="tokenVaultSetup" class="panel token-lock-panel" hidden>
+  <h3>CREATE A PRIVATE OWNER VAULT</h3>
+  <p class="hint">This password encrypts your local token inventory, not access to the public website. Use a long, unique passphrase and export encrypted backups when moving devices.</p>
+  <label>Vault passphrase (12 or more characters)<input id="tokenPassSetup" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Choose a strong owner passphrase"></label>
+  <label>Confirm passphrase<input id="tokenPassConfirm" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Repeat your passphrase"></label>
+  <button id="tokenInitialize" class="primary wide">◈ Create encrypted token vault</button>
+  <p class="hint">No account or remote credential storage is used for this vault. Losing the passphrase means losing access to encrypted records unless you have another unlocked copy.</p>
+ </div>
+ <div id="tokenVaultUnlock" class="panel token-lock-panel" hidden>
+  <h3>UNLOCK TOKEN CONTROL CENTER</h3>
+  <p class="hint">Your encrypted token inventory is stored in this browser. Enter your owner vault passphrase to view it.</p>
+  <label>Vault passphrase<input id="tokenPassUnlock" type="password" autocomplete="current-password" placeholder="Unlock inventory"></label>
+  <button id="tokenUnlockGo" class="primary wide">↗ Unlock private inventory</button>
+  <p class="hint">Need to restore a backup on this device? Use the import control below.</p>
+ </div>
+ <div id="tokenVaultRestore" class="panel token-lock-panel">
+  <h3>RESTORE AN ENCRYPTED VAULT FROM ANOTHER DEVICE</h3>
+  <p class="hint">Import the encrypted backup you exported from PC or iPhone. A backup is portable; your codes do not synchronize automatically between devices.</p>
+  <label>Encrypted Token Foundry backup<input id="tokenRestoreFile" type="file" accept=".json,application/json"></label>
+  <label>Backup passphrase<input id="tokenRestorePass" type="password" autocomplete="off" placeholder="Passphrase for the exported vault"></label>
+  <button id="tokenRestoreGo" class="small-btn">↗ Restore encrypted inventory on this device</button>
+ </div>
+ <div id="tokenVaultMain" hidden>
+  <div class="token-stats">
+   <div><strong id="tokenStatTotal">0</strong><span>ISSUED TOKENS</span></div>
+   <div><strong id="tokenStatActive">0</strong><span>ACTIVE TOKENS</span></div>
+   <div><strong id="tokenStatInactive">0</strong><span>DISABLED / REVOKED</span></div>
+   <div><strong id="tokenStatExpired">0</strong><span>EXPIRED / USED</span></div>
+  </div>
+  <div class="token-topactions"><button id="tokenLock" class="small-btn">▣ Lock owner vault</button><span id="tokenInventorySummary" class="hint">Encrypted inventory</span></div>
+  <div class="workspace image-grid">
+   <div class="panel">
+    <h3>01 / LIVE SECURE GENERATOR</h3>
+    <p class="hint">Generate true random access codes using the device's Web Crypto engine, with 128–256 bits of randomness.</p>
+    <div class="two">
+     <label>Product prefix<input id="tokenPrefix" value="NEXUS" maxlength="10" placeholder="NEXUS"></label>
+     <label>Token purpose<select id="tokenKind"><option value="license">Product license</option><option value="access">Access token</option><option value="redemption">Redemption</option><option value="voucher">Voucher</option><option value="test">Test / temporary</option></select></label>
+    </div>
+    <div class="two"><label>Token strength<select id="tokenStrength"><option value="256" selected>256-bit · Maximum</option><option value="192">192-bit</option><option value="128">128-bit</option></select></label>
+     <label>Generate quantity<input id="tokenQuantity" type="number" min="1" max="50" value="5"></label></div>
+    <label>Product or project name<input id="tokenProduct" maxlength="100" placeholder="NEXUS Asset Alchemist"></label>
+    <label>Batch label<input id="tokenLabel" maxlength="120" placeholder="Founder Access / Customer Wave 1"></label>
+    <label>Assigned to (optional)<input id="tokenRecipient" maxlength="120" placeholder="Customer / friend reference"></label>
+    <div class="two"><label>Max local redemptions<input id="tokenMaxUses" type="number" min="1" max="1000000" value="1"></label>
+     <label>Expiration UTC (optional)<input id="tokenExpires" type="date"></label></div>
+    <label>Private owner notes<textarea id="tokenNotes" rows="3" maxlength="1000" placeholder="Internal description"></textarea></label>
+    <button id="tokenGenerate" class="primary wide">✧ Generate and encrypt token batch</button>
+    <h3>NEWLY GENERATED TOKENS <span id="tokenBatchCount" class="hint">0 newly generated</span></h3>
+    <div id="tokenBatch" class="token-batch-list"></div>
+    <div class="buttons"><button id="tokenCopyBatch" class="small-btn">Copy batch</button><button id="tokenExportBatch" class="small-btn">Share / Download batch CSV</button></div>
+   </div>
+   <div class="panel">
+    <h3>02 / TOKEN VERIFICATION TERMINAL</h3>
+    <p class="hint">Look up a code from your owner inventory. Marking a code as redeemed updates this device's encrypted record; online customer validation requires a separately connected authorization server.</p>
+    <label>Token to inspect<input id="tokenValidationInput" type="text" spellcheck="false" autocomplete="off" placeholder="NEXUS-XXXXX-XXXXX-…"></label>
+    <label>Expected product (optional)<input id="tokenValidateProduct" placeholder="Product / project name"></label>
+    <div class="checks"><label><input type="checkbox" id="tokenConsume"> Record a local redemption when valid</label></div>
+    <button id="tokenValidate" class="primary wide">◎ Validate token</button>
+    <div id="tokenValidationResult" class="token-check-result" role="status">Enter a code to check its local status.</div>
+    <h3>03 / ENCRYPTED BACKUP & TRANSFER</h3>
+    <p class="hint">Encrypted backups can be moved between your iPhone and PC. Use the Share / Save sheet when available, or the standard browser download.</p>
+    <div class="buttons"><button id="tokenExportEncrypted" class="primary">↓ Share / Save encrypted backup</button><button id="tokenExportCSV" class="small-btn">↓ Owner inventory CSV</button><button id="tokenExportTXT" class="small-btn">↓ Codes TXT</button></div>
+    <p class="hint">CSV and TXT exports reveal full token codes and are not encrypted. Only share them with authorized recipients.</p>
+    <label>Encrypted backup from another device<input id="tokenImportFile" type="file" accept=".json,application/json"></label>
+    <label>Passphrase for imported backup<input id="tokenImportPass" type="password" autocomplete="off" placeholder="Backup vault passphrase"></label>
+    <h3>04 / RECENT OWNER ACTIVITY</h3>
+    <div id="tokenAudit" class="token-audit"></div>
+    <button id="tokenBackupAudit" class="small-btn">↓ Export audit JSON</button>
+   </div>
+  </div>
+  <div class="panel token-inventory-panel">
+   <div class="token-inventory-head"><div><h3>05 / LIVE TOKEN INVENTORY</h3><p class="hint" id="tokenVisibleCount">0 matching tokens</p></div>
+    <div class="buttons"><button id="tokenClearSelection" class="small-btn">Clear selection</button><button id="tokenBulkDisable" class="small-btn">Disable selected</button><button id="tokenBulkRevoke" class="small-btn token-danger">Revoke selected</button><button id="tokenRemoveRevoked" class="small-btn">Clear revoked archive</button></div>
+   </div>
+   <div class="two"><label>Search names, products or codes<input id="tokenSearch" type="search" placeholder="Filter vault records…"></label>
+    <label>Filter status<select id="tokenFilter"><option value="all">All token states</option><option value="active">Active</option><option value="disabled">Disabled</option><option value="revoked">Revoked</option><option value="expired">Expired</option><option value="exhausted">Exhausted</option></select></label></div>
+   <div id="tokenInventory" class="token-record-list"></div>
+  </div>
+ </div>
+ <div class="token-security-note">
+  <strong>Protection model</strong>
+  <p>Token Foundry encrypts saved token records using a passphrase, but does not make a public website private. Tokens issued here do not automatically unlock the website or revoke access for remote users. Production membership/licensing requires server-side authentication and a protected application host. The repository and launch URLs remain unchanged.</p>
  </div>
 </section>
 

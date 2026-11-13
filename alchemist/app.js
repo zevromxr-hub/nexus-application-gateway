@@ -17,6 +17,7 @@ import {initCaptureStudio} from './capture-studio.js';
 import {initDocumentForge} from './document-forge.js';
 import {initQRStudio} from './qr-studio.js';
 import {initRecoveryCenter} from './recovery-center.js';
+import {initTokenFoundry} from './token-foundry.js';
 const names=[
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
@@ -44,6 +45,7 @@ const names=[
  {id:'documents',icon:'▣',title:'Document Forge',detail:'Photos to PDF pages print watermark scan images'},
  {id:'qr',icon:'⌗',title:'QR & Branding',detail:'Scannable QR codes social branding PNG SVG card artwork'},
  {id:'recovery',icon:'⚙',title:'Recovery Center',detail:'Browser storage diagnostics settings backup cache update recovery'},
+ {id:'tokens',icon:'⌑',title:'Token Foundry',detail:'CSPRNG access license codes encrypted AES vault generate validate revoke batch CSV TXT JSON export PC iPhone'},
  {id:'releases',icon:'⟳',title:'Release Center',detail:'Newest versions updates change history release notes GitHub official source'},
  {id:'creator',icon:'✧',title:'Creator Story',detail:'About the developer ZevRo PROXIMUS NEXUS vision journey project history'}
 ];
@@ -243,7 +245,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.7.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.8.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -266,10 +268,10 @@ function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
  initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
- initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);
+ initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.7 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.8 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

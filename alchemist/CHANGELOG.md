@@ -1,5 +1,18 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v2.8.0 — Token Foundry & Owner Vault Edition (2026-11-13)
+
+### New studio 27: Token Foundry
+- Added live cryptographically secure token generation with editable prefixes, token types and 128/192/256-bit random codes.
+- Added encrypted owner vault setup, unlock and on-device inventory management with AES-256-GCM encryption.
+- Added token labels, product assignments, recipient notes, expiration dates and redemption limits.
+- Added masked inventory previews, search, status filters and owner activity records.
+- Added local code validation, redemption recording, individual and bulk disabling and revocation.
+- Added encrypted JSON vault backups, CSV owner inventories, TXT code lists and new-batch exports.
+- Added direct encrypted vault restore to transfer a token collection between iPhone and PC.
+- Added a search-engine noindex preference for the PROXIMUS application page.
+
+
 ## v2.7.0 — Sovereign Reactor Finale (2026-11-13)
 
 ### New studio 26: Sovereign Reactor
