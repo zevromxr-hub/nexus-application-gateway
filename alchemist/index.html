@@ -31,6 +31,10 @@
     <button class="nav" data-view="animation"><span>▣</span> Animation Forge <small>15</small></button>
     <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
+    <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
+    <button class="nav" data-view="utility"><span>⌘</span> Utility Forge <small>19</small></button>
+    <button class="nav" data-view="releases"><span>⟳</span> Release Center <small>INFO</small></button>
+    <button class="nav" data-view="creator"><span>✧</span> Creator Story <small>ABOUT</small></button>
   </nav>
   <div class="rail-bottom"><div class="secure">● PROCESSING IS LOCAL</div><p>Files stay in your browser. Exports go to your Downloads folder.</p><a href="../hub/">← Sovereign Gateway</a></div>
 </aside>
@@ -41,11 +45,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.4.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Seventeen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>17</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.5.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Nineteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>19</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.4.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.5.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -264,6 +268,112 @@
   <div class="arcade-actions"><button id="arcadeSnapshot" class="small-btn">＋ Comet screenshot to Pack</button><button id="arcadeScoreExport" class="small-btn">↓ Export highscores JSON</button><button id="arcadeScoreClear" class="small-btn">Reset best scores</button></div>
  </div>
 </section>
+
+<section class="studio" data-panel="workflow" hidden>
+ <div class="section-heading"><div><div class="eyebrow">18 / WORKFLOW AND ORGANIZATION</div><h2>Workflow Desk <span class="subtitle">Notes · checklists · focus · portable backups</span></h2></div></div>
+ <div class="workspace image-grid">
+  <div class="panel">
+   <div class="desk-title-row"><h3>My workspace</h3><span id="deskNoteCount" class="hint">0 notes</span></div>
+   <div class="desk-actions"><button id="deskAddNote" class="primary">＋ New note</button><button id="deskDeleteNote" class="small-btn">Remove note</button></div>
+   <div id="deskNoteList" class="desk-notes"></div>
+   <label>Note title<input id="deskTitle" type="text" maxlength="90" placeholder="Note title"></label>
+   <label>Note contents<textarea id="deskBody" rows="11" maxlength="25000" placeholder="Ideas, creative plans, project notes…"></textarea></label>
+   <p class="hint"><span id="deskChars">0 / 25000 characters</span> · <span id="deskState">Ready</span></p>
+   <h3>Portable workspace backup</h3>
+   <div class="desk-actions"><button id="deskBackup" class="small-btn">↓ Export backup JSON</button><button id="deskToPack" class="small-btn">＋ Backup to Pack</button></div>
+   <label class="upload"><input id="deskImport" type="file" accept=".json,application/json"><b>＋ IMPORT WORKFLOW BACKUP</b><span>Move your notes and tasks between your own devices</span></label>
+  </div>
+  <div class="panel">
+   <h3>Project checklist</h3>
+   <div class="desk-actions"><input id="deskTaskInput" maxlength="240" placeholder="Add your next task…" aria-label="New task" class="desk-task-input"><button id="deskTaskAdd" class="primary">＋ Add</button></div>
+   <progress id="deskProgress" value="0" max="100" class="desk-progress"></progress>
+   <div id="deskTaskStats" class="hint">0 completed · 0 remaining</div>
+   <div id="deskTasks" class="desk-tasks"></div>
+   <div class="desk-actions"><button id="deskTasksClear" class="small-btn">Clear completed tasks</button></div>
+   <h3>Focus timer</h3>
+   <p class="hint">A small timer for design, coding, editing or creative sessions.</p>
+   <label>Session length<select id="deskFocusMinutes"><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="15">15 minutes</option><option value="20">20 minutes</option><option value="25" selected>25 minutes</option><option value="30">30 minutes</option><option value="45">45 minutes</option><option value="60">60 minutes</option></select></label>
+   <div id="deskTimer" class="desk-timer">25:00</div>
+   <div class="desk-actions"><button id="deskTimerButton" class="primary">▶ Start focus</button><button id="deskTimerReset" class="small-btn">↻ Reset</button></div>
+   <p id="deskStatus" class="hint" role="status">Workspace ready</p>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="utility" hidden>
+ <div class="section-heading"><div><div class="eyebrow">19 / DAILY DIGITAL TOOLS</div><h2>Utility Forge <span class="subtitle">Text · JSON · passwords · batch renaming</span></h2></div></div>
+ <div class="workspace image-grid">
+  <div class="panel">
+   <h3>Text & data transformer</h3>
+   <label>Input text<textarea id="utilTextIn" rows="8" placeholder="Paste text, a JSON document, a list, a URL…"></textarea></label>
+   <p id="utilTextStats" class="hint">0 characters</p>
+   <label>Operation<select id="utilAction">
+     <option value="trim">Clean blank lines and whitespace</option><option value="unique">Remove duplicate lines</option>
+     <option value="sort">Alphabetize / numeric sort lines</option><option value="reverse">Reverse line order</option>
+     <option value="upper">UPPERCASE</option><option value="lower">lowercase</option>
+     <option value="json-pretty">JSON → Formatted</option><option value="json-min">JSON → Minified</option>
+     <option value="url-enc">URL encode</option><option value="url-dec">URL decode</option>
+     <option value="b64-enc">Unicode text → Base64</option><option value="b64-dec">Base64 → Unicode text</option>
+   </select></label>
+   <div class="desk-actions"><button id="utilRun" class="primary">◈ Transform</button><button id="utilSwap" class="small-btn">↻ Output to input</button></div>
+   <label>Result<textarea id="utilTextOut" rows="8" readonly placeholder="Your processed result appears here…"></textarea></label>
+   <div class="desk-actions"><button id="utilCopy" class="small-btn">Copy result</button><button id="utilExport" class="small-btn">↓ Download text</button><button id="utilToPack" class="small-btn">＋ To Pack</button></div>
+   <p id="utilStatus" role="status" class="hint">All transformations run locally.</p>
+  </div>
+  <div class="panel">
+   <h3>Secure string generator</h3><p class="hint">Create strong random passwords or access keys for your own services and products.</p>
+   <div class="two"><label>Length<input id="utilPassLength" type="number" min="8" max="96" value="24"></label><label>Number<select id="utilPassCount"><option value="1" selected>1</option><option value="3">3</option><option value="5">5</option><option value="10">10</option><option value="20">20</option></select></label></div>
+   <div class="checks"><label><input type="checkbox" id="utilPassLower" checked> Lowercase</label><label><input type="checkbox" id="utilPassUpper" checked> Uppercase</label><label><input type="checkbox" id="utilPassDigits" checked> Numbers</label><label><input type="checkbox" id="utilPassSymbols" checked> Symbols</label></div>
+   <button id="utilPassGenerate" class="primary wide">✧ Generate secure strings</button>
+   <label>Generated strings<textarea id="utilPassOut" rows="4" readonly spellcheck="false" placeholder="Your generated strings appear here…"></textarea></label>
+   <div class="desk-actions"><button id="utilPassCopy" class="small-btn">Copy</button><button id="utilPassDownload" class="small-btn">↓ Download TXT</button></div>
+   <h3>Batch filename and ZIP forge</h3>
+   <label class="upload"><input id="utilFiles" type="file" multiple><b>＋ IMPORT FILES TO RENAME</b><span>Any file type · output is a ZIP</span></label>
+   <div class="two"><label>Prefix<input id="utilPrefix" placeholder="MY-PROJECT-"></label><label>Suffix<input id="utilSuffix" placeholder="-FINAL"></label></div>
+   <div class="checks"><label><input id="utilNumbered" type="checkbox" checked> Add sequence numbers</label></div>
+   <label>Start at<input id="utilStart" type="number" min="1" max="9999" value="1"></label>
+   <div id="utilFilePreview" class="util-rename-preview"></div>
+   <button id="utilZip" class="primary wide">↓ Download renamed files ZIP</button>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="releases" hidden>
+ <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
+ <div class="release-dashboard">
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.5.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
+  <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
+  <div id="releaseCards" class="release-cards"></div>
+ </div>
+</section>
+<section class="studio" data-panel="creator" hidden>
+ <div class="section-heading"><div><div class="eyebrow">THE CREATOR'S JOURNEY</div><h2>Behind PROXIMUS <span class="subtitle">The work, the progression and the vision</span></h2></div></div>
+ <div class="creator-story">
+  <div class="creator-hero"><div class="eyebrow">INDEPENDENT DEVELOPMENT · COMMUNITY TO CREATIVE TOOLS</div><h3>Ideas turned into working systems.</h3>
+   <p>Behind the PROXIMUS and NEXUS projects is an independent developer and creator known as <strong>ZevRo</strong>. The work began with a fascination for gaming, Discord communities, automation and building better ways for people to interact with software.</p>
+   <p>What started as individual utilities and server systems gradually expanded into a connected library of creative workspaces, desktop applications, browser tools and entertainment projects. Each release represents another step toward something more polished, more capable and easier to use.</p></div>
+  <div class="creator-section"><div class="eyebrow">WHERE THE JOURNEY GREW</div><h3>From community systems to full creative applications</h3>
+   <p>Early development centered on Discord management, custom panels, interactive games, reward systems and the <strong>NEXUS Redemption Control Center</strong>. That experience led to broader tools with their own interfaces, release workflows and owner-controlled publishing.</p>
+   <div class="creator-projects">
+    <article><b>PROXIMUS ARCHIVES</b><span>Game-focused workspaces expanded into a larger collection of creative, media and entertainment tools.</span></article>
+    <article><b>STRATUM &amp; STARFORGE</b><span>Experiments in Minecraft tooling, game modification workflows and No Man’s Sky asset and save utilities.</span></article>
+    <article><b>RELIC DOMINION</b><span>An original offline arcade universe that grew to include customizable relics, rewards and creator tools.</span></article>
+    <article><b>SONIC REACTOR II</b><span>Music visualization and audio-reactive artwork that pushed the design of the wider software ecosystem.</span></article>
+    <article><b>CHARACTER FOUNDRY</b><span>Procedural fantasy character artwork, compositing, custom media and creative exports.</span></article>
+    <article><b>ASSET ALCHEMIST</b><span>A browser-based workshop connecting image, animation, audio, game assets, productivity and entertainment across devices.</span></article>
+   </div>
+  </div>
+  <div class="creator-section"><div class="eyebrow">THE DEVELOPMENT PHILOSOPHY</div><h3>Build it. Improve it. Make it useful.</h3>
+   <p>The focus has never been just collecting feature names. It's about creating tools people can actually use: clear interfaces, convenient exports, personal media controls, repeatable workflows and upgrades that build on what came before.</p>
+   <p>Every new project creates a chance to learn, refine earlier ideas and bring useful features together without leaving people behind on an older version.</p>
+  </div>
+  <div class="creator-section"><div class="eyebrow">THE VISION</div><h3>Independent software with room to grow.</h3>
+   <p>The long-term goal is a connected family of creative and entertainment applications that feel powerful without being intimidating—accessible on a Windows PC, in a browser, and on a phone wherever that makes sense.</p>
+   <p>The direction remains consistent: keep improving quality, make owner publishing simpler, build features that matter, and turn ambitious concepts into practical tools one release at a time.</p>
+  </div>
+  <div class="creator-signature">POWERED BY ZEVRO | PROXIMUS</div>
+ </div>
+</section>
+
 <section class="studio" data-panel="pack" hidden>
 <div class="section-heading"><div><div class="eyebrow">10 / OUTPUT CONTROL</div><h2>Asset Packager <span class="subtitle">Your session's finished work</span></h2></div><button class="small-btn" id="packClear">Clear pack</button></div>
 <div class="workspace split"><div class="panel"><h3>One package, many tools</h3><p>Click <b>Add to Pack</b> in any studio. Collected assets are stored in your browser&#39;s local IndexedDB vault, subject to storage quotas. Download a ZIP to keep a permanent copy.</p><label>Package title<input id="packTitle" maxlength="80" value="PROXIMUS Asset Collection"></label><label>Usage target<select id="packTarget"><option value="general">General digital assets</option><option value="sonic-reactor">Sonic Reactor II media</option><option value="character-foundry">Character Foundry art</option><option value="discord">Discord branding</option><option value="game-dev">Game development assets</option></select></label><button id="packExport" class="primary wide">↓ Download complete ZIP</button>
