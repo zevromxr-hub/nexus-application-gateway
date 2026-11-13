@@ -378,3 +378,26 @@ body[data-proximus-profile="customer"] .nav[data-view="tokens"]{display:none}
  .media-master-options .two{grid-template-columns:1fr}
 }
 @media(max-width:410px){.command-grid{grid-template-columns:1fr}.command-studio-info{min-height:145px}}
+
+
+/* v2.9 Reactor III / Release Guard extension */
+#reactorOverlayVideo,#reactorOverlayImage{position:absolute;inset:0;width:1px;height:1px;opacity:0;z-index:-1;pointer-events:none}
+.reactor-history-box{background:#0c0a1a;border:1px solid #73548f;border-radius:12px;margin:9px 0 20px;padding:10px 12px;overflow:hidden}
+.reactor-history-box>div{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#cbb4e4;font-size:10px;letter-spacing:1px;font-weight:850}
+.reactor-history-box span{color:#93b0c9;font-size:10px}
+#reactorHistoryCanvas{display:block;width:100%;height:auto;max-height:110px;margin-top:8px}
+#reactorOverlayName{overflow-wrap:anywhere}
+.release-guard-panel{margin-top:20px}
+.release-guard-panel h3{color:#e2d0ff;font-size:12px}
+.release-guard-results{display:flex;flex-direction:column;gap:6px;max-height:380px;overflow:auto;margin:15px 0}
+.release-guard-results .recovery-stat{padding:8px 11px}
+.release-guard-results strong{max-width:70%;font-weight:700}
+.release-rollback-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px;border:1px solid #594272;background:#140f25;border-radius:10px;margin-top:12px}
+.release-rollback-actions label{margin:0;flex:1;min-width:140px}
+.release-rollback-actions button{min-height:39px}
+@media(max-width:760px){
+ .release-rollback-actions{align-items:stretch}
+ .release-rollback-actions button{flex:1}
+ #reactorHistoryCanvas{max-height:76px}
+ .reactor-history-box{padding:8px}
+}
