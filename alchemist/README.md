@@ -1,75 +1,81 @@
-# PROXIMUS | ASSET ALCHEMIST v2.4.0
+# PROXIMUS | ASSET ALCHEMIST v2.5.0
 
-**ENTERTAINMENT EXPANSION EDITION — 17 creative studios**
+**CREATOR & PRODUCTIVITY EXPANSION — 19 creative studios, 2 information tabs**
 
-**SUPREME CREATOR EDITION — Powered by ZevRo | Proximus**
+Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-Official website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+A browser-based creative workshop for desktop and mobile, with local media tools, entertainment, asset production, personal organization and version history.
 
-## Version and GitHub policy
-This is a release-identified, static GitHub Pages application. Every **published release** should include matching updates to \`version.json\`, \`CHANGELOG.md\`, \`releases/vX.Y.Z.json\`, app version, cache name, and the tracked GitHub commit. The CI workflow validates version consistency, JavaScript syntax, and source structure on changes. Deployments are ordinary commits to the Pages branch; this does **not** create a GitHub Releases asset automatically.
+## What's new in v2.5.0
 
-**The old /nexus-application-gateway/alchemist/ URL stays unchanged for Discord compatibility, even though the brand is now PROXIMUS.** Existing native protocol handlers and user data keys remain unchanged for compatibility.
+### Release Center
+Explore the app's chronological update history inside Asset Alchemist. Search by version or feature, expand release notes, open the official GitHub source record and use the existing Check Updates control.
 
-## Studios
-1. Image Studio — resize, crop, filters, key removal, type overlay and original generated environments.
-2. Batch Forge — bulk image conversion and ZIP.
-3. Icon Foundry — multiple icon PNG sizes.
-4. Sprite Atlas — image atlas and JSON coordinates.
-5. Texture Lab — height, normal and mask maps.
-6. Color Lab — palette, gradients, WCAG contrast.
-7. Audio Forge — trim, fades, reverse, normalize, WAV.
-8. Motion Lab — preview clips, snapshots and short silent WebM loops.
-9. 3D Inspector — GLB/glTF structure, materials and rig data.
-10. Asset Packager — session pack ZIP, SHA-256 inventory.
-11. Production Lab (NEW) — ready-to-use Discord banners, wallpapers, thumbnails, covers, procedural effects, editable text, imported backdrop, PNG/WebP and JSON recipes.
-12. Asset Audit (NEW) — true SHA-256, duplicate detection, file-header checks, basic image/audio/GLB metadata, CSV/JSON report.
+### Creator Story
+A dedicated introduction to the independent developer behind the projects, with milestones from Discord and NEXUS development to PROXIMUS Archives, STRATUM, STARFORGE, RELIC DOMINION, Sonic Reactor II, Character Foundry and Asset Alchemist.
 
-## Durable work
-Collected assets are also copied to IndexedDB so normal refresh/reopening can restore your pack. Browser storage can be cleared or evicted and may not work in private mode. Download ZIP backups regularly. The application does not persist your original imported images as standalone projects.
+### Workflow Desk — Studio 18
+- Create, rename and edit local notes.
+- Organize a checklist, mark progress and remove completed work.
+- Use the built-in 5–60 minute focus timer.
+- Export, import and package a portable JSON workspace backup.
 
-## Privacy
-All transforms run in the browser; source media stays on the machine and is not uploaded to GitHub or Discord. The optional update check fetches only public \`version.json\`. Pack data remains in browser-local storage.
+### Utility Forge — Studio 19
+- Clean, sort and deduplicate text, change letter case and reverse lines.
+- Format or compact JSON, encode/decode URLs and Unicode-safe Base64.
+- Generate secure random passwords and personal access strings.
+- Bulk rename selected files with prefixes, suffixes and sequence numbers, then export a ZIP.
 
-## Limitations
-- Original wallpaper generation is procedural, not AI diffusion.
-- No full 3D geometry editing, no MP3 encoding, no MP4 export, no direct animated GIF output.
-- Audio Forge produces WAV; Motion Lab produces muted WebM.
-- Large files may exceed browser CPU, memory, quota, or 24 megapixel canvas limits.
-- Audit is not antivirus scanning; unknown signatures are not inherently unsafe.
-- GitHub Pages is static hosting; authenticated Discord commands or private cloud projects would require a backend.
+## Creative studios
 
-## Discord button
+| # | Studio | Key tools |
+|---|---|---|
+| 01 | Image Studio | Image editing, resize, crop and effects |
+| 02 | Batch Forge | Bulk image conversion and export |
+| 03 | Icon Foundry | Static and animated icon packs |
+| 04 | Sprite Atlas | Sprite sheets and JSON atlases |
+| 05 | Texture Lab | Height, normal and mask assets |
+| 06 | Color Lab | Palettes, gradients and contrast |
+| 07 | Audio Forge | Trim, process and export WAV audio |
+| 08 | Motion Lab | Clip preview, snapshots and WebM motion |
+| 09 | 3D Inspector | GLB/glTF model structure |
+| 10 | Asset Packager | Collected exports and local asset vault |
+| 11 | Production Lab | Banners, covers, wallpapers and layouts |
+| 12 | Asset Audit | File signatures, metadata and duplicate analysis |
+| 13 | Layer Forge | Image and text compositions |
+| 14 | Motion Graphics | Cinematic title graphics and animated WebM |
+| 15 | Animation Forge | MP4/WebM/GIF conversion and animated GIF icons |
+| 16 | Media Theater | Music, local videos, playlists and visualizers |
+| 17 | Arcade Chamber | Three original touch-friendly arcade games |
+| 18 | Workflow Desk | Notes, checklists, focus timer and backups |
+| 19 | Utility Forge | Text, data, key generation and ZIP renaming |
+
+## Information tabs
+
+- **Release Center** — version history from \`releases/index.json\` and each version's JSON record.
+- **Creator Story** — project journey and goals.
+
+## Local workflows
+
+Source files are processed in your browser. The app's Asset Packager stores collected exports in browser-local storage. Optional media backgrounds, thumbnails, personal notes, tasks and arcade scores also stay in local browser storage. You can download project files, media and ZIP or JSON backups as needed.
+
+## Version publishing
+
+Every application release updates the same set of sources:
+- \`version.json\`, application version label, \`sw.js\` cache version, \`CHANGELOG.md\`
+- \`releases/vX.Y.Z.json\` and \`releases/index.json\`
+- Studio menus and app initialization for any new modules
+
+The in-app Release Center reads the version index and each release's JSON record. The existing **Check Updates** button reads \`version.json\`.
+
+## GitHub / Discord continuity
+
 **OPEN ASSET ALCHEMIST**
+
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-## Release discipline
-- Publish v2.3.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
-- Run \`node alchemist/tests/validate.mjs\` and JS syntax checks.
-- Keep existing gateway HTML, desktop protocols and paths compatible.
-- After merge, validate Pages deployment separately, since a GitHub commit alone does not guarantee the CDN has updated.
+The application's public launch address is unchanged.
+
+---
 
 POWERED BY ZEVRO | PROXIMUS
-
-## v2.3.0 studios
-Layer Forge creates portable image/text compositions with reorderable layers, drag transforms, blend modes and full-resolution PNG/WebP exports. Save a portable JSON project to preserve design and image layers. Motion Graphics creates procedural particle/portal sequences, preview playback, PNG keyframes and locally recorded silent WebM clips. Both support Add to Pack. Browser support for MediaRecorder varies; Chromium is recommended.
-
-## v2.3.0: Animation Forge & animated icons
-
-Import MP4, WebM and GIF files using the new **Animation Forge**. Browser-decodable videos are sampled frame by frame and encoded as genuine GIF89a animations with LZW, palette quantization, and repeat-loop information. You can trim clips, resize (max 512px longest side, max 8 seconds / 96 frames), change FPS (6, 8, 12), change cover/contain behavior, enable ordered dithering or transparency, download GIFs or add them to the existing Asset Packager. Animation Forge also builds an animated GIF icon ZIP (32/64/128/256) including PNG still fallbacks. **Icon Foundry** now imports GIFs and offers a separate animated icon ZIP export.
-
-**Browser requirements:** GIF decoding uses Chromium ImageDecoder; use recent Chrome, Edge or Opera. MP4/WebM input decoding depends on installed browser codec support. Unsupported codecs produce an error instead of a fake conversion. GIF files have no audio; animated GIF icons are not Windows ICO files. No media is uploaded to a server. Automated validation runs `node alchemist/tests/validate.mjs` and an independent GIF LZW round-trip test.
-
-## v2.3.0 Media Fusion
-
-The existing Animation Forge now provides two explicit output choices: **Regular GIF** (default, automatic source aspect ratio and size) or **Animated Icon Pack** (optional square GIFs and PNG fallbacks). A custom width/height is optional, not required for regular GIFs. Imported GIFs use a built-in frame reader when the browser lacks ImageDecoder.
-
-The new optional **Media** button opens a browser-local publisher for animated GIF, MP4/WebM, or static backgrounds and hero/studio thumbnails. The user can clear or change media and preview locally. Files are stored on that browser/device via IndexedDB; iPhone and Windows do not synchronize personalization. Muted autoplay may need a user tap. Generated GIFs and assets in the existing Packager can be applied directly. The application still has 15 studios, unchanged core layouts, original GitHub Pages URL and Discord link.
-
-## v2.4.0 — Entertainment Expansion
-
-**Media Theater (Studio 16)** brings session playlists for music, video and animated GIFs, playback controls, cinema mode, a Web Audio-reactive visualizer with three designs and five palette themes, instant video/GIF poster capture, PNG visualizer exports, and integration with the Asset Packager and Media Publisher.
-
-**Arcade Chamber (Studio 17)** adds Comet Catch, Pulse Reflex and Memory Matrix—three original touch-friendly local games. High scores are saved on the device and can be exported to JSON; the Comet Catch canvas can be saved into Asset Packager.
-
-All 17 studios share the original browser application, existing local media settings, home-screen installation path, GitHub Pages/Discord launch URL and version-check/update flow.
