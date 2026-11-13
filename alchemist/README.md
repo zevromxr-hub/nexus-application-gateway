@@ -1,4 +1,6 @@
-# PROXIMUS | ASSET ALCHEMIST v2.0.0
+# PROXIMUS | ASSET ALCHEMIST v2.1.0
+
+**DOMINION WORKFLOW EDITION — 14 creative studios**
 
 **SUPREME CREATOR EDITION — Powered by ZevRo | Proximus**
 
@@ -42,9 +44,12 @@ All transforms run in the browser; source media stays on the machine and is not 
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
 ## Release discipline
-- Publish v2.0.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
+- Publish v2.1.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
 - Run \`node alchemist/tests/validate.mjs\` and JS syntax checks.
 - Keep existing gateway HTML, desktop protocols and paths compatible.
 - After merge, validate Pages deployment separately, since a GitHub commit alone does not guarantee the CDN has updated.
 
 POWERED BY ZEVRO | PROXIMUS
+
+## v2.1.0 studios
+Layer Forge creates portable image/text compositions with reorderable layers, drag transforms, blend modes and full-resolution PNG/WebP exports. Save a portable JSON project to preserve design and image layers. Motion Graphics creates procedural particle/portal sequences, preview playback, PNG keyframes and locally recorded silent WebM clips. Both support Add to Pack. Browser support for MediaRecorder varies; Chromium is recommended.
