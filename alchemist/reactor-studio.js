@@ -6,6 +6,7 @@ import {saveOrShare} from './portable-kit.js';
 import {encodeGif} from './gif-codec.js';
 import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
 import {REACTOR_THEMES,spectralBands,initialBeatState,detectBeat,normalizeReactorPreset,reactorDimensions,nextReactorScene} from './reactor-dsp.js';
+import {REACTOR_IV_PRESETS,normalizeEffectSettings,effectLevels,nextSceneInOrder,pulseDecay,transitionProgress} from './reactor-iv.js';
 
 const SETTINGS='proximus-reactor-settings-v1',DB='proximus-reactor-media-v1';
 const MAX_BACKDROP=55000000,MAX_AUDIO=250000000;
@@ -57,7 +58,8 @@ export function initSovereignReactor(app){
  let mediaURL=null,mediaRecord=null,videoReady=false,gifBackdrop=null;
  const overlayVideo=$('reactorOverlayVideo'),overlayImage=$('reactorOverlayImage');
  let overlayURL=null,overlayReady=false,gifOverlay=null;
- let runtimeMode='sovereign',nextSceneAt=0,history=[],lastHistory=0;
+ let runtimeMode='sovereign',nextSceneAt=0,history=[],lastHistory=0,sceneChangedAt=-10000;
+ let fxSettings=normalizeEffectSettings(),identityColors=null;
  let sampleStart=0,sampleFrames=0,measuredFPS=0;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
  let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
@@ -96,11 +98,12 @@ export function initSovereignReactor(app){
   $('reactorAutoPerformance').checked=v.autoPerformance;
   $('reactorOverlayOpacity').value=String(v.overlayOpacity);
   $('reactorOverlayBlend').value=v.overlayBlend;
+  if(p?.fx){fxSettings=normalizeEffectSettings(p.fx);drawFxControls();}
   runtimeMode=v.mode;nextSceneAt=performance.now()+v.cycleSeconds*1000;
   resize();drawStage(performance.now());updateReadouts();
  }
  function saveSettings(){
-  try{localStorage.setItem(SETTINGS,JSON.stringify({preset:options(),saved:presets}));}catch(e){}
+  try{localStorage.setItem(SETTINGS,JSON.stringify({preset:options(),saved:presets,fx:fxSettings}));}catch(e){}
  }
  function updateReadouts(){
   const o=options();
@@ -130,9 +133,80 @@ export function initSovereignReactor(app){
  try{
   const found=JSON.parse(localStorage.getItem(SETTINGS)||'{}');
   if(found.saved&&typeof found.saved==='object'&&!Array.isArray(found.saved))presets=found.saved;
+  if(found.fx)fxSettings=normalizeEffectSettings(found.fx);
   if(found.preset)applyPreset(found.preset);
+  drawFxControls();
  }catch(e){}
  resize();updateReadouts();
+
+ // Reactor IV: route actual band energy into independently adjustable effects.
+ const fxSliders={sub:'reactorFxSub',bass:'reactorFxBass',mid:'reactorFxMid',
+  treble:'reactorFxTreble',shock:'reactorFxShock',particles:'reactorFxParticles'};
+ const fxChecks={reactiveOverlay:'reactorFxReactiveOverlay',showMarkers:'reactorFxBeatMarkers',
+  beatSceneChange:'reactorFxBeatScene'};
+ const fxSelects={mask:'reactorFxMask',transition:'reactorFxTransition'};
+ function drawFxControls(){
+  $('reactorFxPreset').value=fxSettings.preset;
+  for(const [field,id] of Object.entries(fxSliders)){
+   $(id).value=String(fxSettings[field]);
+   $(id+'Out').textContent=fxSettings[field].toFixed(1)+'×';
+  }
+  for(const [field,id] of Object.entries(fxChecks))$(id).checked=fxSettings[field];
+  for(const [field,id] of Object.entries(fxSelects))$(id).value=fxSettings[field];
+  fxSettings.sceneOrder.forEach((scene,i)=>{if(i<4)$('reactorFxScene'+i).value=scene;});
+ }
+ function readFxControls(){
+  const updated={...fxSettings,preset:$('reactorFxPreset').value};
+  for(const [field,id] of Object.entries(fxSliders))updated[field]=Number($(id).value);
+  for(const [field,id] of Object.entries(fxChecks))updated[field]=$(id).checked;
+  for(const [field,id] of Object.entries(fxSelects))updated[field]=$(id).value;
+  updated.sceneOrder=Array.from({length:4},(_,i)=>$('reactorFxScene'+i).value);
+  fxSettings=normalizeEffectSettings(updated);
+  for(const [field,id] of Object.entries(fxSliders))$(id+'Out').textContent=fxSettings[field].toFixed(1)+'×';
+  saveSettings();
+ }
+ $('reactorFxPreset').addEventListener('change',()=>{
+  fxSettings=normalizeEffectSettings({preset:$('reactorFxPreset').value,
+   sceneOrder:fxSettings.sceneOrder,beatSceneChange:fxSettings.beatSceneChange});
+  drawFxControls();saveSettings();
+  $('reactorFxStatus').textContent='Loaded '+REACTOR_IV_PRESETS[fxSettings.preset].label+' effect composition.';
+ });
+ for(const id of [...Object.values(fxSliders),...Object.values(fxChecks),
+  ...Object.values(fxSelects),...Array.from({length:4},(_,i)=>'reactorFxScene'+i)]){
+  $(id).addEventListener('input',readFxControls);
+  $(id).addEventListener('change',readFxControls);
+ }
+ $('reactorFxReset').addEventListener('click',()=>{
+  fxSettings=normalizeEffectSettings({preset:fxSettings.preset});
+  drawFxControls();saveSettings();
+  $('reactorFxStatus').textContent='Restored the original effect composition mapping.';
+ });
+ const effectDocument=()=>textFile({schema:'proximus.reactor.effects/1',version:'3.0.0',
+  exported:new Date().toISOString(),settings:fxSettings});
+ $('reactorFxExport').addEventListener('click',()=>{
+  download(effectDocument(),'PROXIMUS-REACTOR-IV-EFFECTS.json');
+ });
+ $('reactorFxShare').addEventListener('click',wrap(async()=>{
+  await saveOrShare(effectDocument(),'PROXIMUS-REACTOR-IV-EFFECTS.json');
+  $('reactorFxStatus').textContent='Reactor IV effects shared or downloaded.';
+ }));
+ $('reactorFxImport').addEventListener('change',wrap(async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  if(file.size>120000)throw Error('Reactor IV effects file exceeds 120 KB.');
+  const input=JSON.parse(await file.text());
+  if(input?.schema!=='proximus.reactor.effects/1')throw Error('Select a valid Reactor IV effect file.');
+  fxSettings=normalizeEffectSettings(input.settings);
+  drawFxControls();saveSettings();e.target.value='';
+  $('reactorFxStatus').textContent='Imported Reactor IV effects from '+safe(file.name)+'.';
+ }));
+ document.addEventListener('proximus-identity-changed',e=>{
+  const d=e.detail||{};
+  identityColors=d.enabled&&d.applyReactor&&d.colors?d.colors:null;
+  if(identityColors){
+   const map={sovereign:'void',solar:'celestial',abyss:'frost',ember:'inferno',emerald:'emerald',frost:'frost'};
+   $('reactorTheme').value=map[d.palette]||'void';
+  }
+ });
 
  function releaseInput(){
   audio.pause();
