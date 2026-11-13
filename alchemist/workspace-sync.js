@@ -23,18 +23,32 @@ export const SYNC_SETTINGS=[
 const MAX_RECORDS=180,MAX_BYTES=110000000,MAX_FILE=150000000;
 const inSpecs=(name,store)=>SYNC_DATABASES.find(x=>x.name===name&&x.store===store);
 const isObj=v=>v&&typeof v==='object'&&!Array.isArray(v);
+function walkEncoded(value,visit,depth=0){
+ if(depth>12)throw Error('Workspace contains excessively nested data.');
+ if(Array.isArray(value)){
+  if(value.length>10000)throw Error('Workspace contains an oversized array.');
+  for(const item of value)walkEncoded(item,visit,depth+1);return;
+ }
+ if(!isObj(value))return;
+ if(Object.hasOwn(value,'$blob')){visit(value);return;}
+ const fields=Object.entries(value);
+ if(fields.length>200)throw Error('Workspace item contains too many fields.');
+ for(const [key,item] of fields){
+  if(['__proto__','prototype','constructor'].includes(key))throw Error('Workspace item contains an unsafe property.');
+  walkEncoded(item,visit,depth+1);
+ }
+}
 export function validateSyncManifest(m){
  if(m?.schema!==SYNC_SCHEMA||!Array.isArray(m.records)||!isObj(m.settings))throw Error('This is not a PROXIMUS Workspace Sync package.');
  if(m.records.length>MAX_RECORDS)throw Error('Workspace package contains too many records.');
  for(const entry of m.records){
   if(!inSpecs(entry.database,entry.store)||!isObj(entry.item))throw Error('Workspace backup includes an unsupported data store.');
   if(!['string','number'].includes(typeof entry.key))throw Error('Workspace backup has invalid record keys.');
-  for(const field of Object.values(entry.item)){
-   if(isObj(field)&&field.$blob){
-    if(typeof field.$blob!=='string'||!/^blobs_[0-9]{4}\.bin$/.test(field.$blob))throw Error('Workspace package contains an invalid media path.');
-    if(!/^[\w/+.-]{0,110}$/.test(field.mime||''))throw Error('Workspace media MIME type is invalid.');
-   }
-  }
+  walkEncoded(entry.item,field=>{
+   if(typeof field.$blob!=='string'||!/^blobs_[0-9]{4}\.bin$/.test(field.$blob))throw Error('Workspace package contains an invalid media path.');
+   if(!/^[\w/+.-]{0,110}$/.test(field.mime||''))throw Error('Workspace media MIME type is invalid.');
+   if(!Number.isInteger(field.size)||field.size<0||field.size>MAX_BYTES)throw Error('Workspace media size is invalid.');
+  });
  }
  if(Object.keys(m.settings).some(k=>!SYNC_SETTINGS.includes(k)))throw Error('Workspace backup includes an unexpected settings key.');
  for(const value of Object.values(m.settings))if(typeof value!=='string'||value.length>200000)throw Error('Workspace backup has invalid preferences.');
@@ -86,23 +100,39 @@ export async function buildSyncArchive({projects=true,media=true,pack=true,setti
  const enabled={projects,media,pack};
  const manifest={schema:SYNC_SCHEMA,version:'2.9.0',created:new Date().toISOString(),
   records:[],settings:{},included:{projects,media,pack,settings}};
- const entries=[],estimated=()=>entries.reduce((n,e)=>n+Number(e.data?.size||e.data?.byteLength||0),0);
+ const entries=[];
  let blobs=0,total=0;
+ function packValue(value,depth=0){
+  if(depth>12)throw Error('Workspace contains excessively nested data.');
+  if(value instanceof Blob){
+   const file='blobs_'+String(++blobs).padStart(4,'0')+'.bin';
+   entries.push({name:file,data:value});total+=value.size;
+   if(total>MAX_BYTES||blobs>185)throw Error('Export exceeds browser-safe 110 MB / 185 media files. Uncheck a category and export separate packages.');
+   return {$blob:file,mime:value.type||'application/octet-stream',size:value.size,name:typeof value.name==='string'?value.name:''};
+  }
+  if(Array.isArray(value)){
+   if(value.length>10000)throw Error('Workspace contains an oversized array.');
+   return value.map(item=>packValue(item,depth+1));
+  }
+  if(isObj(value)){
+   const out={};
+   if(Object.keys(value).length>200)throw Error('Workspace record contains too many fields.');
+   for(const [key,item] of Object.entries(value)){
+    if(['__proto__','prototype','constructor'].includes(key))throw Error('Workspace record contains an unsafe property.');
+    out[key]=packValue(item,depth+1);
+   }
+   return out;
+  }
+  if(value===undefined)return null;
+  if(value===null||typeof value==='string'||typeof value==='boolean'||typeof value==='number')return value;
+  throw Error('Workspace record contains an unsupported data type.');
+ }
  for(const spec of SYNC_DATABASES){
   if(!enabled[spec.group])continue;
   const items=await readStore(spec);
   for(const {key,item} of items){
    if(manifest.records.length>=MAX_RECORDS)throw Error('Export limit: 180 workspace records. Archive smaller groups separately.');
-   const row={database:spec.name,store:spec.store,key,item:{}};
-   for(const [field,value] of Object.entries(cloneItem(item))){
-    if(value instanceof Blob){
-     const file='blobs_'+String(++blobs).padStart(4,'0')+'.bin';
-     row.item[field]={$blob:file,mime:value.type||'application/octet-stream',size:value.size,
-      name:typeof value.name==='string'?value.name:''};
-     entries.push({name:file,data:value});total+=value.size;
-    }else row.item[field]=value;
-   }
-   if(total>MAX_BYTES||blobs>185)throw Error('Export exceeds browser-safe 110 MB / 185 media files. Uncheck a category and export separate packages.');
+   const row={database:spec.name,store:spec.store,key,item:packValue(cloneItem(item))};
    manifest.records.push(row);
   }
   report('Collected '+manifest.records.length+' project/media records · '+bytes(total));
@@ -123,23 +153,37 @@ export function openSyncArchive(bytes){
  if(!json||json.byteLength>2000000)throw Error('Workspace package has no valid manifest.');
  const manifest=validateSyncManifest(JSON.parse(new TextDecoder().decode(json)));
  let total=0;
- for(const r of manifest.records)for(const value of Object.values(r.item))if(isObj(value)&&value.$blob){
+ const seen=new Set();
+ for(const r of manifest.records)walkEncoded(r.item,value=>{
   const file=map.get(value.$blob);
   if(!file||file.byteLength!==value.size)throw Error('Workspace package is missing a media file or its size changed.');
+  if(seen.has(value.$blob))throw Error('Workspace package has a duplicate binary reference.');
+  seen.add(value.$blob);
   total+=file.byteLength;
   if(total>MAX_BYTES)throw Error('Workspace media exceeds the safe import limit.');
- }
+ });
  return {manifest,files:map,bytes:total};
 }
 function rehydrate(row,files){
- const item={};
- for(const [key,value] of Object.entries(row.item)){
-  if(isObj(value)&&value.$blob){
-   const content=files.get(value.$blob);
-   item[key]=new Blob([content],{type:value.mime||'application/octet-stream'});
-  }else item[key]=value;
- }
- return {key:row.key,item};
+ const unpack=(value,depth=0)=>{
+  if(depth>12)throw Error('Invalid nested workspace record.');
+  if(Array.isArray(value))return value.map(item=>unpack(item,depth+1));
+  if(isObj(value)){
+   if(Object.hasOwn(value,'$blob')){
+    const data=files.get(value.$blob);
+    if(!data||data.byteLength!==value.size)throw Error('Workspace binary data is incomplete.');
+    return new Blob([data],{type:value.mime||'application/octet-stream'});
+   }
+   const result={};
+   for(const [key,item] of Object.entries(value)){
+    if(['__proto__','prototype','constructor'].includes(key))throw Error('Unsafe workspace property.');
+    result[key]=unpack(item,depth+1);
+   }
+   return result;
+  }
+  return value;
+ };
+ return {key:row.key,item:unpack(row.item)};
 }
 export async function restoreSyncPackage(packageData,{replace=false,confirmOverwrite=false}={}){
  if(!confirmOverwrite)throw Error('Review your import preview before restoring local workspace data.');
