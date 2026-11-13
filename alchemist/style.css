@@ -64,3 +64,52 @@ body.has-ambient .rail{background:#0d0a1add}
  #heroOrb.has-personal-media{display:block;width:92px;height:92px;flex:none}
  #mediaOpen{padding:9px 10px}
 }
+
+
+/* v2.4 — local entertainment additions; existing studios and theme unchanged */
+.theater-controls,.arcade-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
+.theater-controls button,.arcade-actions button,.arcade-tabs button{border-radius:10px;padding:10px 13px;font-size:12px;font-weight:800}
+.theater-sidehead{display:flex;align-items:center;justify-content:space-between}
+.theater-queue{display:flex;flex-direction:column;gap:6px;background:#0b0a19;border:1px solid #55456e;border-radius:12px;padding:8px;max-height:270px;overflow:auto}
+.theater-track{display:flex;gap:7px;align-items:center;border:1px solid #433551;border-radius:9px;padding:5px;background:#1a1530}
+.theater-track.selected{border-color:#a578e5;background:#302048}
+.theater-track-title{display:flex;align-items:center;min-width:0;flex:1;gap:9px;background:transparent;border:0;color:#f1e7ff;text-align:left}
+.theater-track-title span:last-child{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:100%}
+.theater-track-title span:first-child{font-size:21px;color:#be8df4}
+.theater-track small{font-size:10px;color:#aca2c2;white-space:nowrap}
+.theater-track>button:last-child{flex:none;padding:4px 9px}
+.theater-stage{position:relative;display:grid;place-items:center;min-height:250px;border:1px solid #5b4586;background:radial-gradient(ellipse at 50% 45%,#40256e,#101023 70%);border-radius:16px;overflow:hidden;padding:10px}
+.theater-logo{font-size:clamp(16px,2.3vw,26px);font-weight:900;letter-spacing:3px;color:#e5cdff;opacity:.5;position:absolute;pointer-events:none}
+.theater-stage:has(.theater-source:not([hidden])) .theater-logo,.theater-stage:has(.theater-audio:not([hidden])) .theater-logo{display:none}
+.theater-source{position:relative;z-index:1;width:100%;max-height:480px;object-fit:contain;border-radius:9px;background:#090914}
+.theater-audio{position:relative;z-index:1;width:100%}
+#theaterCanvas{display:block;width:100%;height:auto;aspect-ratio:3/1;max-height:330px;background:#090c1d;border:1px solid #554979;border-radius:12px}
+#theaterLevels{font-size:10px;text-align:right;letter-spacing:1.4px}
+.arcade-shell{max-width:1050px;margin:0 auto}
+.arcade-tabs{display:flex;flex-wrap:wrap;gap:10px;padding-bottom:12px;border-bottom:1px solid #524260}
+.arcade-tab{background:#171329;color:#d5c7ed;border:1px solid #5a4778}
+.arcade-tab.selected{background:#58408d;color:#fff;border-color:#b594ee}
+.arcade-highscores{font-size:12px;font-weight:850;letter-spacing:.3px;color:#e5be89;margin:15px 0}
+.arcade-game h3{font-size:15px;letter-spacing:2px}
+#cometCanvas{display:block;width:100%;height:auto;aspect-ratio:9/5;border:1px solid #7561a5;border-radius:14px;background:#0b102d;touch-action:manipulation;cursor:crosshair}
+.arcade-actions .hint{margin-left:5px}
+.arcade-hit{font-size:18px!important;min-height:58px;touch-action:manipulation}
+.pulse-area{padding:52px 12px;border:1px solid #69508a;border-radius:15px;background:radial-gradient(ellipse,#291b46,#0d0c1c);margin:20px 0}
+#pulseTrack{height:24px;position:relative;border-radius:16px;background:linear-gradient(90deg,#54315e,#aa6cde 48%,#d8b2ff 50%,#aa6cde 52%,#54315e);border:1px solid #ad82dc}
+#pulseZone{position:absolute;left:45%;width:10%;height:100%;background:#ffdea355;box-shadow:0 0 22px #ecbb8e;top:0}
+#pulseNeedle{position:absolute;left:0;top:-14px;width:8px;height:50px;border-radius:5px;background:#fff3cb;box-shadow:0 0 22px #ffe6a8;transform:translateX(-50%)}
+#pulseText{text-align:center;font-size:16px;font-weight:850;color:#f8dfb7;margin-top:24px;min-height:28px}
+.memory-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;max-width:520px}
+.memory-card{aspect-ratio:1;display:grid;place-items:center;font-size:clamp(22px,5vw,48px);background:linear-gradient(130deg,#261b43,#131226);border:1px solid #745a99;border-radius:12px;color:#c6a4e9;min-width:0;touch-action:manipulation}
+.memory-card.face-up{background:linear-gradient(135deg,#543879,#261d43);color:#f6ddff;border-color:#dfb6ff}
+.memory-card.matched{background:#19564877;border-color:#6cedb0;color:#d5ffe5}
+@media(max-width:760px){
+ .theater-controls button,.arcade-actions button,.arcade-tabs button{min-height:43px}
+ .theater-track small{display:none}
+ .theater-stage{min-height:180px}
+ .theater-logo{font-size:18px;letter-spacing:1px}
+ .memory-cards{gap:6px}
+ .memory-card{border-radius:9px}
+ .pulse-area{padding:45px 9px}
+}
+@media(prefers-reduced-motion:reduce){#pulseNeedle{transition:none!important}}
