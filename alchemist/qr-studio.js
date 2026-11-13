@@ -26,7 +26,7 @@ function codewords(bytes,config){
  put(4,4);put(bytes.length,8);for(const byte of bytes)put(byte,8);
  put(0,Math.min(4,config.data*8-bit.length));while(bit.length%8)bit.push(0);
  const data=[];for(let i=0;i<bit.length;i+=8)data.push(bit.slice(i,i+8).reduce((n,b)=>(n<<1)|b,0));
- while(data.length<config.data)data.push(data.length%2===0?0xec:0x11);
+ let pad=0;while(data.length<config.data)data.push((pad++&1)?0x11:0xec);
  return [...data,...rs(data,config.ecc)];
 }
 export function qrMatrix(value){
