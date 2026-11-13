@@ -46,7 +46,7 @@ assert.equal(qr2.length,37);
 assert.ok(qr2.flat().filter(Boolean).length>200);
 assert.match(qrSvg(qr1),/<svg/);
 assert.throws(()=>qrMatrix('x'.repeat(130)),/106/);
-const storage=new Map();
+const storage={data:new Map(),getItem(k){return this.data.has(k)?this.data.get(k):null;},setItem(k,v){this.data.set(k,v);}};
 storage.setItem('proximus-automations-v1','[{"name":"Preset"}]');
 const backup=backupSettings(storage);
 assert.equal(backup.schema,'proximus.settings/1');
