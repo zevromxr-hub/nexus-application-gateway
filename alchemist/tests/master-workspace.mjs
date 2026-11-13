@@ -52,6 +52,29 @@ assert.equal(opened.manifest.records[1].item.blob.$blob,'blobs_0001.bin');
 assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus-token-foundry-private-v1',store:'vault',key:'owner',item:{}}]}),/unsupported data store/);
 assert.throws(()=>validateSyncManifest({...manifest,settings:{'discord-bot-token':'SECRET'}}),/unexpected settings key/);
 assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus-alchemist-personal-media',store:'media',key:'master',item:{blob:{$blob:'../secret.bin',mime:'image/gif',size:10}}}]}),/invalid media path/);
+// Nested media in the saved Project Hub collection must also survive sync,
+ // rather than preserving only top-level media publisher records.
+const nestedManifest=structuredClone(manifest);
+nestedManifest.records[0].item.items=[{
+ name:'project-art.gif',studio:'Layer Forge',
+ data:{$blob:'blobs_0002.bin',mime:'image/gif',size:bin.byteLength}
+}];
+const nestedArchive=await makeZip([
+ {name:'workspace.json',data:new Blob([JSON.stringify(nestedManifest)],{type:'application/json'})},
+ {name:'blobs_0001.bin',data:new Blob([bin],{type:'image/gif'})},
+ {name:'blobs_0002.bin',data:new Blob([bin],{type:'image/gif'})}
+]);
+const nestedOpened=openSyncArchive(await nestedArchive.arrayBuffer());
+assert.equal(nestedOpened.bytes,12,'Import must verify both main and nested project blobs');
+assert.equal(nestedOpened.manifest.records[0].item.items[0].data.$blob,'blobs_0002.bin');
+const wrongNested=structuredClone(nestedManifest);
+wrongNested.records[0].item.items[0].data.$blob='blobs_0099.bin';
+const missingNested=await makeZip([
+ {name:'workspace.json',data:new Blob([JSON.stringify(wrongNested)])},
+ {name:'blobs_0001.bin',data:new Blob([bin])}
+]);
+const missingNestedBytes=await missingNested.arrayBuffer();
+assert.throws(()=>openSyncArchive(missingNestedBytes),/missing a media file/);
 const corrupted=await makeZip([{name:'workspace.json',data:new Blob([JSON.stringify(manifest)])}]);
 const corruptedBytes=new Uint8Array(await corrupted.arrayBuffer());
 assert.throws(()=>openSyncArchive(corruptedBytes),/missing a media file/);
