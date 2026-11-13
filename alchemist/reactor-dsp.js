@@ -32,8 +32,12 @@ export function detectBeat(bands,now,state=initialBeatState(),sensitivity=1.25){
  const peak=Math.max(raw,Number(state.peak||0)*.86);
  return {baseline:nextBaseline,peak,lastHit:hit?now:state.lastHit,kicks:(state.kicks||0)+(hit?1:0),hit,amplitude:raw,threshold};
 }
+export const REACTOR_SCENES=['sovereign','spectrum','rings','wave','portal','starlight'];
+export function nextReactorScene(current){
+ const i=REACTOR_SCENES.indexOf(current);return REACTOR_SCENES[(i<0?0:i+1)%REACTOR_SCENES.length];
+}
 export function normalizeReactorPreset(item){
- const themes=Object.keys(REACTOR_THEMES),modes=['sovereign','spectrum','rings','wave','portal','starlight'];
+ const themes=Object.keys(REACTOR_THEMES),modes=REACTOR_SCENES;
  const quality=['eco','balanced','cinema'];
  const n=(v,min,max,def)=>Number.isFinite(Number(v))?clamp(Number(v),min,max):def;
  return {
@@ -47,7 +51,11 @@ export function normalizeReactorPreset(item){
   backgroundFit:item?.backgroundFit==='contain'?'contain':'cover',
   autoShift:!!item?.autoShift, snow:!!item?.snow,
   signature:String(item?.signature||'PROXIMUS').slice(0,36),
-  showSignature:item?.showSignature!==false
+  showSignature:item?.showSignature!==false,
+  cycle:!!item?.cycle,cycleSeconds:n(item?.cycleSeconds,5,60,15),
+  autoPerformance:item?.autoPerformance!==false,
+  overlayOpacity:n(item?.overlayOpacity,.05,1,.45),
+  overlayBlend:['screen','lighter','source-over','multiply'].includes(item?.overlayBlend)?item.overlayBlend:'screen'
  };
 }
 export function reactorDimensions(quality){
