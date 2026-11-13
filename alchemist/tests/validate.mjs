@@ -113,6 +113,8 @@ const fallbackTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-fallbac
 assert.equal(fallbackTest.status,0,'GIF Safari fallback: '+fallbackTest.stderr+' '+fallbackTest.stdout);
 const sizingTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-sizing.mjs')],{encoding:'utf8'});
 assert.equal(sizingTest.status,0,'GIF auto/manual size selection: '+sizingTest.stderr+' '+sizingTest.stdout);
+const frameMetaTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-frame-metadata.mjs')],{encoding:'utf8'});
+assert.equal(frameMetaTest.status,0,'Browser ImageData GIF frame metadata regression: '+frameMetaTest.stderr+' '+frameMetaTest.stdout);
 const entertainmentTest=spawnSync(process.execPath,[path.join(ROOT,'tests/entertainment.mjs')],{encoding:'utf8'});
 assert.equal(entertainmentTest.status,0,'Media Theater and Arcade Chamber: '+entertainmentTest.stderr+' '+entertainmentTest.stdout);
 const toolkitTest=spawnSync(process.execPath,[path.join(ROOT,'tests/productivity-releases.mjs')],{encoding:'utf8'});
