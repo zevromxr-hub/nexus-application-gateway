@@ -18,7 +18,7 @@ export const SYNC_SETTINGS=[
  'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1',
  'proximus-alchemist-arcade-scores-v1','proximus-alchemist-arcade-profile-v2',
  'proximus-theater-favorites-v2','proximus-reactor-settings-v1','proximus-command-layout-v1',
- 'proximus-command-pins-v1','proximus-command-name-v1','proximus-recovery-checkpoints-v1'
+ 'proximus-command-pins-v1','proximus-command-name-v1','proximus-recovery-checkpoints-v1','proximus-visual-identity-v1'
 ];
 const MAX_RECORDS=180,MAX_BYTES=110000000,MAX_FILE=150000000;
 const inSpecs=(name,store)=>SYNC_DATABASES.find(x=>x.name===name&&x.store===store);

@@ -401,3 +401,70 @@ body[data-proximus-profile="customer"] .nav[data-view="tokens"]{display:none}
  #reactorHistoryCanvas{max-height:76px}
  .reactor-history-box{padding:8px}
 }
+
+
+/* v3.0 Master Visual Identity System — scoped styles, readable contrast and mobile touch targets */
+:root{--identity-accent:#b38aff;--identity-secondary:#e9bc7e;--identity-glow:#b895ff;--identity-base:#090913;--identity-panel:#151027;--identity-border:#514071;--identity-glow-strength:.65;--identity-font-scale:1}
+body[data-identity-enabled="on"]{--accent:var(--identity-accent);--gold:var(--identity-secondary);--line:var(--identity-border);--base:var(--identity-base);--panel:var(--identity-panel);font-size:calc(14px * var(--identity-font-scale));background-color:var(--identity-base)}
+body[data-identity-enabled="on"] .nav.active,
+body[data-identity-enabled="on"] .primary,
+body[data-identity-enabled="on"] .tool-btn:hover{border-color:var(--identity-accent);box-shadow:0 0 calc(24px * var(--identity-glow-strength)) color-mix(in srgb,var(--identity-glow),transparent 70%)}
+body[data-identity-enabled="on"] .section-heading h2,
+body[data-identity-enabled="on"] .command-welcome h3,
+body[data-identity-enabled="on"] .identity-hero h3{color:var(--identity-accent)}
+body[data-identity-enabled="on"] .panel:not(.token-lock-panel),
+body[data-identity-enabled="on"] .command-studio-card,
+body[data-identity-enabled="on"] .studio-personal-thumb{border-color:var(--identity-border)}
+body[data-identity-enabled="on"][data-identity-border="sharp"] .panel,
+body[data-identity-enabled="on"][data-identity-border="sharp"] .studio-personal-thumb,
+body[data-identity-enabled="on"][data-identity-border="sharp"] .command-studio-card{border-radius:2px}
+body[data-identity-enabled="on"][data-identity-border="glass"] .command-studio-card,
+body[data-identity-enabled="on"][data-identity-border="glass"] .panel{backdrop-filter:blur(18px);background-color:color-mix(in srgb,var(--identity-panel),transparent 14%)}
+body[data-identity-enabled="on"][data-identity-motion="dynamic"] .command-studio-card{transition:transform .25s ease,box-shadow .25s ease}
+body[data-identity-enabled="on"][data-identity-motion="dynamic"] .command-studio-card:hover{box-shadow:0 0 28px color-mix(in srgb,var(--identity-glow),transparent 80%)}
+body[data-identity-enabled="on"][data-identity-motion="still"] *,
+body[data-identity-enabled="on"][data-identity-motion="still"] *::before{animation:none!important;transition:none!important}
+body[data-identity-enabled="on"] .studio[data-identity-exempt="true"]{--accent:#b38aff;--gold:#ecbc7c;--identity-accent:#b38aff;--identity-secondary:#ecbc7c;--identity-border:#514071}
+.identity-hero{padding:24px;border-radius:17px;border:1px solid #7b5aab;background:linear-gradient(125deg,#2d1b52,#130e27);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin:12px 0 17px}
+.identity-hero>div:first-child{flex:1;min-width:250px}
+.identity-hero h3{color:#e9ddff;font-size:clamp(19px,2.5vw,28px);margin:8px 0;font-weight:900}
+.identity-hero p{font-size:12px;color:#b6a9d0;max-width:650px;line-height:1.75}
+.identity-hero-badge{border:1px solid #9c7ac9;border-radius:13px;padding:15px;min-width:160px;background:#130c29;display:flex;flex-direction:column;gap:4px}
+.identity-hero-badge strong{color:var(--identity-accent);font-size:15px}
+.identity-hero-badge span{color:#9990b7;font-weight:800;letter-spacing:1px;font-size:9px}
+.identity-top-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 14px;background:#161124;border:1px solid #493563;border-radius:11px;margin-bottom:20px}
+.identity-top-controls label{display:flex;flex-direction:row;align-items:center;gap:8px;margin:0;font-size:11px;white-space:normal}
+.identity-subhead{font-size:12px;letter-spacing:2px;color:#c8aef1}
+.identity-preset-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:12px 0 20px}
+.identity-preset-card{display:flex;flex-direction:column;align-items:stretch;gap:7px;text-align:left;padding:9px;background:#18132a;border:1px solid #51416b;border-radius:13px;min-width:0}
+.identity-preset-card.selected{border-color:var(--identity-accent);box-shadow:0 0 19px color-mix(in srgb,var(--identity-glow),transparent 85%)}
+.identity-preset-card strong{color:#e8d7ff;font-size:12px}
+.identity-preset-card small{color:#9988b1;font-size:10px;overflow-wrap:anywhere}
+.identity-swatch{display:block;width:100%;height:73px;border:2px solid #614380;border-radius:9px}
+.identity-color-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.identity-color-grid label{font-size:10px;font-weight:800;letter-spacing:.3px}
+.identity-color-grid input[type=color]{width:100%;height:44px;padding:4px;border-radius:7px}
+.identity-exceptions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:240px;overflow:auto;padding:10px;border-radius:9px;background:#110e20;margin:10px 0}
+.identity-exception-row{display:flex;flex-direction:row;gap:8px;align-items:center;font-size:11px;margin:0}
+.identity-archive-actions{display:flex;align-items:flex-end;gap:9px;flex-wrap:wrap}
+.identity-archive-actions label{flex:1;min-width:180px}
+.identity-archive-actions button{min-height:41px}
+.identity-saved-profiles{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.identity-saved-item{display:flex;gap:5px;background:#110d22;border:1px solid #514070;border-radius:8px;padding:5px}
+.identity-saved-item button:first-child{max-width:210px;overflow-wrap:anywhere}
+.reactor-iv-controls{border-color:#6e4a9c}
+.reactor-iv-matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.reactor-iv-matrix label{font-size:10px}
+.reactor-iv-matrix input[type=range]{width:100%}
+#reactorFxStatus{color:#cfbcff;font-size:11px}
+@media(max-width:760px){
+ .identity-preset-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .identity-swatch{height:57px}
+ .identity-color-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .identity-top-controls{gap:9px}
+ .identity-hero{padding:14px}
+ .identity-exceptions{grid-template-columns:1fr}
+ .identity-archive-actions button{flex:1}
+ .reactor-iv-matrix{gap:7px}
+}
+@media(prefers-reduced-motion:reduce){body[data-identity-enabled="on"] .command-studio-card{transition:none!important}}

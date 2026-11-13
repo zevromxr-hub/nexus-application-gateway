@@ -135,7 +135,8 @@ function shouldAnimate(master,studioVisible,cardIndex=0){
  return studioVisible&&cardIndex<(iphone?2:4);
 }
 function refresh(){
- const master=mediaRecords.get('master'),mode=master?.mode||'force',active=activeStudio();
+ const master=document.body.dataset.identityMasterMedia==='off'?null:mediaRecords.get('master'),
+  mode=master?.mode||'force',active=activeStudio();
  const ownHero=mediaRecords.get('hero');
  const heroRec=chooseThumbnail(master,ownHero,mode);
  setDisplay($('heroOrb'),heroRec,{animated:heroRec?shouldAnimate(heroRec,true,0):false,signature:'hero',hero:true});
@@ -271,6 +272,7 @@ export function initMediaPublisher(){
   }catch(err){notice('Cannot apply media: '+(err.message||err),true);}
  });
  document.addEventListener('proximus-view-changed',queueRefresh);
+ document.addEventListener('proximus-identity-changed',queueRefresh);
  document.addEventListener('proximus-media-refresh',queueRefresh);
  void (async()=>{try{
   const entries=await tx('readonly',store=>store.getAll());
