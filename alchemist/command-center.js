@@ -184,7 +184,8 @@ export function initCommandCenter(app){
  });
  $('commandSurprise').addEventListener('click',()=>{
   if(!library.length){app.changeView('videos');return;}
-  const pool=library.filter(v=>v.favorite)||library;
+  const favorites=library.filter(v=>v.favorite);
+  const pool=favorites.length?favorites:library;
   const random=pool[Math.floor(Math.random()*pool.length)];
   if(random)watchFromHome(random.id);
  });
