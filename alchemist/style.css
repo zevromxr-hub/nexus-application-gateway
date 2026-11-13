@@ -255,3 +255,54 @@ body.has-ambient .rail{background:#0d0a1add}
 @media(prefers-reduced-motion:reduce){
  #reactorCanvas{animation:none!important}
 }
+
+
+/* v2.8 — Token Foundry: secure owner inventory and cross-device token controls */
+.token-lead{display:flex;justify-content:space-between;align-items:flex-start;gap:17px;flex-wrap:wrap;padding:22px 25px;background:linear-gradient(120deg,#33204e,#171127 68%);border:1px solid #9a70c9;border-radius:16px;margin:15px 0}
+.token-lead h3{font-size:clamp(20px,3vw,29px);color:#f2dfff;margin:8px 0;font-weight:900}
+.token-lead p{max-width:750px;font-size:12px;color:#c4b4d8;line-height:1.8}
+.token-security-state{white-space:normal;padding:8px 12px;font-size:10px;letter-spacing:1px;font-weight:900;border:1px solid #b98dd9;border-radius:9px;color:#ebd9ff;background:#1d1334}
+.token-lock-panel{max-width:700px;margin:20px auto;padding:26px;border-color:#8d69b8}
+.token-lock-panel label{margin:15px 0}
+#tokenStatus{min-height:20px;font-size:12px;color:#c8b5df;margin:12px 0 20px}
+#tokenStatus[data-error=true]{color:#ff9fb0}
+.token-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.token-stats>div{border:1px solid #6a4c88;background:linear-gradient(120deg,#211833,#151024);border-radius:11px;padding:15px 12px}
+.token-stats strong{font-size:26px;font-variant-numeric:tabular-nums;color:#f7ddff;display:block}
+.token-stats span{font-size:9px;letter-spacing:.7px;color:#a99abc;font-weight:850}
+.token-topactions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 16px}
+.token-batch-list{max-height:315px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:7px;background:#0c0b1c;border-radius:10px;border:1px solid #49355e}
+.token-batch-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border:1px solid #684a88;border-radius:8px;padding:8px}
+.token-batch-code{font-size:11px;overflow-wrap:anywhere;flex:1;min-width:160px;color:#e5d3ff;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.token-check-result{padding:13px 15px;margin:15px 0;border:1px solid #6a507b;border-radius:10px;background:#120e26;color:#e2c5ff;font:800 12px ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+.token-check-result[data-ok=true]{border-color:#4cba8e;color:#92ffd0}
+.token-check-result[data-ok=false]{border-color:#b65776;color:#ffc1d1}
+.token-audit{display:flex;flex-direction:column;max-height:320px;overflow:auto;gap:7px;padding:6px}
+.token-audit-row{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;padding:8px;background:#151126;border:1px solid #3e3159;border-radius:7px;font-size:10px}
+.token-audit-row time{color:#9b8bb9}.token-audit-row strong{color:#d7b3ff}.token-audit-row span{flex:1;color:#bbb1d2}
+.token-inventory-panel{margin-top:22px}
+.token-inventory-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.token-record-list{display:flex;flex-direction:column;gap:10px;max-height:660px;overflow:auto;padding:7px 2px}
+.token-record{display:flex;align-items:flex-start;gap:12px;padding:15px;border:1px solid #55416d;border-radius:11px;background:linear-gradient(110deg,#18132c,#100c1e)}
+.token-record>input{flex:none;margin-top:8px}
+.token-record-info{flex:1;min-width:0;display:flex;align-items:flex-start;flex-direction:column;gap:6px}
+.token-record-info strong{color:#efddff;font-size:13px}
+.token-record-info small{color:#ada1c3;font-size:11px;overflow-wrap:anywhere}
+.token-record-info code{overflow-wrap:anywhere;color:#dab9ff;font-size:11px;line-height:1.8;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.token-record-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.token-record-actions button{padding:7px 10px;font-size:10px}
+.token-state{border-radius:6px;font-size:9px;font-weight:900;letter-spacing:1px;padding:3px 8px;border:1px solid #7f6796;color:#d7c4e7}
+.token-state.state-active{border-color:#4da987;color:#b9ffe3}
+.token-state.state-revoked,.token-state.state-disabled{border-color:#af526d;color:#ffc4d2}
+.token-danger{border-color:#9c476c!important;color:#ffbbc8!important}
+.token-security-note{margin-top:18px;padding:16px 20px;border:1px solid #4c3d66;border-radius:12px;background:#130f24;color:#a99cbf;font-size:11px;line-height:1.8}
+.token-security-note strong{font-size:12px;color:#e5cfef}
+@media(max-width:760px){
+ .token-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .token-lead{padding:15px}
+ .token-record{padding:10px;gap:7px;flex-wrap:wrap}
+ .token-record-actions{width:100%;justify-content:flex-start}
+ .token-record-actions button{min-height:41px}
+ .token-topactions{align-items:start}
+ .token-batch-code{font-size:10px}
+}
