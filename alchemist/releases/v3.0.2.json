@@ -1,0 +1,31 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.0.2",
+  "release_date": "2026-11-13",
+  "title": "GIF Playback & Standards Compliance Patch",
+  "subtitle": "GIF Playback & Standards Compliance Patch",
+  "channel": "stable",
+  "studios": 30,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Fixed exported video-to-GIF animations appearing blank or partially corrupted in native browser viewers",
+    "Corrected the GIF89a LZW dictionary code-width transition so generated images decode correctly in standard viewers",
+    "Updated the Safari fallback GIF decoder to read standard-compliant GIF LZW streams, including external GIFs",
+    "Added multi-resolution pixel roundtrip, transparent GIF, and an independently Pillow-verified 480×270 golden GIF fixture",
+    "Preserved automatic GIF dimensions, animated icon packs and the v3.0.1 decoded-frame metadata fix",
+    "Preserved all 30 studios, Token Foundry, Master Visual Identity, Reactor IV and the current website address"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Animation Forge",
+    "GIF Codec",
+    "Safari GIF Decoder"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
