@@ -25,6 +25,8 @@
    <button class="nav" data-view="pack"><span>▤</span> Asset Packager <small>10</small></button>
    <button class="nav" data-view="production"><span>✧</span> Production Lab <small>11</small></button>
    <button class="nav" data-view="audit"><span>⌕</span> Asset Audit <small>12</small></button>
+   <button class="nav" data-view="layers"><span>◧</span> Layer Forge <small>13</small></button>
+   <button class="nav" data-view="motiongraphics"><span>✺</span> Motion Graphics <small>14</small></button>
   </nav>
   <div class="rail-bottom"><div class="secure">● PROCESSING IS LOCAL</div><p>Files stay in your browser. Exports go to your Downloads folder.</p><a href="../hub/">← Sovereign Gateway</a></div>
 </aside>
@@ -35,11 +37,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.0.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twelve functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>12</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.1.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Fourteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>14</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.0.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.1.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -118,6 +120,46 @@
   <p class="hint">This is a file-integrity inspection utility, not antivirus software or a malware scan.</p>
  </div><div class="panel"><h3>Integrity report</h3><p id="auditStats" class="hint">No audit performed yet.</p><div id="auditResults" class="file-list empty">Select your files and run an audit.</div></div></div>
 </section>
+
+<section class="studio" data-panel="layers" hidden>
+ <div class="section-heading"><div><div class="eyebrow">13 / COMPOSITION ENGINE</div><h2>Layer Forge <span class="subtitle">Build multi-layer artwork with draggable text, images and blending</span></h2></div><button id="layerClear" class="small-btn">Clear canvas</button></div>
+ <div class="workspace image-grid"><div class="panel">
+  <h3>Canvas &amp; source artwork</h3>
+  <label>Canvas preset<select id="layerSize"><option value="video">Video thumbnail · 1280×720</option><option value="discord">Discord hero · 960×540</option><option value="wide">Wide banner · 1920×480</option><option value="square">Square graphic · 1080×1080</option><option value="poster">Vertical poster · 1080×1920</option><option value="wall">Wallpaper · 1920×1080</option><option value="fourk">4K canvas · 3840×2160</option></select></label>
+  <div class="two"><label>Canvas background<input id="layerBg" type="color" value="#0c091b"></label><label class="checks"><input id="layerTransparent" type="checkbox"> Transparent PNG</label></div>
+  <label class="upload"><input id="layerFiles" type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif"><b>＋ IMPORT IMAGE LAYERS</b><span>PNG, JPEG, WebP or GIF still · max 12 MB each · 18 layers</span></label>
+  <div class="actions"><input id="layerNewText" maxlength="100" placeholder="Enter a heading or subtitle"><button id="layerAddText" class="small-btn">＋ Add text layer</button></div>
+  <h3>Layers (top to bottom)</h3><div id="layerList" class="layer-list"></div>
+  <div class="actions"><button id="layerUp" class="small-btn">↑ Raise</button><button id="layerDown" class="small-btn">↓ Lower</button><button id="layerDelete" class="small-btn">× Remove</button></div>
+  <div id="layerSelected"><h3>Selected layer</h3>
+   <div class="two"><label>X position<input id="layerX" type="number" step="1" value="640"></label><label>Y position<input id="layerY" type="number" step="1" value="360"></label></div>
+   <div class="two"><label>Scale · 0.05–6<input id="layerScale" type="number" min=".05" max="6" step=".05" value="1"></label><label>Rotation °<input id="layerRotate" type="number" min="-180" max="180" step="1" value="0"></label></div>
+   <div class="two"><label>Opacity · 0–1<input id="layerOpacity" type="number" min="0" max="1" step=".05" value="1"></label><label>Blend mode<select id="layerBlend"><option value="source-over">Normal</option><option value="screen">Screen</option><option value="multiply">Multiply</option><option value="overlay">Overlay</option><option value="lighter">Additive</option></select></label></div>
+   <label>Edit text layer<input id="layerTextEdit" maxlength="100" placeholder="Select a text layer"></label>
+   <div class="two"><label>Font size<input id="layerFontSize" type="number" min="18" max="240" step="2" value="72"></label><label>Text color<input id="layerColor" type="color" value="#ffffff"></label></div>
+  </div>
+  <label>Output type<select id="layerFormat"><option value="image/png">PNG · lossless</option><option value="image/webp">WebP · smaller file</option></select></label>
+  <div class="actions"><button id="layerExport" class="primary">↓ Export composition</button><button id="layerAdd">＋ Add image to Pack</button></div>
+  <div class="actions"><button id="layerSave" class="small-btn">↓ Save portable project</button><label class="small-btn">↑ Load project<input id="layerLoad" type="file" accept=".json,application/json" hidden></label></div>
+  <p class="hint">Drag the selected layer on the canvas. Portable project JSON embeds supported imported image pixels; keep source files and backups for long-term work. Files never leave your browser.</p>
+ </div><div class="panel"><h3>Live layered composition</h3><canvas id="layerCanvas" width="1280" height="720" class="preview-canvas" aria-label="Layer composition preview"></canvas><p id="layerStatus" class="hint">Ready for artwork.</p><p class="hint">Preview is scaled to fit this panel; exported images use the selected full canvas dimensions.</p></div></div>
+</section>
+<section class="studio" data-panel="motiongraphics" hidden>
+ <div class="section-heading"><div><div class="eyebrow">14 / ANIMATED BRANDING</div><h2>Motion Graphics <span class="subtitle">Dynamic title sequences, particle motion and real silent WebM exports</span></h2></div></div>
+ <div class="workspace image-grid"><div class="panel">
+  <h3>Motion scene generator</h3>
+  <label>Main title<input id="graphicsTitle" maxlength="60" value="PROXIMUS" placeholder="Your brand or creation"></label>
+  <label>Subtitle<input id="graphicsSubtitle" maxlength="110" value="SOVEREIGN CREATOR NETWORK" placeholder="Add your tagline"></label>
+  <div class="two"><label>Color theme<select id="graphicsTheme"><option value="violet">Imperial violet</option><option value="cyan">Cyber cyan</option><option value="gold">Celestial gold</option><option value="crimson">Infernal rose</option><option value="emerald">Emerald realm</option></select></label><label>Clip duration<select id="graphicsDuration"><option value="3">3 seconds</option><option value="5" selected>5 seconds</option><option value="8">8 seconds</option></select></label></div>
+  <div class="two"><label>Particle energy<input id="graphicsEnergy" type="range" min="5" max="100" value="65"></label><label>Animation speed<input id="graphicsSpeed" type="range" min=".3" max="3" step=".1" value="1"></label></div>
+  <label class="upload"><input id="graphicsBackdrop" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><b>＋ OPTIONAL BACKDROP ARTWORK</b><span>Custom images stay local; used at 43% opacity over the motion scene</span></label>
+  <div class="actions"><button id="graphicsClearBackdrop" class="small-btn">Clear backdrop</button><button id="graphicsPreview" class="small-btn">Play preview</button></div>
+  <div class="actions"><button id="graphicsStill" class="small-btn">↓ Capture PNG frame</button><button id="graphicsRecord" class="primary">↓ Record WebM</button></div>
+  <button id="graphicsAdd" class="primary wide">＋ Record &amp; add WebM to Pack</button>
+  <p class="hint">Chromium-based browsers are recommended for 1280×720, 24 fps WebM recording. Video is intentionally silent; live preview is rendered in your browser. Recordings last 3–8 seconds. Exported files are suitable for intros, Discord banners (where video is allowed), and personal motion art.</p>
+ </div><div class="panel"><h3>Animated live stage</h3><canvas id="graphicsCanvas" width="1280" height="720" class="preview-canvas" aria-label="Motion graphics preview"></canvas><p id="graphicsStatus" class="hint">Ready for WebM export.</p><p class="hint">Animated particle and portal effects with configurable themes, title, energy and timing. No uploads or external assets required.</p></div></div>
+</section>
+
 <section class="studio" data-panel="pack" hidden>
 <div class="section-heading"><div><div class="eyebrow">10 / OUTPUT CONTROL</div><h2>Asset Packager <span class="subtitle">Your session's finished work</span></h2></div><button class="small-btn" id="packClear">Clear pack</button></div>
 <div class="workspace split"><div class="panel"><h3>One package, many tools</h3><p>Click <b>Add to Pack</b> in any studio. Collected assets are stored in your browser&#39;s local IndexedDB vault, subject to storage quotas. Download a ZIP to keep a permanent copy.</p><label>Package title<input id="packTitle" maxlength="80" value="PROXIMUS Asset Collection"></label><label>Usage target<select id="packTarget"><option value="general">General digital assets</option><option value="sonic-reactor">Sonic Reactor II media</option><option value="character-foundry">Character Foundry art</option><option value="discord">Discord branding</option><option value="game-dev">Game development assets</option></select></label><button id="packExport" class="primary wide">↓ Download complete ZIP</button>
