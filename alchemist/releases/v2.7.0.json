@@ -1,0 +1,39 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.7.0",
+  "release_date": "2026-11-13",
+  "title": "Sovereign Reactor Finale",
+  "subtitle": "Sovereign Reactor Finale",
+  "channel": "stable",
+  "studios": 26,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "New Sovereign Reactor entertainment studio with real frequency-driven music visualizations",
+    "React to imported local audio and user-permitted microphone input on PC or iPhone",
+    "Capture audio from a user-selected shared desktop tab or screen when the browser includes an audio track",
+    "Six visualizer modes and five original themes with bass/kick-responsive lighting and optional color shifts",
+    "Optional GIF, MP4, WebM or still-image backgrounds stored locally with fit and visibility controls",
+    "Tunable sensitivity, beat impact, optional stardust/snow and battery-saving performance profiles",
+    "Export true animated GIF visualizer loops, PNG artwork and supported silent video recordings",
+    "Share or save generated files on supported devices, and add exports directly to Asset Packager",
+    "Save and transfer custom Reactor visualizer presets as portable JSON",
+    "Send local songs and background images from Media Theater or Asset Packager into Sovereign Reactor",
+    "Preserve the existing 25 studios, Release Center, Discord link and iPhone home-screen update workflow"
+  ],
+  "added_studios": [
+    "Sovereign Reactor"
+  ],
+  "integrations": [
+    "Media Theater",
+    "Asset Packager",
+    "Media Publisher",
+    "Release Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
