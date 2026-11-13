@@ -147,7 +147,7 @@ function setupDrop(){
  document.addEventListener('drop',e=>{
   if(!e.dataTransfer?.files?.length)return;e.preventDefault();overlay.hidden=true;entering=0;
   const id=document.querySelector('.studio:not([hidden])')?.dataset.panel;
-  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile'}[id];
+  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles'}[id];
   if(!dest){notice('Switch to an import studio first.');return}
   const input=$(dest);const dt=new DataTransfer();
   const multiple=input.multiple;
