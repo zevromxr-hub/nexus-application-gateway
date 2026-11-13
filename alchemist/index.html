@@ -63,15 +63,44 @@
   <div class="command-top-actions"><button id="commandOpenMedia" class="primary">✧ Master Media</button><button id="commandOpenSync" class="small-btn">⇄ Transfer to other device</button><button id="commandRefresh" class="small-btn">↻ Refresh</button></div>
  </div>
  <div class="command-metrics"><div><strong id="commandAssets">0</strong><span>COLLECTED ASSETS</span></div><div><strong id="commandPackSize">0 B</strong><span>LOCAL PACK SIZE</span></div><div><strong id="commandPinsCount">0 pinned</strong><span>FAVORITE STUDIOS</span></div></div>
+
+ <div class="companion-hero-pulse" aria-label="Personal companion overview">
+  <div><span class="eyebrow">MY ENTERTAINMENT</span><strong id="commandVideoCount">0 saved videos</strong><small>Stored on this device</small></div>
+  <div><span class="eyebrow">WATCHING</span><strong id="commandVideoContinueCount">0 in progress</strong><small>Resume when you return</small></div>
+  <div><span class="eyebrow">FAVORITES</span><strong id="commandVideoFavoriteCount">0 favorites</strong><small>Your personal watchlist</small></div>
+  <button id="commandRefreshCompanion" class="small-btn">↻ Refresh companion</button>
+ </div>
+ <div class="workspace split companion-home-grid">
+  <div class="panel companion-watching-panel">
+   <div class="companion-section-head"><div><h3>01 / CONTINUE WATCHING</h3><p class="hint">Resume saved videos without searching through your whole collection.</p></div><button id="commandWatchLibrary" class="small-btn">▣ Open Vault</button></div>
+   <div id="commandContinue" class="companion-continue"></div>
+   <div class="buttons"><button id="commandSurprise" class="small-btn">✧ Play something from my library</button><button id="commandWatchFavorites" class="small-btn">★ Saved favorites</button></div>
+  </div>
+  <div class="panel companion-links-panel">
+   <h3>02 / MY FAVORITE DESTINATIONS</h3>
+   <p class="hint">Save personal HTTPS website links—streaming services, documentation, creator resources or everyday tools. Links open externally; the app does not bypass website playback restrictions.</p>
+   <div class="companion-link-form">
+    <label>Shortcut name<input id="commandLinkName" maxlength="46" placeholder="My favorite website" autocomplete="off"></label>
+    <label>HTTPS address<input id="commandLinkUrl" inputmode="url" placeholder="https://example.com" autocomplete="url"></label>
+    <button id="commandLinkAdd" class="primary">＋ Save shortcut</button>
+   </div>
+   <div id="commandLinks" class="companion-links"></div>
+   <p id="commandLinksStatus" class="hint">Shortcuts are private to this browser and saved with your workspace preferences.</p>
+  </div>
+ </div>
  <div class="workspace split">
   <div class="panel">
-   <h3>01 / PERSONAL INTERFACE</h3>
+   <h3>03 / PERSONAL INTERFACE</h3>
    <label>Workspace display name<input id="commandDisplayName" maxlength="45" placeholder="Optional nickname for your dashboard"></label>
    <label>Interface layout<select id="commandMode"><option value="creator">Creator · complete workspace</option><option value="customer">Customer · simplified navigation</option></select></label>
    <p id="commandModeNote" class="hint">Interface modes adjust presentation only; they are not account authentication.</p>
-   <h3>02 / QUICK ACTIONS</h3>
+   <h3>QUICK ACCESS</h3>
    <div class="command-quick-actions">
     <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
+    <button id="commandOpenTheater" class="small-btn">♫ Media Theater</button>
+    <button id="commandOpenArcade" class="small-btn">✦ Mini games</button>
+    <button id="commandOpenWorkflow" class="small-btn">▤ My notes</button>
+    <button id="commandOpenAnimation" class="small-btn">▣ Make a GIF</button>
     <button id="commandOpenReactor" class="small-btn">✺ Open Reactor IV</button><button id="commandOpenVideos" class="small-btn">▣ Saved Video Vault</button>
     <button id="commandOpenRelease" class="small-btn">⟳ Release history</button>
     <button id="commandCheckUpdates" class="small-btn">Check app updates</button>
@@ -79,13 +108,13 @@
    </div>
   </div>
   <div class="panel">
-   <h3>03 / RECENT ASSET OUTPUTS</h3>
+   <h3>04 / RECENT CREATIONS</h3>
    <div id="commandRecent" class="command-recent"></div>
    <p class="hint">Anything added to Asset Packager will be visible here as a quick handoff.</p>
   </div>
  </div>
  <div class="panel command-catalog">
-  <div class="command-filter-bar"><div><h3>04 / MORE COMPANION TOOLS</h3><p class="hint">Keep only what you need at your fingertips. Pin favorites or search for a specific tool.</p></div><div class="command-filters"><label>Search studio<input id="commandSearch" type="search" placeholder="Search companion tools…" autocomplete="off"></label><label class="command-pin-check"><input id="commandOnlyPinned" type="checkbox"> Pinned only</label></div></div>
+  <div class="command-filter-bar"><div><h3>05 / EXPLORE COMPANION TOOLS</h3><p class="hint">Keep only what you need at your fingertips. Pin favorites or search for a specific tool.</p></div><div class="command-filters"><label>Category<select id="commandCategory"><option value="entertainment" selected>Entertainment first</option><option value="everyday">Everyday usefulness</option><option value="creative">Creative tools</option><option value="manage">Manage &amp; protect</option><option value="all">All spaces</option></select></label><label>Search studio<input id="commandSearch" type="search" placeholder="Search companion tools…" autocomplete="off"></label><label class="command-pin-check"><input id="commandOnlyPinned" type="checkbox"> Pinned only</label></div></div>
   <div id="commandCards" class="command-grid"></div>
  </div>
  <p id="commandStatus" role="status" class="hint">Loading command workspace…</p>
