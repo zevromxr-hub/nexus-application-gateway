@@ -206,7 +206,7 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v3.0.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v3.0.1',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
@@ -259,7 +259,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.0.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.0.1';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
