@@ -55,9 +55,9 @@ export function initSovereignReactor(app){
  let audioContext=null,analyser=null,frequency=null;
  let mediaURL=null,mediaRecord=null,videoReady=false;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
- let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordStop=null,recordBlob=null,recordName='';
+ let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
  let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
- let frameCount=0,frequencySmooth=0,activeSeconds=0,streamCaptureActive=false;
+ let frameCount=0,frequencySmooth=0,streamCaptureActive=false;
  const inputText={off:'No source connected',file:'Local music file',mic:'Microphone (permission granted)',tab:'Shared desktop tab / screen audio'};
  const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='reactor';
 
@@ -196,8 +196,8 @@ export function initSovereignReactor(app){
   status('Ready: '+safe(file.name)+' · '+bytes(file.size)+'. Tap Play local audio.');
  });
  $('reactorFilePlay').addEventListener('click',wrap(startFile));
- $('reactorMic').addEventListener('click',wrap(startMic));
- $('reactorTab').addEventListener('click',wrap(startTab));
+ $('reactorMic').addEventListener('click',wrap(async()=>{try{await startMic();}catch(e){status('Microphone: '+(e.message||e),true);throw e;}}));
+ $('reactorTab').addEventListener('click',wrap(async()=>{try{await startTab();}catch(e){status('Shared tab audio: '+(e.message||e),true);throw e;}}));
  $('reactorStop').addEventListener('click',()=>{releaseInput();status('Audio capture stopped.');});
  audio.addEventListener('ended',()=>{
   if(current==='file'){releaseInput();status('Local audio finished.');}
@@ -455,15 +455,15 @@ export function initSovereignReactor(app){
   if(!loopBlob)return;app.addAsset(loopName,loopBlob,'Sovereign Reactor');
   exportStatus('Animated reactor GIF added to Asset Packager');
  });
- $('reactorUseBg').addEventListener('click',()=>{
+ $('reactorUseBg').addEventListener('click',wrap(()=>{
   if(!loopBlob)throw Error('Create the Reactor GIF first.');
   document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:loopBlob,name:loopName,target:'background'}}));
   exportStatus('Reactor GIF added to application background');
- });
+ }));
  // Silent stage video recording, feature detected. No copyrighted streaming
  // music is recorded or redistributed by default.
  const candidates=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
- const mediaType=typeof MediaRecorder!=='undefined'?candidates.find(x=>MediaRecorder.isTypeSupported(x)):null;
+ const mediaType=typeof MediaRecorder!=='undefined'&&typeof MediaRecorder.isTypeSupported==='function'?candidates.find(x=>MediaRecorder.isTypeSupported(x)):null;
  const videoCaptureAvailable=!!canvas.captureStream&&!!mediaType;
  $('reactorRecord').disabled=!videoCaptureAvailable;
  if(!videoCaptureAvailable)$('reactorRecordingStatus').textContent='Use animated GIF or PNG exports on this browser.';
@@ -539,7 +539,7 @@ export function initSovereignReactor(app){
  });
  presetOptions();
  const mobile=/iPad|iPhone|iPod/i.test(navigator.userAgent);
- $('reactorTab').disabled=!navigator.mediaDevices?.getDisplayMedia;
+ $('reactorTab').disabled=mobile||!navigator.mediaDevices?.getDisplayMedia;
  $('reactorDevice').textContent=mobile?
   'iPhone: Use a local music file or tap Microphone to react to nearby speaker audio. Other apps’ system audio cannot be read directly by this website.':
   'PC: Use local audio, Microphone or Share tab audio in supported desktop browsers. Choose a tab with audio sharing enabled.';
