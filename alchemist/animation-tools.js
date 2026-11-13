@@ -133,7 +133,10 @@ async function seek(video,time){
  if(typeof video.requestVideoFrameCallback==='function'){
   await new Promise(resolve=>{
    let done=false;let requestId=null;
-   const finish=()=>{if(done)return;done=true;clearTimeout(timer);resolve();};
+   const finish=()=>{if(done)return;done=true;clearTimeout(timer);
+    if(requestId!==null&&typeof video.cancelVideoFrameCallback==='function')
+     try{video.cancelVideoFrameCallback(requestId);}catch(e){}
+    resolve();};
    const timer=setTimeout(finish,65);
    try{requestId=video.requestVideoFrameCallback((now,metadata)=>{
     if(Math.abs((metadata?.mediaTime??time)-time)>.2){finish();return;}
