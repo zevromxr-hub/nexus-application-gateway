@@ -54,6 +54,8 @@ const gifTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-roundtrip.mj
 assert.equal(gifTest.status,0,'GIF89a source round-trip: '+gifTest.stderr+' '+gifTest.stdout);
 const fallbackTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-fallback.mjs')],{encoding:'utf8'});
 assert.equal(fallbackTest.status,0,'GIF Safari fallback: '+fallbackTest.stderr+' '+fallbackTest.stdout);
+const sizingTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-sizing.mjs')],{encoding:'utf8'});
+assert.equal(sizingTest.status,0,'GIF auto/manual size selection: '+sizingTest.stderr+' '+sizingTest.stdout);
 assert.ok(app.includes('initProduction(app)')&&app.includes('initAudit(app)'));
 assert.ok(app.includes('indexedDB'),'Persistent pack vault must be wired');
 assert.ok(app.includes('setupVersion()'),'Release check must be wired');
