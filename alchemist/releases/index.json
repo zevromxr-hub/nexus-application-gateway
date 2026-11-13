@@ -4,6 +4,11 @@
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
     {
+      "version": "2.9.0",
+      "title": "Sovereign Workspace & Media Dominion",
+      "date": "2026-11-13"
+    },
+    {
       "version": "2.8.0",
       "title": "Token Foundry & Owner Vault Edition",
       "date": "2026-11-13"
