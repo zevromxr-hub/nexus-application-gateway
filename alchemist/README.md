@@ -1,81 +1,56 @@
-# PROXIMUS | ASSET ALCHEMIST v2.5.0
+# PROXIMUS | ASSET ALCHEMIST v2.6.0
 
-**CREATOR & PRODUCTIVITY EXPANSION — 19 creative studios, 2 information tabs**
+**SOVEREIGN UTILITY ENGINE · 25 interoperable studios · PC & iPhone**
 
 Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-A browser-based creative workshop for desktop and mobile, with local media tools, entertainment, asset production, personal organization and version history.
+## New in v2.6.0
 
-## What's new in v2.5.0
+### Studio 20 — Universal Project Hub
+Save a snapshot of the current Asset Packager, export a portable PROXIMUS project ZIP containing the actual files, import your project onto another device, and route assets directly to compatible studios. Pin favorite workspaces to the personal command dashboard.
 
-### Release Center
-Explore the app's chronological update history inside Asset Alchemist. Search by version or feature, expand release notes, open the official GitHub source record and use the existing Check Updates control.
+### Studio 21 — Automation Lab
+Create reusable multi-image workflows with ready-made output presets for Discord, video thumbnails, social squares, app icons and wallpapers. Save custom recipes, apply brightness-independent grayscale, watermarking, cropping and resizing, and export all outputs to ZIP or Asset Packager.
 
-### Creator Story
-A dedicated introduction to the independent developer behind the projects, with milestones from Discord and NEXUS development to PROXIMUS Archives, STRATUM, STARFORGE, RELIC DOMINION, Sonic Reactor II, Character Foundry and Asset Alchemist.
+### Studio 22 — Capture Studio
+Import from the photo library or camera, open a live camera, capture a frame, rotate, resize, adjust brightness/contrast/color, add a watermark, and export to useful creator dimensions. Save or share images directly from the device.
 
-### Workflow Desk — Studio 18
-- Create, rename and edit local notes.
-- Organize a checklist, mark progress and remove completed work.
-- Use the built-in 5–60 minute focus timer.
-- Export, import and package a portable JSON workspace backup.
+### Studio 23 — Document Forge
+Convert photos and selected image pages into a locally created PDF. Reorder pages, choose A4/Letter/square format and apply an optional page-footer label. Export the finished document or add it to Asset Packager.
 
-### Utility Forge — Studio 19
-- Clean, sort and deduplicate text, change letter case and reverse lines.
-- Format or compact JSON, encode/decode URLs and Unicode-safe Base64.
-- Generate secure random passwords and personal access strings.
-- Bulk rename selected files with prefixes, suffixes and sequence numbers, then export a ZIP.
+### Studio 24 — QR & Branding
+Create QR codes from short URLs or text with Reed–Solomon error correction and downloadable PNG/SVG. Apply colors and produce a branded promotional card for a website or community.
 
-## Creative studios
+### Studio 25 — Recovery Center
+View browser storage and app version status, back up and restore settings, request persistent browser storage and clear only the versioned offline app cache. Access Check Updates from this control center.
 
-| # | Studio | Key tools |
-|---|---|---|
-| 01 | Image Studio | Image editing, resize, crop and effects |
-| 02 | Batch Forge | Bulk image conversion and export |
-| 03 | Icon Foundry | Static and animated icon packs |
-| 04 | Sprite Atlas | Sprite sheets and JSON atlases |
-| 05 | Texture Lab | Height, normal and mask assets |
-| 06 | Color Lab | Palettes, gradients and contrast |
-| 07 | Audio Forge | Trim, process and export WAV audio |
-| 08 | Motion Lab | Clip preview, snapshots and WebM motion |
-| 09 | 3D Inspector | GLB/glTF model structure |
-| 10 | Asset Packager | Collected exports and local asset vault |
-| 11 | Production Lab | Banners, covers, wallpapers and layouts |
-| 12 | Asset Audit | File signatures, metadata and duplicate analysis |
-| 13 | Layer Forge | Image and text compositions |
-| 14 | Motion Graphics | Cinematic title graphics and animated WebM |
-| 15 | Animation Forge | MP4/WebM/GIF conversion and animated GIF icons |
-| 16 | Media Theater | Music, local videos, playlists and visualizers |
-| 17 | Arcade Chamber | Three original touch-friendly arcade games |
-| 18 | Workflow Desk | Notes, checklists, focus timer and backups |
-| 19 | Utility Forge | Text, data, key generation and ZIP renaming |
+### Animation Forge — Cross-device GIF extraction
+- **Regular GIF** remains independent of square icon sizing.
+- Convert supported MP4, WebM and animated GIF inputs into real animated GIF89a files.
+- Export a ZIP containing extracted PNG frames.
+- Adjust speed, reverse animations and add animated captions.
+- On devices offering file sharing, use the dedicated **Share / Save generated GIF** button. Normal download and a direct animated GIF preview remain available for other browsers.
+- Imported GIFs use either the browser-native ImageDecoder or the built-in local GIF frame reader.
 
-## Information tabs
+### Media Theater II, Arcade II and Asset Packager II
+- Media Theater now has a floating mini-player, saved favorites and more visualizers.
+- Arcade Chamber now includes a personal profile, selectable themes and achievements.
+- Asset Packager now supports quick search, categories and **Send to Studio** controls.
 
-- **Release Center** — version history from \`releases/index.json\` and each version's JSON record.
-- **Creator Story** — project journey and goals.
+## Existing PROXIMUS ecosystem
 
-## Local workflows
+The original studio library, customized backgrounds/thumbnails, GIF and icon creation, audio and video studios, entertainment, personal productivity, creator information and Release Center remain part of the same application.
 
-Source files are processed in your browser. The app's Asset Packager stores collected exports in browser-local storage. Optional media backgrounds, thumbnails, personal notes, tasks and arcade scores also stay in local browser storage. You can download project files, media and ZIP or JSON backups as needed.
+## Portability
 
-## Version publishing
+**Project ZIPs** include the actual assets in the pack. Save the ZIP on one device and import it from Project Hub on the other device. Use the workflow JSON and settings backup tools to move those preferences separately.
 
-Every application release updates the same set of sources:
-- \`version.json\`, application version label, \`sw.js\` cache version, \`CHANGELOG.md\`
-- \`releases/vX.Y.Z.json\` and \`releases/index.json\`
-- Studio menus and app initialization for any new modules
+## Version history
 
-The in-app Release Center reads the version index and each release's JSON record. The existing **Check Updates** button reads \`version.json\`.
+**Release Center** reads \`releases/index.json\` and individual version records in \`releases/\`. The existing Check Updates flow reads \`version.json\`.
 
-## GitHub / Discord continuity
-
-**OPEN ASSET ALCHEMIST**
+## Main application
 
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
-
-The application's public launch address is unchanged.
-
----
 
 POWERED BY ZEVRO | PROXIMUS
