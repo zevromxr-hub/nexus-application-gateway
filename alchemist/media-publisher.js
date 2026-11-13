@@ -9,7 +9,7 @@ const validSlot=s=>s==='background'||s==='hero'||/^studio-[a-z]+$/.test(s);
 const mediaURLs=new Map(),mediaRecords=new Map();
 let database=null;
 function typeOf(file){
- const mime=file.type||({'gif':'image/gif','png':'image/png','jpg':'image/jpeg','jpeg':'image/jpeg','webp':'image/webp','mp4':'video/mp4','webm':'video/webm'}[file.name?.split('.').pop()?.toLowerCase()]);
+ const mime=ALLOWED.has(file.type)?file.type:({'gif':'image/gif','png':'image/png','jpg':'image/jpeg','jpeg':'image/jpeg','webp':'image/webp','mp4':'video/mp4','webm':'video/webm'}[file.name?.split('.').pop()?.toLowerCase()]);
  if(!ALLOWED.has(mime))throw Error('Use GIF, PNG, JPEG, WebP, MP4 or WebM.');
  if(file.size>(mime.startsWith('video/')?MAX_VIDEO:MAX_IMAGE))throw Error('Media is too large for browser-local personalization. Use a file under '+(mime.startsWith('video/')?'80 MB':'35 MB')+'.');
  return mime;
