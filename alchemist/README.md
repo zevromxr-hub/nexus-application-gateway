@@ -1,45 +1,50 @@
-# NEXUS | ASSET ALCHEMIST v1.0.0
+# PROXIMUS | ASSET ALCHEMIST v2.0.0
 
-**Powered by ZevRo | NEXUS**
+**SUPREME CREATOR EDITION — Powered by ZevRo | Proximus**
 
-## Website
+Official website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## Version and GitHub policy
+This is a release-identified, static GitHub Pages application. Every **published release** should include matching updates to \`version.json\`, \`CHANGELOG.md\`, \`releases/vX.Y.Z.json\`, app version, cache name, and the tracked GitHub commit. The CI workflow validates version consistency, JavaScript syntax, and source structure on changes. Deployments are ordinary commits to the Pages branch; this does **not** create a GitHub Releases asset automatically.
+
+**The old /nexus-application-gateway/alchemist/ URL stays unchanged for Discord compatibility, even though the brand is now PROXIMUS.** Existing native protocol handlers and user data keys remain unchanged for compatibility.
+
+## Studios
+1. Image Studio — resize, crop, filters, key removal, type overlay and original generated environments.
+2. Batch Forge — bulk image conversion and ZIP.
+3. Icon Foundry — multiple icon PNG sizes.
+4. Sprite Atlas — image atlas and JSON coordinates.
+5. Texture Lab — height, normal and mask maps.
+6. Color Lab — palette, gradients, WCAG contrast.
+7. Audio Forge — trim, fades, reverse, normalize, WAV.
+8. Motion Lab — preview clips, snapshots and short silent WebM loops.
+9. 3D Inspector — GLB/glTF structure, materials and rig data.
+10. Asset Packager — session pack ZIP, SHA-256 inventory.
+11. Production Lab (NEW) — ready-to-use Discord banners, wallpapers, thumbnails, covers, procedural effects, editable text, imported backdrop, PNG/WebP and JSON recipes.
+12. Asset Audit (NEW) — true SHA-256, duplicate detection, file-header checks, basic image/audio/GLB metadata, CSV/JSON report.
+
+## Durable work
+Collected assets are also copied to IndexedDB so normal refresh/reopening can restore your pack. Browser storage can be cleared or evicted and may not work in private mode. Download ZIP backups regularly. The application does not persist your original imported images as standalone projects.
+
+## Privacy
+All transforms run in the browser; source media stays on the machine and is not uploaded to GitHub or Discord. The optional update check fetches only public \`version.json\`. Pack data remains in browser-local storage.
+
+## Limitations
+- Original wallpaper generation is procedural, not AI diffusion.
+- No full 3D geometry editing, no MP3 encoding, no MP4 export, no direct animated GIF output.
+- Audio Forge produces WAV; Motion Lab produces muted WebM.
+- Large files may exceed browser CPU, memory, quota, or 24 megapixel canvas limits.
+- Audit is not antivirus scanning; unknown signatures are not inherently unsafe.
+- GitHub Pages is static hosting; authenticated Discord commands or private cloud projects would require a backend.
+
+## Discord button
+**OPEN ASSET ALCHEMIST**
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-This is a static Progressive Web App hosted on GitHub Pages. It runs directly in Chrome, Edge, or Opera GX and never requires a Windows EXE, Python, a subscription, or a Desktop Bridge.
+## Release discipline
+- Publish v2.0.0 in \`version.json\`, application chrome, changelog, JSON release record and cache name together.
+- Run \`node alchemist/tests/validate.mjs\` and JS syntax checks.
+- Keep existing gateway HTML, desktop protocols and paths compatible.
+- After merge, validate Pages deployment separately, since a GitHub commit alone does not guarantee the CDN has updated.
 
-## Main workbenches
-1. IMAGE STUDIO: Resize, crop/contain/cover, rotate, flip, enhance, hue, blur, grayscale, sepia, chroma key, typography overlay, PNG/JPEG/WebP export. Includes five procedural wallpaper generators: Nebula, Eclipse, Aurora, Embers, and Frost.
-2. BATCH FORGE: Convert up to 120 images to WebP/PNG/JPEG with long-side resize, grayscale and ZIP export.
-3. ICON FOUNDRY: Export PNG icons in sizes 16–1024 and a JSON manifest.
-4. SPRITE ATLAS: Atlas PNG with layout, padding, transparency and machine-readable JSON coordinates.
-5. TEXTURE LAB: Height, tangent-space normal and mask maps from image pixels (approximations).
-6. COLOR LAB: K-means dominant color extraction, CSS/SVG/PNG gradient exports and WCAG contrast calculation.
-7. AUDIO FORGE: Trim, gain, peak normalize, fades, reverse, preview and download 16-bit PCM WAV (up to five-minute selections).
-8. MOTION LAB: MP4/WebM/GIF input; preview, snapshots, trimmed visual-only WebM recording up to 20 seconds.
-9. 3D INSPECTOR: Inspect GLB/glTF structure, meshes, materials, skin joints, animations and morph targets. Export JSON report.
-10. ASSET PACKAGER: Collect output from other studios and export one ZIP with SHA-256 manifest.
-
-## Privacy, storage, and performance
-- No local input files are uploaded to the website, GitHub or Discord.
-- Tiny interface preferences reside in browser localStorage.
-- The current asset pack exists only in browser memory, so download it before refreshing or closing the page.
-- ZIP uses stored entries rather than extra compression; max 350 MB and 500 files.
-- Large image processing and video capture depend on browser and device resources.
-- PWA service worker caches the application source for offline reuse after first online visit; imported media is NOT cached.
-
-## Known limits
-- GIF images can be used as still frames or recorded into WebM, but direct animated GIF output is not implemented.
-- Motion Lab produces muted WebM, not MP4 or video with sound.
-- Audio Forge produces WAV, not MP3.
-- 3D Inspector analyzes file structure but does not render/edit full 3D geometry.
-- Normal maps and color-key transparency are approximate, not physically based editing tools.
-- Imported third-party content must be used according to its license.
-
-## Discord Link Button
-Label: OPEN ASSET ALCHEMIST
-URL: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
-
-This opens in the browser. A Windows protocol handler is not needed.
-
-## Safe deployment
-All files reside in the /alchemist/ folder. Existing Reactor, Foundry and Sovereign Hub gateways remain unchanged.
+POWERED BY ZEVRO | PROXIMUS
