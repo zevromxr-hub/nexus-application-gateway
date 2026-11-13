@@ -94,6 +94,13 @@
    <label>Workspace display name<input id="commandDisplayName" maxlength="45" placeholder="Optional nickname for your dashboard"></label>
    <label>Interface layout<select id="commandMode"><option value="creator">Creator · complete workspace</option><option value="customer">Customer · simplified navigation</option></select></label>
    <p id="commandModeNote" class="hint">Interface modes adjust presentation only; they are not account authentication.</p>
+   <details class="companion-pocket-panel">
+    <summary>▤ Pocket Notes · quick thoughts saved locally</summary>
+    <label>Private scratchpad<textarea id="commandPocketNotes" rows="5" maxlength="8000" placeholder="Something to remember, an idea, a to-do, a movie to watch…"></textarea></label>
+    <div class="buttons"><button id="commandNotesExport" class="small-btn">↓ Share / Save notes</button>
+     <button id="commandNotesClear" class="small-btn">Clear notes</button></div>
+    <p id="commandNotesStatus" class="hint">Notes stay on this device. Export them or include settings in Sync Bridge.</p>
+   </details>
    <h3>QUICK ACCESS</h3>
    <div class="command-quick-actions">
     <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
