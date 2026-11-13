@@ -36,6 +36,16 @@ export function dimensionsForGif(w,h,{preset='auto',customWidth=0,customHeight=0
  if(width>720||height>720||width*height>MAX_GIF_PIXELS)throw Error('This GIF size exceeds browser memory limits (maximum 720 px per side and 360,000 total pixels). Choose a smaller size.');
  return {width,height};
 }
+// ImageData exposes width/height/data through prototype getters, which are NOT
+// copied by object spread. Always extract them explicitly before GIF encoding.
+// This fixes regular video→GIF, GIF resize, and derived animated icon output.
+export function frameForGif(image,delayMs=100){
+ const width=Number(image?.width),height=Number(image?.height),data=image?.data;
+ if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||
+    !(data instanceof Uint8ClampedArray)||data.length!==width*height*4)
+  throw Error('A decoded frame is invalid. Try another video codec or image.');
+ return {width,height,data,delayMs:Math.max(20,Math.round(Number(delayMs)||100))};
+}
 function drawFrame(ctx,source,width,height,mode,bg,transparent){
  const c=ctx.canvas;
  ctx.clearRect(0,0,c.width,c.height);
@@ -141,7 +151,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
    if(isCancelled())throw Error('Conversion cancelled.');
    const time=start+k*speed/fps;if(time>=realEnd-.0001)break;
    await seek(source.video,time);
-   frames.push({...stamp(drawFrame(ctx,source.video,width,height,mode,bg,transparent)),delayMs:durationMs});
+   frames.push(frameForGif(stamp(drawFrame(ctx,source.video,width,height,mode,bg,transparent)),durationMs));
    if(k%2===0){progress('Extracting video frame '+(k+1)+' of '+count);await delay();}
   }
  }else{
@@ -160,7 +170,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
      index++;loops++;
      if(loops>3000)throw Error('Invalid GIF timing metadata.');
     }
-    frames.push({...stamp(drawFrame(ctx,current,width,height,mode,bg,transparent)),delayMs:durationMs});
+    frames.push(frameForGif(stamp(drawFrame(ctx,current,width,height,mode,bg,transparent)),durationMs));
     if(k%2===0){progress('Sampling animated GIF '+(k+1)+' of '+count);await delay();}
    }
   }finally{current?.close?.();}
@@ -183,7 +193,7 @@ async function exportAnimatedIcons(frames,sourceW,sourceH,sizes,{bg,transparent,
    else{
     sc.putImageData(frames[i],0,0);
     const image=drawFrame(ctx,stage,sourceW,sourceH,'cover',bg,transparent);
-    resized.push({...image,delayMs:frames[i].delayMs});
+    resized.push(frameForGif(image,frames[i].delayMs));
    }
   }
   progress('Encoding '+size+'×'+size+' animated GIF icon…');
