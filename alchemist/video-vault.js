@@ -51,6 +51,7 @@ export async function saveStoredVideo(meta,blob){
  await transaction(['items','files'],'readwrite',(items,files)=>{
   items.put(meta);files.put({id:meta.id,blob});
  });
+ document.dispatchEvent(new Event('proximus-video-vault-changed'));
  return meta;
 }
 export async function loadStoredVideo(id){
@@ -60,9 +61,11 @@ export async function loadStoredVideo(id){
 }
 export async function updateStoredVideo(meta){
  await transaction(['items'],'readwrite',store=>store.put(meta));
+ document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 export async function removeStoredVideo(id){
  await transaction(['items','files'],'readwrite',(items,files)=>{items.delete(id);files.delete(id);});
+ document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 function newId(){
  if(crypto.randomUUID)return crypto.randomUUID();
@@ -82,6 +85,32 @@ export function initVideoVault(app){
  const search=$('videoVaultSearch'),filter=$('videoVaultFilter'),sort=$('videoVaultSort');
  const records=new Map();
  let activeId=null,currentURL=null,lastSave=0,posterWorking=false,persistent=null;
+ const AUTO_NEXT='proximus-video-vault-auto-next-v1';
+ const autoNext=$('videoVaultAutoNext');
+ try{autoNext.checked=localStorage.getItem(AUTO_NEXT)==='1';}catch(e){}
+ autoNext.addEventListener('change',()=>{
+  try{localStorage.setItem(AUTO_NEXT,autoNext.checked?'1':'0');}catch(e){}
+ });
+ const mini=document.createElement('div');mini.className='companion-video-mini';mini.hidden=true;
+ mini.setAttribute('aria-label','Compact Video Vault player');
+ const miniTitle=document.createElement('strong');
+ const miniToggle=document.createElement('button'),miniOpen=document.createElement('button');
+ const miniNext=document.createElement('button');
+ miniToggle.className=miniOpen.className=miniNext.className='small-btn';
+ miniToggle.textContent='❚❚';miniOpen.textContent='Open Vault';miniNext.textContent='⏭';
+ miniToggle.setAttribute('aria-label','Pause or resume saved video');
+ miniNext.setAttribute('aria-label','Play next saved video');
+ mini.append(miniTitle,miniToggle,miniNext,miniOpen);document.body.append(mini);
+ function updateMini(){
+  const item=active();
+  const inVault=document.querySelector('.studio:not([hidden])')?.dataset.panel==='videos';
+  mini.hidden=!item||video.paused||inVault;
+  miniTitle.textContent=item?.name||'Saved video';
+  miniToggle.textContent=video.paused?'▶':'❚❚';
+ }
+ miniToggle.addEventListener('click',()=>{if(video.paused)video.play().catch(()=>{});else video.pause();});
+ miniOpen.addEventListener('click',()=>app.changeView('videos'));
+ miniNext.addEventListener('click',()=>nextVideo(1));
  let posterURLs=[];
  const say=(msg,bad=false)=>{status.textContent=msg;status.dataset.error=bad?'true':'false';};
  const formatDate=time=>new Date(time).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});
@@ -95,6 +124,8 @@ export function initVideoVault(app){
   info.textContent='Original videos stored only on this device.';
   $('videoVaultDownload').disabled=true;
   $('videoVaultPiP').disabled=true;
+  $('videoVaultSendTheater').disabled=true;
+  updateMini();
  }
  function getVisible(){
   return sortVideoLibrary([...records.values()],{
@@ -245,6 +276,7 @@ export function initVideoVault(app){
    metaLabel.textContent=item.name;info.textContent=bytes(item.bytes)+' · '+item.collection+
     (item.position?' · saved position '+videoTime(item.position):' · start from beginning');
    $('videoVaultDownload').disabled=false;$('videoVaultPiP').disabled=false;
+   $('videoVaultSendTheater').disabled=false;
    render();
   }
   if(autoplay){
@@ -252,6 +284,7 @@ export function initVideoVault(app){
    catch(e){say('Video ready — tap the ▶ control in the player to start on your iPhone.');}
   }
   $('videoVaultPlayer').scrollIntoView({block:'nearest',behavior:'smooth'});
+  updateMini();
  }
  function seekResume(){
   const item=active();if(!item)return;
@@ -284,6 +317,21 @@ export function initVideoVault(app){
  for(const el of [search,filter,sort])el.addEventListener('input',render);
  $('videoVaultPrevious').addEventListener('click',()=>nextVideo(-1));
  $('videoVaultNext').addEventListener('click',()=>nextVideo(1));
+ function skipSeconds(delta){
+  if(!active()||!Number.isFinite(video.duration)||video.duration<=0)return;
+  video.currentTime=Math.max(0,Math.min(video.duration-.1,video.currentTime+delta));
+  void persistPosition(true);
+ }
+ $('videoVaultBack10').addEventListener('click',()=>skipSeconds(-10));
+ $('videoVaultForward30').addEventListener('click',()=>skipSeconds(30));
+ $('videoVaultSendTheater').addEventListener('click',wrap(async()=>{
+  const item=active();if(!item)throw Error('Choose a saved video first.');
+  const blob=await loadStoredVideo(item.id);
+  document.dispatchEvent(new CustomEvent('proximus-video-vault-send-theater',
+   {detail:{blob,name:item.name,mime:item.mime}}));
+  app.changeView('theater');
+  say('Opened '+item.name+' in Media Theater without duplicating the stored file.');
+ }));
  $('videoVaultOpenTheater').addEventListener('click',()=>app.changeView('theater'));
  $('videoVaultCinema').addEventListener('click',wrap(async()=>{
   if(!active())throw Error('Choose a saved video first.');
@@ -306,6 +354,11 @@ export function initVideoVault(app){
   say(outcome==='shared'?'Video sent to your device share sheet.':'Original saved video exported.');
  }));
  video.addEventListener('loadedmetadata',seekResume);
+ video.addEventListener('play',()=>{
+  updateMini();
+  document.dispatchEvent(new CustomEvent('proximus-companion-playing',{detail:{origin:'videos'}}));
+ });
+ video.addEventListener('pause',updateMini);
  video.addEventListener('timeupdate',()=>{
   void persistPosition();
   if(video.currentTime>1&&!active()?.poster)void maybeCreatePoster();
@@ -313,10 +366,25 @@ export function initVideoVault(app){
  video.addEventListener('pause',()=>void persistPosition(true));
  video.addEventListener('ended',()=>{
   if(active()){active().position=0;active().watched=Date.now();void updateStoredVideo(active());}
-  render();
+  render();updateMini();
+  if(autoNext.checked)nextVideo(1);
  });
  video.addEventListener('error',()=>{
   const item=active();if(item)say('This browser cannot decode '+item.name+'. The original saved file is still in Video Vault. Try MP4/H.264 or a device-native MOV.',true);
+ });
+ document.addEventListener('proximus-video-vault-watch',e=>{
+  const id=e.detail?.id;
+  if(typeof id!=='string')return;
+  void (async()=>{
+   if(!records.has(id)){
+    try{for(const entry of await listStoredVideos())records.set(entry.id,entry);}
+    catch(error){say(error.message,true);return;}
+   }
+   await watch(id,true);
+  })();
+ });
+ document.addEventListener('proximus-companion-playing',e=>{
+  if(e.detail?.origin==='theater'&&!video.paused)video.pause();
  });
  document.addEventListener('proximus-video-vault-import',e=>{
   const files=Array.from(e.detail?.files||[]);
@@ -324,9 +392,10 @@ export function initVideoVault(app){
  });
  document.addEventListener('proximus-view-changed',e=>{
   if(e.detail?.studio!=='videos'&&!video.paused)void persistPosition(true);
+  updateMini();
  });
  window.addEventListener('pagehide',()=>{
-  void persistPosition(true);if(currentURL)URL.revokeObjectURL(currentURL);releasePosters();
+  void persistPosition(true);mini.remove();if(currentURL)URL.revokeObjectURL(currentURL);releasePosters();
  });
  void (async()=>{
   try{
