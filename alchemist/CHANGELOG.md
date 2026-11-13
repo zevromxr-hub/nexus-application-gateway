@@ -1,5 +1,25 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.1.0 — Cinematic Continuity & Video Vault (2026-11-13)
+
+### New Studio 31 — Video Vault
+- Added actual binary video storage on the current browser/device using IndexedDB, with separate lightweight video metadata and original Blob store.
+- Added a locally saved library with search, favorites, collections, watch/resume positions, generated poster previews, playback, original file export and storage estimates.
+- Added optional persistent-storage request and clear warnings that clearing website data or browser storage eviction can remove saved copies.
+- Connected the existing Media Theater session queue, topbar and Command Center to Video Vault.
+- Preserved browser-local privacy and excluded large video files from ordinary small workspace sync ZIP exports.
+
+### Smoother GIF output
+- Added 15, 20 and 24 FPS options (120-frame upper bound) to Animation Forge.
+- Added centisecond-accurate distributed per-frame delay durations for better pacing.
+- Added best-effort video frame presentation synchronization after seeking on supported browsers.
+- Added optional MOV/M4V source support with device-dependent codec decoding.
+
+### Mobile studio navigation
+- Added an iPhone-friendly bottom dock, recent-history Back/Forward, searchable studio drawer and saved favorite pins.
+- Added safe-area and touch-friendly layouts with careful left-edge back gesture and desktop navigation unchanged.
+
+
 ## v3.0.2 — GIF Playback & Standards Compliance Patch (2026-11-13)
 
 - Fixed GIF exports that appeared blank, truncated or corrupted in standard image viewers.

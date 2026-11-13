@@ -150,6 +150,14 @@ export function initMediaTheater(app){
   if(current===-1&&playlist.length)await select(0,false);
   showStatus(added+' added · '+playlist.length+' in queue'+(skipped?' · '+skipped+' skipped':''));
  }));
+ $('theaterSaveVault').addEventListener('click',()=>{
+  const files=playlist.filter(item=>item.kind==='video').map(item=>item.file);
+  if(!files.length){showStatus('Add a video to the Media Theater queue first.');return;}
+  document.dispatchEvent(new CustomEvent('proximus-video-vault-import',{detail:{files}}));
+  showStatus('Saving '+files.length+' queue video'+(files.length===1?'':'s')+' to the device-local Video Vault.');
+  app.changeView('videos');
+ });
+ $('theaterOpenVault').addEventListener('click',()=>app.changeView('videos'));
  $('theaterPlay').addEventListener('click',wrap(togglePlay));
  $('theaterNext').addEventListener('click',wrap(()=>next(1)));
  $('theaterPrev').addEventListener('click',wrap(()=>next(-1)));

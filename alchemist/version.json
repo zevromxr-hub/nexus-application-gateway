@@ -1,21 +1,26 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "GIF Playback & Standards Compliance Patch",
-  "studio_count": 30,
-  "previous_version": "3.0.1",
+  "subtitle": "Cinematic Continuity & Video Vault",
+  "studio_count": 31,
+  "previous_version": "3.0.2",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Fixed exported video-to-GIF animations appearing blank or partially corrupted in native browser viewers",
-    "Corrected the GIF89a LZW dictionary code-width transition so generated images decode correctly in standard viewers",
-    "Updated the Safari fallback GIF decoder to read standard-compliant GIF LZW streams, including external GIFs",
-    "Added multi-resolution pixel roundtrip, transparent GIF, and an independently Pillow-verified 480×270 golden GIF fixture",
-    "Preserved automatic GIF dimensions, animated icon packs and the v3.0.1 decoded-frame metadata fix",
-    "Preserved all 30 studios, Token Foundry, Master Visual Identity, Reactor IV and the current website address"
+    "Video Vault (Studio 31): import local MP4, MOV, M4V, WebM or OGV files and retain the actual video bytes in device/browser IndexedDB between visits",
+    "Dedicated local cinema player with native iPhone video controls, saved playback positions, cover snapshots, favorites, collections, searching and sorting",
+    "Video Vault stores lightweight metadata separately from large binary files to avoid loading all videos into iPhone memory",
+    "Media Theater can send its current video playlist into the persistent Video Vault with one action; direct topbar and Command Center launchers",
+    "Video Vault checks site storage limits and offers a best-effort persistent-storage request, with honest warnings about website-data deletion and iOS eviction",
+    "New iPhone safe-area navigation dock with Home, Videos, Back, Forward and searchable Studios drawer",
+    "Mobile studio picker offers pinned favorites, recent studio history, edge-swipe back and safe preservation of current studio state",
+    "Animation Forge adds smooth 15, 20 and 24 FPS GIF exports, up to 120 frames, and accurate frame-delay pacing",
+    "GIF extraction waits briefly for a composited video frame after seeking on supported browsers to reduce duplicated frames",
+    "Animation Forge additionally accepts iPhone MOV and M4V inputs where browser video decoding supports their codecs",
+    "All 30 previously built studios, Reactor IV, Master Visual Identity, Token Foundry, GitHub Pages site and Discord launcher preserved"
   ]
 }

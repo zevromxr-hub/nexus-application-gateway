@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090916">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="description" content="PROXIMUS Asset Alchemist — private browser-based visual, audio, motion, model, and asset transformation workshop">
@@ -33,6 +33,7 @@
    <button class="nav" data-view="motiongraphics"><span>✺</span> Motion Graphics <small>14</small></button>
     <button class="nav" data-view="animation"><span>▣</span> Animation Forge <small>15</small></button>
     <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
+    <button class="nav" data-view="videos"><span>▣</span> Video Vault <small>31</small></button>
     <button class="nav" data-view="reactor"><span>✺</span> Sovereign Reactor <small>26</small></button>
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
@@ -53,15 +54,15 @@
 <div class="shell">
 <header class="topbar">
  <div class="crumb">PROXIMUS <span>/</span> CREATOR NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
- <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
+ <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v3.0.2</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Thirty functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>30</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v3.1.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Thirty-one functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>31</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.0.2 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.1.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>Sovereign Command Center <span class="subtitle">Your workspace · favorite tools · live thumbnails</span></h2></div></div>
@@ -79,7 +80,7 @@
    <h3>02 / QUICK ACTIONS</h3>
    <div class="command-quick-actions">
     <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
-    <button id="commandOpenReactor" class="small-btn">✺ Open Reactor III</button>
+    <button id="commandOpenReactor" class="small-btn">✺ Open Reactor IV</button><button id="commandOpenVideos" class="small-btn">▣ Saved Video Vault</button>
     <button id="commandOpenRelease" class="small-btn">⟳ Release history</button>
     <button id="commandCheckUpdates" class="small-btn">Check app updates</button>
     <button id="commandOpenRecovery" class="small-btn">⚙ Recovery tools</button>
@@ -279,7 +280,7 @@
  <div class="section-heading"><div><div class="eyebrow">15 / ANIMATED ASSET PRODUCTION</div><h2>Animation Forge <span class="subtitle">Video → GIF, animated GIF resizing and real GIF icon packs</span></h2></div></div>
  <div class="workspace image-grid"><div class="panel">
   <h3>Import a video or animated GIF</h3>
-  <label class="upload"><input id="animFile" type="file" accept="video/mp4,video/webm,image/gif,.mp4,.webm,.gif"><b>＋ IMPORT MP4 / WEBM / GIF</b><span>Local files only · maximum source 250 MB · GIF output is always silent</span></label>
+  <label class="upload"><input id="animFile" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-m4v,image/gif,.mp4,.webm,.mov,.m4v,.gif"><b>＋ IMPORT MP4 / WEBM / GIF</b><span>Local files only · maximum source 250 MB · GIF output is always silent</span></label>
   <p id="animStatus" class="hint">Choose a browser-decodable video or GIF to begin. Nothing is uploaded.</p>
   <div class="two"><label>Clip start (seconds)<input id="animStart" type="number" min="0" max="99999" step=".1" value="0"></label><label>Clip end (seconds)<input id="animEnd" type="number" min=".1" max="99999" step=".1" value="4"></label></div>
   <label>Output type<select id="animMode"><option value="gif" selected>Regular animated GIF — no icon dimensions required</option><option value="icons">Animated GIF icon pack — multiple square sizes</option></select></label>
@@ -287,7 +288,8 @@
     <div id="animCustomFields" hidden><div class="two"><label>Width (px)<input id="animCustomWidth" type="number" min="1" max="720" placeholder="Auto"></label><label>Height (px)<input id="animCustomHeight" type="number" min="1" max="720" placeholder="Auto"></label></div><label class="checks"><input id="animKeepRatio" type="checkbox" checked> Preserve original aspect ratio</label></div>
     <p class="hint">Regular GIF uses your video's proportions automatically; exact width or height is optional. Output is not limited to icon sizes.</p>
   </div>
-  <label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8" selected>8 · balanced</option><option value="12">12 · smooth</option></select></label></div>
+  <label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8">8 · balanced</option><option value="12">12 · steady</option><option value="15" selected>15 · smoother</option><option value="20">20 · fluid</option><option value="24">24 · cinematic</option></select>
+ <small class="hint">For 20 FPS choose clips up to 6 seconds; for 24 FPS up to 5 seconds. Longer GIFs can use 15 FPS.</small></label></div>
   <div class="two"><label>Fit mode<select id="animFit"><option value="contain">Contain · full video visible</option><option value="cover">Cover · crop to fill</option></select></label><label>Fill color<input id="animBg" type="color" value="#111020"></label></div>
   <div class="checks"><label><input id="animDither" type="checkbox" checked> Improve gradients with ordered dithering</label><label><input id="animTransparent" type="checkbox"> Preserve transparent areas where available</label></div>
   <div class="actions"><button id="animConvert" class="primary">↓ Create regular GIF</button><button id="animToPack">＋ GIF to Pack</button><button id="animFrame">↓ PNG still frame</button></div>
@@ -303,7 +305,7 @@
   <div class="actions"><button id="animExtract" class="primary">↓ Extract PNG frames ZIP</button><button id="animSaveShare" class="small-btn" hidden>Share / Save generated GIF</button><button id="animOpenGif" class="small-btn" hidden>Open GIF preview for device saving</button></div>
   <p id="animDevice" class="hint" role="status">GIF files use genuine GIF89a animation.</p>
   <p id="animProgress" class="hint" aria-live="polite">Ready · actual GIF89a / LZW conversion in this browser</p>
-  <p class="hint">GIF exports are limited to 8 seconds / 96 frames and 720 px per side (360,000 pixels) for reliable local processing. GIF icons are not animated Windows .ICO files. H.264/MP4 and WebM support depends on the browser decoder; GIF import also works with our local fallback decoder when ImageDecoder is unavailable.</p>
+  <p class="hint">GIF exports are limited to 8 seconds / 120 frames and 720 px per side (360,000 pixels) for reliable local processing. GIF icons are not animated Windows .ICO files. H.264/MP4 and WebM support depends on the browser decoder; GIF import also works with our local fallback decoder when ImageDecoder is unavailable.</p>
  </div><div class="panel">
   <h3>Source preview</h3>
   <video id="animVideo" class="anim-preview" controls muted playsinline hidden></video>
@@ -312,6 +314,50 @@
   <img id="animResult" class="anim-preview" alt="Converted animated GIF result" hidden>
   <p class="hint">Animated playback below will appear after conversion. Save your output ZIP/GIF to keep a permanent copy; original media is never uploaded.</p>
  </div></div>
+</section>
+
+<section class="studio" data-panel="videos" id="videoVaultStudio" hidden>
+ <div class="section-heading"><div><div class="eyebrow">31 / LOCAL PERSONAL ENTERTAINMENT</div><h2>Video Vault <span class="subtitle">Your videos, saved on this device · watch anytime</span></h2></div></div>
+ <div class="video-vault-intro">
+  <div><span class="eyebrow">PROXIMUS / PERSONAL CINEMA ARCHIVE</span><h3>Save it once. Watch it whenever you return.</h3>
+   <p>Import videos from iPhone Files/Photos or your PC. The actual video files are stored privately in this browser’s local library—not merely saved as filenames or temporary links.</p></div>
+  <div class="video-vault-metrics"><div><b id="videoVaultCount">0 saved</b><span>LOCAL LIBRARY</span></div><div><b id="videoVaultFavorites">0</b><span>FAVORITES</span></div><div><b id="videoVaultSavedBytes">0 B</b><span>VIDEO FILE BYTES</span></div></div>
+ </div>
+ <div class="workspace image-grid video-vault-layout">
+  <div class="panel">
+   <h3>01 / ADD VIDEOS TO YOUR LIBRARY</h3>
+   <label class="upload"><input id="videoVaultFiles" type="file" multiple accept="video/mp4,video/webm,video/quicktime,video/x-m4v,video/ogg,.mp4,.m4v,.mov,.webm,.ogv,.ogg"><b>＋ SELECT VIDEOS FROM FILES / PHOTOS</b><span>Local MP4, MOV, M4V, WebM or OGV · stored per device · 500 title limit</span></label>
+   <div class="buttons"><button id="videoVaultImportNow" class="primary">▣ Import new videos</button><button id="videoVaultPersist" class="small-btn">◈ Protect local storage</button><button id="videoVaultRefresh" class="small-btn">↻ Refresh library</button></div>
+   <h3>LOCAL STORAGE STATUS</h3><p id="videoVaultStorage" class="hint" role="status">Checking local browser capacity…</p>
+   <p id="videoVaultStorageHelp" class="hint">Video files stay local to this browser unless website data is removed or browser storage is reclaimed. Keep originals in Files/Photos.</p>
+   <p class="hint">Storage is separate for every device/browser profile. This feature does not upload videos to a server or sync them between iPhone and PC. Limits: 450 MB per video on iPhone/iPad, 750 MB on desktop, subject to available browser storage.</p>
+   <p id="videoVaultStatus" class="hint" role="status">Loading your saved videos…</p>
+   <div class="video-vault-controls">
+    <h3>02 / FIND SOMETHING TO WATCH</h3>
+    <label>Search saved videos or collections<input id="videoVaultSearch" type="search" autocomplete="off" placeholder="Search title, clip, movie, playlist…"></label>
+    <div class="two"><label>Show<select id="videoVaultFilter"><option value="all">Entire library</option><option value="favorites">Favorites ★</option><option value="in-progress">Continue watching</option><option value="unwatched">Not yet watched</option></select></label>
+     <label>Order<select id="videoVaultSort"><option value="recent">Recently watched / added</option><option value="name">Alphabetical</option><option value="favorites">Favorites first</option><option value="oldest">Oldest added</option><option value="size">Largest files</option></select></label></div>
+   </div>
+   <div class="buttons"><button id="videoVaultOpenTheater" class="small-btn">♫ Open Media Theater</button></div>
+  </div>
+  <div class="panel video-vault-cinema">
+   <h3>03 / PRIVATE CINEMA PLAYER</h3>
+   <div class="video-vault-stage"><video id="videoVaultPlayer" playsinline controls preload="metadata" aria-label="Your saved video library player"></video></div>
+   <h3 id="videoVaultPlaying">Select a saved video</h3><p id="videoVaultInfo" class="hint">Open a video below. Playback position is remembered on this device.</p>
+   <div class="video-vault-player-actions">
+    <button id="videoVaultPrevious" class="small-btn">⏮ Previous</button>
+    <button id="videoVaultNext" class="small-btn">Next ⏭</button>
+    <button id="videoVaultCinema" class="small-btn">⛶ Full screen</button>
+    <button id="videoVaultPiP" class="small-btn" disabled>▣ Picture-in-picture</button>
+    <button id="videoVaultDownload" class="small-btn" disabled>↓ Save original file</button>
+   </div>
+   <p class="hint">On iPhone, tap Play in the native video controls if autoplay is blocked. Your saved copies remain available offline after this app has loaded, subject to browser storage retention.</p>
+  </div>
+ </div>
+ <div class="panel video-vault-library"><h3>04 / YOUR VIDEO COLLECTIONS</h3>
+  <p class="hint">Play, resume, favorite, organize, or delete local copies. Video cover snapshots appear after the first time you watch each video.</p>
+  <div id="videoVaultGrid" class="video-vault-grid"></div>
+ </div>
 </section>
 
 <section class="studio" data-panel="theater" hidden>
@@ -328,7 +374,7 @@
    <div class="checks"><label><input type="checkbox" id="theaterShuffle"> Shuffle tracks</label></div>
    <div class="theater-sidehead"><h3>Queue</h3><span id="theaterCurrent" class="hint">0 / 0</span></div>
    <div id="theaterPlaylist" class="theater-queue"></div>
-   <div class="theater-controls"><button id="theaterFavorite" class="small-btn">☆ Favorite track</button><button id="theaterExportFavorites" class="small-btn">↓ Favorites JSON</button><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
+   <div class="theater-controls"><button id="theaterFavorite" class="small-btn">☆ Favorite track</button><button id="theaterExportFavorites" class="small-btn">↓ Favorites JSON</button><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterSaveVault" class="primary">▣ Save queue videos to Vault</button><button id="theaterOpenVault" class="small-btn">Open saved videos</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
    <p id="theaterStatus" class="hint" role="status">Import a file to begin.</p>
   </div>
   <div class="panel">
@@ -573,7 +619,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.0.2</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.1.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -888,5 +934,24 @@
  <p class="hint">Videos loop silently. iPhone/browser autoplay and storage quotas vary; if a video is paused, open Media and tap Play. Your personal backgrounds are stored in this browser's IndexedDB, not uploaded to GitHub. Clearing site data removes them.</p>
  </div></dialog>
 <dialog id="cmdDialog"><div class="cmd-box"><div class="cmd-head"><b>✧ QUICK NAVIGATION</b><button id="cmdClose">×</button></div><input id="cmdSearch" placeholder="Search studios, tools and transforms…" autocomplete="off"><div id="cmdResults"></div><small>Enter to open · Esc to close · Ctrl+K anywhere</small></div></dialog>
+<!-- App-only mobile studio navigation. Original sidebar remains available if JS fails. -->
+<nav id="mobileDock" class="mobile-dock" aria-label="iPhone quick navigation">
+ <button type="button" data-mobile-target="command" aria-label="Open Command Center"><b>⌂</b><small>Home</small></button>
+ <button type="button" data-mobile-target="videos" aria-label="Open saved Video Vault"><b>▣</b><small>Videos</small></button>
+ <button type="button" id="mobileHistoryBack" aria-label="Previous studio" disabled><b>‹</b><small>Back</small></button>
+ <button type="button" id="mobileHistoryNext" aria-label="Next visited studio" disabled><b>›</b><small>Forward</small></button>
+ <button type="button" data-mobile-target="studios" aria-label="Browse all studios"><b>▦</b><small>Studios</small></button>
+</nav>
+<dialog id="mobileStudioDialog" class="mobile-studio-dialog" aria-label="Browse all PROXIMUS studios">
+ <div class="mobile-studio-sheet">
+  <div class="mobile-studio-header"><strong>PROXIMUS · STUDIO NAVIGATOR</strong><button id="mobileStudioClose" class="small-btn" aria-label="Close studio menu">×</button></div>
+  <label>Find a studio<input id="mobileStudioSearch" type="search" autocomplete="off" placeholder="Search tools, video, GIF, identity…"></label>
+  <div class="two"><label>View<select id="mobileStudioMode"><option value="all">All studios</option><option value="favorites">★ Your favorites</option><option value="recent">Recently visited</option></select></label>
+   <div class="mobile-history-actions"><button id="mobileStudioBack" class="small-btn" disabled>‹ Back</button><button id="mobileStudioNext" class="small-btn" disabled>Next ›</button></div></div>
+  <p id="mobileStudioCount" class="hint">Loading studio library…</p>
+  <div id="mobileStudioList" class="mobile-studio-list"></div>
+  <div class="mobile-studio-footer"><button id="mobileStudioTop" class="small-btn">↑ Return to top of page</button></div>
+ </div>
+</dialog>
 <script type="module" src="./app.js"></script>
 </body></html>
