@@ -60,13 +60,15 @@ const list=[
 assert.deepEqual(companionWatchlist(list).map(x=>x.id),['c','a']);
 assert.deepEqual(companionSavedOverview(list),{saved:3,favorites:2,inProgress:2,totalBytes:800});
 for(const id of ['commandVideoCount','commandVideoContinueCount','commandVideoFavoriteCount',
- 'commandContinue','commandLinkName','commandLinkUrl','commandLinkAdd','commandLinks',
+ 'commandContinue','commandPocketNotes','commandNotesExport','commandNotesClear','commandLinkName','commandLinkUrl','commandLinkAdd','commandLinks',
  'commandCategory','commandSurprise','commandWatchFavorites','commandWatchLibrary',
  'videoVaultBack10','videoVaultForward30','videoVaultAutoNext','videoVaultSendTheater']){
  assert.ok(html.includes('id="'+id+'"'),'Companion control must exist: '+id);
 }
 assert.ok(command.includes('proximus-video-vault-watch'));
 assert.ok(command.includes('cleanCompanionLinks'));
+assert.ok(command.includes('proximus-companion-pocket-notes-v1'));
+assert.ok(command.includes('saveOrShare'));
 assert.ok(theater.includes('proximus-video-vault-send-theater'));
 assert.ok(theater.includes("origin:'theater'"));
 assert.ok(video.includes("origin:'videos'"));
