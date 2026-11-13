@@ -22,10 +22,49 @@ export function memoryResult(moves,seconds){
 export function initArcadeChamber(app){
  const scoreNode=$('arcadeBest'),status=$('arcadeStatus');
  let best={comet:0,pulse:0,memory:0},active='comet';
+ const OPTIONS='proximus-alchemist-arcade-profile-v2';
+ const badges=[
+  {id:'comet50',name:'✦ Comet Explorer',test:()=>best.comet>=50},
+  {id:'comet300',name:'♛ Comet Monarch',test:()=>best.comet>=300},
+  {id:'pulse250',name:'⚡ Pulse Initiate',test:()=>best.pulse>=250},
+  {id:'pulse700',name:'✺ Reflex Master',test:()=>best.pulse>=700},
+  {id:'memory400',name:'◇ Memory Architect',test:()=>best.memory>=400}
+ ];
+ let achievements=[];try{
+  const obj=JSON.parse(localStorage.getItem(OPTIONS)||'{}');
+  achievements=Array.isArray(obj.achievements)?obj.achievements:[];
+  $('arcadeTheme').value=['violet','cyan','gold'].includes(obj.theme)?obj.theme:'violet';
+  $('arcadeProfile').value=String(obj.profile||'Player One').slice(0,24);
+ }catch(e){}
+ function saveProfile(){try{
+  localStorage.setItem(OPTIONS,JSON.stringify({theme:$('arcadeTheme').value,profile:$('arcadeProfile').value.slice(0,24),achievements}));
+ }catch(e){}}
+ function renderAchievements(){
+  const holder=$('arcadeAchievements');holder.replaceChildren();
+  for(const badge of badges)if(achievements.includes(badge.id)){
+   const span=document.createElement('span');span.textContent=badge.name;holder.append(span);
+  }
+  if(!achievements.length){const p=document.createElement('small');p.className='hint';p.textContent='Achievements unlock as you play.';holder.append(p);}
+ }
+ function unlockAchievements(){
+  let changed=false;for(const badge of badges)if(!achievements.includes(badge.id)&&badge.test()){
+   achievements.push(badge.id);changed=true;
+  }
+  if(changed){renderAchievements();saveProfile();}
+ }
+ function applyTheme(){
+  const filter={violet:'none',cyan:'hue-rotate(90deg)',gold:'hue-rotate(-65deg)'}[$('arcadeTheme').value]||'none';
+  $('cometCanvas').style.filter=filter;
+  $('pulseTrack').style.filter=filter;
+  saveProfile();
+ }
+ $('arcadeTheme').addEventListener('change',applyTheme);
+ $('arcadeProfile').addEventListener('change',saveProfile);
+ renderAchievements();applyTheme();
  try{const stored=JSON.parse(localStorage.getItem(STORE)||'{}');for(const g of Object.keys(best))best[g]=Math.max(0,Number(stored[g])||0);}catch(e){}
  function paintBest(){scoreNode.textContent='BEST — COMET '+best.comet+' · PULSE '+best.pulse+' · MEMORY '+best.memory;}
  function record(game,value){
-  if(value>best[game]){best[game]=value;try{localStorage.setItem(STORE,JSON.stringify(best));}catch(e){};paintBest();return true;}
+  if(value>best[game]){best[game]=value;try{localStorage.setItem(STORE,JSON.stringify(best));}catch(e){};paintBest();unlockAchievements();return true;}
   return false;
  }
  function say(message){status.textContent=message;}
