@@ -302,8 +302,7 @@ export function initVideoVault(app){
  $('videoVaultDownload').addEventListener('click',wrap(async()=>{
   const item=active();if(!item)throw Error('Choose a saved video first.');
   const blob=await loadStoredVideo(item.id);
-  const file=new File([blob],item.name,{type:item.mime});
-  const outcome=await saveOrShare(file,item.name);
+  const outcome=await saveOrShare(blob,item.name);
   say(outcome==='shared'?'Video sent to your device share sheet.':'Original saved video exported.');
  }));
  video.addEventListener('loadedmetadata',seekResume);
