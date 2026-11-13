@@ -63,7 +63,7 @@ function apply(record){
  let holder=null;
  if(slot==='background'){
   holder=$('ambientMedia');
-  if(holder){holder.replaceChildren(makeDisplay(record,slot));holder.hidden=false;holder.style.opacity=String(record.opacity??.42);}
+  if(holder){holder.replaceChildren(makeDisplay(record,slot));holder.hidden=false;holder.style.opacity=String(record.opacity??.42);document.body.classList.add('has-ambient');}
  }else if(slot==='hero'){
   holder=$('heroOrb');
   if(holder){holder.replaceChildren(makeDisplay(record,slot));holder.classList.add('has-personal-media');}
@@ -79,7 +79,7 @@ function apply(record){
 }
 function remove(slot){
  mediaRecords.delete(slot);revoke(slot);
- if(slot==='background'){$('ambientMedia')?.replaceChildren();if($('ambientMedia'))$('ambientMedia').hidden=true;}
+ if(slot==='background'){$('ambientMedia')?.replaceChildren();if($('ambientMedia'))$('ambientMedia').hidden=true;document.body.classList.remove('has-ambient');}
  if(slot==='hero'){
   const hero=$('heroOrb');if(hero){hero.replaceChildren(document.createTextNode('✧'));hero.classList.remove('has-personal-media');}
  }
@@ -123,8 +123,9 @@ export function initMediaPublisher(){
   }
  }
  $('mediaSave').addEventListener('click',wrap(async()=>{
-  const file=fileInput.files?.[0];if(!file)throw Error('Choose a local GIF, video or image file.');
-  await save(file,file.name);
+  const file=fileInput.files?.[0];
+  if(file)await save(file,file.name);
+  else{const existing=mediaRecords.get(slot());if(!existing)throw Error('Choose a local GIF, MP4, WebM or image file.');await save(existing.blob,existing.name);}
   fileInput.value='';
   notice('Custom media applied · '+slot());
   refresh();
