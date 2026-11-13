@@ -4,6 +4,7 @@
 import {$,bytes,safe,stem,notice,download,blobCanvas,textFile,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
 import {encodeGif} from './gif-codec.js';
+import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
 import {REACTOR_THEMES,spectralBands,initialBeatState,detectBeat,normalizeReactorPreset,reactorDimensions} from './reactor-dsp.js';
 
 const SETTINGS='proximus-reactor-settings-v1',DB='proximus-reactor-media-v1';
@@ -53,7 +54,7 @@ export function initSovereignReactor(app){
  const stage=$('reactorStage');
  let current='off',source=null,stream=null,sourceNode=null,mediaNode=null,selectedAudio=null,audioUrl=null;
  let audioContext=null,analyser=null,frequency=null;
- let mediaURL=null,mediaRecord=null,videoReady=false;
+ let mediaURL=null,mediaRecord=null,videoReady=false,gifBackdrop=null;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
  let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
  let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
@@ -210,7 +211,7 @@ export function initSovereignReactor(app){
   backgroundVideo.pause();backgroundVideo.removeAttribute('src');backgroundVideo.load();backgroundVideo.hidden=true;
   backgroundImage.removeAttribute('src');backgroundImage.hidden=true;
   if(mediaURL){URL.revokeObjectURL(mediaURL);mediaURL=null;}
-  mediaRecord=null;videoReady=false;
+  mediaRecord=null;videoReady=false;gifBackdrop=null;
   $('reactorBgName').textContent='Original Reactor atmosphere';
  }
  function setBackdrop(file,name){
@@ -228,6 +229,19 @@ export function initSovereignReactor(app){
    backgroundVideo.play().catch(()=>{$('reactorBgPlay').hidden=false;});
   }else{
    backgroundImage.hidden=false;backgroundImage.src=mediaURL;
+   if(file.type==='image/gif'||/\.gif$/i.test(mediaRecord.name)){
+    const fileURL=mediaURL;
+    // Frame-by-frame compositor explicitly advances GIFs on the canvas,
+    // even when a browser's drawImage(img) would otherwise use frame zero.
+    void file.arrayBuffer().then(parseGifFrames).then(parsed=>{
+     if(mediaURL!==fileURL)return;
+     const renderer=createGifFrameRenderer(parsed);
+     const first=renderer.frame(0);
+     gifBackdrop={renderer,frames:parsed.frames,index:0,next:performance.now()+parsed.frames[0].delayMs,canvas:first.canvas};
+    }).catch(error=>{
+     if(mediaURL===fileURL)status('GIF image loaded; using browser animation playback: '+(error.message||error));
+    });
+   }
   }
   $('reactorBgName').textContent=mediaRecord.name+' · '+bytes(file.size);
  }
@@ -267,8 +281,20 @@ export function initSovereignReactor(app){
   if(record?.blob)setBackdrop(record.blob,record.name||'Saved backdrop');
  }).catch(()=>{});
 
- function backdrop(ctx,w,h,o){
-  const element=!backgroundVideo.hidden&&videoReady?backgroundVideo:!backgroundImage.hidden&&backgroundImage.complete&&backgroundImage.naturalWidth?backgroundImage:null;
+ function backdrop(ctx,w,h,o,now){
+  if(gifBackdrop){
+   const bg=gifBackdrop;
+   // Use each source frame's native delay and composite with its disposal mode.
+   if(now-bg.next>3500)bg.next=now;
+   let steps=0;
+   while(now>=bg.next&&steps<25){
+    bg.index=(bg.index+1)%bg.frames.length;
+    try{bg.renderer.frame(bg.index);}catch(e){gifBackdrop=null;break;}
+    bg.next+=bg.frames[bg.index].delayMs;
+    steps++;
+   }
+  }
+  const element=gifBackdrop?.canvas||(!backgroundVideo.hidden&&videoReady?backgroundVideo:!backgroundImage.hidden&&backgroundImage.complete&&backgroundImage.naturalWidth?backgroundImage:null);
   if(!element)return false;
   ctx.save();ctx.globalAlpha=o.backgroundOpacity;
   try{fit(ctx,element,w,h,o.backgroundFit);}catch(e){}
@@ -283,7 +309,7 @@ export function initSovereignReactor(app){
   const primary=activeColor.primary,secondary=activeColor.secondary,glow=activeColor.glow;
   ctx.globalAlpha=1;ctx.clearRect(0,0,w,h);
   ctx.fillStyle=theme.dark;ctx.fillRect(0,0,w,h);
-  const custom=backdrop(ctx,w,h,o);
+  const custom=backdrop(ctx,w,h,o,now);
   if(custom){ctx.fillStyle='rgba(3,2,15,.32)';ctx.fillRect(0,0,w,h);}
   const aura=ctx.createRadialGradient(w*.5,h*.5,10,w*.5,h*.5,w*.67);
   aura.addColorStop(0,color(primary,.18+punch*.13));
