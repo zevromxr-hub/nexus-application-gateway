@@ -1,0 +1,22 @@
+name: Proximus Asset Alchemist — Release Validation
+on:
+  push:
+    paths:
+      - 'alchemist/**'
+      - '.github/workflows/proximus-alchemist.yml'
+  pull_request:
+    paths:
+      - 'alchemist/**'
+      - '.github/workflows/proximus-alchemist.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate all client modules, release metadata and UI controls
+        run: node alchemist/tests/validate.mjs
