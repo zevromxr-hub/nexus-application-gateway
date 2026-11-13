@@ -1,0 +1,554 @@
+// PROXIMUS | ASSET ALCHEMIST v2.7 — SOVEREIGN REACTOR
+// Local file, permissioned microphone and desktop browser-tab audio visualizer.
+// No access to protected/iOS system audio. No remote uploads or hidden capture.
+import {$,bytes,safe,stem,notice,download,blobCanvas,textFile,wrap} from './core.js';
+import {saveOrShare} from './portable-kit.js';
+import {encodeGif} from './gif-codec.js';
+import {REACTOR_THEMES,spectralBands,initialBeatState,detectBeat,normalizeReactorPreset,reactorDimensions} from './reactor-dsp.js';
+
+const SETTINGS='proximus-reactor-settings-v1',DB='proximus-reactor-media-v1';
+const MAX_BACKDROP=55000000,MAX_AUDIO=250000000;
+const supportedBackdrop=file=>/^(image\/gif|image\/png|image\/jpeg|image\/webp|video\/mp4|video\/webm)$/.test(file?.type||'')||
+ /\.(?:gif|png|jpe?g|webp|mp4|webm)$/i.test(file?.name||'');
+const isBackdropVideo=file=>file.type.startsWith('video/')||/\.(?:mp4|webm)$/i.test(file.name||'');
+function openMediaStore(){
+ return new Promise((resolve,reject)=>{
+  if(!indexedDB)return reject(Error('Media storage is unavailable in this browser.'));
+  const req=indexedDB.open(DB,1);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('media'))req.result.createObjectStore('media');};
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error||Error('Could not open private media storage.'));
+ });
+}
+async function mediaTransaction(type,callback){
+ const db=await openMediaStore();
+ try{return await new Promise((resolve,reject)=>{
+  const tx=db.transaction('media',type),request=callback(tx.objectStore('media'));
+  let out;
+  if(request)request.onsuccess=()=>out=request.result;
+  tx.oncomplete=()=>resolve(out);
+  tx.onerror=tx.onabort=()=>reject(tx.error||Error('Browser media storage could not be updated.'));
+ });}finally{db.close();}
+}
+const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+const fit=(ctx,source,w,h,mode)=>{
+ const iw=source.videoWidth||source.naturalWidth||source.width,ih=source.videoHeight||source.naturalHeight||source.height;
+ if(!iw||!ih)return;
+ const scale=mode==='contain'?Math.min(w/iw,h/ih):Math.max(w/iw,h/ih);
+ ctx.drawImage(source,(w-iw*scale)/2,(h-ih*scale)/2,iw*scale,ih*scale);
+};
+const color=(hex,a)=>{
+ if(a>=1)return hex;
+ const value=hex.replace('#','');
+ return 'rgba('+parseInt(value.slice(0,2),16)+','+parseInt(value.slice(2,4),16)+','+parseInt(value.slice(4,6),16)+','+clamp(a,0,1)+')';
+};
+
+export function initSovereignReactor(app){
+ const canvas=$('reactorCanvas');if(!canvas)return;
+ const ctx=canvas.getContext('2d',{alpha:false,willReadFrequently:false});
+ const audio=$('reactorAudio'),fileInput=$('reactorInputFile'),backgroundInput=$('reactorBgFile');
+ const backgroundVideo=$('reactorBgVideo'),backgroundImage=$('reactorBgImage');
+ const sourceStatus=$('reactorSourceStatus'),activity=$('reactorActivity'),result=$('reactorExportStatus');
+ const stage=$('reactorStage');
+ let current='off',source=null,stream=null,sourceNode=null,mediaNode=null,selectedAudio=null,audioUrl=null;
+ let audioContext=null,analyser=null,frequency=null;
+ let mediaURL=null,mediaRecord=null,videoReady=false;
+ let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
+ let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordStop=null,recordBlob=null,recordName='';
+ let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
+ let frameCount=0,frequencySmooth=0,activeSeconds=0,streamCaptureActive=false;
+ const inputText={off:'No source connected',file:'Local music file',mic:'Microphone (permission granted)',tab:'Shared desktop tab / screen audio'};
+ const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='reactor';
+
+ function status(s,error=false){sourceStatus.textContent=s;sourceStatus.dataset.error=error?'true':'false';}
+ function exportStatus(s){result.textContent=s;}
+ function options(){
+  return normalizeReactorPreset({
+   theme:$('reactorTheme').value,mode:$('reactorMode').value,quality:$('reactorQuality').value,
+   sensitivity:Number($('reactorSensitivity').value),impact:Number($('reactorImpact').value),
+   layers:Number($('reactorLayers').value),backgroundOpacity:Number($('reactorBgOpacity').value),
+   backgroundFit:$('reactorBgFit').value,autoShift:$('reactorAutoShift').checked,
+   snow:$('reactorSnow').checked,signature:$('reactorSignature').value,
+   showSignature:$('reactorShowSignature').checked
+  });
+ }
+ function applyPreset(p){
+  const v=normalizeReactorPreset(p);
+  for(const [id,value] of [
+   ['reactorTheme',v.theme],['reactorMode',v.mode],['reactorQuality',v.quality],
+   ['reactorSensitivity',v.sensitivity],['reactorImpact',v.impact],
+   ['reactorLayers',v.layers],['reactorBgOpacity',v.backgroundOpacity],
+   ['reactorBgFit',v.backgroundFit],['reactorSignature',v.signature]
+  ])$(id).value=String(value);
+  $('reactorAutoShift').checked=v.autoShift;$('reactorSnow').checked=v.snow;
+  $('reactorShowSignature').checked=v.showSignature;
+  resize();drawStage(performance.now());updateReadouts();
+ }
+ function saveSettings(){
+  try{localStorage.setItem(SETTINGS,JSON.stringify({preset:options(),saved:presets}));}catch(e){}
+ }
+ function updateReadouts(){
+  const o=options();
+  $('reactorSensitivityOut').textContent=o.sensitivity.toFixed(2)+'×';
+  $('reactorImpactOut').textContent=o.impact.toFixed(2)+'×';
+  $('reactorLayersOut').textContent=Math.round(o.layers*100)+'%';
+  $('reactorBgOpacityOut').textContent=Math.round(o.backgroundOpacity*100)+'%';
+ }
+ function resize(){
+  const {width,height}=reactorDimensions(options().quality);
+  if(canvas.width!==width||canvas.height!==height){
+   canvas.width=width;canvas.height=height;
+  }
+  $('reactorResolution').textContent=width+' × '+height;
+ }
+ for(const id of ['reactorTheme','reactorMode','reactorQuality','reactorSensitivity','reactorImpact','reactorLayers',
+  'reactorBgOpacity','reactorBgFit','reactorAutoShift','reactorSnow','reactorSignature','reactorShowSignature']){
+  $(id).addEventListener('input',()=>{
+   if(id==='reactorQuality')resize();
+   updateReadouts();saveSettings();
+  });
+ }
+ try{
+  const found=JSON.parse(localStorage.getItem(SETTINGS)||'{}');
+  if(found.saved&&typeof found.saved==='object'&&!Array.isArray(found.saved))presets=found.saved;
+  if(found.preset)applyPreset(found.preset);
+ }catch(e){}
+ resize();updateReadouts();
+
+ function releaseInput(){
+  audio.pause();
+  audio.removeAttribute('src');audio.load();
+  if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
+  if(sourceNode)try{sourceNode.disconnect();}catch(e){}
+  sourceNode=null;source=null;
+  if(stream){for(const track of stream.getTracks())track.stop();stream=null;}
+  current='off';streamCaptureActive=false;state=initialBeatState();bands={sub:0,bass:0,mid:0,treble:0,energy:0};
+  $('reactorSource').textContent='Not connected';$('reactorStop').disabled=true;
+ }
+ function makeAudioContext(){
+  if(!audioContext){
+   const AudioCtx=window.AudioContext||window.webkitAudioContext;
+   if(!AudioCtx)throw Error('This browser has no Web Audio engine.');
+   audioContext=new AudioCtx();
+   analyser=audioContext.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.70;
+   analyser.minDecibels=-92;analyser.maxDecibels=-15;
+   frequency=new Uint8Array(analyser.frequencyBinCount);
+  }
+  return audioContext;
+ }
+ function startFile(){
+  if(!selectedAudio)throw Error('Choose a local song, audio file or MP4 with audio first.');
+  if(selectedAudio.size>MAX_AUDIO)throw Error('Audio file exceeds the 250 MB local playback limit.');
+  releaseInput();const c=makeAudioContext();
+  if(!mediaNode)mediaNode=c.createMediaElementSource(audio);
+  sourceNode=mediaNode;sourceNode.connect(analyser);sourceNode.connect(c.destination);
+  audioUrl=URL.createObjectURL(selectedAudio);audio.src=audioUrl;audio.load();
+  current='file';$('reactorSource').textContent='Local file';$('reactorStop').disabled=false;
+  // Both resume() and play() are initiated on the actual user interaction.
+  const start=c.resume(),play=audio.play();
+  Promise.all([start,play]).then(()=>{
+   status('Live music analysis · '+safe(selectedAudio.name));
+  }).catch(err=>{status('Tap Play in the local audio player: '+(err.message||err),true);});
+ }
+ async function startMic(){
+  if(!navigator.mediaDevices?.getUserMedia)throw Error('Microphone permission is unavailable in this browser.');
+  // Request capture within the click gesture. Never request it on page load.
+  const promise=navigator.mediaDevices.getUserMedia({video:false,audio:{
+   echoCancellation:false,noiseSuppression:false,autoGainControl:false}});
+  const c=makeAudioContext(),resume=c.resume();
+  let captured;
+  try{captured=await promise;await resume;}
+  catch(e){if(captured)for(const t of captured.getTracks())t.stop();throw e;}
+  releaseInput();stream=captured;sourceNode=c.createMediaStreamSource(captured);
+  sourceNode.connect(analyser);current='mic';$('reactorSource').textContent='Microphone';
+  $('reactorStop').disabled=false;status('Microphone listening to ambient sound · reacts to audible beats');
+  captured.getAudioTracks()[0]?.addEventListener('ended',()=>{
+   if(stream===captured){releaseInput();status('Microphone session ended.');}
+  });
+ }
+ async function startTab(){
+  if(!navigator.mediaDevices?.getDisplayMedia)throw Error('Desktop tab-audio capture is unavailable here. Use Local File or Microphone instead.');
+  // getDisplayMedia MUST be called directly as part of the click gesture.
+  const request=navigator.mediaDevices.getDisplayMedia({video:true,audio:true,systemAudio:'include'});
+  const c=makeAudioContext(),resume=c.resume();
+  let captured;
+  try{captured=await request;await resume;}
+  catch(e){if(captured)for(const t of captured.getTracks())t.stop();throw e;}
+  if(!captured.getAudioTracks().length){
+   for(const t of captured.getTracks())t.stop();
+   throw Error('The selected tab or screen did not share an audio track. On desktop, choose a music tab and enable Share tab audio.');
+  }
+  releaseInput();stream=captured;sourceNode=c.createMediaStreamSource(new MediaStream(captured.getAudioTracks()));
+  sourceNode.connect(analyser);current='tab';streamCaptureActive=true;
+  $('reactorSource').textContent='Desktop shared audio';$('reactorStop').disabled=false;
+  status('Listening to user-shared desktop audio · source '+captured.getAudioTracks().length+' track');
+  for(const t of captured.getTracks())t.addEventListener('ended',()=>{
+   if(stream===captured){releaseInput();status('Tab or screen sharing stopped.');}
+  },{once:true});
+ }
+ fileInput.addEventListener('change',e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  if(!file.type.startsWith('audio/')&&!file.type.startsWith('video/')&&!/\.(?:mp3|wav|m4a|aac|ogg|flac|opus|mp4|webm)$/i.test(file.name)){
+   status('Choose a supported local music or video file with audio.',true);return;
+  }
+  selectedAudio=file;
+  status('Ready: '+safe(file.name)+' · '+bytes(file.size)+'. Tap Play local audio.');
+ });
+ $('reactorFilePlay').addEventListener('click',wrap(startFile));
+ $('reactorMic').addEventListener('click',wrap(startMic));
+ $('reactorTab').addEventListener('click',wrap(startTab));
+ $('reactorStop').addEventListener('click',()=>{releaseInput();status('Audio capture stopped.');});
+ audio.addEventListener('ended',()=>{
+  if(current==='file'){releaseInput();status('Local audio finished.');}
+ });
+ audio.addEventListener('error',()=>{if(current==='file')status('Audio decoding failed. Try another browser-supported format.',true);});
+ $('reactorVolume').addEventListener('input',()=>{audio.volume=Number($('reactorVolume').value);});
+ audio.volume=Number($('reactorVolume').value);
+
+ function clearBackdrop(){
+  backgroundVideo.pause();backgroundVideo.removeAttribute('src');backgroundVideo.load();backgroundVideo.hidden=true;
+  backgroundImage.removeAttribute('src');backgroundImage.hidden=true;
+  if(mediaURL){URL.revokeObjectURL(mediaURL);mediaURL=null;}
+  mediaRecord=null;videoReady=false;
+  $('reactorBgName').textContent='Original Reactor atmosphere';
+ }
+ function setBackdrop(file,name){
+  if(!(file instanceof Blob))throw Error('Choose an image, GIF, MP4 or WebM.');
+  if(file.size>MAX_BACKDROP)throw Error('Use a background file under 55 MB.');
+  clearBackdrop();
+  mediaRecord={blob:file,name:safe(name||'Backdrop'),mime:file.type};
+  mediaURL=URL.createObjectURL(file);
+  if(isBackdropVideo({name:mediaRecord.name,type:file.type})){
+   backgroundVideo.hidden=false;backgroundVideo.muted=true;backgroundVideo.loop=true;backgroundVideo.autoplay=true;
+   backgroundVideo.playsInline=true;backgroundVideo.preload='auto';
+   backgroundVideo.src=mediaURL;backgroundVideo.addEventListener('loadeddata',()=>{
+    videoReady=true;backgroundVideo.play().catch(()=>{$('reactorBgPlay').hidden=false;});
+   },{once:true});
+   backgroundVideo.play().catch(()=>{$('reactorBgPlay').hidden=false;});
+  }else{
+   backgroundImage.hidden=false;backgroundImage.src=mediaURL;
+  }
+  $('reactorBgName').textContent=mediaRecord.name+' · '+bytes(file.size);
+ }
+ backgroundInput.addEventListener('change',wrap(async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  if(!supportedBackdrop(file))throw Error('Choose GIF, MP4, WebM, PNG, JPEG or WebP artwork.');
+  setBackdrop(file,file.name);
+  try{
+   await mediaTransaction('readwrite',store=>store.put({blob:file,name:file.name},'background'));
+   status('Custom Reactor backdrop saved locally.');
+  }catch(err){status('Background applied for this session; storage unavailable: '+err.message,true);}
+  e.target.value='';
+ }));
+ $('reactorBgRemove').addEventListener('click',wrap(async()=>{
+  clearBackdrop();$('reactorBgPlay').hidden=true;
+  try{await mediaTransaction('readwrite',store=>store.delete('background'));}
+  catch(e){status('Backdrop cleared for this session.');}
+ }));
+ $('reactorBgPlay').addEventListener('click',()=>{
+  backgroundVideo.play().then(()=>{$('reactorBgPlay').hidden=true;}).catch(()=>{status('Tap the video to play your custom backdrop.');});
+ });
+ document.addEventListener('proximus-reactor-background',wrap(async e=>{
+  const {blob,name}=e.detail||{};
+  if(!blob||!supportedBackdrop({name:name||'',type:blob.type}))throw Error('Reactor backdrop must be an image, GIF, MP4 or WebM.');
+  setBackdrop(blob,name);
+  await mediaTransaction('readwrite',store=>store.put({blob,name},'background'));
+  app.changeView('reactor');
+ }));
+ document.addEventListener('proximus-reactor-import',e=>{
+  const file=e.detail?.file;
+  if(!file)return;
+  selectedAudio=file;
+  status('Ready from Media Theater: '+safe(file.name)+'. Tap Play local audio.');
+  app.changeView('reactor');
+ });
+ void mediaTransaction('readonly',store=>store.get('background')).then(record=>{
+  if(record?.blob)setBackdrop(record.blob,record.name||'Saved backdrop');
+ }).catch(()=>{});
+
+ function backdrop(ctx,w,h,o){
+  const element=!backgroundVideo.hidden&&videoReady?backgroundVideo:!backgroundImage.hidden&&backgroundImage.complete&&backgroundImage.naturalWidth?backgroundImage:null;
+  if(!element)return false;
+  ctx.save();ctx.globalAlpha=o.backgroundOpacity;
+  try{fit(ctx,element,w,h,o.backgroundFit);}catch(e){}
+  ctx.restore();return true;
+ }
+ function drawStage(now){
+  const w=canvas.width,h=canvas.height,o=options();
+  const theme=REACTOR_THEMES[o.theme],hasAudio=current!=='off'&&analyser;
+  const b=hasAudio?bands:{sub:0,bass:0,mid:0,treble:0,energy:0};
+  const punch=(b.bass*.75+b.sub*.25)*o.impact;
+  const activeColor=o.autoShift?Object.values(REACTOR_THEMES)[shift%5]:theme;
+  const primary=activeColor.primary,secondary=activeColor.secondary,glow=activeColor.glow;
+  ctx.globalAlpha=1;ctx.clearRect(0,0,w,h);
+  ctx.fillStyle=theme.dark;ctx.fillRect(0,0,w,h);
+  const custom=backdrop(ctx,w,h,o);
+  if(custom){ctx.fillStyle='rgba(3,2,15,.32)';ctx.fillRect(0,0,w,h);}
+  const aura=ctx.createRadialGradient(w*.5,h*.5,10,w*.5,h*.5,w*.67);
+  aura.addColorStop(0,color(primary,.18+punch*.13));
+  aura.addColorStop(.46,color(secondary,.11+b.energy*.12));
+  aura.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=aura;ctx.fillRect(0,0,w,h);
+  // Render bounds are normalized to stage size; no per-frame image allocations.
+  const cx=w*.5,cy=h*.5,scale=w/960,t=now/1000;
+  if(o.mode==='spectrum'||o.mode==='sovereign'||o.mode==='starlight'){
+   const bars=o.quality==='eco'?42:70;
+   const gap=Math.max(2,Math.round(w*.003)),bw=(w*.88-(bars-1)*gap)/bars;
+   const start=w*.06;
+   for(let i=0;i<bars;i++){
+    const index=Math.min(frequency?.length-1||0,Math.floor(i/(bars-1)*(frequency?.length-1||0)*.44));
+    const value=hasAudio&&frequency?frequency[index]/255:0;
+    const height=Math.max(2,Math.pow(value,1.2)*h*.46*o.impact);
+    const x=start+i*(bw+gap);
+    const gradient=ctx.createLinearGradient(0,h*.94-height,0,h*.94);
+    gradient.addColorStop(0,color(glow,.95));gradient.addColorStop(1,color(secondary,.9));
+    ctx.fillStyle=gradient;ctx.fillRect(x,h*.94-height,bw,height);
+   }
+  }
+  if(o.mode==='wave'){
+   ctx.beginPath();ctx.lineWidth=3*scale;ctx.strokeStyle=glow;ctx.shadowColor=primary;ctx.shadowBlur=15*scale;
+   for(let x=0;x<=w;x+=Math.max(2,3*scale)){
+    const bin=Math.floor((x/w)*(frequency?.length||0)*.5);
+    const amplitude=hasAudio&&frequency?frequency[bin]/255:0;
+    const y=cy+Math.sin(x*.017-t*3)*(8+amplitude*h*.32)+Math.cos(x*.003+t*2)*amplitude*h*.2;
+    x?ctx.lineTo(x,y):ctx.moveTo(x,y);
+   }
+   ctx.stroke();ctx.shadowBlur=0;
+  }
+  if(['rings','sovereign','portal'].includes(o.mode)){
+   for(let ring=0;ring<(o.quality==='eco'?5:9);ring++){
+    const offset=ring*19*scale;
+    const radius=(68+offset+Math.sin(t*1.1+ring*.5)*5+punch*38)*scale;
+    ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);
+    ctx.lineWidth=(1.3+punch*2.5)*scale;
+    ctx.strokeStyle=color(ring%2?secondary:primary,.42+Math.min(.4,punch*.3));
+    ctx.shadowColor=primary;ctx.shadowBlur=(8+punch*14)*scale;ctx.stroke();
+   }
+   ctx.shadowBlur=0;
+  }
+  if(['portal','sovereign','starlight'].includes(o.mode)){
+   const count=o.quality==='eco'?45:105;
+   for(let i=0;i<count;i++){
+    const phase=i*2.399963+Math.sin(i*2.1)*.22,
+      radius=(.13+((i*.618034+t*(.015+b.energy*.045))%1)*.72)*Math.min(w,h),
+      angle=phase+t*(.075+b.bass*.25);
+    const x=cx+Math.cos(angle)*radius*1.2,y=cy+Math.sin(angle)*radius*.78;
+    const r=(.6+i%3*.3+b.energy*1.2)*scale;
+    ctx.fillStyle=color(i%3===0?glow:primary,o.layers*(.3+((i*17)%7)/10));
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+   }
+  }
+  if(o.mode==='sovereign'||o.mode==='portal'){
+   ctx.save();ctx.translate(cx,cy);ctx.rotate(t*.12);
+   for(let wing=-1;wing<=1;wing+=2){
+    for(let i=0;i<9;i++){
+     const rx=wing*(35+i*16)*scale,ry=(25+i*6+punch*38)*scale;
+     ctx.beginPath();ctx.moveTo(0,0);ctx.quadraticCurveTo(rx,ry,rx*1.42,(i-4)*12*scale);
+     ctx.strokeStyle=color(i%2?glow:primary,(.1+.025*i)*o.layers);
+     ctx.lineWidth=(2.8+punch*2)*scale;ctx.stroke();
+    }
+   }
+   ctx.restore();
+  }
+  if(o.snow){
+   const count=o.quality==='eco'?24:75;
+   for(let i=0;i<count;i++){
+    const x=((i*97.1+Math.sin(t*.6+i)*36)*scale+w)%w,
+      y=((i*171.2+(t*(9+i%7*4)*scale))%h+h)%h;
+    ctx.fillStyle=color(glow,.18+(i%5)*.09);
+    ctx.beginPath();ctx.arc(x,y,(i%3+1)*.75*scale,0,Math.PI*2);ctx.fill();
+   }
+  }
+  // Bass flash only when the detector has a real input and a confirmed peak.
+  const flash=current!=='off'?Math.exp(-(now-lastPulse)/180)*.45:0;
+  if(flash>0.001&&now>=lastPulse){
+   ctx.fillStyle=color(glow,flash*.26);ctx.fillRect(0,0,w,h);
+  }
+  const font=Math.max(14,18*scale);
+  ctx.fillStyle=color(glow,.9);ctx.textAlign='left';ctx.font='800 '+font+'px system-ui';
+  ctx.fillText('PROXIMUS  |  SOVEREIGN REACTOR',24*scale,36*scale);
+  ctx.fillStyle=color(primary,.8);ctx.font='700 '+Math.max(11,13*scale)+'px system-ui';
+  ctx.fillText(current==='off'?'VISUAL AMBIENCE · SOURCE NOT CONNECTED':inputText[current].toUpperCase(),24*scale,57*scale);
+  if(o.showSignature){
+   ctx.textAlign='right';ctx.font='900 '+Math.max(15,23*scale)+'px system-ui';
+   ctx.fillStyle=color(glow,.78);ctx.fillText(o.signature||'PROXIMUS',w-26*scale,h-25*scale);
+  }
+  ctx.textAlign='left';ctx.fillStyle=color(primary,.68);
+  ctx.fillRect(25*scale,h-26*scale,Math.max(2,(w-50*scale)*clamp(b.energy*o.impact,0,1)),3*scale);
+ }
+ function stats(){
+  $('reactorBass').value=clamp(bands.bass*options().impact,0,1)*100;
+  $('reactorMid').value=clamp(bands.mid*options().impact,0,1)*100;
+  $('reactorHigh').value=clamp(bands.treble*options().impact,0,1)*100;
+  $('reactorBassText').textContent=Math.round(bands.bass*100)+'%';
+  $('reactorMidText').textContent=Math.round(bands.mid*100)+'%';
+  $('reactorHighText').textContent=Math.round(bands.treble*100)+'%';
+  $('reactorBeats').textContent=String(state.kicks||0);
+ }
+ function tick(now){
+  raf=requestAnimationFrame(tick);
+  if(document.hidden)return;
+  const o=options(),fps=reactorDimensions(o.quality).fps;
+  if(!active()&&!recording&&!loopCapturing)return;
+  if(now-previous<1000/fps)return;
+  previous=now;frameCount++;
+  if(current!=='off'&&analyser&&audioContext?.state==='running'){
+   analyser.getByteFrequencyData(frequency);
+   bands=spectralBands(frequency,audioContext.sampleRate,analyser.fftSize);
+   state=detectBeat(bands,now,state,o.sensitivity);
+   if(state.hit){lastPulse=now;if(o.autoShift)shift++;}
+   frequencySmooth=frequencySmooth*.85+bands.energy*.15;
+  }else bands={sub:0,bass:0,mid:0,treble:0,energy:0};
+  drawStage(now);
+  if(frameCount%4===0)stats();
+ }
+ let loopCapturing=false;
+ raf=requestAnimationFrame(tick);
+ $('reactorFullscreen').addEventListener('click',wrap(async()=>{
+  if(stage.requestFullscreen)await stage.requestFullscreen();
+  else if(stage.webkitEnterFullscreen)stage.webkitEnterFullscreen();
+  else status('This device offers the full stage within the page.');
+ }));
+ async function exportFrame(kind){
+  drawStage(performance.now());
+  const blob=await blobCanvas(canvas,'image/png'),name='PROXIMUS-REACTOR-'+stem(options().mode)+'.png';
+  if(kind==='pack')app.addAsset(name,blob,'Sovereign Reactor');
+  else if(kind==='share')await saveOrShare(blob,name);
+  else download(blob,name);
+  exportStatus('Captured '+name+' · '+bytes(blob.size));
+ }
+ $('reactorPNG').addEventListener('click',wrap(()=>exportFrame('download')));
+ $('reactorPNGPack').addEventListener('click',wrap(()=>exportFrame('pack')));
+ $('reactorPNGShare').addEventListener('click',wrap(()=>exportFrame('share')));
+
+ // A real 3-second silent GIF, including the current animated backdrop where
+ // the browser decodes it to a drawable frame. Always keep it within mobile memory.
+ $('reactorMakeGif').addEventListener('click',wrap(async()=>{
+  if(loopCapturing||recording)throw Error('Finish the current recording first.');
+  loopCapturing=true;$('reactorMakeGif').disabled=true;
+  const frames=[],clip=document.createElement('canvas');clip.width=384;clip.height=216;
+  const g=clip.getContext('2d',{willReadFrequently:true});
+  const duration=3000,count=24;
+  try{
+   for(let i=0;i<count;i++){
+    if(document.hidden)throw Error('Keep Reactor Studio visible while exporting the animated GIF.');
+    drawStage(performance.now());
+    g.clearRect(0,0,clip.width,clip.height);g.drawImage(canvas,0,0,clip.width,clip.height);
+    frames.push({...g.getImageData(0,0,clip.width,clip.height),delayMs:125});
+    exportStatus('Capturing GIF frame '+(i+1)+' / '+count);
+    await pause(duration/count);
+   }
+   const blob=encodeGif({width:384,height:216,frames,dither:true});
+   loopBlob=blob;loopName='PROXIMUS-REACTOR-'+options().mode+'-LIVE.gif';
+   $('reactorSaveGif').hidden=false;$('reactorGifPack').hidden=false;
+   download(blob,loopName);
+   exportStatus('Animated GIF ready · 384×216 · 24 frames · '+bytes(blob.size));
+  }finally{loopCapturing=false;$('reactorMakeGif').disabled=false;}
+ }));
+ $('reactorSaveGif').addEventListener('click',wrap(async()=>{
+  if(!loopBlob)throw Error('Create an animated reactor GIF first.');
+  const result=await saveOrShare(loopBlob,loopName);
+  exportStatus(result==='shared'?'GIF sent to your device share sheet':result==='cancelled'?'Share cancelled':'GIF downloaded');
+ }));
+ $('reactorGifPack').addEventListener('click',()=>{
+  if(!loopBlob)return;app.addAsset(loopName,loopBlob,'Sovereign Reactor');
+  exportStatus('Animated reactor GIF added to Asset Packager');
+ });
+ $('reactorUseBg').addEventListener('click',()=>{
+  if(!loopBlob)throw Error('Create the Reactor GIF first.');
+  document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:loopBlob,name:loopName,target:'background'}}));
+  exportStatus('Reactor GIF added to application background');
+ });
+ // Silent stage video recording, feature detected. No copyrighted streaming
+ // music is recorded or redistributed by default.
+ const candidates=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm','video/mp4'];
+ const mediaType=typeof MediaRecorder!=='undefined'?candidates.find(x=>MediaRecorder.isTypeSupported(x)):null;
+ const videoCaptureAvailable=!!canvas.captureStream&&!!mediaType;
+ $('reactorRecord').disabled=!videoCaptureAvailable;
+ if(!videoCaptureAvailable)$('reactorRecordingStatus').textContent='Use animated GIF or PNG exports on this browser.';
+ async function beginRecord(){
+  if(recording||loopCapturing)throw Error('Finish the current visual export first.');
+  if(!videoCaptureAvailable)throw Error('Canvas video recording is not available; use GIF or PNG exports.');
+  recording=true;recordChunks=[];
+  const duration=Math.max(3,Math.min(15,Number($('reactorRecordSeconds').value)||8));
+  const stageStream=canvas.captureStream(30);
+  try{
+   recorder=new MediaRecorder(stageStream,{mimeType:mediaType,videoBitsPerSecond:3500000});
+   const finished=new Promise((resolve,reject)=>{
+    recorder.addEventListener('dataavailable',e=>{if(e.data.size)recordChunks.push(e.data);});
+    recorder.addEventListener('error',e=>reject(e.error||Error('Media recording failed.')),{once:true});
+    recorder.addEventListener('stop',resolve,{once:true});
+   });
+   recorder.start(250);
+   $('reactorRecord').disabled=true;$('reactorStopRecord').disabled=false;
+   $('reactorRecordingStatus').textContent='Recording silent visualizer video · '+duration+' seconds';
+   recordTimer=setTimeout(()=>{if(recorder?.state==='recording')recorder.stop();},duration*1000);
+   await finished;
+   if(!recordChunks.length)throw Error('No video frames were recorded.');
+   const blob=new Blob(recordChunks,{type:recorder.mimeType||mediaType});
+   recordBlob=blob;const ext=blob.type.includes('mp4')?'mp4':'webm';
+   recordName='PROXIMUS-REACTOR-'+options().mode+'-'+duration+'s.'+ext;
+   $('reactorSaveRecord').hidden=false;$('reactorRecordPack').hidden=false;
+   $('reactorRecordingStatus').textContent='Silent visualizer recording ready · '+bytes(blob.size);
+  }finally{
+   clearTimeout(recordTimer);
+   for(const tr of stageStream.getTracks())tr.stop();
+   recorder=null;recording=false;$('reactorRecord').disabled=false;$('reactorStopRecord').disabled=true;
+  }
+ }
+ $('reactorRecord').addEventListener('click',wrap(beginRecord));
+ $('reactorStopRecord').addEventListener('click',()=>{if(recorder?.state==='recording')recorder.stop();});
+ $('reactorSaveRecord').addEventListener('click',wrap(async()=>{
+  if(!recordBlob)throw Error('Record a stage video first.');
+  await saveOrShare(recordBlob,recordName);
+ }));
+ $('reactorRecordPack').addEventListener('click',()=>{if(recordBlob)app.addAsset(recordName,recordBlob,'Sovereign Reactor');});
+
+ function presetOptions(){
+  const list=$('reactorPresetList');list.replaceChildren();
+  for(const key of Object.keys(presets).sort()){
+   const row=document.createElement('div');row.className='reactor-preset-row';
+   const use=document.createElement('button');use.className='small-btn';use.textContent=key;
+   use.addEventListener('click',()=>{applyPreset(presets[key]);saveSettings();status('Loaded preset '+key);});
+   const del=document.createElement('button');del.className='small-btn';del.textContent='×';del.title='Delete preset';
+   del.addEventListener('click',()=>{delete presets[key];saveSettings();presetOptions();});
+   row.append(use,del);list.append(row);
+  }
+  if(!list.childElementCount)list.textContent='Save a Reactor look to recall it later.';
+ }
+ $('reactorPresetSave').addEventListener('click',wrap(()=>{
+  const name=safe($('reactorPresetName').value.trim()).slice(0,55);
+  if(!name||name==='asset')throw Error('Name your Reactor preset.');
+  presets[name]=options();if(Object.keys(presets).length>24)throw Error('Keep no more than 24 saved presets.');
+  saveSettings();presetOptions();status('Saved appearance preset '+name);
+ }));
+ $('reactorPresetExport').addEventListener('click',()=>{
+  download(textFile({schema:'proximus.reactor.presets/1',presets,exported:new Date().toISOString()}),'PROXIMUS-REACTOR-PRESETS.json');
+ });
+ $('reactorPresetImport').addEventListener('change',wrap(async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  if(file.size>150000)throw Error('Reactor preset backup is too large.');
+  const input=JSON.parse(await file.text());
+  if(input.schema!=='proximus.reactor.presets/1'||typeof input.presets!=='object'||Array.isArray(input.presets))throw Error('This is not a Reactor preset backup.');
+  for(const [key,val] of Object.entries(input.presets).slice(0,24))presets[safe(key).slice(0,55)]=normalizeReactorPreset(val);
+  saveSettings();presetOptions();e.target.value='';status('Reactor presets imported.');
+ }));
+ $('reactorPresetPack').addEventListener('click',()=>{
+  app.addAsset('PROXIMUS-REACTOR-PRESETS.json',textFile({schema:'proximus.reactor.presets/1',presets}), 'Sovereign Reactor');
+ });
+ presetOptions();
+ const mobile=/iPad|iPhone|iPod/i.test(navigator.userAgent);
+ $('reactorTab').disabled=!navigator.mediaDevices?.getDisplayMedia;
+ $('reactorDevice').textContent=mobile?
+  'iPhone: Use a local music file or tap Microphone to react to nearby speaker audio. Other apps’ system audio cannot be read directly by this website.':
+  'PC: Use local audio, Microphone or Share tab audio in supported desktop browsers. Choose a tab with audio sharing enabled.';
+ status(mobile?'Ready on iPhone · import music or enable the microphone':'Ready on PC · choose an input source');
+ exportStatus('Ready for PNG, animated GIF and supported silent video exports.');
+ drawStage(performance.now());
+ window.addEventListener('pagehide',()=>{
+  releaseInput();clearBackdrop();
+  cancelAnimationFrame(raf);if(recorder?.state==='recording')recorder.stop();
+  if(audioContext)audioContext.close().catch(()=>{});
+ },{once:true});
+}
