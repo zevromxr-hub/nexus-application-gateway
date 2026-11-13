@@ -31,7 +31,7 @@ export function validateSyncManifest(m){
   if(!['string','number'].includes(typeof entry.key))throw Error('Workspace backup has invalid record keys.');
   for(const field of Object.values(entry.item)){
    if(isObj(field)&&field.$blob){
-    if(typeof field.$blob!=='string'||!/^blobs\/[0-9]{4}\.bin$/.test(field.$blob))throw Error('Workspace package contains an invalid media path.');
+    if(typeof field.$blob!=='string'||!/^blobs_[0-9]{4}\.bin$/.test(field.$blob))throw Error('Workspace package contains an invalid media path.');
     if(!/^[\w/+.-]{0,110}$/.test(field.mime||''))throw Error('Workspace media MIME type is invalid.');
    }
   }
