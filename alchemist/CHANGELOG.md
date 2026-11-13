@@ -1,5 +1,14 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.0.1 — Animation Forge GIF Frame Precision Patch (2026-11-13)
+
+- Fixed false "Frame sizes do not match GIF dimensions" errors when creating regular GIFs from MP4/WebM.
+- Explicitly preserved the decoded ImageData pixel buffer, width, height and frame timing before GIF89a encoding.
+- Applied the same correction to GIF resize and animated icon conversion.
+- Added repeatable regression tests for browser-style ImageData objects with prototype getters, automatic sizing, independent custom width/height, and actual GIF89a encoding.
+- Preserved the existing 30 studios, Token Foundry, Master Visual Identity, Sovereign Reactor IV and cross-device workflows.
+
+
 ## v3.0.0 — Omniverse Identity & Reactor IV (2026-11-13)
 
 ### New Studio 30 — Master Visual Identity
