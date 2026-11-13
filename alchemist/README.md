@@ -1,55 +1,41 @@
-# PROXIMUS | ASSET ALCHEMIST v2.6.0
+# PROXIMUS | ASSET ALCHEMIST v2.7.0
 
-**SOVEREIGN UTILITY ENGINE · 25 interoperable studios · PC & iPhone**
+**SOVEREIGN REACTOR FINALE — 26 studios, PC and iPhone**
 
-Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+Official website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-## New in v2.6.0
+## New: Sovereign Reactor (Studio 26)
 
-### Studio 20 — Universal Project Hub
-Save a snapshot of the current Asset Packager, export a portable PROXIMUS project ZIP containing the actual files, import your project onto another device, and route assets directly to compatible studios. Pin favorite workspaces to the personal command dashboard.
+Create cosmic music-reactive visualizations using real-time Web Audio analysis. Build an original Reactor experience with five color themes, six visual modes, beat-responsive lighting, performance profiles, and personalized animated artwork.
 
-### Studio 21 — Automation Lab
-Create reusable multi-image workflows with ready-made output presets for Discord, video thumbnails, social squares, app icons and wallpapers. Save custom recipes, apply brightness-independent grayscale, watermarking, cropping and resizing, and export all outputs to ZIP or Asset Packager.
+### Connect your music
+- **Play Local Music:** import a song or audio/video file from your device, press Play, and see the spectrum respond.
+- **Listen with Microphone:** grant microphone permission and visualize audible music coming from nearby speakers or instruments.
+- **PC Tab Audio:** in a desktop browser supporting shared audio tracks, select a tab or screen and explicitly share its audio to power the Reactor.
+- **Media Theater handoff:** send a previously selected local music track straight into the Reactor, then press Play.
 
-### Studio 22 — Capture Studio
-Import from the photo library or camera, open a live camera, capture a frame, rotate, resize, adjust brightness/contrast/color, add a watermark, and export to useful creator dimensions. Save or share images directly from the device.
+### Design your Reactor
+- Styles: Sovereign Overdrive, Neon Spectrum, Shockwave Rings, Kinetic Wave, Singularity Portal and Starlight Reactor.
+- Themes: Void Sovereign, Celestial Ascension, Frost Sentinel, Ember Dominion and Emerald Reactor.
+- Add your own GIF/MP4/WebM or still-image backdrop, choose cover/contain fitting and background opacity.
+- Customize bass sensitivity, impact, effect intensity, color changes on beats, stardust, signature and rendering quality.
+- Save visualizer presets in the browser or export/import a portable JSON backup.
 
-### Studio 23 — Document Forge
-Convert photos and selected image pages into a locally created PDF. Reorder pages, choose A4/Letter/square format and apply an optional page-footer label. Export the finished document or add it to Asset Packager.
+### Record and export
+- Export a full-resolution Reactor PNG, or send artwork to Asset Packager.
+- Capture an original three-second animated GIF loop, export it, share it through supported device sharing controls, or add it to Packager.
+- Record a short silent visualizer video on devices exposing MediaRecorder and canvas capture.
+- Save videos, GIFs and artwork to your own device using the browser's download or share flow.
+- Apply your exported Reactor GIF as the optional application background.
+- Use Cinema Mode for a dedicated full-screen Reactor stage.
 
-### Studio 24 — QR & Branding
-Create QR codes from short URLs or text with Reed–Solomon error correction and downloadable PNG/SVG. Apply colors and produce a branded promotional card for a website or community.
+## Previous creative systems
 
-### Studio 25 — Recovery Center
-View browser storage and app version status, back up and restore settings, request persistent browser storage and clear only the versioned offline app cache. Access Check Updates from this control center.
+All twenty-five previously available studios, Release Center, Creator Story, local projects, Media Theater, Arcade Chamber, media backgrounds and in-app Check Updates remain part of the same application.
 
-### Animation Forge — Cross-device GIF extraction
-- **Regular GIF** remains independent of square icon sizing.
-- Convert supported MP4, WebM and animated GIF inputs into real animated GIF89a files.
-- Export a ZIP containing extracted PNG frames.
-- Adjust speed, reverse animations and add animated captions.
-- On devices offering file sharing, use the dedicated **Share / Save generated GIF** button. Normal download and a direct animated GIF preview remain available for other browsers.
-- Imported GIFs use either the browser-native ImageDecoder or the built-in local GIF frame reader.
+## GitHub and Discord
 
-### Media Theater II, Arcade II and Asset Packager II
-- Media Theater now has a floating mini-player, saved favorites and more visualizers.
-- Arcade Chamber now includes a personal profile, selectable themes and achievements.
-- Asset Packager now supports quick search, categories and **Send to Studio** controls.
-
-## Existing PROXIMUS ecosystem
-
-The original studio library, customized backgrounds/thumbnails, GIF and icon creation, audio and video studios, entertainment, personal productivity, creator information and Release Center remain part of the same application.
-
-## Portability
-
-**Project ZIPs** include the actual assets in the pack. Save the ZIP on one device and import it from Project Hub on the other device. Use the workflow JSON and settings backup tools to move those preferences separately.
-
-## Version history
-
-**Release Center** reads \`releases/index.json\` and individual version records in \`releases/\`. The existing Check Updates flow reads \`version.json\`.
-
-## Main application
+The launch URL and existing Discord **OPEN ASSET ALCHEMIST** destination are unchanged.
 
 https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
