@@ -1,0 +1,43 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.9.0",
+  "release_date": "2026-11-13",
+  "title": "Sovereign Workspace & Media Dominion",
+  "subtitle": "Sovereign Workspace & Media Dominion",
+  "channel": "stable",
+  "studios": 29,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Master Thumbnail Publisher: one locally uploaded GIF/MP4/WebM populates all studio thumbnail slots, the home hero and Command Center cards",
+    "Master-first or individual-override-first thumbnail precedence with saved local settings and adaptive iPhone video rendering",
+    "Direct Master Thumbnail handoff from Media Theater, Project Hub and Asset Packager",
+    "New Sovereign Command Center studio with searchable studio catalog, dashboard thumbnails, pinned favorites, quick actions and recent assets",
+    "Creator/customer presentation layouts with customizable interface preference for desktop and mobile",
+    "New Sync Bridge studio to export and restore complete projects, media including Master Thumbnail, asset pack and personal preferences as a portable ZIP",
+    "Cross-device Sync Bridge preview, merge/replace choices and iPhone Share/Save plus PC download support",
+    "Sovereign Reactor III second GIF/video/image layer with blend/opacity controls and persistent local overlay media",
+    "Reactor III timed scene director, live frequency-energy history and adaptive performance for iPhone and PC",
+    "Recovery Center Release Guard with release file diagnostics and exportable health report",
+    "Offline worker retains the previous cached application release and supports deliberate fallback or return to latest",
+    "All existing Token Foundry code and vault data remain unchanged, as do the current GitHub Pages and Discord launch destinations"
+  ],
+  "added_studios": [
+    "Sovereign Command Center",
+    "Sync Bridge"
+  ],
+  "upgraded_studios": [
+    "Media Publisher",
+    "Media Theater",
+    "Project Hub",
+    "Asset Packager",
+    "Sovereign Reactor",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

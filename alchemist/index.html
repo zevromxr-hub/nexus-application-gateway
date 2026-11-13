@@ -15,6 +15,7 @@
   <a class="brand" href="../hub/" title="PROXIMUS Sovereign Gateway"><span class="sigil">✧</span><span>PROXIMUS <small>ASSET ALCHEMIST</small></span></a>
   <div class="rail-label">YOUR WORKBENCHES</div>
   <nav id="nav" aria-label="Asset studios">
+   <button class="nav" data-view="command"><span>⌂</span> Command Center <small>28</small></button>
    <button class="nav active" data-view="image"><span>◈</span> Image Studio <small>01</small></button>
    <button class="nav" data-view="batch"><span>▦</span> Batch Forge <small>02</small></button>
    <button class="nav" data-view="icons"><span>▣</span> Icon Foundry <small>03</small></button>
@@ -36,6 +37,7 @@
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
     <button class="nav" data-view="utility"><span>⌘</span> Utility Forge <small>19</small></button>
     <button class="nav" data-view="projects"><span>▤</span> Project Hub <small>20</small></button>
+    <button class="nav" data-view="sync"><span>⇄</span> Sync Bridge <small>29</small></button>
     <button class="nav" data-view="automation"><span>⛓</span> Automation Lab <small>21</small></button>
     <button class="nav" data-view="capture"><span>◉</span> Capture Studio <small>22</small></button>
     <button class="nav" data-view="documents"><span>▣</span> Document Forge <small>23</small></button>
@@ -54,12 +56,47 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.8.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-seven functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>27</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.9.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-nine functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>29</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.8.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.9.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
+<section class="studio" data-panel="command" hidden>
+ <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>Sovereign Command Center <span class="subtitle">Your workspace · favorite tools · live thumbnails</span></h2></div></div>
+ <div class="command-top">
+  <div class="command-welcome"><h3 id="commandGreeting">Welcome to your PROXIMUS command center.</h3><p>One-click studios, personal preferences, recent exports and the new Master Thumbnail Publisher. Everything works on both iPhone and PC.</p></div>
+  <div class="command-top-actions"><button id="commandOpenMedia" class="primary">✧ Master Media</button><button id="commandOpenSync" class="small-btn">⇄ Transfer to other device</button><button id="commandRefresh" class="small-btn">↻ Refresh</button></div>
+ </div>
+ <div class="command-metrics"><div><strong id="commandAssets">0</strong><span>COLLECTED ASSETS</span></div><div><strong id="commandPackSize">0 B</strong><span>LOCAL PACK SIZE</span></div><div><strong id="commandPinsCount">0 pinned</strong><span>FAVORITE STUDIOS</span></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <h3>01 / PERSONAL INTERFACE</h3>
+   <label>Workspace display name<input id="commandDisplayName" maxlength="45" placeholder="Optional nickname for your dashboard"></label>
+   <label>Interface layout<select id="commandMode"><option value="creator">Creator · complete workspace</option><option value="customer">Customer · simplified navigation</option></select></label>
+   <p id="commandModeNote" class="hint">Interface modes adjust presentation only; they are not account authentication.</p>
+   <h3>02 / QUICK ACTIONS</h3>
+   <div class="command-quick-actions">
+    <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
+    <button id="commandOpenReactor" class="small-btn">✺ Open Reactor III</button>
+    <button id="commandOpenRelease" class="small-btn">⟳ Release history</button>
+    <button id="commandCheckUpdates" class="small-btn">Check app updates</button>
+    <button id="commandOpenRecovery" class="small-btn">⚙ Recovery tools</button>
+   </div>
+  </div>
+  <div class="panel">
+   <h3>03 / RECENT ASSET OUTPUTS</h3>
+   <div id="commandRecent" class="command-recent"></div>
+   <p class="hint">Anything added to Asset Packager will be visible here as a quick handoff.</p>
+  </div>
+ </div>
+ <div class="panel command-catalog">
+  <div class="command-filter-bar"><div><h3>04 / STUDIO LIBRARY</h3><p class="hint">Every studio uses the current Master Thumbnail asset, unless an override takes priority.</p></div><div class="command-filters"><label>Search studio<input id="commandSearch" type="search" placeholder="Search 27+ studios…" autocomplete="off"></label><label class="command-pin-check"><input id="commandOnlyPinned" type="checkbox"> Pinned only</label></div></div>
+  <div id="commandCards" class="command-grid"></div>
+ </div>
+ <p id="commandStatus" role="status" class="hint">Loading command workspace…</p>
+</section>
+
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
 <div class="workspace image-grid">
@@ -249,7 +286,7 @@
    <canvas id="theaterCanvas" width="900" height="300" aria-label="Music-reactive graphic visualizer"></canvas><div id="theaterLevels" class="hint">VISUAL PREVIEW · VIOLET</div>
    <div class="theater-controls"><button id="theaterVizPng" class="small-btn">↓ Save visualizer PNG</button><button id="theaterVizPack" class="small-btn">＋ Visualizer to Pack</button></div>
    <h3>Connect to Media Publisher</h3>
-   <div class="theater-controls"><button id="theaterToReactor" class="primary">✺ Send audio to Sovereign Reactor</button><button id="theaterReactorBg" class="small-btn">◧ Send image/video to Reactor background</button></div>
+   <div class="theater-controls"><button id="theaterToReactor" class="primary">✺ Send audio to Sovereign Reactor</button><button id="theaterReactorBg" class="small-btn">◧ Send image/video to Reactor background</button><button id="theaterSetMaster" class="small-btn">✧ Set media as ALL site thumbnails</button></div>
    <div class="theater-controls"><button id="theaterMakeBg" class="small-btn">✧ Current media → Background</button><button id="theaterMakeThumb" class="small-btn">◧ Current media → Hero thumbnail</button></div>
   </div>
  </div>
@@ -264,6 +301,8 @@
   <canvas id="reactorCanvas" width="960" height="540" aria-label="Live, music-reactive PROXIMUS Sovereign Reactor visualizer"></canvas>
   <video id="reactorBgVideo" muted autoplay loop playsinline preload="metadata" hidden aria-hidden="true"></video>
   <img id="reactorBgImage" alt="" hidden aria-hidden="true">
+  <video id="reactorOverlayVideo" muted autoplay loop playsinline preload="metadata" hidden aria-hidden="true"></video>
+  <img id="reactorOverlayImage" alt="" hidden aria-hidden="true">
  </div>
  <div class="reactor-monitor">
   <div><span>SUB / BASS</span><progress id="reactorBass" max="100" value="0"></progress><b id="reactorBassText">0%</b></div>
@@ -271,6 +310,7 @@
   <div><span>TREBLE</span><progress id="reactorHigh" max="100" value="0"></progress><b id="reactorHighText">0%</b></div>
   <div class="reactor-kicks"><span>BEATS DETECTED</span><b id="reactorBeats">0</b></div>
  </div>
+ <div class="reactor-history-box"><div><strong>REACTOR III · LIVE ENERGY TIMELINE</strong><span id="reactorPerformanceText">Performance: Balanced</span></div><canvas id="reactorHistoryCanvas" width="960" height="100" aria-label="Bass and frequency energy history from the connected audio input"></canvas></div>
  <div class="workspace image-grid reactor-workspace">
   <div class="panel">
    <h3>01 / LIVE AUDIO SOURCE</h3>
@@ -293,12 +333,24 @@
    <div class="two"><label>Background fit<select id="reactorBgFit"><option value="cover">Cover / cinematic crop</option><option value="contain">Contain / show full frame</option></select></label><label>Backdrop visibility <output id="reactorBgOpacityOut">70%</output><input type="range" id="reactorBgOpacity" min=".1" max="1" step=".05" value=".7"></label></div>
    <div class="reactor-source-controls"><button class="small-btn" id="reactorBgPlay" hidden>▶ Start backdrop</button><button class="small-btn" id="reactorBgRemove">Remove custom background</button></div>
 
+   <h3>02B / SECOND MEDIA LAYER</h3>
+   <p class="hint">Place an additional GIF, video or image over your main background. Both layers remain browser-local and render into the same Reactor stage.</p>
+   <label class="upload"><input id="reactorOverlayFile" type="file" accept=".gif,.mp4,.webm,.png,.jpg,.jpeg,.webp,image/gif,video/mp4,video/webm,image/png,image/jpeg,image/webp"><b>＋ IMPORT OVERLAY GIF / VIDEO / IMAGE</b></label>
+   <p id="reactorOverlayName" class="hint">No secondary visual layer selected.</p>
+   <div class="two"><label>Overlay opacity <output id="reactorOverlayOpacityOut">45%</output><input id="reactorOverlayOpacity" type="range" min=".05" max="1" step=".05" value=".45"></label>
+    <label>Blend effect<select id="reactorOverlayBlend"><option value="screen">Screen · luminous blend</option><option value="lighter">Add · intense highlights</option><option value="source-over">Normal · overlay</option><option value="multiply">Multiply · dramatic dark</option></select></label></div>
+   <button id="reactorOverlayRemove" class="small-btn">Remove second layer</button>
    <h3>03 / VISUALIZER POWER</h3>
    <div class="two"><label>Reactor theme<select id="reactorTheme"><option value="void">Void Sovereign</option><option value="celestial">Celestial Ascension</option><option value="frost">Frost Sentinel</option><option value="inferno">Ember Dominion</option><option value="emerald">Emerald Reactor</option></select></label><label>Visual mode<select id="reactorMode"><option value="sovereign">Sovereign Overdrive</option><option value="spectrum">Neon Spectrum</option><option value="rings">Shockwave Rings</option><option value="wave">Kinetic Wave</option><option value="portal">Singularity Portal</option><option value="starlight">Starlight Reactor</option></select></label></div>
    <label>Performance profile<select id="reactorQuality"><option value="eco">Battery saver · 640×360</option><option value="balanced" selected>Balanced · 960×540</option><option value="cinema">Cinematic · 1280×720</option></select></label>
    <div class="two"><label>Bass sensitivity <output id="reactorSensitivityOut">1.25×</output><input id="reactorSensitivity" type="range" min=".5" max="2.5" step=".05" value="1.25"></label><label>Impact strength <output id="reactorImpactOut">1.65×</output><input id="reactorImpact" type="range" min=".5" max="2.8" step=".05" value="1.65"></label></div>
    <label>Effects intensity <output id="reactorLayersOut">70%</output><input id="reactorLayers" type="range" min=".1" max="1" step=".05" value=".7"></label>
    <div class="checks"><label><input type="checkbox" id="reactorAutoShift" checked> Switch colors on beats</label><label><input type="checkbox" id="reactorSnow"> Falling stardust / snow</label><label><input type="checkbox" id="reactorShowSignature" checked> Show Reactor signature</label></div>
+   <h3>03B / REACTOR III SCENE DIRECTOR</h3>
+   <div class="checks"><label><input id="reactorSceneDirector" type="checkbox"> Auto-cycle visualizer scenes</label>
+   <label><input id="reactorAutoPerformance" type="checkbox" checked> Adaptive iPhone/PC performance</label></div>
+   <label>Scene interval<select id="reactorSceneSeconds"><option value="8">8 seconds · energetic</option><option value="15" selected>15 seconds · cinematic</option><option value="25">25 seconds · relaxed</option><option value="40">40 seconds · ambient</option></select></label>
+   <p id="reactorSceneStatus" class="hint">Scene Director ready. Beats and frequency measurements remain live as scenes change.</p>
    <label>On-stage signature<input type="text" id="reactorSignature" maxlength="36" value="PROXIMUS" placeholder="PROXIMUS"></label>
    <p class="hint"><span id="reactorResolution">960 × 540</span> · Microphone audio is analyzed, not played back through the speaker.</p>
   </div>
@@ -429,7 +481,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.8.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.9.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -462,6 +514,37 @@
   </div>
   <div class="creator-signature">POWERED BY ZEVRO | PROXIMUS</div>
  </div>
+</section>
+
+<section class="studio" data-panel="sync" hidden>
+ <div class="section-heading"><div><div class="eyebrow">29 / CROSS-DEVICE WORKSPACE</div><h2>Sync Bridge <span class="subtitle">Project, media and settings transfer · PC ↔ iPhone</span></h2></div></div>
+ <div class="sync-lead"><strong>ONE PORTABLE WORKSPACE PACKAGE</strong><p>Carry your saved projects, imported artwork, Master Thumbnail, Reactor backgrounds, presets, notes and local asset pack between your own devices. The bundle includes actual file bytes—not just links.</p></div>
+ <div class="workspace split">
+  <div class="panel">
+   <h3>01 / CHOOSE WHAT TO INCLUDE</h3>
+   <div class="sync-checkboxes">
+    <label><input id="syncProjects" type="checkbox" checked> Saved project vault (complete assets)</label>
+    <label><input id="syncMedia" type="checkbox" checked> Master Thumbnail, studio media and Reactor background</label>
+    <label><input id="syncPack" type="checkbox" checked> Asset Packager files</label>
+    <label><input id="syncSettings" type="checkbox" checked> Workspace preferences, notes, favorites and Reactor presets</label>
+   </div>
+   <p class="hint">Your encrypted Token Foundry vault and credentials are always excluded. Use Token Foundry's own encrypted-backup function for those records.</p>
+   <div class="buttons"><button id="syncPrepare" class="primary">◈ Prepare workspace transfer</button><button id="syncShare" class="small-btn" disabled>Share / Save ZIP</button><button id="syncDownload" class="small-btn" disabled>Download ZIP</button></div>
+   <p id="syncSummary" class="hint" role="status">Select the data you want to transfer.</p>
+   <h3>SHORTCUTS</h3><div class="buttons"><button id="syncOpenProjects" class="small-btn">▤ Open Projects</button><button id="syncOpenMedia" class="small-btn">✧ Open Media Publisher</button></div>
+  </div>
+  <div class="panel">
+   <h3>02 / RESTORE A WORKSPACE ZIP</h3>
+   <label class="upload"><input id="syncImport" type="file" accept=".zip,application/zip"><b>＋ SELECT WORKSPACE ZIP</b><span>From the iPhone Files app or your PC downloads</span></label>
+   <p id="syncImportPreview" class="hint">An imported package will be checked before any local records are changed.</p>
+   <label class="sync-replace-check"><input id="syncReplace" type="checkbox"> Replace records in the included categories instead of merging them</label>
+   <div class="buttons"><button id="syncRestore" class="primary" disabled>↗ Restore verified workspace</button><button id="syncReload" class="small-btn" hidden>↻ Reload studios</button></div>
+   <h3>HOW CROSS-DEVICE TRANSFER WORKS</h3>
+   <p>Prepare on one device → Save or Share the ZIP → Open it on the other device → Preview and restore → Reload.</p>
+   <p class="hint">This is portable manual synchronization, not a cloud service or an automatic account login. The existing application stays online as before; your personal files remain yours.</p>
+  </div>
+ </div>
+ <p id="syncStatus" class="hint" role="status">Ready to build a portable workspace snapshot.</p>
 </section>
 
 <section class="studio" data-panel="projects" hidden>
@@ -583,6 +666,16 @@
    <p class="hint">Current Asset Packager files: <strong id="recoveryPackCount">0</strong></p>
   </div>
  </div>
+ <div class="panel release-guard-panel">
+  <h3>RELEASE GUARD · DEPLOYMENT DIAGNOSTICS & FALLBACK</h3>
+  <p class="hint">Verify release metadata, required application files, offline readiness and the prior cached build. The GitHub release workflow validates source changes before publishing.</p>
+  <div class="buttons"><button id="releaseGuardScan" class="primary">◈ Run release health scan</button><button id="releaseGuardExport" class="small-btn">↓ Export diagnostic report</button><button id="releaseGuardUpdate" class="small-btn">Check latest release</button><button id="releaseGuardOpenSync" class="small-btn">⇄ Backup whole workspace</button></div>
+  <div class="release-rollback-actions"><label>Offline fallback version<select id="releaseGuardRollbackSelect"><option value="">No previous cached build detected</option></select></label>
+   <button id="releaseGuardRollback" class="small-btn">↶ Restore selected cached version</button>
+   <button id="releaseGuardLatest" class="small-btn">↻ Return to latest build</button></div>
+  <div id="releaseGuardResults" class="release-guard-results"></div>
+  <p id="releaseGuardStatus" class="hint" role="status">Run a health scan to inspect this installation.</p>
+ </div>
 </section>
 
 <section class="studio" data-panel="tokens" hidden>
@@ -686,11 +779,19 @@
 <dialog id="mediaDialog" class="media-dialog"><div class="media-settings">
  <div class="cmd-head"><b>✧ OPTIONAL MEDIA PUBLISHER</b><button id="mediaClose" class="small-btn" type="button">× Close</button></div>
  <p class="hint">Customize only the look of this device's Asset Alchemist. Upload a looping GIF, MP4, WebM or still image as an app background or thumbnail. The original theme stays unchanged until you choose a file.</p>
- <label>Where to display this media<select id="mediaTarget"><option value="background">Full application background</option><option value="hero">Home screen hero thumbnail</option><option value="studio">Selected studio thumbnail</option></select></label>
+ <label>Where to display this media<select id="mediaTarget"><option value="background">Full application background</option><option value="hero">Home screen hero thumbnail</option><option value="master">MASTER · all website thumbnails</option><option value="studio">Selected studio thumbnail</option></select></label>
  <label id="mediaStudioRow" hidden>Studio<select id="mediaStudio"></select></label>
+ <div class="media-master-head"><strong>✧ MASTER THUMBNAIL CONTROL</strong><span>One upload → every thumbnail</span></div>
+ <p class="hint">Select MASTER below to apply one looping GIF/MP4/WebM across the home hero, all studio thumbnails and Command Center cards. It is stored only once and reused automatically.</p>
+ <div id="mediaMasterRow" class="media-master-options" hidden>
+  <div class="two"><label>Master priority<select id="mediaMasterMode"><option value="force">Master first · replace every thumbnail</option><option value="fallback">Individual first · master fills empty slots</option></select></label>
+   <label>Video playback behavior<select id="mediaMasterMotion"><option value="adaptive">Adaptive · best for iPhone + PC</option><option value="live">Live where visible</option><option value="poster">Static video frame · battery saver</option></select></label></div>
+  <p class="hint">GIFs loop naturally. MP4/WebM thumbnails use muted, adaptive playback where visible to conserve iPhone resources. Changing the master never deletes the individual media you saved earlier.</p>
+ </div>
+ <p id="mediaMasterStatus" class="hint">No master thumbnail selected.</p>
  <label class="upload"><input id="mediaFile" type="file" accept=".gif,.mp4,.webm,.png,.jpg,.jpeg,.webp,image/gif,video/mp4,video/webm,image/png,image/jpeg,image/webp"><b>＋ SELECT GIF / MP4 / WEBM / IMAGE</b><span>Up to 80 MB video or 35 MB image. File stays on this device.</span></label>
  <div class="two"><label>Visibility (background only)<input id="mediaOpacity" type="range" min=".1" max="1" step=".05" value=".42"></label><label>Display fit<select id="mediaFit"><option value="cover">Fill · crop to fit</option><option value="contain">Contain · show entire image</option></select></label></div>
- <div class="actions"><button id="mediaSave" class="primary">Save media locally</button><button id="mediaClear" class="small-btn">Remove selected media</button><button id="mediaResume" class="small-btn" hidden>▶ Play background video</button></div>
+ <div class="actions"><button id="mediaMasterApply" class="primary">✧ Apply one file to ALL thumbnails</button><button id="mediaSave" class="primary">Save media locally</button><button id="mediaClear" class="small-btn">Remove selected media</button><button id="mediaResume" class="small-btn" hidden>▶ Play background video</button></div>
  <p id="mediaStatus" class="hint" role="status">Loading media settings…</p>
  <p class="hint">Videos loop silently. iPhone/browser autoplay and storage quotas vary; if a video is paused, open Media and tap Play. Your personal backgrounds are stored in this browser's IndexedDB, not uploaded to GitHub. Clearing site data removes them.</p>
  </div></dialog>

@@ -280,6 +280,12 @@ export function initMediaTheater(app){
  $('theaterPosterPack').addEventListener('click',wrap(()=>poster(true)));
  $('theaterVizPng').addEventListener('click',wrap(async()=>{drawVisualization(performance.now());download(await blobCanvas(canvas),'PROXIMUS-VISUALIZER.png');}));
  $('theaterVizPack').addEventListener('click',wrap(async()=>{drawVisualization(performance.now());app.addAsset('PROXIMUS-VISUALIZER.png',await blobCanvas(canvas),'Media Theater');}));
+ $('theaterSetMaster').addEventListener('click',wrap(()=>{
+  const item=currentItem();
+  if(!item||item.kind==='audio')throw Error('Choose a video or GIF for all website thumbnails.');
+  document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:item.file,name:item.file.name,target:'master'}}));
+  showStatus('Applied '+safe(item.file.name)+' to the Master Thumbnail Publisher on this device.');
+ }));
  $('theaterMakeBg').addEventListener('click',wrap(()=>{
   const item=currentItem();if(!item)throw Error('Choose an image or video first');
   if(item.kind==='audio')throw Error('Choose a video or GIF for backgrounds.');

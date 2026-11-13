@@ -18,7 +18,11 @@ import {initDocumentForge} from './document-forge.js';
 import {initQRStudio} from './qr-studio.js';
 import {initRecoveryCenter} from './recovery-center.js';
 import {initTokenFoundry} from './token-foundry.js';
+import {initCommandCenter} from './command-center.js';
+import {initSyncBridge} from './workspace-sync.js';
+import {initReleaseGuard} from './release-guard.js';
 const names=[
+ {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
  {id:'icons',icon:'▣',title:'Icon Foundry',detail:'Generate application icon PNG size collections'},
@@ -40,6 +44,7 @@ const names=[
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
  {id:'utility',icon:'⌘',title:'Utility Forge',detail:'Text transformations JSON formatter Base64 URL codec secure password generator batch rename ZIP'},
  {id:'projects',icon:'▤',title:'Project Hub',detail:'Universal portable project ZIP vault favorites dashboard asset handoff'},
+ {id:'sync',icon:'⇄',title:'Sync Bridge',detail:'Cross-device PC iPhone portable workspace synchronization projects media master thumbnail backups ZIP'},
  {id:'automation',icon:'⛓',title:'Automation Lab',detail:'Bulk presets repeatable workflow image conversion icons ZIP'},
  {id:'capture',icon:'◉',title:'Capture Studio',detail:'Camera photo share social banners wallpaper crop presets'},
  {id:'documents',icon:'▣',title:'Document Forge',detail:'Photos to PDF pages print watermark scan images'},
@@ -101,6 +106,10 @@ const app={
  changeView(id){changeView(id);},
  listAssets(){return pack.slice();},
  sendAsset(asset,dest){
+  if(dest==='master'){
+   document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:asset.data,name:asset.name,target:'master'}}));
+   return;
+  }
   if(dest==='reactor'||dest==='reactorBg'){
    const name=safe(asset.name),mime=asset.data.type||({
     mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',ogg:'audio/ogg',
@@ -147,6 +156,7 @@ function changeView(id){
  document.querySelectorAll('[data-panel]').forEach(n=>n.hidden=n.dataset.panel!==id);
  document.querySelectorAll('[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
  localStorage.setItem('nexus-alchemist-last-view',id);
+ document.dispatchEvent(new CustomEvent('proximus-view-changed',{detail:{studio:id}}));
  const heading=document.querySelector('[data-panel="'+id+'"] .section-heading h2');
  if(heading)document.title='PROXIMUS | '+names.find(x=>x.id===id).title+' — Asset Alchemist';
  window.scrollTo({top:0,behavior:'auto'});
@@ -171,7 +181,9 @@ function drawPack(){
     bg.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'background'}})));
     const thumb=document.createElement('button');thumb.textContent='Thumb';thumb.title='Use as hero thumbnail';
     thumb.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'hero'}})));
-    row.append(bg,thumb);
+    const master=document.createElement('button');master.textContent='MASTER';master.title='Apply this GIF or video to every website thumbnail on your device';
+    master.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'master'}})));
+    row.append(bg,thumb,master);
    }
    const tag=document.createElement('select');tag.title='Asset category';
   for(const name of ['','Artwork','Animation','Audio','Video','Documents','Project','Favorite']){
@@ -179,7 +191,7 @@ function drawPack(){
   }
   tag.value=f.tag||'';tag.addEventListener('change',()=>{f.tag=tag.value;void vaultPut(f);});
   const destinations=document.createElement('select');destinations.title='Send to studio';
-  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
+  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['master','Master Thumb'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
    const option=document.createElement('option');option.value=value;option.textContent=label;destinations.append(option);
   }
   destinations.addEventListener('change',wrap(()=>{const dest=destinations.value;destinations.value='';if(dest)app.sendAsset(f,dest);}));
@@ -192,7 +204,7 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.6.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.9.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
@@ -245,7 +257,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.8.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.9.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -269,9 +281,10 @@ function launch(){
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
  initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
+ initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
- const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.8 loaded. All transformations remain local to your browser.');
+ const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
+ notice('PROXIMUS Asset Alchemist v2.9 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
