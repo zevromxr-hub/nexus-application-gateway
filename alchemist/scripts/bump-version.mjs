@@ -11,6 +11,7 @@ version.previous_version=previous;version.version=ver;version.release_date=new D
 write('version.json',JSON.stringify(version,null,2)+'\n');
 let html=read('index.html').replaceAll('v'+previous,'v'+ver);write('index.html',html);
 let app=read('app.js').replaceAll("LOCAL='"+previous+"'","LOCAL='"+ver+"'").replaceAll('ALCHEMIST v'+previous,'ALCHEMIST v'+ver);write('app.js',app);
+let readme=read('README.md').replaceAll('v'+previous,'v'+ver);write('README.md',readme);
 let sw=read('sw.js').replaceAll('proximus-alchemist-v'+previous,'proximus-alchemist-v'+ver).replaceAll('Alchemist v'+previous,'Alchemist v'+ver);write('sw.js',sw);
 const r={schema:'proximus.alchemist.release/1',brand:'PROXIMUS',name:'Asset Alchemist',version:ver,release_date:version.release_date,status:'pending-validation',channel:version.channel,studios:version.studio_count,branch:'main',path:'alchemist/'};
 fs.mkdirSync(path.join(root,'releases'),{recursive:true});write('releases/v'+ver+'.json',JSON.stringify(r,null,2)+'\n');
