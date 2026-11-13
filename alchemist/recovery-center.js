@@ -3,7 +3,8 @@ import {$,bytes,download,textFile,wrap} from './core.js';
 import {mobileFileSupport} from './portable-kit.js';
 const keys=[
  'nexus-alchemist-last-view','nexus-alchemist-pack-title','nexus-alchemist-pack-target',
- 'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1','proximus-alchemist-arcade-scores-v1'
+ 'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1','proximus-alchemist-arcade-scores-v1',
+ 'proximus-command-layout-v1','proximus-command-pins-v1','proximus-command-name-v1','proximus-reactor-settings-v1'
 ];
 export function backupSettings(storage){
  const prefs={};
