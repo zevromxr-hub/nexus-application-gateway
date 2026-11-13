@@ -16,6 +16,7 @@
   <div class="rail-label">YOUR WORKBENCHES</div>
   <nav id="nav" aria-label="Asset studios">
    <button class="nav" data-view="command"><span>⌂</span> Command Center <small>28</small></button>
+   <button class="nav" data-view="identity"><span>✧</span> Visual Identity <small>30</small></button>
    <button class="nav active" data-view="image"><span>◈</span> Image Studio <small>01</small></button>
    <button class="nav" data-view="batch"><span>▦</span> Batch Forge <small>02</small></button>
    <button class="nav" data-view="icons"><span>▣</span> Icon Foundry <small>03</small></button>
@@ -56,11 +57,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.9.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-nine functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>29</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v3.0.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Thirty functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>30</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.9.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.0.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>Sovereign Command Center <span class="subtitle">Your workspace · favorite tools · live thumbnails</span></h2></div></div>
@@ -95,6 +96,65 @@
   <div id="commandCards" class="command-grid"></div>
  </div>
  <p id="commandStatus" role="status" class="hint">Loading command workspace…</p>
+</section>
+
+<section class="studio" data-panel="identity" id="identityStudio" hidden>
+ <div class="section-heading"><div><div class="eyebrow">30 / SOVEREIGN DESIGN SYSTEM</div><h2>Master Visual Identity <span class="subtitle">One aesthetic · every studio · PC + iPhone</span></h2></div></div>
+ <div class="identity-hero">
+  <div><span class="eyebrow">OMNIVERSE CORE · VISUAL CONTROL</span><h3>Your complete creative universe, one signature look.</h3>
+   <p>Control application accents, master media, thumbnail priority, styling, Reactor linkage and saved appearances without changing the source repository or personal files.</p></div>
+  <div class="identity-hero-badge"><strong id="identityCurrentTheme">Sovereign Violet</strong><span>LOCAL DESIGN PROFILE</span></div>
+ </div>
+ <div class="identity-top-controls"><label><input id="identityEnabled" type="checkbox" checked> Enable custom visual identity</label>
+  <label><input id="identityMasterEnabled" type="checkbox" checked> Include Master Thumbnail media</label>
+  <label><input id="identityReactorLinked" type="checkbox"> Link Reactor IV color theme</label>
+ </div>
+ <h3 class="identity-subhead">01 / GLOBAL COLOR UNIVERSES</h3>
+ <div id="identityPresetGallery" class="identity-preset-gallery" aria-label="Select a complete PROXIMUS appearance preset"></div>
+ <div class="workspace image-grid">
+  <div class="panel">
+   <h3>02 / FINE-TUNE YOUR IDENTITY</h3>
+   <p class="hint">Edit six color channels. Updates apply live without removing your custom backgrounds or existing thumbnail overrides.</p>
+   <div class="identity-color-grid">
+    <label>Primary accent<input id="identityColorAccent" type="color" value="#b38aff"></label>
+    <label>Secondary accent<input id="identityColorSecondary" type="color" value="#e9bc7e"></label>
+    <label>Emissive glow<input id="identityColorGlow" type="color" value="#b895ff"></label>
+    <label>Canvas base<input id="identityColorBase" type="color" value="#090913"></label>
+    <label>Panel surfaces<input id="identityColorPanel" type="color" value="#151027"></label>
+    <label>Border color<input id="identityColorBorder" type="color" value="#514071"></label>
+   </div>
+   <div class="two"><label>Glow intensity <output id="identityGlowOut">65%</output><input id="identityGlow" type="range" min="0" max="1" value=".65" step=".05"></label>
+    <label>Interface scale <output id="identityScaleOut">100%</output><input id="identityFontScale" type="range" min=".9" max="1.2" step=".05" value="1"></label></div>
+   <div class="two"><label>Border geometry<select id="identityBorder"><option value="soft">Sovereign · rounded</option><option value="sharp">Tactical · angular</option><option value="glass">Prismatic · glass</option></select></label>
+    <label>Ambient motion<select id="identityMotion"><option value="still">Still · battery saver</option><option value="ambient" selected>Ambient · subtle</option><option value="dynamic">Dynamic · immersive</option></select></label></div>
+   <div class="buttons"><button class="small-btn" id="identityReset">Restore default identity</button><button class="small-btn" id="identityExceptionToggle">Studio appearance exceptions</button></div>
+   <div id="identityExceptionsPanel" hidden><p class="hint">Check a studio to keep its original look instead of the global identity.</p><div id="identityStudioExceptions" class="identity-exceptions"></div></div>
+  </div>
+  <div class="panel">
+   <h3>03 / MASTER MEDIA + REACTOR IV</h3>
+   <p id="identityMediaStatus" class="hint">Master Thumbnail media is enabled across the site.</p>
+   <div class="buttons"><button id="identityOpenMedia" class="primary">✧ Edit site-wide thumbnail</button><button id="identityOpenBackground" class="small-btn">Set app background</button></div>
+   <p class="hint">Existing GIF/MP4/WebM files remain browser-local. Use Sync Bridge to transfer artwork to another device.</p>
+   <div class="buttons"><button id="identityReactorOpen" class="small-btn">✺ Open Reactor IV</button><button id="identityShareToReactor" class="small-btn">Link site colors to Reactor</button></div>
+   <h3>04 / AUTOMATIC DAY / NIGHT THEMES</h3>
+   <div class="checks"><label><input id="identityScheduleEnabled" type="checkbox"> Enable automatic schedule based on local device time</label></div>
+   <div class="two"><label>Day palette<select id="identityDay"><option value="solar">Solar Dominion</option><option value="sovereign">Sovereign Violet</option><option value="abyss">Abyssal Cyan</option><option value="ember">Crimson Ember</option><option value="emerald">Emerald Ascendant</option><option value="frost">Frost Sentinel</option></select></label>
+   <label>Night palette<select id="identityNight"><option value="sovereign">Sovereign Violet</option><option value="solar">Solar Dominion</option><option value="abyss">Abyssal Cyan</option><option value="ember">Crimson Ember</option><option value="emerald">Emerald Ascendant</option><option value="frost">Frost Sentinel</option></select></label></div>
+   <div class="two"><label>Day starts (24-hour)<input id="identityScheduleStart" type="number" min="0" max="23" value="8"></label>
+   <label>Night starts (24-hour)<input id="identityScheduleEnd" type="number" min="0" max="23" value="20"></label></div>
+   <p class="hint">Scheduled themes update when the app is active or returns to the foreground; this does not create a background device service.</p>
+  </div>
+ </div>
+ <div class="panel identity-bottom">
+  <h3>05 / PERSONAL THEME ARCHIVE</h3><p class="hint">Save up to 12 compositions. Portable JSON backups transfer colors and layout settings; Sync Bridge additionally includes the original GIF and video files.</p>
+  <div class="identity-archive-actions"><label>Theme name<input id="identityProfileName" maxlength="42" placeholder="My Divine Sovereign look"></label>
+   <button id="identitySaveProfile" class="primary">＋ Save design preset</button>
+   <button id="identityExport" class="small-btn">Share / Save identity JSON</button>
+   <button id="identityOpenSync" class="small-btn">⇄ Transfer complete media</button></div>
+  <label class="upload"><input id="identityImport" type="file" accept=".json,application/json"><b>＋ IMPORT VISUAL IDENTITY</b><span>Restore a color composition from iPhone Files or PC</span></label>
+  <div id="identitySavedProfiles" class="identity-saved-profiles"></div>
+ </div>
+ <p id="identityStatus" class="hint" role="status">Loading your visual identity…</p>
 </section>
 
 <section class="studio" data-panel="image">
@@ -292,7 +352,7 @@
  </div>
 </section>
 <section class="studio" data-panel="reactor" hidden>
- <div class="section-heading"><div><div class="eyebrow">26 / MUSIC-REACTIVE ENTERTAINMENT</div><h2>Sovereign Reactor <span class="subtitle">Audio-responsive visual universe · PC + iPhone</span></h2></div></div>
+ <div class="section-heading"><div><div class="eyebrow">26 / MUSIC-REACTIVE ENTERTAINMENT</div><h2>Sovereign Reactor IV <span class="subtitle">Audio-responsive visual universe · PC + iPhone</span></h2></div></div>
  <div class="reactor-heading">
   <div><strong>LIVE MUSIC REACTOR</strong><p>Five original cosmic palettes · Six visualizer modes · Real bass, mid and treble analysis</p></div>
   <div class="reactor-heading-actions"><span id="reactorSource" class="reactor-source">Not connected</span><button id="reactorFullscreen" class="small-btn">⛶ Cinema mode</button></div>
@@ -351,6 +411,38 @@
    <label><input id="reactorAutoPerformance" type="checkbox" checked> Adaptive iPhone/PC performance</label></div>
    <label>Scene interval<select id="reactorSceneSeconds"><option value="8">8 seconds · energetic</option><option value="15" selected>15 seconds · cinematic</option><option value="25">25 seconds · relaxed</option><option value="40">40 seconds · ambient</option></select></label>
    <p id="reactorSceneStatus" class="hint">Scene Director ready. Beats and frequency measurements remain live as scenes change.</p>
+   <div class="reactor-export-block reactor-iv-controls">
+    <h3>03C / REACTOR IV · EFFECT ROUTING MATRIX</h3>
+    <p class="hint">Map measured audio frequencies to visual effects. All reactions use the actual connected audio analysis—no imaginary beats.</p>
+    <label>Effect composition<select id="reactorFxPreset"><option value="dominion">Dominion Impact · heavy bass</option><option value="celestial">Celestial Radiance · luminous</option><option value="hyperspace">Hyperspace Reactor · energetic</option><option value="frost">Frost Precision · crisp</option><option value="abyss">Abyssal Singularity · deep sub</option></select></label>
+    <div class="reactor-iv-matrix">
+     <label>SUB → atmosphere <output id="reactorFxSubOut">1.9×</output><input id="reactorFxSub" type="range" min=".1" max="3" step=".1" value="1.9"></label>
+     <label>BASS → shockwaves <output id="reactorFxBassOut">2.3×</output><input id="reactorFxBass" type="range" min=".1" max="3" step=".1" value="2.3"></label>
+     <label>MIDS → emissive wings <output id="reactorFxMidOut">1.1×</output><input id="reactorFxMid" type="range" min=".1" max="3" step=".1" value="1.05"></label>
+     <label>TREBLE → sparks <output id="reactorFxTrebleOut">0.9×</output><input id="reactorFxTreble" type="range" min=".1" max="3" step=".1" value=".85"></label>
+    </div>
+    <div class="two"><label>Shockwave intensity <output id="reactorFxShockOut">1.8×</output><input id="reactorFxShock" type="range" min="0" max="2" step=".1" value="1.8"></label>
+      <label>Particle density <output id="reactorFxParticlesOut">0.7×</output><input id="reactorFxParticles" type="range" min="0" max="2" step=".1" value=".65"></label></div>
+    <div class="two"><label>Reactive mask<select id="reactorFxMask"><option value="none">No mask</option><option value="halo">Celestial halo</option><option value="wings">Emissive wings</option><option value="bars">Kinetic equalizer bars</option><option value="eclipse">Eclipse iris</option></select></label>
+     <label>Scene transition<select id="reactorFxTransition"><option value="flash">Impact flash</option><option value="fade">Dark fade</option><option value="sweep">Cinematic light sweep</option></select></label></div>
+    <div class="checks"><label><input id="reactorFxReactiveOverlay" type="checkbox" checked> Map audio to overlay intensity</label>
+     <label><input id="reactorFxBeatMarkers" type="checkbox" checked> Show beat markers on timeline</label>
+     <label><input id="reactorFxBeatScene" type="checkbox"> Switch scenes on detected kicks</label></div>
+    <p class="hint">Kick-triggered scene changes use a cooldown and only occur when the audio detector identifies a real beat.</p>
+   </div>
+   <div class="reactor-export-block">
+    <h3>03D / CINEMATIC SCENE DIRECTOR</h3><p class="hint">Choose the order of four Reactor modes and run them using the existing timed Scene Director or kick-triggered switching.</p>
+    <div class="reactor-iv-matrix">
+     <label>Scene A<select id="reactorFxScene0"><option value="sovereign">Sovereign</option><option value="spectrum">Spectrum</option><option value="rings">Rings</option><option value="wave">Wave</option><option value="portal">Portal</option><option value="starlight">Starlight</option></select></label>
+     <label>Scene B<select id="reactorFxScene1"><option value="portal">Portal</option><option value="sovereign">Sovereign</option><option value="spectrum">Spectrum</option><option value="rings">Rings</option><option value="wave">Wave</option><option value="starlight">Starlight</option></select></label>
+     <label>Scene C<select id="reactorFxScene2"><option value="rings">Rings</option><option value="sovereign">Sovereign</option><option value="spectrum">Spectrum</option><option value="wave">Wave</option><option value="portal">Portal</option><option value="starlight">Starlight</option></select></label>
+     <label>Scene D<select id="reactorFxScene3"><option value="wave">Wave</option><option value="sovereign">Sovereign</option><option value="spectrum">Spectrum</option><option value="rings">Rings</option><option value="portal">Portal</option><option value="starlight">Starlight</option></select></label>
+    </div>
+    <div class="reactor-source-controls"><button id="reactorFxReset" class="small-btn">↺ Restore effect preset</button>
+     <button id="reactorFxExport" class="small-btn">↓ Export effects JSON</button><button id="reactorFxShare" class="small-btn">Share / Save effect settings</button></div>
+    <label class="upload"><input id="reactorFxImport" type="file" accept=".json,application/json"><b>＋ IMPORT REACTOR IV EFFECT COMPOSITION</b></label>
+    <p id="reactorFxStatus" class="hint" role="status">Audio effect routing ready.</p>
+   </div>
    <label>On-stage signature<input type="text" id="reactorSignature" maxlength="36" value="PROXIMUS" placeholder="PROXIMUS"></label>
    <p class="hint"><span id="reactorResolution">960 × 540</span> · Microphone audio is analyzed, not played back through the speaker.</p>
   </div>
@@ -481,7 +573,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.9.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.0.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
