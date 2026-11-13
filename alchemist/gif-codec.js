@@ -1,4 +1,4 @@
-// PROXIMUS Asset Alchemist v2.2 — dependency-free GIF89a encoder.
+// PROXIMUS Asset Alchemist v2.3 — dependency-free GIF89a encoder.
 // Converts true RGBA frames to palette-indexed, LZW compressed animated GIF bytes.
 // No network, remote codec, GIF renaming, or external library.
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
@@ -54,24 +54,24 @@ export function lzwCompress(pixels){
 }
 export function encodeGif({width,height,frames,loop=0,transparent=false,dither=false}){
  width=Math.round(width);height=Math.round(height);
- if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||width>512||height>512||width*height>200000)throw Error('GIF dimensions must be within 512px and 200,000 pixels');
+ if(!Number.isInteger(width)||!Number.isInteger(height)||width<1||height<1||width>720||height>720||width*height>360000)throw Error('GIF dimensions must be within 720px and 360,000 pixels');
  if(!Array.isArray(frames)||frames.length<1||frames.length>120)throw Error('GIF needs 1–120 frames');
- const out=[...ascii('GIF89a'),...u16(width),...u16(height),0xf7,0,0,...PALETTE];
- // NETSCAPE2.0 loop extension; 0 means forever.
- out.push(0x21,0xff,11,...ascii('NETSCAPE2.0'),3,1,...u16(clamp(Math.floor(loop),0,65535)),0);
+ // Hold typed chunks rather than an enormous JS number array, which is important
+ // for higher-resolution exports on mobile browsers.
+ const chunks=[Uint8Array.from([...ascii('GIF89a'),...u16(width),...u16(height),0xf7,0,0,...PALETTE])];
+ chunks.push(Uint8Array.from([0x21,0xff,11,...ascii('NETSCAPE2.0'),3,1,...u16(clamp(Math.floor(loop),0,65535)),0]));
  for(const frame of frames){
   if(frame.width!==width||frame.height!==height)throw Error('Frame sizes do not match GIF dimensions');
   const indexed=rgbaToIndexed(frame,{transparent,dither});
-  const delay=clamp(Math.round((Number(frame.delayMs)||100)/10),2,65535);
-  out.push(0x21,0xf9,4,transparent?0x09:0x08,...u16(delay),0,0);
-  out.push(0x2c,0,0,0,0,...u16(width),...u16(height),0);
-  out.push(8);
+  const duration=clamp(Math.round((Number(frame.delayMs)||100)/10),2,65535);
+  chunks.push(Uint8Array.from([0x21,0xf9,4,transparent?0x09:0x08,...u16(duration),0,0,0x2c,0,0,0,0,...u16(width),...u16(height),0,8]));
   const bytes=lzwCompress(indexed);
   for(let start=0;start<bytes.length;start+=255){
-   const chunk=bytes.subarray(start,start+255);out.push(chunk.length,...chunk);
+   const part=bytes.subarray(start,start+255);
+   chunks.push(Uint8Array.of(part.length),part);
   }
-  out.push(0);
+  chunks.push(Uint8Array.of(0));
  }
- out.push(0x3b);
- return new Blob([Uint8Array.from(out)],{type:'image/gif'});
+ chunks.push(Uint8Array.of(0x3b));
+ return new Blob(chunks,{type:'image/gif'});
 }
