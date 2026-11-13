@@ -1,8 +1,9 @@
-// PROXIMUS | ASSET ALCHEMIST v2.2 — Animation Forge
+// PROXIMUS | ASSET ALCHEMIST v2.3 — Animation Forge
 // Real local video/GIF frame sampling + GIF89a encoding; browser-dependent decoders clearly guarded.
 import {$,safe,stem,bytes,notice,download,makeZip,textFile,blobCanvas,wrap} from './core.js';
 import {encodeGif} from './gif-codec.js';
-const MAX_BYTES=250000000,MAX_FRAMES=96,MAX_GIF_FRAMES=1200;
+import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
+const MAX_BYTES=250000000,MAX_FRAMES=96,MAX_GIF_FRAMES=400,MAX_GIF_PIXELS=360000,MAX_FRAME_BUDGET=17000000;
 const ICON_SIZES=[32,64,128,256];
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
 const delay=()=>new Promise(resolve=>setTimeout(resolve,0));
@@ -12,13 +13,27 @@ function sourceType(file){
  if(['video/mp4','video/webm'].includes(file?.type)||/\.(?:mp4|webm)$/.test(name))return 'video';
  throw Error('Use a local GIF, MP4 or WebM. Other formats require a browser-supported decoder.');
 }
-function dims(w,h,size,asIcon=false){
- let aspect=h/w;
- if(!Number.isFinite(aspect)||aspect<=0)throw Error('Invalid media dimensions.');
- const maxSide=asIcon?256:512,maxPixels=asIcon?65536:200000;
- const outW=Math.max(1,Math.floor(Math.min(size,maxSide,maxSide/aspect,Math.sqrt(maxPixels/aspect))));
- const outH=Math.max(1,Math.round(outW*aspect));
- return {width:outW,height:outH};
+// Default GIF mode keeps the original aspect ratio with no exact-size requirement.
+export function dimensionsForGif(w,h,{preset='auto',customWidth=0,customHeight=0,keepRatio=true}={}){
+ w=Math.round(Number(w));h=Math.round(Number(h));
+ if(w<1||h<1)throw Error('Invalid source dimensions.');
+ let width,height;
+ if(preset==='custom'){
+  const cw=Number(customWidth)||0,ch=Number(customHeight)||0;
+  if(cw<=0&&ch<=0)throw Error('Enter a custom width, height, or both — or use Auto GIF size.');
+  if(keepRatio){
+   const scale=cw>0&&ch>0?Math.min(cw/w,ch/h):cw>0?cw/w:ch/h;
+   width=Math.max(1,Math.round(w*scale));height=Math.max(1,Math.round(h*scale));
+  }else{
+   width=Math.max(1,Math.round(cw||w));height=Math.max(1,Math.round(ch||h));
+  }
+ }else{
+  const size=({auto:480,small:240,medium:360,large:600})[preset]||480;
+  const scale=Math.min(1,size/Math.max(w,h),Math.sqrt(MAX_GIF_PIXELS/(w*h)));
+  width=Math.max(1,Math.round(w*scale));height=Math.max(1,Math.round(h*scale));
+ }
+ if(width>720||height>720||width*height>MAX_GIF_PIXELS)throw Error('This GIF size exceeds browser memory limits (maximum 720 px per side and 360,000 total pixels). Choose a smaller size.');
+ return {width,height};
 }
 function drawFrame(ctx,source,width,height,mode,bg,transparent){
  const c=ctx.canvas;
@@ -49,19 +64,20 @@ async function videoSource(file){
  }catch(err){URL.revokeObjectURL(url);throw err;}
 }
 async function gifSource(file){
- if(typeof ImageDecoder==='undefined')throw Error('Animated GIF frame decoding needs Chromium ImageDecoder. Try current Chrome, Edge, or Opera.');
- if(!await ImageDecoder.isTypeSupported('image/gif'))throw Error('This browser does not support animated GIF frame extraction.');
- const decoder=new ImageDecoder({data:new Uint8Array(await file.arrayBuffer()),type:'image/gif',preferAnimation:true});
- try{
-  await decoder.tracks.ready;
-  const track=decoder.tracks.selectedTrack;
-  if(!track||track.frameCount<1||track.frameCount>MAX_GIF_FRAMES)throw Error('GIF must contain 1–1200 frames for local conversion.');
-  const width=decoder.tracks.selectedTrack?.frameWidth||0,height=decoder.tracks.selectedTrack?.frameHeight||0;
-  // Intrinsic dimensions are reported by first decoded VideoFrame when track metadata omits them.
-  const first=(await decoder.decode({frameIndex:0})).image;
-  const w=width||first.displayWidth,h=height||first.displayHeight;first.close();
-  return {kind:'gif',decoder,count:track.frameCount,width:w,height:h,close(){decoder.close()}};
- }catch(err){decoder.close();throw err;}
+ // Native decoder where available, plus a fully local GIF89a/GIF87a fallback for Safari.
+ if(typeof ImageDecoder!=='undefined'&&await ImageDecoder.isTypeSupported('image/gif')){
+  const decoder=new ImageDecoder({data:new Uint8Array(await file.arrayBuffer()),type:'image/gif',preferAnimation:true});
+  try{
+   await decoder.tracks.ready;const track=decoder.tracks.selectedTrack;
+   if(!track||track.frameCount<1||track.frameCount>MAX_GIF_FRAMES)throw Error('GIF must contain 1–400 frames for safe local conversion.');
+   const first=(await decoder.decode({frameIndex:0})).image;
+   const width=first.displayWidth,height=first.displayHeight;first.close();
+   return {kind:'gif',decoder,count:track.frameCount,width,height,close(){decoder.close()}};
+  }catch(err){decoder.close();throw err;}
+ }
+ const parsed=parseGifFrames(await file.arrayBuffer());
+ const renderer=createGifFrameRenderer(parsed);
+ return {kind:'gifraw',renderer,count:parsed.frames.length,width:parsed.width,height:parsed.height,close(){}};
 }
 async function openSource(file){
  if(!file)throw Error('Select a local MP4, WebM or GIF.');
@@ -99,6 +115,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
  if(![6,8,12].includes(fps))throw Error('FPS must be 6, 8 or 12.');
  const count=Math.ceil((end-start)*fps);
  if(count>MAX_FRAMES)throw Error('GIF export limit is 96 frames. Reduce duration or FPS.');
+ if(count*width*height>MAX_FRAME_BUDGET)throw Error('The GIF would use too much browser memory. Choose a smaller size, shorter clip, or lower FPS.');
  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
  const ctx=canvas.getContext('2d',{willReadFrequently:true}),frames=[];
  const durationMs=Math.round(1000/fps);
@@ -114,24 +131,25 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
    if(k%2===0){progress('Extracting video frame '+(k+1)+' of '+count);await delay();}
   }
  }else{
-  const decoder=source.decoder;
-  let index=0,at=0,next=0,current=null;
+  // Sample by animation timestamp, automatically repeating shorter source GIFs.
+  let index=0,next=0,current=null,loops=0;
   try{
    for(let k=0;k<count;k++){
     if(isCancelled())throw Error('Conversion cancelled.');
     const time=start+k/fps;
-    while((!current||time>=next-1e-6)&&index<source.count){
-     if(current)current.close();
-     const result=await decoder.decode({frameIndex:index++});
-     current=result.image;
-     at=next;
-     next=at+clamp((Number(current.duration)||100000)/1000000,.02,10);
+    while(!current||time>=next-1e-6){
+     current?.close?.();
+     const i=index%source.count;
+     const result=source.kind==='gifraw'?source.renderer.frame(i):(await source.decoder.decode({frameIndex:i})).image;
+     current=source.kind==='gifraw'?result.canvas:result;
+     next+=clamp(Number(result.duration||100000)/1000000,.02,10);
+     index++;loops++;
+     if(loops>3000)throw Error('Invalid GIF timing metadata.');
     }
-    if(!current||time>=next)break;
     frames.push({...drawFrame(ctx,current,width,height,mode,bg,transparent),delayMs:durationMs});
-    if(k%2===0){progress('Sampling GIF frame '+(k+1)+' of '+count);await delay();}
+    if(k%2===0){progress('Sampling animated GIF '+(k+1)+' of '+count);await delay();}
    }
-  }finally{current?.close();}
+  }finally{current?.close?.();}
  }
  if(!frames.length)throw Error('No frames decoded. Adjust the trim range or try another file.');
  return frames;
@@ -183,7 +201,7 @@ export function initAnimationForge(app){
  const fileEl=$('animFile');if(!fileEl)return;
  const video=$('animVideo'),gif=$('animGif'),preview=$('animResult');
  const status=$('animStatus'),progress=$('animProgress');
- let file=null,url=null,resultURL=null,busy=false,cancel=false;
+ let file=null,url=null,resultURL=null,busy=false,cancel=false,lastGif=null,lastGifName='';
  const say=t=>{progress.textContent=t};
  const quality=()=>({
   fps:Number($('animFPS').value),
@@ -199,7 +217,7 @@ export function initAnimationForge(app){
   const f=e.target.files[0];if(!f)return;
   if(busy)throw Error('Finish or cancel the current export first');
   const type=sourceType(f);if(f.size>MAX_BYTES)throw Error('Media exceeds 250 MB.');
-  cleanup();file=f;url=URL.createObjectURL(file);
+  cleanup();file=f;lastGif=null;lastGifName='';$('animUseBg').hidden=true;$('animUseThumb').hidden=true;preview.hidden=true;if(resultURL){URL.revokeObjectURL(resultURL);resultURL=null;}url=URL.createObjectURL(file);
   video.hidden=type!=='video';gif.hidden=type!=='gif';
   if(type==='video'){
    video.onloadedmetadata=()=>{
@@ -227,8 +245,13 @@ export function initAnimationForge(app){
    src=await openSource(file);
    const opts=quality();
    let width,height;
-   if(kind==='icons'){width=256;height=256;}else{
-    ({width,height}=dims(src.width,src.height,Number($('animWidth').value)));
+   if(kind==='icons'||kind==='iconPack'){width=256;height=256;}else{
+    ({width,height}=dimensionsForGif(src.width,src.height,{
+     preset:$('animSizePreset').value,
+     customWidth:Number($('animCustomWidth').value),
+     customHeight:Number($('animCustomHeight').value),
+     keepRatio:$('animKeepRatio').checked
+    }));
    }
    if(kind==='frame'){
     opts.end=opts.start+1/opts.fps;
@@ -237,13 +260,15 @@ export function initAnimationForge(app){
     mode:kind==='icons'?'cover':opts.mode});
    if(cancel)throw Error('Conversion cancelled.');
    const base=stem(file.name);
-   if(kind==='icons'){
+   if(kind==='icons'||kind==='iconPack'){
     const sizes=[...document.querySelectorAll('.animIconSize:checked')].map(el=>Number(el.value));
     if(!sizes.length)throw Error('Select at least one animated icon size.');
     const blob=await exportAnimatedIcons(frames,256,256,sizes,{...opts,progress:say});
-    download(blob,base+'-ANIMATED-ICON-PACK.zip');
+    const name=base+'-ANIMATED-ICON-PACK.zip';
+    if(kind==='iconPack')app.addAsset(name,blob,'Animation Forge');
+    else download(blob,name);
     status.textContent='GIF icon ZIP completed · '+frames.length+' frames · '+bytes(blob.size);
-    notice('Animated GIF icon pack downloaded');
+    notice('Animated GIF icon pack '+(kind==='iconPack'?'added to Pack':'downloaded'));
    }else if(kind==='frame'){
     const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
     canvas.getContext('2d').putImageData(frames[0],0,0);
@@ -258,6 +283,8 @@ export function initAnimationForge(app){
     const name=base+'-'+width+'x'+height+'-'+opts.fps+'fps.gif';
     if(kind==='pack')app.addAsset(name,blob,'Animation Forge');
     else download(blob,name);
+    lastGif=blob;lastGifName=name;
+    $('animUseBg').hidden=false;$('animUseThumb').hidden=false;
     status.textContent='GIF complete · '+frames.length+' frames · '+width+'×'+height+' · '+bytes(blob.size);
     say('Completed with true animated GIF89a encoding. Preview below.');
    }
@@ -266,9 +293,26 @@ export function initAnimationForge(app){
    for(const id of controls)$(id).disabled=false;
   }
  }
- $('animConvert').addEventListener('click',wrap(()=>run('gif')));
- $('animToPack').addEventListener('click',wrap(()=>run('pack')));
+ const mode=$('animMode'),sizePreset=$('animSizePreset');
+ function updateMode(){
+  const icons=mode.value==='icons';
+  $('animIconOptions').hidden=!icons;
+  $('animStandardOptions').hidden=icons;
+  $('animConvert').textContent=icons?'↓ Create animated GIF icons':'↓ Create regular GIF';
+  $('animToPack').textContent=icons?'＋ Icon ZIP to Pack':'＋ GIF to Pack';
+ }
+ function updateSize(){ $('animCustomFields').hidden=sizePreset.value!=='custom'; }
+ mode.addEventListener('change',updateMode);sizePreset.addEventListener('change',updateSize);
+ updateMode();updateSize();
+ $('animConvert').addEventListener('click',wrap(()=>run(mode.value==='icons'?'icons':'gif')));
+ $('animToPack').addEventListener('click',wrap(()=>run(mode.value==='icons'?'iconPack':'pack')));
  $('animIcons').addEventListener('click',wrap(()=>run('icons')));
+ for(const [id,target] of [['animUseBg','background'],['animUseThumb','hero']]){
+  $(id).addEventListener('click',()=>{
+   if(!lastGif){notice('Create a regular GIF first.',true);return;}
+   document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:lastGif,name:lastGifName,target}}));
+  });
+ }
  $('animFrame').addEventListener('click',wrap(()=>run('frame')));
  window.addEventListener('pagehide',()=>{cleanup();if(resultURL)URL.revokeObjectURL(resultURL)},{once:true});
 }

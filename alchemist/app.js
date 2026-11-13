@@ -4,6 +4,7 @@ import {initAudio,initMotion,initModel} from './media-tools.js';
 import {initProduction,initAudit} from './pro-tools.js';
 import {initLayerForge,initMotionGraphics} from './creator-tools.js';
 import {initAnimationForge} from './animation-tools.js';
+import {initMediaPublisher} from './media-publisher.js';
 const names=[
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
@@ -101,7 +102,14 @@ function drawPack(){
   const btn=document.createElement('button');btn.textContent='×';btn.title='Remove file';
   btn.addEventListener('click',()=>{pack.splice(i,1);drawPack();void vaultRemove(f.name);notice('Removed '+f.name)});
   const dl=document.createElement('button');dl.textContent='↓';dl.title='Download this file';dl.addEventListener('click',()=>download(f.data,f.name));
-  row.append(title,size,dl,btn);list.append(row);
+  if(/\.(?:gif|mp4|webm|png|webp|jpe?g)$/i.test(f.name)){
+    const bg=document.createElement('button');bg.textContent='BG';bg.title='Use as application background';
+    bg.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'background'}})));
+    const thumb=document.createElement('button');thumb.textContent='Thumb';thumb.title='Use as hero thumbnail';
+    thumb.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'hero'}})));
+    row.append(bg,thumb);
+   }
+   row.append(title,size,dl,btn);list.append(row);
  });
 }
 $('packExport').addEventListener('click',wrap(async()=>{
@@ -110,7 +118,7 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.2.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.3.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
@@ -162,7 +170,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.2.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.3.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -184,10 +192,10 @@ function setupVersion(){
 function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);
+ initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.1 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.3 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

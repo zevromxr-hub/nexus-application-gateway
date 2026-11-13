@@ -1,5 +1,34 @@
 # PROXIMUS | ASSET ALCHEMIST — Changelog
 
+## v2.3.0 — Media Fusion Edition (2026-11-12)
+
+### GIF conversion fixes
+- Animation Forge now defaults to **regular GIF**, separate from the optional animated GIF icon workflow. Neither regular GIF generation nor its Pack export requires selected icon sizes.
+- Default **automatic dimensions** preserve source aspect ratio and avoid exact-size fields. Small, medium, large, or custom width/height remain available; optional aspect-ratio lock.
+- GIF output uses browser-safe frame/pixel budgets and typed byte chunks rather than a large plain JavaScript array.
+- Fallback local GIF87a/GIF89a frame reader supports GIF animation re-encoding when the browser does not expose ImageDecoder, including some iOS Safari builds. GIF frame timing, disposal, palette and LZW decoding are handled locally.
+- Animation Forge generated GIFs can be applied as the application background or hero thumbnail without a separate upload.
+
+### Optional media backgrounds and thumbnails
+- **Media Publisher** button in the existing top bar; no new studio or visual redesign.
+- Choose a local GIF/MP4/WebM (or PNG/JPEG/WebP) for an animated page background, the home hero thumbnail, or a studio-specific thumbnail.
+- Choose cover/contain, optional background visibility, replace/clear media, and save locally to IndexedDB on that device.
+- GIF, MP4, WebM, and still image assets from the existing Asset Packager can be used as backgrounds or thumbnails.
+- Videos loop muted and inline. Autoplay restrictions may require tapping Play in Media Publisher. User media is never uploaded to the repository or other servers.
+
+### Preservation
+- All prior 15 studios, pack vault, original page styles when custom media is absent, desktop/mobile layouts, Discord button destination, GitHub repository and independent application gateways remain unchanged.
+- New local-only storage uses its own IndexedDB database so existing saved packs are not migrated or reset.
+- The service worker cache and release metadata are versioned consistently.
+
+### Limits
+- GIF format supports 256 palette colors and no audio.
+- GIF conversion limits 8 seconds / 96 frames; 720 px maximum side and 360,000 pixels per frame. Browser memory guards may require smaller dimensions or FPS.
+- User media persists only on the importing browser/device, subject to browser storage and autoplay restrictions. It is not cloud synced.
+- Video decoding depends on supported browser codecs; iOS support varies by source format.
+- Animated GIF icons are not animated Windows .ICO files.
+
+
 ## v2.2.0 — Motion & GIF Dominion Edition (2026-11-12)
 
 ### New

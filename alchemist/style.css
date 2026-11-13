@@ -34,3 +34,33 @@
 [data-panel="animation"] .checks label{font-size:12px}
 [data-panel="animation"] .check-grid{display:flex;flex-wrap:wrap;gap:6px 18px}
 #iconGifExport{margin:10px 0}
+
+
+/* v2.3 optional media publisher - dormant until custom media is chosen */
+#ambientMedia{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:transparent}
+#ambientMedia .personal-media{width:100%;height:100%;display:block}
+.rail,.shell{position:relative;z-index:1}
+.rail{position:fixed;z-index:15}
+body.has-ambient .welcome{background:linear-gradient(115deg,#17122ed6,#1a1530c5 58%,#100f25d9)}
+body.has-ambient .panel,body.has-ambient .preview-panel{background:linear-gradient(155deg,#151329dc,#121020d5)}
+body.has-ambient .rail{background:#0d0a1add}
+#heroOrb.has-personal-media{position:relative;overflow:hidden;font-size:0}
+#heroOrb.has-personal-media .personal-media{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit}
+.studio-personal-thumb{width:164px;height:90px;overflow:hidden;flex:none;border-radius:12px;border:1px solid #8268a6;background:#0a0916}
+.studio-personal-thumb .personal-media{width:100%;height:100%;object-fit:cover;display:block}
+.media-dialog{padding:0;border:1px solid #7860a9;border-radius:16px;background:#110e22;color:#ede7ff;width:min(650px,calc(100vw - 22px));max-height:90vh;overflow:auto;box-shadow:0 35px 130px #000d;z-index:60}
+.media-dialog::backdrop{background:#05040cd9;backdrop-filter:blur(4px)}
+.media-settings{padding:24px}.media-settings .cmd-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:12px}
+.media-settings .cmd-head b{letter-spacing:1.5px;color:#d5b4fa}
+.media-settings .actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.media-settings .actions button{padding:11px 13px;border-radius:9px}
+.media-settings .hint{font-size:12px;color:#b4a6d0;line-height:1.6}
+#animIconOptions,#animStandardOptions{border:1px solid #59487b;border-radius:10px;padding:12px;margin:10px 0}
+#animCustomFields .two{margin-top:10px}
+@media(max-width:760px){
+ .rail{position:relative;inset:auto;width:auto;height:auto}
+ .studio-personal-thumb{width:92px;height:64px}
+ .media-settings{padding:16px}
+ #heroOrb.has-personal-media{display:block;width:92px;height:92px;flex:none}
+ #mediaOpen{padding:9px 10px}
+}

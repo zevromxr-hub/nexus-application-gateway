@@ -1,0 +1,50 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.3.0",
+  "release_date": "2026-11-12",
+  "status": "published-source",
+  "channel": "stable",
+  "studios": 15,
+  "delivery": "GitHub Pages static app, no installer",
+  "branch": "main",
+  "path": "alchemist/",
+  "compatibility": "Same Discord OPEN ASSET ALCHEMIST URL and existing iPhone home-screen web app; all existing studios intact",
+  "modules": [
+    "core",
+    "image-tools",
+    "media-tools",
+    "pro-tools",
+    "creator-tools",
+    "animation-tools",
+    "gif-codec",
+    "gif-reader",
+    "media-publisher",
+    "application-shell",
+    "offline-service-worker",
+    "version-metadata"
+  ],
+  "privacy": "All media chosen by user stays within current device/browser IndexedDB; no server upload or GitHub artifact publishing of private files",
+  "features": [
+    "Regular GIF with automatic aspect ratio",
+    "Separate animated icon ZIP creation",
+    "Custom width/height optional",
+    "GIF imported and transcoded without Chromium ImageDecoder",
+    "Optional full-screen GIF or muted MP4/WebM background",
+    "Optional animated hero/studio thumbnails",
+    "Media persists locally with user clear controls",
+    "Animation Forge and Packager can apply generated GIF/media",
+    "Existing 15 studios preserved"
+  ],
+  "known_limits": [
+    "GIF output is inherently silent and palette-limited",
+    "Video decoding and mobile autoplay depend on browser and codecs; videos are always muted, looped and inline",
+    "GIF exports are bounded by 8 seconds, 96 frames, 720 px each side and 360,000 total pixels",
+    "Media uploads stay in local browser storage (not synced between iPhone and desktop); site-data deletion removes settings",
+    "GIF source frame compositing requires source that fits browser memory limits",
+    "No Windows animated ICO support"
+  ],
+  "test_command": "node alchemist/tests/validate.mjs",
+  "validation": "Automated JS/source checks, GIF round-trip + GIF fallback tests; live deployment/mobile browser testing is separate"
+}

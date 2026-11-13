@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="./style.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Visual & Media Workshop</title>
 </head><body>
+<div id="ambientMedia" hidden aria-hidden="true"></div>
 <div id="dropOverlay" hidden><div class="drop-msg">✧ DROP ASSETS INTO THE ACTIVE STUDIO</div></div>
 <aside class="rail">
   <a class="brand" href="../hub/" title="PROXIMUS Sovereign Gateway"><span class="sigil">✧</span><span>PROXIMUS <small>ASSET ALCHEMIST</small></span></a>
@@ -34,15 +35,15 @@
 <div class="shell">
 <header class="topbar">
  <div class="crumb">PROXIMUS <span>/</span> CREATOR NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
- <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
+ <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.2.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Fifteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" aria-hidden="true">✧</div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.3.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Fifteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>15</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.2.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.3.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -169,17 +170,22 @@
   <label class="upload"><input id="animFile" type="file" accept="video/mp4,video/webm,image/gif,.mp4,.webm,.gif"><b>＋ IMPORT MP4 / WEBM / GIF</b><span>Local files only · maximum source 250 MB · GIF output is always silent</span></label>
   <p id="animStatus" class="hint">Choose a browser-decodable video or GIF to begin. Nothing is uploaded.</p>
   <div class="two"><label>Clip start (seconds)<input id="animStart" type="number" min="0" max="99999" step=".1" value="0"></label><label>Clip end (seconds)<input id="animEnd" type="number" min=".1" max="99999" step=".1" value="4"></label></div>
-  <div class="two"><label>Target width<select id="animWidth"><option value="128">128 px · compact</option><option value="240">240 px · small</option><option value="320" selected>320 px · balanced</option><option value="480">480 px · high detail</option></select></label><label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8" selected>8 · balanced</option><option value="12">12 · smooth</option></select></label></div>
+  <label>Output type<select id="animMode"><option value="gif" selected>Regular animated GIF — no icon dimensions required</option><option value="icons">Animated GIF icon pack — multiple square sizes</option></select></label>
+  <div id="animStandardOptions"><label>GIF dimensions<select id="animSizePreset"><option value="auto" selected>Automatic · source proportions</option><option value="small">Small · up to 240 px</option><option value="medium">Medium · up to 360 px</option><option value="large">Large · up to 600 px</option><option value="custom">Custom width / height</option></select></label>
+    <div id="animCustomFields" hidden><div class="two"><label>Width (px)<input id="animCustomWidth" type="number" min="1" max="720" placeholder="Auto"></label><label>Height (px)<input id="animCustomHeight" type="number" min="1" max="720" placeholder="Auto"></label></div><label class="checks"><input id="animKeepRatio" type="checkbox" checked> Preserve original aspect ratio</label></div>
+    <p class="hint">Regular GIF uses your video's proportions automatically; exact width or height is optional. Output is not limited to icon sizes.</p>
+  </div>
+  <label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8" selected>8 · balanced</option><option value="12">12 · smooth</option></select></label></div>
   <div class="two"><label>Fit mode<select id="animFit"><option value="contain">Contain · full video visible</option><option value="cover">Cover · crop to fill</option></select></label><label>Fill color<input id="animBg" type="color" value="#111020"></label></div>
   <div class="checks"><label><input id="animDither" type="checkbox" checked> Improve gradients with ordered dithering</label><label><input id="animTransparent" type="checkbox"> Preserve transparent areas where available</label></div>
-  <div class="actions"><button id="animConvert" class="primary">↓ Convert to GIF</button><button id="animToPack">＋ GIF to Pack</button><button id="animFrame">↓ PNG still frame</button></div>
-  <h3>Animated GIF icon pack</h3>
+  <div class="actions"><button id="animConvert" class="primary">↓ Create regular GIF</button><button id="animToPack">＋ GIF to Pack</button><button id="animFrame">↓ PNG still frame</button></div>
+  <div id="animIconOptions" hidden><h3>Animated GIF icon pack</h3>
   <p class="hint">Creates genuinely animated square GIF icons, plus PNG still icons, from the same MP4/WebM/GIF source.</p>
   <div class="check-grid"><label><input class="animIconSize" type="checkbox" value="32" checked>32×32</label><label><input class="animIconSize" type="checkbox" value="64" checked>64×64</label><label><input class="animIconSize" type="checkbox" value="128" checked>128×128</label><label><input class="animIconSize" type="checkbox" value="256" checked>256×256</label></div>
-  <button id="animIcons" class="primary wide">↓ Export animated GIF icon ZIP</button>
-  <div class="actions"><button id="animCancel" class="small-btn">Cancel conversion</button></div>
+  <button id="animIcons" class="primary wide">↓ Export animated GIF icon ZIP</button></div>
+  <div class="actions"><button id="animUseBg" class="small-btn" hidden>✧ Set generated GIF as background</button><button id="animUseThumb" class="small-btn" hidden>◧ Set as hero thumbnail</button><button id="animCancel" class="small-btn">Cancel conversion</button></div>
   <p id="animProgress" class="hint" aria-live="polite">Ready · actual GIF89a / LZW conversion in this browser</p>
-  <p class="hint">GIF exports are limited to 8 seconds / 96 frames and 512 px longest side for reliable local processing. GIF icons are not animated Windows .ICO files. H.264/MP4 and WebM support depends on the browser decoder; animated GIF extraction requires Chromium ImageDecoder.</p>
+  <p class="hint">GIF exports are limited to 8 seconds / 96 frames and 720 px per side (360,000 pixels) for reliable local processing. GIF icons are not animated Windows .ICO files. H.264/MP4 and WebM support depends on the browser decoder; GIF import also works with our local fallback decoder when ImageDecoder is unavailable.</p>
  </div><div class="panel">
   <h3>Source preview</h3>
   <video id="animVideo" class="anim-preview" controls muted playsinline hidden></video>
@@ -196,6 +202,17 @@
 <p id="vaultStatus" class="hint">Vault starting…</p><div class="actions"><button id="vaultReload" class="small-btn">↻ Restore saved pack</button><button id="vaultInfo" class="small-btn">Storage estimate</button></div><p class="hint">ZIP is built entirely in your browser. No background uploads, accounts, or cloud storage. Large uncompressed packs can consume significant RAM. Browser data may be deleted by private browsing, browser cleanup, or storage quota eviction.</p></div><div class="panel"><h3>Collected files <span id="packTotal"></span></h3><div id="packList" class="file-list empty">Your pack is empty. Add outputs from another studio.</div></div></div></section>
 <footer>POWERED BY ZEVRO | PROXIMUS <span>·</span> PERSONAL CREATIVE WORKBENCH <span>·</span> ALL TRANSFORMS LOCAL</footer>
 </main></div>
+<dialog id="mediaDialog" class="media-dialog"><div class="media-settings">
+ <div class="cmd-head"><b>✧ OPTIONAL MEDIA PUBLISHER</b><button id="mediaClose" class="small-btn" type="button">× Close</button></div>
+ <p class="hint">Customize only the look of this device's Asset Alchemist. Upload a looping GIF, MP4, WebM or still image as an app background or thumbnail. The original theme stays unchanged until you choose a file.</p>
+ <label>Where to display this media<select id="mediaTarget"><option value="background">Full application background</option><option value="hero">Home screen hero thumbnail</option><option value="studio">Selected studio thumbnail</option></select></label>
+ <label id="mediaStudioRow" hidden>Studio<select id="mediaStudio"></select></label>
+ <label class="upload"><input id="mediaFile" type="file" accept=".gif,.mp4,.webm,.png,.jpg,.jpeg,.webp,image/gif,video/mp4,video/webm,image/png,image/jpeg,image/webp"><b>＋ SELECT GIF / MP4 / WEBM / IMAGE</b><span>Up to 80 MB video or 35 MB image. File stays on this device.</span></label>
+ <div class="two"><label>Visibility (background only)<input id="mediaOpacity" type="range" min=".1" max="1" step=".05" value=".42"></label><label>Display fit<select id="mediaFit"><option value="cover">Fill · crop to fit</option><option value="contain">Contain · show entire image</option></select></label></div>
+ <div class="actions"><button id="mediaSave" class="primary">Save media locally</button><button id="mediaClear" class="small-btn">Remove selected media</button><button id="mediaResume" class="small-btn" hidden>▶ Play background video</button></div>
+ <p id="mediaStatus" class="hint" role="status">Loading media settings…</p>
+ <p class="hint">Videos loop silently. iPhone/browser autoplay and storage quotas vary; if a video is paused, open Media and tap Play. Your personal backgrounds are stored in this browser's IndexedDB, not uploaded to GitHub. Clearing site data removes them.</p>
+ </div></dialog>
 <dialog id="cmdDialog"><div class="cmd-box"><div class="cmd-head"><b>✧ QUICK NAVIGATION</b><button id="cmdClose">×</button></div><input id="cmdSearch" placeholder="Search studios, tools and transforms…" autocomplete="off"><div id="cmdResults"></div><small>Enter to open · Esc to close · Ctrl+K anywhere</small></div></dialog>
 <script type="module" src="./app.js"></script>
 </body></html>
