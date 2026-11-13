@@ -606,6 +606,13 @@
   <button id="tokenUnlockGo" class="primary wide">↗ Unlock private inventory</button>
   <p class="hint">Need to restore a backup on this device? Use the import control below.</p>
  </div>
+ <div id="tokenVaultRestore" class="panel token-lock-panel">
+  <h3>RESTORE AN ENCRYPTED VAULT FROM ANOTHER DEVICE</h3>
+  <p class="hint">Import the encrypted backup you exported from PC or iPhone. A backup is portable; your codes do not synchronize automatically between devices.</p>
+  <label>Encrypted Token Foundry backup<input id="tokenRestoreFile" type="file" accept=".json,application/json"></label>
+  <label>Backup passphrase<input id="tokenRestorePass" type="password" autocomplete="off" placeholder="Passphrase for the exported vault"></label>
+  <button id="tokenRestoreGo" class="small-btn">↗ Restore encrypted inventory on this device</button>
+ </div>
  <div id="tokenVaultMain" hidden>
   <div class="token-stats">
    <div><strong id="tokenStatTotal">0</strong><span>ISSUED TOKENS</span></div>
