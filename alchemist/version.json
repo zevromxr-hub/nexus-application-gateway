@@ -1,22 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "channel": "stable",
   "release_date": "2026-11-12",
-  "subtitle": "Media Fusion Edition",
-  "studio_count": 15,
-  "previous_version": "2.2.0",
+  "subtitle": "Entertainment Expansion Edition",
+  "studio_count": 17,
+  "previous_version": "2.3.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Regular GIF is the default, separate from animated GIF icon packs",
-    "Automatic source-aspect GIF sizing with optional custom width/height and aspect lock",
-    "Local GIF frame decoder fallback for browsers without ImageDecoder",
-    "Optional locally saved animated GIF/MP4/WebM backgrounds and hero or studio thumbnails",
-    "Direct generated GIF to background or thumbnail and Packager-to-media handoff",
-    "Memory-conscious GIF encoder and coherent versioned offline cache",
-    "Previous 15 studios, existing mobile layout, GitHub Pages URL and Discord button unchanged"
+    "Media Theater: local music/video/GIF playlist with shuffle, looping, speed and cinema mode",
+    "Media Theater: three Web Audio visualizer styles, five color themes and PNG/Pack exports",
+    "Media Theater: video and GIF posters plus application background and hero thumbnail handoff",
+    "Arcade Chamber: Comet Catch touch game with score, combo and hazards",
+    "Arcade Chamber: Pulse Reflex timing game with precision streak scoring",
+    "Arcade Chamber: Memory Matrix matching game with time and move scoring",
+    "Browser-local high scores, arcade score JSON export and poster Asset Packager integration",
+    "Seventeen studios with original mobile layout, GitHub Pages/Discord link and in-app update checking retained"
   ]
 }
