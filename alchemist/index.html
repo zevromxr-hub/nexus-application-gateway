@@ -33,6 +33,12 @@
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
     <button class="nav" data-view="utility"><span>⌘</span> Utility Forge <small>19</small></button>
+    <button class="nav" data-view="projects"><span>▤</span> Project Hub <small>20</small></button>
+    <button class="nav" data-view="automation"><span>⛓</span> Automation Lab <small>21</small></button>
+    <button class="nav" data-view="capture"><span>◉</span> Capture Studio <small>22</small></button>
+    <button class="nav" data-view="documents"><span>▣</span> Document Forge <small>23</small></button>
+    <button class="nav" data-view="qr"><span>⌗</span> QR & Branding <small>24</small></button>
+    <button class="nav" data-view="recovery"><span>⚙</span> Recovery Center <small>25</small></button>
     <button class="nav" data-view="releases"><span>⟳</span> Release Center <small>INFO</small></button>
     <button class="nav" data-view="creator"><span>✧</span> Creator Story <small>ABOUT</small></button>
   </nav>
@@ -45,11 +51,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.5.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Nineteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>19</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.6.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-five functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>25</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.5.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.6.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -190,6 +196,12 @@
   <div class="check-grid"><label><input class="animIconSize" type="checkbox" value="32" checked>32×32</label><label><input class="animIconSize" type="checkbox" value="64" checked>64×64</label><label><input class="animIconSize" type="checkbox" value="128" checked>128×128</label><label><input class="animIconSize" type="checkbox" value="256" checked>256×256</label></div>
   <button id="animIcons" class="primary wide">↓ Export animated GIF icon ZIP</button></div>
   <div class="actions"><button id="animUseBg" class="small-btn" hidden>✧ Set generated GIF as background</button><button id="animUseThumb" class="small-btn" hidden>◧ Set as hero thumbnail</button><button id="animCancel" class="small-btn">Cancel conversion</button></div>
+  <h3>Advanced GIF controls</h3>
+  <div class="two"><label>Playback speed<select id="animSpeed"><option value=".5">0.5× · Slow motion</option><option value="1" selected>1× · Normal</option><option value="1.5">1.5× · Fast</option><option value="2">2× · Fastest</option></select></label><label>Text color<input id="animCaptionColor" type="color" value="#ffffff"></label></div>
+  <label>Animated caption<input id="animCaption" maxlength="70" placeholder="Optional text on every GIF frame"></label>
+  <div class="checks"><label><input id="animReverse" type="checkbox"> Reverse frame order</label></div>
+  <div class="actions"><button id="animExtract" class="primary">↓ Extract PNG frames ZIP</button><button id="animSaveShare" class="small-btn" hidden>Share / Save generated GIF</button><button id="animOpenGif" class="small-btn" hidden>Open GIF preview for device saving</button></div>
+  <p id="animDevice" class="hint" role="status">GIF files use genuine GIF89a animation.</p>
   <p id="animProgress" class="hint" aria-live="polite">Ready · actual GIF89a / LZW conversion in this browser</p>
   <p class="hint">GIF exports are limited to 8 seconds / 96 frames and 720 px per side (360,000 pixels) for reliable local processing. GIF icons are not animated Windows .ICO files. H.264/MP4 and WebM support depends on the browser decoder; GIF import also works with our local fallback decoder when ImageDecoder is unavailable.</p>
  </div><div class="panel">
@@ -216,7 +228,7 @@
    <div class="checks"><label><input type="checkbox" id="theaterShuffle"> Shuffle tracks</label></div>
    <div class="theater-sidehead"><h3>Queue</h3><span id="theaterCurrent" class="hint">0 / 0</span></div>
    <div id="theaterPlaylist" class="theater-queue"></div>
-   <div class="theater-controls"><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
+   <div class="theater-controls"><button id="theaterFavorite" class="small-btn">☆ Favorite track</button><button id="theaterExportFavorites" class="small-btn">↓ Favorites JSON</button><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
    <p id="theaterStatus" class="hint" role="status">Import a file to begin.</p>
   </div>
   <div class="panel">
@@ -229,7 +241,7 @@
    </div>
    <div class="theater-controls"><button id="theaterFullscreen" class="small-btn">⛶ Cinema mode</button><button id="theaterCapture" class="small-btn">↓ Frame PNG</button><button id="theaterPosterPack" class="small-btn">＋ Poster to Pack</button></div>
    <h3>Audio-reactive visualizer</h3>
-   <div class="two"><label>Mode<select id="theaterVisualizerMode"><option value="bars">Neon bars</option><option value="wave">Waveform</option><option value="rings">Resonance rings</option></select></label><label>Palette<select id="theaterTheme"><option value="violet">Imperial violet</option><option value="cyan">Nebula cyan</option><option value="gold">Solar gold</option><option value="ember">Crimson ember</option><option value="emerald">Emerald realm</option></select></label></div>
+   <div class="two"><label>Mode<select id="theaterVisualizerMode"><option value="bars">Neon bars</option><option value="wave">Waveform</option><option value="rings">Resonance rings</option><option value="stars">Nebula stars</option><option value="tunnel">Energy tunnel</option></select></label><label>Palette<select id="theaterTheme"><option value="violet">Imperial violet</option><option value="cyan">Nebula cyan</option><option value="gold">Solar gold</option><option value="ember">Crimson ember</option><option value="emerald">Emerald realm</option></select></label></div>
    <button id="theaterEnableAudio" class="primary wide">♫ Enable live audio reaction</button>
    <canvas id="theaterCanvas" width="900" height="300" aria-label="Music-reactive graphic visualizer"></canvas><div id="theaterLevels" class="hint">VISUAL PREVIEW · VIOLET</div>
    <div class="theater-controls"><button id="theaterVizPng" class="small-btn">↓ Save visualizer PNG</button><button id="theaterVizPack" class="small-btn">＋ Visualizer to Pack</button></div>
@@ -264,6 +276,7 @@
    <div id="memoryCards" class="memory-cards"></div>
    <div class="arcade-actions"><button id="memoryReset" class="primary">▶ Start Memory Matrix</button><span id="memoryStats" class="hint">Pairs 0/8 · Moves 0 · Time 0s</span></div>
   </div>
+  <div class="arcade-actions"><label>Arcade theme<select id="arcadeTheme"><option value="violet">Imperial violet</option><option value="cyan">Nebula cyan</option><option value="gold">Solar gold</option></select></label><label>Profile<input id="arcadeProfile" maxlength="24" value="Player One"></label></div><div id="arcadeAchievements" class="arcade-achievements"></div>
   <p id="arcadeStatus" role="status" class="hint">Choose a game to begin.</p>
   <div class="arcade-actions"><button id="arcadeSnapshot" class="small-btn">＋ Comet screenshot to Pack</button><button id="arcadeScoreExport" class="small-btn">↓ Export highscores JSON</button><button id="arcadeScoreClear" class="small-btn">Reset best scores</button></div>
  </div>
@@ -339,7 +352,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.5.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.6.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -374,10 +387,131 @@
  </div>
 </section>
 
+<section class="studio" data-panel="projects" hidden>
+ <div class="section-heading"><div><div class="eyebrow">20 / UNIVERSAL WORKSPACE</div><h2>Project Hub <span class="subtitle">Portable projects · saved snapshots · instant studio handoff</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <h3>Project identity</h3>
+   <label>Project title<input id="projectTitle" maxlength="80" value="My PROXIMUS Project"></label>
+   <label>Project notes<textarea id="projectNotes" rows="4" maxlength="6000" placeholder="Describe the build or creative direction…"></textarea></label>
+   <div class="buttons"><button id="projectSave" class="primary">Save browser snapshot</button><button id="projectExport">↓ Export portable project ZIP</button></div>
+   <label class="upload"><input id="projectImport" type="file" accept=".zip,application/zip"><b>＋ IMPORT PROXIMUS PROJECT ZIP</b><span>Restore project assets into the Packager on iPhone or PC</span></label>
+   <div class="desk-title-row"><h3>Saved project library</h3><span id="projectCount" class="hint">0 projects</span></div>
+   <button id="projectRestoreVault" class="small-btn">↻ Refresh library</button>
+   <div id="projectList" class="sovereign-project-list"></div>
+   <p id="projectStatus" class="hint" role="status">Your browser-local projects appear here.</p>
+  </div>
+  <div class="panel">
+   <div class="desk-title-row"><h3>Universal asset handoff</h3><span id="projectAssetCount" class="hint">0 assets</span></div>
+   <p class="hint">Assets produced by any studio can be routed into another compatible studio. Select a destination for each asset.</p>
+   <div id="projectAssetList" class="sovereign-project-list"></div>
+   <div class="desk-title-row"><h3>Personal command dashboard</h3><span id="projectFavoriteCount" class="hint">0 favorites</span></div>
+   <p class="hint">Open any studio directly or pin your most-used workspaces to the dashboard.</p>
+   <div id="projectShortcuts" class="project-shortcut-list"></div>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="automation" hidden>
+ <div class="section-heading"><div><div class="eyebrow">21 / CREATIVE AUTOMATION</div><h2>Automation Lab <span class="subtitle">Reusable batch workflows · one import, many exports</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <h3>Image pipeline</h3>
+   <label class="upload"><input id="automationFiles" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple><b>＋ CHOOSE PHOTOS / ARTWORK</b><span>Run the same processing recipe on up to 30 images</span></label>
+   <span id="automationSelection" class="hint">0 images selected</span><div id="automationFileList"></div>
+   <label>Ready-made creator profile<select id="automationPreset">
+    <option value="discord">Discord branding</option><option value="youtube">Video thumbnail</option><option value="phone">Phone wallpaper</option>
+    <option value="desktop">Desktop wallpaper</option><option value="square">Social square</option><option value="icon">Icon collection</option>
+   </select></label>
+   <label>Recipe name<input id="automationName" maxlength="60" value="Discord branding"></label>
+   <div class="two"><label>Output width<input id="automationWidth" type="number" min="16" max="4096" value="512"></label><label>Output height<input id="automationHeight" type="number" min="16" max="4096" value="512"></label></div>
+   <div class="two"><label>Fit<select id="automationFit"><option value="cover">Fill / crop</option><option value="contain">Contain / keep entire artwork</option></select></label><label>Format<select id="automationFormat"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></label></div>
+   <label>Watermark text<input id="automationWatermark" maxlength="70" placeholder="Optional credit"></label>
+   <div class="checks"><label><input type="checkbox" id="automationGray"> Black-and-white output</label><label><input type="checkbox" id="automationIcons" checked> Also generate 64 / 128 / 256 px icons</label></div>
+   <div class="buttons"><button id="automationRun" class="primary">▶ Run workflow → ZIP</button><button id="automationPack">＋ Outputs to Pack</button><button id="automationStop">Cancel</button></div>
+   <p id="automationStatus" role="status" class="hint">Select images and a recipe to begin.</p>
+  </div>
+  <div class="panel">
+   <h3>Save and reuse processing recipes</h3><button id="automationSave" class="primary">＋ Save current recipe</button><div id="automationSaved" class="sovereign-project-list"></div>
+   <h3>Creator-friendly exports</h3><p class="hint">Use custom artwork to build app icons, wallpapers, banners and promotional images without rebuilding settings every time. Download a ZIP or send all outputs into Asset Packager for handoff to other studios.</p>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="capture" hidden>
+ <div class="section-heading"><div><div class="eyebrow">22 / CAMERA & QUICK CREATION</div><h2>Capture Studio <span class="subtitle">Take a photo · edit · export for any platform</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <label class="upload"><input id="captureFile" type="file" accept="image/*"><b>＋ TAKE OR CHOOSE PHOTO</b><span>On iPhone you can use your camera or photo library</span></label>
+   <div class="two"><label>Camera lens<select id="captureFacing"><option value="environment">Rear camera</option><option value="user">Front camera</option></select></label><label>Export preset<select id="capturePreset">
+    <option value="original">Original photo</option><option value="discord">Discord icon</option><option value="banner">Discord banner</option>
+    <option value="youtube">Video thumbnail</option><option value="social">Social square</option><option value="phone">Phone wallpaper</option><option value="desktop">Desktop wallpaper</option>
+   </select></label></div>
+   <div class="buttons"><button id="captureOpenCamera" class="small-btn">◉ Open live camera</button><button id="captureSnap" class="small-btn">Capture frame</button><button id="captureCloseCamera" class="small-btn">Stop camera</button></div>
+   <div class="two"><label>Fit<select id="captureFit"><option value="cover">Crop to fill</option><option value="contain">Fit entire photo</option></select></label><label>Rotate<select id="captureRotation"><option value="0">0°</option><option value="90">90°</option><option value="180">180°</option><option value="270">270°</option></select></label></div>
+   <div class="three"><label>Brightness<input id="captureBrightness" type="range" min="30" max="180" value="100"></label><label>Contrast<input id="captureContrast" type="range" min="40" max="170" value="100"></label><label>Color<input id="captureSaturation" type="range" min="0" max="200" value="100"></label></div>
+   <div class="two"><label>Export type<select id="captureFormat"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></label><label>Canvas fill<input id="captureFill" type="color" value="#111020"></label></div>
+   <label>Optional watermark<input id="captureWatermark" maxlength="70" placeholder="Brand credit / creator signature"></label>
+   <div class="buttons"><button id="captureSave" class="primary">↓ Download</button><button id="captureShare" class="small-btn">Share / Save on device</button><button id="captureToPack" class="small-btn">＋ To Pack</button></div>
+   <p id="captureStatus" role="status" class="hint">Choose a photo or start a live camera session.</p>
+  </div>
+  <div class="panel">
+   <h3>Live camera / imported photo</h3><video id="captureCamera" class="anim-preview" muted playsinline autoplay hidden></video><img id="captureImage" class="anim-preview" alt="Imported photograph" hidden>
+   <h3>Creative export preview</h3><p id="captureResolution" class="hint">Canvas resolution</p><div class="canvas-frame checker"><canvas id="captureCanvas" width="512" height="512" class="sovereign-canvas"></canvas></div>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="documents" hidden>
+ <div class="section-heading"><div><div class="eyebrow">23 / DOCUMENT PRODUCTION</div><h2>Document Forge <span class="subtitle">Photos → ordered printable PDF files</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <label class="upload"><input id="documentFiles" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" multiple><b>＋ IMPORT DOCUMENT PHOTOS</b><span>Select multiple images from iPhone or PC</span></label>
+   <div class="desk-title-row"><h3>Page order</h3><span id="documentCount" class="hint">0 pages</span></div><div id="documentList" class="sovereign-project-list"></div>
+   <label>Document title<input id="documentTitle" maxlength="80" value="My PROXIMUS Document"></label>
+   <div class="two"><label>Page format<select id="documentPaper"><option value="a4">A4</option><option value="letter">US Letter</option><option value="square">Square</option></select></label><label>Photo quality<input id="documentQuality" type="range" min="45" max="95" value="85"></label></div>
+   <label>Optional page footer<input id="documentMark" maxlength="150" placeholder="Confidential / project label"></label>
+   <div class="buttons"><button id="documentExport" class="primary">↓ Generate PDF</button><button id="documentShare" class="small-btn">Share / Save PDF</button><button id="documentToPack" class="small-btn">＋ PDF to Pack</button></div>
+   <p id="documentStatus" class="hint" role="status">Create a document from ordered photos.</p>
+  </div>
+  <div class="panel"><h3>Paper-ready asset collection</h3><p>Compile phone photos, scans, screenshots and artwork into a professional multi-page PDF. Rearrange pages using the arrows, choose A4 or Letter, and keep a copy in Asset Packager.</p></div>
+ </div>
+</section>
+<section class="studio" data-panel="qr" hidden>
+ <div class="section-heading"><div><div class="eyebrow">24 / DIGITAL BRANDING</div><h2>QR & Branding <span class="subtitle">Scannable links · printable artwork · promotional cards</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <label>Website URL or short message<textarea id="qrText" rows="3" placeholder="https://your-website.example" maxlength="106"></textarea></label>
+   <div class="two"><label>QR foreground<input id="qrDark" type="color" value="#211233"></label><label>QR background<input id="qrLight" type="color" value="#ffffff"></label></div>
+   <label>File name<input id="qrFileName" maxlength="65" value="PROXIMUS-QR"></label>
+   <div class="buttons"><button id="qrGenerate" class="primary">◈ Generate QR</button><button id="qrExport">↓ PNG</button><button id="qrSVG">↓ SVG</button><button id="qrShare">Share / Save</button><button id="qrPack">＋ To Pack</button></div>
+   <h3>Digital promotional card</h3><label>Card heading<input id="qrCardTitle" maxlength="50" placeholder="Your brand name"></label><label>Card subtitle<input id="qrCardDetail" maxlength="70" placeholder="SCAN TO CONNECT"></label><button id="qrCard" class="primary wide">↓ Build and package branded card</button>
+   <p id="qrStatus" class="hint" role="status">Generate a QR code locally.</p>
+  </div>
+  <div class="panel"><h3>QR preview</h3><div class="canvas-frame checker"><canvas id="qrCanvas" class="sovereign-qr-canvas" width="650" height="650"></canvas></div><p class="hint">Add a URL or short message, then download artwork for websites, social pages, product packaging or Discord.</p></div>
+ </div>
+</section>
+<section class="studio" data-panel="recovery" hidden>
+ <div class="section-heading"><div><div class="eyebrow">25 / PERFORMANCE & RECOVERY</div><h2>Recovery Center <span class="subtitle">Device diagnostics · backups · safe refresh</span></h2></div></div>
+ <div class="workspace split">
+  <div class="panel">
+   <h3>Device and browser overview</h3><div id="recoveryDiagnostics" class="sovereign-project-list"></div>
+   <label>Estimated browser storage usage<progress id="recoveryStorage" value="0" max="100" class="desk-progress"></progress></label>
+   <div class="buttons"><button id="recoveryRefresh" class="primary">↻ Refresh diagnostics</button><button id="recoveryPersist" class="small-btn">Request persistent storage</button></div>
+   <p id="recoveryStatus" class="hint" role="status">Preparing storage overview…</p>
+  </div>
+  <div class="panel">
+   <h3>Backup and restore</h3><p class="hint">Download a copy of your app preferences, or restore them from your own JSON file. Project ZIPs live in Project Hub.</p>
+   <div class="buttons"><button id="recoveryExportSettings" class="primary">↓ Export settings backup</button><button id="recoveryExportPack" class="small-btn">↓ Export current Asset Pack</button></div>
+   <label class="upload"><input id="recoveryImportSettings" type="file" accept=".json,application/json"><b>＋ IMPORT SETTINGS BACKUP</b></label>
+   <h3>App update and cache tools</h3><p class="hint">Refresh release metadata or clear only the application cache to obtain fresh program files. Personal project storage is kept separate.</p>
+   <div class="buttons"><button id="recoveryCheckUpdates" class="small-btn">Check Updates</button><button id="recoveryClearCache" class="small-btn">Clear app cache</button></div>
+   <p class="hint">Current Asset Packager files: <strong id="recoveryPackCount">0</strong></p>
+  </div>
+ </div>
+</section>
+
 <section class="studio" data-panel="pack" hidden>
 <div class="section-heading"><div><div class="eyebrow">10 / OUTPUT CONTROL</div><h2>Asset Packager <span class="subtitle">Your session's finished work</span></h2></div><button class="small-btn" id="packClear">Clear pack</button></div>
 <div class="workspace split"><div class="panel"><h3>One package, many tools</h3><p>Click <b>Add to Pack</b> in any studio. Collected assets are stored in your browser&#39;s local IndexedDB vault, subject to storage quotas. Download a ZIP to keep a permanent copy.</p><label>Package title<input id="packTitle" maxlength="80" value="PROXIMUS Asset Collection"></label><label>Usage target<select id="packTarget"><option value="general">General digital assets</option><option value="sonic-reactor">Sonic Reactor II media</option><option value="character-foundry">Character Foundry art</option><option value="discord">Discord branding</option><option value="game-dev">Game development assets</option></select></label><button id="packExport" class="primary wide">↓ Download complete ZIP</button>
-<p id="vaultStatus" class="hint">Vault starting…</p><div class="actions"><button id="vaultReload" class="small-btn">↻ Restore saved pack</button><button id="vaultInfo" class="small-btn">Storage estimate</button></div><p class="hint">ZIP is built entirely in your browser. No background uploads, accounts, or cloud storage. Large uncompressed packs can consume significant RAM. Browser data may be deleted by private browsing, browser cleanup, or storage quota eviction.</p></div><div class="panel"><h3>Collected files <span id="packTotal"></span></h3><div id="packList" class="file-list empty">Your pack is empty. Add outputs from another studio.</div></div></div></section>
+<p id="vaultStatus" class="hint">Vault starting…</p><div class="actions"><button id="vaultReload" class="small-btn">↻ Restore saved pack</button><button id="vaultInfo" class="small-btn">Storage estimate</button></div><p class="hint">ZIP is built entirely in your browser. No background uploads, accounts, or cloud storage. Large uncompressed packs can consume significant RAM. Browser data may be deleted by private browsing, browser cleanup, or storage quota eviction.</p></div><div class="panel"><h3>Collected files <span id="packTotal"></span></h3><label>Find asset<input id="packSearch" type="search" placeholder="Search files, tags or studios"></label><div id="packList" class="file-list empty">Your pack is empty. Add outputs from another studio.</div></div></div></section>
 <footer>POWERED BY ZEVRO | PROXIMUS <span>·</span> PERSONAL CREATIVE WORKBENCH <span>·</span> ALL TRANSFORMS LOCAL</footer>
 </main></div>
 <dialog id="mediaDialog" class="media-dialog"><div class="media-settings">

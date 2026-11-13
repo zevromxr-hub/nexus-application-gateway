@@ -10,6 +10,12 @@ import {initArcadeChamber} from './arcade-chamber.js';
 import {initReleaseCenter} from './release-center.js';
 import {initWorkflowDesk} from './workflow-desk.js';
 import {initUtilityForge} from './utility-forge.js';
+import {initProjectHub} from './project-hub.js';
+import {initAutomationLab} from './automation-lab.js';
+import {initCaptureStudio} from './capture-studio.js';
+import {initDocumentForge} from './document-forge.js';
+import {initQRStudio} from './qr-studio.js';
+import {initRecoveryCenter} from './recovery-center.js';
 const names=[
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
@@ -30,6 +36,12 @@ const names=[
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
  {id:'utility',icon:'⌘',title:'Utility Forge',detail:'Text transformations JSON formatter Base64 URL codec secure password generator batch rename ZIP'},
+ {id:'projects',icon:'▤',title:'Project Hub',detail:'Universal portable project ZIP vault favorites dashboard asset handoff'},
+ {id:'automation',icon:'⛓',title:'Automation Lab',detail:'Bulk presets repeatable workflow image conversion icons ZIP'},
+ {id:'capture',icon:'◉',title:'Capture Studio',detail:'Camera photo share social banners wallpaper crop presets'},
+ {id:'documents',icon:'▣',title:'Document Forge',detail:'Photos to PDF pages print watermark scan images'},
+ {id:'qr',icon:'⌗',title:'QR & Branding',detail:'Scannable QR codes social branding PNG SVG card artwork'},
+ {id:'recovery',icon:'⚙',title:'Recovery Center',detail:'Browser storage diagnostics settings backup cache update recovery'},
  {id:'releases',icon:'⟳',title:'Release Center',detail:'Newest versions updates change history release notes GitHub official source'},
  {id:'creator',icon:'✧',title:'Creator Story',detail:'About the developer ZevRo PROXIMUS NEXUS vision journey project history'}
 ];
@@ -61,7 +73,7 @@ async function vaultTx(mode,run){
 async function vaultPut(asset){
  try{
   vaultStatus('Saving assets to local browser vault…');
-  await vaultTx('readwrite',store=>store.put({name:asset.name,data:asset.data,studio:asset.studio,when:asset.when}));
+  await vaultTx('readwrite',store=>store.put({name:asset.name,data:asset.data,studio:asset.studio,when:asset.when,tag:asset.tag||''}));
   vaultStatus('Saved to browser vault · '+pack.length+' assets. Export a ZIP to keep a permanent backup.');
  }catch(err){vaultStatus('Local save unavailable: '+(err?.message||err)+'. Export your pack before closing.');}
 }
@@ -76,11 +88,32 @@ async function vaultRestore(){
   const rows=await vaultTx('readonly',store=>store.getAll());
   const known=new Set(pack.map(x=>x.name));
   for(const row of rows){if(!known.has(row.name)&&row.data instanceof Blob){pack.push(row);known.add(row.name)}}
-  drawPack();
+  drawPack();document.dispatchEvent(new Event('proximus-pack-changed'));
   vaultStatus('Browser vault ready · '+pack.length+' saved assets. Download a ZIP backup when finished.');
  }catch(err){vaultStatus('Vault storage unavailable: '+(err?.message||err)+'. You can still work and export ZIPs.');}
 }
 const app={
+ studios:names,
+ changeView(id){changeView(id);},
+ listAssets(){return pack.slice();},
+ sendAsset(asset,dest){
+  const ids={image:'imgFile',icons:'iconFile',animation:'animFile',layers:'layerFiles',
+   production:'prodFile',motion:'motionFile',theater:'theaterFiles',capture:'captureFile',automation:'automationFiles'};
+  const id=ids[dest];if(!id||!$(id))throw Error('No file import is available for this destination.');
+  const name=safe(asset.name),mime=asset.data.type||({
+   png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif',
+   mp4:'video/mp4',webm:'video/webm',mp3:'audio/mpeg',wav:'audio/wav'
+  }[name.split('.').pop()?.toLowerCase()]||'application/octet-stream');
+  if(dest==='animation'&&!/^(image\/gif|video\/(mp4|webm))$/.test(mime))throw Error('Animation Forge accepts GIF, MP4 or WebM media.');
+  if(['image','icons','layers','production','capture','automation'].includes(dest)&&!mime.startsWith('image/'))throw Error('Choose an image file for this studio.');
+  if(dest==='automation'&&mime==='image/gif')throw Error('Automation Lab accepts still images. Use Animation Forge for GIFs.');
+  const input=$(id),f=new File([asset.data],name,{type:mime});
+  try{
+   const transfer=new DataTransfer();transfer.items.add(f);input.files=transfer.files;
+   changeView(dest);input.dispatchEvent(new Event('change',{bubbles:true}));
+   notice('Sent '+name+' to '+names.find(x=>x.id===dest).title);
+  }catch(err){throw Error('Use the destination studio file picker to import this asset: '+err.message);}
+ },
  addAsset(name,data,studio){
   if(!(data instanceof Blob))data=new Blob([data]);
   if(data.size>200000000)throw Error('This asset is over 200 MB and cannot be held in the session pack.');
@@ -88,7 +121,7 @@ const app={
   let filename=safe(name);const used=new Set(pack.map(x=>x.name));let n=2;
   while(used.has(filename)){const dot=filename.lastIndexOf('.');filename=(dot===-1?stem(filename):filename.slice(0,dot))+'-'+n+++(dot===-1?'':filename.slice(dot))}
   pack.push({name:filename,data,studio,when:new Date().toISOString()});
-  drawPack();void vaultPut(pack[pack.length-1]);notice(filename+' added to your Asset Packager');
+  drawPack();void vaultPut(pack[pack.length-1]);notice(filename+' added to your Asset Packager');document.dispatchEvent(new Event('proximus-pack-changed'));
  }
 };
 function changeView(id){
@@ -106,7 +139,9 @@ function drawPack(){
  $('packTotal').textContent=pack.reduce((s,f)=>s+f.data.size,0)?'('+bytes(pack.reduce((s,f)=>s+f.data.size,0))+')':'';
  if(!pack.length){list.classList.add('empty');list.textContent='Your pack is empty. Add outputs from another studio.';return}
  list.classList.remove('empty');
+ const term=$('packSearch')?.value.trim().toLowerCase()||'';
  pack.forEach((f,i)=>{
+  if(term&&!(f.name+' '+f.studio+' '+(f.tag||'')).toLowerCase().includes(term))return;
   const row=document.createElement('div');row.className='file-row';
   const title=document.createElement('span');title.className='name';title.title=f.name;title.textContent=f.name;
   const size=document.createElement('small');size.textContent=bytes(f.data.size);
@@ -120,7 +155,17 @@ function drawPack(){
     thumb.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'hero'}})));
     row.append(bg,thumb);
    }
-   row.append(title,size,dl,btn);list.append(row);
+   const tag=document.createElement('select');tag.title='Asset category';
+  for(const name of ['','Artwork','Animation','Audio','Video','Documents','Project','Favorite']){
+   const option=document.createElement('option');option.value=name;option.textContent=name||'Tag…';tag.append(option);
+  }
+  tag.value=f.tag||'';tag.addEventListener('change',()=>{f.tag=tag.value;void vaultPut(f);});
+  const destinations=document.createElement('select');destinations.title='Send to studio';
+  for(const [value,label] of [['','Send…'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
+   const option=document.createElement('option');option.value=value;option.textContent=label;destinations.append(option);
+  }
+  destinations.addEventListener('change',wrap(()=>{const dest=destinations.value;destinations.value='';if(dest)app.sendAsset(f,dest);}));
+  row.append(title,size,tag,destinations,dl,btn);list.append(row);
  });
 }
 $('packExport').addEventListener('click',wrap(async()=>{
@@ -129,12 +174,13 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.5.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.6.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
 }));
-$('packClear').addEventListener('click',()=>{if(pack.length&&!confirm('Clear all session-collected assets? This cannot be undone.'))return;pack.length=0;drawPack();void vaultClear();notice('Asset pack cleared')});
+$('packClear').addEventListener('click',()=>{if(pack.length&&!confirm('Clear all session-collected assets? This cannot be undone.'))return;pack.length=0;drawPack();void vaultClear();notice('Asset pack cleared');document.dispatchEvent(new Event('proximus-pack-changed'))});
+$('packSearch').addEventListener('input',drawPack);
 $('vaultReload').addEventListener('click',()=>{void vaultRestore()});
 $('vaultInfo').addEventListener('click',wrap(async()=>{if(!navigator.storage?.estimate)throw Error('Browser storage estimates are unavailable');const q=await navigator.storage.estimate();vaultStatus('Browser vault storage: '+bytes(q.usage||0)+' used / '+bytes(q.quota||0)+' estimated allowance. Browser may evict data.');}));
 $('packTitle').value=localStorage.getItem('nexus-alchemist-pack-title')||'PROXIMUS Asset Collection';
@@ -171,7 +217,7 @@ function setupDrop(){
  document.addEventListener('drop',e=>{
   if(!e.dataTransfer?.files?.length)return;e.preventDefault();overlay.hidden=true;entering=0;
   const id=document.querySelector('.studio:not([hidden])')?.dataset.panel;
-  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles',layers:'layerFiles',motiongraphics:'graphicsBackdrop',animation:'animFile',theater:'theaterFiles',utility:'utilFiles'}[id];
+  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles',layers:'layerFiles',motiongraphics:'graphicsBackdrop',animation:'animFile',theater:'theaterFiles',utility:'utilFiles',automation:'automationFiles',capture:'captureFile',documents:'documentFiles'}[id];
   if(!dest){notice('Switch to an import studio first.');return}
   const input=$(dest);const dt=new DataTransfer();
   const multiple=input.multiple;
@@ -181,7 +227,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.5.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.6.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -204,9 +250,10 @@ function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
  initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.5 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.6 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

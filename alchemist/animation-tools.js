@@ -3,6 +3,7 @@
 import {$,safe,stem,bytes,notice,download,makeZip,textFile,blobCanvas,wrap} from './core.js';
 import {encodeGif} from './gif-codec.js';
 import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
+import {saveOrShare,mobileFileSupport} from './portable-kit.js';
 const MAX_BYTES=250000000,MAX_FRAMES=96,MAX_GIF_FRAMES=400,MAX_GIF_PIXELS=360000,MAX_FRAME_BUDGET=17000000;
 const ICON_SIZES=[32,64,128,256];
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
@@ -108,26 +109,39 @@ async function seek(video,time){
   try{video.currentTime=time;}catch(err){cleanup();reject(err)}
  });
 }
-async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg='#111020',transparent=false,progress=()=>{},isCancelled=()=>false}){
+async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg='#111020',transparent=false,
+ speed=1,reverse=false,caption='',captionColor='#ffffff',progress=()=>{},isCancelled=()=>false}){
  if(!Number.isFinite(start)||!Number.isFinite(end)||end<=start||start<0)throw Error('End time must be greater than start time.');
  if(end-start>8.01)throw Error('Maximum GIF clip length is 8 seconds.');
  fps=Math.floor(fps);
  if(![6,8,12].includes(fps))throw Error('FPS must be 6, 8 or 12.');
- const count=Math.ceil((end-start)*fps);
+ speed=Number(speed);
+ if(![.5,1,1.5,2].includes(speed))throw Error('Choose a supported GIF playback speed.');
+ const count=Math.ceil((end-start)*fps/speed);
  if(count>MAX_FRAMES)throw Error('GIF export limit is 96 frames. Reduce duration or FPS.');
  if(count*width*height>MAX_FRAME_BUDGET)throw Error('The GIF would use too much browser memory. Choose a smaller size, shorter clip, or lower FPS.');
  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
  const ctx=canvas.getContext('2d',{willReadFrequently:true}),frames=[];
  const durationMs=Math.round(1000/fps);
+ const stamp=frame=>{
+  if(!caption.trim())return frame;
+  const cc=document.createElement('canvas');cc.width=width;cc.height=height;
+  const c=cc.getContext('2d',{willReadFrequently:true});c.putImageData(frame,0,0);
+  const text=caption.trim().slice(0,70),font=Math.max(12,Math.min(34,Math.round(width*.06)));
+  c.font='800 '+font+'px system-ui';c.textAlign='center';c.lineWidth=Math.max(3,font*.16);c.strokeStyle='#000c';
+  c.strokeText(text,width/2,height-Math.max(8,font*.5),width*.92);
+  c.fillStyle=captionColor;c.fillText(text,width/2,height-Math.max(8,font*.5),width*.92);
+  return c.getImageData(0,0,width,height);
+ };
  if(source.kind==='video'){
   source.video.pause();
   if(start>=source.duration)throw Error('Start time exceeds the video duration.');
   const realEnd=Math.min(end,source.duration);
   for(let k=0;k<count;k++){
    if(isCancelled())throw Error('Conversion cancelled.');
-   const time=start+k/fps;if(time>=realEnd-.0001)break;
+   const time=start+k*speed/fps;if(time>=realEnd-.0001)break;
    await seek(source.video,time);
-   frames.push({...drawFrame(ctx,source.video,width,height,mode,bg,transparent),delayMs:durationMs});
+   frames.push({...stamp(drawFrame(ctx,source.video,width,height,mode,bg,transparent)),delayMs:durationMs});
    if(k%2===0){progress('Extracting video frame '+(k+1)+' of '+count);await delay();}
   }
  }else{
@@ -136,7 +150,7 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
   try{
    for(let k=0;k<count;k++){
     if(isCancelled())throw Error('Conversion cancelled.');
-    const time=start+k/fps;
+    const time=start+k*speed/fps;
     while(!current||time>=next-1e-6){
      current?.close?.();
      const i=index%source.count;
@@ -146,12 +160,13 @@ async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg
      index++;loops++;
      if(loops>3000)throw Error('Invalid GIF timing metadata.');
     }
-    frames.push({...drawFrame(ctx,current,width,height,mode,bg,transparent),delayMs:durationMs});
+    frames.push({...stamp(drawFrame(ctx,current,width,height,mode,bg,transparent)),delayMs:durationMs});
     if(k%2===0){progress('Sampling animated GIF '+(k+1)+' of '+count);await delay();}
    }
   }finally{current?.close?.();}
  }
  if(!frames.length)throw Error('No frames decoded. Adjust the trim range or try another file.');
+ if(reverse)frames.reverse();
  return frames;
 }
 async function exportAnimatedIcons(frames,sourceW,sourceH,sizes,{bg,transparent,dither,fps,progress=()=>{}}){
@@ -210,14 +225,16 @@ export function initAnimationForge(app){
   transparent:$('animTransparent').checked,
   dither:$('animDither').checked,
   mode:$('animFit').value,
-  bg:$('animBg').value
+  bg:$('animBg').value,
+  speed:Number($('animSpeed').value),reverse:$('animReverse').checked,
+  caption:$('animCaption').value,captionColor:$('animCaptionColor').value
  });
  function cleanup(){video.pause();video.removeAttribute('src');video.load();gif.removeAttribute('src');if(url)URL.revokeObjectURL(url);url=null}
  fileEl.addEventListener('change',wrap(async e=>{
   const f=e.target.files[0];if(!f)return;
   if(busy)throw Error('Finish or cancel the current export first');
   const type=sourceType(f);if(f.size>MAX_BYTES)throw Error('Media exceeds 250 MB.');
-  cleanup();file=f;lastGif=null;lastGifName='';$('animUseBg').hidden=true;$('animUseThumb').hidden=true;preview.hidden=true;if(resultURL){URL.revokeObjectURL(resultURL);resultURL=null;}url=URL.createObjectURL(file);
+  cleanup();file=f;lastGif=null;lastGifName='';$('animUseBg').hidden=true;$('animUseThumb').hidden=true;$('animSaveShare').hidden=true;$('animOpenGif').hidden=true;preview.hidden=true;if(resultURL){URL.revokeObjectURL(resultURL);resultURL=null;}url=URL.createObjectURL(file);
   video.hidden=type!=='video';gif.hidden=type!=='gif';
   if(type==='video'){
    video.onloadedmetadata=()=>{
@@ -239,7 +256,7 @@ export function initAnimationForge(app){
   if(!file)throw Error('Choose MP4, WebM or GIF first.');
   if(busy)throw Error('An animation export is already in progress.');
   busy=true;cancel=false;
-  const controls=['animConvert','animToPack','animIcons','animFrame'];for(const id of controls)$(id).disabled=true;
+  const controls=['animConvert','animToPack','animIcons','animFrame','animExtract'];for(const id of controls)$(id).disabled=true;
   let src=null;
   try{
    src=await openSource(file);
@@ -254,7 +271,7 @@ export function initAnimationForge(app){
     }));
    }
    if(kind==='frame'){
-    opts.end=opts.start+1/opts.fps;
+    opts.end=opts.start+opts.speed/opts.fps;
    }
    const frames=await sampleFrames(src,{...opts,width,height,progress:say,isCancelled:()=>cancel,
     mode:kind==='icons'?'cover':opts.mode});
@@ -269,6 +286,19 @@ export function initAnimationForge(app){
     else download(blob,name);
     status.textContent='GIF icon ZIP completed · '+frames.length+' frames · '+bytes(blob.size);
     notice('Animated GIF icon pack '+(kind==='iconPack'?'added to Pack':'downloaded'));
+   }else if(kind==='frames'){
+    const c=document.createElement('canvas');c.width=width;c.height=height;
+    const cx=c.getContext('2d'),entries=[];
+    for(let i=0;i<frames.length;i++){
+     if(cancel)throw Error('Conversion cancelled.');
+     cx.putImageData(frames[i],0,0);
+     entries.push({name:base+'-frame-'+String(i+1).padStart(3,'0')+'.png',data:await blobCanvas(c)});
+     if(i%5===0){say('Extracting PNG '+(i+1)+' / '+frames.length);await delay();}
+    }
+    entries.push({name:'FRAMES.txt',data:'PROXIMUS GIF / VIDEO FRAME EXTRACTION\n'+width+'x'+height+' · '+frames.length+' PNG frames\n'});
+    const zipped=await makeZip(entries);
+    download(zipped,base+'-EXTRACTED-FRAMES.zip');
+    status.textContent='PNG frames extracted · '+frames.length+' files · '+bytes(zipped.size);
    }else if(kind==='frame'){
     const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
     canvas.getContext('2d').putImageData(frames[0],0,0);
@@ -285,6 +315,7 @@ export function initAnimationForge(app){
     else download(blob,name);
     lastGif=blob;lastGifName=name;
     $('animUseBg').hidden=false;$('animUseThumb').hidden=false;
+    $('animSaveShare').hidden=false;$('animOpenGif').hidden=false;
     status.textContent='GIF complete · '+frames.length+' frames · '+width+'×'+height+' · '+bytes(blob.size);
     say('Completed with true animated GIF89a encoding. Preview below.');
    }
@@ -314,5 +345,18 @@ export function initAnimationForge(app){
   });
  }
  $('animFrame').addEventListener('click',wrap(()=>run('frame')));
+ $('animExtract').addEventListener('click',wrap(()=>run('frames')));
+ $('animSaveShare').addEventListener('click',wrap(async()=>{
+  if(!lastGif)throw Error('Create a GIF first.');
+  const result=await saveOrShare(lastGif,lastGifName);
+  say(result==='shared'?'GIF sent to your device share/save sheet':result==='downloaded'?'GIF downloaded': 'GIF sharing cancelled');
+ }));
+ $('animOpenGif').addEventListener('click',wrap(()=>{
+  if(!resultURL||!lastGif)throw Error('Create a GIF first.');
+  // A separate tap preserves browser gesture for a real GIF preview, useful
+  // for iPhone users saving via the browser image/file actions.
+  const a=document.createElement('a');a.href=resultURL;a.target='_blank';a.rel='noopener';a.click();
+ }));
+ $('animDevice').textContent=mobileFileSupport().share?'Share / Save available on this device · GIF keeps its original .gif format':'Download and extracted PNG frames available · GIF keeps its original .gif format';
  window.addEventListener('pagehide',()=>{cleanup();if(resultURL)URL.revokeObjectURL(resultURL)},{once:true});
 }

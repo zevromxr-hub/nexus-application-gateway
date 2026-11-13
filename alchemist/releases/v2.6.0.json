@@ -1,0 +1,46 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.6.0",
+  "release_date": "2026-11-13",
+  "subtitle": "Sovereign Utility Engine",
+  "title": "Sovereign Utility Engine",
+  "channel": "stable",
+  "studios": 25,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Universal Project Hub with browser-local saved snapshots and portable ZIP projects",
+    "Project Hub personal dashboard with pinned studios and direct studio launches",
+    "Cross-studio Asset Packager routing with search, tags and destination controls",
+    "Automation Lab with reusable multi-image workflows, platform presets and icon outputs",
+    "Capture Studio with camera/gallery import, creative adjustments and export presets",
+    "Animation Forge with iPhone file share/save, GIF preview and PNG frame sequence ZIP extraction",
+    "Animation Forge with slow/fast/reversed animation and overlay captions",
+    "Media Theater II with a floating mini-player, saved favorites and two new visualizer modes",
+    "Document Forge with photo-to-PDF page ordering, A4/Letter layouts and watermark export",
+    "QR & Branding with locally generated scannable QR codes, PNG, SVG and digital cards",
+    "Arcade Chamber II with a player profile, color themes and unlockable achievements",
+    "Recovery Center with browser storage overview, settings backup/restore and app cache management",
+    "Twenty-five interoperable studios preserving the existing GitHub Pages / Discord path and iPhone update system"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  },
+  "new_studios": [
+    "Project Hub",
+    "Automation Lab",
+    "Capture Studio",
+    "Document Forge",
+    "QR & Branding",
+    "Recovery Center"
+  ],
+  "expanded_studios": [
+    "Animation Forge",
+    "Media Theater",
+    "Arcade Chamber",
+    "Asset Packager"
+  ]
+}
