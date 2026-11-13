@@ -169,3 +169,41 @@ body.has-ambient .rail{background:#0d0a1add}
  .desk-actions button{min-height:43px}
  .desk-timer{padding:10px}
 }
+
+
+/* v2.6 — Sovereign Utility Engine: cross-device project, automation and media workspaces */
+.sovereign-project-list{display:flex;flex-direction:column;gap:8px;max-height:350px;overflow:auto;padding:10px 0;overflow-wrap:anywhere}
+.sovereign-project-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border:1px solid #55436f;border-radius:10px;background:#0e0b20;padding:10px}
+.sovereign-project-row>span{flex:1;min-width:135px;color:#ded1ef;font-size:12px;overflow-wrap:anywhere}
+.sovereign-project-row button,.sovereign-project-row select{flex:none;font-size:11px}
+.sovereign-project-row select{max-width:165px}
+.project-shortcut-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.project-shortcut-group{display:flex;align-items:stretch;gap:5px;min-width:0}
+.project-shortcut{flex:1;min-width:0;text-align:left;padding:9px 10px;border:1px solid #55426d;background:#201830;color:#eee0ff;border-radius:9px;font-size:12px;overflow:hidden;text-overflow:ellipsis}
+.project-shortcut.pinned{border-color:#ddb6fa;background:#3c2a5b}
+.project-shortcut-group .small-btn{padding:6px;font-size:10px}
+.sovereign-canvas{max-width:100%;width:auto;height:auto;max-height:60vh;object-fit:contain}
+.sovereign-qr-canvas{display:block;width:100%;max-width:530px;height:auto;aspect-ratio:1;border-radius:10px}
+#captureCanvas{border:1px solid #836aaf;border-radius:10px}
+#captureImage,#captureCamera{max-height:310px}
+#documentList{max-height:370px}
+#projectShortcuts{max-height:440px;overflow:auto;padding-right:5px}
+#packList .file-row{flex-wrap:wrap;gap:6px}
+#packList .file-row select{max-width:115px;font-size:10px;padding:6px}
+#packSearch{width:100%}
+.recovery-stat{display:flex;align-items:center;justify-content:space-between;gap:14px;background:#111026;border:1px solid #4e3d66;border-radius:9px;padding:11px 12px}
+.recovery-stat span{color:#afa1c8;font-size:12px}
+.recovery-stat strong{color:#ede0ff;font-size:12px;overflow-wrap:anywhere;text-align:right}
+.arcade-achievements{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.arcade-achievements span{font-size:11px;padding:7px 10px;border:1px solid #5b457c;border-radius:8px;color:#f1deba;background:#201933}
+.theater-mini{position:fixed;z-index:18;right:16px;bottom:16px;display:flex;align-items:center;gap:10px;max-width:min(460px,calc(100vw - 32px));padding:9px 12px;border:1px solid #a67ee6;background:#141027ed;box-shadow:0 15px 50px #000b;border-radius:12px}
+.theater-mini b{color:#f4e8ff;font-size:11px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-width:0;flex:1}
+.theater-mini button{flex:none;border:1px solid #8460b6;border-radius:8px;padding:7px 9px;background:#35214f;color:#fff}
+@media(max-width:760px){
+ .sovereign-project-row{padding:8px;gap:6px}
+ .sovereign-project-row>span{min-width:110px}
+ .project-shortcut-list{grid-template-columns:1fr}
+ #packList .file-row{padding:10px}
+ .theater-mini{bottom:8px;right:8px;left:8px;max-width:none}
+ .sovereign-canvas{max-height:42vh}
+}
