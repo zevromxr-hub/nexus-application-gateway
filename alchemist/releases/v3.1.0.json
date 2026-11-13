@@ -1,0 +1,41 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.1.0",
+  "release_date": "2026-11-13",
+  "title": "Cinematic Continuity & Video Vault",
+  "subtitle": "Cinematic Continuity & Video Vault",
+  "channel": "stable",
+  "studios": 31,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Video Vault (Studio 31): import local MP4, MOV, M4V, WebM or OGV files and retain the actual video bytes in device/browser IndexedDB between visits",
+    "Dedicated local cinema player with native iPhone video controls, saved playback positions, cover snapshots, favorites, collections, searching and sorting",
+    "Video Vault stores lightweight metadata separately from large binary files to avoid loading all videos into iPhone memory",
+    "Media Theater can send its current video playlist into the persistent Video Vault with one action; direct topbar and Command Center launchers",
+    "Video Vault checks site storage limits and offers a best-effort persistent-storage request, with honest warnings about website-data deletion and iOS eviction",
+    "New iPhone safe-area navigation dock with Home, Videos, Back, Forward and searchable Studios drawer",
+    "Mobile studio picker offers pinned favorites, recent studio history, edge-swipe back and safe preservation of current studio state",
+    "Animation Forge adds smooth 15, 20 and 24 FPS GIF exports, up to 120 frames, and accurate frame-delay pacing",
+    "GIF extraction waits briefly for a composited video frame after seeking on supported browsers to reduce duplicated frames",
+    "Animation Forge additionally accepts iPhone MOV and M4V inputs where browser video decoding supports their codecs",
+    "All 30 previously built studios, Reactor IV, Master Visual Identity, Token Foundry, GitHub Pages site and Discord launcher preserved"
+  ],
+  "added_studios": [
+    "Video Vault"
+  ],
+  "upgraded_studios": [
+    "Animation Forge",
+    "Media Theater",
+    "Command Center",
+    "Mobile Navigation",
+    "Sync Bridge",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
