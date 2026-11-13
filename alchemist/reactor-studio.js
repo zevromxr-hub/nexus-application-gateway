@@ -425,7 +425,30 @@ export function initSovereignReactor(app){
   const source=gifOverlay?.canvas||
    (!overlayVideo.hidden&&overlayReady?overlayVideo:!overlayImage.hidden&&overlayImage.complete&&overlayImage.naturalWidth?overlayImage:null);
   if(!source)return;
-  c.save();c.globalAlpha=o.overlayOpacity;c.globalCompositeOperation=o.overlayBlend;
+  const levels=effectLevels(bands,fxSettings,false);
+  c.save();
+  c.globalAlpha=o.overlayOpacity*(fxSettings.reactiveOverlay?Math.min(1,.55+levels.overlay*.65):1);
+  c.globalCompositeOperation=o.overlayBlend;
+  const cx=w/2,cy=h/2,pulse=1+levels.aura*.15;
+  if(fxSettings.mask!=='none'){
+   c.beginPath();
+   if(fxSettings.mask==='halo'){
+    c.ellipse(cx,cy,w*.40*pulse,h*.43*pulse,0,0,Math.PI*2);
+   }else if(fxSettings.mask==='eclipse'){
+    c.ellipse(cx,cy,w*.27*pulse,h*.40*pulse,0,0,Math.PI*2);
+   }else if(fxSettings.mask==='wings'){
+    c.ellipse(cx-w*.23,cy,w*.26*pulse,h*.25*pulse,-.38,0,Math.PI*2);
+    c.ellipse(cx+w*.23,cy,w*.26*pulse,h*.25*pulse,.38,0,Math.PI*2);
+   }else if(fxSettings.mask==='bars'){
+    const count=22,bandWidth=w/count;
+    for(let i=0;i<count;i++){
+     const value=frequency?.length?frequency[Math.min(frequency.length-1,Math.floor(i*frequency.length/(count*2)))]/255:0;
+     const height=h*(.22+Math.min(.55,value*.72))*pulse;
+     c.rect(i*bandWidth,cy-height/2,bandWidth*.78,height);
+    }
+   }
+   c.clip();
+  }
   try{fit(c,source,w,h,'cover');}catch(e){}
   c.restore();
  }
@@ -434,6 +457,13 @@ export function initSovereignReactor(app){
   const w=historyCanvas.width,h=historyCanvas.height;
   historyCtx.fillStyle='#0a0a1c';historyCtx.fillRect(0,0,w,h);
   for(let i=1;i<5;i++){historyCtx.strokeStyle='#68528233';historyCtx.beginPath();historyCtx.moveTo(0,h*i/5);historyCtx.lineTo(w,h*i/5);historyCtx.stroke();}
+  if(fxSettings.showMarkers){
+   history.forEach((point,i)=>{
+    if(!point.beat)return;
+    const x=(w-1)*i/119;
+    historyCtx.fillStyle='#fff4b5';historyCtx.fillRect(x,0,2,h);
+   });
+  }
   for(const [key,colorValue] of [['bass','#bd89ff'],['mid','#72ddff'],['treble','#f1c48b']]){
    historyCtx.strokeStyle=colorValue;historyCtx.lineWidth=2.4;historyCtx.beginPath();
    for(let i=0;i<history.length;i++){
@@ -466,20 +496,23 @@ export function initSovereignReactor(app){
  }
  function drawStage(now){
   const w=canvas.width,h=canvas.height,o=options();
-  const sceneMode=o.cycle?runtimeMode:o.mode;
+  const sceneMode=(o.cycle||fxSettings.beatSceneChange)?runtimeMode:o.mode;
   const theme=REACTOR_THEMES[o.theme],hasAudio=current!=='off'&&analyser;
   const b=hasAudio?bands:{sub:0,bass:0,mid:0,treble:0,energy:0};
   const punch=(b.bass*.75+b.sub*.25)*o.impact;
   const activeColor=o.autoShift?Object.values(REACTOR_THEMES)[shift%5]:theme;
-  const primary=activeColor.primary,secondary=activeColor.secondary,glow=activeColor.glow;
+  const primary=identityColors?.accent||activeColor.primary,
+   secondary=identityColors?.secondary||activeColor.secondary,
+   glow=identityColors?.glow||activeColor.glow;
+  const fx=effectLevels(b,fxSettings,state.hit);
   ctx.globalAlpha=1;ctx.clearRect(0,0,w,h);
   ctx.fillStyle=theme.dark;ctx.fillRect(0,0,w,h);
   const custom=backdrop(ctx,w,h,o,now);
   if(custom){ctx.fillStyle='rgba(3,2,15,.32)';ctx.fillRect(0,0,w,h);}
   drawOverlay(ctx,w,h,o,now);
   const aura=ctx.createRadialGradient(w*.5,h*.5,10,w*.5,h*.5,w*.67);
-  aura.addColorStop(0,color(primary,.18+punch*.13));
-  aura.addColorStop(.46,color(secondary,.11+b.energy*.12));
+  aura.addColorStop(0,color(primary,.18+punch*.13+fx.aura*.11));
+  aura.addColorStop(.46,color(secondary,.11+b.energy*.12+fx.emissive*.08));
   aura.addColorStop(1,'rgba(0,0,0,0)');
   ctx.fillStyle=aura;ctx.fillRect(0,0,w,h);
   // Render bounds are normalized to stage size; no per-frame image allocations.
@@ -552,6 +585,53 @@ export function initSovereignReactor(app){
     ctx.beginPath();ctx.arc(x,y,(i%3+1)*.75*scale,0,Math.PI*2);ctx.fill();
    }
   }
+  // Reactor IV frequency-mapped visual layer: only real measured audio can
+  // increase these visual intensities; the idle scene remains ambient.
+  const kickGlow=pulseDecay(now,lastPulse,270);
+  if(current!=='off'&&fx.impact>0.02&&kickGlow>.012){
+   ctx.save();ctx.lineWidth=(2+fx.impact*7)*scale;
+   ctx.strokeStyle=color(glow,Math.min(.9,.2+kickGlow*.7));
+   ctx.shadowColor=primary;ctx.shadowBlur=25*scale*kickGlow;
+   ctx.beginPath();ctx.arc(cx,cy,(100+kickGlow*130)*scale,0,Math.PI*2);ctx.stroke();
+   ctx.restore();
+  }
+  if(current!=='off'&&fx.emissive>.02){
+   ctx.save();ctx.strokeStyle=color(glow,Math.min(.85,fx.emissive*.4));
+   ctx.lineWidth=(1+fx.emissive*3.5)*scale;ctx.shadowColor=glow;ctx.shadowBlur=16*scale;
+   for(const wing of [-1,1]){
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.bezierCurveTo(cx+wing*w*.08,cy-h*.31,cx+wing*w*.37,cy-h*.15,
+     cx+wing*w*(.21+fx.emissive*.055),cy+h*.09);
+    ctx.stroke();
+   }
+   ctx.restore();
+  }
+  if(current!=='off'&&fx.shimmer>.025){
+   const count=o.quality==='eco'?20:56;
+   ctx.save();
+   for(let i=0;i<count;i++){
+    const x=((i*127.7+now*.015*(1+i%4))%w+w)%w;
+    const y=((i*83.1+Math.sin(now*.002+i)*h*.1)%h+h)%h;
+    ctx.fillStyle=color(i%3?primary:glow,Math.min(.6,fx.shimmer*.30));
+    ctx.beginPath();ctx.arc(x,y,(.7+(i%3)*.45)*scale,0,Math.PI*2);ctx.fill();
+   }
+   ctx.restore();
+  }
+  const transition=transitionProgress(now,sceneChangedAt,640);
+  if(transition<1){
+   const level=(1-transition);
+   ctx.save();
+   if(fxSettings.transition==='fade'){
+    ctx.fillStyle='rgba(0,0,0,'+(level*.7)+')';ctx.fillRect(0,0,w,h);
+   }else if(fxSettings.transition==='sweep'){
+    const px=w*(1-transition),grad=ctx.createLinearGradient(px-100*scale,0,px+100*scale,0);
+    grad.addColorStop(0,'rgba(0,0,0,0)');grad.addColorStop(.5,color(glow,level*.45));grad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+   }else{
+    ctx.fillStyle=color(glow,level*.18);ctx.fillRect(0,0,w,h);
+   }
+   ctx.restore();
+  }
   // Bass flash only when the detector has a real input and a confirmed peak.
   const flash=current!=='off'?Math.exp(-(now-lastPulse)/180)*.45:0;
   if(flash>0.001&&now>=lastPulse){
@@ -586,11 +666,11 @@ export function initSovereignReactor(app){
   if(now-previous<1000/fps)return;
   previous=now;frameCount++;
   if(o.cycle&&now>=nextSceneAt){
-   runtimeMode=nextReactorScene(runtimeMode);
-   nextSceneAt=now+o.cycleSeconds*1000;
-   $('reactorSceneStatus').textContent='Scene Director · '+runtimeMode+' · '+o.cycleSeconds+'s cycle';
+   runtimeMode=nextSceneInOrder(runtimeMode,fxSettings.sceneOrder);
+   sceneChangedAt=now;nextSceneAt=now+o.cycleSeconds*1000;
+   $('reactorSceneStatus').textContent='Scene Director IV · '+runtimeMode+' · '+o.cycleSeconds+'s cycle';
   }
-  if(!o.cycle)runtimeMode=o.mode;
+  if(!o.cycle&&!fxSettings.beatSceneChange)runtimeMode=o.mode;
   sampleFrames++;
   if(!sampleStart)sampleStart=now;
   if(now-sampleStart>=3500){
@@ -606,11 +686,18 @@ export function initSovereignReactor(app){
    analyser.getByteFrequencyData(frequency);
    bands=spectralBands(frequency,audioContext.sampleRate,analyser.fftSize);
    state=detectBeat(bands,now,state,o.sensitivity);
-   if(state.hit){lastPulse=now;if(o.autoShift)shift++;}
+   if(state.hit){
+    lastPulse=now;if(o.autoShift)shift++;
+    if(fxSettings.beatSceneChange&&now-sceneChangedAt>1300){
+     runtimeMode=nextSceneInOrder(runtimeMode,fxSettings.sceneOrder);
+     sceneChangedAt=now;
+     $('reactorSceneStatus').textContent='Beat-triggered scene · '+runtimeMode;
+    }
+   }
    frequencySmooth=frequencySmooth*.85+bands.energy*.15;
   }else bands={sub:0,bass:0,mid:0,treble:0,energy:0};
   if(now-lastHistory>125){
-   history.push({bass:bands.bass,mid:bands.mid,treble:bands.treble});
+   history.push({bass:bands.bass,mid:bands.mid,treble:bands.treble,beat:state.hit});
    if(history.length>120)history.shift();
    lastHistory=now;
   }
@@ -734,7 +821,7 @@ export function initSovereignReactor(app){
  $('reactorPresetSave').addEventListener('click',wrap(()=>{
   const name=safe($('reactorPresetName').value.trim()).slice(0,55);
   if(!name||name==='asset')throw Error('Name your Reactor preset.');
-  presets[name]=options();if(Object.keys(presets).length>24)throw Error('Keep no more than 24 saved presets.');
+  presets[name]={...options(),fx:{...fxSettings}};if(Object.keys(presets).length>24)throw Error('Keep no more than 24 saved presets.');
   saveSettings();presetOptions();status('Saved appearance preset '+name);
  }));
  $('reactorPresetExport').addEventListener('click',()=>{
