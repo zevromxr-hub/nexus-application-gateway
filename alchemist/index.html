@@ -30,6 +30,7 @@
    <button class="nav" data-view="motiongraphics"><span>✺</span> Motion Graphics <small>14</small></button>
     <button class="nav" data-view="animation"><span>▣</span> Animation Forge <small>15</small></button>
     <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
+    <button class="nav" data-view="reactor"><span>✺</span> Sovereign Reactor <small>26</small></button>
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
     <button class="nav" data-view="utility"><span>⌘</span> Utility Forge <small>19</small></button>
@@ -51,11 +52,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.6.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-five functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>25</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.7.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Twenty-six functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>26</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.6.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.7.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -246,9 +247,83 @@
    <canvas id="theaterCanvas" width="900" height="300" aria-label="Music-reactive graphic visualizer"></canvas><div id="theaterLevels" class="hint">VISUAL PREVIEW · VIOLET</div>
    <div class="theater-controls"><button id="theaterVizPng" class="small-btn">↓ Save visualizer PNG</button><button id="theaterVizPack" class="small-btn">＋ Visualizer to Pack</button></div>
    <h3>Connect to Media Publisher</h3>
+   <div class="theater-controls"><button id="theaterToReactor" class="primary">✺ Send audio to Sovereign Reactor</button><button id="theaterReactorBg" class="small-btn">◧ Send image/video to Reactor background</button></div>
    <div class="theater-controls"><button id="theaterMakeBg" class="small-btn">✧ Current media → Background</button><button id="theaterMakeThumb" class="small-btn">◧ Current media → Hero thumbnail</button></div>
   </div>
  </div>
+</section>
+<section class="studio" data-panel="reactor" hidden>
+ <div class="section-heading"><div><div class="eyebrow">26 / MUSIC-REACTIVE ENTERTAINMENT</div><h2>Sovereign Reactor <span class="subtitle">Audio-responsive visual universe · PC + iPhone</span></h2></div></div>
+ <div class="reactor-heading">
+  <div><strong>LIVE MUSIC REACTOR</strong><p>Five original cosmic palettes · Six visualizer modes · Real bass, mid and treble analysis</p></div>
+  <div class="reactor-heading-actions"><span id="reactorSource" class="reactor-source">Not connected</span><button id="reactorFullscreen" class="small-btn">⛶ Cinema mode</button></div>
+ </div>
+ <div class="reactor-stage-frame" id="reactorStage">
+  <canvas id="reactorCanvas" width="960" height="540" aria-label="Live, music-reactive PROXIMUS Sovereign Reactor visualizer"></canvas>
+  <video id="reactorBgVideo" muted autoplay loop playsinline preload="metadata" hidden aria-hidden="true"></video>
+  <img id="reactorBgImage" alt="" hidden aria-hidden="true">
+ </div>
+ <div class="reactor-monitor">
+  <div><span>SUB / BASS</span><progress id="reactorBass" max="100" value="0"></progress><b id="reactorBassText">0%</b></div>
+  <div><span>MID RANGE</span><progress id="reactorMid" max="100" value="0"></progress><b id="reactorMidText">0%</b></div>
+  <div><span>TREBLE</span><progress id="reactorHigh" max="100" value="0"></progress><b id="reactorHighText">0%</b></div>
+  <div class="reactor-kicks"><span>BEATS DETECTED</span><b id="reactorBeats">0</b></div>
+ </div>
+ <div class="workspace image-grid reactor-workspace">
+  <div class="panel">
+   <h3>01 / LIVE AUDIO SOURCE</h3>
+   <p class="hint">Choose one input. Real spectral measurements animate the visualizer; the microphone requires permission, and desktop tab capture requires you to explicitly share audio.</p>
+   <label class="upload"><input type="file" id="reactorInputFile" accept="audio/*,video/mp4,video/webm,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus,.mp4,.webm"><b>＋ IMPORT LOCAL SONG / MUSIC</b><span>Private device playback · file stays in your browser</span></label>
+   <div class="reactor-source-controls">
+    <button class="primary" id="reactorFilePlay">▶ Play local audio</button>
+    <button class="small-btn" id="reactorMic">◎ Listen with microphone</button>
+    <button class="small-btn" id="reactorTab">◉ Share PC tab audio</button>
+    <button class="small-btn" id="reactorStop" disabled>■ Stop listening</button>
+   </div>
+   <label>Local audio player<audio id="reactorAudio" controls preload="none" class="reactor-audio"></audio></label>
+   <label>Playback volume (local audio only)<input type="range" id="reactorVolume" min="0" max="1" step=".05" value=".75"></label>
+   <p id="reactorDevice" class="reactor-device-note">Checking supported audio inputs…</p>
+   <p id="reactorSourceStatus" class="hint" role="status">Choose a local file or another supported source.</p>
+
+   <h3>02 / ANIMATED BACKGROUND PUBLISHER</h3>
+   <label class="upload"><input type="file" id="reactorBgFile" accept="image/gif,image/png,image/jpeg,image/webp,video/mp4,video/webm,.gif,.png,.jpg,.jpeg,.webp,.mp4,.webm"><b>＋ IMPORT GIF / MP4 / WEBM BACKDROP</b><span>Animated or static local art · remembered on this device</span></label>
+   <p class="hint" id="reactorBgName">Original Reactor atmosphere</p>
+   <div class="two"><label>Background fit<select id="reactorBgFit"><option value="cover">Cover / cinematic crop</option><option value="contain">Contain / show full frame</option></select></label><label>Backdrop visibility <output id="reactorBgOpacityOut">70%</output><input type="range" id="reactorBgOpacity" min=".1" max="1" step=".05" value=".7"></label></div>
+   <div class="reactor-source-controls"><button class="small-btn" id="reactorBgPlay" hidden>▶ Start backdrop</button><button class="small-btn" id="reactorBgRemove">Remove custom background</button></div>
+
+   <h3>03 / VISUALIZER POWER</h3>
+   <div class="two"><label>Reactor theme<select id="reactorTheme"><option value="void">Void Sovereign</option><option value="celestial">Celestial Ascension</option><option value="frost">Frost Sentinel</option><option value="inferno">Ember Dominion</option><option value="emerald">Emerald Reactor</option></select></label><label>Visual mode<select id="reactorMode"><option value="sovereign">Sovereign Overdrive</option><option value="spectrum">Neon Spectrum</option><option value="rings">Shockwave Rings</option><option value="wave">Kinetic Wave</option><option value="portal">Singularity Portal</option><option value="starlight">Starlight Reactor</option></select></label></div>
+   <label>Performance profile<select id="reactorQuality"><option value="eco">Battery saver · 640×360</option><option value="balanced" selected>Balanced · 960×540</option><option value="cinema">Cinematic · 1280×720</option></select></label>
+   <div class="two"><label>Bass sensitivity <output id="reactorSensitivityOut">1.25×</output><input id="reactorSensitivity" type="range" min=".5" max="2.5" step=".05" value="1.25"></label><label>Impact strength <output id="reactorImpactOut">1.65×</output><input id="reactorImpact" type="range" min=".5" max="2.8" step=".05" value="1.65"></label></div>
+   <label>Effects intensity <output id="reactorLayersOut">70%</output><input id="reactorLayers" type="range" min=".1" max="1" step=".05" value=".7"></label>
+   <div class="checks"><label><input type="checkbox" id="reactorAutoShift" checked> Switch colors on beats</label><label><input type="checkbox" id="reactorSnow"> Falling stardust / snow</label><label><input type="checkbox" id="reactorShowSignature" checked> Show Reactor signature</label></div>
+   <label>On-stage signature<input type="text" id="reactorSignature" maxlength="36" value="PROXIMUS" placeholder="PROXIMUS"></label>
+   <p class="hint"><span id="reactorResolution">960 × 540</span> · Microphone audio is analyzed, not played back through the speaker.</p>
+  </div>
+  <div class="panel">
+   <h3>04 / CAPTURE THE REACTOR</h3>
+   <p class="hint">Export your own music-reactive scenes. GIFs are real animated image files, not renamed videos. The optional video recorder captures silent visuals.</p>
+   <div class="reactor-source-controls"><button class="primary" id="reactorPNG">↓ Export PNG artwork</button><button class="small-btn" id="reactorPNGShare">Share / Save PNG</button><button class="small-btn" id="reactorPNGPack">＋ PNG to Pack</button></div>
+   <div class="reactor-export-block"><h3>3-SECOND ANIMATED REACTOR LOOP</h3>
+    <p class="hint">Capture 24 animation frames into an actual GIF89a at 384×216. The current audio drives the visual effects when connected.</p>
+    <div class="reactor-source-controls"><button id="reactorMakeGif" class="primary">✺ Create animated GIF</button><button id="reactorSaveGif" class="small-btn" hidden>Share / Save GIF</button><button id="reactorGifPack" class="small-btn" hidden>＋ GIF to Pack</button><button id="reactorUseBg" class="small-btn">✧ Use GIF as app backdrop</button></div>
+   </div>
+   <div class="reactor-export-block"><h3>SILENT VIDEO LOOP RECORDER</h3>
+    <label>Duration<select id="reactorRecordSeconds"><option value="5">5 seconds</option><option value="8" selected>8 seconds</option><option value="12">12 seconds</option><option value="15">15 seconds</option></select></label>
+    <div class="reactor-source-controls"><button id="reactorRecord" class="primary">● Record visualizer video</button><button id="reactorStopRecord" class="small-btn" disabled>■ Stop recording</button><button id="reactorSaveRecord" class="small-btn" hidden>Share / Save video</button><button id="reactorRecordPack" class="small-btn" hidden>＋ Video to Pack</button></div>
+    <p id="reactorRecordingStatus" class="hint" role="status">Video recording exports silent visual effects.</p>
+   </div>
+   <p id="reactorExportStatus" class="hint" role="status">Ready for exports.</p>
+
+   <h3>05 / PERSONAL REACTOR PRESETS</h3>
+   <label>Name your look<input id="reactorPresetName" type="text" maxlength="55" placeholder="My Void Overdrive"></label>
+   <div class="reactor-source-controls"><button id="reactorPresetSave" class="primary">＋ Save current preset</button><button id="reactorPresetExport" class="small-btn">↓ Export presets JSON</button><button id="reactorPresetPack" class="small-btn">＋ Presets to Pack</button></div>
+   <label class="upload"><input id="reactorPresetImport" type="file" accept=".json,application/json"><b>＋ IMPORT PRESETS FROM OTHER DEVICE</b><span>Move custom visualizer configurations between iPhone and PC</span></label>
+   <div id="reactorPresetList" class="reactor-preset-list"></div>
+   <p class="hint">Connect music from Media Theater using its Send to Reactor control, or use Asset Packager. All personalization stays local to your browser.</p>
+  </div>
+ </div>
+ <p id="reactorActivity" class="hint">POWERED BY ZEVRO | PROXIMUS</p>
 </section>
 <section class="studio" data-panel="arcade" hidden>
  <div class="section-heading"><div><div class="eyebrow">17 / OFFLINE ARCADE</div><h2>Arcade Chamber <span class="subtitle">Three original touch-and-mouse games</span></h2></div></div>
@@ -352,7 +427,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.6.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v2.7.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>

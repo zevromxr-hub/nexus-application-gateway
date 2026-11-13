@@ -207,3 +207,51 @@ body.has-ambient .rail{background:#0d0a1add}
  .theater-mini{bottom:8px;right:8px;left:8px;max-width:none}
  .sovereign-canvas{max-height:42vh}
 }
+
+
+/* v2.7 — SOVEREIGN REACTOR · cinematic original Web Audio renderer */
+.reactor-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;margin-bottom:12px;border:1px solid #7759aa;border-radius:14px;background:linear-gradient(100deg,#271b46,#110e28)}
+.reactor-heading strong{font-size:12px;letter-spacing:2.5px;color:#f0d6ff}
+.reactor-heading p{color:#a8a0c6;font-size:11px;margin:4px 0 0}
+.reactor-heading-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.reactor-source{display:inline-flex;align-items:center;padding:7px 11px;border-radius:9px;border:1px solid #8963b6;font-size:11px;color:#ddd0f8;background:#1b1532}
+.reactor-stage-frame{position:relative;display:grid;place-items:center;overflow:hidden;width:100%;aspect-ratio:16/9;background:#070613;border:1px solid #9a76c8;border-radius:16px;box-shadow:0 24px 95px #0d0a27a8,0 0 55px #9666d01e}
+#reactorCanvas{width:100%;height:100%;aspect-ratio:16/9;display:block;object-fit:contain;touch-action:manipulation}
+#reactorBgVideo,#reactorBgImage{position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none;opacity:0;z-index:-1}
+.reactor-stage-frame:fullscreen{background:#060411;width:100vw;height:100vh;border:0;border-radius:0}
+.reactor-stage-frame:fullscreen #reactorCanvas{height:100vh;width:100vw}
+.reactor-monitor{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(95px,.5fr);gap:12px;margin:12px 0 23px}
+.reactor-monitor>div{border:1px solid #4d3c6c;background:linear-gradient(125deg,#191327,#111022);border-radius:10px;padding:11px 13px;min-width:0;display:grid;grid-template-columns:1fr auto;gap:4px;align-items:center}
+.reactor-monitor span{font-size:9px;color:#b6a7d3;font-weight:850;letter-spacing:1px}
+.reactor-monitor b{font-size:11px;color:#f1d7ff;font-variant-numeric:tabular-nums}
+.reactor-monitor progress{grid-column:1/-1;width:100%;height:8px;accent-color:#ae85fb}
+.reactor-monitor .reactor-kicks{grid-template-columns:1fr;text-align:center}
+.reactor-monitor .reactor-kicks b{font-size:24px;color:#f1cba4}
+.reactor-workspace .panel{border-color:#594475}
+.reactor-workspace .panel h3{font-size:11px;letter-spacing:1.5px}
+.reactor-source-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:12px 0}
+.reactor-source-controls button{font-size:11px;letter-spacing:.2px;padding:10px 12px;border-radius:9px}
+.reactor-source-controls button:disabled{opacity:.42;cursor:not-allowed}
+.reactor-audio{display:block;width:100%;accent-color:#ad7eff;margin-top:8px}
+.reactor-device-note{padding:12px 13px;background:#211a35;border-left:3px solid #a986e3;border-radius:8px;color:#c6b8dd;font-size:11px;line-height:1.8}
+#reactorSourceStatus[data-error=true]{color:#ffabb6}
+.reactor-export-block{padding:13px;background:#0c0b1f;border:1px solid #44355f;border-radius:11px;margin:17px 0}
+.reactor-export-block h3{margin-top:0}
+.reactor-preset-list{display:flex;flex-direction:column;gap:7px;max-height:250px;overflow:auto}
+.reactor-preset-row{display:flex;align-items:center;gap:8px;justify-content:space-between;background:#18132e;padding:7px;border:1px solid #544069;border-radius:8px}
+.reactor-preset-row button:first-child{flex:1;text-align:left}
+#reactorActivity{text-align:right;text-transform:uppercase;letter-spacing:2px;font-weight:800;font-size:10px;margin-top:20px}
+@media(max-width:760px){
+ .reactor-heading{padding:12px;align-items:start;flex-direction:column;gap:8px}
+ .reactor-monitor{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .reactor-monitor>div{padding:8px}
+ .reactor-monitor .reactor-kicks{grid-column:1/-1}
+ .reactor-source-controls{gap:6px}
+ .reactor-source-controls button{min-height:44px;flex:1}
+ .reactor-stage-frame{border-radius:10px}
+ .reactor-workspace .panel{padding:14px}
+ .reactor-device-note{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+ #reactorCanvas{animation:none!important}
+}

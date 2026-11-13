@@ -1,5 +1,20 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v2.7.0 — Sovereign Reactor Finale (2026-11-13)
+
+### New studio 26: Sovereign Reactor
+- Added a dedicated audio-reactive entertainment studio for PC and iPhone, powered by real Web Audio frequency analysis.
+- Added local audio playback, microphone listening and optional permissioned desktop tab-audio capture.
+- Added five cosmic visual themes and six original Reactor visualization styles.
+- Added bass/kick impact detection, beat-driven color shifting, adjustable sensitivity and particle effects.
+- Added custom GIF, MP4, WebM and still-image visualizer backgrounds with local saving and placement controls.
+- Added full-screen Cinema Mode, three rendering-quality profiles, stardust/snow and editable on-stage signature.
+- Added full-resolution PNG artwork export, true animated GIF loop export and device share/save actions.
+- Added short silent visualizer video recording with local playback controls and Asset Packager exports.
+- Added persistent style presets with JSON import/export and project handoff.
+- Linked Media Theater and Asset Packager to the new Reactor for direct audio and background transfers.
+
+
 ## v2.6.0 — Sovereign Utility Engine (2026-11-13)
 
 ### New studios

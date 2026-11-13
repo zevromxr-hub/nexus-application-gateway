@@ -93,7 +93,7 @@ export function initProjectHub(app){
    const row=document.createElement('div');row.className='sovereign-project-row';
    const label=document.createElement('span');label.textContent=item.name+' · '+bytes(item.data.size);
    const send=document.createElement('select');send.setAttribute('aria-label','Send '+item.name+' to studio');
-   for(const [value,label] of [['','Send to…'],['image','Image Studio'],['icons','Icon Foundry'],['animation','Animation Forge'],['layers','Layer Forge'],['production','Production Lab'],['motion','Motion Lab'],['theater','Media Theater'],['capture','Capture Studio'],['automation','Automation Lab']]){
+   for(const [value,label] of [['','Send to…'],['reactor','Sovereign Reactor'],['reactorBg','Reactor Background'],['image','Image Studio'],['icons','Icon Foundry'],['animation','Animation Forge'],['layers','Layer Forge'],['production','Production Lab'],['motion','Motion Lab'],['theater','Media Theater'],['capture','Capture Studio'],['automation','Automation Lab']]){
     const option=document.createElement('option');option.value=value;option.textContent=label;send.append(option);
    }
    send.addEventListener('change',wrap(async()=>{

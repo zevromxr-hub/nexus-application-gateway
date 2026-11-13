@@ -299,6 +299,18 @@ export function initMediaTheater(app){
  $('theaterExportFavorites').addEventListener('click',()=>{
   download(textFile({generator:'PROXIMUS | MEDIA THEATER',exported:new Date().toISOString(),favorites}), 'PROXIMUS-THEATER-FAVORITES.json');
  });
+ $('theaterToReactor').addEventListener('click',wrap(()=>{
+  const item=currentItem();
+  if(!item||!['audio','video'].includes(item.kind))throw Error('Select a local music or video track to play in Sovereign Reactor.');
+  document.dispatchEvent(new CustomEvent('proximus-reactor-import',{detail:{file:item.file}}));
+  showStatus('Sent '+safe(item.file.name)+' to Sovereign Reactor. Tap Play local audio there.');
+ }));
+ $('theaterReactorBg').addEventListener('click',wrap(()=>{
+  const item=currentItem();
+  if(!item||item.kind==='audio')throw Error('Choose a GIF, photo or video as the Reactor background.');
+  document.dispatchEvent(new CustomEvent('proximus-reactor-background',{detail:{blob:item.file,name:item.file.name}}));
+  showStatus('Opened selected backdrop in Sovereign Reactor.');
+ }));
  $('theaterManifest').addEventListener('click',wrap(()=>{
   if(!playlist.length)throw Error('Add local media first.');
   download(textFile(playlistManifest(playlist)),'PROXIMUS-MEDIA-PLAYLIST.json');
