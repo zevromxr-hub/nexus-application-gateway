@@ -1,5 +1,25 @@
 # PROXIMUS | ASSET ALCHEMIST — Changelog
 
+## v2.2.0 — Motion & GIF Dominion Edition (2026-11-12)
+
+### New
+- **Animation Forge (Studio 15)** accepts local MP4, WebM, or animated GIF. It can convert supported clips to real animated \`GIF89a\` files with 6/8/12 fps, clip trimming, resizing, contain/cover, background fill, optional transparency, and simple ordered dithering.
+- Animation Forge can produce a PNG keyframe, save an animated GIF into the persistent Pack Vault, and create an animated GIF icon ZIP (32, 64, 128, 256 px) with separate static PNG fallbacks.
+- **Icon Foundry upgraded:** imported GIF master artwork is supported for static PNG icons or the new dedicated animated GIF icon export. Animated GIF output is real multi-frame data, not a video file renamed \`.gif\`.
+- **Original LZW GIF encoder** with a deterministic palette and actual NETSCAPE looping extension, compatible file-header output, and frame delays. Added independent GIF decode round-trip source tests.
+
+### Preserved
+- All previous 14 studios, persistent vault, static hosting, versioned cache, and Discord's existing "OPEN ASSET ALCHEMIST" GitHub Pages link.
+- No external encoder service, remote upload, application installer, or unrelated gateway changes.
+
+### Compatibility and honest limits
+- Video decoding is browser-dependent: MP4/H.264 and WebM/VP8/VP9 are common; codecs not understood by the browser will fail with an explanation.
+- Animated GIF re-encoding uses Chromium's built-in ImageDecoder; current Chrome, Edge or Opera recommended.
+- GIF has a maximum of 256 palette colors and no audio. Clips are capped at 8 seconds, 96 frames, and 512 px longest dimension to manage browser memory.
+- Animated \`.gif\` icon files can animate only where the target platform permits GIFs. Windows taskbar/executable \`.ico\` files cannot animate.
+- Browser source processing has no cloud upload. Output GIF files can be much larger than MP4/WebM for comparable animation.
+
+
 ## v2.1.0 — Dominion Workflow Edition (2026-11-12)
 
 ### New
