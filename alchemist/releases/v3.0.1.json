@@ -1,0 +1,29 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.0.1",
+  "release_date": "2026-11-13",
+  "title": "Animation Forge — GIF Frame Precision Patch",
+  "subtitle": "Animation Forge — GIF Frame Precision Patch",
+  "channel": "stable",
+  "studios": 30,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Fixed video-to-GIF exports reporting frame dimension mismatches in regular GIF mode even when custom dimensions were disabled",
+    "Preserve the browser ImageData width, height and RGBA buffer explicitly before GIF89a encoding",
+    "Apply the same frame metadata fix to animated GIF resizing and animated icon-pack generation",
+    "Preserve Auto sizing, aspect-ratio controls and custom width/height settings without imposing icon dimensions on standard GIFs",
+    "Retain all 30 studios, visual identity, Reactor IV, offline PWA, and unchanged Token Foundry"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Animation Forge",
+    "Release Guard"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
