@@ -1,7 +1,16 @@
-# PROXIMUS | ASSET ALCHEMIST v3.0.0
+# PROXIMUS | ASSET ALCHEMIST v3.0.1
 **OMNIVERSE IDENTITY & REACTOR IV — 30 studios · PC + iPhone**
 
 Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## PATCH v3.0.1 — ANIMATION FORGE GIF FRAME PRECISION
+
+**Fixed:** Regular MP4/WebM → GIF conversions no longer lose browser ImageData width, height or pixel buffers before encoding. The prior bug incorrectly displayed "Frame sizes do not match GIF dimensions" even with automatic dimensions selected.
+
+This fix also covers animated GIF resizing and GIF icon packs. No exact-width requirement is imposed on normal GIFs. Select **Regular animated GIF** + **Automatic · source proportions** for hands-free sizing, or Custom to choose your output dimensions.
+
+All 30 studios remain available and all personal data stays local. Use **Check Updates** after GitHub Pages finishes publishing the new release.
+
 
 ## NEW STUDIO 30 — MASTER VISUAL IDENTITY
 
