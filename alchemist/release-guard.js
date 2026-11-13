@@ -68,12 +68,59 @@ export function initReleaseGuard(app){
    row.append(title,value);holder.append(row);
   }
  };
+ async function talkToWorker(type,name){
+  if(!navigator.serviceWorker)throw Error('This browser does not support a service worker.');
+  const reg=await navigator.serviceWorker.ready,worker=navigator.serviceWorker.controller||reg.active;
+  if(!worker)throw Error('No active PROXIMUS offline worker is available.');
+  return await new Promise((resolve,reject)=>{
+   const channel=new MessageChannel();
+   const timer=setTimeout(()=>{channel.port1.close();reject(Error('Offline worker did not respond.'));},7000);
+   channel.port1.onmessage=e=>{
+    clearTimeout(timer);channel.port1.close();
+    if(e.data?.ok)resolve(e.data);else reject(Error(e.data?.error||'Offline cache control failed.'));
+   };
+   worker.postMessage({type,name},[channel.port2]);
+  });
+ }
+ async function refreshPrevious(){
+  const select=$('releaseGuardRollbackSelect');select.replaceChildren();
+  try{
+   const info=await talkToWorker('PROXIMUS_LIST_CACHES');
+   const archived=info.names.filter(x=>x!==info.latest);
+   for(const name of archived){
+    const opt=document.createElement('option');opt.value=name;opt.textContent=name.replace('proximus-alchemist-','');
+    select.append(opt);
+   }
+   if(!archived.length){
+    const option=document.createElement('option');option.value='';option.textContent='No earlier cached release';
+    select.append(option);
+   }
+   $('releaseGuardRollback').disabled=!archived.length;
+   $('releaseGuardLatest').disabled=info.active===info.latest;
+   const active=document.createElement('option');active.value='';active.disabled=true;
+   $('releaseGuardStatus').textContent=info.active===info.latest?'Running latest cached build.':'Fallback active: '+info.active+'. Use Return to latest build to resume updates.';
+  }catch(e){
+   const option=document.createElement('option');option.value='';option.textContent='Offline fallback unavailable';
+   select.append(option);$('releaseGuardRollback').disabled=true;
+   $('releaseGuardStatus').textContent='Fallback status: '+e.message;
+  }
+ }
+ $('releaseGuardRollback').addEventListener('click',wrap(async()=>{
+  const name=$('releaseGuardRollbackSelect').value;
+  if(!name)throw Error('Select a cached earlier release.');
+  if(!confirm('Switch this browser to the saved '+name+' application files? Your personal projects remain stored locally.'))return;
+  await talkToWorker('PROXIMUS_RESTORE_CACHE',name);
+  location.reload();
+ }));
+ $('releaseGuardLatest').addEventListener('click',wrap(async()=>{
+  await talkToWorker('PROXIMUS_USE_LATEST');location.reload();
+ }));
  $('releaseGuardScan').addEventListener('click',wrap(async()=>{
   $('releaseGuardScan').disabled=true;
   try{
    status.textContent='Checking release metadata, online assets and offline caches…';
    last=await inspectRelease();
-   draw(last);
+   draw(last);await refreshPrevious();
    status.textContent='Release guard completed · '+last.summary.passing+' checks passed, '+last.summary.notices+' notices.';
   }finally{$('releaseGuardScan').disabled=false;}
  }));
@@ -85,4 +132,5 @@ export function initReleaseGuard(app){
  $('releaseGuardOpenSync').addEventListener('click',()=>app.changeView('sync'));
  $('releaseGuardUpdate').addEventListener('click',()=>$('versionCheck').click());
  status.textContent='Ready to inspect release files, service worker and cached versions.';
+ void refreshPrevious();
 }
