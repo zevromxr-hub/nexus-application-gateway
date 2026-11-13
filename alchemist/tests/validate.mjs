@@ -115,6 +115,8 @@ const sizingTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-sizing.mj
 assert.equal(sizingTest.status,0,'GIF auto/manual size selection: '+sizingTest.stderr+' '+sizingTest.stdout);
 const frameMetaTest=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-frame-metadata.mjs')],{encoding:'utf8'});
 assert.equal(frameMetaTest.status,0,'Browser ImageData GIF frame metadata regression: '+frameMetaTest.stderr+' '+frameMetaTest.stdout);
+const compliantGif=spawnSync(process.execPath,[path.join(ROOT,'tests/gif-standards-compliance.mjs')],{encoding:'utf8'});
+assert.equal(compliantGif.status,0,'Native browser GIF standard compliance / external decoder fixture: '+compliantGif.stderr+' '+compliantGif.stdout);
 const entertainmentTest=spawnSync(process.execPath,[path.join(ROOT,'tests/entertainment.mjs')],{encoding:'utf8'});
 assert.equal(entertainmentTest.status,0,'Media Theater and Arcade Chamber: '+entertainmentTest.stderr+' '+entertainmentTest.stdout);
 const toolkitTest=spawnSync(process.execPath,[path.join(ROOT,'tests/productivity-releases.mjs')],{encoding:'utf8'});
