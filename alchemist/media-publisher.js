@@ -17,7 +17,7 @@ export function mediaFitOptions(record){
   opacity:Number.isFinite(Number(record?.opacity))?Math.min(1,Math.max(.1,Number(record.opacity))):.42};
 }
 const mediaRecords=new Map(),urls=new Map();
-let database=null,posterUrl=null,posterFor='',refreshTimer=0;
+let database=null,posterUrl=null,posterFor='',posterLoadingFor='';
 function mimeType(file){
  const ext=file?.name?.split('.').pop()?.toLowerCase();
  const mime=ALLOWED.has(file?.type)?file.type:({gif:'image/gif',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',mp4:'video/mp4',webm:'video/webm'}[ext]);
@@ -62,7 +62,8 @@ function setPoster(newUrl,key){
 async function generatePoster(record){
  if(!isVideo(record))return;
  const token=record.savedAt||record.name;
- if(posterFor===token)return;
+ if(posterFor===token||posterLoadingFor===token)return;
+ posterLoadingFor=token;
  const node=document.createElement('video');node.muted=true;node.playsInline=true;node.preload='auto';
  const url=urlFor(record),guard=()=>mediaRecords.get('master')===record;
  try{
@@ -79,7 +80,7 @@ async function generatePoster(record){
   x.drawImage(node,(512-w*scale)/2,(288-h*scale)/2,w*scale,h*scale);
   const blob=await new Promise(resolve=>c.toBlob(resolve,'image/jpeg',.78));
   if(blob&&guard())setPoster(URL.createObjectURL(blob),token);
- }catch(e){}finally{node.pause();node.removeAttribute('src');node.load();}
+ }catch(e){}finally{if(posterLoadingFor===token)posterLoadingFor='';node.pause();node.removeAttribute('src');node.load();}
 }
 function safeRecord(x){
  if(!x||!validSlot(x.slot)||!(x.blob instanceof Blob))throw Error('Invalid saved media record.');
