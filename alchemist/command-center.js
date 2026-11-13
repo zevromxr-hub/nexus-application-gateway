@@ -80,6 +80,7 @@ export function initCommandCenter(app){
  $('commandOpenProjects').addEventListener('click',()=>app.changeView('projects'));
  $('commandOpenMedia').addEventListener('click',()=>$('mediaOpen').click());
  $('commandOpenReactor').addEventListener('click',()=>app.changeView('reactor'));
+ $('commandOpenVideos').addEventListener('click',()=>app.changeView('videos'));
  $('commandOpenRelease').addEventListener('click',()=>app.changeView('releases'));
  $('commandOpenRecovery').addEventListener('click',()=>app.changeView('recovery'));
  $('commandCheckUpdates').addEventListener('click',()=>$('versionCheck').click());
