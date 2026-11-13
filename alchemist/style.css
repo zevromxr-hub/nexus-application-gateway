@@ -40,7 +40,7 @@
 #ambientMedia{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:transparent}
 #ambientMedia .personal-media{width:100%;height:100%;display:block}
 .rail,.shell{position:relative;z-index:1}
-.rail{position:fixed}
+.rail{position:fixed;z-index:15}
 body.has-ambient .welcome{background:linear-gradient(115deg,#17122ed6,#1a1530c5 58%,#100f25d9)}
 body.has-ambient .panel,body.has-ambient .preview-panel{background:linear-gradient(155deg,#151329dc,#121020d5)}
 body.has-ambient .rail{background:#0d0a1add}
@@ -61,5 +61,6 @@ body.has-ambient .rail{background:#0d0a1add}
  .rail{position:relative;inset:auto;width:auto;height:auto}
  .studio-personal-thumb{width:92px;height:64px}
  .media-settings{padding:16px}
+ #heroOrb.has-personal-media{display:block;width:92px;height:92px;flex:none}
  #mediaOpen{padding:9px 10px}
 }
