@@ -71,13 +71,25 @@ async function openSource(file){
 }
 async function seek(video,time){
  time=clamp(time,0,Math.max(0,video.duration-.035));
- if(Math.abs(video.currentTime-time)<.005&&video.readyState>=2)return;
+ // Seeking to time=0 after loadedmetadata may not dispatch "seeked".
+ // Wait for a genuinely decoded frame instead of relying on an unchanged currentTime.
+ if(Math.abs(video.currentTime-time)<.005){
+  if(video.readyState>=2)return;
+  await new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>{cleanup();reject(Error('Timed out waiting for first video frame.'))},7500);
+   const cleanup=()=>{clearTimeout(timer);video.removeEventListener('loadeddata',ok);video.removeEventListener('canplay',ok);video.removeEventListener('error',fail)};
+   const ok=()=>{cleanup();resolve()},fail=()=>{cleanup();reject(Error('Video frame could not be decoded.'))};
+   video.addEventListener('loadeddata',ok,{once:true});video.addEventListener('canplay',ok,{once:true});video.addEventListener('error',fail,{once:true});
+   if(video.readyState>=2)ok();
+  });
+  return;
+ }
  await new Promise((resolve,reject)=>{
-  const timer=setTimeout(()=>{done();reject(Error('Video seeking timed out. The source codec may not support frame extraction.'))},7500);
-  const done=()=>{clearTimeout(timer);video.removeEventListener('seeked',onSeek);video.removeEventListener('error',onError)};
-  const onSeek=()=>{done();resolve()},onError=()=>{done();reject(Error('Could not extract the selected video frame'))};
+  const timer=setTimeout(()=>{cleanup();reject(Error('Video seeking timed out. The source codec may not support frame extraction.'))},7500);
+  const cleanup=()=>{clearTimeout(timer);video.removeEventListener('seeked',onSeek);video.removeEventListener('error',onError)};
+  const onSeek=()=>{cleanup();resolve()},onError=()=>{cleanup();reject(Error('Could not extract the selected video frame'))};
   video.addEventListener('seeked',onSeek,{once:true});video.addEventListener('error',onError,{once:true});
-  try{video.currentTime=time;}catch(err){done();reject(err)}
+  try{video.currentTime=time;}catch(err){cleanup();reject(err)}
  });
 }
 async function sampleFrames(source,{start,end,fps,width,height,mode='contain',bg='#111020',transparent=false,progress=()=>{},isCancelled=()=>false}){
@@ -190,7 +202,6 @@ export function initAnimationForge(app){
   cleanup();file=f;url=URL.createObjectURL(file);
   video.hidden=type!=='video';gif.hidden=type!=='gif';
   if(type==='video'){
-   video.src=url;video.load();
    video.onloadedmetadata=()=>{
     if(file!==f)return;
     $('animStart').value=0;
@@ -198,6 +209,7 @@ export function initAnimationForge(app){
     status.textContent='Video · '+video.videoWidth+'×'+video.videoHeight+' · '+video.duration.toFixed(1)+' sec';
    };
    video.onerror=()=>status.textContent='Video codec unsupported in this browser. Try H.264 MP4 or WebM.';
+   video.src=url;video.load();
   }else{
    gif.src=url;$('animStart').value=0;$('animEnd').value=4;
    status.textContent='Animated GIF loaded · click Convert to resize, trim or create GIF icons';
