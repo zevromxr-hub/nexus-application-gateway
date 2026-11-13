@@ -1,7 +1,16 @@
-# PROXIMUS | ASSET ALCHEMIST v3.0.1
+# PROXIMUS | ASSET ALCHEMIST v3.0.2
 **OMNIVERSE IDENTITY & REACTOR IV — 30 studios · PC + iPhone**
 
 Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## PATCH v3.0.2 — BLANK GIF EXPORT CORRECTION
+
+Fixed the actual GIF89a encoder: an off-by-one dictionary code-width change produced invalid LZW compressed data. This could create GIFs that appeared blank or only displayed the first few rows in standard image viewers, although the application reported success. The Safari fallback decoder has been aligned with standards-compliant streams too.
+
+GIF exports now include an independent, externally decoded golden fixture test at **480 × 270**, as well as several frame sizes and transparent colors. The existing **v3.0.1** dimensions/decoded-frame fix remains included. All 30 studios remain available.
+
+**Try:** Animation Forge → Regular animated GIF → Automatic dimensions → import video → Create regular GIF. After deployment, use Check Updates to load v3.0.2.
+
 
 ## PATCH v3.0.1 — ANIMATION FORGE GIF FRAME PRECISION
 
