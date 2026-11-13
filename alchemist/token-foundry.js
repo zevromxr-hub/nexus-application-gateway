@@ -65,13 +65,13 @@ export function initTokenFoundry(app){
  const tell=(s,error=false)=>{stat.textContent=s;stat.dataset.error=error?'true':'false';};
  const lockedView=mode=>{
   q('tokenVaultSetup').hidden=mode!=='setup';q('tokenVaultUnlock').hidden=mode!=='unlock';
-  q('tokenVaultMain').hidden=mode!=='main';
+  q('tokenVaultMain').hidden=mode!=='main';q('tokenVaultRestore').hidden=mode==='main';
   q('tokenSecurityState').textContent=mode==='main'?'UNLOCKED · ENCRYPTED DEVICE INVENTORY':mode==='setup'?'CREATE PRIVATE TOKEN VAULT':'LOCKED · VAULT PASSPHRASE REQUIRED';
  };
  const requireVault=()=>{if(!vault)throw Error('Unlock your encrypted vault first.');lastActivity=Date.now();return vault;};
  function clearSensitive(){
   latest=[];selected.clear();list.replaceChildren();audit.replaceChildren();batch.replaceChildren();
-  for(const id of ['tokenPassSetup','tokenPassConfirm','tokenPassUnlock','tokenValidationInput','tokenImportPass','tokenNewPass','tokenOldPass'])q(id).value='';
+  for(const id of ['tokenPassSetup','tokenPassConfirm','tokenPassUnlock','tokenValidationInput','tokenImportPass','tokenRestorePass'])q(id).value='';
   q('tokenBatchCount').textContent='0 newly generated';
  }
  function lock(reason='Vault locked.'){
@@ -252,6 +252,16 @@ export function initTokenFoundry(app){
   // user's tap so the platform can display the iPhone native Share sheet.
   await saveOrShare(encoder(JSON.stringify(v.envelope,null,2)),dated('ENCRYPTED-BACKUP','json'));
   tell('Encrypted vault backup exported. Keep your passphrase separately.');
+ }));
+ q('tokenRestoreGo').addEventListener('click',wrap(async()=>{
+  const file=q('tokenRestoreFile').files?.[0];
+  if(!file)throw Error('Choose an encrypted Token Foundry JSON backup first.');
+  if(file.size>3500000)throw Error('Encrypted vault backup exceeds the 3.5 MB import limit.');
+  const next=await openEncryptedVault(JSON.parse(await file.text()),q('tokenRestorePass').value);
+  if(await getEnvelope()&&!confirm('Replace the encrypted local vault with this backup? Export your existing encrypted backup first.'))return;
+  await putEnvelope(next.envelope);vault=next;lockedView('main');render();
+  q('tokenRestoreFile').value='';q('tokenRestorePass').value='';
+  tell('Encrypted vault restored · '+vault.inventory.records.length+' tokens ready on this device.');
  }));
  q('tokenImportFile').addEventListener('change',wrap(async e=>{
   const file=e.target.files?.[0];if(!file)return;
