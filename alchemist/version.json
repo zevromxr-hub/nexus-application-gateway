@@ -1,23 +1,24 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "channel": "stable",
-  "release_date": "2026-11-12",
-  "subtitle": "Entertainment Expansion Edition",
-  "studio_count": 17,
-  "previous_version": "2.3.0",
+  "release_date": "2026-11-13",
+  "subtitle": "Creator & Productivity Expansion",
+  "studio_count": 19,
+  "previous_version": "2.4.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Media Theater: local music/video/GIF playlist with shuffle, looping, speed and cinema mode",
-    "Media Theater: three Web Audio visualizer styles, five color themes and PNG/Pack exports",
-    "Media Theater: video and GIF posters plus application background and hero thumbnail handoff",
-    "Arcade Chamber: Comet Catch touch game with score, combo and hazards",
-    "Arcade Chamber: Pulse Reflex timing game with precision streak scoring",
-    "Arcade Chamber: Memory Matrix matching game with time and move scoring",
-    "Browser-local high scores, arcade score JSON export and poster Asset Packager integration",
-    "Seventeen studios with original mobile layout, GitHub Pages/Discord link and in-app update checking retained"
+    "Release Center: on-site searchable version history, newest-first change cards and direct GitHub source records",
+    "Release Center: dynamic latest-version lookup and shortcut to the existing Check Updates control",
+    "Creator Story: independent developer journey, project milestones, design philosophy and long-term goals",
+    "Workflow Desk: editable notes, persistent checklists, progress and focus timer",
+    "Workflow Desk: portable JSON backup, restore and Asset Packager export",
+    "Utility Forge: text cleanup, sorting, deduplication, JSON formatting and URL/Base64 transformations",
+    "Utility Forge: cryptographically secure passwords and custom key strings",
+    "Utility Forge: batch file renaming with preview and ZIP export for any file type",
+    "Expanded from 17 to 19 creative studios and two information tabs while preserving the original app and launch/update links"
   ]
 }
