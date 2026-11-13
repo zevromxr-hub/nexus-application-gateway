@@ -45,7 +45,12 @@ export function lzwCompress(pixels){
   emit(phrase);
   if(next<MAX){
    codes.set(key,next++);
-   if(next===(1<<bits)&&bits<12)bits++;
+   // GIF89a LZW: dictionary growth in the encoder leads the decoder
+   // by one phrase. Codes must continue using the old width at the
+   // exact 2^bits boundary; switch on the NEXT insertion.
+   // Advancing at equality emits streams that standard GIF decoders
+   // reject or render as partial/blank images.
+   if(next>(1<<bits)&&bits<12)bits++;
   }else{emit(CLEAR);reset();}
   phrase=curr;
  }
