@@ -6,6 +6,7 @@ import {initLayerForge,initMotionGraphics} from './creator-tools.js';
 import {initAnimationForge} from './animation-tools.js';
 import {initMediaPublisher} from './media-publisher.js';
 import {initMediaTheater} from './media-theater.js';
+import {initSovereignReactor} from './reactor-studio.js';
 import {initArcadeChamber} from './arcade-chamber.js';
 import {initReleaseCenter} from './release-center.js';
 import {initWorkflowDesk} from './workflow-desk.js';
@@ -33,6 +34,7 @@ const names=[
  {id:'motiongraphics',icon:'✺',title:'Motion Graphics',detail:'Animated title sequences particles and WebM export'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
+ {id:'reactor',icon:'✺',title:'Sovereign Reactor',detail:'Music beat bass audio reactive visualizer microphone PC tab YouTube Music local GIF MP4 animated background sovereign'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
  {id:'utility',icon:'⌘',title:'Utility Forge',detail:'Text transformations JSON formatter Base64 URL codec secure password generator batch rename ZIP'},
@@ -97,6 +99,20 @@ const app={
  changeView(id){changeView(id);},
  listAssets(){return pack.slice();},
  sendAsset(asset,dest){
+  if(dest==='reactor'||dest==='reactorBg'){
+   const name=safe(asset.name),mime=asset.data.type||({
+    mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',ogg:'audio/ogg',
+    mp4:'video/mp4',webm:'video/webm',gif:'image/gif',png:'image/png',jpg:'image/jpeg',webp:'image/webp'
+   }[name.split('.').pop()?.toLowerCase()]||'application/octet-stream');
+   if(dest==='reactor'){
+    if(!mime.startsWith('audio/')&&!mime.startsWith('video/'))throw Error('Send a music or video file with audio to Sovereign Reactor.');
+    document.dispatchEvent(new CustomEvent('proximus-reactor-import',{detail:{file:new File([asset.data],name,{type:mime})}}));
+   }else{
+    if(!mime.startsWith('image/')&&!mime.startsWith('video/'))throw Error('Send a GIF, video or image as Reactor background.');
+    document.dispatchEvent(new CustomEvent('proximus-reactor-background',{detail:{blob:new File([asset.data],name,{type:mime}),name}}));
+   }
+   return;
+  }
   const ids={image:'imgFile',icons:'iconFile',animation:'animFile',layers:'layerFiles',
    production:'prodFile',motion:'motionFile',theater:'theaterFiles',capture:'captureFile',automation:'automationFiles'};
   const id=ids[dest];if(!id||!$(id))throw Error('No file import is available for this destination.');
@@ -161,7 +177,7 @@ function drawPack(){
   }
   tag.value=f.tag||'';tag.addEventListener('change',()=>{f.tag=tag.value;void vaultPut(f);});
   const destinations=document.createElement('select');destinations.title='Send to studio';
-  for(const [value,label] of [['','Send…'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
+  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
    const option=document.createElement('option');option.value=value;option.textContent=label;destinations.append(option);
   }
   destinations.addEventListener('change',wrap(()=>{const dest=destinations.value;destinations.value='';if(dest)app.sendAsset(f,dest);}));
@@ -227,7 +243,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.6.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.7.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -249,11 +265,11 @@ function setupVersion(){
 function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.6 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.7 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
