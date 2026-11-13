@@ -31,7 +31,7 @@ function changeView(id){
  localStorage.setItem('nexus-alchemist-last-view',id);
  const heading=document.querySelector('[data-panel="'+id+'"] .section-heading h2');
  if(heading)document.title='NEXUS | '+names.find(x=>x.id===id).title+' — Asset Alchemist';
- window.scrollTo({top:0,behavior:'instant'});
+ window.scrollTo({top:0,behavior:'auto'});
 }
 function drawPack(){
  $('packCount').textContent=String(pack.length);
