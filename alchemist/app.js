@@ -20,6 +20,7 @@ import {initRecoveryCenter} from './recovery-center.js';
 import {initTokenFoundry} from './token-foundry.js';
 import {initCommandCenter} from './command-center.js';
 import {initSyncBridge} from './workspace-sync.js';
+import {initReleaseGuard} from './release-guard.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
@@ -105,6 +106,10 @@ const app={
  changeView(id){changeView(id);},
  listAssets(){return pack.slice();},
  sendAsset(asset,dest){
+  if(dest==='master'){
+   document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:asset.data,name:asset.name,target:'master'}}));
+   return;
+  }
   if(dest==='reactor'||dest==='reactorBg'){
    const name=safe(asset.name),mime=asset.data.type||({
     mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',ogg:'audio/ogg',
@@ -176,7 +181,9 @@ function drawPack(){
     bg.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'background'}})));
     const thumb=document.createElement('button');thumb.textContent='Thumb';thumb.title='Use as hero thumbnail';
     thumb.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'hero'}})));
-    row.append(bg,thumb);
+    const master=document.createElement('button');master.textContent='MASTER';master.title='Apply this GIF or video to every website thumbnail on your device';
+    master.addEventListener('click',()=>document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:f.data,name:f.name,target:'master'}})));
+    row.append(bg,thumb,master);
    }
    const tag=document.createElement('select');tag.title='Asset category';
   for(const name of ['','Artwork','Animation','Audio','Video','Documents','Project','Favorite']){
@@ -184,7 +191,7 @@ function drawPack(){
   }
   tag.value=f.tag||'';tag.addEventListener('change',()=>{f.tag=tag.value;void vaultPut(f);});
   const destinations=document.createElement('select');destinations.title='Send to studio';
-  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
+  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['master','Master Thumb'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
    const option=document.createElement('option');option.value=value;option.textContent=label;destinations.append(option);
   }
   destinations.addEventListener('change',wrap(()=>{const dest=destinations.value;destinations.value='';if(dest)app.sendAsset(f,dest);}));
@@ -274,7 +281,7 @@ function launch(){
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
  initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
- initCommandCenter(app);initSyncBridge(app);
+ initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
  notice('PROXIMUS Asset Alchemist v2.9 loaded. All transformations remain local to your browser.');
