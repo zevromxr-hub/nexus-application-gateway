@@ -1,56 +1,41 @@
-# PROXIMUS | ASSET ALCHEMIST v2.9.0
+# PROXIMUS | ASSET ALCHEMIST v3.0.0
+**OMNIVERSE IDENTITY & REACTOR IV — 30 studios · PC + iPhone**
 
-**SOVEREIGN WORKSPACE & MEDIA DOMINION — 29 studios · PC + iPhone**
+Official application: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
-Official site: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+## NEW STUDIO 30 — MASTER VISUAL IDENTITY
 
-## NEW — Master Thumbnail Publisher
+The master design controller applies a cohesive appearance to the entire local Asset Alchemist browser UI.
 
-Open **Media** and choose **MASTER · all website thumbnails**. Upload **one GIF, MP4 or WebM**, then choose how to reuse it across the application:
+- Choose Sovereign Violet, Solar Dominion, Abyssal Cyan, Crimson Ember, Emerald Ascendant, or Frost Sentinel.
+- Edit six safe custom hex-color channels: primary, secondary, emissive glow, background base, panel surface, and borders.
+- Tune glow, interface sizing, border geometry, and motion intensity. Exempt any selected studio's local appearance from the global theme.
+- Optional time-of-day switching between two color universes, activated when the application is in use or regains focus.
+- Choose whether to show the existing master GIF/video thumbnail everywhere. The identity preference never deletes uploaded media.
+- Continue to use Media Publisher's existing GIF/MP4/WebM master thumbnail and full-screen background publisher; dedicated buttons open them directly.
+- Link currently chosen identity colors to Sovereign Reactor IV *only if enabled*.
+- Save up to twelve named appearances, import/export portable visual identity JSON, or transfer all media bytes with Sync Bridge.
 
-- Apply the same imported media to all studio thumbnail positions, the home hero and the Sovereign Command Center cards.
-- Master-first mode makes the master media take priority everywhere. Individual-first mode preserves any per-studio thumbnails and fills remaining places from the master.
-- Playback preference: Adaptive, Live where visible or Static Poster for video. Adaptive mode avoids running dozens of video decoders at once on iPhone.
-- GIFs stay animated where shown. Videos are muted loops in visible main displays, with a common extracted preview poster for dashboard cards.
-- A single original media Blob is stored in local browser IndexedDB. There are no per-studio duplicates in storage.
-- You can also send supported GIF/video files from **Media Theater**, **Project Hub** or **Asset Packager** straight to the Master Thumbnail Publisher.
+This feature changes browser-local cosmetics, not server permissions, GitHub source, customer licensing, or another user's appearance.
 
-**Personalization is per browser/device**, not a global upload into the public GitHub Pages repository. To move the master media to your other device, export/import it through Sync Bridge. The public site source is unchanged by customers' personal uploads.
+## SOVEREIGN REACTOR IV — AUDIO-REACTIVE CINEMATIC STUDIO
 
-## NEW STUDIO 28 — Sovereign Command Center
+Reactor IV extends the existing working Web Audio visualization with:
+- Five original effect compositions: Dominion Impact, Celestial Radiance, Hyperspace Reactor, Frost Precision, and Abyssal Singularity.
+- A visual frequency routing matrix mapping sub-bass to atmosphere, bass to shockwaves, mids to emissive wing effects, and treble to particles.
+- Independent controls for each frequency band and for shockwave/particle intensity.
+- Custom animated GIF/video/image layers with clipped masks: halo, wings, kinetic equalizer bars, and eclipse.
+- Flash, fade, and cinematic sweep scene transitions, four custom ordered scenes, timed or beat-triggered switching.
+- Real detected-beat timeline markers and portable effect JSON backups.
+- Optional Visual Identity system color synchronization.
+- All pre-existing microphone, local audio file, desktop tab-audio capture, custom backdrop, GIF export, PNG, and supported silent video capture continue to work.
 
-A customizable dashboard with studio cards, a live thumbnail gallery, pinned favorites, recent asset outputs, quick actions, version checking and project shortcuts.
+Note: iPhone webpages still cannot directly read protected system audio playing inside another app. Use local audio files or a permissioned microphone to drive music reactions. Audio-reactive measurements represent actual input, not generated guesses.
 
-Choose a creator or streamlined customer **interface layout**. This preference affects presentation only; it is not a secure owner/customer authentication system.
+## PC/iPhone and offline reliability
 
-## NEW STUDIO 29 — Sync Bridge
+The existing 29 studios and Token Foundry are retained. Custom Identity preferences are included in Sync Bridge workspace ZIP transfer and ordinary Recovery Center settings backups. Uploaded GIFs, videos, and other binary assets remain in their original local IndexedDB stores and require an archive that includes media.
 
-Transfer actual workspace data between PC and iPhone:
-
-1. Select saved projects, media and backdrops, Asset Packager files and workspace preferences.
-2. Press **Prepare workspace transfer**.
-3. Share or save the ZIP on iPhone, or download the ZIP on PC.
-4. On the other device, choose the ZIP, inspect the preview and restore with merge or replace.
-5. Reload the app to refresh restored studios.
-
-Sync Bridge includes actual user media bytes, not merely image URLs. It uses a single ZIP archive. **Sync is manual and offline-friendly**, not automatic online account synchronization.
-
-The encrypted **Token Foundry vault is always excluded** from these general workspace transfers. To move that separate vault, use Token Foundry's own encrypted backup/export.
-
-## Sovereign Reactor III
-
-The existing true Web Audio visualizer receives a second independent GIF/MP4/WebM/image layer, opacity and blend controls, a timed Scene Director that rotates visual effects, a live bass/mid/treble history chart, and automatic lower-power rendering when sustained frame rate drops.
-
-The previously supported local song, microphone, desktop shared audio, GIF and video output methods remain part of Reactor.
-
-## Release Guard and recovery
-
-Recovery Center can inspect published version metadata, required source files, service-worker readiness and available offline cache snapshots. Export an audit report. The new offline worker preserves the previous cached PROXIMUS application build when available; Recovery Center can switch to it and return to the latest build. User projects and media are stored separately from the app cache.
-
-## Existing product
-
-The previous 27 studios—including Token Foundry—remain intact. GitHub Pages, the Discord **OPEN ASSET ALCHEMIST** link, local project libraries, the home-screen PWA and **Check Updates** continue using the same paths.
-
-The public browser application does not enforce paid-customer permissions. Secure owner/customer authorization would require an authenticated backend.
+The application's original GitHub Pages site, Discord button, PWA installation route, Check Updates flow and rollback support remain unchanged.
 
 POWERED BY ZEVRO | PROXIMUS
