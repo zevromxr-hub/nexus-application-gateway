@@ -113,7 +113,7 @@ function nodeDisplay(record,{animated=true,slot=''}={}){
 }
 function setDisplay(holder,record,{animated=true,signature='',hero=false}={}){
  if(!holder)return;
- const key=record?record.slot+'|'+record.savedAt+'|'+record.mode+'|'+record.motion+'|'+animated+'|'+signature:'none';
+ const key=record?record.slot+'|'+record.savedAt+'|'+record.mode+'|'+record.motion+'|'+animated+'|'+signature+'|'+(isVideo(record)&&!animated?posterFor:''):'none';
  if(holder.dataset.mediaSignature===key)return;
  holder.dataset.mediaSignature=key;
  holder.querySelectorAll('video').forEach(v=>v.pause());
