@@ -1,0 +1,271 @@
+// PROXIMUS Asset Alchemist v2.4 — Media Theater
+// Local playlist, cinematic playback, real Web Audio visualizer and poster captures.
+// Media remains in the current browser session unless explicitly saved by the user.
+import {$,bytes,safe,stem,notice,blobCanvas,download,textFile,wrap} from './core.js';
+
+const MAX_QUEUE=80,MAX_FILE=400000000;
+const THEMES={
+ violet:['#b692ff','#6d55ea','#edb8ff'],
+ cyan:['#7fefff','#2fbdff','#b8fff9'],
+ gold:['#ffdc9d','#db9a3d','#fff0bf'],
+ ember:['#ffa09c','#eb496c','#ffd5a8'],
+ emerald:['#80f8bc','#25be9a','#e2fff5']
+};
+const audioExt=/\.(?:mp3|wav|ogg|m4a|aac|flac|opus)$/i;
+const videoExt=/\.(?:mp4|m4v|mov|webm|ogv|ogg)$/i;
+const imageExt=/\.(?:gif|png|jpe?g|webp)$/i;
+export function mediaKind(file){
+ const type=String(file?.type||''),name=String(file?.name||'');
+ if(type.startsWith('audio/')||audioExt.test(name))return 'audio';
+ if(type.startsWith('video/')||videoExt.test(name))return 'video';
+ if(type.startsWith('image/')||imageExt.test(name))return 'image';
+ return null;
+}
+export function formatTime(seconds){
+ if(!Number.isFinite(seconds)||seconds<0)return '0:00';
+ const s=Math.floor(seconds);
+ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+}
+export function playlistManifest(items){
+ return {generator:'PROXIMUS | ASSET ALCHEMIST',type:'local-session-playlist',
+  exported_at:new Date().toISOString(),
+  items:items.map((i,index)=>({index:index+1,name:safe(i.file.name),type:i.kind,bytes:i.file.size}))};
+}
+export function initMediaTheater(app){
+ const input=$('theaterFiles'),video=$('theaterVideo'),audio=$('theaterAudio'),image=$('theaterImage');
+ const canvas=$('theaterCanvas'),ctx=canvas.getContext('2d'),list=$('theaterPlaylist');
+ const label=$('theaterNow'),info=$('theaterInfo'),play=$('theaterPlay'),capture=$('theaterCapture');
+ const level=$('theaterLevels'),status=$('theaterStatus');
+ const playlist=[];let current=-1,mode='off',shuffle=false,visualMode='bars',color='violet',currentURL=null;
+ let audioContext=null,analyser=null,frequency=null,timeDomain=null,nodes=new Map(),visualized=false;
+ let playing=false,raf=0,tick=0,pausedByVisibility=false;
+ let themeImage=null;
+ const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='theater';
+ const currentItem=()=>playlist[current]||null;
+ const player=()=>currentItem()?.kind==='video'?video:audio;
+ const showStatus=(s)=>{status.textContent=s;};
+ const showInfo=()=>{
+  const item=currentItem();
+  label.textContent=item?safe(item.file.name):'Choose a track or video';
+  info.textContent=item?item.kind.toUpperCase()+' · '+bytes(item.file.size)+' · '+(item.kind==='image'?'Animated/still image':formatTime(Number.isFinite(player().duration)?player().duration:0)):'Your local playlist appears here';
+  $('theaterCurrent').textContent=item?(current+1)+' / '+playlist.length:'0 / '+playlist.length;
+  play.textContent=playing?'❚❚ Pause':'▶ Play';
+ };
+ function revoke(){if(currentURL)URL.revokeObjectURL(currentURL);currentURL=null;}
+ function stopMedia(){video.pause();audio.pause();playing=false;}
+ function drawList(){
+  list.replaceChildren();for(let i=0;i<playlist.length;i++){
+   const item=playlist[i];
+   const row=document.createElement('div');row.className='theater-track'+(i===current?' selected':'');
+   const choose=document.createElement('button');choose.type='button';choose.className='theater-track-title';
+   const icon=document.createElement('span');icon.textContent=item.kind==='video'?'▣':item.kind==='audio'?'♫':'◈';
+   const text=document.createElement('span');text.textContent=safe(item.file.name);
+   choose.append(icon,text);choose.title='Play '+safe(item.file.name);
+   choose.addEventListener('click',()=>{void select(i,true);});
+   const length=document.createElement('small');length.textContent=bytes(item.file.size);
+   const remove=document.createElement('button');remove.type='button';remove.className='small-btn';remove.textContent='×';remove.title='Remove track';
+   remove.addEventListener('click',()=>{
+    const had=i===current;const next=i<current?current-1:current;
+    playlist.splice(i,1);
+    if(had){stopMedia();revoke();current=-1;video.hidden=true;audio.hidden=true;image.hidden=true;
+     if(playlist.length)void select(Math.min(i,playlist.length-1),false);
+    }else current=Math.max(-1,next);
+    drawList();showInfo();
+   });
+   row.append(choose,length,remove);list.append(row);
+  }
+  if(!playlist.length){const empty=document.createElement('div');empty.className='hint';empty.textContent='Add local songs, videos or GIFs to create a playlist.';list.append(empty);}
+  showInfo();
+ }
+ async function select(index,autoplay=false){
+  if(index<0||index>=playlist.length)return;
+  stopMedia();revoke();current=index;
+  const item=playlist[index],kind=item.kind;
+  currentURL=URL.createObjectURL(item.file);
+  video.hidden=kind!=='video';audio.hidden=kind!=='audio';image.hidden=kind!=='image';
+  if(kind==='video'||kind==='audio'){
+   const media=player();
+   media.src=currentURL;media.load();media.playbackRate=Number($('theaterSpeed').value)||1;
+   media.loop=mode==='one';
+   if(autoplay)try{await media.play();playing=true;await resumeContext();}catch(e){showStatus('Tap Play to start playback');}
+  }else{image.src=currentURL;playing=false;}
+  showInfo();drawList();
+ }
+ async function resumeContext(){
+  if(audioContext&&audioContext.state==='suspended')try{await audioContext.resume();}catch(e){}
+ }
+ async function next(direction=1,fromEnded=false){
+  if(!playlist.length)return;
+  if(fromEnded&&mode==='one'){await select(current,true);return;}
+  if(fromEnded&&mode==='off'&&!shuffle&&current===playlist.length-1){stopMedia();showInfo();return;}
+  let index=shuffle&&playlist.length>1?Math.floor(Math.random()*playlist.length):Math.max(0,current);
+  if(shuffle&&playlist.length>1){if(index===current)index=(index+1)%playlist.length;}
+  else index=(index+direction+playlist.length)%playlist.length;
+  await select(index,true);
+ }
+ async function togglePlay(){
+  if(!playlist.length)throw Error('Add a song, video or GIF first.');
+  if(current<0)await select(0,false);
+  if(currentItem()?.kind==='image'){showStatus('GIF and image items play in the preview');return;}
+  const media=player();
+  if(media.paused){
+   try{await media.play();playing=true;await resumeContext();showStatus('Playing · '+safe(currentItem().file.name))}
+   catch(e){showStatus('Tap the native player button to play this file.');}
+  }else{media.pause();playing=false;}
+  showInfo();
+ }
+ function clearQueue(){
+  stopMedia();revoke();playlist.length=0;current=-1;
+  video.removeAttribute('src');audio.removeAttribute('src');video.load();audio.load();image.removeAttribute('src');
+  video.hidden=true;audio.hidden=true;image.hidden=true;drawList();
+  showStatus('Queue cleared');
+ }
+ input.addEventListener('change',wrap(async e=>{
+  const files=Array.from(e.target.files||[]);
+  let added=0,skipped=0;
+  for(const file of files){
+   if(playlist.length>=MAX_QUEUE)break;
+   const kind=mediaKind(file);
+   if(!kind||file.size>MAX_FILE||!file.size){skipped++;continue;}
+   playlist.push({file,kind});added++;
+  }
+  input.value='';drawList();
+  if(current===-1&&playlist.length)await select(0,false);
+  showStatus(added+' added · '+playlist.length+' in queue'+(skipped?' · '+skipped+' skipped':''));
+ }));
+ $('theaterPlay').addEventListener('click',wrap(togglePlay));
+ $('theaterNext').addEventListener('click',wrap(()=>next(1)));
+ $('theaterPrev').addEventListener('click',wrap(()=>next(-1)));
+ $('theaterClear').addEventListener('click',()=>{if(playlist.length&&confirm('Clear the local theater playlist?'))clearQueue();});
+ $('theaterLoop').addEventListener('change',e=>{mode=e.target.value;video.loop=mode==='one';audio.loop=mode==='one';});
+ $('theaterShuffle').addEventListener('change',e=>{shuffle=e.target.checked;});
+ $('theaterSpeed').addEventListener('change',e=>{video.playbackRate=Number(e.target.value);audio.playbackRate=Number(e.target.value);});
+ for(const el of [audio,video]){
+  el.addEventListener('ended',()=>{playing=false;void next(1,true);});
+  el.addEventListener('play',()=>{playing=true;showInfo();});
+  el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();}});
+  el.addEventListener('loadedmetadata',showInfo);
+  el.addEventListener('error',()=>{showStatus('Could not decode '+(currentItem()?.file.name||'file')+' in this browser');playing=false;showInfo();});
+ }
+ $('theaterFullscreen').addEventListener('click',wrap(async()=>{
+  const el=currentItem()?.kind==='video'?video:$('theaterStage');
+  if(!currentItem())throw Error('Choose a media file before opening cinema mode.');
+  if(el.requestFullscreen)await el.requestFullscreen();
+  else if(el.webkitEnterFullscreen&&el===video)el.webkitEnterFullscreen();
+  else showStatus('Cinema preview is available in the player above.');
+ }));
+ function drawVisualization(time){
+  const w=canvas.width,h=canvas.height;
+  const [primary,secondary,glow]=THEMES[color],t=time/1000;
+  ctx.fillStyle='#090a1c';ctx.fillRect(0,0,w,h);
+  const gradient=ctx.createRadialGradient(w*.5,h*.52,0,w*.5,h*.5,w*.73);
+  gradient.addColorStop(0,secondary+'32');gradient.addColorStop(1,'#060916');
+  ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+  ctx.lineWidth=1;ctx.strokeStyle=primary+'13';
+  for(let y=22;y<h;y+=30){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  let energy=0;
+  if(analyser&&visualized){
+   analyser.getByteFrequencyData(frequency);analyser.getByteTimeDomainData(timeDomain);
+   for(let i=0;i<Math.min(50,frequency.length);i++)energy+=frequency[i];
+   energy/=Math.min(50,frequency.length)*255;
+  }
+  level.textContent=visualized?'LIVE AUDIO · '+Math.round(energy*100)+'%':'VISUAL PREVIEW · '+color.toUpperCase();
+  if(visualMode==='bars'){
+   const count=56,gap=5,bw=(w-72)/count-gap;
+   for(let i=0;i<count;i++){
+    const v=visualized?frequency[Math.floor(i*frequency.length/count)]/255:(.15+.13*Math.sin(t*1.8+i*.32));
+    const bh=Math.max(8,v*(h*.68)),x=36+i*(bw+gap);
+    const g=ctx.createLinearGradient(0,h-bh,0,h);g.addColorStop(0,glow);g.addColorStop(1,secondary);
+    ctx.fillStyle=g;ctx.shadowColor=primary;ctx.shadowBlur=8+v*22;
+    ctx.fillRect(x,h-20-bh,bw,bh);
+   }
+   ctx.shadowBlur=0;
+  }else if(visualMode==='wave'){
+   ctx.lineWidth=3;ctx.strokeStyle=primary;ctx.shadowColor=glow;ctx.shadowBlur=18;ctx.beginPath();
+   for(let x=0;x<w;x+=2){
+    const v=visualized?(timeDomain[Math.floor(x/w*timeDomain.length)]-128)/128:Math.sin(x*.025+t*2)*(.2+.08*Math.sin(t));
+    const y=h/2+v*h*.34+(visualized?0:Math.sin(x*.008-t)*h*.06);
+    if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+   }
+   ctx.stroke();ctx.shadowBlur=0;
+  }else{
+   const radius=72+energy*95;
+   for(let ring=0;ring<3;ring++){
+    ctx.beginPath();ctx.arc(w/2,h/2,radius+ring*25+8*Math.sin(t+ring),0,Math.PI*2);
+    ctx.lineWidth=2+energy*5;ctx.strokeStyle=ring===0?primary:ring===1?secondary:glow;ctx.shadowColor=primary;ctx.shadowBlur=16;ctx.stroke();
+   }
+   for(let i=0;i<72;i++){
+    const angle=i*Math.PI*2/72+t*.3;
+    const v=visualized?frequency[Math.floor(i*frequency.length/72)]/255:(.15+.1*Math.sin(t+i*.23));
+    const a=radius+45,b=a+v*90;
+    ctx.beginPath();ctx.moveTo(w/2+Math.cos(angle)*a,h/2+Math.sin(angle)*a);
+    ctx.lineTo(w/2+Math.cos(angle)*b,h/2+Math.sin(angle)*b);
+    ctx.strokeStyle=glow;ctx.lineWidth=2+v*3;ctx.stroke();
+   }
+   ctx.shadowBlur=0;
+  }
+  const name=currentItem()?.file.name||'PROXIMUS | MEDIA THEATER';
+  ctx.font='700 15px system-ui,sans-serif';ctx.textAlign='center';ctx.fillStyle='#f2eaffaa';
+  ctx.fillText(safe(name).slice(0,65),w/2,h-8);
+ }
+ function animate(t){
+  raf=requestAnimationFrame(animate);
+  if(document.hidden||!active())return;
+  if(t-tick<32)return;tick=t;
+  drawVisualization(t);
+ }
+ $('theaterTheme').addEventListener('change',e=>{color=e.target.value;drawVisualization(performance.now());});
+ $('theaterVisualizerMode').addEventListener('change',e=>{visualMode=e.target.value;drawVisualization(performance.now());});
+ $('theaterEnableAudio').addEventListener('click',wrap(async()=>{
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)throw Error('Web Audio is unavailable in this browser.');
+  if(!audioContext)audioContext=new AudioCtx();
+  if(!analyser){analyser=audioContext.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.76;frequency=new Uint8Array(analyser.frequencyBinCount);timeDomain=new Uint8Array(analyser.fftSize);}
+  for(const el of [audio,video]){
+   if(nodes.has(el))continue;
+   const source=audioContext.createMediaElementSource(el);
+   source.connect(analyser);nodes.set(el,source);
+  }
+  if(!analyser.__wired){analyser.connect(audioContext.destination);analyser.__wired=true;}
+  await resumeContext();visualized=true;
+  $('theaterEnableAudio').textContent='✓ Visualizer active';showStatus('Visualizer connected to local media playback');
+ }));
+ async function poster(add){
+  const item=currentItem();if(!item)throw Error('Choose a video or GIF to capture a poster.');
+  let src;if(item.kind==='video'){if(video.readyState<2)throw Error('Play or seek the video to load a frame first.');src=video;}
+  else if(item.kind==='image'){if(!image.complete||!image.naturalWidth)throw Error('Image is still loading.');src=image;}
+  else throw Error('Poster capture uses a video or an image; use Visualizer Capture for audio.');
+  const iw=src.videoWidth||src.naturalWidth,ih=src.videoHeight||src.naturalHeight;
+  if(!iw||!ih)throw Error('No decoded frame is available yet.');
+  const scale=Math.min(1,1920/iw,1080/ih);
+  const out=document.createElement('canvas');out.width=Math.max(1,Math.round(iw*scale));out.height=Math.max(1,Math.round(ih*scale));
+  out.getContext('2d').drawImage(src,0,0,out.width,out.height);
+  const blob=await blobCanvas(out),name=stem(item.file.name)+'-poster.png';
+  if(add)app.addAsset(name,blob,'Media Theater');else download(blob,name);
+ }
+ capture.addEventListener('click',wrap(()=>poster(false)));
+ $('theaterPosterPack').addEventListener('click',wrap(()=>poster(true)));
+ $('theaterVizPng').addEventListener('click',wrap(async()=>{drawVisualization(performance.now());download(await blobCanvas(canvas),'PROXIMUS-VISUALIZER.png');}));
+ $('theaterVizPack').addEventListener('click',wrap(async()=>{drawVisualization(performance.now());app.addAsset('PROXIMUS-VISUALIZER.png',await blobCanvas(canvas),'Media Theater');}));
+ $('theaterMakeBg').addEventListener('click',wrap(()=>{
+  const item=currentItem();if(!item)throw Error('Choose an image or video first');
+  if(item.kind==='audio')throw Error('Choose a video or GIF for backgrounds.');
+  document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:item.file,name:item.file.name,target:'background'}}));
+  showStatus('Applied media as your personalized background');
+ }));
+ $('theaterMakeThumb').addEventListener('click',wrap(()=>{
+  const item=currentItem();if(!item||item.kind==='audio')throw Error('Choose an image or video for thumbnails.');
+  document.dispatchEvent(new CustomEvent('proximus-media-export',{detail:{blob:item.file,name:item.file.name,target:'hero'}}));
+  showStatus('Applied media as your hero thumbnail');
+ }));
+ $('theaterManifest').addEventListener('click',wrap(()=>{
+  if(!playlist.length)throw Error('Add local media first.');
+  download(textFile(playlistManifest(playlist)),'PROXIMUS-MEDIA-PLAYLIST.json');
+ }));
+ $('theaterStage').addEventListener('dblclick',()=>{$('theaterFullscreen').click();});
+ drawList();drawVisualization(0);raf=requestAnimationFrame(animate);
+ window.addEventListener('pagehide',()=>{
+  cancelAnimationFrame(raf);stopMedia();revoke();
+  audioContext?.close().catch(()=>{});
+ },{once:true});
+}

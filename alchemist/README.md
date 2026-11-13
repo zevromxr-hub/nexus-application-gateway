@@ -1,6 +1,6 @@
-# PROXIMUS | ASSET ALCHEMIST v2.3.0
+# PROXIMUS | ASSET ALCHEMIST v2.4.0
 
-**MEDIA FUSION EDITION — 15 preserved creative studios**
+**ENTERTAINMENT EXPANSION EDITION — 17 creative studios**
 
 **SUPREME CREATOR EDITION — Powered by ZevRo | Proximus**
 
@@ -65,3 +65,11 @@ Import MP4, WebM and GIF files using the new **Animation Forge**. Browser-decoda
 The existing Animation Forge now provides two explicit output choices: **Regular GIF** (default, automatic source aspect ratio and size) or **Animated Icon Pack** (optional square GIFs and PNG fallbacks). A custom width/height is optional, not required for regular GIFs. Imported GIFs use a built-in frame reader when the browser lacks ImageDecoder.
 
 The new optional **Media** button opens a browser-local publisher for animated GIF, MP4/WebM, or static backgrounds and hero/studio thumbnails. The user can clear or change media and preview locally. Files are stored on that browser/device via IndexedDB; iPhone and Windows do not synchronize personalization. Muted autoplay may need a user tap. Generated GIFs and assets in the existing Packager can be applied directly. The application still has 15 studios, unchanged core layouts, original GitHub Pages URL and Discord link.
+
+## v2.4.0 — Entertainment Expansion
+
+**Media Theater (Studio 16)** brings session playlists for music, video and animated GIFs, playback controls, cinema mode, a Web Audio-reactive visualizer with three designs and five palette themes, instant video/GIF poster capture, PNG visualizer exports, and integration with the Asset Packager and Media Publisher.
+
+**Arcade Chamber (Studio 17)** adds Comet Catch, Pulse Reflex and Memory Matrix—three original touch-friendly local games. High scores are saved on the device and can be exported to JSON; the Comet Catch canvas can be saved into Asset Packager.
+
+All 17 studios share the original browser application, existing local media settings, home-screen installation path, GitHub Pages/Discord launch URL and version-check/update flow.

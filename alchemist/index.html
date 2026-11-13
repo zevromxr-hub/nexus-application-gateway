@@ -29,6 +29,8 @@
    <button class="nav" data-view="layers"><span>◧</span> Layer Forge <small>13</small></button>
    <button class="nav" data-view="motiongraphics"><span>✺</span> Motion Graphics <small>14</small></button>
     <button class="nav" data-view="animation"><span>▣</span> Animation Forge <small>15</small></button>
+    <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
+    <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
   </nav>
   <div class="rail-bottom"><div class="secure">● PROCESSING IS LOCAL</div><p>Files stay in your browser. Exports go to your Downloads folder.</p><a href="../hub/">← Sovereign Gateway</a></div>
 </aside>
@@ -39,11 +41,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.3.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Fifteen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>15</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v2.4.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Seventeen functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>17</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.3.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v2.4.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="image">
 <div class="section-heading"><div><div class="eyebrow">01 / IMAGE TRANSFORMATION</div><h2>Image Studio <span class="subtitle">Crop · scale · enhance · transform</span></h2></div><button class="small-btn" id="imgReset">Reset filters</button></div>
@@ -196,6 +198,72 @@
  </div></div>
 </section>
 
+<section class="studio" data-panel="theater" hidden>
+ <div class="section-heading"><div><div class="eyebrow">16 / PERSONAL ENTERTAINMENT</div><h2>Media Theater <span class="subtitle">Your own audio, video, GIFs and live visualizer</span></h2></div></div>
+ <div class="workspace image-grid">
+  <div class="panel">
+   <h3>Local media playlist</h3>
+   <label class="upload"><input id="theaterFiles" type="file" accept="audio/*,video/*,image/gif,image/png,image/jpeg,image/webp,.m4a,.mov" multiple><b>＋ ADD MUSIC, VIDEOS OR GIFS</b><span>Your files stay on this device · 80 queue items max</span></label>
+   <p class="hint">Create a listening or cinema session from local files. Playback continues while you browse other studios.</p>
+   <div class="theater-controls">
+    <button id="theaterPrev" class="small-btn">⏮ Previous</button><button id="theaterPlay" class="primary">▶ Play</button><button id="theaterNext" class="small-btn">Next ⏭</button>
+   </div>
+   <div class="two"><label>Playback speed<select id="theaterSpeed"><option value=".75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label><label>Loop mode<select id="theaterLoop"><option value="off">Stop at playlist end</option><option value="all">Repeat playlist</option><option value="one">Repeat current track</option></select></label></div>
+   <div class="checks"><label><input type="checkbox" id="theaterShuffle"> Shuffle tracks</label></div>
+   <div class="theater-sidehead"><h3>Queue</h3><span id="theaterCurrent" class="hint">0 / 0</span></div>
+   <div id="theaterPlaylist" class="theater-queue"></div>
+   <div class="theater-controls"><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
+   <p id="theaterStatus" class="hint" role="status">Import a file to begin.</p>
+  </div>
+  <div class="panel">
+   <h3 id="theaterNow">Choose a track or video</h3><p id="theaterInfo" class="hint">Your local playlist appears here</p>
+   <div id="theaterStage" class="theater-stage">
+    <video id="theaterVideo" class="theater-source" controls playsinline preload="metadata" hidden></video>
+    <audio id="theaterAudio" class="theater-audio" controls preload="metadata" hidden></audio>
+    <img id="theaterImage" class="theater-source" alt="Local GIF or image preview" hidden>
+    <div class="theater-logo" aria-hidden="true">✦ PROXIMUS THEATER</div>
+   </div>
+   <div class="theater-controls"><button id="theaterFullscreen" class="small-btn">⛶ Cinema mode</button><button id="theaterCapture" class="small-btn">↓ Frame PNG</button><button id="theaterPosterPack" class="small-btn">＋ Poster to Pack</button></div>
+   <h3>Audio-reactive visualizer</h3>
+   <div class="two"><label>Mode<select id="theaterVisualizerMode"><option value="bars">Neon bars</option><option value="wave">Waveform</option><option value="rings">Resonance rings</option></select></label><label>Palette<select id="theaterTheme"><option value="violet">Imperial violet</option><option value="cyan">Nebula cyan</option><option value="gold">Solar gold</option><option value="ember">Crimson ember</option><option value="emerald">Emerald realm</option></select></label></div>
+   <button id="theaterEnableAudio" class="primary wide">♫ Enable live audio reaction</button>
+   <canvas id="theaterCanvas" width="900" height="300" aria-label="Music-reactive graphic visualizer"></canvas><div id="theaterLevels" class="hint">VISUAL PREVIEW · VIOLET</div>
+   <div class="theater-controls"><button id="theaterVizPng" class="small-btn">↓ Save visualizer PNG</button><button id="theaterVizPack" class="small-btn">＋ Visualizer to Pack</button></div>
+   <h3>Connect to Media Publisher</h3>
+   <div class="theater-controls"><button id="theaterMakeBg" class="small-btn">✧ Current media → Background</button><button id="theaterMakeThumb" class="small-btn">◧ Current media → Hero thumbnail</button></div>
+  </div>
+ </div>
+</section>
+<section class="studio" data-panel="arcade" hidden>
+ <div class="section-heading"><div><div class="eyebrow">17 / OFFLINE ARCADE</div><h2>Arcade Chamber <span class="subtitle">Three original touch-and-mouse games</span></h2></div></div>
+ <div class="panel arcade-shell">
+  <p class="hint">Play locally on your computer or iPhone. Your best scores are saved on this browser.</p>
+  <div class="arcade-tabs" role="group" aria-label="Choose arcade game">
+   <button class="arcade-tab selected" data-game="comet">✦ Comet Catch</button>
+   <button class="arcade-tab" data-game="pulse">⚡ Pulse Reflex</button>
+   <button class="arcade-tab" data-game="memory">◇ Memory Matrix</button>
+  </div>
+  <p id="arcadeBest" class="arcade-highscores">BEST — COMET 0 · PULSE 0 · MEMORY 0</p>
+  <div class="arcade-game" data-game="comet">
+   <h3>COMET CATCH</h3><p class="hint">Collect falling violet and gold comets. Dodge crimson hazards. Score as much as possible in 45 seconds.</p>
+   <canvas id="cometCanvas" width="720" height="400" aria-label="Comet Catch touch arcade canvas"></canvas>
+   <div class="arcade-actions"><button id="cometStart" class="primary">▶ Start Comet Catch</button><span id="cometScore" class="hint">Score 0 · Combo 0 · Lives 3</span></div>
+  </div>
+  <div class="arcade-game" data-game="pulse" hidden>
+   <h3>PULSE REFLEX</h3><p class="hint">Watch the moving marker and tap HIT when it enters the glowing center. 12 hits per round.</p>
+   <div class="pulse-area"><div id="pulseTrack"><span id="pulseZone"></span><span id="pulseNeedle"></span></div>
+    <div id="pulseText" aria-live="polite">Start a round to test your reflexes.</div></div>
+   <div class="arcade-actions"><button id="pulseStart" class="small-btn">▶ Start round</button><button id="pulseHit" class="primary arcade-hit" disabled>⚡ HIT PULSE</button><span id="pulseScore" class="hint">0 pts · Combo 0 · 0/12</span></div>
+  </div>
+  <div class="arcade-game" data-game="memory" hidden>
+   <h3>MEMORY MATRIX</h3><p class="hint">Find eight matching pairs using 16 touch-friendly cards. Fewer moves earn a better score.</p>
+   <div id="memoryCards" class="memory-cards"></div>
+   <div class="arcade-actions"><button id="memoryReset" class="primary">▶ Start Memory Matrix</button><span id="memoryStats" class="hint">Pairs 0/8 · Moves 0 · Time 0s</span></div>
+  </div>
+  <p id="arcadeStatus" role="status" class="hint">Choose a game to begin.</p>
+  <div class="arcade-actions"><button id="arcadeSnapshot" class="small-btn">＋ Comet screenshot to Pack</button><button id="arcadeScoreExport" class="small-btn">↓ Export highscores JSON</button><button id="arcadeScoreClear" class="small-btn">Reset best scores</button></div>
+ </div>
+</section>
 <section class="studio" data-panel="pack" hidden>
 <div class="section-heading"><div><div class="eyebrow">10 / OUTPUT CONTROL</div><h2>Asset Packager <span class="subtitle">Your session's finished work</span></h2></div><button class="small-btn" id="packClear">Clear pack</button></div>
 <div class="workspace split"><div class="panel"><h3>One package, many tools</h3><p>Click <b>Add to Pack</b> in any studio. Collected assets are stored in your browser&#39;s local IndexedDB vault, subject to storage quotas. Download a ZIP to keep a permanent copy.</p><label>Package title<input id="packTitle" maxlength="80" value="PROXIMUS Asset Collection"></label><label>Usage target<select id="packTarget"><option value="general">General digital assets</option><option value="sonic-reactor">Sonic Reactor II media</option><option value="character-foundry">Character Foundry art</option><option value="discord">Discord branding</option><option value="game-dev">Game development assets</option></select></label><button id="packExport" class="primary wide">↓ Download complete ZIP</button>

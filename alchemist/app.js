@@ -5,6 +5,8 @@ import {initProduction,initAudit} from './pro-tools.js';
 import {initLayerForge,initMotionGraphics} from './creator-tools.js';
 import {initAnimationForge} from './animation-tools.js';
 import {initMediaPublisher} from './media-publisher.js';
+import {initMediaTheater} from './media-theater.js';
+import {initArcadeChamber} from './arcade-chamber.js';
 const names=[
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
@@ -20,7 +22,9 @@ const names=[
  {id:'audit',icon:'⌕',title:'Asset Audit',detail:'Inspect file types SHA-256 duplicate detection metadata reports'},
  {id:'layers',icon:'◧',title:'Layer Forge',detail:'Draggable image text layers blends and full-res export'},
  {id:'motiongraphics',icon:'✺',title:'Motion Graphics',detail:'Animated title sequences particles and WebM export'},
- {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'}
+ {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
+ {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
+ {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'}
 ];
 const pack=[];
 const VAULT_NAME='proximus-alchemist-vault',VAULT_STORE='assets';
@@ -118,7 +122,7 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.3.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.4.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
@@ -160,7 +164,7 @@ function setupDrop(){
  document.addEventListener('drop',e=>{
   if(!e.dataTransfer?.files?.length)return;e.preventDefault();overlay.hidden=true;entering=0;
   const id=document.querySelector('.studio:not([hidden])')?.dataset.panel;
-  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles',layers:'layerFiles',motiongraphics:'graphicsBackdrop',animation:'animFile'}[id];
+  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles',layers:'layerFiles',motiongraphics:'graphicsBackdrop',animation:'animFile',theater:'theaterFiles'}[id];
   if(!dest){notice('Switch to an import studio first.');return}
   const input=$(dest);const dt=new DataTransfer();
   const multiple=input.multiple;
@@ -170,7 +174,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.3.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.4.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -192,10 +196,10 @@ function setupVersion(){
 function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();
+ initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initArcadeChamber(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.3 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.4 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
