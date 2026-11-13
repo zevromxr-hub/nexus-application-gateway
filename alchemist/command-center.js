@@ -35,7 +35,7 @@ export function initCommandCenter(app){
  }
  const advanced=new Set(['audit','production','motiongraphics','recovery','tokens','utility','projects','automation','motion','model']);
  function draw(){
-  grid.replaceChildren();const showing=filterStudios(all,search.value,pins,onlyPinned);
+  grid.replaceChildren();const showing=filterStudios(all,search.value,pins,onlyPinned).filter(x=>profile==='creator'||!advanced.has(x.id));
   for(const s of showing){
    const card=document.createElement('article');card.className='command-studio-card';
    card.dataset.proximusThumbnail=s.id;
