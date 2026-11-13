@@ -634,3 +634,15 @@ body[data-identity-enabled="on"] .studio[data-identity-exempt="true"]{--accent:#
  .command-catalog .command-filters{flex-wrap:wrap;gap:9px}
  .command-catalog .command-filters label{min-width:125px;flex:1}
 }
+
+
+/* Companion Edition — small optional pocket notes and preserved legacy details */
+.companion-pocket-panel{border:1px solid #5a4579;background:#100d21;border-radius:10px;padding:10px 12px;margin:15px 0}
+.companion-pocket-panel summary{font-weight:800;font-size:12px;cursor:pointer;color:#d7c0f5;line-height:1.5}
+.companion-pocket-panel textarea{display:block;min-width:0;width:100%;min-height:100px;resize:vertical;
+ border:1px solid #635077;border-radius:9px;background:#0b0918;padding:10px;
+ color:#f1e5ff;font:inherit;font-size:12px;line-height:1.6}
+.companion-pocket-panel .buttons{margin-top:7px}
+.companion-retired-info{border:1px solid #443651;background:#100d1e;border-radius:10px;padding:11px 14px;margin:16px 0;font-size:11px;color:#ada0bd}
+.companion-retired-info summary{cursor:pointer;color:#c6b1df;font-size:11px;font-weight:780}
+.companion-retired-info p{line-height:1.7}
