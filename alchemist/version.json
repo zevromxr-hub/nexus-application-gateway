@@ -1,22 +1,22 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "channel": "stable",
   "release_date": "2026-11-12",
-  "subtitle": "Motion & GIF Dominion Edition",
+  "subtitle": "Media Fusion Edition",
   "studio_count": 15,
-  "previous_version": "2.1.0",
+  "previous_version": "2.2.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "New Animation Forge: local MP4/WebM to genuine animated GIF89a file conversion",
-    "Trim, resize, frame rate (6/8/12 FPS), contain/cover, background, transparency and dithering",
-    "Animated GIF resizing and re-encoding using Chromium ImageDecoder",
-    "Animated GIF icon ZIP (32–256px) plus real static PNG fallback assets",
-    "Icon Foundry accepts GIF input and can export animated GIF icon packs",
-    "Existing 14 studios, Discord button URL, repository and offline features retained",
-    "Independent animated GIF LZW round-trip test and updated offline cache"
+    "Regular GIF is the default, separate from animated GIF icon packs",
+    "Automatic source-aspect GIF sizing with optional custom width/height and aspect lock",
+    "Local GIF frame decoder fallback for browsers without ImageDecoder",
+    "Optional locally saved animated GIF/MP4/WebM backgrounds and hero or studio thumbnails",
+    "Direct generated GIF to background or thumbnail and Packager-to-media handoff",
+    "Memory-conscious GIF encoder and coherent versioned offline cache",
+    "Previous 15 studios, existing mobile layout, GitHub Pages URL and Discord button unchanged"
   ]
 }
