@@ -2,7 +2,7 @@ import {$,safe,stem,bytes,number,clamp,notice,download,blobCanvas,createCanvas,i
 const fileLabel = f=>f?.name||'asset';
 const getFile=id=>$(id)?.files?.[0];
 export function initImage(app){
- let source=null,last=null;
+ let source=null,last=null,sourceName='NEXUS-original-art';
  const ids=['imgW','imgH','imgFit','imgRotate','imgFlipX','imgFlipY','imgBg','imgBright','imgContrast','imgSat','imgHue','imgBlur','imgGray','imgSepia','imgChroma','imgKey','imgTolerance','imgText','imgTextSize','imgTextColor','imgTextPos','imgFormat','imgQuality'];
  const canvas=$('imgCanvas');
  const defaults={imgBright:100,imgContrast:100,imgSat:100,imgHue:0,imgBlur:0,imgGray:0,imgSepia:0,imgChroma:false,imgText:'',imgRotate:'0',imgFlipX:false,imgFlipY:false};
@@ -40,11 +40,57 @@ export function initImage(app){
   for(const [id,unit] of [['imgBright','%'],['imgContrast','%'],['imgSat','%'],['imgHue','°'],['imgBlur',' px'],['imgGray','%'],['imgSepia','%'],['imgQuality','%']])$(id+'Out').textContent=$(id).value+unit;
   last=canvas;
  }
- $('imgFile').addEventListener('change',wrap(async e=>{source=await imageOf(e.target.files[0]);$('imgW').value=source.naturalWidth;$('imgH').value=source.naturalHeight;schedule();notice('Image loaded: '+safe(e.target.files[0].name));}));
+ $('imgFile').addEventListener('change',wrap(async e=>{source=await imageOf(e.target.files[0]);sourceName=stem(e.target.files[0].name);$('imgW').value=source.naturalWidth;$('imgH').value=source.naturalHeight;schedule();notice('Image loaded: '+safe(e.target.files[0].name));}));
+ $('imgGenerate').addEventListener('click',wrap(async()=>{
+  const style=$('imgArtStyle').value;let seed=number('imgArtSeed',777,0,99999999)|0;
+  const rand=()=>{seed+=0x6D2B79F5;let z=seed;z=Math.imul(z^(z>>>15),z|1);z^=z+Math.imul(z^(z>>>7),z|61);return ((z^(z>>>14))>>>0)/4294967296};
+  const palettes={
+   nebula:['#09091c','#2b155e','#914cdb','#dba3f7'],
+   eclipse:['#070914','#25203c','#e39f50','#fff0b1'],
+   aurora:['#050e24','#153c55','#2dd7b4','#b1faff'],
+   embers:['#12070e','#61182b','#e45b35','#ffc16c'],
+   frost:['#071322','#23516f','#67b6ff','#f0fcff']
+  };
+  const p=palettes[style]||palettes.nebula;
+  const art=createCanvas(960,540),g=art.getContext('2d');
+  const base=g.createLinearGradient(0,0,960,540);base.addColorStop(0,p[0]);base.addColorStop(.5,p[1]);base.addColorStop(1,'#050711');g.fillStyle=base;g.fillRect(0,0,960,540);
+  g.globalCompositeOperation='screen';
+  for(let i=0;i<115;i++){
+   const x=rand()*1100-70,y=rand()*640-50,r=35+rand()*260;
+   const fog=g.createRadialGradient(x,y,0,x,y,r);
+   const col=i%7===0?p[3]:i%2?p[1]:p[2];
+   fog.addColorStop(0,col+'60');fog.addColorStop(.4,col+'25');fog.addColorStop(1,col+'00');
+   g.fillStyle=fog;g.fillRect(x-r,y-r,r*2,r*2);
+  }
+  if(style==='eclipse'||style==='nebula'){
+   const x=style==='eclipse'?480:690,y=style==='eclipse'?235:270,r=style==='eclipse'?180:140;
+   for(let j=0;j<4;j++){g.beginPath();g.ellipse(x,y,r+j*12,r+j*12,0,0,2*Math.PI);g.strokeStyle=j%2?p[3]:p[2];g.globalAlpha=.5/(1+j*.6);g.lineWidth=14/(1+j*.4);g.shadowColor=p[3];g.shadowBlur=34;g.stroke();}
+   g.globalAlpha=1;g.shadowBlur=0;
+   if(style==='eclipse'){g.fillStyle='#05040c';g.beginPath();g.arc(x,y,r-15,0,Math.PI*2);g.fill()}
+  }
+  if(style==='aurora'||style==='frost'){
+   for(let k=0;k<7;k++){g.beginPath();for(let x=0;x<=960;x+=8){const y=110+k*29+Math.sin(x*.010+k*.7)*49+Math.cos(x*.018+k)*18;if(x===0)g.moveTo(x,y);else g.lineTo(x,y)}g.strokeStyle=k%2?p[2]:p[3];g.lineWidth=13+rand()*15;g.globalAlpha=.13+rand()*.18;g.shadowColor=p[2];g.shadowBlur=40;g.stroke();}
+   g.globalAlpha=1;g.shadowBlur=0;
+  }
+  if(style==='embers'){
+   for(let k=0;k<80;k++){const x=rand()*960,y=rand()*540;g.beginPath();g.strokeStyle=k%3?p[2]:p[3];g.lineWidth=.6+rand()*2.5;g.globalAlpha=.35+rand()*.45;g.moveTo(x,y);g.lineTo(x+(rand()-.5)*12,y-(5+rand()*60));g.stroke();}
+   g.globalAlpha=1;
+  }
+  for(let i=0;i<560;i++){
+   const x=rand()*960,y=rand()*540,r=.3+rand()*1.3;
+   g.globalAlpha=.23+rand()*.72;g.fillStyle=i%9===0?p[3]:'#f6eaff';
+   g.beginPath();g.arc(x,y,r,0,Math.PI*2);g.fill();
+  }
+  g.globalAlpha=1;g.globalCompositeOperation='source-over';
+  const vignette=g.createRadialGradient(480,270,90,480,270,600);vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#000000a9');g.fillStyle=vignette;g.fillRect(0,0,960,540);
+  source=art;sourceName='NEXUS-'+style+'-'+$('imgArtSeed').value; 
+  $('imgW').value='1920';$('imgH').value='1080';schedule();
+  notice('Generated original '+style+' background. Adjust filters or export to PNG/WebP.');
+ }));
  ids.forEach(id=>$(id)?.addEventListener('input',schedule));
  $('imgPreset').addEventListener('change',()=>{const v=$('imgPreset').value;if(v){const [w,h]=v.split('x');$('imgW').value=w;$('imgH').value=h;schedule()}});
  $('imgReset').addEventListener('click',()=>{for(const [id,v] of Object.entries(defaults)){if(typeof v==='boolean')$(id).checked=v;else $(id).value=v;}schedule();});
- async function output(){if(!source)throw Error('Load an image before exporting.');render();const mime=$('imgFormat').value;return{blob:await blobCanvas(canvas,mime,number('imgQuality',92,20,100)/100),name:stem(getFile('imgFile').name)+'-alchemist.'+extension(mime)}}
+ async function output(){if(!source)throw Error('Load an image before exporting.');render();const mime=$('imgFormat').value;return{blob:await blobCanvas(canvas,mime,number('imgQuality',92,20,100)/100),name:stem(sourceName)+'-alchemist.'+extension(mime)}}
  $('imgExport').addEventListener('click',wrap(async()=>{const f=await output();download(f.blob,f.name);notice('Image exported '+f.name)}));
  $('imgAdd').addEventListener('click',wrap(async()=>{const f=await output();app.addAsset(f.name,f.blob,'Image Studio')}));
  render();
