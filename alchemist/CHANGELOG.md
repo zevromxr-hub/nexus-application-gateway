@@ -1,5 +1,23 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.0.0 — Omniverse Identity & Reactor IV (2026-11-13)
+
+### New Studio 30 — Master Visual Identity
+- Added six original global interface palettes, live six-channel color editing, glow, scaling, geometry and motion options.
+- Added optional day/night automatic appearance switching and per-studio appearance exceptions.
+- Integrated existing Master Thumbnail GIF/video visibility and Media Publisher controls into a unified identity dashboard.
+- Added optional live color linkage with Sovereign Reactor IV.
+- Added named visual identity profiles and portable JSON import/export; expanded Sync Bridge and Recovery Center preference backups.
+
+### Sovereign Reactor IV
+- Added five effect preset compositions and independent frequency-to-effect routing for sub, bass, mids and treble.
+- Added original real-bass shockwaves, midrange emissive wings and treble sparkle effects.
+- Added secondary media masks: halo, wings, equalizer bars and eclipse iris.
+- Added four custom scene slots, real kick-triggered switching and flash/fade/sweep transitions.
+- Added true detected-beat markers to audio history and portable effect settings import/export.
+- Preserved preexisting Reactor audio inputs, animated backgrounds and creative exports.
+
+
 ## v2.9.0 — Sovereign Workspace & Media Dominion (2026-11-13)
 
 ### Media Publisher — Master Thumbnail Engine
