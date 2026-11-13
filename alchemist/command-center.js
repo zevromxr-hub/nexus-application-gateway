@@ -3,10 +3,11 @@
 // All user permissions still require a protected backend. Never claims that
 // changing a browser interface profile provides authorization or access control.
 import {$,bytes,wrap} from './core.js';
+import {saveOrShare} from './portable-kit.js';
 import {listStoredVideos} from './video-vault.js';
 import {COMPANION_LINKS,companionCategory,companionWatchlist,companionSavedOverview,
  cleanCompanionLinks,validateCompanionUrl} from './companion-core.js';
-const PROFILE='proximus-command-layout-v1',PINS='proximus-command-pins-v1',NAME='proximus-command-name-v1';
+const PROFILE='proximus-command-layout-v1',PINS='proximus-command-pins-v1',NAME='proximus-command-name-v1',NOTES='proximus-companion-pocket-notes-v1';
 export const MODES=['creator','customer'];
 export function normalizePins(input,known){
  if(!Array.isArray(input))return [];
@@ -200,8 +201,28 @@ export function initCommandCenter(app){
   try{bookmarks=cleanCompanionLinks(JSON.parse(localStorage.getItem(COMPANION_LINKS)||'[]'));}
   catch(e){bookmarks=[];}
   renderBookmarks();void refreshOverview();
+  try{$('commandPocketNotes').value=(localStorage.getItem(NOTES)||'').slice(0,8000);}catch(e){}
  });
  renderBookmarks();void refreshOverview();
+
+ const notes=$('commandPocketNotes'),notesStatus=$('commandNotesStatus');
+ try{notes.value=(localStorage.getItem(NOTES)||'').slice(0,8000);}catch(e){}
+ notes.addEventListener('input',()=>{
+  const value=notes.value.slice(0,8000);
+  try{localStorage.setItem(NOTES,value);
+   notesStatus.textContent='Pocket Notes saved locally · '+value.length+' / 8,000 characters';
+  }catch(e){notesStatus.textContent='Browser storage full. Export notes to keep your changes.';}
+ });
+ $('commandNotesExport').addEventListener('click',wrap(async()=>{
+  if(!notes.value.trim())throw Error('Pocket Notes is empty.');
+  const file=new Blob([notes.value],{type:'text/plain;charset=utf-8'});
+  await saveOrShare(file,'PROXIMUS-COMPANION-POCKET-NOTES.txt');
+  notesStatus.textContent='Your Pocket Notes were shared or downloaded.';
+ }));
+ $('commandNotesClear').addEventListener('click',()=>{
+  if(!notes.value||!confirm('Clear your private Pocket Notes from this browser?'))return;
+  notes.value='';notes.dispatchEvent(new Event('input'));
+ });
 
  useProfile(profile);liveStats();drawGreeting();
  summary.textContent='Companion Edition · entertainment, saved videos, personal shortcuts and 23 focused spaces.';
