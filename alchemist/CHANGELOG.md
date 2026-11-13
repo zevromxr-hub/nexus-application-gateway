@@ -1,5 +1,14 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.0.2 — GIF Playback & Standards Compliance Patch (2026-11-13)
+
+- Fixed GIF exports that appeared blank, truncated or corrupted in standard image viewers.
+- Corrected the GIF89a LZW encoder's dictionary width transition to match independently verified native GIF decoding.
+- Updated the Safari fallback reader to decode standard-compliant LZW streams.
+- Added independent Pillow-verified GIF binary fixture with exact output hash, nonempty pixel and animated-frame tests across common resolutions and transparency.
+- Preserved v3.0.1 dimension metadata fix, all 30 studios, Token Foundry and other application features.
+
+
 ## v3.0.1 — Animation Forge GIF Frame Precision Patch (2026-11-13)
 
 - Fixed false "Frame sizes do not match GIF dimensions" errors when creating regular GIFs from MP4/WebM.
