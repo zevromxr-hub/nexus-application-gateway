@@ -119,7 +119,8 @@ export function initArcadeChamber(app){
  let pulse={running:false,position:0,score:0,combo:0,hits:0,last:0,raf:0};
  const pulseNeedle=$('pulseNeedle'),pulseText=$('pulseText');
  function updatePulse(){
-  pulseNeedle.style.left=(pulse.position*100).toFixed(2)+'%';
+  const visualPosition=pulse.position<=1?pulse.position:2-pulse.position;
+  pulseNeedle.style.left=(visualPosition*100).toFixed(2)+'%';
   $('pulseScore').textContent=pulse.score+' pts · Combo '+pulse.combo+' · '+pulse.hits+'/12';
  }
  function pulseTick(t){
