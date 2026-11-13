@@ -1,22 +1,20 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "channel": "stable",
   "release_date": "2026-11-12",
-  "subtitle": "Supreme Creator Edition",
-  "studio_count": 12,
-  "previous_version": "1.0.0",
+  "subtitle": "Dominion Workflow Edition",
+  "studio_count": 14,
+  "previous_version": "2.0.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Complete Proximus visual identity",
-    "Production Lab with presets and project recipes",
-    "Asset Audit with hashes and duplicate detection",
-    "IndexedDB persistent pack vault",
-    "Version checker and explicit release manifests",
-    "Updated offline cache",
-    "GitHub automated static validation"
+    "Layer Forge with draggable image and text layers, blending, 4K canvases and portable self-contained JSON projects",
+    "Motion Graphics with themed animated title sequences, particle scenes and real-time silent WebM export",
+    "Both new studios export to persistent Asset Packager",
+    "Preserved all 12 prior studios and original Discord GitHub Pages launch link",
+    "Versioned browser cache and source checks updated for 14 studios"
   ]
 }
