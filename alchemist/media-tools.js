@@ -107,7 +107,7 @@ export function initMotion(app){
  }));
  $('motionSnap').addEventListener('click',wrap(async()=>{
   if(!source())throw Error('Load media first.');draw();
-  download(await blobCanvas(canvas),'NEXUS-MOTION-SNAPSHOT.png');notice('Snapshot exported');
+  download(await blobCanvas(canvas),'PROXIMUS-MOTION-SNAPSHOT.png');notice('Snapshot exported');
  }));
  function seek(video,time){
   return new Promise((resolve,reject)=>{
@@ -152,7 +152,7 @@ export function initModel(app){
   const triangles=meshes.reduce((n,m)=>n+(m.primitives||[]).reduce((a,p)=>a+(p.mode===4||p.mode==null?1:0),0),0);
   const images=gltf.images||[],externalBuffers=(gltf.buffers||[]).filter(b=>b.uri&&!b.uri.startsWith('data:')).length;
   return{
-   generator:'NEXUS Asset Alchemist / 3D Inspector',source:file.name,size_bytes:file.size,format:file.name.toLowerCase().endsWith('.glb')?'GLB':'glTF JSON',
+   generator:'PROXIMUS Asset Alchemist / 3D Inspector',source:file.name,size_bytes:file.size,format:file.name.toLowerCase().endsWith('.glb')?'GLB':'glTF JSON',
    asset:gltf.asset||{},counts:{scenes:gltf.scenes?.length||0,nodes:nodes.length,meshes:meshes.length,primitives:meshes.reduce((n,m)=>n+(m.primitives?.length||0),0),materials:materials.length,images:images.length,textures:gltf.textures?.length||0,skins:skins.length,animations:animations.length,accessors:gltf.accessors?.length||0,morph_targets:targets},extensions_used:gltf.extensionsUsed||[],
    warnings:[...(externalBuffers?['Model references '+externalBuffers+' external buffers; import them separately to use this glTF.']:[]),...(skins.length===0?['No skeletal skinning definitions found.']:[]),...(targets===0?['No morph targets declared.']:[])],
    scenes:(gltf.scenes||[]).map(s=>({name:s.name||'',nodes:s.nodes||[]})),
