@@ -14,9 +14,14 @@ const compareBuild=(a,b)=>{
  return 0;
 };
 async function buildNames(){return (await caches.keys()).filter(isBuild).sort(compareBuild);}
-async function chosenBuild(){
- const store=await caches.open(CONTROL),record=await store.match(CONTROL_URL),name=record?await record.text():CACHE;
- return (await buildNames()).includes(name)?name:CACHE;
+let activePromise=null;
+function chosenBuild(){
+ if(activePromise)return activePromise;
+ activePromise=(async()=>{
+  const store=await caches.open(CONTROL),record=await store.match(CONTROL_URL),name=record?await record.text():CACHE;
+  return (await buildNames()).includes(name)?name:CACHE;
+ })();
+ return activePromise;
 }
 self.addEventListener('install',event=>{
  // All required release files must be fetched before the new worker activates.
@@ -45,10 +50,12 @@ self.addEventListener('message',event=>{
      throw Error('Selected fallback is incomplete.');
     const control=await caches.open(CONTROL);
     await control.put(CONTROL_URL,new Response(data.name,{headers:{'Content-Type':'text/plain'}}));
+    activePromise=Promise.resolve(data.name);
     reply({ok:true,active:data.name});return;
    }
    if(data.type==='PROXIMUS_USE_LATEST'){
     const control=await caches.open(CONTROL);await control.delete(CONTROL_URL);
+    activePromise=Promise.resolve(CACHE);
     reply({ok:true,active:CACHE});return;
    }
    reply({ok:false,error:'Unsupported cache command'});
