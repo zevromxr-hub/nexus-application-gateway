@@ -1,3 +1,4 @@
+import {makeAnimatedIconPack} from './animation-tools.js';
 import {$,safe,stem,bytes,number,clamp,notice,download,blobCanvas,createCanvas,imageOf,fitDraw,makeZip,extension,hex,rgb,contrastColor,fileRow,textFile,wrap,validateFileList} from './core.js';
 const fileLabel = f=>f?.name||'asset';
 const getFile=id=>$(id)?.files?.[0];
@@ -125,7 +126,7 @@ export function initBatch(app){
 export function initIcons(app){
  let img=null;
  const c=$('iconCanvas');function render(){const ctx=c.getContext('2d');ctx.clearRect(0,0,256,256);if(img)fitDraw(ctx,img,256,256,'cover')}
- $('iconFile').addEventListener('change',wrap(async e=>{img=await imageOf(e.target.files[0]);render();notice('Icon master loaded')}));
+ $('iconFile').addEventListener('change',wrap(async e=>{iconMaster=e.target.files[0];img=await imageOf(iconMaster);render();notice('Icon master loaded')}));
  $('iconExport').addEventListener('click',wrap(async()=>{
   if(!img)throw Error('Load a master image.');
   const sizes=[...document.querySelectorAll('.iconSize:checked')].map(x=>Number(x.value));if(!sizes.length)throw Error('Select at least one icon size.');
