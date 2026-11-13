@@ -1,7 +1,7 @@
 {
-  "name": "NEXUS | Asset Alchemist",
+  "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "Offline-capable creative asset transformation workshop",
+  "description": "Versioned browser-based Proximus creative production and asset workshop",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
