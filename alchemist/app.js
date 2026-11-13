@@ -22,6 +22,8 @@ import {initCommandCenter} from './command-center.js';
 import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
+import {initVideoVault} from './video-vault.js';
+import {initMobileNavigation} from './mobile-navigation.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
@@ -41,6 +43,7 @@ const names=[
  {id:'motiongraphics',icon:'✺',title:'Motion Graphics',detail:'Animated title sequences particles and WebM export'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
+ {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
  {id:'reactor',icon:'✺',title:'Sovereign Reactor',detail:'Music beat bass audio reactive visualizer microphone PC tab YouTube Music local GIF MP4 animated background sovereign'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
@@ -221,6 +224,7 @@ $('packTitle').addEventListener('change',()=>localStorage.setItem('nexus-alchemi
 $('packTarget').addEventListener('change',()=>localStorage.setItem('nexus-alchemist-pack-target',$('packTarget').value));
 document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>changeView(btn.dataset.view)));
 $('packJump').addEventListener('click',()=>changeView('pack'));
+$('vaultJump').addEventListener('click',()=>changeView('videos'));
 const dialog=$('cmdDialog'),search=$('cmdSearch'),results=$('cmdResults');
 function drawCommands(){
  const term=search.value.trim().toLowerCase();results.replaceChildren();
@@ -281,9 +285,9 @@ function setupVersion(){
 function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initVideoVault(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
- initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);
+ initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
  notice('PROXIMUS Asset Alchemist v3.0 loaded. All transformations remain local to your browser.');
