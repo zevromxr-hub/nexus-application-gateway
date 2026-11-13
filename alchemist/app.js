@@ -2,6 +2,7 @@ import {$,bytes,safe,stem,notice,download,makeZip,sha256,textFile,nowName,wrap} 
 import {initImage,initBatch,initIcons,initSprites,initTextures,initPalette} from './image-tools.js';
 import {initAudio,initMotion,initModel} from './media-tools.js';
 import {initProduction,initAudit} from './pro-tools.js';
+import {initLayerForge,initMotionGraphics} from './creator-tools.js';
 const names=[
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
  {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
@@ -14,7 +15,9 @@ const names=[
  {id:'model',icon:'⬡',title:'3D Inspector',detail:'GLB glTF model mesh material skin animations'},
  {id:'pack',icon:'▤',title:'Asset Packager',detail:'Collect outputs and download ZIP manifest'},
  {id:'production',icon:'✧',title:'Production Lab',detail:'Professional banners thumbnails branding artwork and presets'},
- {id:'audit',icon:'⌕',title:'Asset Audit',detail:'Inspect file types SHA-256 duplicate detection metadata reports'}
+ {id:'audit',icon:'⌕',title:'Asset Audit',detail:'Inspect file types SHA-256 duplicate detection metadata reports'},
+ {id:'layers',icon:'◧',title:'Layer Forge',detail:'Draggable image text layers blends and full-res export'},
+ {id:'motiongraphics',icon:'✺',title:'Motion Graphics',detail:'Animated title sequences particles and WebM export'}
 ];
 const pack=[];
 const VAULT_NAME='proximus-alchemist-vault',VAULT_STORE='assets';
@@ -105,7 +108,7 @@ $('packExport').addEventListener('click',wrap(async()=>{
  const inventory=[];let size=0;const entries=[];
  notice('Building package and computing SHA-256 checksums…');
  for(const f of pack){size+=f.data.size;inventory.push({file:f.name,studio:f.studio,bytes:f.data.size,sha256:await sha256(f.data),created_at:f.when});entries.push({name:f.name,data:f.data})}
- const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.0.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
+ const manifest={schema:'proximus.assetpack/2',generator:'PROXIMUS | ASSET ALCHEMIST v2.1.0',generated_at:new Date().toISOString(),title,target,file_count:pack.length,total_bytes:size,items:inventory,notice:'Files were generated locally. Check all rights and licensing before redistributing third-party inputs.'};
  entries.push({name:'manifest.json',data:textFile(manifest)});
  download(await makeZip(entries),'PROXIMUS-'+stem(title).replace(/\s+/g,'-')+'-'+nowName()+'.zip');
  notice('Asset pack exported: '+pack.length+' assets · '+bytes(size));
@@ -147,7 +150,7 @@ function setupDrop(){
  document.addEventListener('drop',e=>{
   if(!e.dataTransfer?.files?.length)return;e.preventDefault();overlay.hidden=true;entering=0;
   const id=document.querySelector('.studio:not([hidden])')?.dataset.panel;
-  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles'}[id];
+  const dest={image:'imgFile',batch:'batchFiles',icons:'iconFile',sprites:'spriteFiles',textures:'textureFile',palette:'colorFile',audio:'audioFile',motion:'motionFile',model:'modelFile',production:'prodFile',audit:'auditFiles',layers:'layerFiles',motiongraphics:'graphicsBackdrop'}[id];
   if(!dest){notice('Switch to an import studio first.');return}
   const input=$(dest);const dt=new DataTransfer();
   const multiple=input.multiple;
@@ -157,7 +160,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.0.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.1.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -179,9 +182,10 @@ function setupVersion(){
 function launch(){
  initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
  initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
+ initLayerForge(app);initMotionGraphics(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'image';changeView(last);
- notice('PROXIMUS Asset Alchemist v2.0 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Asset Alchemist v2.1 loaded. All transformations remain local to your browser.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

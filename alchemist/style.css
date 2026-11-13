@@ -13,3 +13,15 @@
 #prodImportRecipe{display:none}
 #vaultStatus{margin:10px 0;color:#cfc2ef}
 @media(max-width:760px){.release-strip{flex-direction:column;align-items:stretch}.release-strip .small-btn{text-align:center}#prodCanvas{max-height:50vh}}
+
+
+/* v2.1 Dominion Workflow studios */
+#layerCanvas,#graphicsCanvas{display:block;width:100%;max-width:100%;height:auto;max-height:min(68vh,670px);object-fit:contain;border:1px solid #856cbb80;border-radius:12px;background:#090714}
+#layerCanvas{cursor:grab;touch-action:none}#layerCanvas:active{cursor:grabbing}
+.layer-list{display:flex;flex-direction:column;gap:6px;max-height:250px;overflow:auto;padding:5px;background:#0b0a19;border:1px solid #493a6c;border-radius:10px;margin-bottom:10px}
+.layer-list:empty:before{content:'No layers — add artwork or text.';color:#ada3c6;font-size:12px;padding:10px}
+.layer-list-item{color:#cfc3ed;text-align:left;padding:9px 12px;background:#17132b;border:1px solid #49405e;border-radius:7px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+.layer-list-item.selected{border-color:#b891fd;background:#302049;color:#fff}
+#layerNewText{flex:1;min-width:120px}
+[data-panel="motiongraphics"] .preview-canvas{background:#090a20}
+@media(max-width:760px){#layerCanvas,#graphicsCanvas{max-height:50vh}.layer-list{max-height:180px}}
