@@ -1,0 +1,46 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.1.0",
+  "release_date": "2026-11-12",
+  "status": "published-source",
+  "channel": "stable",
+  "studios": 14,
+  "delivery": "GitHub Pages, no installer",
+  "branch": "main",
+  "path": "alchemist/",
+  "compatibility": "Existing Discord /alchemist/ URL and root Sonic Reactor gateway maintained",
+  "modules": [
+    "core",
+    "image-tools",
+    "media-tools",
+    "pro-tools",
+    "creator-tools",
+    "application-shell",
+    "offline-service-worker",
+    "version-metadata"
+  ],
+  "privacy": "User imports and renders stay within browser; Pack persists in local IndexedDB",
+  "features": [
+    "Layer Forge: multilevel image/text composition and portable JSON",
+    "Motion Graphics: silent 1280×720 WebM recording",
+    "All 12 existing studios preserved",
+    "IndexedDB Pack Vault",
+    "Release consistency and validation"
+  ],
+  "changed": [
+    "alchemist/index.html",
+    "alchemist/app.js",
+    "alchemist/style.css",
+    "alchemist/creator-tools.js",
+    "alchemist/sw.js",
+    "alchemist/manifest.webmanifest",
+    "alchemist/README.md",
+    "alchemist/version.json",
+    "alchemist/CHANGELOG.md",
+    "alchemist/tests/validate.mjs"
+  ],
+  "test_command": "node alchemist/tests/validate.mjs",
+  "development_verification": "Source and Node syntax checks; final GitHub Pages live browser test needed after deploy"
+}
