@@ -245,7 +245,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.7.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='2.8.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
