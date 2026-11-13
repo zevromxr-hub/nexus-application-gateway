@@ -14,7 +14,7 @@ function parseSubblocks(b,start){
  for(const ch of chunks){joined.set(ch,i);i+=ch.length;}
  return {data:joined,offset:off};
 }
-function decodeLzw(data,minCode,count){
+export function decodeLzw(data,minCode,count){
  if(minCode<2||minCode>8)throw Error('Unsupported GIF LZW code size');
  const clear=1<<minCode,end=clear+1,table=[];
  let bits=minCode+1,next=clear+2,pos=0,prev=null;
