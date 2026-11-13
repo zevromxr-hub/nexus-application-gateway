@@ -124,7 +124,7 @@ export function initBatch(app){
  }));
 }
 export function initIcons(app){
- let img=null;
+ let img=null,iconMaster=null;
  const c=$('iconCanvas');function render(){const ctx=c.getContext('2d');ctx.clearRect(0,0,256,256);if(img)fitDraw(ctx,img,256,256,'cover')}
  $('iconFile').addEventListener('change',wrap(async e=>{iconMaster=e.target.files[0];img=await imageOf(iconMaster);render();notice('Icon master loaded')}));
  $('iconExport').addEventListener('click',wrap(async()=>{
@@ -134,6 +134,20 @@ export function initIcons(app){
    entries.push({name:'icon-'+sz+'x'+sz+'.png',data:await blobCanvas(canvas)});}
   entries.push({name:'manifest.json',data:textFile({generator:'PROXIMUS Asset Alchemist',sizes,format:'PNG',note:'No Windows ICO binary included'})});
   download(await makeZip(entries),'PROXIMUS-ICON-FOUNDRY.zip');notice(sizes.length+' PNG icon sizes exported');
+ }));
+ $('iconGifExport').addEventListener('click',wrap(async()=>{
+  if(!iconMaster)throw Error('Import an animated GIF into Icon Foundry first.');
+  if(!/^image\/gif$/.test(iconMaster.type)&&!/\.gif$/i.test(iconMaster.name))throw Error('Animated GIF icon export requires an imported .gif. Use Animation Forge for video sources.');
+  const sizes=[...document.querySelectorAll('.iconSize:checked')].map(x=>Number(x.value)).filter(x=>[32,64,128,256].includes(x));
+  if(!sizes.length)throw Error('Select one or more animated GIF icon sizes: 32, 64, 128 or 256 px.');
+  $('iconGifExport').disabled=true;
+  try{
+   $('iconGifStatus').textContent='Decoding and resizing animation…';
+   const zip=await makeAnimatedIconPack(iconMaster,{sizes,seconds:Number($('iconGifSeconds').value),fps:Number($('iconGifFps').value),progress:msg=>{$('iconGifStatus').textContent=msg;}});
+   download(zip,stem(iconMaster.name)+'-ANIMATED-GIF-ICONS.zip');
+   $('iconGifStatus').textContent='Real animated GIF icon ZIP exported · '+bytes(zip.size);
+   notice('Animated GIF icon pack downloaded');
+  }finally{$('iconGifExport').disabled=false;}
  }));render();
 }
 export function initSprites(app){
