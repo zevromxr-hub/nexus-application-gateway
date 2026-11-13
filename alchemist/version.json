@@ -1,0 +1,22 @@
+{
+  "product": "PROXIMUS | ASSET ALCHEMIST",
+  "version": "2.0.0",
+  "channel": "stable",
+  "release_date": "2026-11-12",
+  "subtitle": "Supreme Creator Edition",
+  "studio_count": 12,
+  "previous_version": "1.0.0",
+  "changelog": "./CHANGELOG.md",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+  "changes": [
+    "Complete Proximus visual identity",
+    "Production Lab with presets and project recipes",
+    "Asset Audit with hashes and duplicate detection",
+    "IndexedDB persistent pack vault",
+    "Version checker and explicit release manifests",
+    "Updated offline cache",
+    "GitHub automated static validation"
+  ]
+}
