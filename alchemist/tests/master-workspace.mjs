@@ -53,7 +53,8 @@ assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus
 assert.throws(()=>validateSyncManifest({...manifest,settings:{'discord-bot-token':'SECRET'}}),/unexpected settings key/);
 assert.throws(()=>validateSyncManifest({...manifest,records:[{database:'proximus-alchemist-personal-media',store:'media',key:'master',item:{blob:{$blob:'../secret.bin',mime:'image/gif',size:10}}}]}),/invalid media path/);
 const corrupted=await makeZip([{name:'workspace.json',data:new Blob([JSON.stringify(manifest)])}]);
-assert.throws(()=>openSyncArchive(new Uint8Array(await corrupted.arrayBuffer())),/missing a media file/);
+const corruptedBytes=new Uint8Array(await corrupted.arrayBuffer());
+assert.throws(()=>openSyncArchive(corruptedBytes),/missing a media file/);
 assert.equal(nextReactorScene('sovereign'),'spectrum');
 assert.equal(nextReactorScene('starlight'),'sovereign');
 assert.equal(REACTOR_SCENES.length,6);
