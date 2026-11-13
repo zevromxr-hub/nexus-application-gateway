@@ -1,0 +1,40 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.0.0",
+  "release_date": "2026-11-13",
+  "title": "Omniverse Identity & Reactor IV",
+  "subtitle": "Omniverse Identity & Reactor IV",
+  "channel": "stable",
+  "studios": 30,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "New Studio 30 — Master Visual Identity: six original whole-site themes, editable six-channel color system and live interface styling",
+    "Visual Identity controls glow, border geometry, interface scale, subtle motion, day/night schedules and per-studio appearance exclusions",
+    "Link Master Thumbnail visibility and custom uploaded media without deleting original GIF/MP4/WebM artwork or overrides",
+    "Optional one-way live color-link from Visual Identity presets to Sovereign Reactor IV",
+    "Create, load, import and export up to 12 identity appearance presets using iPhone Share/Save or desktop downloads",
+    "Existing Sync Bridge and Recovery Center backups now include visual identity settings while preserving separate personal media",
+    "Sovereign Reactor IV brings five new named real-audio effect compositions for heavy bass, glowing celestials, hyperspace, frost and abyssal styles",
+    "Independently route sub, bass, mids and treble into visual intensity with customizable shockwave and particle effects",
+    "New audio-responsive overlay masks: halo, wing shapes, kinetic equalizer bars and eclipse iris; preserves original GIF/video overlay",
+    "Cinematic scene transitions with flash, fade or sweep, four custom ordered scenes, timed rotation and optional kick-triggered changes",
+    "Add real beat markers to the audio history chart and persist or transfer custom Reactor IV effect mappings as JSON",
+    "Preserve all 29 previous studios, token/licensing data, the existing Discord/GitHub Pages launcher and PC/iPhone workflows"
+  ],
+  "added_studios": [
+    "Master Visual Identity"
+  ],
+  "upgraded_studios": [
+    "Sovereign Reactor IV",
+    "Media Publisher",
+    "Sync Bridge",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
