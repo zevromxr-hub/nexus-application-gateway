@@ -8,7 +8,7 @@ export function projectManifest(name,assets,notes=''){
  const title=safe(name||'Untitled project');
  return {schema:'proximus.project/1',title,created:new Date().toISOString(),
   notes:String(notes||'').slice(0,6000),items:assets.map((a,i)=>({
-   name:safe(a.name),entry:'file-'+String(i).padStart(4,'0')+'-'+safe(a.name),studio:a.studio||'Imported',
+   name:safe(a.name),entry:'file-'+String(i).padStart(4,'0')+'-'+safe(a.name).slice(0,140),studio:a.studio||'Imported',
    size:a.data.size,mime:a.data.type||'application/octet-stream'}))};
 }
 async function openDb(){
