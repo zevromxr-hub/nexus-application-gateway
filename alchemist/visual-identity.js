@@ -177,6 +177,8 @@ export function initVisualIdentity(app){
  }
  window.addEventListener('focus',tickSchedule);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tickSchedule();});
+ const scheduleTicker=setInterval(()=>{if(!document.hidden)tickSchedule();},60000);
+ window.addEventListener('pagehide',()=>clearInterval(scheduleTicker),{once:true});
  window.addEventListener('storage',e=>{
   if(e.key===IDENTITY_STORAGE){
    try{state=normalizeIdentity(JSON.parse(e.newValue||'{}'));render();}catch(err){}
