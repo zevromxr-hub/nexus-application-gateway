@@ -25,3 +25,12 @@
 #layerNewText{flex:1;min-width:120px}
 [data-panel="motiongraphics"] .preview-canvas{background:#090a20}
 @media(max-width:760px){#layerCanvas,#graphicsCanvas{max-height:50vh}.layer-list{max-height:180px}}
+
+
+/* v2.2 — animation forge + animated icon exports */
+.anim-preview{display:block;width:100%;max-width:100%;max-height:390px;object-fit:contain;border:1px solid #6e558e;background:#080816;border-radius:12px;margin:9px auto 20px}
+.anim-preview[hidden]{display:none}
+#animProgress,#animStatus,#iconGifStatus{overflow-wrap:anywhere}
+[data-panel="animation"] .checks label{font-size:12px}
+[data-panel="animation"] .check-grid{display:flex;flex-wrap:wrap;gap:6px 18px}
+#iconGifExport{margin:10px 0}
