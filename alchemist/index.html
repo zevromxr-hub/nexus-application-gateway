@@ -301,6 +301,8 @@
   <canvas id="reactorCanvas" width="960" height="540" aria-label="Live, music-reactive PROXIMUS Sovereign Reactor visualizer"></canvas>
   <video id="reactorBgVideo" muted autoplay loop playsinline preload="metadata" hidden aria-hidden="true"></video>
   <img id="reactorBgImage" alt="" hidden aria-hidden="true">
+  <video id="reactorOverlayVideo" muted autoplay loop playsinline preload="metadata" hidden aria-hidden="true"></video>
+  <img id="reactorOverlayImage" alt="" hidden aria-hidden="true">
  </div>
  <div class="reactor-monitor">
   <div><span>SUB / BASS</span><progress id="reactorBass" max="100" value="0"></progress><b id="reactorBassText">0%</b></div>
@@ -308,6 +310,7 @@
   <div><span>TREBLE</span><progress id="reactorHigh" max="100" value="0"></progress><b id="reactorHighText">0%</b></div>
   <div class="reactor-kicks"><span>BEATS DETECTED</span><b id="reactorBeats">0</b></div>
  </div>
+ <div class="reactor-history-box"><div><strong>REACTOR III · LIVE ENERGY TIMELINE</strong><span id="reactorPerformanceText">Performance: Balanced</span></div><canvas id="reactorHistoryCanvas" width="960" height="100" aria-label="Bass and frequency energy history from the connected audio input"></canvas></div>
  <div class="workspace image-grid reactor-workspace">
   <div class="panel">
    <h3>01 / LIVE AUDIO SOURCE</h3>
@@ -330,12 +333,24 @@
    <div class="two"><label>Background fit<select id="reactorBgFit"><option value="cover">Cover / cinematic crop</option><option value="contain">Contain / show full frame</option></select></label><label>Backdrop visibility <output id="reactorBgOpacityOut">70%</output><input type="range" id="reactorBgOpacity" min=".1" max="1" step=".05" value=".7"></label></div>
    <div class="reactor-source-controls"><button class="small-btn" id="reactorBgPlay" hidden>▶ Start backdrop</button><button class="small-btn" id="reactorBgRemove">Remove custom background</button></div>
 
+   <h3>02B / SECOND MEDIA LAYER</h3>
+   <p class="hint">Place an additional GIF, video or image over your main background. Both layers remain browser-local and render into the same Reactor stage.</p>
+   <label class="upload"><input id="reactorOverlayFile" type="file" accept=".gif,.mp4,.webm,.png,.jpg,.jpeg,.webp,image/gif,video/mp4,video/webm,image/png,image/jpeg,image/webp"><b>＋ IMPORT OVERLAY GIF / VIDEO / IMAGE</b></label>
+   <p id="reactorOverlayName" class="hint">No secondary visual layer selected.</p>
+   <div class="two"><label>Overlay opacity <output id="reactorOverlayOpacityOut">45%</output><input id="reactorOverlayOpacity" type="range" min=".05" max="1" step=".05" value=".45"></label>
+    <label>Blend effect<select id="reactorOverlayBlend"><option value="screen">Screen · luminous blend</option><option value="lighter">Add · intense highlights</option><option value="source-over">Normal · overlay</option><option value="multiply">Multiply · dramatic dark</option></select></label></div>
+   <button id="reactorOverlayRemove" class="small-btn">Remove second layer</button>
    <h3>03 / VISUALIZER POWER</h3>
    <div class="two"><label>Reactor theme<select id="reactorTheme"><option value="void">Void Sovereign</option><option value="celestial">Celestial Ascension</option><option value="frost">Frost Sentinel</option><option value="inferno">Ember Dominion</option><option value="emerald">Emerald Reactor</option></select></label><label>Visual mode<select id="reactorMode"><option value="sovereign">Sovereign Overdrive</option><option value="spectrum">Neon Spectrum</option><option value="rings">Shockwave Rings</option><option value="wave">Kinetic Wave</option><option value="portal">Singularity Portal</option><option value="starlight">Starlight Reactor</option></select></label></div>
    <label>Performance profile<select id="reactorQuality"><option value="eco">Battery saver · 640×360</option><option value="balanced" selected>Balanced · 960×540</option><option value="cinema">Cinematic · 1280×720</option></select></label>
    <div class="two"><label>Bass sensitivity <output id="reactorSensitivityOut">1.25×</output><input id="reactorSensitivity" type="range" min=".5" max="2.5" step=".05" value="1.25"></label><label>Impact strength <output id="reactorImpactOut">1.65×</output><input id="reactorImpact" type="range" min=".5" max="2.8" step=".05" value="1.65"></label></div>
    <label>Effects intensity <output id="reactorLayersOut">70%</output><input id="reactorLayers" type="range" min=".1" max="1" step=".05" value=".7"></label>
    <div class="checks"><label><input type="checkbox" id="reactorAutoShift" checked> Switch colors on beats</label><label><input type="checkbox" id="reactorSnow"> Falling stardust / snow</label><label><input type="checkbox" id="reactorShowSignature" checked> Show Reactor signature</label></div>
+   <h3>03B / REACTOR III SCENE DIRECTOR</h3>
+   <div class="checks"><label><input id="reactorSceneDirector" type="checkbox"> Auto-cycle visualizer scenes</label>
+   <label><input id="reactorAutoPerformance" type="checkbox" checked> Adaptive iPhone/PC performance</label></div>
+   <label>Scene interval<select id="reactorSceneSeconds"><option value="8">8 seconds · energetic</option><option value="15" selected>15 seconds · cinematic</option><option value="25">25 seconds · relaxed</option><option value="40">40 seconds · ambient</option></select></label>
+   <p id="reactorSceneStatus" class="hint">Scene Director ready. Beats and frequency measurements remain live as scenes change.</p>
    <label>On-stage signature<input type="text" id="reactorSignature" maxlength="36" value="PROXIMUS" placeholder="PROXIMUS"></label>
    <p class="hint"><span id="reactorResolution">960 × 540</span> · Microphone audio is analyzed, not played back through the speaker.</p>
   </div>
