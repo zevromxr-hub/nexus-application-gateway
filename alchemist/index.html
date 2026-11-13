@@ -3,29 +3,21 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090916">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="description" content="PROXIMUS Asset Alchemist — private browser-based visual, audio, motion, model, and asset transformation workshop">
+<meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./style.css">
-<title>PROXIMUS | ASSET ALCHEMIST — Visual & Media Workshop</title>
+<title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
 <div id="dropOverlay" hidden><div class="drop-msg">✧ DROP ASSETS INTO THE ACTIVE STUDIO</div></div>
 <aside class="rail">
   <a class="brand" href="../hub/" title="PROXIMUS Sovereign Gateway"><span class="sigil">✧</span><span>PROXIMUS <small>ASSET ALCHEMIST</small></span></a>
-  <div class="rail-label">YOUR WORKBENCHES</div>
+  <div class="rail-label">YOUR COMPANION SPACES</div>
   <nav id="nav" aria-label="Asset studios">
    <button class="nav" data-view="command"><span>⌂</span> Command Center <small>28</small></button>
    <button class="nav" data-view="identity"><span>✧</span> Visual Identity <small>30</small></button>
    <button class="nav active" data-view="image"><span>◈</span> Image Studio <small>01</small></button>
-   <button class="nav" data-view="batch"><span>▦</span> Batch Forge <small>02</small></button>
-   <button class="nav" data-view="icons"><span>▣</span> Icon Foundry <small>03</small></button>
-   <button class="nav" data-view="sprites"><span>▥</span> Sprite Atlas <small>04</small></button>
-   <button class="nav" data-view="textures"><span>⌗</span> Texture Lab <small>05</small></button>
-   <button class="nav" data-view="palette"><span>◉</span> Color Lab <small>06</small></button>
-   <button class="nav" data-view="audio"><span>♫</span> Audio Forge <small>07</small></button>
-   <button class="nav" data-view="motion"><span>▷</span> Motion Lab <small>08</small></button>
-   <button class="nav" data-view="model"><span>⬡</span> 3D Inspector <small>09</small></button>
    <button class="nav" data-view="pack"><span>▤</span> Asset Packager <small>10</small></button>
    <button class="nav" data-view="production"><span>✧</span> Production Lab <small>11</small></button>
    <button class="nav" data-view="audit"><span>⌕</span> Asset Audit <small>12</small></button>
@@ -53,33 +45,69 @@
 </aside>
 <div class="shell">
 <header class="topbar">
- <div class="crumb">PROXIMUS <span>/</span> CREATOR NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
+ <div class="crumb">PROXIMUS <span>/</span> COMPANION NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
  <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v3.1.0</div>
-<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>One workshop. Thirty-one functional studios. Create, transform, preview, and export your own assets—without installing another huge application.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
-<div class="metrics"><div><strong>31</strong><span>CREATION STUDIOS</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+<div class="eyebrow">PROXIMUS / CREATIVE SYSTEMS / v3.2.0</div>
+<div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
+<div class="metrics"><div><strong>23</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.1.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.2.0 · SUPREME CREATOR EDITION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
- <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>Sovereign Command Center <span class="subtitle">Your workspace · favorite tools · live thumbnails</span></h2></div></div>
+ <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <div class="command-top">
-  <div class="command-welcome"><h3 id="commandGreeting">Welcome to your PROXIMUS command center.</h3><p>One-click studios, personal preferences, recent exports and the new Master Thumbnail Publisher. Everything works on both iPhone and PC.</p></div>
+  <div class="command-welcome"><h3 id="commandGreeting">Welcome to your PROXIMUS command center.</h3><p>Your private entertainment hub, saved videos, Reactor IV, daily favorites, projects and personal shortcuts—organized for iPhone and PC.</p></div>
   <div class="command-top-actions"><button id="commandOpenMedia" class="primary">✧ Master Media</button><button id="commandOpenSync" class="small-btn">⇄ Transfer to other device</button><button id="commandRefresh" class="small-btn">↻ Refresh</button></div>
  </div>
  <div class="command-metrics"><div><strong id="commandAssets">0</strong><span>COLLECTED ASSETS</span></div><div><strong id="commandPackSize">0 B</strong><span>LOCAL PACK SIZE</span></div><div><strong id="commandPinsCount">0 pinned</strong><span>FAVORITE STUDIOS</span></div></div>
+
+ <div class="companion-hero-pulse" aria-label="Personal companion overview">
+  <div><span class="eyebrow">MY ENTERTAINMENT</span><strong id="commandVideoCount">0 saved videos</strong><small>Stored on this device</small></div>
+  <div><span class="eyebrow">WATCHING</span><strong id="commandVideoContinueCount">0 in progress</strong><small>Resume when you return</small></div>
+  <div><span class="eyebrow">FAVORITES</span><strong id="commandVideoFavoriteCount">0 favorites</strong><small>Your personal watchlist</small></div>
+  <button id="commandRefreshCompanion" class="small-btn">↻ Refresh companion</button>
+ </div>
+ <div class="workspace split companion-home-grid">
+  <div class="panel companion-watching-panel">
+   <div class="companion-section-head"><div><h3>01 / CONTINUE WATCHING</h3><p class="hint">Resume saved videos without searching through your whole collection.</p></div><button id="commandWatchLibrary" class="small-btn">▣ Open Vault</button></div>
+   <div id="commandContinue" class="companion-continue"></div>
+   <div class="buttons"><button id="commandSurprise" class="small-btn">✧ Play something from my library</button><button id="commandWatchFavorites" class="small-btn">★ Saved favorites</button></div>
+  </div>
+  <div class="panel companion-links-panel">
+   <h3>02 / MY FAVORITE DESTINATIONS</h3>
+   <p class="hint">Save personal HTTPS website links—streaming services, documentation, creator resources or everyday tools. Links open externally; the app does not bypass website playback restrictions.</p>
+   <div class="companion-link-form">
+    <label>Shortcut name<input id="commandLinkName" maxlength="46" placeholder="My favorite website" autocomplete="off"></label>
+    <label>HTTPS address<input id="commandLinkUrl" inputmode="url" placeholder="https://example.com" autocomplete="url"></label>
+    <button id="commandLinkAdd" class="primary">＋ Save shortcut</button>
+   </div>
+   <div id="commandLinks" class="companion-links"></div>
+   <p id="commandLinksStatus" class="hint">Shortcuts are private to this browser and saved with your workspace preferences.</p>
+  </div>
+ </div>
  <div class="workspace split">
   <div class="panel">
-   <h3>01 / PERSONAL INTERFACE</h3>
+   <h3>03 / PERSONAL INTERFACE</h3>
    <label>Workspace display name<input id="commandDisplayName" maxlength="45" placeholder="Optional nickname for your dashboard"></label>
    <label>Interface layout<select id="commandMode"><option value="creator">Creator · complete workspace</option><option value="customer">Customer · simplified navigation</option></select></label>
    <p id="commandModeNote" class="hint">Interface modes adjust presentation only; they are not account authentication.</p>
-   <h3>02 / QUICK ACTIONS</h3>
+   <details class="companion-pocket-panel">
+    <summary>▤ Pocket Notes · quick thoughts saved locally</summary>
+    <label>Private scratchpad<textarea id="commandPocketNotes" rows="5" maxlength="8000" placeholder="Something to remember, an idea, a to-do, a movie to watch…"></textarea></label>
+    <div class="buttons"><button id="commandNotesExport" class="small-btn">↓ Share / Save notes</button>
+     <button id="commandNotesClear" class="small-btn">Clear notes</button></div>
+    <p id="commandNotesStatus" class="hint">Notes stay on this device. Export them or include settings in Sync Bridge.</p>
+   </details>
+   <h3>QUICK ACCESS</h3>
    <div class="command-quick-actions">
     <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
+    <button id="commandOpenTheater" class="small-btn">♫ Media Theater</button>
+    <button id="commandOpenArcade" class="small-btn">✦ Mini games</button>
+    <button id="commandOpenWorkflow" class="small-btn">▤ My notes</button>
+    <button id="commandOpenAnimation" class="small-btn">▣ Make a GIF</button>
     <button id="commandOpenReactor" class="small-btn">✺ Open Reactor IV</button><button id="commandOpenVideos" class="small-btn">▣ Saved Video Vault</button>
     <button id="commandOpenRelease" class="small-btn">⟳ Release history</button>
     <button id="commandCheckUpdates" class="small-btn">Check app updates</button>
@@ -87,15 +115,19 @@
    </div>
   </div>
   <div class="panel">
-   <h3>03 / RECENT ASSET OUTPUTS</h3>
+   <h3>04 / RECENT CREATIONS</h3>
    <div id="commandRecent" class="command-recent"></div>
    <p class="hint">Anything added to Asset Packager will be visible here as a quick handoff.</p>
   </div>
  </div>
  <div class="panel command-catalog">
-  <div class="command-filter-bar"><div><h3>04 / STUDIO LIBRARY</h3><p class="hint">Every studio uses the current Master Thumbnail asset, unless an override takes priority.</p></div><div class="command-filters"><label>Search studio<input id="commandSearch" type="search" placeholder="Search 27+ studios…" autocomplete="off"></label><label class="command-pin-check"><input id="commandOnlyPinned" type="checkbox"> Pinned only</label></div></div>
+  <div class="command-filter-bar"><div><h3>05 / EXPLORE COMPANION TOOLS</h3><p class="hint">Keep only what you need at your fingertips. Pin favorites or search for a specific tool.</p></div><div class="command-filters"><label>Category<select id="commandCategory"><option value="entertainment" selected>Entertainment first</option><option value="everyday">Everyday usefulness</option><option value="creative">Creative tools</option><option value="manage">Manage &amp; protect</option><option value="all">All spaces</option></select></label><label>Search studio<input id="commandSearch" type="search" placeholder="Search companion tools…" autocomplete="off"></label><label class="command-pin-check"><input id="commandOnlyPinned" type="checkbox"> Pinned only</label></div></div>
   <div id="commandCards" class="command-grid"></div>
  </div>
+ <details class="companion-retired-info"><summary>Legacy studio archive & rollback</summary>
+  <p>Eight specialized studios have been retired from this version to keep PROXIMUS focused: Batch Forge, Icon Foundry, Sprite Atlas, Texture Lab, Color Lab, Audio Forge, Motion Lab and 3D Inspector.</p>
+  <p>Their source files and the earlier v3.1 release remain in the GitHub repository. This update does not delete user files, saved projects, media, or Token Foundry data. Returning to a previous version is possible using an existing offline cache when available, or the preserved repository history.</p>
+ </details>
  <p id="commandStatus" role="status" class="hint">Loading command workspace…</p>
 </section>
 
@@ -184,30 +216,6 @@
 <div class="buttons"><button class="primary" id="imgExport">↓ Download image</button><button id="imgAdd">＋ Add to Pack</button></div></div>
 <div class="preview-panel"><div class="preview-top"><span>LIVE OUTPUT</span><span id="imgStatus">Load a source image</span></div><div class="canvas-frame checker"><canvas id="imgCanvas" width="960" height="540"></canvas></div><p class="hint">Canvas preview uses your selected output dimensions. Saving always uses the output canvas, not a screenshot.</p></div>
 </div></section>
-<section class="studio" data-panel="batch" hidden>
-<div class="section-heading"><div><div class="eyebrow">02 / MASS PROCESSING</div><h2>Batch Forge <span class="subtitle">Many files · one ZIP</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Batch conversion</h3><label class="upload"><input id="batchFiles" type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple><b>＋ ADD MULTIPLE IMAGES</b><span>Supports PNG, JPEG, WebP and first-frame GIF</span></label><div class="two"><label>Maximum long side <input id="batchSide" type="number" value="1920" min="32" max="8192"></label><label>Format<select id="batchFormat"><option value="image/webp">WebP (efficient)</option><option value="image/png">PNG (lossless)</option><option value="image/jpeg">JPEG</option></select></label></div><label>Quality <input id="batchQuality" type="range" min="20" max="100" value="86"></label><div class="checks"><label><input id="batchGray" type="checkbox"> Grayscale</label><span class="hint">Canvas output automatically omits original EXIF metadata.</span></div><button class="primary wide" id="batchExport">↓ Convert all and download ZIP</button><p class="hint">All transformations happen locally; filenames are sanitized inside the ZIP. Large batches can take time and memory.</p></div><div class="panel"><h3>Batch queue</h3><div id="batchList" class="file-list empty">Choose multiple images to begin.</div><div class="callout">TIP — Batch Forge is ideal for converting a whole wallpaper or texture collection to WebP for faster loading.</div></div></div></section>
-<section class="studio" data-panel="icons" hidden>
-<div class="section-heading"><div><div class="eyebrow">03 / PRODUCT BRANDING</div><h2>Icon Foundry <span class="subtitle">App icons · favicon packs</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Master artwork</h3><label class="upload"><input id="iconFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif,.gif"><b>＋ CHOOSE SQUARE MASTER ART</b><span>Non-square art is center-cropped</span></label><h3>Outputs</h3><div class="check-grid"><label><input class="iconSize" type="checkbox" value="16" checked>16 px</label><label><input class="iconSize" type="checkbox" value="32" checked>32 px</label><label><input class="iconSize" type="checkbox" value="48" checked>48 px</label><label><input class="iconSize" type="checkbox" value="64" checked>64 px</label><label><input class="iconSize" type="checkbox" value="128" checked>128 px</label><label><input class="iconSize" type="checkbox" value="256" checked>256 px</label><label><input class="iconSize" type="checkbox" value="512" checked>512 px</label><label><input class="iconSize" type="checkbox" value="1024" checked>1024 px</label></div><button id="iconExport" class="primary wide">↓ Download icon pack ZIP</button><h3>Animated GIF icons</h3><p class="hint">Import an animated GIF above and export real 32–256 px animated GIF icons with matching PNG fallbacks. The selected icon sizes at or below 256 px determine the output.</p><div class="two"><label>Clip length<select id="iconGifSeconds"><option value="2">2 sec</option><option value="4" selected>4 sec</option><option value="6">6 sec</option></select></label><label>Frame rate<select id="iconGifFps"><option value="6">6 FPS</option><option value="8" selected>8 FPS</option><option value="12">12 FPS</option></select></label></div><button id="iconGifExport" class="primary wide">↓ Download animated GIF icon ZIP</button><p id="iconGifStatus" class="hint" aria-live="polite">Animated GIF import requires current Chromium. Windows .ico files do not support animation.</p></div><div class="panel"><h3>Icon preview</h3><div class="icon-view checker"><canvas id="iconCanvas" width="256" height="256"></canvas></div><p class="hint">Real PNG icon sizes suitable for browser favicons and app assets. Windows ICO containers are not generated in this release.</p></div></div></section>
-<section class="studio" data-panel="sprites" hidden>
-<div class="section-heading"><div><div class="eyebrow">04 / GAME & UI ASSETS</div><h2>Sprite Atlas <span class="subtitle">Pack images onto one sheet</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Sprites</h3><label class="upload"><input id="spriteFiles" type="file" accept="image/png,image/jpeg,image/webp" multiple><b>＋ IMPORT MULTIPLE SPRITES</b></label><div class="three"><label>Columns<input id="spriteCols" type="number" value="4" min="1" max="24"></label><label>Cell size<input id="spriteSize" type="number" value="128" min="16" max="1024"></label><label>Padding<input id="spritePad" type="number" value="4" min="0" max="128"></label></div><div class="two"><label>Background<select id="spriteBg"><option value="transparent">Transparent</option><option value="#080b16">Dark</option><option value="#ffffff">White</option></select></label><label>Scale<select id="spriteFit"><option value="contain">Contain</option><option value="cover">Cover</option></select></label></div><button id="spriteExport" class="primary wide">↓ Export atlas PNG + JSON ZIP</button><p class="hint">Includes a machine-readable atlas manifest with sprite positions and original filenames.</p></div><div class="panel"><h3>Atlas preview</h3><div class="canvas-frame checker"><canvas id="spriteCanvas" width="512" height="512"></canvas></div><div id="spriteStatus" class="hint">No sprites loaded</div></div></div></section>
-<section class="studio" data-panel="textures" hidden>
-<div class="section-heading"><div><div class="eyebrow">05 / MATERIAL PROCESSING</div><h2>Texture Lab <span class="subtitle">Height maps · normal maps · masks</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Source texture</h3><label class="upload"><input id="textureFile" type="file" accept="image/png,image/jpeg,image/webp"><b>＋ SELECT SOURCE TEXTURE</b></label><div class="two"><label>Output size<select id="textureSide"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option></select></label><label>Normal strength<input id="textureStrength" type="range" min="1" max="20" value="7"></label></div><label>Height mode<select id="textureMode"><option value="luma">Luminance</option><option value="red">Red channel</option><option value="alpha">Alpha</option></select></label><div class="checks"><label><input id="textureInvert" type="checkbox"> Invert height</label></div><button id="textureBuild" class="primary wide">◈ Generate texture set</button><div class="buttons"><button id="textureExport">↓ Download ZIP</button><button id="textureAdd">＋ Add to Pack</button></div><p class="hint">Produces grayscale height, tangent-space normal, and high-contrast mask PNGs using real pixel calculations. These are approximations, not physically scanned material maps.</p></div><div class="panel"><h3>Normal map preview</h3><div class="canvas-frame checker"><canvas id="textureCanvas" width="512" height="512"></canvas></div><p id="textureStatus" class="hint">Load an image to create maps</p></div></div></section>
-<section class="studio" data-panel="palette" hidden>
-<div class="section-heading"><div><div class="eyebrow">06 / COLOR ENGINEERING</div><h2>Color Lab <span class="subtitle">Palettes · gradients · contrast</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Palette extraction</h3><label class="upload"><input id="colorFile" type="file" accept="image/png,image/jpeg,image/webp"><b>＋ EXTRACT COLORS FROM IMAGE</b></label><div class="two"><label>Colors<input id="colorCount" type="number" min="3" max="12" value="7"></label><label>Iterations<select id="colorIterations"><option value="5">Fast</option><option value="10" selected>Balanced</option><option value="16">Accurate</option></select></label></div><button class="primary wide" id="colorExtract">◈ Extract dominant colors</button><div id="swatches" class="swatches"></div><h3>Gradient workshop</h3><div class="three"><label>Start<input type="color" id="gradStart" value="#7047f5"></label><label>End<input type="color" id="gradEnd" value="#e6a55f"></label><label>Angle<input type="number" id="gradAngle" min="0" max="360" value="135"></label></div><div class="buttons"><button id="gradCss">↓ CSS</button><button id="gradSvg">↓ SVG</button><button id="gradPng">↓ 1920×1080 PNG</button></div><p class="hint">Click any extracted swatch to copy its HEX code.</p></div><div class="panel"><h3>Gradient preview</h3><div id="gradientPreview" class="gradient-preview"></div><h3>Contrast accessibility</h3><div class="two"><label>Foreground<input type="color" id="contrastFg" value="#ffffff"></label><label>Background<input type="color" id="contrastBg" value="#512c7f"></label></div><div class="contrast-result" id="contrastResult">Contrast ratio —</div></div></div></section>
-<section class="studio" data-panel="audio" hidden>
-<div class="section-heading"><div><div class="eyebrow">07 / SOUND PRODUCTION</div><h2>Audio Forge <span class="subtitle">Trim · normalize · fade · WAV</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Audio source</h3><label class="upload"><input id="audioFile" type="file" accept="audio/*"><b>＋ OPEN LOCAL AUDIO</b><span>MP3, WAV, OGG, AAC and other browser-decodable files</span></label><div id="audioStatus" class="hint">No audio loaded</div><div class="two"><label>Trim start (sec)<input id="audioStart" type="number" min="0" step=".1" value="0"></label><label>Trim end (sec)<input id="audioEnd" type="number" min="0" step=".1" value="0"></label></div><div class="two"><label>Output gain<input id="audioGain" type="range" min="0" max="200" value="100"></label><label>Fade length (sec)<input id="audioFade" type="number" min="0" max="30" step=".1" value=".5"></label></div><div class="checks"><label><input id="audioNormalize" type="checkbox"> Peak normalize</label><label><input id="audioReverse" type="checkbox"> Reverse audio</label></div><div class="buttons"><button id="audioPlay">▶ Preview selection</button><button id="audioStop">■ Stop</button></div><div class="buttons"><button id="audioExport" class="primary">↓ Download WAV</button><button id="audioAdd">＋ Add to Pack</button></div></div><div class="panel"><h3>Waveform</h3><div class="audio-frame"><canvas id="audioCanvas" width="900" height="220"></canvas></div><p class="hint">Real audio decode, trims and sample processing. Exports uncompressed PCM WAV; MP3/AAC encoding is not included.</p></div></div></section>
-<section class="studio" data-panel="motion" hidden>
-<div class="section-heading"><div><div class="eyebrow">08 / ANIMATION & LOOP PROCESSING</div><h2>Motion Lab <span class="subtitle">Frames · loops · visual WebM</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Video or animated image</h3><label class="upload"><input id="motionFile" type="file" accept="video/mp4,video/webm,image/gif"><b>＋ OPEN MP4 / WEBM / GIF</b></label><div class="two"><label>Start (sec)<input id="motionStart" type="number" value="0" min="0" step=".1"></label><label>End (sec)<input id="motionEnd" type="number" value="5" min=".5" step=".1"></label></div><div class="three"><label>Width<input id="motionWidth" type="number" value="960" min="64" max="3840"></label><label>FPS<select id="motionFps"><option value="15">15</option><option value="24" selected>24</option><option value="30">30</option></select></label><label>Quality<select id="motionQuality"><option value="3000000">3 Mbps</option><option value="6000000" selected>6 Mbps</option><option value="10000000">10 Mbps</option></select></label></div><div class="buttons"><button id="motionPlay">▶ Preview clip</button><button id="motionSnap">↓ Snapshot PNG</button></div><button id="motionExport" class="primary wide">● Record visual WebM (max 20s)</button><p id="motionStatus" class="hint">Choose local video or GIF. Video exports are visual-only and do not contain audio. Browser MediaRecorder support is required.</p></div><div class="panel"><h3>Live playback</h3><video id="motionVideo" muted playsinline controls loop hidden></video><img id="motionGif" alt="Animated GIF preview" hidden><div class="canvas-frame checker"><canvas id="motionCanvas" width="960" height="540"></canvas></div></div></div></section>
-<section class="studio" data-panel="model" hidden>
-<div class="section-heading"><div><div class="eyebrow">09 / 3D ASSET ENGINEERING</div><h2>3D Inspector <span class="subtitle">GLB / glTF structure diagnostics</span></h2></div></div>
-<div class="workspace split"><div class="panel"><h3>Import 3D model</h3><label class="upload"><input id="modelFile" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json"><b>＋ INSPECT GLB / GLTF</b></label><p class="hint">Reads the model's structure locally: mesh counts, nodes, skeletons, morph targets, materials, animation tracks, extension usage, textures and scene metadata.</p><div class="buttons"><button id="modelReport" class="primary">↓ Download report JSON</button><button id="modelAdd">＋ Add to Pack</button></div></div><div class="panel"><h3>Structure report</h3><div id="modelStats" class="model-stats">Choose a 3D file to inspect.</div><pre id="modelDetails" class="log"></pre><p class="hint">This tool inspects file structure; it does not render or modify 3D geometry in v1.0. External glTF buffers are not automatically fetched.</p></div></div></section>
 <section class="studio" data-panel="production" hidden>
  <div class="section-heading"><div><div class="eyebrow">11 / BRANDING AND PRODUCTION</div><h2>Production Lab <span class="subtitle">Generate downloadable graphics and reusable design recipes</span></h2></div><button class="small-btn" id="prodShuffle">New seed ↻</button></div>
  <div class="workspace image-grid"><div class="panel">
@@ -347,11 +355,17 @@
    <div class="video-vault-player-actions">
     <button id="videoVaultPrevious" class="small-btn">⏮ Previous</button>
     <button id="videoVaultNext" class="small-btn">Next ⏭</button>
+    <button id="videoVaultBack10" class="small-btn">↶ 10s</button>
+    <button id="videoVaultForward30" class="small-btn">30s ↷</button>
     <button id="videoVaultCinema" class="small-btn">⛶ Full screen</button>
     <button id="videoVaultPiP" class="small-btn" disabled>▣ Picture-in-picture</button>
     <button id="videoVaultDownload" class="small-btn" disabled>↓ Save original file</button>
+    <button id="videoVaultSendTheater" class="small-btn" disabled>♫ Open in Media Theater</button>
    </div>
-   <p class="hint">On iPhone, tap Play in the native video controls if autoplay is blocked. Your saved copies remain available offline after this app has loaded, subject to browser storage retention.</p>
+   <div class="checks companion-cinema-settings">
+    <label><input id="videoVaultAutoNext" type="checkbox"> Automatically play the next saved video</label>
+   </div>
+   <p class="hint">On iPhone, tap Play in the native video controls if autoplay is blocked. Auto-next is optional and may require a user tap. Original video copies remain stored locally, subject to browser storage retention.</p>
   </div>
  </div>
  <div class="panel video-vault-library"><h3>04 / YOUR VIDEO COLLECTIONS</h3>
@@ -619,7 +633,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.1.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.2.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>

@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "Versioned browser-based Proximus creative production and asset workshop",
+  "description": "PROXIMUS Companion Edition — private entertainment, saved local videos, creative media and everyday usefulness",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

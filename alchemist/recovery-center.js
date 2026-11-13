@@ -4,7 +4,7 @@ import {mobileFileSupport} from './portable-kit.js';
 const keys=[
  'nexus-alchemist-last-view','nexus-alchemist-pack-title','nexus-alchemist-pack-target',
  'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1','proximus-alchemist-arcade-scores-v1',
- 'proximus-command-layout-v1','proximus-command-pins-v1','proximus-command-name-v1','proximus-reactor-settings-v1','proximus-visual-identity-v1','proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1'
+ 'proximus-command-layout-v1','proximus-command-pins-v1','proximus-command-name-v1','proximus-reactor-settings-v1','proximus-visual-identity-v1','proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1','proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1'
 ];
 export function backupSettings(storage){
  const prefs={};

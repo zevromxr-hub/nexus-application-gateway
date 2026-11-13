@@ -1,6 +1,6 @@
 import {$,bytes,safe,stem,notice,download,makeZip,sha256,textFile,nowName,wrap} from './core.js';
-import {initImage,initBatch,initIcons,initSprites,initTextures,initPalette} from './image-tools.js';
-import {initAudio,initMotion,initModel} from './media-tools.js';
+import {initImage} from './image-tools.js';
+// Archived v3.1: Audio Forge, Motion Lab and 3D Inspector are no longer mounted.
 import {initProduction,initAudit} from './pro-tools.js';
 import {initLayerForge,initMotionGraphics} from './creator-tools.js';
 import {initAnimationForge} from './animation-tools.js';
@@ -24,18 +24,11 @@ import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
 import {initMobileNavigation} from './mobile-navigation.js';
+import {RETIRED_STUDIOS} from './companion-core.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
  {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
- {id:'batch',icon:'▦',title:'Batch Forge',detail:'Bulk image conversion and WebP optimization'},
- {id:'icons',icon:'▣',title:'Icon Foundry',detail:'Generate application icon PNG size collections'},
- {id:'sprites',icon:'▥',title:'Sprite Atlas',detail:'Combine 2D sprites into PNG atlas and JSON'},
- {id:'textures',icon:'⌗',title:'Texture Lab',detail:'Height maps normal maps masks'},
- {id:'palette',icon:'◉',title:'Color Lab',detail:'Dominant colors palettes gradients contrast'},
- {id:'audio',icon:'♫',title:'Audio Forge',detail:'WAV trim normalize fade reverse sound'},
- {id:'motion',icon:'▷',title:'Motion Lab',detail:'Video GIF clips snapshot recording WebM'},
- {id:'model',icon:'⬡',title:'3D Inspector',detail:'GLB glTF model mesh material skin animations'},
  {id:'pack',icon:'▤',title:'Asset Packager',detail:'Collect outputs and download ZIP manifest'},
  {id:'production',icon:'✧',title:'Production Lab',detail:'Professional banners thumbnails branding artwork and presets'},
  {id:'audit',icon:'⌕',title:'Asset Audit',detail:'Inspect file types SHA-256 duplicate detection metadata reports'},
@@ -157,7 +150,9 @@ const app={
  }
 };
 function changeView(id){
- if(!names.some(n=>n.id===id))return;
+ // Retired studios are safely redirected; old saved last-view preferences
+ // never strand users on an empty page after the Companion update.
+ if(!names.some(n=>n.id===id))id='command';
  document.querySelectorAll('[data-panel]').forEach(n=>n.hidden=n.dataset.panel!==id);
  document.querySelectorAll('[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
  localStorage.setItem('nexus-alchemist-last-view',id);
@@ -263,7 +258,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.1.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.2.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -283,14 +278,13 @@ function setupVersion(){
 }
 
 function launch(){
- initImage(app);initBatch(app);initIcons(app);initSprites(app);initTextures(app);initPalette(app);
- initAudio(app);initMotion(app);initModel(app);initProduction(app);initAudit(app);
+ initImage(app);initProduction(app);initAudit(app);
  initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initVideoVault(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Asset Alchemist v3.1 loaded. All transformations remain local to your browser.');
+ notice('PROXIMUS Companion Edition v3.2 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

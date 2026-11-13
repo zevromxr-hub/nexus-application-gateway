@@ -577,3 +577,72 @@ body[data-identity-enabled="on"] .studio[data-identity-exempt="true"]{--accent:#
  .video-vault-cover{max-height:170px}
  .mobile-dock button small{font-size:9px}
 }
+
+
+/* PROXIMUS Companion Edition 3.2 — uncluttered home and entertainment bridge */
+.companion-hero-pulse{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:9px;align-items:stretch;
+ margin:4px 0 16px}
+.companion-hero-pulse>div{display:flex;flex-direction:column;gap:5px;padding:12px 15px;min-width:0;
+ border:1px solid #70558e;border-radius:12px;background:linear-gradient(135deg,#231839,#120d22)}
+.companion-hero-pulse strong{font-size:16px;color:#f1e6ff;overflow-wrap:anywhere}
+.companion-hero-pulse small{font-size:10px;color:#9e90b9}
+.companion-hero-pulse .eyebrow{font-size:9px}
+.companion-hero-pulse>button{align-self:center;min-height:43px}
+.companion-home-grid{margin-bottom:18px}
+.companion-section-head{display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:9px;margin-bottom:10px}
+.companion-section-head h3{margin:2px 0 5px}
+.companion-section-head button{min-height:38px}
+.companion-continue{display:flex;flex-direction:column;gap:8px;min-height:75px;font-size:11px;color:#b2a1ca}
+.companion-resume-item{display:flex;flex-direction:column;align-items:start;gap:5px;text-align:left;
+ background:linear-gradient(100deg,#282044,#131026);border:1px solid #6c4f96;border-radius:10px;
+ padding:13px 12px;min-height:54px;color:#f1dfff;line-height:1.5}
+.companion-resume-item:hover{border-color:#b999df}
+.companion-resume-item strong{font-size:12px;overflow-wrap:anywhere}
+.companion-resume-item small{font-size:10px;color:#aaa0c1}
+.companion-link-form{display:grid;grid-template-columns:1fr 1.4fr;gap:9px;align-items:end}
+.companion-link-form label{margin:4px 0}
+.companion-link-form>button{grid-column:1/-1;min-height:42px}
+.companion-links{display:flex;flex-direction:column;gap:8px;margin:14px 0 5px;min-height:40px;
+ color:#a99bc6;font-size:11px}
+.companion-link-item{display:flex;align-items:center;gap:8px;background:#140e26;border:1px solid #59457a;
+ border-radius:9px;padding:7px 10px;flex-wrap:wrap}
+.companion-link-item a{flex:1;min-width:105px;color:#e3c9ff;font-size:12px;overflow-wrap:anywhere}
+.companion-link-item small{max-width:45%;overflow-wrap:anywhere;color:#8d81aa}
+.companion-link-item button{min-width:38px;min-height:38px;padding:4px 10px}
+.companion-video-mini{position:fixed;z-index:59;right:16px;bottom:16px;display:flex;align-items:center;
+ gap:7px;max-width:min(510px,calc(100vw - 32px));padding:8px 10px;border:1px solid #aa85de;
+ background:linear-gradient(120deg,#271b3d,#0f0b1c);border-radius:13px;
+ box-shadow:0 6px 34px #000c;color:#f0e2ff}
+.companion-video-mini[hidden]{display:none!important}
+.companion-video-mini strong{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:55px}
+.companion-video-mini button{min-height:38px;white-space:nowrap}
+.companion-cinema-settings label{font-size:11px;color:#c1afd5}
+#commandCategory{min-width:135px}
+@media(max-width:1050px){.companion-hero-pulse{grid-template-columns:repeat(3,minmax(0,1fr))}.companion-hero-pulse>button{grid-column:1/-1;justify-self:start}}
+@media(max-width:760px){
+ .companion-hero-pulse{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .companion-hero-pulse>div{padding:9px 8px}
+ .companion-hero-pulse strong{font-size:12px}
+ .companion-hero-pulse .eyebrow{font-size:8px;letter-spacing:.7px}
+ .companion-hero-pulse small{font-size:9px}
+ .companion-home-grid{grid-template-columns:1fr}
+ .companion-link-form{grid-template-columns:1fr}
+ .companion-video-mini{bottom:calc(82px + env(safe-area-inset-bottom,0px));left:8px;right:8px;
+ max-width:none;gap:4px;padding:7px 8px}
+ .companion-video-mini button{padding:8px 10px;font-size:10px}
+ .companion-video-mini strong{font-size:10px;max-width:40%}
+ .command-catalog .command-filters{flex-wrap:wrap;gap:9px}
+ .command-catalog .command-filters label{min-width:125px;flex:1}
+}
+
+
+/* Companion Edition — small optional pocket notes and preserved legacy details */
+.companion-pocket-panel{border:1px solid #5a4579;background:#100d21;border-radius:10px;padding:10px 12px;margin:15px 0}
+.companion-pocket-panel summary{font-weight:800;font-size:12px;cursor:pointer;color:#d7c0f5;line-height:1.5}
+.companion-pocket-panel textarea{display:block;min-width:0;width:100%;min-height:100px;resize:vertical;
+ border:1px solid #635077;border-radius:9px;background:#0b0918;padding:10px;
+ color:#f1e5ff;font:inherit;font-size:12px;line-height:1.6}
+.companion-pocket-panel .buttons{margin-top:7px}
+.companion-retired-info{border:1px solid #443651;background:#100d1e;border-radius:10px;padding:11px 14px;margin:16px 0;font-size:11px;color:#ada0bd}
+.companion-retired-info summary{cursor:pointer;color:#c6b1df;font-size:11px;font-weight:780}
+.companion-retired-info p{line-height:1.7}

@@ -1,0 +1,47 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.2.0",
+  "release_date": "2026-11-13",
+  "title": "Companion Edition — Entertainment & Everyday Utility",
+  "subtitle": "Companion Edition — Entertainment & Everyday Utility",
+  "channel": "stable",
+  "studios": 23,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Safely retired eight specialized production studios from the navigation, search, dashboard and startup: Batch Forge, Icon Foundry, Sprite Atlas, Texture Lab, Color Lab, Audio Forge, Motion Lab and 3D Inspector",
+    "Kept original retired studio source modules and immutable v3.1 release history for rollback; never deleted any local user data or license records",
+    "Redirected older saved last-view preferences for retired studios to Companion Center instead of loading a missing page",
+    "Refocused Companion Center around Continue Watching, saved video counts, favorites and entertainment-first categories for the remaining 23 focused spaces",
+    "Added up to 12 private HTTPS personal shortcuts with automatic workspace setting backup, safe URL validation and external no-opener links",
+    "Added optional locally autosaved Pocket Notes with plain TXT share/export, clear confirmation and portable settings backup",
+    "Upgraded Video Vault with 10-second back and 30-second forward, optional autoplay-next, cross-studio mini-player and direct handoff to Media Theater without large duplicate file copies",
+    "Coordinated Video Vault and Media Theater audio focus so starting one pauses the other",
+    "Kept iPhone safe-area navigation, Reactor IV, Animation Forge, existing master media, utility tools and offline workspace compatibility",
+    "Preserved Token Foundry, GitHub Pages deployment location and existing Discord application launchers unchanged"
+  ],
+  "added_studios": [],
+  "retired_studios": [
+    "Batch Forge",
+    "Icon Foundry",
+    "Sprite Atlas",
+    "Texture Lab",
+    "Color Lab",
+    "Audio Forge",
+    "Motion Lab",
+    "3D Inspector"
+  ],
+  "upgraded_studios": [
+    "Companion Center",
+    "Video Vault",
+    "Media Theater",
+    "iPhone Navigation",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

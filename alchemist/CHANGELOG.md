@@ -1,5 +1,27 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.2.0 — Companion Edition: Entertainment & Everyday Utility (2026-11-13)
+
+### Eight legacy production studios retired
+- Removed Batch Forge, Icon Foundry, Sprite Atlas, Texture Lab, Color Lab, Audio Forge, Motion Lab and 3D Inspector from the active user interface and runtime initialization.
+- Original source code and v3.1.0 rollback history retained. No user-created projects, saved video files, media, or Token Foundry records are deleted.
+- Retired last-opened studio preferences safely redirect to Companion Center.
+
+### New Companion Center
+- Continue Watching shelf, saved video/favorite counts, entertainment-first studio categories and one-tap access to local Video Vault.
+- Added private saved HTTPS shortcuts (up to 12), with safe link handling and simple deletion.
+- Added locally autosaved Pocket Notes with TXT share/export and workspace-settings backup.
+- Enhanced direct navigation to Media Theater, Reactor IV, Arcade Chamber, Workflow Desk and Animation Forge.
+
+### Video Vault + Media Theater
+- Added ±10/30-second seek controls, optional next-video playback and a compact cross-studio video mini-player.
+- Added direct Video Vault → Media Theater playback handoff using stored media without duplicating large files.
+- Added exclusive audio focus to pause one entertainment player when the other starts.
+
+### Stability
+- Kept the remaining 23 spaces, existing iPhone navigation, personal media and vault databases, previous release cache and full regression coverage.
+
+
 ## v3.1.0 — Cinematic Continuity & Video Vault (2026-11-13)
 
 ### New Studio 31 — Video Vault
