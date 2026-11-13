@@ -1,0 +1,18 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "1.0.0",
+  "title": "Genesis Edition",
+  "channel": "historical",
+  "studios": 10,
+  "features": [
+    "Initial browser-based creative production workshop",
+    "Image Studio and Batch Forge",
+    "Icon Foundry, Sprite Atlas and Texture Lab",
+    "Color Lab, Audio Forge and Motion Lab",
+    "3D Inspector and Asset Packager"
+  ],
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/"
+}

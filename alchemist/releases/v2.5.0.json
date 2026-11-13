@@ -1,0 +1,40 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "2.5.0",
+  "release_date": "2026-11-13",
+  "title": "Creator & Productivity Expansion",
+  "subtitle": "Creator & Productivity Expansion",
+  "channel": "stable",
+  "studios": 19,
+  "path": "alchemist/",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Release Center: on-site searchable version history, newest-first change cards and direct GitHub source records",
+    "Release Center: dynamic latest-version lookup and shortcut to the existing Check Updates control",
+    "Creator Story: independent developer journey, project milestones, design philosophy and long-term goals",
+    "Workflow Desk: editable notes, persistent checklists, progress and focus timer",
+    "Workflow Desk: portable JSON backup, restore and Asset Packager export",
+    "Utility Forge: text cleanup, sorting, deduplication, JSON formatting and URL/Base64 transformations",
+    "Utility Forge: cryptographically secure passwords and custom key strings",
+    "Utility Forge: batch file renaming with preview and ZIP export for any file type"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  },
+  "modules": [
+    "release-center",
+    "workflow-desk",
+    "utility-forge",
+    "creator-story",
+    "application-shell"
+  ],
+  "added_tabs": [
+    "Release Center",
+    "Creator Story",
+    "Workflow Desk",
+    "Utility Forge"
+  ]
+}

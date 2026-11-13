@@ -1,124 +1,64 @@
-# PROXIMUS | ASSET ALCHEMIST — Changelog
+# PROXIMUS | ASSET ALCHEMIST — Change Releases
 
-## v2.4.0 — Entertainment Expansion Edition (2026-11-12)
+## v2.5.0 — Creator & Productivity Expansion (2026-11-13)
 
-### New: Media Theater — Studio 16
-- Build a personal playlist using locally selected music, videos and animated GIFs.
-- Play, pause, skip, shuffle, repeat and adjust playback speed with the native media controls.
-- Expand videos to cinema mode and capture video or GIF poster frames as PNG.
-- Enable live music-reactive visualizers: neon spectrum bars, waveforms and resonance rings.
-- Personalize visualizer colors with violet, cyan, solar gold, crimson and emerald themes.
-- Download visualizer artwork or collect it in your Asset Packager.
-- Send supported theater media directly to the application background or hero thumbnail.
-- Export a portable JSON list of the playlist's file names and order.
+### New tabs: Release Center and Creator Story
+- Added searchable release history showing the newest version, release date, changes and GitHub source records.
+- Added a refresh control and shortcut to the existing **Check Updates** button.
+- Added the creator's journey, project milestones, independent-development philosophy and long-term vision.
 
-### New: Arcade Chamber — Studio 17
-- **Comet Catch:** 45-second comet-catching game with combos, gold rewards and hazards.
-- **Pulse Reflex:** timing challenge with perfect-hit scoring, streak bonuses and 12-hit rounds.
-- **Memory Matrix:** 16-card matching challenge with move/time scoring and eight unique pairs.
-- Responsive touch/mouse controls, browser-local best scores and score JSON exports.
-- Export a Comet Catch screenshot to the existing Asset Packager.
+### New studio 18: Workflow Desk
+- Create, edit and manage personal notes.
+- Organize task checklists with completion and progress tracking.
+- Run configurable focus timers.
+- Export and import portable workflow JSON backups or send them to Asset Packager.
 
-### Integration
-- Added both studios to Quick Navigation, desktop/mobile studio menus and the offline application cache.
-- Preserved existing fifteen studios, Asset Packager, local media personalization, GitHub Pages URL, Discord button and Check Updates flow.
+### New studio 19: Utility Forge
+- Transform text, clean lists, sort/deduplicate lines and convert letter case.
+- Format or minimize JSON and encode/decode URLs or Unicode Base64.
+- Generate strong random passwords and keys using the browser's cryptographic random generator.
+- Preview bulk filename changes and export renamed files as a ZIP.
 
+### Connected workflow
+- Added the new studios and information tabs to Quick Navigation and the mobile/desktop studio menus.
+- Added release-history records to the versioned offline application cache.
+
+## v2.4.0 — Entertainment Expansion (2026-11-12)
+
+### New studio 16: Media Theater
+- Added local music, video and GIF playlists, playback speed, shuffle, repeat and cinema mode.
+- Added live Web Audio-reactive neon bars, waveforms and resonance rings with five color themes.
+- Added video/GIF poster capture and PNG exports to the Asset Packager.
+- Added links from theater media to personal application backgrounds and thumbnails.
+
+### New studio 17: Arcade Chamber
+- Added Comet Catch, Pulse Reflex and Memory Matrix arcade games.
+- Added local best scores, high-score JSON exports and Comet Catch image exports.
 
 ## v2.3.0 — Media Fusion Edition (2026-11-12)
-
-### GIF conversion fixes
-- Animation Forge now defaults to **regular GIF**, separate from the optional animated GIF icon workflow. Neither regular GIF generation nor its Pack export requires selected icon sizes.
-- Default **automatic dimensions** preserve source aspect ratio and avoid exact-size fields. Small, medium, large, or custom width/height remain available; optional aspect-ratio lock.
-- GIF output uses browser-safe frame/pixel budgets and typed byte chunks rather than a large plain JavaScript array.
-- Fallback local GIF87a/GIF89a frame reader supports GIF animation re-encoding when the browser does not expose ImageDecoder, including some iOS Safari builds. GIF frame timing, disposal, palette and LZW decoding are handled locally.
-- Animation Forge generated GIFs can be applied as the application background or hero thumbnail without a separate upload.
-
-### Optional media backgrounds and thumbnails
-- **Media Publisher** button in the existing top bar; no new studio or visual redesign.
-- Choose a local GIF/MP4/WebM (or PNG/JPEG/WebP) for an animated page background, the home hero thumbnail, or a studio-specific thumbnail.
-- Choose cover/contain, optional background visibility, replace/clear media, and save locally to IndexedDB on that device.
-- GIF, MP4, WebM, and still image assets from the existing Asset Packager can be used as backgrounds or thumbnails.
-- Videos loop muted and inline. Autoplay restrictions may require tapping Play in Media Publisher. User media is never uploaded to the repository or other servers.
-
-### Preservation
-- All prior 15 studios, pack vault, original page styles when custom media is absent, desktop/mobile layouts, Discord button destination, GitHub repository and independent application gateways remain unchanged.
-- New local-only storage uses its own IndexedDB database so existing saved packs are not migrated or reset.
-- The service worker cache and release metadata are versioned consistently.
-
-### Limits
-- GIF format supports 256 palette colors and no audio.
-- GIF conversion limits 8 seconds / 96 frames; 720 px maximum side and 360,000 pixels per frame. Browser memory guards may require smaller dimensions or FPS.
-- User media persists only on the importing browser/device, subject to browser storage and autoplay restrictions. It is not cloud synced.
-- Video decoding depends on supported browser codecs; iOS support varies by source format.
-- Animated GIF icons are not animated Windows .ICO files.
-
+- Added separate regular GIF and animated GIF icon output modes.
+- Added automatic aspect-ratio sizing and optional custom GIF dimensions.
+- Added local animated GIF decoding for browsers without ImageDecoder.
+- Added optional animated GIF/MP4/WebM application backgrounds and hero/studio thumbnails.
+- Added direct links from generated GIFs and Asset Packager media to customized backgrounds.
+- Added local storage for personal media layouts.
 
 ## v2.2.0 — Motion & GIF Dominion Edition (2026-11-12)
-
-### New
-- **Animation Forge (Studio 15)** accepts local MP4, WebM, or animated GIF. It can convert supported clips to real animated \`GIF89a\` files with 6/8/12 fps, clip trimming, resizing, contain/cover, background fill, optional transparency, and simple ordered dithering.
-- Animation Forge can produce a PNG keyframe, save an animated GIF into the persistent Pack Vault, and create an animated GIF icon ZIP (32, 64, 128, 256 px) with separate static PNG fallbacks.
-- **Icon Foundry upgraded:** imported GIF master artwork is supported for static PNG icons or the new dedicated animated GIF icon export. Animated GIF output is real multi-frame data, not a video file renamed \`.gif\`.
-- **Original LZW GIF encoder** with a deterministic palette and actual NETSCAPE looping extension, compatible file-header output, and frame delays. Added independent GIF decode round-trip source tests.
-
-### Preserved
-- All previous 14 studios, persistent vault, static hosting, versioned cache, and Discord's existing "OPEN ASSET ALCHEMIST" GitHub Pages link.
-- No external encoder service, remote upload, application installer, or unrelated gateway changes.
-
-### Compatibility and honest limits
-- Video decoding is browser-dependent: MP4/H.264 and WebM/VP8/VP9 are common; codecs not understood by the browser will fail with an explanation.
-- Animated GIF re-encoding uses Chromium's built-in ImageDecoder; current Chrome, Edge or Opera recommended.
-- GIF has a maximum of 256 palette colors and no audio. Clips are capped at 8 seconds, 96 frames, and 512 px longest dimension to manage browser memory.
-- Animated \`.gif\` icon files can animate only where the target platform permits GIFs. Windows taskbar/executable \`.ico\` files cannot animate.
-- Browser source processing has no cloud upload. Output GIF files can be much larger than MP4/WebM for comparable animation.
-
+- Added Animation Forge for video/GIF-to-GIF conversion and local animated file exports.
+- Added GIF89a frame encoding, clip trimming, transparency and dithering options.
+- Added animated GIF icon packs with PNG alternatives.
+- Added GIF inputs and animated icon ZIP exports to Icon Foundry.
 
 ## v2.1.0 — Dominion Workflow Edition (2026-11-12)
-
-### New
-- **Layer Forge (Studio 13):** multi-layer canvas editor, local image imports, editable text layers, pointer-driven positioning, layer order, opacity, rotation, scaling, five blend modes, transparent backgrounds, and output presets up to 4K.
-- Portable Layer Forge JSON projects can embed imported image bytes for later restoration; imports are validated and limited to safe known image formats.
-- **Motion Graphics (Studio 14):** original procedural orbital particles, glowing portals, editable title/subtitle, five color themes, speed and energy controls, and local still PNG capture.
-- Actual 1280×720 silent WebM exports (3–8 seconds) via browser MediaRecorder, with optional custom image background and integration with Asset Packager.
-
-### Compatibility and quality
-- All 12 existing Proximus creative studios, pack vault, in-browser privacy, production audit and recipe tooling preserved.
-- GitHub Pages URL \`/nexus-application-gateway/alchemist/\` and the **OPEN ASSET ALCHEMIST** Discord button destination remain unchanged.
-- Independent root Sonic Reactor II gateway, desktop protocol handlers, and Character Foundry pages remain untouched.
-- Additional asset module added to the offline cache; new source and ID checks cover 14 studios.
-
-### Known limits
-- WebM recording requires a browser that supports canvas capture and MediaRecorder (Chromium recommended). Exports are silent and visual-only, not audio muxed.
-- Large portable JSON projects can use substantial memory because image pixels are embedded as base64. Keep regular file backups.
-- Layer Forge currently uses a flat composition canvas and per-layer transforms; it is not a full PSD editor.
-- GIF imports use the still frame rather than retaining GIF animation.
-
+- Added Layer Forge with draggable image/text layers, compositing and portable design projects.
+- Added Motion Graphics with animated titles, particle scenes, PNG captures and WebM recording.
+- Added project outputs to the local Asset Packager.
 
 ## v2.0.0 — Supreme Creator Edition (2026-11-12)
+- Added Production Lab for banners, wallpapers, product covers and creative presets.
+- Added Asset Audit for file inspection, metadata reporting and duplicate detection.
+- Added local Asset Packager persistence and version checking.
 
-### New
-- **Production Lab** with Discord banner, wide banner, video thumbnail, square, cover, 1080p/4K wallpaper, and vertical layouts.
-- Five distinct procedural material themes, editable titles/subtitles, seed-based art, optional user image backdrops, PNG/WebP exports, and reusable JSON recipes.
-- **Asset Audit** for file-header identification, SHA-256 integrity checking, duplicate detection, suspicious extension mismatches, and basic PNG/GIF/WebP/WAV/GLB metadata.
-- JSON and CSV audit exports plus Add to Pack action.
-- **Persistent Pack Vault** using local IndexedDB, automatic background saving, recovery after refresh, and storage information.
-- In-app **version checker**, release manifest, explicit changelog, and updated offline cache.
-- GitHub Actions static checks and self-contained version consistency tests.
-
-### Improved
-- Full **PROXIMUS** visual branding, footer, output naming, and release documentation.
-- Original ten creative workbenches preserved.
-- Previous URLs, GitHub repository path, compatible launcher protocols and existing browser preferences remain unchanged.
-- The application stays static-hosted and processes source files only in the browser.
-
-### Known limits
-- Browser storage can be evicted or disabled: download ZIP backups.
-- Production backgrounds are procedural, not AI generated.
-- Motion Lab remains visual-only WebM; Audio Forge remains WAV-only.
-- Audit is not an antivirus or malware scanner.
-- The 3D inspector reads structure and does not yet sculpt meshes.
-
-## v1.0.0 — Genesis
-Initial 10-studio NEXUS-era release. Superseded by Proximus v2.0.0; archive retained in Git history.
-
-**POWERED BY ZEVRO | PROXIMUS**
+## v1.0.0 — Genesis Edition
+- Introduced the original 10-studio browser-based creative workshop.
+- Introduced image processing, icons, sprites, textures, palettes, audio, motion, model inspection and the Asset Packager.
