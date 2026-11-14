@@ -22,7 +22,7 @@ export function audioTrackId(file){
  if(!isLocalAudio(file)||!Number.isSafeInteger(file.size)||file.size<=0||file.size>MAX_TRACK_BYTES)throw Error('Select an audio file under 250 MB.');
  const name=String(file.name||'').slice(0,255);
  const modified=Number.isSafeInteger(file.lastModified)?file.lastModified:0;
- return name+'\u0000'+String(file.size)+'\u0000'+String(modified);
+ return JSON.stringify([name,file.size,modified]);
 }
 export function sanitizeSavedTrack(record){
  if(!record||typeof record!=='object'||typeof record.id!=='string'||typeof record.name!=='string'||
