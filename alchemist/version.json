@@ -1,23 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.6.3",
+  "version": "3.6.4",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Web Cinema Embed First — Persistent Player Sources",
+  "subtitle": "Video Vault Ultra Import — Large Local Files & Wider Format Support",
   "studio_count": 18,
-  "previous_version": "3.6.2",
+  "previous_version": "3.6.3",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Brought back the original PROXIMUS Embed First experience inside the existing compact Web Cinema Gateway, accepting official iframe embed snippets or player URLs without executing arbitrary HTML",
-    "Added user-selectable playback routing: automatic detection, official embedded player, native browser video source, or standard website preview, with the more technical controls collapsed by default",
-    "Allowed browser-supported direct media streams and signed HTTPS video URLs even when the URL does not end in a conventional video file extension, subject to hosting permissions and actual media data",
-    "Remembered the chosen official player address or native source on each saved watch-later entry, while preserving the original full watch URL, titles, collections, favorites, and previously saved progress",
-    "Kept manual JSON link import/export and metadata-only Recovery Center/Workspace Sync backups compatible with earlier Web Cinema collections without a destructive migration",
-    "Displayed safer link previews by masking sensitive access tokens in the library while retaining the real full URLs in browser storage and playback requests",
-    "Maintained strict external URL validation and sandboxing; no arbitrary embed HTML execution, proxying, login bypass, site protection evasion, streaming-site scraping, or video downloading",
-    "Preserved existing ORBIT responsive PC/iPhone interface, opaque Video Vault, saved music and Play on Start, Mobile Power Guard, all companion studios, rollback history, and direct GitHub-to-Discord release workflow"
+    "Removed the previous 450 MB iPhone/iPad and 750 MB PC single-video limits, replacing them with generous 8 GB mobile and 16 GB desktop safety guardrails while respecting actual browser storage quotas and free device capacity",
+    "Introduced chunked large-file saves in the browser’s private origin filesystem (OPFS) where writable; older or unsupported browsers use smaller 16 MB IndexedDB chunks instead of one enormous Blob transaction",
+    "Preserved the exact existing Video Vault database and all previously saved videos, thumbnails, watch history, favorites and collections; the additive database upgrade creates a new chunk store without deleting original files",
+    "Expanded the import picker and filename/MIME validation to accept MP4, MOV, M4V, WebM, OGV, MKV, AVI, WMV, FLV, MPEG, TS/MTS/M2TS, 3GP, HEVC and additional supported video MIME types, keeping unsupported codecs exportable rather than pretending they play",
+    "Added import progress with bytes and percentage, cancellation that discards partial imports on supported paths, clearer failure reasons for quota/unsupported files and browser storage guidance",
+    "Added Play from Files — no copy: play a user-selected large video directly from its iPhone/PC file picker without copying its data into browser-managed storage; Save this preview optionally persists it when quotas permit",
+    "Added safer streamed-file integrity checks and native video playback with existing full-screen, picture-in-picture, snapshots and existing resume/bookmark controls where applicable",
+    "Preserved Web Cinema Embed First, Sonic Theater saved music and Play on Start, Mobile Power Guard, ORBIT PC/iPhone layout, all other studios, media exports, previous rollback packages and direct Discord release automation"
   ]
 }
