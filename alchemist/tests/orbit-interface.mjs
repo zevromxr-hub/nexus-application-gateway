@@ -48,7 +48,7 @@ assert.equal(typeof readOrbitPins,'function');
 assert.equal(typeof readOrbitRecent,'function');
 assert.equal(typeof toggleOrbitPin,'function');
 const sourceIds=['orbitAccessBar','orbitFind','orbitHome','orbitPinCurrent','orbitCurrent','orbitCurrentCategory',
- 'orbitPinned','orbitRecent','orbitCmdCategory','orbitCmdPinned',
+ 'orbitPinned','orbitRecent','orbitCmdCategory','orbitCmdPinned','orbitMobileCategory',
  'cmdDialog','cmdSearch','cmdOpen','layoutToggle','layoutCurrent','mobileDock',
  'mobileStudioDialog','mobileStudioList','videoVaultPlayer','videoVaultFiles','theaterMusicSavedList',
  'theaterMusicAutostart','sonicPowerMode','reactorCanvas','tokenInventory','identityPresetGallery'];
@@ -74,6 +74,7 @@ assert.ok(orbit.includes("wrapAdvancedArea(document.querySelector('#overdriveHub
 assert.ok(orbit.includes("document.body.dataset.orbitView=view"),'Active studio should trigger a compact header without removing original content');
 assert.ok(nav.includes("readOrbitPins().filter"),'Phone picker should use unified favorites');
 assert.ok(nav.includes("writeOrbitPins(pins)"),'Phone favorite changes should update desktop');
+assert.ok(nav.includes("orbitGroupFor(s.id)===selectedGroup"),'Phone studio picker must support category filters');
 assert.ok(command.includes("writeOrbitPins(pins)"),'Dashboard favorites should update global access');
 assert.ok(styles.includes('body[data-orbit-view]:not([data-orbit-view="command"]) .welcome'),'Hide redundant giant welcome banner only on individual studios');
 assert.ok(styles.includes('.orbit-nav-group>summary'),'Desktop sidebar should be categorized and collapsible');
