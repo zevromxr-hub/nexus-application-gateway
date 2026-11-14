@@ -1,0 +1,43 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.5.1",
+  "release_date": "2026-11-13",
+  "title": "Sonic Dimension — Five Living Audio Worlds",
+  "subtitle": "Sonic Dimension — Five Living Audio Worlds",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Expanded Sovereign Reactor IV into Sonic Dimension with five original Canvas2D environments: Nebula Collapse, Cyber Tunnel, Celestial Gate, Ember Storm and Frozen Aurora, rendered from measured local audio or permissioned input",
+    "Added an opt-in world mode that preserves all six classic Reactor IV visual modes, local media backdrops, visual overlays, effect routing, saved presets, GIF/PNG/silent video exports and existing playback sources",
+    "Introduced user-adjustable real bass and frequency reactivity, beat-driven color transitions and optional automatic world evolution after eight measured beats with a twelve-second minimum interval",
+    "Connected Sonic Dimension to the v3.5 Convergence scene palette with live cross-studio color updates and a separate versioned local settings backup",
+    "Added settings import/export, save-to-Project Hub, new legacy preset round-tripping, and optional Sync Bridge / Recovery Center backup of Sonic plus Convergence preferences",
+    "Retained the PC/iPhone adaptive interface, browser privacy, original Github Pages URL, 18 existing companion spaces and all prior retirement decisions, with no external audio recording or unauthorized system audio capture",
+    "Maintained GitHub release validation, deployment verification, rollback cache and the pre-existing automatic Discord announcement sender unchanged"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Sovereign Reactor IV",
+    "Sonic Dimension",
+    "Entertainment Overdrive",
+    "Project Hub",
+    "Sync Bridge",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

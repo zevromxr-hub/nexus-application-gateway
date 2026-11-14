@@ -1,5 +1,15 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.5.1 — Sonic Dimension: Five Living Audio Worlds (2026-11-13)
+
+- Added five original music-reactive worlds to the existing Reactor IV canvas, with new visual atmosphere algorithms and transient beat response.
+- Added opt-in world selection, reactive intensity, beat-triggered color shifts, and world cycling gated by actual detected beats (minimum 8 kicks and 12 seconds).
+- Linked colors with the v3.5.0 Convergence scene settings, introduced portable Sonic backups, and preserved old Reactor IV presets and classic modes.
+- Updated Project Hub, Recovery Center and Sync Bridge to include personal scene settings and preserved saved media, audio sources, old interfaces and private Token Foundry data.
+- Retained 18 active companion spaces and all previously retired studios; unchanged GitHub Pages and direct Discord release announcer integration.
+- Added deterministic renderer, mobile performance, local backup, unchanged navigation and real-audio regression tests.
+- **Next planned milestones:** v3.5.2 Arcade Nexus; v3.5.3 Infinite Realms; v3.5.4 Creator Overdrive; v3.5.5 convergence finalization.
+
 ## v3.5.0 — Entertainment Overdrive: Convergence Foundation & Cinema Atmosphere Sync (2026-11-13)
 
 - Created the unified Entertainment Overdrive launch hub within Companion Center; no new top-level studios or retired studio restoration.

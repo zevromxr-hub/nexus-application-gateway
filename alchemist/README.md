@@ -1,3 +1,38 @@
+# PROXIMUS | ASSET ALCHEMIST v3.5.1
+**SONIC DIMENSION — Five Living Audio Worlds · 18 existing companion spaces · PC and iPhone**
+
+Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.5.1 — SONIC DIMENSION
+
+Inside the existing **Sonic Dimension / Sovereign Reactor IV** workspace, activate the optional **Five Living Worlds** engine to transform your visualizer. Original Reactor IV remains available when the new toggle is off. This is an additive update: no extra top-level navigation and no restoration of retired studios.
+
+### The five original dimensions
+- **Nebula Collapse:** gravity rings, an orbiting singularity and streaming stars.
+- **Cyber Tunnel:** kinetic neon corridor, accelerated perspective and bass-driven depth.
+- **Celestial Gate:** luminous wings, pulsing halo and celestial energy column.
+- **Ember Storm:** flowing molten energy currents, sparks and explosions.
+- **Frozen Aurora:** color curtains, frost crystals and shimmering light.
+
+All five use the EXISTING real Web Audio analysis. Sub-bass powers atmosphere, bass drives shocks, mids brighten waves and contours, and treble adds light. No music or beats are fabricated. Without an active source, idle worlds animate ambient artwork but measured reaction levels stay zero.
+
+### New controls and interoperability
+Select a world, change reactive intensity from 30–160%, optionally shift accents when real beats are detected, and enable intelligent world progression after **8 measured beats** with at least **12 seconds** between transitions. Choose **Link colors to Entertainment Overdrive scene** to reuse the selected Convergence preset color live. The original Reactor performance profile still handles Mobile Battery Saver, Balanced and Cinematic resolution; reduced-motion preference is honored.
+
+Dimension settings use a separate localStorage key, never overwrite old Reactor IV data, and support versioned JSON import/export and Project Hub Collected Exports. The existing Reactor look presets can now include the selected Sonic state. **Sync Bridge** and **Recovery Center** can include new Sonic and Convergence preferences as well. All data remains per browser unless explicitly backed up.
+
+### Existing features preserved
+- All original Reactor IV visual modes, sound sources, scene controls, audio measurements, external backdrop/overlay files, old saved presets, real GIF exports, PNG captures, and silent WebM/MP4 export where the browser supports recording.
+- Video Vault, Cinema Atmosphere Sync, Entertainment Overdrive, Arcade Chamber, Animation Forge, Life Command, Project Hub, Token Foundry, and the 18-space adaptive PC/iPhone layout.
+- Existing GitHub Pages application URL, GitHub Actions validation, GitHub Pages deploy, rolling release cache and automatic **Discord webhook** announcement remain unchanged.
+- The planned v3.5.2 Arcade Nexus, v3.5.3 Infinite Realms and v3.5.4 Creator Overdrive are **not yet delivered**.
+
+### Device realities
+iPhone cannot grant direct audio capture of arbitrary other apps and may not support the same canvas recording codecs as PC. Use the local file player or permissioned microphone; the renderer does not bypass DRM or protected streams. Custom media storage is browser-local and may be evicted: retain originals and export backups. No new backend or external account is required.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
 # PROXIMUS | ASSET ALCHEMIST v3.5.0
 **ENTERTAINMENT OVERDRIVE — 18 active companion spaces · Shared scenes & Cinema Atmosphere Sync**
 
