@@ -248,6 +248,11 @@ export function initWebCinemaGateway(){
  });
  $('webCinemaApplySource').addEventListener('click',()=>{
   try{
+   // The common Share → Embed paste should work without first changing another dropdown.
+   if(sourceMode.value==='auto'&&sourceCode.value.trim()){
+    const detected=parseWebCinemaPlayerInput(sourceCode.value,{hint:'embed',appOrigin:location.origin});
+    sourceMode.value=detected.playerMode;
+   }
    let url=input.value.trim();
    if(!url&&sourceCode.value.trim()){
     const parsed=parseWebCinemaPlayerInput(sourceCode.value,{hint:sourceMode.value,appOrigin:location.origin});
