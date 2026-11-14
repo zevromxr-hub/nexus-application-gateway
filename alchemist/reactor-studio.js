@@ -98,7 +98,7 @@ export function initSovereignReactor(app){
   document.documentElement.dataset.sonicPower=plan.draw?mode:'audio';
  }
  function applyPowerEnvironment(){
-  const plan=getPowerPlan(),suspendBackdrop=plan.backgroundPause&&active()&&!recording&&!loopCapturing;
+  const plan=getPowerPlan(),suspendBackdrop=(plan.backgroundPause||!active()||!stageVisible||document.hidden)&&!recording&&!loopCapturing;
   const suppressAmbient=plan.siteAmbientPause&&active();
   if(suppressAmbient!==lastAmbientSuppression){
    lastAmbientSuppression=suppressAmbient;
@@ -136,6 +136,7 @@ export function initSovereignReactor(app){
   if(powerSettings.mode==='audio')status('Music-only mode: Reactor graphics paused. Saved music and controls keep working.');
  });
  document.addEventListener('proximus-view-changed',()=>{applyPowerEnvironment();previous=0;});
+ document.addEventListener('visibilitychange',()=>{applyPowerEnvironment();previous=0;});
  if(typeof IntersectionObserver==='function'){
   const observer=new IntersectionObserver(entries=>{stageVisible=entries.some(entry=>entry.isIntersecting);previous=0;},
    {root:null,threshold:0});
