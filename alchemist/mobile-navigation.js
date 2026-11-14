@@ -5,7 +5,7 @@ export const MOBILE_PINS='proximus-mobile-navigation-pins-v1';
 export const MOBILE_RECENT='proximus-mobile-navigation-recent-v1';
 export function mobileNavigationList(studios,{term='',favorites=[],recent=[],mode='all'}={}){
  const text=String(term||'').trim().toLowerCase();
- const base=studios.filter(s=>(s.title+' '+s.detail).toLowerCase().includes(text));
+ const base=studios.filter(s=>s.id!=='theater'&&(s.title+' '+s.detail).toLowerCase().includes(text));
  if(mode==='favorites')return base.filter(s=>favorites.includes(s.id));
  if(mode==='recent')return [...base].sort((a,b)=>recent.indexOf(a.id)-recent.indexOf(b.id))
   .filter(s=>recent.includes(s.id));
