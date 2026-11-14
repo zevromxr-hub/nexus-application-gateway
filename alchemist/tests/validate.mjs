@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 const ROOT=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(ROOT,f),'utf8');
 const version=JSON.parse(read('version.json')),release=JSON.parse(read('releases/v'+version.version+'.json'));
 const html=read('index.html'),app=read('app.js'),service=read('sw.js');
-const modules=['app.js','core.js','companion-core.js','media-tools.js','layout-adapter-core.js','layout-adapter.js','gif-codec.js','gif-reader.js','animation-tools.js','media-suite-core.js','life-command-core.js','life-command.js','video-vault-core.js','video-vault.js','mobile-navigation.js','media-publisher.js','visual-identity-core.js','visual-identity.js','reactor-iv.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','overdrive-core.js','entertainment-overdrive.js','sonic-dimension.js','cinema-clarity.js','music-library-core.js','music-library.js','sonic-theater.js','sonic-power.js','sonic-playlist-core.js','arcade-daily.js','sw.js'];
+const modules=['app.js','core.js','companion-core.js','media-tools.js','layout-adapter-core.js','layout-adapter.js','gif-codec.js','gif-reader.js','animation-tools.js','media-suite-core.js','life-command-core.js','life-command.js','video-vault-core.js','video-vault.js','mobile-navigation.js','media-publisher.js','visual-identity-core.js','visual-identity.js','reactor-iv.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','overdrive-core.js','entertainment-overdrive.js','sonic-dimension.js','cinema-clarity.js','music-library-core.js','music-library.js','sonic-theater.js','sonic-power.js','sonic-playlist-core.js','orbit-core.js','orbit-interface.js','arcade-daily.js','sw.js'];
 for(const f of modules){
  const r=spawnSync(process.execPath,['--check',path.join(ROOT,f)],{encoding:'utf8'});
  assert.equal(r.status,0,f+': '+r.stderr);
@@ -152,6 +152,9 @@ const masterTest=spawnSync(process.execPath,[path.join(ROOT,'tests/master-worksp
 assert.equal(masterTest.status,0,'Master thumbnails / Sync Bridge / Reactor III / Release Guard: '+masterTest.stderr+' '+masterTest.stdout);
 const identityTest=spawnSync(process.execPath,[path.join(ROOT,'tests/identity-reactor-iv.mjs')],{encoding:'utf8'});
 assert.equal(identityTest.status,0,'Visual Identity / Reactor IV: '+identityTest.stderr+' '+identityTest.stdout);
+const orbitTest=spawnSync(process.execPath,[path.join(ROOT,'tests/orbit-interface.mjs')],{encoding:'utf8'});
+assert.equal(orbitTest.status,0,'ORBIT Interface v3.6.0: '+orbitTest.stderr+' '+orbitTest.stdout);
+assert.ok(fs.existsSync(path.join(ROOT,'orbit-interface.css')),'New PC/iPhone UI stylesheet must exist');
 const powerTest=spawnSync(process.execPath,[path.join(ROOT,'tests/sonic-power.mjs')],{encoding:'utf8'});
 assert.equal(powerTest.status,0,'Mobile Power Guard v3.5.4: '+powerTest.stderr+' '+powerTest.stdout);
 assert.ok(fs.existsSync(path.join(ROOT,'sonic-power.css')),'Mobile Power Guard CSS must exist');
