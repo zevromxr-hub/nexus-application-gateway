@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090916">
+<meta name="theme-color" content="#0b1520">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -45,22 +45,37 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.4</div>
+<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.6.0</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.4 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.6.0 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
+ <div class="orbit-access-current">
+  <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
+  <strong id="orbitCurrent">Companion Center</strong>
+ </div>
+ <div class="orbit-access-actions">
+  <button id="orbitHome" type="button" class="orbit-access-minor" aria-label="Open Companion Center home">⌂ Home</button>
+  <button id="orbitPinCurrent" type="button" class="orbit-access-minor" aria-pressed="false">☆ Pin this space</button>
+  <button id="orbitFind" type="button" class="orbit-access-find">⌕ Find any tool <span aria-hidden="true">/ Ctrl K</span></button>
+ </div>
+ <div class="orbit-access-collections">
+  <div><span class="orbit-access-label">★ Favorites</span><div id="orbitPinned" class="orbit-access-chips" aria-label="Pinned tools">Your pinned tools appear here</div></div>
+  <div><span class="orbit-access-label">◷ Recent</span><div id="orbitRecent" class="orbit-access-chips" aria-label="Recently visited tools">Your recently opened tools appear here</div></div>
+ </div>
+</section>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.4</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.6.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.4</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.6.0</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
-   <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play existing original mini-games; expanded adventures follow in v3.5.4.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
-   <button type="button" class="overdrive-card" data-overdrive-target="animation"><span class="overdrive-symbol">◈</span><strong>Creator Overdrive</strong><small>Use Animation Forge today; unified scene editor arrives in v3.5.4.</small><span class="overdrive-tag">OPEN ANIMATION FORGE</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="animation"><span class="overdrive-symbol">◈</span><strong>Creator Overdrive</strong><small>Use Animation Forge today; a deeper unified editor is planned separately.</small><span class="overdrive-tag">OPEN ANIMATION FORGE</span></button>
   </div>
   <div class="overdrive-scene-panel">
    <div><h4>CONVERGENCE SCENES</h4><p class="hint">Shared visual profiles for Cinema and Media Theater. Profiles contain settings only, never video or audio files.</p></div>
@@ -547,7 +562,7 @@
    </div>
 
    <div class="reactor-export-block sonic-dimension-controls" id="sonicDimensionControls">
-    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.5.4</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
+    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.6.0</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
     <div class="checks"><label><input id="reactorDimensionEnabled" type="checkbox"> Enable Sonic Dimension worlds</label><label><input id="reactorDimensionAuto" type="checkbox"> Evolve world every 8 detected beats (12s cooldown)</label></div>
     <div class="two">
      <label>World environment<select id="reactorDimensionWorld">
@@ -709,7 +724,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.4</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.6.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -1027,10 +1042,27 @@
  <p id="mediaStatus" class="hint" role="status">Loading media settings…</p>
  <p class="hint">Videos loop silently. iPhone/browser autoplay and storage quotas vary; if a video is paused, open Media and tap Play. Your personal backgrounds are stored in this browser's IndexedDB, not uploaded to GitHub. Clearing site data removes them.</p>
  </div></dialog>
-<dialog id="cmdDialog"><div class="cmd-box"><div class="cmd-head"><b>✧ QUICK NAVIGATION</b><button id="cmdClose">×</button></div><input id="cmdSearch" placeholder="Search studios, tools and transforms…" autocomplete="off"><div id="cmdResults"></div><small>Enter to open · Esc to close · Ctrl+K anywhere</small></div></dialog>
+<dialog id="cmdDialog"><div class="cmd-box"><div class="cmd-head"><b>✧ QUICK NAVIGATION</b><button id="cmdClose">×</button></div><input id="cmdSearch" type="search" aria-label="Search all PROXIMUS spaces" placeholder="Search a studio, game, video, utility…" autocomplete="off">
+ <div class="orbit-command-filters">
+  <label>Explore by purpose
+   <select id="orbitCmdCategory">
+    <option value="all">All tools</option>
+    <option value="entertainment">Entertainment</option>
+    <option value="creative">Create</option>
+    <option value="everyday">Everyday</option>
+    <option value="workspace">Workspace</option>
+    <option value="settings">Customize &amp; protect</option>
+    <option value="information">Information</option>
+    <option value="recent">Recently opened</option>
+   </select>
+  </label>
+  <label class="orbit-cmd-pins"><input id="orbitCmdPinned" type="checkbox"> ★ Favorites only</label>
+ </div>
+ <div id="cmdResults" class="orbit-command-results" aria-label="Matching accessible tools"></div><small>Enter to open · Esc to close · Ctrl+K anywhere</small></div></dialog>
 <!-- App-only mobile studio navigation. Original sidebar remains available if JS fails. -->
 <nav id="mobileDock" class="mobile-dock" aria-label="iPhone quick navigation">
  <button type="button" data-mobile-target="command" aria-label="Open Command Center"><b>⌂</b><small>Home</small></button>
+ <button type="button" data-mobile-target="reactor" aria-label="Open Sonic Theater"><b>♫</b><small>Sonic</small></button>
  <button type="button" data-mobile-target="videos" aria-label="Open saved Video Vault"><b>▣</b><small>Videos</small></button>
  <button type="button" data-mobile-target="life" aria-label="Open Life Command planner"><b>◷</b><small>Life</small></button>
  <button type="button" id="mobileHistoryBack" aria-label="Previous studio" disabled><b>‹</b><small>Back</small></button>
@@ -1043,6 +1075,17 @@
   <label>Find a studio<input id="mobileStudioSearch" type="search" autocomplete="off" placeholder="Search tools, video, GIF, identity…"></label>
   <div class="two"><label>View<select id="mobileStudioMode"><option value="all">All studios</option><option value="favorites">★ Your favorites</option><option value="recent">Recently visited</option></select></label>
    <div class="mobile-history-actions"><button id="mobileStudioBack" class="small-btn" disabled>‹ Back</button><button id="mobileStudioNext" class="small-btn" disabled>Next ›</button></div></div>
+  <label class="orbit-mobile-category">Browse by category
+   <select id="orbitMobileCategory">
+    <option value="all">Every available tool</option>
+    <option value="entertainment">Entertainment</option>
+    <option value="creative">Create</option>
+    <option value="everyday">Everyday</option>
+    <option value="workspace">Workspace</option>
+    <option value="settings">Customize &amp; protect</option>
+    <option value="information">Information</option>
+   </select>
+  </label>
   <p id="mobileStudioCount" class="hint">Loading studio library…</p>
   <div id="mobileStudioList" class="mobile-studio-list"></div>
   <div class="mobile-studio-footer"><button id="mobileStudioTop" class="small-btn">↑ Return to top of page</button></div>

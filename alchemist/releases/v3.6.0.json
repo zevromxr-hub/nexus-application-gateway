@@ -1,0 +1,46 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.6.0",
+  "release_date": "2026-11-14",
+  "title": "ORBIT Interface — Unified Access & Adaptive Redesign",
+  "subtitle": "ORBIT Interface — Unified Access & Adaptive Redesign",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Introduced ORBIT, a full site-wide interface redesign using modern midnight navy and soft aurora accents, consistent readable cards and controls, restrained motion, and a cleaner hierarchy across PC and iPhone",
+    "Reorganized the original desktop sidebar into collapsible purpose groups: Start, Entertainment, Create, Everyday, Workspace, Customize & Protect, and Information; all existing studio routes and legacy redirects remain intact",
+    "Added a universal quick-access bar visible in every workspace with the current studio, Find any tool, favorite pinned shortcuts, recently visited spaces, and one-tap Home navigation",
+    "Expanded the existing Ctrl/Cmd+K search into a category-aware launcher with immediate opening and one-tap pin/unpin controls, without creating a competing search interface or new studio",
+    "Unified favorites between the existing Companion Center studio cards, the mobile studio navigator, and the new global access bar; previous favorites are reused as initial shortcuts instead of discarded",
+    "Simplified the top bar by moving secondary existing actions into a More menu while preserving their original IDs and behavior, and added direct Sonic Theater access to the touch-friendly mobile dock",
+    "Removed the redundant global welcome hero from individual studio pages while retaining the complete home page, and collapsed advanced dashboard, catalog and scene controls behind accessible details rather than deleting features",
+    "Preserved the adaptive PC/iPhone layout override, saved video and music library, Play on Start, Reactor IV and Sonic Dimension worlds, mobile power profiles, original media/themes, encrypted Token Foundry, exports and existing offline/Discord release automation"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Companion Center",
+    "Studio Navigation",
+    "PC Sidebar",
+    "iPhone Quick Dock",
+    "Tool Search",
+    "Master Visual Identity",
+    "Recovery Center",
+    "Sync Bridge"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

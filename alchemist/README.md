@@ -1,3 +1,63 @@
+# PROXIMUS | ASSET ALCHEMIST v3.6.0
+**ORBIT INTERFACE — FULL PC / iPHONE FACELIFT · ONE EASY ACCESS SYSTEM**
+
+Official website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.6.0 — ORBIT WORKSPACE
+
+### A different, cleaner interface across the entire site
+The app now uses a dark midnight-navy/aurora design, consistent button and card styling, clearer typography, calmer transitions, improved spacing, accessible focus states, and a compact active-studio header. The previous large homepage banner still appears in Companion Center but **is no longer repeated above individual studios**. The site retains the existing custom Visual Identity themes and personally uploaded background/thumbnail media.
+
+No studio engines, video or audio files, Token Foundry records, source media, presets, tools, storage schemas, or exports are deleted or converted. The registered legacy Media Theater route remains compatible, pointing to unified Sonic Theater. All 18 active companion spaces and the Release/Creator information pages remain available.
+
+### Universal quick access on every studio page
+The new **ORBIT Access Bar** shows the studio you are in, a Home shortcut, a **Pin this space** favorite control, pinned tools, recently opened tools, and **Find any tool**. This stays available when navigating from one studio to another; it does not reload the page or restart music.
+
+**One search launcher:** Click Find any tool, use the top-bar search, or press Ctrl+K on PC / Command+K on Mac. Filter studios by purpose, limit to pinned favorites, search by feature name, immediately open a result, or use ☆ / ★ to pin and unpin it. Existing search and its original keyboard shortcut still work.
+
+**Favorites reused:** Existing saved Command Center and mobile picker favorites are imported into the new ORBIT preference on first use. New pin changes update the old Command Center cards and iPhone picker, so shortcuts are shared within the same browser profile. New pinned and recently opened shortcuts are included in Recovery Center and Sync Bridge preferences backups; media files remain separately stored locally.
+
+### Desktop / PC access
+Instead of a 20-item flat sidebar, original studio links are sorted into expandable groups:
+- **Start** — Companion Center
+- **Entertainment** — Sonic Theater, Video Vault, Arcade Chamber
+- **Create** — Animation Forge, Capture, Documents, QR & Branding
+- **Everyday** — Life Command, Workflow Desk, Utility Forge
+- **Workspace** — Project Hub, Automation Lab, Sync Bridge
+- **Customize & Protect** — Visual Identity, Token Foundry, Recovery Center
+- **Information** — Release Center and Creator Story
+
+The current studio's group automatically opens. Existing secondary top-bar buttons for Video Vault, Life Command, Media Publisher, and Exports have moved under **More**. No action was removed or renamed internally.
+
+### iPhone / mobile access
+The touch-friendly dock now prioritizes **Home · Sonic · Videos · Life · Studios**. Back/Forward history remains available in the studio navigator and left-edge swipe where supported. The existing mobile studio picker includes search, pinned-only and recent filters, plus pin/unpin controls. Content, tool cards and controls adapt to narrow/rotated iPhone screens; there is no separate mobile copy of any studio.
+
+The Auto/Desktop/Mobile display selector is preserved, with manual overrides and orientation handling. Motion is restrained for reduced-motion preferences and iPhone power savings. Sonic Theater Mobile Power Guard is untouched.
+
+### Less clutter in Companion Center
+The long tool catalog, advanced dashboard/personalization panels, and Entertainment Overdrive scene-editing settings are now **collapsible**. Expand the appropriate section whenever you want those controls. Every original form field, event handler and local setting remains in the DOM and works as before; nothing is removed.
+
+### Compatibility & scope
+- Full UI and navigation-only update: no changed audio codecs, gameplay, encryption, exports, video playback, or file content.
+- Opaque Video Vault playback surface and external Cinema Atmosphere Sync retained.
+- Saved MP3 playlists, persistent local music library and opt-in Play on Start remain in Sonic Theater.
+- iPhone Mobile Power Guard 24/15/0/30 FPS choices and original desktop rendering preserved.
+- Recovery Center and Sync Bridge can export new ORBIT favorites/recent preferences without including local music or video bytes.
+- The existing GitHub Pages deployment, validation suite, previous rollback manifests, and **direct GitHub-to-Discord release announcements** stay unchanged.
+- As before, browser-local music, videos and large personal assets are not automatically synced across devices. Keep the originals/backups.
+
+### Suggested acceptance check
+1. Open PROXIMUS on your iPhone and verify Home, Sonic, Videos, Life, Studios in the bottom dock. Open the studio navigator, choose ★ Favorites, and pin a tool.
+2. Confirm the new ORBIT pinned shortcut appears in the access bar. Visit multiple studios and verify the Recent shortcuts update.
+3. Open an individual studio and confirm the giant homepage banner is gone but the active studio controls all remain.
+4. Open Sonic Theater and test saved MP3 music, Play on Start, Reactor visuals, Mobile Power Guard and existing video/GIF tools.
+5. On PC, expand purpose groups, use Ctrl+K, search for a tool, and open **More** to access the old secondary top-bar actions.
+6. In Companion Center, expand the complete catalog, scene settings and advanced dashboard controls; verify original notes, links, presets and widgets remain available.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.5.4
 **MOBILE POWER GUARD — LIGHTER SONIC THEATER ON iPHONE**
 
