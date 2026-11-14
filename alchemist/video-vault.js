@@ -5,10 +5,11 @@ import {$,bytes,download,notice,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
 import {normalizeBookmarks,makeVideoCatalog} from './media-suite-core.js';
 import {
- VIDEO_VAULT_DB,VIDEO_VAULT_SCHEMA,VIDEO_VAULT_MAX_ITEMS,videoFileType,
- createVideoMetadata,validateVideoFile,normalizeVideoCollection,
+ VIDEO_VAULT_DB,VIDEO_VAULT_SCHEMA,VIDEO_VAULT_MAX_ITEMS,VIDEO_VAULT_CHUNK_BYTES,videoFileType,
+ createVideoMetadata,validateVideoFile,videoStorageSlices,videoPlaybackHint,normalizeVideoCollection,
  sortVideoLibrary,videoTime,vaultStorageWarning
 } from './video-vault-core.js';
+import {saveVideoOpfs,readVideoOpfs,deleteVideoOpfs,isVideoOpfsSupported} from './video-vault-opfs.js';
 
 let database=null;
 function openVideoDB(){
@@ -20,6 +21,7 @@ function openVideoDB(){
    const db=request.result;
    if(!db.objectStoreNames.contains('items'))db.createObjectStore('items',{keyPath:'id'});
    if(!db.objectStoreNames.contains('files'))db.createObjectStore('files',{keyPath:'id'});
+   if(!db.objectStoreNames.contains('chunks'))db.createObjectStore('chunks',{keyPath:'id'});
   };
   request.onsuccess=()=>{
    database=request.result;
@@ -46,18 +48,86 @@ async function transaction(stores,mode,run){
 export async function listStoredVideos(){
  return transaction(['items'],'readonly',store=>store.getAll());
 }
-export async function saveStoredVideo(meta,blob){
+// Additive storage v2. Existing IndexedDB 'files' videos remain playable, unchanged.
+const videoChunkRange=id=>IDBKeyRange.bound(id+':',id+':\uffff');
+const importedVideoError=error=>{
+ if(error?.name==='AbortError')return 'Import canceled. Partial local copy was discarded.';
+ if(error?.name==='QuotaExceededError')return 'Not enough browser-managed storage for this copy. Free space or use Play without saving; your original file is unchanged.';
+ if(error?.name==='NotReadableError')return 'The video file could not be read. Move it into iPhone Files (On My iPhone), then try again.';
+ return error?.message||'Local video storage failed unexpectedly.';
+};
+async function dropChunkFiles(id){
+ try{
+  const keys=await transaction(['chunks'],'readonly',store=>store.getAllKeys(videoChunkRange(id)));
+  if(keys?.length)await transaction(['chunks'],'readwrite',store=>{
+   for(const key of keys)store.delete(key);
+  });
+ }catch{} // Best-effort cleanup for incomplete imports only.
+}
+async function saveVideoChunked(meta,file,{signal,onProgress}={}){
+ const count=videoStorageSlices(file.size),id=meta.id;
+ try{
+  for(let i=0;i<count;i++){
+   if(signal?.aborted)throw Object.assign(Error('Video import canceled.'),{name:'AbortError'});
+   const start=i*VIDEO_VAULT_CHUNK_BYTES,end=Math.min(file.size,start+VIDEO_VAULT_CHUNK_BYTES);
+   // The browser copies one file-backed Blob slice at a time instead of one huge IDB value.
+   await transaction(['chunks'],'readwrite',store=>store.put({
+    id:id+':'+i,blob:file.slice(start,end)
+   }));
+   onProgress?.(end,file.size,'chunked');
+  }
+  if(signal?.aborted)throw Object.assign(Error('Video import canceled.'),{name:'AbortError'});
+  meta.storage='chunks';meta.chunkCount=count;
+  await transaction(['items'],'readwrite',store=>store.put(meta));
+  return meta;
+ }catch(error){await dropChunkFiles(id);throw error;}
+}
+async function readVideoChunked(meta){
+ const rows=await transaction(['chunks'],'readonly',store=>store.getAll(videoChunkRange(meta.id)));
+ const count=meta.chunkCount||videoStorageSlices(meta.bytes);
+ if(!rows||rows.length!==count)throw Error('Some saved video chunks are missing. Keep the original video in Files/Photos and import it again.');
+ const parts=new Array(count);
+ for(const row of rows){
+  const number=Number(row.id.slice(meta.id.length+1));
+  if(!Number.isSafeInteger(number)||number<0||number>=count||!(row.blob instanceof Blob))
+   throw Error('Saved video chunk data is damaged.');
+  parts[number]=row.blob;
+ }
+ if(parts.some(x=>!(x instanceof Blob)))throw Error('Saved video has missing pieces.');
+ const reconstructed=new Blob(parts,{type:meta.mime||'video/mp4'});
+ if(reconstructed.size!==meta.bytes)throw Error('Saved video size does not match the imported original.');
+ return reconstructed;
+}
+export async function saveStoredVideo(meta,blob,{signal,onProgress}={}){
  if(!(blob instanceof Blob)||blob.size!==meta.bytes)throw Error('Video import failed integrity check.');
- // One atomic transaction: no orphan metadata if file storage is full.
- await transaction(['items','files'],'readwrite',(items,files)=>{
-  items.put(meta);files.put({id:meta.id,blob});
- });
+ if(signal?.aborted)throw Object.assign(Error('Import canceled.'),{name:'AbortError'});
+ if(isVideoOpfsSupported()){
+  let output;
+  try{output=await saveVideoOpfs(meta,blob,{signal,onProgress});}
+  catch(error){
+   if(!['NotSupportedError','SecurityError'].includes(error?.name))throw error;
+  }
+  if(output?.supported){
+   meta.storage='opfs';meta.opfsName=output.fileName;
+   try{await transaction(['items'],'readwrite',store=>store.put(meta));}
+   catch(error){await deleteVideoOpfs(meta).catch(()=>{});throw error;}
+   document.dispatchEvent(new Event('proximus-video-vault-changed'));
+   return meta;
+  }
+ }
+ // Compatible with older Safari implementations where OPFS createWritable is missing.
+ const saved=await saveVideoChunked(meta,blob,{signal,onProgress});
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
- return meta;
+ return saved;
 }
 export async function loadStoredVideo(id){
+ const meta=await transaction(['items'],'readonly',store=>store.get(id));
+ if(!meta)throw Error('This video is not available in your browser’s local library.');
+ if(meta.storage==='opfs')return readVideoOpfs(meta);
+ if(meta.storage==='chunks')return readVideoChunked(meta);
+ // Legacy videos are still read from their original unmodified IndexedDB store.
  const record=await transaction(['files'],'readonly',store=>store.get(id));
- if(!(record?.blob instanceof Blob))throw Error('This video is not available in this browser’s local storage.');
+ if(!(record?.blob instanceof Blob))throw Error('The original IndexedDB video file was not found.');
  return record.blob;
 }
 export async function updateStoredVideo(meta){
@@ -65,7 +135,19 @@ export async function updateStoredVideo(meta){
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 export async function removeStoredVideo(id){
- await transaction(['items','files'],'readwrite',(items,files)=>{items.delete(id);files.delete(id);});
+ const meta=await transaction(['items'],'readonly',store=>store.get(id));
+ if(meta?.storage==='chunks'){
+  const keys=await transaction(['chunks'],'readonly',store=>store.getAllKeys(videoChunkRange(id)));
+  await transaction(['items','chunks'],'readwrite',(items,chunks)=>{
+   items.delete(id);for(const key of keys||[])chunks.delete(key);
+  });
+ }else{
+  // The original v1 transaction remains intact for existing media.
+  await transaction(['items','files'],'readwrite',(items,files)=>{
+   items.delete(id);files.delete(id);
+  });
+  if(meta?.storage==='opfs')await deleteVideoOpfs(meta).catch(()=>{});
+ }
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 function newId(){
