@@ -81,7 +81,14 @@ export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareSt
   try{await prepareChosen();say('Startup song prepared. Tap Play now or return on your next visit.');}
   catch(error){say(error.message,true);}
  });
- launch.addEventListener('click',()=>{void playSaved();});
+ launch.addEventListener('click',()=>{
+  const chosen=startupTrack(rows,startup);
+  if(!chosen){say('Save a song to the local library first.',true);return;}
+  if(getCurrent()?.libraryId===chosen.id){void playSaved();return;}
+  // A newly selected track may require asynchronous IndexedDB loading;
+  // if a browser loses user activation, the fallback stays available.
+  void prepareChosen().then(()=>playSaved()).catch(error=>say(error.message,true));
+ });
  const say=(message,error=false)=>{
   status.textContent=message;status.dataset.error=error?'true':'false';
  };
