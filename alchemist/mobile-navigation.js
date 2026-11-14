@@ -2,6 +2,7 @@
 // No route reloads: moves within the existing 31 studios and preserves their state.
 import {$} from './core.js';
 import {readOrbitPins,writeOrbitPins} from './orbit-interface.js';
+import {orbitGroupFor} from './orbit-core.js';
 export const MOBILE_PINS='proximus-mobile-navigation-pins-v1';
 export const MOBILE_RECENT='proximus-mobile-navigation-recent-v1';
 export function mobileNavigationList(studios,{term='',favorites=[],recent=[],mode='all'}={}){
@@ -57,7 +58,9 @@ export function initMobileNavigation(app){
  }
  function render(){
   grid.replaceChildren();
-  const choices=mobileNavigationList(app.studios,{term:$('mobileStudioSearch').value,favorites:pins,recent,mode});
+  const selectedGroup=$('orbitMobileCategory').value;
+  const choices=mobileNavigationList(app.studios,{term:$('mobileStudioSearch').value,favorites:pins,recent,mode})
+   .filter(s=>selectedGroup==='all'||orbitGroupFor(s.id)===selectedGroup);
   for(const s of choices){
    const row=document.createElement('div');row.className='mobile-studio-row';
    const open=document.createElement('button');open.type='button';open.className='mobile-studio-open';
@@ -84,6 +87,7 @@ export function initMobileNavigation(app){
  function openPicker(){
   $('mobileStudioSearch').value='';
   mode='all';$('mobileStudioMode').value='all';
+  $('orbitMobileCategory').value='all';
   render();modal.showModal();
   $('mobileStudioSearch').focus();
  }
@@ -100,6 +104,7 @@ export function initMobileNavigation(app){
  $('mobileStudioClose').addEventListener('click',()=>modal.close());
  $('mobileStudioSearch').addEventListener('input',render);
  $('mobileStudioMode').addEventListener('change',e=>{mode=e.target.value;render();});
+ $('orbitMobileCategory').addEventListener('change',render);
  $('mobileStudioTop').addEventListener('click',()=>{modal.close();window.scrollTo({top:0,behavior:'smooth'});});
  modal.addEventListener('click',e=>{if(e.target===modal)modal.close();});
  document.addEventListener('proximus-orbit-pins-changed',event=>{
