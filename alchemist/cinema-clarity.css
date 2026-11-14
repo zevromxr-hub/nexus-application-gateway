@@ -1,0 +1,137 @@
+/* PROXIMUS v3.5.2 — Video Vault opaque cinematic matte. Deliberately scoped only to the Vault. */
+#videoVaultStudio .video-vault-cinema{
+ background:#0a0913!important; /* Override the optional translucent global Identity glass theme. */
+ background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ isolation:isolate;
+ border-color:#504264;
+}
+#videoVaultStudio .video-vault-stage{
+ position:relative;isolation:isolate;z-index:0;
+ background:#000!important;background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ overflow:hidden;
+}
+#videoVaultStudio .video-vault-stage::before{
+ content:"";position:absolute;inset:0;z-index:0;
+ background:#000;opacity:1;pointer-events:none;
+}
+#videoVaultStudio #videoVaultPlayer{
+ position:relative;z-index:1;
+ display:block;width:100%;height:100%;min-height:0;max-width:100%;
+ background:#000!important;background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;
+ filter:none!important;-webkit-filter:none!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+ object-fit:var(--vault-video-fit,contain);
+ -webkit-mask-image:none!important;mask-image:none!important;
+}
+#videoVaultStudio .video-vault-stage.overdrive-ambient{
+ /* Keep the optional ambient effect OUTSIDE the video, never as an inset/overlay. */
+ box-shadow:0 0 calc(42px * var(--overdrive-strength,.62)) rgba(var(--overdrive-rgb,140,106,255),.45),0 18px 36px #0009;
+}
+#videoVaultStudio .video-vault-stage.overdrive-ambient[data-overdrive-quality="overdrive"]{
+ box-shadow:0 0 calc(60px * var(--overdrive-strength,.62)) rgba(var(--overdrive-rgb,140,106,255),.55),0 18px 36px #0009;
+}
+#videoVaultStudio .video-vault-stage:not(.overdrive-ambient){box-shadow:0 16px 38px #000b}
+#videoVaultStudio .video-vault-closing-controls{
+ display:flex;gap:10px;align-items:end;flex-wrap:wrap;
+ padding:12px 13px;background:#10101a;border:1px solid #514366;border-radius:12px;
+ margin:11px 0 14px;position:relative;z-index:1;
+}
+#videoVaultStudio .video-vault-closing-controls label{flex:1 1 190px;margin:0}
+#videoVaultStudio .video-vault-closing-controls select{width:100%;min-width:0}
+#videoVaultStudio .video-vault-closing-controls button{min-height:43px;white-space:normal}
+#videoVaultStudio #videoVaultClarityStatus{flex-basis:100%;margin:0;color:#9be0c8}
+#videoVaultStudio.vault-focus-mode .video-vault-intro,
+#videoVaultStudio.vault-focus-mode .video-vault-layout>.panel:first-child,
+#videoVaultStudio.vault-focus-mode .video-vault-library{display:none!important}
+#videoVaultStudio.vault-focus-mode .video-vault-layout{display:grid;grid-template-columns:minmax(0,1fr)!important}
+#videoVaultStudio.vault-focus-mode .video-vault-cinema{width:100%;max-width:none}
+#videoVaultStudio.vault-focus-mode .video-vault-stage{min-height:0;aspect-ratio:16/9}
+#videoVaultStudio.vault-focus-mode .video-vault-stage video{max-height:min(78dvh,860px)}
+.theater-view-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0;
+ padding:12px;border:1px solid #55426b;border-radius:11px;background:#100e21}
+.theater-view-controls label{flex:1 1 200px;margin:0}
+.theater-view-controls select{width:100%}
+.theater-view-controls button{min-height:43px}
+.theater-view-controls #theaterViewStatus{flex-basis:100%;margin:0;font-size:11px}
+.studio[data-panel="theater"] #theaterVideo{object-fit:var(--theater-video-fit,contain);background:#050509}
+.studio[data-panel="theater"].theater-wide-mode .workspace.image-grid{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+.studio[data-panel="theater"].theater-wide-mode .workspace.image-grid>.panel:nth-child(2){order:-1}
+.studio[data-panel="theater"].theater-wide-mode #theaterStage{min-height:clamp(230px,55vw,600px)}
+.animation-quick-clips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:9px 0 15px;
+ padding:9px 11px;background:#141126;border:1px solid #4d3f6f;border-radius:11px}
+.animation-quick-clips strong{font-size:11px;color:#d8c0ff}
+.animation-quick-clips button{min-height:40px}
+@media(max-width:640px){
+ #videoVaultStudio .video-vault-closing-controls{align-items:stretch}
+ #videoVaultStudio .video-vault-closing-controls button{flex:1 1 125px}
+ .theater-view-controls button{width:100%}
+ .animation-quick-clips button{flex:1}
+}
+@media(prefers-reduced-motion:reduce){
+ #videoVaultStudio #videoVaultPlayer{transition:none!important}
+}
+
+
+/* Existing Arcade Chamber gains an integrated daily mission, not another studio. */
+.arcade-daily-panel{margin:16px 0 18px;padding:15px 17px;background:radial-gradient(ellipse at 90% 3%,#4e367759,transparent 56%),#141126;border:1px solid #7152a2;border-radius:14px;min-width:0}
+.arcade-daily-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.arcade-daily-heading h3{font-size:clamp(14px,1.5vw,18px);letter-spacing:.3px;margin:4px 0!important}
+.arcade-daily-badge{font-size:10px;letter-spacing:.06em;font-weight:850;color:#cdb7ff;border:1px solid #694e90;padding:5px 9px;border-radius:99px}
+.arcade-daily-panel progress{display:block;width:100%;height:11px;border-radius:8px;accent-color:#a578ec}
+.arcade-daily-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:9px 0;color:#cdb8f3;font-size:12px}
+.arcade-daily-meta strong{color:#f6e6ff}
+.arcade-daily-panel .arcade-actions{margin:2px 0 4px}
+.arcade-daily-panel button{min-height:43px}
+@media(max-width:520px){.arcade-daily-panel{padding:12px}.arcade-daily-panel .arcade-actions button{flex:1 1 150px}}
+
+
+/* Saved music — explicit opt-in IndexedDB persistence inside existing Media Theater. */
+.theater-music-library{min-width:0;margin:16px 0 18px;padding:15px;border:1px solid #6b548c;border-radius:14px;background:linear-gradient(145deg,#1b1532,#0d0c1c)}
+.theater-music-top{display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.theater-music-top h3{font-size:clamp(14px,1.7vw,18px);color:#f0dfff;margin:5px 0 6px}
+.theater-music-top p{margin:0}
+.theater-music-counter{color:#dfc8ff;font-size:11px;border:1px solid #624583;border-radius:999px;padding:6px 11px;white-space:nowrap}
+.theater-music-actions{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0 12px}
+.theater-music-actions button{min-height:41px;white-space:normal}
+#theaterMusicStatus[data-error="true"]{color:#ffb8c6}
+.theater-music-list{display:flex;flex-direction:column;gap:6px;max-height:275px;overflow:auto;overscroll-behavior:contain;border:1px solid #4d405f;border-radius:10px;padding:7px;background:#0a0a18}
+.theater-saved-track{display:flex;align-items:center;gap:7px;padding:9px;background:#181429;border:1px solid #514064;border-radius:10px;min-width:0}
+.theater-saved-track-info{display:flex;flex-direction:column;min-width:0;flex:1}
+.theater-saved-track-info strong{font-size:12px;white-space:normal;overflow-wrap:anywhere;color:#ede1fc}
+.theater-saved-track-info small{font-size:10px;color:#b6a3cb}
+.theater-saved-track button{flex:none;min-height:38px;padding:8px 10px;white-space:nowrap}
+@media(max-width:590px){
+ .theater-music-library{padding:12px}
+ .theater-saved-track{flex-wrap:wrap}
+ .theater-saved-track-info{flex-basis:100%}
+ .theater-saved-track button{flex:1 1 120px}
+ .theater-music-actions button{flex:1 1 140px}
+}
+
+
+/* Optional startup-song preference and browser-safe click-to-play fallback. */
+.theater-music-startup{border:1px solid rgba(148,116,221,.45);background:#0b1022;padding:12px;border-radius:11px;margin:13px 0}
+.theater-music-startup .theater-music-startup-checkbox{display:flex;flex-direction:row;gap:9px;align-items:center;color:#eadfff;line-height:1.5;font-size:12px}
+.theater-music-startup-checkbox input{flex:none;width:17px;height:17px;accent-color:#9972ff}
+.theater-music-startup label:not(.theater-music-startup-checkbox){margin:6px 0 9px;max-width:100%}
+.theater-music-startup select{width:100%;min-width:0;max-width:100%}
+.theater-music-startup #theaterMusicStartupStatus{color:#bde4cf}
+.theater-startup-prompt{position:fixed;right:16px;bottom:84px;z-index:95;
+ display:flex;align-items:center;flex-wrap:wrap;gap:10px;width:min(460px,calc(100vw - 24px));
+ padding:13px 14px;color:#f0e6ff;border:1px solid #a27cde;border-radius:14px;
+ background:#171127;box-shadow:0 16px 60px #000c}
+.theater-startup-prompt[hidden]{display:none!important}
+.theater-startup-prompt span{flex:1 1 100%;line-height:1.45;font-size:12px}
+.theater-startup-prompt button{min-height:43px;flex:1 1 130px}
+@media(max-width:660px){
+ .theater-startup-prompt{left:12px;right:12px;bottom:calc(85px + env(safe-area-inset-bottom,0px));width:auto;max-width:none}
+ .theater-startup-prompt button{flex:1 1 115px}
+}
+@media(prefers-reduced-motion:reduce){.theater-startup-prompt{transition:none}}

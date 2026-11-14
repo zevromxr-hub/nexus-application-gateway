@@ -1,3 +1,45 @@
+# PROXIMUS | ASSET ALCHEMIST v3.5.2
+**CINEMA CLARITY · SAVED LOCAL MUSIC · ARCADE DAILY — 18 active companion spaces**
+
+Open the website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.5.2
+
+### Fix: Video Vault video clarity
+The Video Vault player now renders on a completely opaque black backing, with the original video pixel layer explicitly isolated from the website's animated backgrounds, global glass theme and blending effects. Atmosphere Sync's optional cinematic glow stays outside the video, not on top of it. The video itself does not have an opacity slider, image filter or forced color tint.
+
+Use **Video Vault → Picture framing** for original uncropped video (default) or Fill screen / crop edges. **Focus on player** enlarges the viewing area without deleting or changing any saved videos. Return to library at any time. Restore picture defaults resets only these view settings, not your videos.
+
+### NEW: Saved Music Library inside Media Theater
+1. Open Media Theater and import a local MP3, M4A, WAV, FLAC, OGG or other browser-decodable audio file.
+2. Click **Save current song** or **Save queue music**. This explicit action stores an audio copy in browser-local IndexedDB, rather than saving a filename or external link.
+3. Reopen this website in the same browser and device: saved music is listed and up to 80 songs automatically reappear in the Theater listening queue. Choose Play to start; iPhone does not allow unauthorized audible autoplay.
+4. You can click **＋ Queue** for any stored song, or **Remove** to delete its saved *browser copy*. Removing music from the listening queue is separate from removing its stored copy.
+
+### NEW: Optional Play on Open
+
+Inside **Media Theater → Saved Music Library**, turn on **Attempt to play saved music when I open PROXIMUS** (off by default). Choose a specific saved startup song or leave **Most recently saved song** selected. PROXIMUS attempts audible playback automatically when the site opens. If the browser blocks it, a visible **▶ Play my music** prompt lets you start with one tap. You can also click **Play selected startup song now**.
+
+**Important browser restriction:** iPhone Safari generally does not permit audible music to autoplay without user interaction. PC browsers may allow it depending on site engagement and permissions, but it is not guaranteed. The option saves the *preference* (not the audio bytes) in Recovery Center and Sync Bridge backups. Turning it off stops future startup attempts but does not stop music already playing. All songs must first be explicitly saved to the local music library.
+
+Music is stored only on this device/browser profile, not uploaded to GitHub, Discord or a server. Per-track limit: 250 MB; saved library: 150 titles, subject to free browser storage. Keeping the original songs in iPhone Files/Photos or on your PC is strongly recommended; browser site data may be cleared or evicted. These large audio files are **not** included in the standard Settings Backup or 110 MB Workspace Sync; back up originals separately. Videos continue to belong in Video Vault. Songs that the browser cannot decode cannot be guaranteed to play.
+
+### Improvements to existing studios
+- **Media Theater:** Add full-frame vs crop-to-fill video framing and optional wide-player layout while preserving A/B loop, favorites, visualizers, queues, and Reactor transfer.
+- **Animation Forge:** Add quick 3-second, 5-second and 8-second GIF clip ranges from the current source video playhead; the existing quality profiles, frame budget preflight and animation exports are unchanged.
+- **Arcade Chamber:** Add Arcade Nexus rotating daily mission across Comet Catch, Pulse Reflex and Memory Matrix. Challenge streaks and completed totals persist locally and do not overwrite existing scores. This is the first Arcade Nexus expansion, not the full future set of games.
+- **Recovery Center / Sync Bridge:** Back up new layout and Arcade Daily *settings*. Sonic Dimension and Convergence settings remain included. Backups still exclude Token Foundry secrets and large music bytes.
+
+### Compatibility and rollback
+- Preserve all existing local videos, bookmarks, media art, Reactor IV/Sonic Dimension worlds, Reactor audio inputs, GIF/video exports, and personal data; no schema-breaking migration, no retired studios restored.
+- Preserve the 18-space adaptive iPhone/PC navigation, same production site address, GitHub Pages app, validation workflow and existing **direct Discord webhook** release announcement.
+- Service-worker cache bumped to v3.5.2 with the v3.5.1 and v3.5.0 release manifests retained.
+- Follow-up stage: deeper original Arcade Nexus games remain planned separately after this clarity/music release.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.5.1
 **SONIC DIMENSION — Five Living Audio Worlds · 18 existing companion spaces · PC and iPhone**
 

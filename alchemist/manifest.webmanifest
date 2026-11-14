@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.5.1 Sonic Dimension — five original audio-reactive worlds, personal cinema, arcade, GIF animation and everyday companion tools",
+  "description": "PROXIMUS v3.5.2 — opaque private Video Vault, locally saved music, Sonic Dimension, Arcade daily challenges and adaptive creative studios",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

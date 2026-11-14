@@ -1,6 +1,7 @@
 // PROXIMUS | ASSET ALCHEMIST v2.4 — Arcade Chamber.
 // Three original local/touch arcade games with session stats and persistent local bests.
 import {$,notice,download,textFile,blobCanvas,wrap} from './core.js';
+import {ARCADE_DAILY_KEY,dailyMission,normalizeDailyProgress,applyDailyAttempt} from './arcade-daily.js';
 const STORE='proximus-alchemist-arcade-scores-v1';
 const ICONS=['✦','☾','♛','♜','❖','⚡','♢','✧'];
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
@@ -62,8 +63,29 @@ export function initArcadeChamber(app){
  $('arcadeProfile').addEventListener('change',saveProfile);
  renderAchievements();applyTheme();
  try{const stored=JSON.parse(localStorage.getItem(STORE)||'{}');for(const g of Object.keys(best))best[g]=Math.max(0,Number(stored[g])||0);}catch(e){}
+ const todaysMission=()=>dailyMission(new Date());
+ let dailyState=normalizeDailyProgress();
+ try{dailyState=normalizeDailyProgress(JSON.parse(localStorage.getItem(ARCADE_DAILY_KEY)||'{}'));}catch(e){}
+ function renderDaily(){
+  const mission=todaysMission();
+  dailyState=applyDailyAttempt(dailyState,mission,'',0);
+  $('arcadeDailyTitle').textContent=mission.title+' · '+mission.day;
+  $('arcadeDailyGoal').textContent=mission.detail;
+  $('arcadeDailyScore').textContent=dailyState.completed?'MISSION COMPLETE · '+dailyState.attemptBest+' pts':
+   'BEST TODAY '+dailyState.attemptBest+' / '+mission.target+' pts';
+  $('arcadeDailyStreak').textContent='Completed '+dailyState.totalCompleted+' · Current streak '+dailyState.streak+' day'+(dailyState.streak===1?'':'s');
+  $('arcadeDailyProgress').value=Math.min(100,Math.floor(100*dailyState.attemptBest/mission.target));
+ }
+ function attemptDaily(game,score){
+  const mission=todaysMission(),before=dailyState.completed;
+  dailyState=applyDailyAttempt(dailyState,mission,game,score);
+  try{localStorage.setItem(ARCADE_DAILY_KEY,JSON.stringify(dailyState));}catch(e){}
+  renderDaily();
+  if(!before&&dailyState.completed)status.textContent='★ Arcade daily challenge complete! '+mission.title+' · Streak '+dailyState.streak;
+ }
  function paintBest(){scoreNode.textContent='BEST — COMET '+best.comet+' · PULSE '+best.pulse+' · MEMORY '+best.memory;}
  function record(game,value){
+  attemptDaily(game,value);
   if(value>best[game]){best[game]=value;try{localStorage.setItem(STORE,JSON.stringify(best));}catch(e){};paintBest();unlockAchievements();return true;}
   return false;
  }
@@ -74,6 +96,18 @@ export function initArcadeChamber(app){
   for(const p of document.querySelectorAll('.arcade-game'))p.hidden=p.dataset.game!==name;
  }
  for(const b of document.querySelectorAll('.arcade-tab'))b.addEventListener('click',()=>{select(b.dataset.game);say(b.textContent.trim()+' selected');});
+ $('arcadeDailyPlay').addEventListener('click',()=>{
+  const mission=todaysMission();select(mission.game);
+  say('Today’s challenge: '+mission.detail);
+  document.querySelector('.arcade-game[data-game="'+mission.game+'"]')?.scrollIntoView({block:'nearest',behavior:'auto'});
+ });
+ $('arcadeDailyExport').addEventListener('click',()=>download(textFile({
+  schema:'proximus.arcade.daily/1',exported:new Date().toISOString(),daily:dailyState,
+  challenge:todaysMission()
+ }),'PROXIMUS-ARCADE-DAILY-CHALLENGE.json'));
+ document.addEventListener('proximus-view-changed',event=>{if(event.detail?.studio==='arcade')renderDaily();});
+ renderDaily();
+
  // Game 1: pointer-first falling-object game
  const cometCanvas=$('cometCanvas'),ctx=cometCanvas.getContext('2d'),cw=cometCanvas.width,ch=cometCanvas.height;
  let cometState={running:false,score:0,lives:3,combo:0,remaining:45,objects:[],last:0,spawn:0,raf:0};
