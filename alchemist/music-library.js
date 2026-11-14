@@ -164,8 +164,11 @@ export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareSt
   try{
    setBusy(true);await refresh();
    let loaded=0;
-   // Restore queue on each browser visit, but do not autoplay or bypass gesture policies.
-   for(const item of rows.slice().reverse()){
+   // Prioritize the selected startup song so it remains accessible with 80 queue slots.
+   const first=startupTrack(rows,startup);
+   const queueOrder=first?[first,...rows.slice().reverse().filter(item=>item.id!==first.id)]:[];
+   // Restore queue on each browser visit; only explicitly opted-in users request autoplay.
+   for(const item of queueOrder){
     if(getQueued().length>=80)break;
     try{
      const record=await loadMusic(item.id);
