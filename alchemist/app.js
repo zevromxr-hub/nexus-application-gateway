@@ -26,6 +26,8 @@ import {initAdaptiveLayout} from './layout-adapter.js';
 import {initEntertainmentOverdrive} from './entertainment-overdrive.js';
 import {initCinemaStudioImprovements} from './cinema-clarity.js';
 import {mountUnifiedSonicTheater} from './sonic-theater.js';
+import {initOrbitInterface,readOrbitPins,readOrbitRecent,toggleOrbitPin} from './orbit-interface.js';
+import {orbitFilter} from './orbit-core.js';
 import {RETIRED_STUDIOS} from './companion-core.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
@@ -229,20 +231,32 @@ $('vaultJump').addEventListener('click',()=>changeView('videos'));
 $('lifeJump').addEventListener('click',()=>changeView('life'));
 const dialog=$('cmdDialog'),search=$('cmdSearch'),results=$('cmdResults');
 function drawCommands(){
- const term=search.value.trim().toLowerCase();results.replaceChildren();
- const relevant=names.filter(n=>n.id!=='theater'&&(n.title+' '+n.detail).toLowerCase().includes(term));
+ const term=search.value.trim().toLowerCase(),category=$('orbitCmdCategory')?.value||'all';
+ const pinnedOnly=$('orbitCmdPinned')?.checked===true,pins=readOrbitPins(),recent=readOrbitRecent();
+ results.replaceChildren();
+ const relevant=orbitFilter(names,{term,group:category,pinnedOnly,pins,recent});
  for(const n of relevant){
-  const btn=document.createElement('button');btn.className='cmd-item';
+  const row=document.createElement('div');row.className='orbit-search-row';
+  const button=document.createElement('button');button.type='button';button.className='cmd-item';
   const icon=document.createElement('span');icon.textContent=n.icon;
   const title=document.createElement('b');title.textContent=n.title;
   const detail=document.createElement('small');detail.textContent=n.detail;
-  btn.append(icon,title,detail);btn.addEventListener('click',()=>{dialog.close();changeView(n.id)});results.append(btn);
+  button.append(icon,title,detail);button.addEventListener('click',()=>{dialog.close();changeView(n.id);});
+  const pin=document.createElement('button');pin.type='button';pin.className='orbit-pin-toggle';
+  pin.textContent=pins.includes(n.id)?'★':'☆';
+  pin.setAttribute('aria-label',(pins.includes(n.id)?'Unpin ':'Pin ')+n.title);
+  pin.setAttribute('aria-pressed',String(pins.includes(n.id)));
+  pin.addEventListener('click',()=>{toggleOrbitPin(n.id);drawCommands();});
+  row.append(button,pin);results.append(row);
  }
- if(!relevant.length){const p=document.createElement('p');p.textContent='No matching studio';results.append(p)}
+ if(!relevant.length){const message=document.createElement('p');message.className='orbit-search-empty';message.textContent='No matching tools. Try All tools or another search.';results.append(message);}
 }
-function openCommand(){search.value='';drawCommands();dialog.showModal();search.focus()}
+function openCommand(){search.value='';$('orbitCmdCategory').value='all';$('orbitCmdPinned').checked=false;drawCommands();dialog.showModal();search.focus()}
 $('cmdOpen').addEventListener('click',openCommand);$('cmdClose').addEventListener('click',()=>dialog.close());
-search.addEventListener('input',drawCommands);search.addEventListener('keydown',e=>{if(e.key==='Enter'){const first=results.querySelector('button');if(first){e.preventDefault();first.click()}}});
+search.addEventListener('input',drawCommands);
+$('orbitCmdCategory').addEventListener('change',drawCommands);
+$('orbitCmdPinned').addEventListener('change',drawCommands);
+document.addEventListener('proximus-orbit-pins-changed',()=>{if(dialog.open)drawCommands();});search.addEventListener('keydown',e=>{if(e.key==='Enter'){const first=results.querySelector('button');if(first){e.preventDefault();first.click()}}});
 document.addEventListener('keydown',e=>{
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();dialog.open?dialog.close():openCommand()}
  if(e.key==='Escape'&&dialog.open)dialog.close();
@@ -265,7 +279,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.5.4';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -286,12 +300,13 @@ function setupVersion(){
 
 function launch(){
  mountUnifiedSonicTheater();
+ initOrbitInterface(app);
  initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Mobile Power Guard v3.5.4 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
+ notice('PROXIMUS Orbit Interface v3.6.0 is ready. All studios, saved media, music, presets and private tools remain in place.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
