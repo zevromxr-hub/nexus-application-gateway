@@ -6,7 +6,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -45,14 +45,42 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.4.0</div>
+<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.0</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.4.0 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.0 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
+ <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.0</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-cards">
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.0</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Launch Reactor IV now; living audio worlds expand in v3.5.1.</small><span class="overdrive-tag">OPEN REACTOR</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play existing original mini-games; expanded adventures follow in v3.5.2.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
+   <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · v3.5.3</span></div>
+   <button type="button" class="overdrive-card" data-overdrive-target="animation"><span class="overdrive-symbol">◈</span><strong>Creator Overdrive</strong><small>Use Animation Forge today; unified scene editor arrives in v3.5.4.</small><span class="overdrive-tag">OPEN ANIMATION FORGE</span></button>
+  </div>
+  <div class="overdrive-scene-panel">
+   <div><h4>CONVERGENCE SCENES</h4><p class="hint">Shared visual profiles for Cinema and Media Theater. Profiles contain settings only, never video or audio files.</p></div>
+   <div class="overdrive-form">
+    <label>Active scene<select id="overdriveScene" aria-label="Choose entertainment scene"></select></label>
+    <label>Rendering quality<select id="overdriveQuality"><option value="auto">Auto (recommended)</option><option value="efficiency">Efficiency · mobile</option><option value="overdrive">Overdrive · enhanced</option></select></label>
+    <label>Custom scene name<input id="overdriveSceneName" type="text" maxlength="48" placeholder="Name this visual preset" autocomplete="off"></label>
+   </div>
+   <div class="overdrive-actions">
+    <button id="overdriveSave" class="small-btn" type="button">＋ Save scene</button>
+    <button id="overdriveDelete" class="small-btn" type="button">Remove custom scene</button>
+    <button id="overdriveExport" class="small-btn" type="button">↓ Export scenes</button>
+    <label class="overdrive-import">Import scenes <input id="overdriveImport" type="file" accept=".json,application/json" aria-label="Import PROXIMUS Overdrive JSON scene backup"></label>
+    <button id="overdriveToProjects" class="small-btn" type="button">＋ Send to Project Hub</button>
+   </div>
+   <p class="hint">Current scene: <strong id="overdriveCurrentScene">Nebula Violet</strong>. Scene colors are shared with the Media Theater visualizer when you select a preset.</p>
+   <p id="overdriveStatus" class="overdrive-status" role="status" aria-live="polite">Loading entertainment settings…</p>
+   <div class="overdrive-actions"><button id="overdriveCinemaJump" class="primary" type="button">▣ Enter Cinema Overdrive</button></div>
+  </div>
+ </section>
  <div class="command-top">
   <div class="command-welcome"><h3 id="commandGreeting">Welcome to your PROXIMUS command center.</h3><p>Your private entertainment hub, saved videos, Reactor IV, daily favorites, projects and personal shortcuts—organized for iPhone and PC.</p></div>
   <div class="command-top-actions"><button id="commandOpenMedia" class="primary">✧ Master Media</button><button id="commandOpenSync" class="small-btn">⇄ Transfer to other device</button><button id="commandRefresh" class="small-btn">↻ Refresh</button></div>
@@ -258,6 +286,12 @@
   <div class="panel video-vault-cinema">
    <h3>03 / PRIVATE CINEMA PLAYER</h3>
    <div class="video-vault-stage"><video id="videoVaultPlayer" playsinline controls preload="metadata" aria-label="Your saved video library player"></video></div>
+   <div class="overdrive-cinema-controls" aria-label="Cinema Overdrive atmosphere controls">
+    <label class="overdrive-check"><input id="overdriveAtmosphere" type="checkbox" checked> <strong>Atmosphere Sync</strong> · color-reactive ambient glow around supported local video</label>
+    <label>Glow intensity <strong id="overdriveGlowValue">62%</strong><input id="overdriveGlow" type="range" min="0" max="100" step="5" value="62"></label>
+    <div class="hint">Scene: <strong id="overdriveCinemaScene">Nebula Violet</strong>. Change profiles from Companion Center → Entertainment Overdrive.</div>
+    <p id="overdriveCinemaStatus" class="overdrive-status" role="status">Loading ambient cinema…</p>
+   </div>
    <h3 id="videoVaultPlaying">Select a saved video</h3>
    <div class="video-vault-enhancements"><label>Playback speed<select id="videoVaultSpeed"><option value=".5">0.5× Slow</option><option value=".75">0.75×</option><option value="1" selected>1× Normal</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2× Fast</option></select></label>
     <label>Local caption file (.vtt)<input id="videoVaultCaptions" type="file" accept=".vtt,text/vtt"></label></div><p id="videoVaultInfo" class="hint">Open a video below. Playback position is remembered on this device.</p>
@@ -592,7 +626,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.4.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
