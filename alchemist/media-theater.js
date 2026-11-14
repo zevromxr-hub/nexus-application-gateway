@@ -413,8 +413,9 @@ export function initMediaTheater(app){
   addToQueue:async(file,id)=>{
    if(playlist.length>=MAX_QUEUE)throw Error('Media Theater queue is full (80 items). Remove a queue item before adding another.');
    if(!isLocalAudio(file))throw Error('The stored audio file is invalid.');
-   if(playlist.some(item=>item.kind==='audio'&&
-      (item.libraryId===id||(()=>{try{return audioTrackId(item.file)===id;}catch{return false;}})())))return false;
+   const duplicate=playlist.find(item=>item.kind==='audio'&&
+      (item.libraryId===id||(()=>{try{return audioTrackId(item.file)===id;}catch{return false;}})()));
+   if(duplicate){duplicate.libraryId=id;return false;}
    playlist.push({file,kind:'audio',libraryId:id});
    drawList();
    if(current===-1)await select(0,false);
