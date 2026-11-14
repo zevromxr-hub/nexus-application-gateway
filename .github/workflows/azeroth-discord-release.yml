@@ -1,0 +1,45 @@
+name: NEXUS Azeroth Companion — Discord Release Announcer
+on:
+  workflow_run:
+    workflows:
+      - NEXUS Azeroth Companion — Release Validation
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Preview or send the current Azeroth release
+        type: choice
+        required: true
+        default: dry-run
+        options: [dry-run, send-current]
+permissions:
+  contents: read
+concurrency:
+  group: azeroth-release-announcer-${{ github.event.workflow_run.head_sha || github.ref }}
+  cancel-in-progress: false
+jobs:
+  announce:
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Azeroth release payload
+        run: node azeroth-companion/tests/validate.mjs
+      - name: Announce published Azeroth release
+        env:
+          DISCORD_RELEASE_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+          ANNOUNCEMENT_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'send-on-release' }}
+        run: node azeroth-companion/scripts/announce-release.mjs "$ANNOUNCEMENT_MODE"
