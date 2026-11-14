@@ -1,7 +1,22 @@
-# PROXIMUS | ASSET ALCHEMIST v3.2.0
+# PROXIMUS | ASSET ALCHEMIST v3.2.1
 **COMPANION EDITION — 23 focused spaces · entertainment and usefulness · iPhone + PC**
 
 Open: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.2.1 — AUTOMATED DISCORD RELEASE ANNOUNCER
+
+PROXIMUS now includes a GitHub-hosted release notification system. GitHub Actions posts an official Discord embed only when the **Release Validation** workflow succeeds on the main branch and the actual application version has increased. The announcer waits until the matching version appears on the live GitHub Pages site before sending a post.
+
+Each embed contains the release version, new features taken directly from the current alchemist release JSON, the PROXIMUS application link, release notes and the footer **POWERED BY ZEVRO | PROXIMUS**.
+
+**One-time private setup:** In the repository, open **Settings → Secrets and variables → Actions → New repository secret**. Name the secret DISCORD_RELEASE_WEBHOOK and paste the Discord channel's webhook URL there. Do not put it in project source, commits, issues, workflow input boxes or a chat message. Regenerate any webhook that has been shared.
+
+**Test or catch up after setup:** Open **Actions → PROXIMUS — Discord Release Announcer → Run workflow**, select send-current on branch main, and run it once. The default dry-run choice previews the formatted announcement without sending a message. This manual option is provided for first-time setup and recovering a missed post; using it repeatedly may post duplicates.
+
+Without the encrypted secret, the action reports a configuration warning and sends **nothing**. The GitHub integration cannot configure the secret automatically, so the repository owner must complete the one-time step.
+
+This automation does not require your home PC to remain running. It never reads personal Video Vault files, Token Foundry data or Discord bot credentials.
+
 
 ## Decluttered safely — eight retired studios
 
