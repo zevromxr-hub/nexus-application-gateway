@@ -4,6 +4,7 @@
 import {$,bytes,safe,stem,notice,blobCanvas,download,textFile,wrap} from './core.js';
 import {initLocalMusicLibrary} from './music-library.js';
 import {audioTrackId,isLocalAudio} from './music-library-core.js';
+import {SONIC_ORDER_KEY,normalizeSonicOrder,movePlaylistItem} from './sonic-playlist-core.js';
 
 const MAX_QUEUE=80,MAX_FILE=400000000;
 const THEMES={
@@ -45,6 +46,15 @@ export function initMediaTheater(app){
  const FAVORITES='proximus-theater-favorites-v2';
  let favorites=[];try{favorites=JSON.parse(localStorage.getItem(FAVORITES)||'[]');if(!Array.isArray(favorites))favorites=[];}catch(e){}
  function keepFavorites(){try{localStorage.setItem(FAVORITES,JSON.stringify(favorites.slice(0,250)));}catch(e){}}
+ function storeQueueOrder(){
+  const ids=playlist.filter(item=>item.kind==='audio').map(item=>{
+   try{return item.libraryId||audioTrackId(item.file);}catch{return '';}
+  }).filter(Boolean);
+  try{
+   const old=normalizeSonicOrder(JSON.parse(localStorage.getItem(SONIC_ORDER_KEY)||'[]'));
+   localStorage.setItem(SONIC_ORDER_KEY,JSON.stringify(normalizeSonicOrder([...ids,...old])));
+  }catch(e){}
+ }
  const mini=document.createElement('div');mini.className='theater-mini';mini.hidden=true;
  const miniTitle=document.createElement('b'),miniPlay=document.createElement('button'),miniNext=document.createElement('button'),miniOpen=document.createElement('button');
  miniPlay.textContent='▶';miniNext.textContent='⏭';miniOpen.textContent='Theater';
@@ -102,7 +112,18 @@ export function initMediaTheater(app){
     }else current=Math.max(-1,next);
     drawList();showInfo();
    });
-   row.append(choose,length,remove);list.append(row);
+   const move=(direction)=>{
+    const selected=currentItem(),ordered=movePlaylistItem(playlist,i,direction);
+    playlist.splice(0,playlist.length,...ordered);
+    current=selected?playlist.indexOf(selected):-1;
+    drawList();storeQueueOrder();
+    showStatus('Playlist order updated and saved for this browser.');
+   };
+   const up=document.createElement('button');up.type='button';up.className='small-btn theater-track-order';
+   up.textContent='↑';up.title='Move '+safe(item.file.name)+' up';up.setAttribute('aria-label',up.title);up.disabled=i===0;up.addEventListener('click',()=>move(-1));
+   const down=document.createElement('button');down.type='button';down.className='small-btn theater-track-order';
+   down.textContent='↓';down.title='Move '+safe(item.file.name)+' down';down.setAttribute('aria-label',down.title);down.disabled=i===playlist.length-1;down.addEventListener('click',()=>move(1));
+   row.append(choose,length,up,down,remove);list.append(row);
   }
   if(!playlist.length){const empty=document.createElement('div');empty.className='hint';empty.textContent='Add local songs, videos or GIFs to create a playlist.';list.append(empty);}
   showInfo();
