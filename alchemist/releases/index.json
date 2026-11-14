@@ -4,6 +4,11 @@
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
     {
+      "version": "3.4.0",
+      "title": "Adaptive Companion — Device Intelligence & Studio Cleanup",
+      "date": "2026-11-13"
+    },
+    {
       "version": "3.3.0",
       "title": "Cinematic Life Command — Entertainment & Everyday Utility",
       "date": "2026-11-13"
