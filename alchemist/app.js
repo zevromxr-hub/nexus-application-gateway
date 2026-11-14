@@ -143,15 +143,19 @@ const app={
  }
 };
 function changeView(id){
- // Retired studios are safely redirected; old saved last-view preferences
- // never strand users on an empty page after the Companion update.
- if(!names.some(n=>n.id===id))id=id==='pack'?'projects':'command';
+ // Retired studios are safely redirected without deleting any saved project data.
+ const collectedExports=id==='pack';
+ if(!names.some(n=>n.id===id))id=collectedExports?'projects':'command';
  document.querySelectorAll('[data-panel]').forEach(n=>n.hidden=n.dataset.panel!==id);
  document.querySelectorAll('[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
  localStorage.setItem('nexus-alchemist-last-view',id);
  document.dispatchEvent(new CustomEvent('proximus-view-changed',{detail:{studio:id}}));
  const heading=document.querySelector('[data-panel="'+id+'"] .section-heading h2');
  if(heading)document.title='PROXIMUS | '+names.find(x=>x.id===id).title+' — Asset Alchemist';
+ if(collectedExports){
+  const container=$('projectCollectedExports');
+  if(container)container.open=true;
+ }
  window.scrollTo({top:0,behavior:'auto'});
 }
 function drawPack(){
