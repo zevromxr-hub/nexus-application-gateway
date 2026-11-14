@@ -87,7 +87,7 @@ assert.ok(sw.includes("'./cinema-clarity.js'")&&sw.includes("'./cinema-clarity.c
 assert.ok(sw.includes("'./music-library-core.js'")&&sw.includes("'./music-library.js'")&&sw.includes("'./arcade-daily.js'"));
 assert.ok(sync.includes(CINEMA_VIEWS_KEY)&&sync.includes(ARCADE_DAILY_KEY)&&sync.includes(MUSIC_STARTUP_KEY));
 assert.ok(recovery.includes(CINEMA_VIEWS_KEY)&&recovery.includes(ARCADE_DAILY_KEY)&&recovery.includes(MUSIC_STARTUP_KEY));
-assert.ok(app.includes("LOCAL='3.5.2'"));
+assert.ok(app.includes("LOCAL='"+JSON.parse(read('version.json')).version+"'"),'Cinema Clarity must remain compatible with the active release version');
 assert.equal([...html.matchAll(/<section class="studio" data-panel="([^"]+)"/g)].length,20,'Do not add another studio');
 assert.equal([...html.matchAll(/class="nav[^"]*" data-view="([^"]+)"/g)].length,20,'Do not clutter navigation');
 console.log('PASS v3.5.2: opaque Video Vault, focus controls, Media Theater, GIF quick clips, IndexedDB music, opt-in autoplay and one-tap browser fallback, Arcade Daily.');
