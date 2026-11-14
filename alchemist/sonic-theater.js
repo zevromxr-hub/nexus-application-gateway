@@ -38,7 +38,32 @@ export function mountUnifiedSonicTheater(){
  const library=document.createElement('div');library.className='sonic-unified-library';
  const heading=document.createElement('div');heading.className='sonic-unified-intro';
  heading.innerHTML='<strong>SONIC THEATER · ALL-IN-ONE ENTERTAINMENT</strong><p>Import MP3s, save your playlist, play music and watch your custom Reactor simultaneously. Play on Start stays beside the saved music library.</p>';
- visual.append(stage);library.append(panels[0]);grid.append(visual,library);
+ const dock=document.createElement('div');dock.className='sonic-unified-dock';dock.setAttribute('aria-label','Sonic Theater playback controls');
+ dock.innerHTML='<strong id="sonicUnifiedNow">Ready for your saved playlist</strong><div class="sonic-unified-dock-controls"><button id="sonicUnifiedPrev" type="button" class="small-btn" title="Previous song">⏮</button><button id="sonicUnifiedPlay" type="button" class="primary" title="Play or pause playlist">▶ Play / Pause</button><button id="sonicUnifiedNext" type="button" class="small-btn" title="Next song">⏭</button><button id="sonicUnifiedSave" type="button" class="small-btn" title="Save current song in browser">＋ Save song</button></div><label>Playback volume <input id="sonicUnifiedVolume" type="range" min="0" max="1" step=".05" value=".75"></label>';
+ visual.append(dock,stage);library.append(panels[0]);grid.append(visual,library);
+ const trigger=(id)=>document.getElementById(id)?.click();
+ dock.querySelector('#sonicUnifiedPrev').addEventListener('click',()=>trigger('theaterPrev'));
+ dock.querySelector('#sonicUnifiedPlay').addEventListener('click',()=>trigger('theaterPlay'));
+ dock.querySelector('#sonicUnifiedNext').addEventListener('click',()=>trigger('theaterNext'));
+ dock.querySelector('#sonicUnifiedSave').addEventListener('click',()=>trigger('theaterMusicSaveCurrent'));
+ const volume=dock.querySelector('#sonicUnifiedVolume');
+ volume.addEventListener('input',()=>{
+  const val=Number(volume.value);
+  const theaterAudio=document.getElementById('theaterAudio');
+  const theaterVideo=document.getElementById('theaterVideo');
+  if(theaterAudio)theaterAudio.volume=val;
+  if(theaterVideo)theaterVideo.volume=val;
+  const reactorVolume=document.getElementById('reactorVolume');
+  if(reactorVolume){reactorVolume.value=String(val);reactorVolume.dispatchEvent(new Event('input'));}
+ });
+ document.addEventListener('proximus-sonic-playback',e=>{
+  const d=e.detail||{},display=document.getElementById('sonicUnifiedNow');
+  if(!display)return;
+  const file=document.getElementById('theaterNow')?.textContent||'Your playlist';
+  display.textContent=(d.playing?'♫ NOW PLAYING · ':'READY · ')+(d.name||file);
+  const play=dock.querySelector('#sonicUnifiedPlay');
+  play.textContent=d.playing?'❚❚ Pause / Resume':'▶ Play / Pause';
+ });
  const advanced=document.createElement('details');advanced.className='sonic-unified-advanced';
  advanced.id='sonicTheaterAdvanced';const summary=document.createElement('summary');
  summary.textContent='▣ Advanced Theater playback · video / GIF, visualizer and media exports';
