@@ -6,7 +6,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -21,7 +21,7 @@
     <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
     <button class="nav" data-view="videos"><span>▣</span> Video Vault <small>31</small></button>
     <button class="nav" data-view="life"><span>◷</span> Life Command <small>32</small></button>
-    <button class="nav" data-view="reactor"><span>✺</span> Sovereign Reactor <small>26</small></button>
+    <button class="nav" data-view="reactor"><span>✺</span> Sonic Theater <small>26</small></button>
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
     <button class="nav" data-view="utility"><span>⌘</span> Utility Forge <small>19</small></button>
@@ -45,20 +45,20 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.2</div>
+<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.3</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.2 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.3 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.2</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.3</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.2</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.3</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
-   <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play existing original mini-games; expanded adventures follow in v3.5.2.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play existing original mini-games; expanded adventures follow in v3.5.3.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · v3.5.3</span></div>
    <button type="button" class="overdrive-card" data-overdrive-target="animation"><span class="overdrive-symbol">◈</span><strong>Creator Overdrive</strong><small>Use Animation Forge today; unified scene editor arrives in v3.5.4.</small><span class="overdrive-tag">OPEN ANIMATION FORGE</span></button>
   </div>
@@ -382,8 +382,8 @@
  <div class="section-heading"><div><div class="eyebrow">16 / PERSONAL ENTERTAINMENT</div><h2>Media Theater <span class="subtitle">Your own audio, video, GIFs and live visualizer</span></h2></div></div>
  <div class="workspace image-grid">
   <div class="panel">
-   <h3>Local media playlist</h3>
-   <label class="upload"><input id="theaterFiles" type="file" accept="audio/*,video/*,image/gif,image/png,image/jpeg,image/webp,.m4a,.mov" multiple><b>＋ ADD MUSIC, VIDEOS OR GIFS</b><span>Your files stay on this device · 80 queue items max</span></label>
+   <h3>SONIC THEATER · Saved Music & Playlist</h3>
+   <label class="upload"><input id="theaterFiles" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus,.aiff,.aif,video/*,.mp4,.webm,.m4v,.mov,image/gif,image/png,image/jpeg,image/webp" multiple><b>＋ ADD MUSIC, VIDEOS OR GIFS</b><span>Your files stay on this device · 80 queue items max</span></label>
    <p class="hint">Create a listening or cinema session from local files. Playback continues while you browse other studios.</p>
    <div class="theater-controls">
     <button id="theaterPrev" class="small-btn">⏮ Previous</button><button id="theaterPlay" class="primary">▶ Play</button><button id="theaterNext" class="small-btn">Next ⏭</button><button id="theaterSkipBack" class="small-btn">↶ 10s</button><button id="theaterSkipForward" class="small-btn">30s ↷</button>
@@ -462,17 +462,17 @@
  <div class="reactor-history-box"><div><strong>REACTOR III · LIVE ENERGY TIMELINE</strong><span id="reactorPerformanceText">Performance: Balanced</span></div><canvas id="reactorHistoryCanvas" width="960" height="100" aria-label="Bass and frequency energy history from the connected audio input"></canvas></div>
  <div class="workspace image-grid reactor-workspace">
   <div class="panel">
-   <h3>01 / LIVE AUDIO SOURCE</h3>
-   <p class="hint">Choose one input. Real spectral measurements animate the visualizer; the microphone requires permission, and desktop tab capture requires you to explicitly share audio.</p>
-   <label class="upload"><input type="file" id="reactorInputFile" accept="audio/*,video/mp4,video/webm,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus,.mp4,.webm"><b>＋ IMPORT LOCAL SONG / MUSIC</b><span>Private device playback · file stays in your browser</span></label>
+   <h3>01 / SHARED PLAYLIST & ALTERNATE AUDIO INPUTS</h3>
+   <p class="hint">Your saved playlist above powers the Reactor directly, without double playback. Alternatively use a microphone or desktop tab audio with explicit browser permission.</p>
+   <label class="upload"><input type="file" id="reactorInputFile" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus,.aiff,.aif,video/mp4,video/webm,.mp4,.webm"><b>＋ IMPORT LOCAL SONG / MUSIC</b><span>Private device playback · file stays in your browser</span></label>
    <div class="reactor-source-controls">
-    <button class="primary" id="reactorFilePlay">▶ Play local audio</button>
+    <button class="primary" id="reactorFilePlay">▶ Queue & play in Sonic Theater</button>
     <button class="small-btn" id="reactorMic">◎ Listen with microphone</button>
     <button class="small-btn" id="reactorTab">◉ Share PC tab audio</button>
     <button class="small-btn" id="reactorStop" disabled>■ Stop listening</button>
    </div>
-   <label>Local audio player<audio id="reactorAudio" controls preload="none" class="reactor-audio"></audio></label>
-   <label>Playback volume (local audio only)<input type="range" id="reactorVolume" min="0" max="1" step=".05" value=".75"></label>
+   <label id="reactorLegacyAudioLabel">Original standalone audio player (compatibility)<audio id="reactorAudio" controls preload="none" class="reactor-audio"></audio></label>
+   <label>Playback volume (shared playlist and alternatives)<input type="range" id="reactorVolume" min="0" max="1" step=".05" value=".75"></label>
    <p id="reactorDevice" class="reactor-device-note">Checking supported audio inputs…</p>
    <p id="reactorSourceStatus" class="hint" role="status">Choose a local file or another supported source.</p>
 
@@ -534,7 +534,7 @@
    </div>
 
    <div class="reactor-export-block sonic-dimension-controls" id="sonicDimensionControls">
-    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.5.2</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
+    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.5.3</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
     <div class="checks"><label><input id="reactorDimensionEnabled" type="checkbox"> Enable Sonic Dimension worlds</label><label><input id="reactorDimensionAuto" type="checkbox"> Evolve world every 8 detected beats (12s cooldown)</label></div>
     <div class="two">
      <label>World environment<select id="reactorDimensionWorld">
@@ -696,7 +696,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.2</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.3</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>

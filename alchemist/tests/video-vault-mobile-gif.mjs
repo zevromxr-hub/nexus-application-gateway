@@ -40,11 +40,13 @@ assert.match(vaultStorageWarning(false),/cleared by iOS/);
 const studios=[
  {id:'command',title:'Command Center',detail:'Main dashboard'},
  {id:'videos',title:'Video Vault',detail:'Saved personal movies'},
- {id:'theater',title:'Media Theater',detail:'Live playback'}
+ {id:'theater',title:'Media Theater',detail:'Legacy playback alias'},
+ {id:'reactor',title:'Sonic Theater',detail:'Unified playlist and live visuals'}
 ];
 assert.deepEqual(mobileNavigationList(studios,{term:'video'}).map(v=>v.id),['videos']);
-assert.deepEqual(mobileNavigationList(studios,{mode:'favorites',favorites:['theater']}).map(v=>v.id),['theater']);
-assert.deepEqual(mobileNavigationList(studios,{mode:'recent',recent:['videos','theater']}).map(v=>v.id),['videos','theater']);
+assert.deepEqual(mobileNavigationList(studios,{mode:'favorites',favorites:['theater']}).map(v=>v.id),[]);
+assert.deepEqual(mobileNavigationList(studios,{mode:'favorites',favorites:['reactor']}).map(v=>v.id),['reactor']);
+assert.deepEqual(mobileNavigationList(studios,{mode:'recent',recent:['videos','theater']}).map(v=>v.id),['videos']);
 assert.deepEqual(historyMove(['command','videos','theater'],2,-1),{index:1,id:'videos'});
 assert.deepEqual(historyMove(['command','videos','theater'],1,1),{index:2,id:'theater'});
 assert.deepEqual(historyMove(['command','videos','theater'],0,-1),{index:0,id:'command'});

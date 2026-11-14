@@ -5,7 +5,7 @@ export const MOBILE_PINS='proximus-mobile-navigation-pins-v1';
 export const MOBILE_RECENT='proximus-mobile-navigation-recent-v1';
 export function mobileNavigationList(studios,{term='',favorites=[],recent=[],mode='all'}={}){
  const text=String(term||'').trim().toLowerCase();
- const base=studios.filter(s=>(s.title+' '+s.detail).toLowerCase().includes(text));
+ const base=studios.filter(s=>s.id!=='theater'&&(s.title+' '+s.detail).toLowerCase().includes(text));
  if(mode==='favorites')return base.filter(s=>favorites.includes(s.id));
  if(mode==='recent')return [...base].sort((a,b)=>recent.indexOf(a.id)-recent.indexOf(b.id))
   .filter(s=>recent.includes(s.id));
@@ -23,8 +23,8 @@ export function initMobileNavigation(app){
  try{pins=JSON.parse(localStorage.getItem(MOBILE_PINS)||'[]');if(!Array.isArray(pins))pins=[];}catch(e){pins=[];}
  try{recent=JSON.parse(localStorage.getItem(MOBILE_RECENT)||'[]');if(!Array.isArray(recent))recent=[];}catch(e){recent=[];}
  const known=new Set(app.studios.map(s=>s.id));
- pins=[...new Set(pins)].filter(s=>known.has(s)).slice(0,18);
- recent=[...new Set(recent)].filter(s=>known.has(s)).slice(0,30);
+ pins=[...new Set(pins.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,18);
+ recent=[...new Set(recent.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,30);
  function save(){
   try{
    localStorage.setItem(MOBILE_PINS,JSON.stringify(pins));

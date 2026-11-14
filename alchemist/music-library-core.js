@@ -12,7 +12,7 @@ export function startupTrack(rows=[],settings={}){
  return rows.find(r=>r.id===s.trackId)||rows[0];
 }
 
-const audioExt=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i;
+const audioExt=/\.(mp3|wav|ogg|m4a|aac|flac|opus|aiff|aif)$/i;
 export function isLocalAudio(file){
  const mime=String(file?.type||'');
  const name=String(file?.name||'');

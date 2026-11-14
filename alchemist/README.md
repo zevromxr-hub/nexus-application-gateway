@@ -1,3 +1,43 @@
+# PROXIMUS | ASSET ALCHEMIST v3.5.3
+**SONIC THEATER — UNIFIED MUSIC LIBRARY + SOVEREIGN REACTOR**
+
+Live app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.5.3 — SONIC THEATER
+
+### One entertainment studio instead of two disconnected audio players
+**Sonic Theater** combines saved playlists, Media Theater playback, and the entire Sovereign Reactor IV/Sonic Dimension visualizer in one responsive PC/iPhone space. Previous Media Theater links redirect to this same space. Registered compatibility routes remain intact for existing exports and integration tests, while redundant visible navigation entries are hidden.
+
+The **live Reactor stage** appears beside the playlist on large screens, stacking above it on phones. A universal dock offers Play/Pause, Previous/Next, volume, Now Playing, and Save current song. All previous Reactor backgrounds, animated overlays, six classic Reactor IV modes, five Sonic Dimension worlds, real microphone and explicitly shared desktop-tab analysis, screenshots, GIFs, video visualizer exports, and visual presets remain available.
+
+### MP3 compatibility fix
+The Media Theater file chooser now **explicitly accepts .mp3**, as well as .wav, .m4a, .aac, .ogg, .flac, .opus and .aiff/.aif alongside the original video and images. Files selected in either the playlist importer or Reactor importer can be played through the **same listening queue**. Real MP3 files with standard browser-supported codecs should play; a renamed file or unsupported codec still cannot be decoded by the browser and receives an error message. No new server or download bypass exists.
+
+### One real audio signal drives both experiences
+Instead of playing a second copy of a song in Reactor, one Media Theater audio element uses a single Web Audio analysis graph and shares **actual measured frequency levels** with Reactor. Beat effects, visual worlds, saved backgrounds and video/GIF capture use the live audio. The same queue handles music and video; advanced Theater video/GIF/visualizer/media-publishing controls remain inside an expandable section. Microphone and PC tab modes remain independent permissioned alternatives; switching to them pauses the local music queue to avoid competing sound sources.
+
+### Persistent local music, repeat and song order
+Saved songs stay in the **existing IndexedDB music library**; the update does not copy, delete or migrate song bytes. Each selected song can still be saved to browser storage and restored on the next visit. Use the ↑ / ↓ controls to change queue order. Song ordering is saved as small metadata through localStorage and the existing Sync Bridge / Recovery Center settings backups, but the large audio bytes themselves remain local to that browser.
+
+**Play on Start remains in the exact same Saved Music Library section**, with the original enable/disable toggle, selected startup track, and Play selected song now option. It defaults off; PC audible autoplay depends on browser policy. Safari/iPhone can refuse automatically playing sound, so use the one-tap Play my music fallback if prompted.
+
+### Compatibility
+- **No destructive migrations:** preserve original video files, Video Vault, audio files, Reactor saved presets and backgrounds, Project Hub assets and all unrelated studios.
+- **No duplication or extra hosting:** music files remain only on your device in supported browser storage; browser storage may still be evicted, so retain original files.
+- **Responsive layout:** desktop uses a two-column player/playlist; mobile stacks these controls and keeps touch-sized reorder/play buttons.
+- **Release automation unchanged:** GitHub validation, successful Pages deployment verification, rollback cache, and direct Discord release announcer. BotGhost is not connected.
+- **Roadmap adjustment:** the previously proposed Infinite Realms stage is deferred to a later release; v3.5.3 addresses the important Media Theater / Reactor integration and MP3 issue first.
+
+### Quick test
+1. Open **Sonic Theater** on iPhone or PC.
+2. Import an MP3 using the local media playlist file chooser, press **Play**, and confirm the Reactor visualizer responds while the song is audible only once.
+3. Choose **Save current song** or **Save queue music**. Move a track up/down and reload the site to see local queue restoration.
+4. In **Saved Music Library**, optionally enable **Attempt to play saved music when I open PROXIMUS**, choose a startup track and verify the browser-policy fallback. You can switch this off later.
+5. Open advanced tools for videos/GIFs and verify original exports, capture and visual presets continue to work.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
 # PROXIMUS | ASSET ALCHEMIST v3.5.2
 **CINEMA CLARITY · SAVED LOCAL MUSIC · ARCADE DAILY — 18 active companion spaces**
 

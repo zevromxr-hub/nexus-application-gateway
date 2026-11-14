@@ -1,0 +1,46 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.5.3",
+  "release_date": "2026-11-13",
+  "title": "Sonic Theater — Unified Music Library & Reactor",
+  "subtitle": "Sonic Theater — Unified Music Library & Reactor",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Fixed Media Theater MP3 selection by explicitly permitting .mp3, .wav, .m4a, .aac, .ogg, .flac and supported audio extensions in its iPhone/PC file picker, with playback errors that identify unsupported codecs",
+    "Merged the previously separate Media Theater and Sovereign Reactor surfaces into one responsive Sonic Theater workspace with the real-time Reactor stage, integrated playlist and Saved Music Library visible together",
+    "One original browser audio player now supplies actual Web Audio frequency measurements to both Media Theater and Sovereign Reactor visuals, avoiding duplicate songs playing simultaneously and retaining all six Reactor IV modes and five Sonic Dimension worlds",
+    "Introduced one universal music dock with play/pause, previous/next, volume, now-playing text and immediate save-song action; existing music source, presets, video tools and microphone/tab inputs remain accessible",
+    "Preserved local music IndexedDB tracks and Play on Start preferences, including the selected startup song, toggle, iPhone tap-to-play fallback, and existing auto-restoration behavior",
+    "Added touch-friendly song reorder controls and saved local queue ordering, preserving the existing 80-item playback queue and 150-song storage capacity",
+    "Retained existing Theater routes as redirects to Sonic Theater, kept previous studios/media/data, and hid duplicate visible menu entries across PC/mobile without deleting the legacy compatibility layer",
+    "Maintained existing GitHub Pages deployment, version validation, release rollback and direct GitHub-to-Discord release automation unchanged; Infinite Realms is deferred to a future standalone release"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Sonic Theater",
+    "Media Theater",
+    "Sovereign Reactor IV",
+    "Sonic Dimension",
+    "Saved Music Library",
+    "Sync Bridge",
+    "Recovery Center",
+    "Entertainment Overdrive"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

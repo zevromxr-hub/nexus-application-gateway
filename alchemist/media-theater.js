@@ -4,6 +4,7 @@
 import {$,bytes,safe,stem,notice,blobCanvas,download,textFile,wrap} from './core.js';
 import {initLocalMusicLibrary} from './music-library.js';
 import {audioTrackId,isLocalAudio} from './music-library-core.js';
+import {SONIC_ORDER_KEY,normalizeSonicOrder,movePlaylistItem} from './sonic-playlist-core.js';
 
 const MAX_QUEUE=80,MAX_FILE=400000000;
 const THEMES={
@@ -13,7 +14,7 @@ const THEMES={
  ember:['#ffa09c','#eb496c','#ffd5a8'],
  emerald:['#80f8bc','#25be9a','#e2fff5']
 };
-const audioExt=/\.(?:mp3|wav|ogg|m4a|aac|flac|opus)$/i;
+const audioExt=/\.(?:mp3|wav|ogg|m4a|aac|flac|opus|aiff|aif)$/i;
 const videoExt=/\.(?:mp4|m4v|mov|webm|ogv|ogg)$/i;
 const imageExt=/\.(?:gif|png|jpe?g|webp)$/i;
 export function mediaKind(file){
@@ -45,6 +46,15 @@ export function initMediaTheater(app){
  const FAVORITES='proximus-theater-favorites-v2';
  let favorites=[];try{favorites=JSON.parse(localStorage.getItem(FAVORITES)||'[]');if(!Array.isArray(favorites))favorites=[];}catch(e){}
  function keepFavorites(){try{localStorage.setItem(FAVORITES,JSON.stringify(favorites.slice(0,250)));}catch(e){}}
+ function storeQueueOrder(){
+  const ids=playlist.filter(item=>item.kind==='audio').map(item=>{
+   try{return item.libraryId||audioTrackId(item.file);}catch{return '';}
+  }).filter(Boolean);
+  try{
+   const old=normalizeSonicOrder(JSON.parse(localStorage.getItem(SONIC_ORDER_KEY)||'[]'));
+   localStorage.setItem(SONIC_ORDER_KEY,JSON.stringify(normalizeSonicOrder([...ids,...old])));
+  }catch(e){}
+ }
  const mini=document.createElement('div');mini.className='theater-mini';mini.hidden=true;
  const miniTitle=document.createElement('b'),miniPlay=document.createElement('button'),miniNext=document.createElement('button'),miniOpen=document.createElement('button');
  miniPlay.textContent='▶';miniNext.textContent='⏭';miniOpen.textContent='Theater';
@@ -58,7 +68,7 @@ export function initMediaTheater(app){
   miniPlay.textContent=playing?'❚❚':'▶';
   $('theaterFavorite').textContent=item&&favorites.includes(item.file.name)?'★ Favorited':'☆ Favorite track';
  }
- const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='theater';
+ const active=()=>['theater','reactor'].includes(document.querySelector('.studio:not([hidden])')?.dataset.panel);
  const currentItem=()=>playlist[current]||null;
  const player=()=>currentItem()?.kind==='video'?video:audio;
  const showStatus=(s)=>{status.textContent=s;};
@@ -71,7 +81,7 @@ export function initMediaTheater(app){
   updateMini();
  };
  function revoke(){if(currentURL)URL.revokeObjectURL(currentURL);currentURL=null;}
- function stopMedia(){video.pause();audio.pause();playing=false;}
+ function stopMedia(){video.pause();audio.pause();playing=false;document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:'audio',playing:false}}));}
  function updateAB(){
   $('theaterABStatus').textContent=loopA===null?'Choose the beginning (A), then the end (B).':
    loopB===null?'A: '+formatTime(loopA)+' · choose B to finish segment.':
@@ -102,7 +112,18 @@ export function initMediaTheater(app){
     }else current=Math.max(-1,next);
     drawList();showInfo();
    });
-   row.append(choose,length,remove);list.append(row);
+   const move=(direction)=>{
+    const selected=currentItem(),ordered=movePlaylistItem(playlist,i,direction);
+    playlist.splice(0,playlist.length,...ordered);
+    current=selected?playlist.indexOf(selected):-1;
+    drawList();storeQueueOrder();
+    showStatus('Playlist order updated and saved for this browser.');
+   };
+   const up=document.createElement('button');up.type='button';up.className='small-btn theater-track-order';
+   up.textContent='↑';up.title='Move '+safe(item.file.name)+' up';up.setAttribute('aria-label',up.title);up.disabled=i===0;up.addEventListener('click',()=>move(-1));
+   const down=document.createElement('button');down.type='button';down.className='small-btn theater-track-order';
+   down.textContent='↓';down.title='Move '+safe(item.file.name)+' down';down.setAttribute('aria-label',down.title);down.disabled=i===playlist.length-1;down.addEventListener('click',()=>move(1));
+   row.append(choose,length,up,down,remove);list.append(row);
   }
   if(!playlist.length){const empty=document.createElement('div');empty.className='hint';empty.textContent='Add local songs, videos or GIFs to create a playlist.';list.append(empty);}
   showInfo();
@@ -113,16 +134,36 @@ export function initMediaTheater(app){
   const item=playlist[index],kind=item.kind;
   currentURL=URL.createObjectURL(item.file);
   video.hidden=kind!=='video';audio.hidden=kind!=='audio';image.hidden=kind!=='image';
+  if(kind==='video'||kind==='image')$('sonicTheaterAdvanced')?.setAttribute('open','');
+  document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind,playing:false}}));
   if(kind==='video'||kind==='audio'){
    const media=player();
    media.src=currentURL;media.load();media.playbackRate=Number($('theaterSpeed').value)||1;
    media.loop=mode==='one';
-   if(autoplay)try{await media.play();playing=true;await resumeContext();}catch(e){showStatus('Tap Play to start playback');}
+   if(autoplay)try{const analysis=ensureTheaterAnalysis();const started=media.play();await Promise.all([started,analysis]);playing=true;}
+   catch(e){showStatus('Tap Play to start music. '+(e?.message||'Browser may block autoplay'));}
   }else{image.src=currentURL;playing=false;}
   showInfo();drawList();
  }
  async function resumeContext(){
   if(audioContext&&audioContext.state==='suspended')try{await audioContext.resume();}catch(e){}
+ }
+ function ensureTheaterAnalysis(){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return Promise.resolve();
+  if(!audioContext)audioContext=new AudioCtx();
+  if(!analyser){
+   analyser=audioContext.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.76;
+   frequency=new Uint8Array(analyser.frequencyBinCount);timeDomain=new Uint8Array(analyser.fftSize);
+  }
+  // Exactly one MediaElementSourceNode per source; both visualizers use the same playing audio.
+  for(const el of [audio,video]){
+   if(nodes.has(el))continue;
+   const node=audioContext.createMediaElementSource(el);node.connect(analyser);nodes.set(el,node);
+  }
+  if(!analyser.__wired){analyser.connect(audioContext.destination);analyser.__wired=true;}
+  visualized=true;$('theaterEnableAudio').textContent='✓ Shared analysis active';
+  return resumeContext();
  }
  async function next(direction=1,fromEnded=false){
   if(!playlist.length)return;
@@ -139,7 +180,7 @@ export function initMediaTheater(app){
   if(currentItem()?.kind==='image'){showStatus('GIF and image items play in the preview');return;}
   const media=player();
   if(media.paused){
-   try{await media.play();playing=true;await resumeContext();showStatus('Playing · '+safe(currentItem().file.name))}
+   try{const analysis=ensureTheaterAnalysis();const started=media.play();await Promise.all([started,analysis]);playing=true;showStatus('Playing in Sonic Theater · '+safe(currentItem().file.name))}
    catch(e){showStatus('Tap the native player button to play this file.');}
   }else{media.pause();playing=false;}
   showInfo();
@@ -150,19 +191,32 @@ export function initMediaTheater(app){
   video.hidden=true;audio.hidden=true;image.hidden=true;drawList();
   showStatus('Queue cleared');
  }
- input.addEventListener('change',wrap(async e=>{
-  const files=Array.from(e.target.files||[]);
-  let added=0,skipped=0;
+ async function importToQueue(files,{autoplay=false}={}){
+  let added=0,skipped=0,lastIndex=-1;
   for(const file of files){
-   if(playlist.length>=MAX_QUEUE)break;
    const kind=mediaKind(file);
    if(!kind||file.size>MAX_FILE||!file.size){skipped++;continue;}
-   playlist.push({file,kind});added++;
+   const duplicate=playlist.findIndex(row=>row.kind===kind&&row.file.name===file.name&&
+    row.file.size===file.size&&row.file.lastModified===file.lastModified);
+   if(duplicate>=0){lastIndex=duplicate;continue;}
+   if(playlist.length>=MAX_QUEUE){skipped++;continue;}
+   playlist.push({file,kind});added++;lastIndex=playlist.length-1;
   }
-  input.value='';drawList();
-  if(current===-1&&playlist.length)await select(0,false);
-  showStatus(added+' added · '+playlist.length+' in queue'+(skipped?' · '+skipped+' skipped':''));
+  drawList();
+  if(autoplay&&lastIndex>=0)await select(lastIndex,true);
+  else if(current===-1&&playlist.length)await select(0,false);
+  showStatus(added+' added · '+playlist.length+' in Sonic Theater queue'+(skipped?' · '+skipped+' skipped':''));
+  return {added,skipped};
+ }
+ input.addEventListener('change',wrap(async e=>{
+  const files=Array.from(e.target.files||[]);input.value='';
+  await importToQueue(files);
  }));
+ document.addEventListener('proximus-sonic-enqueue',e=>{
+  const files=Array.isArray(e.detail?.files)?e.detail.files:[e.detail?.file].filter(Boolean);
+  if(files.length)void importToQueue(files,{autoplay:e.detail?.play===true}).catch(err=>showStatus('Could not queue music: '+(err?.message||err)));
+ });
+ document.addEventListener('proximus-sonic-stop-playlist',()=>{audio.pause();video.pause();playing=false;showInfo();});
  $('theaterSaveVault').addEventListener('click',()=>{
   const files=playlist.filter(item=>item.kind==='video').map(item=>item.file);
   if(!files.length){showStatus('Add a video to the Media Theater queue first.');return;}
@@ -217,16 +271,18 @@ export function initMediaTheater(app){
   el.addEventListener('ended',()=>{playing=false;void next(1,true);});
   el.addEventListener('play',()=>{
    playing=true;showInfo();
+   try{void ensureTheaterAnalysis().catch(()=>{});}catch(err){showStatus('Audio analysis unavailable: '+(err?.message||err));}
+   document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:el===audio?'audio':'video',playing:true,name:currentItem()?.file?.name||''}}));
    document.dispatchEvent(new CustomEvent('proximus-companion-playing',{detail:{origin:'theater'}}));
   });
-  el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();}});
+  el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:el===audio?'audio':'video',playing:false}}));}});
   el.addEventListener('loadedmetadata',showInfo);
   el.addEventListener('timeupdate',()=>{
    if(el===player()&&loopA!==null&&loopB!==null&&el.currentTime>=loopB){
     el.currentTime=loopA;
    }
   });
-  el.addEventListener('error',()=>{showStatus('Could not decode '+(currentItem()?.file.name||'file')+' in this browser');playing=false;showInfo();});
+  el.addEventListener('error',()=>{showStatus('Cannot decode '+(currentItem()?.file.name||'file')+'. Verify its actual audio codec, not only the .mp3 extension.');playing=false;showInfo();});
  }
  $('theaterFullscreen').addEventListener('click',wrap(async()=>{
   const el=currentItem()?.kind==='video'?video:$('theaterStage');
@@ -247,6 +303,9 @@ export function initMediaTheater(app){
   let energy=0;
   if(analyser&&visualized){
    analyser.getByteFrequencyData(frequency);analyser.getByteTimeDomainData(timeDomain);
+   if(currentItem()?.kind==='audio')document.dispatchEvent(new CustomEvent('proximus-sonic-spectrum',{
+    detail:{frequency,sampleRate:audioContext.sampleRate,fftSize:analyser.fftSize,active:!audio.paused&&audioContext.state==='running'}
+   }));
    for(let i=0;i<Math.min(50,frequency.length);i++)energy+=frequency[i];
    energy/=Math.min(50,frequency.length)*255;
   }
@@ -314,18 +373,7 @@ export function initMediaTheater(app){
  $('theaterTheme').addEventListener('change',e=>{color=e.target.value;drawVisualization(performance.now());});
  $('theaterVisualizerMode').addEventListener('change',e=>{visualMode=e.target.value;drawVisualization(performance.now());});
  $('theaterEnableAudio').addEventListener('click',wrap(async()=>{
-  const AudioCtx=window.AudioContext||window.webkitAudioContext;
-  if(!AudioCtx)throw Error('Web Audio is unavailable in this browser.');
-  if(!audioContext)audioContext=new AudioCtx();
-  if(!analyser){analyser=audioContext.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.76;frequency=new Uint8Array(analyser.frequencyBinCount);timeDomain=new Uint8Array(analyser.fftSize);}
-  for(const el of [audio,video]){
-   if(nodes.has(el))continue;
-   const source=audioContext.createMediaElementSource(el);
-   source.connect(analyser);nodes.set(el,source);
-  }
-  if(!analyser.__wired){analyser.connect(audioContext.destination);analyser.__wired=true;}
-  await resumeContext();visualized=true;
-  $('theaterEnableAudio').textContent='✓ Visualizer active';showStatus('Visualizer connected to local media playback');
+  await ensureTheaterAnalysis();showStatus('Sonic Theater and Sovereign Reactor use one measured audio spectrum.');
  }));
  async function poster(add){
   const item=currentItem();if(!item)throw Error('Choose a video or GIF to capture a poster.');
@@ -400,8 +448,8 @@ export function initMediaTheater(app){
   attemptStartup:async()=>{
    if(currentItem()?.kind!=='audio')return {played:false,blocked:false,reason:'Choose a saved audio track first.'};
    try{
-    await audio.play();
-    playing=true;await resumeContext();showInfo();
+    const analysis=ensureTheaterAnalysis();const started=audio.play();
+    await Promise.all([started,analysis]);playing=true;showInfo();
     return {played:true,blocked:false};
    }catch(error){
     playing=false;showInfo();
