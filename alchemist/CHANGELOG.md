@@ -1,5 +1,16 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.5.2 — Cinema Clarity, Saved Music Library & Arcade Daily (2026-11-13)
+
+- Fixed Video Vault transparency: fully opaque black player backing regardless of the global personalized media background or glass identity theme; kept Cinema Atmosphere Sync external to video pixels.
+- Added Video Vault full-frame/crop choice, solo-player Focus Mode and reset to defaults.
+- Added Media Theater local music storage backed by IndexedDB: explicit save-current/save-queue, restore into listening queue on later visits, queue/reload/delete individual saved songs, device-local quota/error handling.
+- Added Media Theater wide layout, video framing selection, and Animation Forge one-tap 3/5/8-second clip selections.
+- Introduced an Arcade Nexus daily mission, local completion/streak progress and export, using the three original existing games.
+- Included new layout and Arcade Daily preferences in the Recovery Center and Sync Bridge settings backups without embedding large song files.
+- Preserved existing 18 active spaces, bookmarks, Reactor modes, personal media, retired studios, GitHub Pages and unchanged Discord release automation.
+- Added deterministic feature tests, adaptive layouts and offline-cache support.
+
 ## v3.5.1 — Sonic Dimension: Five Living Audio Worlds (2026-11-13)
 
 - Added five original music-reactive worlds to the existing Reactor IV canvas, with new visual atmosphere algorithms and transient beat response.
