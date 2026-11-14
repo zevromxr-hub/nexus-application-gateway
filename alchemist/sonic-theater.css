@@ -40,3 +40,14 @@
 .sonic-theater-integrated #reactorLegacyAudioLabel{display:none!important}
 .sonic-theater-integrated .sonic-unified-advanced .panel{background:#100f23}
 @media(max-width:650px){.sonic-unified-dock{padding:9px}.sonic-unified-dock-controls{width:100%}.sonic-unified-dock-controls button{flex:1 1 105px}.sonic-unified-dock label{width:100%}.sonic-unified-dock input{flex:1;width:auto}}
+
+.sonic-unified-library .theater-track-order{flex:none;min-width:31px;min-height:38px;padding:6px 8px;font-size:15px}
+.sonic-unified-library .theater-track-order:disabled{opacity:.3;cursor:not-allowed}
+.sonic-unified-library .theater-track-title{min-width:0}
+.sonic-unified-library .theater-track small{font-size:10px}
+@media(max-width:500px){
+ .sonic-unified-library .theater-track{gap:4px;flex-wrap:wrap}
+ .sonic-unified-library .theater-track-title{flex-basis:calc(100% - 110px)}
+ .sonic-unified-library .theater-track-order{min-width:39px;min-height:42px}
+ .sonic-unified-library .theater-track small{display:none}
+}
