@@ -1,3 +1,44 @@
+# PROXIMUS | ASSET ALCHEMIST v3.6.2
+**WEB CINEMA GATEWAY — iPHONE PLAYER COMPATIBILITY & EMBED RELIABILITY**
+
+Official website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.6.2 — WHY iPHONE PREVIEWS WERE BLANK
+The original Web Cinema Gateway requested generic website previews in a restrictive iframe with an opaque browser origin, no third-party storage requests, a no-referrer policy and lazy loading. Some permitted websites could not initialize their own players, cookies or scripts inside that environment. Safari is particularly sensitive to embedded player permissions.
+
+The updated Gateway uses **Compatible viewing mode by default**: embedded external HTTPS pages are treated as their own cross-origin sites, allowed to run ordinary scripts and forms, and permitted to request browser-approved storage access after user interaction. Embedded frames are loaded eagerly only when you click Open link. Existing safety restrictions continue to block top-level navigation, popups, downloads and same-origin content from PROXIMUS.
+
+### Compatible player links
+The Gateway recognizes and routes additional supported share links carrying a video view key to their **provider's official embedded player** instead of trying to display the entire website. The original URL, including its query parameters, remains intact in your saved link library. Only supported, known share URL formats are converted; unrelated sites are never guessed or rewritten.
+
+The existing official YouTube/Vimeo player support and direct MP4/WebM/HLS media handling remain unchanged. Native video files still depend on the browser's codecs and the remote media server.
+
+### Clear controls when a site does not display
+- **Open link** normally uses the improved compatibility profile.
+- Expand **Viewing compatibility options** to switch to **Restricted** mode if you want stricter iframe isolation and do not mind reduced website functionality. Your choice is saved locally and included in settings backups.
+- On iPhone, the Gateway shows a concise troubleshooting hint if an iframe has not visibly responded after several seconds. Dismiss it once playback works.
+- **Reload** retries the original website or official player.
+- **Try video source** tests whether a generic HTTPS link provides actual decodable video bytes; it will not work on ordinary website pages, login-required streams or page HTML.
+- **Open externally** remains available when the source does not permit embedded access.
+
+**Important limitation:** Some websites explicitly disallow embedding with X-Frame-Options or Content-Security-Policy frame-ancestors, require a first-party login, use browser-restricted cookies, or block playback by region or other access rules. PROXIMUS cannot override these protections. A provider's permission to embed and iOS Safari policies still determine whether a given video can play inside the application. An iframe load event is not reliable proof that the site was actually rendered successfully.
+
+### Everything preserved
+The Gateway remains **one optional collapsible section in Video Vault**; it is not a new studio. Your saved website/video links, title collections, favorites, full source URLs, direct media progress and JSON backups are preserved. The fully opaque local Video Vault player, stored local videos, Sonic Theater, saved music/Play on Start, Mobile Power Guard, ORBIT and the remaining creator utilities are unchanged.
+
+No new proxy, third-party downloader, authentication bypass or server dependency is introduced. The original GitHub Pages URL, rollback files, validation suite and direct GitHub-to-Discord release workflow remain unchanged.
+
+### How to test on iPhone
+1. Reopen PROXIMUS and confirm v3.6.2. Open **Video Vault → Web Cinema Gateway**.
+2. Paste a video page or link that previously appeared white. Tap **Open link** in Compatible mode.
+3. If the page remains blank, wait for the troubleshooting hint, then try Reload. For a genuine direct media link, try **Try video source**. For sites restricting embeds, there is no safe in-site workaround.
+4. Save the link and reopen it from the saved library; verify that its original URL remains unchanged.
+5. Compare on PC, then verify the original local Video Vault, saved music and power modes still function.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.6.1
 **WEB CINEMA GATEWAY — Compatible Websites, Video Links & Private Watch-Later Library**
 

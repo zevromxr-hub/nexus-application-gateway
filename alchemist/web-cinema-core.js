@@ -1,5 +1,6 @@
 // PROXIMUS Web Cinema Gateway 3.6.1 — pure URL classification and persistent bookmarks.
 // No fetching, proxying, token extraction or automatic third-party requests.
+import {officialShareEmbed} from "./web-cinema-compat.js";
 export const WEB_CINEMA_KEY='proximus-web-cinema-links-v1';
 export const WEB_CINEMA_SCHEMA='proximus.web-cinema.links/1';
 export const WEB_CINEMA_LIMIT=180;
@@ -59,13 +60,15 @@ export function classifyWebCinemaUrl(input){
   const suffix=/^[a-zA-Z0-9]{6,64}$/.test(h)?'?h='+encodeURIComponent(h):'';
   return {...base,kind:'vimeo',label:'Vimeo video',embed:'https://player.vimeo.com/video/'+id+suffix};
  }
+ const supportedShare=officialShareEmbed(u);
+ if(supportedShare)return {...base,...supportedShare};
  if(dailymotionHosts.has(host))return {...base,kind:'external',label:'Dailymotion website',
   reason:'This provider requires a configured player ID for modern embeds. Use Open Externally.'};
  if(directExt.test(u.pathname))return {...base,kind:'direct',label:u.pathname.toLowerCase().endsWith('.m3u8')?'HLS stream':'Direct video file'};
  return {...base,kind:'website',label:'Website preview',embed:url,
   reason:'This site may block iframe viewing or require third-party cookies. Use Open Externally if needed.'};
 }
-export const isWebCinemaVideo=kind=>['youtube','vimeo','direct'].includes(kind);
+export const isWebCinemaVideo=kind=>['youtube','vimeo','official-video','direct'].includes(kind);
 function safeTitle(s){return clean(s).slice(0,120);}
 function safeCollection(s){return clean(s).slice(0,40)||'General';}
 export function normalizeWebCinemaLibrary(raw=[]){

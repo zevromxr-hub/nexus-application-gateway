@@ -71,3 +71,29 @@
  .web-cinema-backup-actions>button,.web-cinema-import{flex:1 1 130px}
 }
 @media(prefers-reduced-motion:reduce){.web-cinema-gateway *{scroll-behavior:auto;transition:none}}
+
+
+/* v3.6.2 — accessible Safari recovery without crowding the default Video Vault. */
+.web-cinema-settings{min-width:0;border:1px solid rgba(105,146,182,.48);background:#101c29;border-radius:12px;padding:0 12px}
+.web-cinema-settings>summary{list-style:none;cursor:pointer;padding:12px 4px;color:#c3e4ed;font-size:11px;font-weight:750;min-height:42px;display:flex;align-items:center;gap:8px}
+.web-cinema-settings>summary:before{content:'⚙';font-size:15px}
+.web-cinema-settings>summary::-webkit-details-marker{display:none}
+.web-cinema-settings>summary:focus-visible{outline:2px solid #abcdfa;outline-offset:2px}
+.web-cinema-settings label{display:grid;gap:6px;max-width:650px;margin-bottom:9px;font-size:11px}
+.web-cinema-settings select{width:100%;min-height:43px;white-space:normal;max-width:100%}
+.web-cinema-settings .hint{margin:0 0 12px;color:#b1c6db;line-height:1.55}
+.web-cinema-help{position:absolute;z-index:5;left:8px;right:8px;bottom:9px;
+ background:rgba(10,20,34,.96);border:1px solid rgba(166,205,237,.77);border-radius:10px;
+ color:#eef5ff;font-size:11px;line-height:1.5;padding:9px 11px;
+ display:flex;gap:10px;align-items:center;justify-content:space-between;
+ box-shadow:0 6px 22px rgba(0,0,0,.4)}
+.web-cinema-help[hidden]{display:none!important}
+.web-cinema-help span{flex:1;min-width:0;overflow-wrap:anywhere}
+.web-cinema-help button{flex:none;min-width:38px;min-height:38px;background:#253d52;border-radius:8px;color:#fff;border:1px solid #55748b;font-size:19px}
+.web-cinema-frame iframe{background:#000;opacity:1;mix-blend-mode:normal}
+@media(max-width:620px){
+ .web-cinema-settings{padding:0 10px}
+ .web-cinema-settings>summary{min-height:45px}
+ .web-cinema-help{left:5px;right:5px;bottom:6px;padding:8px 9px;font-size:10px}
+ .web-cinema-frame iframe{min-height:100%}
+}

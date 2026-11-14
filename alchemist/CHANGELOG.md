@@ -1,5 +1,14 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.6.2 — Web Cinema: iPhone Embed Compatibility & Player Reliability (2026-11-14)
+
+- Corrected a restrictive generic iframe configuration that could produce blank previews on iOS Safari and other browsers: cross-origin site identity, user-approved storage access, normal external-origin referrer policy and eager user-initiated loading.
+- Added official embedded-player routing for supported video sharing URLs that carry a view key. Original URLs, query parameters and saved watch-later records are retained.
+- Added a compact fallback hint on iPhone, an optional Restricted privacy mode, and a user-controlled Try video source action for direct media addresses.
+- Kept website sandbox protections against parent navigation, downloads, and popups, as well as provider-controlled player/authentication/framing policies.
+- Preserved all existing Video Vault videos, saved website links, bookmarks, personal collections, Sonic Theater, saved music/Play on Start, Mobile Power Guard, ORBIT and local storage.
+- Retained the existing GitHub Pages deployment and direct Discord release workflow, full validation tests, offline app cache and previous rollback releases.
+
 ## v3.6.1 — Web Cinema Gateway: Embedded Viewing & Saved Video Links (2026-11-14)
 
 - Added one optional collapsible Web Cinema Gateway inside Video Vault, without expanding the ORBIT sidebar or replacing local media playback.
