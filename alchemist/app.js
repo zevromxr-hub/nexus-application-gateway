@@ -34,7 +34,7 @@ const names=[
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
  {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
  {id:'life',icon:'◷',title:'Life Command',detail:'Private tasks recurring routines habits streaks due dates planner calendar export important personal dates everyday companion'},
- {id:'reactor',icon:'✺',title:'Sovereign Reactor',detail:'Music beat bass audio reactive visualizer microphone PC tab YouTube Music local GIF MP4 animated background sovereign'},
+ {id:'reactor',icon:'✺',title:'Sonic Theater',detail:'One connected music player MP3 playlist saved music Play on Start Reactor IV Sonic Dimension visualizer backgrounds audio export'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
  {id:'utility',icon:'⌘',title:'Utility Forge',detail:'Text transformations JSON formatter Base64 URL codec secure password generator batch rename ZIP'},
@@ -230,7 +230,7 @@ $('lifeJump').addEventListener('click',()=>changeView('life'));
 const dialog=$('cmdDialog'),search=$('cmdSearch'),results=$('cmdResults');
 function drawCommands(){
  const term=search.value.trim().toLowerCase();results.replaceChildren();
- const relevant=names.filter(n=>(n.title+' '+n.detail).toLowerCase().includes(term));
+ const relevant=names.filter(n=>n.id!=='theater'&&(n.title+' '+n.detail).toLowerCase().includes(term));
  for(const n of relevant){
   const btn=document.createElement('button');btn.className='cmd-item';
   const icon=document.createElement('span');icon.textContent=n.icon;
