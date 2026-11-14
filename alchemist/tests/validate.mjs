@@ -133,6 +133,8 @@ const vaultMobileGifTest=spawnSync(process.execPath,[path.join(ROOT,'tests/video
 assert.equal(vaultMobileGifTest.status,0,'Video Vault + iPhone navigation + smooth GIF: '+vaultMobileGifTest.stderr+' '+vaultMobileGifTest.stdout);
 const companionTest=spawnSync(process.execPath,[path.join(ROOT,'tests/companion-edition.mjs')],{encoding:'utf8'});
 assert.equal(companionTest.status,0,'Companion Edition retirement/playback/shortcuts: '+companionTest.stderr+' '+companionTest.stdout);
+const notifierTest=spawnSync(process.execPath,[path.join(ROOT,'tests/release-announcer.mjs')],{encoding:'utf8'});
+assert.equal(notifierTest.status,0,'Automated Discord release announcer safety and embed tests: '+notifierTest.stderr+' '+notifierTest.stdout);
 const entertainmentTest=spawnSync(process.execPath,[path.join(ROOT,'tests/entertainment.mjs')],{encoding:'utf8'});
 assert.equal(entertainmentTest.status,0,'Media Theater and Arcade Chamber: '+entertainmentTest.stderr+' '+entertainmentTest.stdout);
 const toolkitTest=spawnSync(process.execPath,[path.join(ROOT,'tests/productivity-releases.mjs')],{encoding:'utf8'});
