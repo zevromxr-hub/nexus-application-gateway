@@ -393,6 +393,13 @@
    <div class="theater-music-library" aria-label="Saved local music library">
     <div class="theater-music-top"><div><span class="eyebrow">PERSONAL OFFLINE MUSIC · LOCAL TO THIS DEVICE</span><h3>Saved Music Library</h3><p class="hint">Save your own audio files once in this browser, then they automatically return to your listening queue on future visits. No cloud account or uploading.</p></div><span id="theaterMusicCount" class="theater-music-counter">0 / 150 saved</span></div>
     <p class="hint" id="theaterMusicSize">Checking local music storage…</p>
+    <div class="theater-music-startup" aria-label="Saved music startup playback preferences">
+     <label class="theater-music-startup-checkbox"><input type="checkbox" id="theaterMusicAutostart"> Attempt to play saved music when I open PROXIMUS</label>
+     <label>Startup track<select id="theaterMusicStartupTrack"><option value="">Most recently saved song</option></select></label>
+     <button id="theaterMusicPlayNow" class="small-btn" type="button">▶ Play selected startup song now</button>
+     <p id="theaterMusicStartupStatus" class="hint" role="status" aria-live="polite">Off by default. Some browsers require a tap before sound can play.</p>
+     <p class="hint">Autoplay is opt-in. Chrome on PC may allow it; Safari on iPhone generally requires a user tap. When blocked, PROXIMUS shows a one-tap Play my music prompt instead of forcing playback.</p>
+    </div>
     <div class="theater-music-actions">
      <button id="theaterMusicSaveCurrent" class="small-btn" type="button">♫ Save current song</button>
      <button id="theaterMusicSaveQueue" class="primary" type="button">＋ Save queue music</button>
