@@ -390,6 +390,18 @@
    </div>
    <div class="two"><label>Playback speed<select id="theaterSpeed"><option value=".75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label><label>Loop mode<select id="theaterLoop"><option value="off">Stop at playlist end</option><option value="all">Repeat playlist</option><option value="one">Repeat current track</option></select></label></div>
    <div class="checks"><label><input type="checkbox" id="theaterShuffle"> Shuffle tracks</label></div>
+   <div class="theater-music-library" aria-label="Saved local music library">
+    <div class="theater-music-top"><div><span class="eyebrow">PERSONAL OFFLINE MUSIC · LOCAL TO THIS DEVICE</span><h3>Saved Music Library</h3><p class="hint">Save your own audio files once in this browser, then they automatically return to your listening queue on future visits. No cloud account or uploading.</p></div><span id="theaterMusicCount" class="theater-music-counter">0 / 150 saved</span></div>
+    <p class="hint" id="theaterMusicSize">Checking local music storage…</p>
+    <div class="theater-music-actions">
+     <button id="theaterMusicSaveCurrent" class="small-btn" type="button">♫ Save current song</button>
+     <button id="theaterMusicSaveQueue" class="primary" type="button">＋ Save queue music</button>
+     <button id="theaterMusicRefresh" class="small-btn" type="button">↻ Refresh saved music</button>
+    </div>
+    <p id="theaterMusicStatus" class="hint" role="status" aria-live="polite">Loading saved music…</p>
+    <div id="theaterMusicSavedList" class="theater-music-list" aria-label="Stored songs"></div>
+    <p class="hint">Up to 150 tracks, maximum 250 MB each, subject to device capacity. Original audio remains yours; saved browser copies can be cleared by browser storage management. Keep original music files in Files or on your PC.</p>
+   </div>
    <div class="theater-sidehead"><h3>Queue</h3><span id="theaterCurrent" class="hint">0 / 0</span></div>
    <div id="theaterPlaylist" class="theater-queue"></div>
    <div class="theater-controls"><button id="theaterFavorite" class="small-btn">☆ Favorite track</button><button id="theaterExportFavorites" class="small-btn">↓ Favorites JSON</button><button id="theaterClear" class="small-btn">Clear queue</button><button id="theaterSaveVault" class="primary">▣ Save queue videos to Vault</button><button id="theaterOpenVault" class="small-btn">Open saved videos</button><button id="theaterManifest" class="small-btn">↓ Playlist JSON</button></div>
