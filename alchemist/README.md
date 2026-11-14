@@ -1,5 +1,33 @@
+# PROXIMUS | ASSET ALCHEMIST v3.5.0
+**ENTERTAINMENT OVERDRIVE — 18 active companion spaces · Shared scenes & Cinema Atmosphere Sync**
+
+Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.5.0 — ENTERTAINMENT OVERDRIVE FOUNDATION
+
+**The five flagship systems are a staged roadmap, not five completed releases.** This release implements the shared Convergence scene foundation and Cinema Overdrive atmosphere upgrades. Existing Reactor IV, Arcade Chamber and Animation Forge continue to function now; the larger Sonic Dimension, Arcade Nexus, Infinite Realms and Creator Overdrive systems are planned for v3.5.1–v3.5.4.
+
+### Unified entertainment hub
+The Companion Center now displays a single responsive Entertainment Overdrive launch area. It opens existing Video Vault, Reactor IV, Arcade Chamber and Animation Forge without new top-level studios. Infinite Realms is clearly labeled planned, not playable in v3.5.0.
+
+### Convergence scene settings
+Five built-in scene colors, up to 20 custom named scene presets, Auto/Efficiency/Overdrive quality controls and JSON export/import live in the Companion Center. Select a scene to apply its palette to Media Theater. Save a scene manifest in Project Hub → Collected Exports. Imported JSON contains only settings, not audio or video bytes. New settings use their own localStorage key and do not rewrite old profiles, token records, media or game scores.
+
+### Cinema Overdrive / Atmosphere Sync
+Open Video Vault and enable Atmosphere Sync next to the video player. A throttled tiny-canvas sampler calculates an average color from *locally playable* video frames and adds a background glow to the existing Video Vault and Media Theater stages. When video is paused, protected, unsupported, hidden or cross-origin, a static scene color remains available. This is not a DRM bypass, downloader or streaming-player integration. The original media and existing PiP/fullscreen/playback functions remain unchanged.
+
+### Compatibility and roadmap
+- PC/iPhone adaptive layout selector and 18 active companion spaces retained.
+- Auto quality uses viewport and pointer properties; mobile Efficiency and enhanced Overdrive can be selected manually. Reduced-motion preference takes precedence.
+- Nothing migrates, clears or duplicates saved IndexedDB videos. Browser storage is still device-local; export scene settings and keep your original media files elsewhere.
+- v3.5.1 Sonic Dimension; v3.5.2 Arcade Nexus; v3.5.3 Infinite Realms; v3.5.4 Creator Overdrive; v3.5.5 convergence polish, each requiring independent implementation and validation.
+- Existing GitHub Pages deployment, service-worker release cache, offline core, rollback history, and Discord release announcer are retained.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
 # PROXIMUS | ASSET ALCHEMIST v3.4.0
-**CINEMATIC LIFE COMMAND — 24 active spaces · Entertainment, Media & Everyday Utility**
+**ADAPTIVE COMPANION — 18 active spaces · Entertainment, Media & Everyday Utility**
 
 Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 
