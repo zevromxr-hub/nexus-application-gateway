@@ -3,7 +3,7 @@
 export const WEB_CINEMA_KEY='proximus-web-cinema-links-v1';
 export const WEB_CINEMA_SCHEMA='proximus.web-cinema.links/1';
 export const WEB_CINEMA_LIMIT=180;
-export const WEB_CINEMA_MAX_IMPORT=300000;
+export const WEB_CINEMA_MAX_IMPORT=750000;
 const youtubeHosts=new Set(['youtube.com','www.youtube.com','m.youtube.com','music.youtube.com','youtu.be','www.youtu.be','www.youtube-nocookie.com','youtube-nocookie.com']);
 const vimeoHosts=new Set(['vimeo.com','www.vimeo.com','player.vimeo.com']);
 const dailymotionHosts=new Set(['www.dailymotion.com','dailymotion.com','dai.ly','www.dai.ly']);
@@ -55,7 +55,7 @@ export function classifyWebCinemaUrl(input){
  if(vimeoHosts.has(host)){
   const id=host==='player.vimeo.com'&&parts[0]==='video'?parts[1]:parts[0];
   if(!/^\d{5,14}$/.test(id||''))return {...base,kind:'external',label:'Vimeo page',reason:'This is not a supported Vimeo video URL.'};
-  const h=u.searchParams.get('h')||'';
+  const h=u.searchParams.get('h')||(host==='player.vimeo.com'?'':parts[1])||'';
   const suffix=/^[a-zA-Z0-9]{6,64}$/.test(h)?'?h='+encodeURIComponent(h):'';
   return {...base,kind:'vimeo',label:'Vimeo video',embed:'https://player.vimeo.com/video/'+id+suffix};
  }
