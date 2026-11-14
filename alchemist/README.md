@@ -1,3 +1,54 @@
+# PROXIMUS | ASSET ALCHEMIST v3.6.4
+**VIDEO VAULT ULTRA IMPORT — LARGE PERSONAL VIDEOS, BETTER LOCAL STORAGE & NO-COPY PLAYBACK**
+
+Website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## New — large Video Vault imports on iPhone and PC
+The old iPhone per-video limit of **450 MB** and PC limit of **750 MB** are replaced with **8 GB per video on iPhone/iPad** and **16 GB on desktop** as application guardrails, subject to the actual free space and per-origin browser quota. These numbers are upper bounds, NOT guaranteed quotas or a promise that every video will fit in the browser.
+
+### Why files previously failed beneath the maximum size
+The earlier Video Vault tried to store the whole video as one IndexedDB Blob value. On mobile Safari, large single-value writes can fail even while the file is smaller than our stated cap. The current upgrade uses **browser-origin private filesystem (OPFS) chunked writes** on supported browsers, copying at most about 8 MB into each streaming write. If the browser lacks a writable OPFS, the app instead saves each file in **separate 16 MB IndexedDB pieces**. Both approaches preserve the original file bytes, rather than decoding or uploading it to a server.
+
+The existing \`proximus-video-vault-v1\` database is upgraded in place from schema 1 to schema 2: the original \`items\` and \`files\` stores remain untouched, while a \`chunks\` store is added for fallback imports. Previous saved videos, thumbnails, positions, favorites and collections are not deleted or migrated.
+
+### Two ways to watch
+1. **Save videos in Vault:** Choose one or more local files and watch the import progress bar, current byte count and percentage. You may cancel an import; partial writes are cleaned up on supported completion/error paths. Videos saved into OPFS/IndexedDB occupy a separate browser-managed copy on your device. The same videos appear when you revisit PROXIMUS in the same browser profile, provided the browser retains website data.
+2. **Play from Files · no copy:** Choose a file directly from iPhone Files/Photos or PC folders. The native video player opens it immediately without storing the whole video again. This is ideal for very large movies or when the browser's website storage is almost full. Session-only playback does **not** persist when the page closes or reloads; you must choose the original file again. If you want to try keeping a local Vault copy, choose **Save this preview** while viewing it.
+
+### Supported import containers, not guaranteed playable codecs
+The picker now accepts a much broader range of video names/MIME types, including:
+- MP4, M4V, MOV (common iPhone-compatible containers)
+- WebM, OGV/OGG
+- MKV, AVI, WMV, FLV, F4V
+- MPEG/MPG, TS/MTS/M2TS, 3GP/3G2
+- HEVC/H.264/H.265 and additional recognized video types
+
+Storing a video does **not** transcode it. Safari may not decode an MKV/AVI/WMV/FLV video even when the browser can store and export the bytes. Playback depends on both the container and actual audio/video codecs. For the most reliable iPhone playback, use MP4 with H.264 video/AAC audio or a compatible MOV file encoded with supported HEVC/H.264. Large HLS playlists are not local video files; this importer accepts actual files from the device, not external streaming URLs. Video Vault will explain unsupported playback rather than delete your original.
+
+### Storage is private but subject to browser limits
+The video original in iPhone Photos/Files is NOT a server-hosted file. A saved Vault import is a **second local copy inside the browser's origin-private storage**, which is separate from Photos/Files and counts toward the storage available to this website. Its data may be evicted when the device or Safari needs space; clearing website data or using Private Browsing can delete it. Keep originals and external backups. Browser Storage Status shows the current estimate and persistence mode, and **Protect local storage** requests durable storage where supported. Safari might decline this permission; no web application can guarantee unlimited local capacity.
+
+On iPhone 17 Pro Max with recent iOS, writable OPFS is a good option for large files when supported. On older Safari builds, chunked IndexedDB is the compatible fallback. Large file operations can temporarily increase heat/battery usage; the import progress/cancel controls help you manage this.
+
+### What is preserved
+- Existing original Video Vault video files, saved positions, collections, thumbnails, bookmarks, caption selection, player framing, movie theater focus, picture-in-picture, still-frame export, and current video download/share functions.
+- Sonic Theater saved MP3s, Play on Start, Mobile Power Guard, Reactor IV, Sonic Dimension, Video Vault to Animation Forge workflows and original performance profiles.
+- Web Cinema Gateway and its watch-later URLs, all ORBIT iPhone/desktop layouts and navigation, private Token Foundry and other companion studios.
+- Previous rollback releases, GitHub Pages deployment and the existing direct GitHub-to-Discord release announcement workflow.
+- NO external storage service, video uploader, automatic sync, expensive background transcode, codec pack or extra studio tab.
+
+### Suggested acceptance test
+1. On iPhone, import one previously failing MP4/MOV file larger than 450 MB. Confirm the progress bar increments and a saved card appears afterward.
+2. Test **Play from Files · no copy** with an even larger local video and confirm immediate session playback when Safari supports the codec, with no new permanent Vault entry.
+3. Test **Cancel import** using a large file; the last fully saved videos must remain intact.
+4. Reload PROXIMUS and play an old saved film plus a newly imported video. Test resume position, favorites and export/catalog.
+5. Try an MKV/AVI: it should import if space permits, but if Safari cannot decode it, the app should show a useful codec message while keeping the stored original.
+6. On PC, verify existing Video Vault records, player controls, and protected backups work the same.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.6.3
 **WEB CINEMA EMBED FIRST — PLAYER SOURCE OPTIONS & PERSISTENT WATCH-LATER LINKS**
 
