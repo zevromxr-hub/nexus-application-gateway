@@ -46,7 +46,8 @@ export function normalizeSavedPlayback(row,{appOrigin=''}={}){
 }
 export function webCinemaPlaybackPlan(raw,source={},appOrigin=''){
  const original=classifyWebCinemaUrl(raw),normalized=normalizeSavedPlayback(source,{appOrigin});
- if(original.kind==='external')return {...original,mode:'external',displayUrl:original.url};
+ if(original.kind==='external'&&(normalized.playerMode==='auto'||!original.secure||original.host==='zevromxr-hub.github.io'))
+  return {...original,mode:'external',displayUrl:original.url};
  if(normalized.playerMode==='embed'){
   return {...original,kind:'custom-embed',embed:normalized.playerUrl,mode:'embed',
    label:'Official embedded player',displayUrl:original.url};
