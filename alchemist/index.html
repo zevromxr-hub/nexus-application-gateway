@@ -26,6 +26,7 @@
     <button class="nav" data-view="animation"><span>▣</span> Animation Forge <small>15</small></button>
     <button class="nav" data-view="theater"><span>♫</span> Media Theater <small>16</small></button>
     <button class="nav" data-view="videos"><span>▣</span> Video Vault <small>31</small></button>
+    <button class="nav" data-view="life"><span>◷</span> Life Command <small>32</small></button>
     <button class="nav" data-view="reactor"><span>✺</span> Sovereign Reactor <small>26</small></button>
     <button class="nav" data-view="arcade"><span>✦</span> Arcade Chamber <small>17</small></button>
     <button class="nav" data-view="workflow"><span>▤</span> Workflow Desk <small>18</small></button>
@@ -46,7 +47,7 @@
 <div class="shell">
 <header class="topbar">
  <div class="crumb">PROXIMUS <span>/</span> COMPANION NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
- <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
+ <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="lifeJump" class="tool-btn" title="Open your private tasks and daily plan">◷ Life</button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent">◈ Pack <span id="packCount">0</span></button></div>
 </header>
 <main class="content">
 <section class="welcome">
@@ -64,6 +65,7 @@
  </div>
  <div class="command-metrics"><div><strong id="commandAssets">0</strong><span>COLLECTED ASSETS</span></div><div><strong id="commandPackSize">0 B</strong><span>LOCAL PACK SIZE</span></div><div><strong id="commandPinsCount">0 pinned</strong><span>FAVORITE STUDIOS</span></div></div>
 
+ <div class="companion-life-summary"><div><strong id="commandLifeSummary">Today's plans are ready</strong><small id="commandLifeDetail">No active Life Command entries yet</small></div><button id="commandLifeNow" class="small-btn">◷ Review my day</button></div>
  <div class="companion-hero-pulse" aria-label="Personal companion overview">
   <div><span class="eyebrow">MY ENTERTAINMENT</span><strong id="commandVideoCount">0 saved videos</strong><small>Stored on this device</small></div>
   <div><span class="eyebrow">WATCHING</span><strong id="commandVideoContinueCount">0 in progress</strong><small>Resume when you return</small></div>
@@ -106,6 +108,7 @@
     <button id="commandOpenProjects" class="small-btn">▤ Project library</button>
     <button id="commandOpenTheater" class="small-btn">♫ Media Theater</button>
     <button id="commandOpenArcade" class="small-btn">✦ Mini games</button>
+    <button id="commandOpenLife" class="small-btn">◷ Open Life Command</button>
     <button id="commandOpenWorkflow" class="small-btn">▤ My notes</button>
     <button id="commandOpenAnimation" class="small-btn">▣ Make a GIF</button>
     <button id="commandOpenReactor" class="small-btn">✺ Open Reactor IV</button><button id="commandOpenVideos" class="small-btn">▣ Saved Video Vault</button>
@@ -287,7 +290,7 @@
 <section class="studio" data-panel="animation" hidden>
  <div class="section-heading"><div><div class="eyebrow">15 / ANIMATED ASSET PRODUCTION</div><h2>Animation Forge <span class="subtitle">Video → GIF, animated GIF resizing and real GIF icon packs</span></h2></div></div>
  <div class="workspace image-grid"><div class="panel">
-  <h3>Import a video or animated GIF</h3>
+  <h3>Import a video or animated GIF</h3><div class="companion-media-pill">CINEMATIC GIF ENGINE · Quality profiles · Smart preflight · Direct Vault import</div>
   <label class="upload"><input id="animFile" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-m4v,image/gif,.mp4,.webm,.mov,.m4v,.gif"><b>＋ IMPORT MP4 / WEBM / GIF</b><span>Local files only · maximum source 250 MB · GIF output is always silent</span></label>
   <p id="animStatus" class="hint">Choose a browser-decodable video or GIF to begin. Nothing is uploaded.</p>
   <div class="two"><label>Clip start (seconds)<input id="animStart" type="number" min="0" max="99999" step=".1" value="0"></label><label>Clip end (seconds)<input id="animEnd" type="number" min=".1" max="99999" step=".1" value="4"></label></div>
@@ -296,10 +299,14 @@
     <div id="animCustomFields" hidden><div class="two"><label>Width (px)<input id="animCustomWidth" type="number" min="1" max="720" placeholder="Auto"></label><label>Height (px)<input id="animCustomHeight" type="number" min="1" max="720" placeholder="Auto"></label></div><label class="checks"><input id="animKeepRatio" type="checkbox" checked> Preserve original aspect ratio</label></div>
     <p class="hint">Regular GIF uses your video's proportions automatically; exact width or height is optional. Output is not limited to icon sizes.</p>
   </div>
+  <label>Quality profile<select id="animQualityProfile"><option value="balanced" selected>Balanced · smooth and manageable</option><option value="mobile">Mobile · compact and quick</option><option value="smooth">Smooth · 20 FPS motion</option><option value="cinema">Cinematic · 24 FPS short clip</option><option value="original">Manual · use my custom settings</option></select></label>
   <label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8">8 · balanced</option><option value="12">12 · steady</option><option value="15" selected>15 · smoother</option><option value="20">20 · fluid</option><option value="24">24 · cinematic</option></select>
  <small class="hint">For 20 FPS choose clips up to 6 seconds; for 24 FPS up to 5 seconds. Longer GIFs can use 15 FPS.</small></label></div>
   <div class="two"><label>Fit mode<select id="animFit"><option value="contain">Contain · full video visible</option><option value="cover">Cover · crop to fill</option></select></label><label>Fill color<input id="animBg" type="color" value="#111020"></label></div>
   <div class="checks"><label><input id="animDither" type="checkbox" checked> Improve gradients with ordered dithering</label><label><input id="animTransparent" type="checkbox"> Preserve transparent areas where available</label></div>
+  <div class="anim-preflight" id="animPreflight" role="status">Import a source to inspect estimated frame count and memory cost.</div>
+  <div class="actions"><button id="animTrimStart" class="small-btn">Set start from playhead</button><button id="animTrimEnd" class="small-btn">Set end from playhead</button><button id="animCheck" class="small-btn">◈ Inspect export settings</button></div>
+  <div class="checks"><label><input id="animOptimizeFrames" type="checkbox" checked> Combine exact duplicate frames to reduce GIF size</label></div>
   <div class="actions"><button id="animConvert" class="primary">↓ Create regular GIF</button><button id="animToPack">＋ GIF to Pack</button><button id="animFrame">↓ PNG still frame</button></div>
   <div id="animIconOptions" hidden><h3>Animated GIF icon pack</h3>
   <p class="hint">Creates genuinely animated square GIF icons, plus PNG still icons, from the same MP4/WebM/GIF source.</p>
@@ -346,12 +353,14 @@
     <div class="two"><label>Show<select id="videoVaultFilter"><option value="all">Entire library</option><option value="favorites">Favorites ★</option><option value="in-progress">Continue watching</option><option value="unwatched">Not yet watched</option></select></label>
      <label>Order<select id="videoVaultSort"><option value="recent">Recently watched / added</option><option value="name">Alphabetical</option><option value="favorites">Favorites first</option><option value="oldest">Oldest added</option><option value="size">Largest files</option></select></label></div>
    </div>
-   <div class="buttons"><button id="videoVaultOpenTheater" class="small-btn">♫ Open Media Theater</button></div>
+   <div class="buttons"><button id="videoVaultOpenTheater" class="small-btn">♫ Open Media Theater</button><button id="videoVaultExportCatalog" class="small-btn">↓ Export library catalog JSON</button></div>
   </div>
   <div class="panel video-vault-cinema">
    <h3>03 / PRIVATE CINEMA PLAYER</h3>
    <div class="video-vault-stage"><video id="videoVaultPlayer" playsinline controls preload="metadata" aria-label="Your saved video library player"></video></div>
-   <h3 id="videoVaultPlaying">Select a saved video</h3><p id="videoVaultInfo" class="hint">Open a video below. Playback position is remembered on this device.</p>
+   <h3 id="videoVaultPlaying">Select a saved video</h3>
+   <div class="video-vault-enhancements"><label>Playback speed<select id="videoVaultSpeed"><option value=".5">0.5× Slow</option><option value=".75">0.75×</option><option value="1" selected>1× Normal</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2× Fast</option></select></label>
+    <label>Local caption file (.vtt)<input id="videoVaultCaptions" type="file" accept=".vtt,text/vtt"></label></div><p id="videoVaultInfo" class="hint">Open a video below. Playback position is remembered on this device.</p>
    <div class="video-vault-player-actions">
     <button id="videoVaultPrevious" class="small-btn">⏮ Previous</button>
     <button id="videoVaultNext" class="small-btn">Next ⏭</button>
@@ -361,6 +370,13 @@
     <button id="videoVaultPiP" class="small-btn" disabled>▣ Picture-in-picture</button>
     <button id="videoVaultDownload" class="small-btn" disabled>↓ Save original file</button>
     <button id="videoVaultSendTheater" class="small-btn" disabled>♫ Open in Media Theater</button>
+    <button id="videoVaultToGif" class="small-btn" disabled>▣ Open in Animation Forge</button>
+    <button id="videoVaultSnapshot" class="small-btn" disabled>↓ Save video frame PNG</button>
+   </div>
+   <div class="video-vault-bookmarks">
+   <h3>SCENE BOOKMARKS</h3><p class="hint">Save favorite moments in this video. Bookmarks and timecodes stay in your private local library.</p>
+   <div class="video-vault-bookmark-actions"><input id="videoVaultBookmarkTitle" maxlength="70" placeholder="Scene title (optional)"><button id="videoVaultBookmarkSave" class="small-btn">＋ Bookmark time</button></div>
+   <div id="videoVaultBookmarks" class="video-vault-bookmarks-list"></div>
    </div>
    <div class="checks companion-cinema-settings">
     <label><input id="videoVaultAutoNext" type="checkbox"> Automatically play the next saved video</label>
@@ -372,6 +388,48 @@
   <p class="hint">Play, resume, favorite, organize, or delete local copies. Video cover snapshots appear after the first time you watch each video.</p>
   <div id="videoVaultGrid" class="video-vault-grid"></div>
  </div>
+</section>
+
+<section class="studio" data-panel="life" id="lifeCommandStudio" hidden>
+ <div class="section-heading"><div><div class="eyebrow">32 / EVERYDAY COMPANION UTILITY</div><h2>Life Command <span class="subtitle">Your day, your routines, your important dates · completely private</span></h2></div></div>
+ <div class="life-hero">
+  <div><span class="eyebrow">PROXIMUS / PERSONAL PLANNING SYSTEM</span><h3>One place to organize what actually matters.</h3>
+   <p>Create tasks, keep a running habit streak, remember upcoming events, and export a calendar. Every entry is saved directly in this browser; no login, account, or server.</p></div>
+  <div class="life-metrics"><div><strong id="lifeTotal">0</strong><small>Total entries</small></div>
+   <div><strong id="lifeDue">0</strong><small>Next 7 days</small></div>
+   <div><strong id="lifeDone">0</strong><small>Done today</small></div>
+   <div><strong id="lifeRoutines">0</strong><small>Active repeats</small></div></div>
+ </div>
+ <p id="lifeAttention" class="life-attention" role="status">Your personal planner is ready.</p>
+ <div class="workspace image-grid life-workspace">
+  <div class="panel">
+   <h3>01 / CREATE OR EDIT AN ENTRY</h3><p class="hint">Capture a task, a repeating daily/weekly habit, a renewal, or an upcoming date. Use the same form to edit an existing entry.</p>
+   <form id="lifeForm" class="life-form">
+    <label>Title<input id="lifeTitle" maxlength="110" required placeholder="Finish a project, daily walk, membership renewal…"></label>
+    <div class="two"><label>Type<select id="lifeKind"><option value="task">Task / to-do</option><option value="routine">Habit / routine</option><option value="event">Important date</option></select></label>
+     <label>Priority<select id="lifePriority"><option value="normal">Normal</option><option value="high">High priority</option><option value="low">Low priority</option></select></label></div>
+    <div class="two"><label>Due date / first occurrence<input id="lifeDate" type="date"></label>
+     <label>Repeat<select id="lifeRepeat"><option value="none">Never (one-time)</option><option value="daily">Every day</option><option value="weekly">Every week</option><option value="monthly">Every month</option></select></label></div>
+    <label>Category<input id="lifeCategory" maxlength="38" placeholder="Personal, Work, Entertainment, Bills…"></label>
+    <label>Private note<textarea id="lifeNote" rows="3" maxlength="800" placeholder="Optional details or context"></textarea></label>
+    <div class="buttons"><button id="lifeSave" type="submit" class="primary">＋ Add to Life Command</button><button id="lifeCancelEdit" type="button" class="small-btn" hidden>Cancel editing</button></div>
+   </form>
+   <h3>02 / PRIVATE DATA PORTABILITY</h3><p class="hint">Your plans remain on this device. Export a JSON backup for PC/iPhone transfer, or an .ics calendar for compatible calendar apps. Background reminders are not available while the webpage is closed.</p>
+   <div class="buttons"><button id="lifeExport" class="small-btn">↓ Share / Save planner JSON</button><button id="lifeCalendar" class="small-btn">◷ Export .ics calendar</button></div>
+   <label class="upload"><input id="lifeImport" type="file" accept=".json,application/json"><b>＋ IMPORT LIFE COMMAND BACKUP</b><span>Restore or merge planner data from iPhone Files or PC</span></label>
+  </div>
+  <div class="panel life-board">
+   <div class="life-board-head"><div><h3>03 / MY DAILY COMMAND BOARD</h3><p id="lifeCount" class="hint">Loading your personal plans…</p></div>
+    <button id="lifeToday" class="small-btn">Today</button></div>
+   <label>Search tasks, routines and notes<input id="lifeSearch" type="search" placeholder="Search your planner…" autocomplete="off"></label>
+   <div class="two"><label>Type<select id="lifeFilterKind"><option value="all">Everything</option><option value="task">Tasks</option><option value="routine">Routines</option><option value="event">Dates / events</option></select></label>
+    <label>Show<select id="lifeFilterStatus"><option value="active">Active / outstanding</option><option value="all">All entries</option><option value="done">Completed today</option><option value="overdue">Overdue one-time items</option></select></label></div>
+   <div id="lifeList" class="life-list"></div>
+   <div class="buttons"><button id="lifeClearCompleted" class="small-btn">Remove finished one-time tasks</button></div>
+   <p id="lifeStatus" class="hint" role="status">Loading Life Command…</p>
+  </div>
+ </div>
+ <p class="hint">This is an in-app planner, not an alarm or server scheduler. Dates and routine status refresh when the app is active or reopened. For guaranteed calendar reminders, import the .ics file into your device's calendar and configure alerts there.</p>
 </section>
 
 <section class="studio" data-panel="theater" hidden>
