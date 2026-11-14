@@ -1,7 +1,9 @@
 // PROXIMUS Asset Alchemist v2.4 — Media Theater
 // Local playlist, cinematic playback, real Web Audio visualizer and poster captures.
-// Media remains in the current browser session unless explicitly saved by the user.
+// Queue items are session-local unless the user chooses to save their own music in browser IndexedDB.
 import {$,bytes,safe,stem,notice,blobCanvas,download,textFile,wrap} from './core.js';
+import {initLocalMusicLibrary} from './music-library.js';
+import {audioTrackId,isLocalAudio} from './music-library-core.js';
 
 const MAX_QUEUE=80,MAX_FILE=400000000;
 const THEMES={
@@ -383,6 +385,21 @@ export function initMediaTheater(app){
   if(!playlist.length)throw Error('Add local media first.');
   download(textFile(playlistManifest(playlist)),'PROXIMUS-MEDIA-PLAYLIST.json');
  }));
+ // Device-local music can survive page reloads; current session stays user-controlled.
+ initLocalMusicLibrary({
+  getCurrent:currentItem,
+  getQueued:()=>playlist,
+  addToQueue:async(file,id)=>{
+   if(playlist.length>=MAX_QUEUE)throw Error('Media Theater queue is full (80 items). Remove a queue item before adding another.');
+   if(!isLocalAudio(file))throw Error('The stored audio file is invalid.');
+   if(playlist.some(item=>item.kind==='audio'&&
+      (item.libraryId===id||(()=>{try{return audioTrackId(item.file)===id;}catch{return false;}})())))return false;
+   playlist.push({file,kind:'audio',libraryId:id});
+   drawList();
+   if(current===-1)await select(0,false);
+   return true;
+  }
+ });
  $('theaterStage').addEventListener('dblclick',()=>{$('theaterFullscreen').click();});
  drawList();drawVisualization(0);raf=requestAnimationFrame(animate);
  window.addEventListener('pagehide',()=>{
