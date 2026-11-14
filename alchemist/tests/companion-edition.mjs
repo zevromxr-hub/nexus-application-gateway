@@ -26,7 +26,7 @@ for(const oldInit of ['initBatch(app)','initIcons(app)','initSprites(app)','init
 for(const file of ['media-tools.js','releases/v3.1.0.json','releases/v3.3.0.json']){
  assert.ok(fs.existsSync(path.join(root,file)),'Do not delete archived studio source or prior release '+file);
 }
-assert.ok(app.includes("if(!names.some(n=>n.id===id))id='command';"),
+assert.ok(app.includes("if(!names.some(n=>n.id===id))id=collectedExports?'projects':'command';"),
  'Saved last-view preference must fall back to Companion Center');
 const groupIds=Object.values(COMPANION_GROUPS).flatMap(x=>x.items);
 assert.equal(new Set(groupIds).size,groupIds.length,'Companion categories cannot duplicate studio entries');
