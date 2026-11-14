@@ -1,21 +1,24 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Automated Discord Release Announcer",
-  "studio_count": 23,
-  "previous_version": "3.2.0",
+  "subtitle": "Cinematic Life Command — Entertainment & Everyday Utility",
+  "studio_count": 24,
+  "previous_version": "3.2.1",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Added a GitHub Actions release notifier that follows successful main-branch release validation and announces new published PROXIMUS versions to Discord automatically",
-    "Created branded Discord embeds with the true release changelog, version, published status, GitHub release notes and application link",
-    "Protected Discord webhook credentials through an encrypted DISCORD_RELEASE_WEBHOOK GitHub Actions secret; credentials are never placed in public code",
-    "Verified that GitHub Pages serves the new version before posting and prevented ordinary commits, pull requests, failed checks or repeated version numbers from triggering notifications",
-    "Added a safe manual dry-run preview and a Send current release action for testing a channel after the encrypted webhook secret is configured",
-    "Preserved PROXIMUS Companion Edition, its 23 active studios, Video Vault, Reactor IV, existing user data, Token Foundry and prior rollback releases"
+    "NEW Life Command Studio 32: private everyday organizer with tasks, important dates, priority, categories, notes and recurring daily, weekly or monthly routines",
+    "Life Command adds daily completion tracking, habit streaks, overdue and upcoming-date summaries, searchable task boards, and one-tap access from Companion Center and the iPhone navigation dock",
+    "Export or import Life Command JSON backups and share an ICS calendar for dated events, with local-only browser storage and no account or background notification claims",
+    "Enhanced Animation Forge with mobile, balanced, smooth and cinematic quality profiles, GIF frame/memory preflight, playhead trim shortcuts and exact duplicate-frame reduction",
+    "Improved Video Vault with saved scene bookmarks, renamable display titles, playback speed controls, session-only local VTT captions, frame PNG snapshots and metadata catalog export",
+    "Integrated direct Video Vault to Animation Forge handoff for saved local videos, automatically selecting a short GIF clip from the chosen playback timestamp",
+    "Expanded Media Theater with 10-second rewind, 30-second skip and precise A/B section loops for music or video",
+    "Refined iPhone-responsive interface while preserving 24 active Companion spaces, existing video files, projects, Reactor IV, Master Visual Identity and Token Foundry unchanged",
+    "Maintained secure automated GitHub-to-Discord release announcements with real changelog and no PC hosting required"
   ]
 }
