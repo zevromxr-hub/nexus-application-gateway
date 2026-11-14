@@ -1,0 +1,40 @@
+/* PROXIMUS v3.5.0 | Entertainment Overdrive — additive adaptive layouts */
+.overdrive-hub{position:relative;isolation:isolate;margin:16px 0 23px;padding:clamp(16px,2.1vw,28px);border:1px solid rgba(181,133,255,.32);border-radius:20px;background:radial-gradient(ellipse at 90% 5%,rgba(115,66,192,.25),transparent 50%),linear-gradient(145deg,rgba(19,17,42,.95),rgba(11,15,33,.94));box-shadow:0 12px 48px rgba(0,0,0,.18);overflow:hidden;min-width:0}
+.overdrive-hub:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#9a70ff,#46d1f8,#edb17a);pointer-events:none}
+.overdrive-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.overdrive-heading h3{margin:4px 0 6px;font-size:clamp(1.15rem,2vw,1.7rem);letter-spacing:.025em;color:#f4ecff}
+.overdrive-heading p{margin:0;color:#c1bed9;font-size:.89rem;max-width:680px}
+.overdrive-eyebrow{letter-spacing:.16em;font-size:.67rem;font-weight:800;color:#b5a0f6}
+.overdrive-ready{display:inline-block;border:1px solid rgba(154,197,249,.37);border-radius:999px;padding:7px 12px;color:#c9e8ff;font-size:.75rem;white-space:nowrap}
+.overdrive-cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}
+.overdrive-card{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:8px;padding:15px 12px;border:1px solid rgba(192,180,255,.2);border-radius:13px;background:linear-gradient(135deg,rgba(120,91,177,.13),rgba(8,11,30,.55));color:#f7f4ff;text-align:left;min-height:151px}
+button.overdrive-card{width:100%;cursor:pointer;transition:background .17s ease,border-color .17s ease,transform .17s ease}
+button.overdrive-card:hover{transform:translateY(-2px);background:rgba(102,77,170,.23);border-color:rgba(190,171,255,.6)}
+.overdrive-card strong{font-size:.92rem;line-height:1.25}
+.overdrive-card small{color:#c4bfe1;font-size:.75rem;line-height:1.45;overflow-wrap:anywhere}
+.overdrive-card .overdrive-symbol{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;font-size:1.3rem;background:rgba(121,85,198,.23)}
+.overdrive-future{border-style:dashed;opacity:.78}
+.overdrive-card .overdrive-tag{margin-top:auto;color:#a9e2fb;font-size:.69rem;font-weight:700;letter-spacing:.025em}
+.overdrive-scene-panel{display:grid;gap:12px;margin-top:15px;padding:15px;border:1px solid rgba(178,151,234,.25);border-radius:14px;background:rgba(6,11,29,.55)}
+.overdrive-scene-panel h4{margin:0;font-size:1rem;color:#eee8ff}
+.overdrive-form{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:10px}
+.overdrive-form label{min-width:0;display:flex;flex-direction:column;gap:5px;font-size:.77rem;color:#cec7e9}
+.overdrive-form input,.overdrive-form select,.overdrive-cinema-controls input,.overdrive-cinema-controls select{width:100%;min-width:0;max-width:100%;border-radius:9px}
+.overdrive-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.overdrive-actions button{white-space:normal}
+.overdrive-import{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.overdrive-import input{max-width:210px;font-size:.76rem}
+.overdrive-status{margin:0;color:#bbd9dc;font-size:.8rem;min-height:1.2em;overflow-wrap:anywhere}
+.overdrive-status[data-error="true"]{color:#ffc0bc}
+.overdrive-cinema-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px;align-items:end;margin:12px 0 16px;padding:13px;border:1px solid rgba(175,148,235,.28);border-radius:12px;background:rgba(15,12,36,.76)}
+.overdrive-cinema-controls .overdrive-check{display:flex;align-items:center;gap:8px;grid-column:1/-1}
+.overdrive-cinema-controls .overdrive-check input{width:auto;accent-color:#9972ff}
+.overdrive-cinema-controls label{color:#d7c9fb;font-size:.79rem}
+.overdrive-cinema-controls .overdrive-status{grid-column:1/-1}
+.video-vault-stage.overdrive-ambient,.theater-stage.overdrive-ambient{--overdrive-rgb:140,106,255;--overdrive-strength:.62;border:1px solid rgba(var(--overdrive-rgb),.46);box-shadow:0 0 calc(42px * var(--overdrive-strength)) rgba(var(--overdrive-rgb),.57),inset 0 0 20px rgba(var(--overdrive-rgb),.1);transition:box-shadow .5s ease,border-color .5s ease}
+.overdrive-ambient[data-overdrive-quality="efficiency"]{transition:none}
+.overdrive-ambient[data-overdrive-quality="overdrive"]{box-shadow:0 0 calc(65px * var(--overdrive-strength)) rgba(var(--overdrive-rgb),.62),inset 0 0 28px rgba(var(--overdrive-rgb),.15)}
+@media(max-width:1150px){.overdrive-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:750px){.overdrive-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.overdrive-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.overdrive-form label:first-child{grid-column:1/-1}.overdrive-card{min-height:137px}.overdrive-heading{align-items:flex-start}.overdrive-ready{white-space:normal}}
+@media(max-width:420px){.overdrive-hub{padding:14px}.overdrive-card{min-height:140px;padding:12px 10px}.overdrive-card strong{font-size:.82rem}.overdrive-form{grid-template-columns:1fr}.overdrive-form label:first-child{grid-column:auto}.overdrive-cinema-controls{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.overdrive-card{transition:none}.overdrive-card:hover{transform:none}.video-vault-stage.overdrive-ambient,.theater-stage.overdrive-ambient{transition:none}}
