@@ -1,0 +1,79 @@
+/* PROXIMUS v3.5.2 — Video Vault opaque cinematic matte. Deliberately scoped only to the Vault. */
+#videoVaultStudio .video-vault-cinema{
+ background:#0a0913!important; /* Override the optional translucent global Identity glass theme. */
+ background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ isolation:isolate;
+ border-color:#504264;
+}
+#videoVaultStudio .video-vault-stage{
+ position:relative;isolation:isolate;z-index:0;
+ background:#000!important;background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+ overflow:hidden;
+}
+#videoVaultStudio .video-vault-stage::before{
+ content:"";position:absolute;inset:0;z-index:0;
+ background:#000;opacity:1;pointer-events:none;
+}
+#videoVaultStudio #videoVaultPlayer{
+ position:relative;z-index:1;
+ display:block;width:100%;height:100%;min-height:0;max-width:100%;
+ background:#000!important;background-image:none!important;
+ opacity:1!important;mix-blend-mode:normal!important;
+ filter:none!important;-webkit-filter:none!important;
+ -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+ object-fit:var(--vault-video-fit,contain);
+ -webkit-mask-image:none!important;mask-image:none!important;
+}
+#videoVaultStudio .video-vault-stage.overdrive-ambient{
+ /* Keep the optional ambient effect OUTSIDE the video, never as an inset/overlay. */
+ box-shadow:0 0 calc(42px * var(--overdrive-strength,.62)) rgba(var(--overdrive-rgb,140,106,255),.45),0 18px 36px #0009;
+}
+#videoVaultStudio .video-vault-stage.overdrive-ambient[data-overdrive-quality="overdrive"]{
+ box-shadow:0 0 calc(60px * var(--overdrive-strength,.62)) rgba(var(--overdrive-rgb,140,106,255),.55),0 18px 36px #0009;
+}
+#videoVaultStudio .video-vault-stage:not(.overdrive-ambient){box-shadow:0 16px 38px #000b}
+#videoVaultStudio .video-vault-closing-controls{
+ display:flex;gap:10px;align-items:end;flex-wrap:wrap;
+ padding:12px 13px;background:#10101a;border:1px solid #514366;border-radius:12px;
+ margin:11px 0 14px;position:relative;z-index:1;
+}
+#videoVaultStudio .video-vault-closing-controls label{flex:1 1 190px;margin:0}
+#videoVaultStudio .video-vault-closing-controls select{width:100%;min-width:0}
+#videoVaultStudio .video-vault-closing-controls button{min-height:43px;white-space:normal}
+#videoVaultStudio #videoVaultClarityStatus{flex-basis:100%;margin:0;color:#9be0c8}
+#videoVaultStudio.vault-focus-mode .video-vault-intro,
+#videoVaultStudio.vault-focus-mode .video-vault-layout>.panel:first-child,
+#videoVaultStudio.vault-focus-mode .video-vault-library{display:none!important}
+#videoVaultStudio.vault-focus-mode .video-vault-layout{display:grid;grid-template-columns:minmax(0,1fr)!important}
+#videoVaultStudio.vault-focus-mode .video-vault-cinema{width:100%;max-width:none}
+#videoVaultStudio.vault-focus-mode .video-vault-stage{min-height:0;aspect-ratio:16/9}
+#videoVaultStudio.vault-focus-mode .video-vault-stage video{max-height:min(78dvh,860px)}
+.theater-view-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0;
+ padding:12px;border:1px solid #55426b;border-radius:11px;background:#100e21}
+.theater-view-controls label{flex:1 1 200px;margin:0}
+.theater-view-controls select{width:100%}
+.theater-view-controls button{min-height:43px}
+.theater-view-controls #theaterViewStatus{flex-basis:100%;margin:0;font-size:11px}
+.studio[data-panel="theater"] #theaterVideo{object-fit:var(--theater-video-fit,contain);background:#050509}
+.studio[data-panel="theater"].theater-wide-mode .workspace.image-grid{
+ grid-template-columns:minmax(0,1fr)!important;
+}
+.studio[data-panel="theater"].theater-wide-mode .workspace.image-grid>.panel:nth-child(2){order:-1}
+.studio[data-panel="theater"].theater-wide-mode #theaterStage{min-height:clamp(230px,55vw,600px)}
+.animation-quick-clips{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:9px 0 15px;
+ padding:9px 11px;background:#141126;border:1px solid #4d3f6f;border-radius:11px}
+.animation-quick-clips strong{font-size:11px;color:#d8c0ff}
+.animation-quick-clips button{min-height:40px}
+@media(max-width:640px){
+ #videoVaultStudio .video-vault-closing-controls{align-items:stretch}
+ #videoVaultStudio .video-vault-closing-controls button{flex:1 1 125px}
+ .theater-view-controls button{width:100%}
+ .animation-quick-clips button{flex:1}
+}
+@media(prefers-reduced-motion:reduce){
+ #videoVaultStudio #videoVaultPlayer{transition:none!important}
+}
