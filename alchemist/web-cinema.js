@@ -6,6 +6,7 @@ import {
  normalizeWebCinemaLibrary,addWebCinemaLink,filterWebCinemaLibrary,
  webCinemaBackup,readWebCinemaBackup
 } from './web-cinema-core.js';
+import {WEB_CINEMA_COMPAT_MODE_KEY,normalizeFrameMode,webCinemaFramePolicy} from './web-cinema-compat.js';
 
 export function initWebCinemaGateway(){
  const root=$('webCinemaGateway'),form=$('webCinemaForm'),input=$('webCinemaUrl'),
@@ -15,6 +16,19 @@ export function initWebCinemaGateway(){
   status=$('webCinemaStatus'),list=$('webCinemaSavedList');
  if(!root||!form||!iframe||!video)return;
  let saved=[],active=null,currentSavedId=null,history=[],historyIndex=-1,lastPositionSave=0;
+ const help=$('webCinemaHelp'),helpText=$('webCinemaHelpText');
+ const browserIsMobile=/iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+ let helpTimer=null,mode='compatible',directTrial=false;
+ try{mode=normalizeFrameMode(localStorage.getItem(WEB_CINEMA_COMPAT_MODE_KEY));}catch{}
+ $('webCinemaFrameMode').value=mode;
+ function showHelp(message){
+  if(!help||!helpText)return;
+  helpText.textContent=message;help.hidden=false;
+ }
+ function clearHelp(){
+  if(helpTimer!==null){clearTimeout(helpTimer);helpTimer=null;}
+  if(help)help.hidden=true;
+ }
  try{saved=normalizeWebCinemaLibrary(JSON.parse(localStorage.getItem(WEB_CINEMA_KEY)||'[]'));}catch{}
  const findCurrent=()=>saved.find(item=>item.id===currentSavedId)||null;
  const say=(message,bad=false)=>{status.textContent=message;status.dataset.error=bad?'true':'false';};
@@ -23,13 +37,14 @@ export function initWebCinemaGateway(){
   catch{say('Saved links are available this session, but browser storage is full/unavailable. Export a link backup.',true);return false;}
  }
  function capturePosition(){
-  if(active?.kind!=='direct'||!currentSavedId)return;
+  if(active?.kind!=='direct'||directTrial||!currentSavedId)return;
   const item=findCurrent();
   if(!item||!Number.isFinite(video.currentTime))return;
   item.position=Math.max(0,Math.min(432000,video.currentTime));
   write();
  }
  function stopMedia(){
+  clearHelp();
   if(active?.kind==='direct')capturePosition();
   video.pause();video.removeAttribute('src');video.load();video.hidden=true;
   iframe.removeAttribute('src');iframe.hidden=true;
@@ -41,15 +56,19 @@ export function initWebCinemaGateway(){
   $('webCinemaReload').disabled=!active;
   $('webCinemaExternal').disabled=!active;
   $('webCinemaFullscreen').disabled=!active||active.kind==='external';
+  $('webCinemaTryVideo').disabled=!active||active.kind!=='website';
  }
  function activeTitle(){
   return findCurrent()?.title||title.value.trim()||active?.label||'Video or website';
  }
- function navigate(raw,{addHistory=true}={}){
+ function navigate(raw,{addHistory=true,forceVideo=false}={}){
   let link;
   try{link=classifyWebCinemaUrl(raw);}
   catch(error){say(error.message,true);return false;}
   stopMedia();
+  directTrial=forceVideo&&link.kind==='website';
+  if(directTrial)link={...link,kind:'direct',label:'Native video trial'};
+
   // Keep a single active Video Vault video audio source on iPhone and PC.
   const localPlayer=$('videoVaultPlayer');if(localPlayer&&!localPlayer.paused)localPlayer.pause();
   active=link;currentSavedId=saved.find(item=>item.url===link.url)?.id||null;
@@ -63,7 +82,7 @@ export function initWebCinemaGateway(){
    history.push(link.url);if(history.length>40)history.shift();
    historyIndex=history.length-1;
   }
-  tag.textContent=({youtube:'YOUTUBE',vimeo:'VIMEO',website:'WEBSITE',direct:'VIDEO FILE',external:'EXTERNAL'})[link.kind]||'LINK';
+  tag.textContent=({youtube:'YOUTUBE',vimeo:'VIMEO','official-video':'VIDEO PLAYER',website:'WEBSITE',direct:'VIDEO FILE',external:'EXTERNAL'})[link.kind]||'LINK';
   now.textContent=activeTitle();controls();renderSaved();
   if(link.kind==='external'){
    say(link.reason+' Use Open externally for this address.',true);return true;
@@ -71,18 +90,31 @@ export function initWebCinemaGateway(){
   blank.hidden=true;
   if(link.kind==='direct'){
    video.hidden=false;video.preload='metadata';video.src=link.url;video.load();
-   say('Direct media ready. Tap Play. Codec support, range requests and source availability depend on the host and browser.');return true;
+   say(directTrial?'Testing the address as a direct video stream. This works only if it serves video bytes, not a normal webpage.':'Direct media ready. Tap Play. Codec support, range requests and source availability depend on the host and browser.');return true;
   }
+  // iOS Safari often needs the site's true cross-origin identity and the ability
+  // to request user-approved third-party storage; an opaque-origin sandbox can
+  // cause a blank player even for sites that permit embedding.
+  const policy=webCinemaFramePolicy(link.kind,link.embed,{
+   appOrigin:location.origin,mode
+  });
+  if(!policy.allowed){blank.hidden=false;active={...link,kind:'external'};
+   controls();say(policy.reason+' Use Open externally.',true);return true;}
+  iframe.setAttribute('sandbox',policy.sandbox);
+  iframe.setAttribute('allow',policy.allow);
+  iframe.referrerPolicy=policy.referrerPolicy;
+  iframe.loading=policy.loading;
   iframe.hidden=false;
-  // Trusted official player embeds can use their own origin. Untrusted generic
-  // websites run without allow-same-origin, popups or top-navigation permissions.
-  const trusted=link.kind==='youtube'||link.kind==='vimeo';
-  iframe.setAttribute('sandbox',trusted?'allow-scripts allow-same-origin allow-presentation':'allow-scripts allow-forms allow-presentation');
-  iframe.setAttribute('allow',trusted?'fullscreen; picture-in-picture; encrypted-media; autoplay':'fullscreen; picture-in-picture');
-  iframe.referrerPolicy=trusted?'strict-origin-when-cross-origin':'no-referrer';
   iframe.src=link.embed;
-  say(trusted?'Official embedded player requested. If its owner blocks embedding, use Open externally.':
-   'Website preview requested in an isolated frame. If it stays blank or blocks features, use Open externally.');
+  say(link.kind==='website'?'Website requested in '+policy.mode+' mode. Some websites may still block framing.':
+   'Official player requested. Tap Play inside the frame; access and embed rules remain controlled by the provider.');
+  if(browserIsMobile){
+   const target=link.url;
+   helpTimer=setTimeout(()=>{
+    if(active?.url!==target||iframe.hidden||!root.open)return;
+    showHelp('Still seeing a blank page? Tap Reload or switch Viewing compatibility options. If the website forbids embedding, it cannot be forced to play inside PROXIMUS.');
+   },8500);
+  }
   return true;
  }
  function renderSaved(){
@@ -161,6 +193,19 @@ export function initWebCinemaGateway(){
   if(historyIndex<history.length-1){historyIndex++;navigate(history[historyIndex],{addHistory:false});}
  });
  $('webCinemaReload').addEventListener('click',()=>{if(active)navigate(active.url,{addHistory:false});});
+ $('webCinemaTryVideo').addEventListener('click',()=>{
+  if(active?.kind==='website')navigate(active.url,{addHistory:false,forceVideo:true});
+ });
+ $('webCinemaFrameMode').addEventListener('change',event=>{
+  mode=normalizeFrameMode(event.target.value);
+  try{localStorage.setItem(WEB_CINEMA_COMPAT_MODE_KEY,mode);}catch{}
+  if(active&&['website','youtube','vimeo','official-video'].includes(active.kind))navigate(active.url,{addHistory:false});
+  else say('Viewing mode saved. It applies to the next embedded website or player you open.');
+ });
+ $('webCinemaHelpDismiss').addEventListener('click',clearHelp);
+ iframe.addEventListener('error',()=>{
+  if(!iframe.hidden)showHelp('This website or player could not be displayed. Try Reload or a different viewing mode. Some sites do not permit embedding.');
+ });
  $('webCinemaStop').addEventListener('click',()=>{
   stopMedia();say('Playback and website preview stopped. Use Reload or a saved link to view again.');
  });
@@ -188,7 +233,11 @@ export function initWebCinemaGateway(){
  video.addEventListener('pause',capturePosition);
  video.addEventListener('ended',()=>{const item=findCurrent();if(item){item.position=0;write();renderSaved();}});
  video.addEventListener('error',()=>{
-  if(!video.hidden)say('This source could not be played. It may be unavailable, expired, protected, or use a codec unsupported by this browser. Try Open externally.',true);
+  if(!video.hidden){
+   say(directTrial?'This URL did not provide decodable video data. It may be a webpage rather than a direct media file. Tap Reload to return to the website preview.':
+    'This source could not be played. It may be unavailable, expired, protected, or use a codec unsupported by this browser. Try Reload or Open externally.',true);
+   showHelp('Native playback could not read this URL. Video pages and session-protected links are not necessarily direct video files.');
+  }
  });
  $('webCinemaSearch').addEventListener('input',renderSaved);
  $('webCinemaFilter').addEventListener('change',renderSaved);
