@@ -32,7 +32,7 @@ const song={name:'My Song.mp3',size:456789,type:'audio/mpeg',lastModified:12345}
 assert.equal(isLocalAudio(song),true);assert.equal(isLocalAudio({name:'Track.FLAC',size:12}),true);
 assert.equal(isLocalAudio({name:'movie.mp4',type:'video/mp4'}),false);
 assert.equal(isLocalAudio({name:'random.exe',type:'application/octet-stream'}),false);
-assert.equal(audioTrackId(song),'My Song.mp3\u0000456789\u000012345');
+assert.equal(audioTrackId(song),JSON.stringify(['My Song.mp3',456789,12345]));
 assert.throws(()=>audioTrackId({...song,size:250000001}),/250 MB/);
 assert.throws(()=>audioTrackId({...song,size:0}),/250 MB/);
 const record={id:audioTrackId(song),name:song.name,bytes:song.size,mime:song.type,blob:{size:song.size},addedAt:10};
