@@ -90,3 +90,27 @@
 .arcade-daily-panel .arcade-actions{margin:2px 0 4px}
 .arcade-daily-panel button{min-height:43px}
 @media(max-width:520px){.arcade-daily-panel{padding:12px}.arcade-daily-panel .arcade-actions button{flex:1 1 150px}}
+
+
+/* Saved music — explicit opt-in IndexedDB persistence inside existing Media Theater. */
+.theater-music-library{min-width:0;margin:16px 0 18px;padding:15px;border:1px solid #6b548c;border-radius:14px;background:linear-gradient(145deg,#1b1532,#0d0c1c)}
+.theater-music-top{display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.theater-music-top h3{font-size:clamp(14px,1.7vw,18px);color:#f0dfff;margin:5px 0 6px}
+.theater-music-top p{margin:0}
+.theater-music-counter{color:#dfc8ff;font-size:11px;border:1px solid #624583;border-radius:999px;padding:6px 11px;white-space:nowrap}
+.theater-music-actions{display:flex;flex-wrap:wrap;gap:8px;margin:9px 0 12px}
+.theater-music-actions button{min-height:41px;white-space:normal}
+#theaterMusicStatus[data-error="true"]{color:#ffb8c6}
+.theater-music-list{display:flex;flex-direction:column;gap:6px;max-height:275px;overflow:auto;overscroll-behavior:contain;border:1px solid #4d405f;border-radius:10px;padding:7px;background:#0a0a18}
+.theater-saved-track{display:flex;align-items:center;gap:7px;padding:9px;background:#181429;border:1px solid #514064;border-radius:10px;min-width:0}
+.theater-saved-track-info{display:flex;flex-direction:column;min-width:0;flex:1}
+.theater-saved-track-info strong{font-size:12px;white-space:normal;overflow-wrap:anywhere;color:#ede1fc}
+.theater-saved-track-info small{font-size:10px;color:#b6a3cb}
+.theater-saved-track button{flex:none;min-height:38px;padding:8px 10px;white-space:nowrap}
+@media(max-width:590px){
+ .theater-music-library{padding:12px}
+ .theater-saved-track{flex-wrap:wrap}
+ .theater-saved-track-info{flex-basis:100%}
+ .theater-saved-track button{flex:1 1 120px}
+ .theater-music-actions button{flex:1 1 140px}
+}
