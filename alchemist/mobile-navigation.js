@@ -115,7 +115,7 @@ export function initMobileNavigation(app){
   if(modal.open)modal.close();
  });
  document.addEventListener('keydown',e=>{
-  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='m'&&matchMedia('(max-width:760px)').matches){
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='m'&&document.body.dataset.deviceLayout==='mobile'){
    e.preventDefault();modal.open?modal.close():openPicker();
   }
  });
@@ -123,7 +123,7 @@ export function initMobileNavigation(app){
  // buttons, inputs, carousels and browser selection. Never steal vertical scrolling.
  let start=null;
  document.addEventListener('touchstart',e=>{
-  if(!matchMedia('(max-width:760px)').matches||modal.open||e.touches.length!==1)return;
+  if(document.body.dataset.deviceLayout!=='mobile'||modal.open||e.touches.length!==1)return;
   const t=e.touches[0];if(t.clientX>24)return;
   if(e.target.closest('input,textarea,select,button,a,video,audio,canvas,[contenteditable],dialog,.theater-stage'))return;
   start={x:t.clientX,y:t.clientY};
