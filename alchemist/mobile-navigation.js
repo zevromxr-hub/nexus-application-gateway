@@ -1,6 +1,7 @@
 // PROXIMUS | Asset Alchemist v3.1 — iPhone studio navigation
 // No route reloads: moves within the existing 31 studios and preserves their state.
 import {$} from './core.js';
+import {readOrbitPins,writeOrbitPins} from './orbit-interface.js';
 export const MOBILE_PINS='proximus-mobile-navigation-pins-v1';
 export const MOBILE_RECENT='proximus-mobile-navigation-recent-v1';
 export function mobileNavigationList(studios,{term='',favorites=[],recent=[],mode='all'}={}){
@@ -24,6 +25,7 @@ export function initMobileNavigation(app){
  try{recent=JSON.parse(localStorage.getItem(MOBILE_RECENT)||'[]');if(!Array.isArray(recent))recent=[];}catch(e){recent=[];}
  const known=new Set(app.studios.map(s=>s.id));
  pins=[...new Set(pins.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,18);
+ pins=readOrbitPins().filter(id=>known.has(id)).slice(0,18);
  recent=[...new Set(recent.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,30);
  function save(){
   try{
@@ -69,7 +71,7 @@ export function initMobileNavigation(app){
    favorite.textContent=pins.includes(s.id)?'★':'☆';
    favorite.addEventListener('click',()=>{
     pins=pins.includes(s.id)?pins.filter(x=>x!==s.id):[...pins,s.id].slice(0,18);
-    save();render();
+    save();writeOrbitPins(pins);render();
    });
    row.append(open,favorite);grid.append(row);
   }
@@ -100,6 +102,10 @@ export function initMobileNavigation(app){
  $('mobileStudioMode').addEventListener('change',e=>{mode=e.target.value;render();});
  $('mobileStudioTop').addEventListener('click',()=>{modal.close();window.scrollTo({top:0,behavior:'smooth'});});
  modal.addEventListener('click',e=>{if(e.target===modal)modal.close();});
+ document.addEventListener('proximus-orbit-pins-changed',event=>{
+  pins=(event.detail?.pins||[]).filter(id=>known.has(id)).slice(0,18);save();
+  if(modal.open)render();
+ });
  document.addEventListener('proximus-view-changed',e=>{
   const id=e.detail?.studio;
   if(!known.has(id))return;
