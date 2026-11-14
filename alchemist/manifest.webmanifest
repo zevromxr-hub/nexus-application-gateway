@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.6.3 — Web Cinema Embed First with official video player sources, native playback and saved watch-later collections.",
+  "description": "PROXIMUS v3.6.4 ORBIT — large mobile video imports with browser-local streamed storage, wider file compatibility and no-copy playback from iPhone Files.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

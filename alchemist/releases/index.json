@@ -4,6 +4,11 @@
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
     {
+      "version": "3.6.4",
+      "title": "Video Vault Ultra Import — Large Local Files & Wider Format Support",
+      "date": "2026-11-14"
+    },
+    {
       "version": "3.6.3",
       "title": "Web Cinema Embed First — Persistent Player Sources",
       "date": "2026-11-14"

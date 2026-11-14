@@ -5,10 +5,11 @@ import {$,bytes,download,notice,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
 import {normalizeBookmarks,makeVideoCatalog} from './media-suite-core.js';
 import {
- VIDEO_VAULT_DB,VIDEO_VAULT_SCHEMA,VIDEO_VAULT_MAX_ITEMS,videoFileType,
- createVideoMetadata,validateVideoFile,normalizeVideoCollection,
+ VIDEO_VAULT_DB,VIDEO_VAULT_SCHEMA,VIDEO_VAULT_MAX_ITEMS,VIDEO_VAULT_CHUNK_BYTES,videoFileType,
+ createVideoMetadata,validateVideoFile,videoStorageSlices,videoPlaybackHint,normalizeVideoCollection,
  sortVideoLibrary,videoTime,vaultStorageWarning
 } from './video-vault-core.js';
+import {saveVideoOpfs,readVideoOpfs,deleteVideoOpfs,isVideoOpfsSupported} from './video-vault-opfs.js';
 
 let database=null;
 function openVideoDB(){
@@ -20,6 +21,7 @@ function openVideoDB(){
    const db=request.result;
    if(!db.objectStoreNames.contains('items'))db.createObjectStore('items',{keyPath:'id'});
    if(!db.objectStoreNames.contains('files'))db.createObjectStore('files',{keyPath:'id'});
+   if(!db.objectStoreNames.contains('chunks'))db.createObjectStore('chunks',{keyPath:'id'});
   };
   request.onsuccess=()=>{
    database=request.result;
@@ -46,18 +48,86 @@ async function transaction(stores,mode,run){
 export async function listStoredVideos(){
  return transaction(['items'],'readonly',store=>store.getAll());
 }
-export async function saveStoredVideo(meta,blob){
+// Additive storage v2. Existing IndexedDB 'files' videos remain playable, unchanged.
+const videoChunkRange=id=>IDBKeyRange.bound(id+':',id+':\uffff');
+const importedVideoError=error=>{
+ if(error?.name==='AbortError')return 'Import canceled. Partial local copy was discarded.';
+ if(error?.name==='QuotaExceededError')return 'Not enough browser-managed storage for this copy. Free space or use Play without saving; your original file is unchanged.';
+ if(error?.name==='NotReadableError')return 'The video file could not be read. Move it into iPhone Files (On My iPhone), then try again.';
+ return error?.message||'Local video storage failed unexpectedly.';
+};
+async function dropChunkFiles(id){
+ try{
+  const keys=await transaction(['chunks'],'readonly',store=>store.getAllKeys(videoChunkRange(id)));
+  if(keys?.length)await transaction(['chunks'],'readwrite',store=>{
+   for(const key of keys)store.delete(key);
+  });
+ }catch{} // Best-effort cleanup for incomplete imports only.
+}
+async function saveVideoChunked(meta,file,{signal,onProgress}={}){
+ const count=videoStorageSlices(file.size),id=meta.id;
+ try{
+  for(let i=0;i<count;i++){
+   if(signal?.aborted)throw Object.assign(Error('Video import canceled.'),{name:'AbortError'});
+   const start=i*VIDEO_VAULT_CHUNK_BYTES,end=Math.min(file.size,start+VIDEO_VAULT_CHUNK_BYTES);
+   // The browser copies one file-backed Blob slice at a time instead of one huge IDB value.
+   await transaction(['chunks'],'readwrite',store=>store.put({
+    id:id+':'+i,blob:file.slice(start,end)
+   }));
+   onProgress?.(end,file.size,'chunked');
+  }
+  if(signal?.aborted)throw Object.assign(Error('Video import canceled.'),{name:'AbortError'});
+  meta.storage='chunks';meta.chunkCount=count;
+  await transaction(['items'],'readwrite',store=>store.put(meta));
+  return meta;
+ }catch(error){await dropChunkFiles(id);throw error;}
+}
+async function readVideoChunked(meta){
+ const rows=await transaction(['chunks'],'readonly',store=>store.getAll(videoChunkRange(meta.id)));
+ const count=meta.chunkCount||videoStorageSlices(meta.bytes);
+ if(!rows||rows.length!==count)throw Error('Some saved video chunks are missing. Keep the original video in Files/Photos and import it again.');
+ const parts=new Array(count);
+ for(const row of rows){
+  const number=Number(row.id.slice(meta.id.length+1));
+  if(!Number.isSafeInteger(number)||number<0||number>=count||!(row.blob instanceof Blob))
+   throw Error('Saved video chunk data is damaged.');
+  parts[number]=row.blob;
+ }
+ if(parts.some(x=>!(x instanceof Blob)))throw Error('Saved video has missing pieces.');
+ const reconstructed=new Blob(parts,{type:meta.mime||'video/mp4'});
+ if(reconstructed.size!==meta.bytes)throw Error('Saved video size does not match the imported original.');
+ return reconstructed;
+}
+export async function saveStoredVideo(meta,blob,{signal,onProgress}={}){
  if(!(blob instanceof Blob)||blob.size!==meta.bytes)throw Error('Video import failed integrity check.');
- // One atomic transaction: no orphan metadata if file storage is full.
- await transaction(['items','files'],'readwrite',(items,files)=>{
-  items.put(meta);files.put({id:meta.id,blob});
- });
+ if(signal?.aborted)throw Object.assign(Error('Import canceled.'),{name:'AbortError'});
+ if(isVideoOpfsSupported()){
+  let output;
+  try{output=await saveVideoOpfs(meta,blob,{signal,onProgress});}
+  catch(error){
+   if(!['NotSupportedError','SecurityError'].includes(error?.name))throw error;
+  }
+  if(output?.supported){
+   meta.storage='opfs';meta.opfsName=output.fileName;
+   try{await transaction(['items'],'readwrite',store=>store.put(meta));}
+   catch(error){await deleteVideoOpfs(meta).catch(()=>{});throw error;}
+   document.dispatchEvent(new Event('proximus-video-vault-changed'));
+   return meta;
+  }
+ }
+ // Compatible with older Safari implementations where OPFS createWritable is missing.
+ const saved=await saveVideoChunked(meta,blob,{signal,onProgress});
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
- return meta;
+ return saved;
 }
 export async function loadStoredVideo(id){
+ const meta=await transaction(['items'],'readonly',store=>store.get(id));
+ if(!meta)throw Error('This video is not available in your browser’s local library.');
+ if(meta.storage==='opfs')return readVideoOpfs(meta);
+ if(meta.storage==='chunks')return readVideoChunked(meta);
+ // Legacy videos are still read from their original unmodified IndexedDB store.
  const record=await transaction(['files'],'readonly',store=>store.get(id));
- if(!(record?.blob instanceof Blob))throw Error('This video is not available in this browser’s local storage.');
+ if(!(record?.blob instanceof Blob))throw Error('The original IndexedDB video file was not found.');
  return record.blob;
 }
 export async function updateStoredVideo(meta){
@@ -65,7 +135,19 @@ export async function updateStoredVideo(meta){
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 export async function removeStoredVideo(id){
- await transaction(['items','files'],'readwrite',(items,files)=>{items.delete(id);files.delete(id);});
+ const meta=await transaction(['items'],'readonly',store=>store.get(id));
+ if(meta?.storage==='chunks'){
+  const keys=await transaction(['chunks'],'readonly',store=>store.getAllKeys(videoChunkRange(id)));
+  await transaction(['items','chunks'],'readwrite',(items,chunks)=>{
+   items.delete(id);for(const key of keys||[])chunks.delete(key);
+  });
+ }else{
+  // The original v1 transaction remains intact for existing media.
+  await transaction(['items','files'],'readwrite',(items,files)=>{
+   items.delete(id);files.delete(id);
+  });
+  if(meta?.storage==='opfs')await deleteVideoOpfs(meta).catch(()=>{});
+ }
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 function newId(){
@@ -86,6 +168,10 @@ export function initVideoVault(app){
  const search=$('videoVaultSearch'),filter=$('videoVaultFilter'),sort=$('videoVaultSort');
  const records=new Map();
  let activeId=null,currentURL=null,lastSave=0,posterWorking=false,persistent=null,captionURL=null;
+ let sessionFile=null,importController=null,lastProgress=0;
+ const meter=$('videoVaultImportMeter'),progress=$('videoVaultImportProgress'),detail=$('videoVaultImportDetail');
+ const importButton=$('videoVaultImportNow'),cancelButton=$('videoVaultCancelImport'),
+  previewButton=$('videoVaultPlayFromFiles'),keepSession=$('videoVaultKeepSession');
  const AUTO_NEXT='proximus-video-vault-auto-next-v1';
  const autoNext=$('videoVaultAutoNext');
  try{autoNext.checked=localStorage.getItem(AUTO_NEXT)==='1';}catch(e){}
@@ -123,7 +209,7 @@ export function initVideoVault(app){
   video.querySelectorAll('track[data-vault-caption]').forEach(t=>t.remove());
   $('videoVaultCaptions').value='';
   if(currentURL)URL.revokeObjectURL(currentURL);
-  currentURL=null;activeId=null;lastSave=0;
+  currentURL=null;activeId=null;sessionFile=null;keepSession.disabled=true;lastSave=0;
   metaLabel.textContent='Select a saved video';
   info.textContent='Original videos stored only on this device.';
   $('videoVaultDownload').disabled=true;
@@ -211,7 +297,8 @@ export function initVideoVault(app){
   let estimate=null;
   try{if(navigator.storage?.estimate)estimate=await navigator.storage.estimate();}catch(e){}
   try{persistent=await navigator.storage?.persisted?.()??null;}catch(e){persistent=null;}
-  storage.textContent=quotaText(estimate)+' · '+(persistent===true?'persistent mode granted':persistent===false?'best-effort mode':'storage mode unknown');
+  storage.textContent=quotaText(estimate)+' · '+(persistent===true?'persistent mode granted':persistent===false?'best-effort mode':'storage mode unknown')+
+   ' · local media: '+(isVideoOpfsSupported()?'OPFS preferred / 16 MB chunk fallback':'16 MB chunked IndexedDB')+' · no cloud upload';
   $('videoVaultStorageHelp').textContent=vaultStorageWarning(persistent);
   $('videoVaultPersist').disabled=persistent===true||!navigator.storage?.persist;
  }
@@ -225,34 +312,75 @@ export function initVideoVault(app){
    return result;
   }catch(e){await refreshStorage();return false;}
  }
+ function reportImportProgress(done,total,mode,name,force=false){
+  const now=Date.now();if(!force&&done<total&&now-lastProgress<180)return;
+  lastProgress=now;progress.value=Math.min(100,Math.round(done/Math.max(total,1)*100));
+  const action=mode==='OPFS'?'Streaming local copy':mode==='chunked'?'Saving in small local chunks':'Preparing file';
+  detail.textContent=action+' · '+bytes(done)+' / '+bytes(total)+' ('+progress.value+'%) · '+name;
+ }
  async function importFiles(files){
-  if(!files.length)return;
-  $('videoVaultImportNow').disabled=true;
-  let added=0,skipped=0;
+  if(!files.length)return {added:0,skipped:0};
+  if(importController){say('A video import is already running. Cancel it before starting another.',true);return {added:0,skipped:files.length};}
+  const controller=new AbortController();importController=controller;
+  importButton.disabled=true;previewButton.disabled=true;cancelButton.disabled=false;
+  meter.hidden=false;progress.value=0;lastProgress=0;
+  let added=0,skipped=0,canceled=false;
+  const errors=[];
   try{
    for(const file of files){
-    if(records.size>=VIDEO_VAULT_MAX_ITEMS){say('Video Vault is limited to 500 titles on this device.',true);break;}
+    if(controller.signal.aborted){canceled=true;break;}
+    if(records.size>=VIDEO_VAULT_MAX_ITEMS){errors.push('Library title limit reached (500 videos).');break;}
     let meta;
     try{
      meta=createVideoMetadata(file,newId(),Date.now(),{mobile});
      if([...records.values()].some(r=>r.fingerprint===meta.fingerprint)){skipped++;continue;}
-    }catch(error){say(file.name+': '+error.message,true);skipped++;continue;}
+    }catch(error){errors.push(file.name+': '+error.message);skipped++;continue;}
     try{
-     say('Saving '+file.name+' · '+bytes(file.size)+' directly on this device…');
-     await saveStoredVideo(meta,file);
+     let estimated=null;try{estimated=await navigator.storage?.estimate?.();}catch{}
+     const space=Number.isFinite(estimated?.quota)&&Number.isFinite(estimated?.usage)?estimated.quota-estimated.usage:null;
+     if(Number.isFinite(space)&&space<meta.bytes)
+      say('Browser storage may be too small. Attempting import; you can cancel and Play from Files instead.',true);
+     else say('Importing '+file.name+' ('+bytes(file.size)+') locally…');
+     reportImportProgress(0,file.size,'preparing',file.name,true);
+     await saveStoredVideo(meta,file,{
+      signal:controller.signal,
+      onProgress:(done,total,mode)=>reportImportProgress(done,total,mode,file.name)
+     });
      records.set(meta.id,meta);added++;render();
+     reportImportProgress(file.size,file.size,meta.storage==='opfs'?'OPFS':'chunked',file.name,true);
     }catch(error){
-     say('Could not save '+file.name+': '+(error?.name==='QuotaExceededError'?
-      'This browser’s local storage is full. Free space and keep original videos in Files/Photos.':
-      error.message),true);
-     break;
+     if(error?.name==='AbortError'){canceled=true;break;}
+     skipped++;errors.push(file.name+': '+importedVideoError(error));
+     if(error?.name==='QuotaExceededError')break;
     }
    }
-   if(added||skipped)say('Saved '+added+' video'+(added===1?'':'s')+' on this device.'+
-    (skipped?' '+skipped+' duplicate/unsupported files skipped.':'')+
-    ' They will reappear when you reopen Video Vault in this same browser, unless website data is cleared.');
+   if(controller.signal.aborted)canceled=true;
+   const summary='Saved '+added+' new video'+(added===1?'':'s')+' locally'+
+    (skipped?' · '+skipped+' skipped':'')+(canceled?' · import canceled':'')+'. ';
+   say(summary+(errors.length?errors.slice(0,2).join(' | '):
+    'Saved files return when reopening this browser unless website data is cleared.'),errors.length>0||canceled);
+   detail.textContent=summary+(errors.length?errors.slice(0,2).join(' | '):'Local import completed.');
    render();await refreshStorage();
-  }finally{$('videoVaultImportNow').disabled=false;}
+   return {added,skipped,canceled,errors};
+  }finally{
+   importController=null;importButton.disabled=false;previewButton.disabled=false;cancelButton.disabled=true;
+  }
+ }
+ async function playSessionFile(file){
+  const mime=videoFileType(file);
+  if(!mime||!Number.isFinite(file.size)||file.size<1)throw Error('Choose a readable video from Files or Photos.');
+  await persistPosition(true);clearPlayback();
+  sessionFile=file;currentURL=URL.createObjectURL(file);
+  video.src=currentURL;video.playsInline=true;video.preload='metadata';video.load();
+  metaLabel.textContent=file.name+' · SESSION PREVIEW';
+  info.textContent=bytes(file.size)+' · no extra browser copy · choose Save this preview to keep a copy'+
+   ' · '+videoPlaybackHint(mime,video.canPlayType(mime));
+  keepSession.disabled=false;$('videoVaultPiP').disabled=false;
+  $('videoVaultSendTheater').disabled=true;$('videoVaultToGif').disabled=true;
+  $('videoVaultSnapshot').disabled=false;
+  say('Playing directly from Files without copying '+bytes(file.size)+' into website storage. Select again next visit unless saved.');
+  try{await video.play();}catch{say('Session video ready. Tap the video player’s Play button on iPhone.');}
+  video.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
  async function persistPosition(force=false){
   const item=active();if(!item||!Number.isFinite(video.currentTime))return;
@@ -298,6 +426,7 @@ export function initVideoVault(app){
    $('videoVaultToGif').disabled=false;
    $('videoVaultSnapshot').disabled=false;
    video.playbackRate=Number($('videoVaultSpeed').value)||1;
+   info.textContent+=' · '+videoPlaybackHint(item.mime,video.canPlayType(item.mime));
    drawBookmarks();render();
   }
   if(autoplay){
@@ -329,7 +458,19 @@ export function initVideoVault(app){
   await importFiles(files);
  });
  input.addEventListener('change',onFiles);
- $('videoVaultImportNow').addEventListener('click',()=>input.click());
+ importButton.addEventListener('click',()=>input.click());
+ cancelButton.addEventListener('click',()=>{
+  if(importController){importController.abort();say('Canceling import and discarding incomplete data…');}
+ });
+ previewButton.addEventListener('click',()=>$('videoVaultDirectFiles').click());
+ $('videoVaultDirectFiles').addEventListener('change',wrap(async e=>{
+  const file=e.target.files?.[0];e.target.value='';
+  if(file)await playSessionFile(file);
+ }));
+ keepSession.addEventListener('click',wrap(async()=>{
+  if(!sessionFile)throw Error('Choose a session preview first.');
+  const result=await importFiles([sessionFile]);if(result.added)keepSession.disabled=true;
+ }));
  $('videoVaultPersist').addEventListener('click',wrap(requestPersistence));
  $('videoVaultRefresh').addEventListener('click',wrap(async()=>{
   records.clear();for(const entry of await listStoredVideos())records.set(entry.id,entry);
@@ -411,7 +552,7 @@ export function initVideoVault(app){
   say('Saved video passed to Animation Forge without adding a new permanent copy.');
  }));
  $('videoVaultSnapshot').addEventListener('click',wrap(async()=>{
-  if(!active()||video.readyState<2||!video.videoWidth)throw Error('Play or seek to a valid video frame first.');
+  if(!(active()||sessionFile)||video.readyState<2||!video.videoWidth)throw Error('Play or seek to a valid video frame first.');
   const canvas=document.createElement('canvas');canvas.width=Math.min(video.videoWidth,1920);
   canvas.height=Math.max(1,Math.round(canvas.width*video.videoHeight/video.videoWidth));
   canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
@@ -427,13 +568,13 @@ export function initVideoVault(app){
 
  $('videoVaultOpenTheater').addEventListener('click',()=>app.changeView('theater'));
  $('videoVaultCinema').addEventListener('click',wrap(async()=>{
-  if(!active())throw Error('Choose a saved video first.');
+  if(!(active()||sessionFile))throw Error('Choose a saved video or session preview first.');
   if(video.requestFullscreen)await video.requestFullscreen();
   else if(video.webkitEnterFullscreen)video.webkitEnterFullscreen();
   else say('Use the native video controls to enter full-screen playback.');
  }));
  $('videoVaultPiP').addEventListener('click',wrap(async()=>{
-  if(!active())throw Error('Choose a video first.');
+  if(!(active()||sessionFile))throw Error('Choose a saved video or session preview first.');
   if(document.pictureInPictureEnabled&&video.requestPictureInPicture){
    await video.requestPictureInPicture();
   }else if(video.webkitSetPresentationMode){
@@ -466,7 +607,11 @@ export function initVideoVault(app){
   }
  });
  video.addEventListener('error',()=>{
-  const item=active();if(item)say('This browser cannot decode '+item.name+'. The original saved file is still in Video Vault. Try MP4/H.264 or a device-native MOV.',true);
+  const item=active();
+  if(item||sessionFile){
+   const name=item?.name||sessionFile?.name;
+   say('This browser could not decode '+name+'. The Vault can store more formats than Safari plays. For reliable iPhone playback, use a compatible MP4 (H.264/AAC) or MOV (supported HEVC).',true);
+  }
  });
  document.addEventListener('proximus-video-vault-watch',e=>{
   const id=e.detail?.id;
@@ -487,7 +632,9 @@ export function initVideoVault(app){
   if(files.length)void importFiles(files);
  });
  document.addEventListener('proximus-view-changed',e=>{
-  if(e.detail?.studio!=='videos'&&!video.paused)void persistPosition(true);
+  if(e.detail?.studio!=='videos'&&!video.paused){
+   if(sessionFile)video.pause();else void persistPosition(true);
+  }
   updateMini();
  });
  window.addEventListener('pagehide',()=>{

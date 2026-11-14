@@ -1,0 +1,13 @@
+/* PROXIMUS 3.6.4 — uncluttered large video import controls for iPhone and PC. */
+.video-vault-ultra-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.video-vault-ultra-buttons button{width:100%;min-width:0;min-height:44px;padding:10px 8px;border-radius:10px;font-size:11px;font-weight:760}
+.video-vault-ultra-buttons button:disabled{opacity:.5;cursor:not-allowed}
+.video-vault-import-meter{margin:9px 0;padding:12px;border:1px solid var(--line,#455672);background:var(--panel,#101c2b);border-radius:11px}
+.video-vault-import-meter[hidden]{display:none!important}
+.video-vault-import-meter progress{display:block;appearance:auto;width:100%;height:15px;accent-color:var(--accent,#93b9ff);border-radius:8px}
+.video-vault-import-meter .hint{margin:8px 0 0;overflow-wrap:anywhere;color:var(--text,#e9f2ff);font-size:11px;line-height:1.5}
+#videoVaultDirectFiles[hidden]{display:none!important}
+@media(max-width:520px){.video-vault-ultra-buttons{grid-template-columns:1fr 1fr;gap:6px}
+.video-vault-ultra-buttons button{font-size:10px;min-height:48px;line-height:1.35}
+.video-vault-import-meter{padding:10px}
+}

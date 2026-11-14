@@ -1,5 +1,16 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.6.4 — Video Vault Ultra Import: Large Videos & iPhone Compatibility (2026-11-14)
+
+- Increased local per-video guardrails from 450 MB to 8 GB on iPhone/iPad, and 750 MB to 16 GB on desktop, subject to real browser/device storage limits.
+- Introduced streamed OPFS saves in bounded 8 MB file-backed slices with byte-integrity checks; where OPFS writable APIs are unsupported, use additive 16 MB IndexedDB chunk storage instead of one enormous media value.
+- Upgraded the original Video Vault database non-destructively from schema 1 to schema 2, keeping legacy video blobs in their existing store.
+- Expanded local file selection and metadata validation to MKV, AVI, TS, MTS, M2TS, MPEG, 3GP, WMV, FLV, HEVC and other video files while being clear that Safari playback still depends on codec support.
+- Added live local import progress, Abort/Cancel and better quota/error guidance.
+- Added Play from Files — no copy, which uses the original local video for session playback without consuming additional website storage, plus an optional Save this preview action.
+- Preserved the original local Video Vault player, saved bookmarks and positions, exports, Sonic Theater, iPhone Mobile Power Guard, ORBIT adaptive UI, original Web Cinema Gateway and all other companion utilities.
+- Retained the existing GitHub Pages publishing, full release validation, rollback versions and direct Discord release announcements.
+
 ## v3.6.3 — Web Cinema Embed First: Persistent Player Sources (2026-11-14)
 
 - Restored the proven Embed First workflow from earlier PROXIMUS publishing tools within the existing collapsed Web Cinema Gateway.
