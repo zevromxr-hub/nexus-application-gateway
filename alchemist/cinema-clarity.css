@@ -114,3 +114,24 @@
  .theater-saved-track button{flex:1 1 120px}
  .theater-music-actions button{flex:1 1 140px}
 }
+
+
+/* Optional startup-song preference and browser-safe click-to-play fallback. */
+.theater-music-startup{border:1px solid rgba(148,116,221,.45);background:#0b1022;padding:12px;border-radius:11px;margin:13px 0}
+.theater-music-startup .theater-music-startup-checkbox{display:flex;flex-direction:row;gap:9px;align-items:center;color:#eadfff;line-height:1.5;font-size:12px}
+.theater-music-startup-checkbox input{flex:none;width:17px;height:17px;accent-color:#9972ff}
+.theater-music-startup label:not(.theater-music-startup-checkbox){margin:6px 0 9px;max-width:100%}
+.theater-music-startup select{width:100%;min-width:0;max-width:100%}
+.theater-music-startup #theaterMusicStartupStatus{color:#bde4cf}
+.theater-startup-prompt{position:fixed;right:16px;bottom:84px;z-index:95;
+ display:flex;align-items:center;flex-wrap:wrap;gap:10px;width:min(460px,calc(100vw - 24px));
+ padding:13px 14px;color:#f0e6ff;border:1px solid #a27cde;border-radius:14px;
+ background:#171127;box-shadow:0 16px 60px #000c}
+.theater-startup-prompt[hidden]{display:none!important}
+.theater-startup-prompt span{flex:1 1 100%;line-height:1.45;font-size:12px}
+.theater-startup-prompt button{min-height:43px;flex:1 1 130px}
+@media(max-width:660px){
+ .theater-startup-prompt{left:12px;right:12px;bottom:calc(85px + env(safe-area-inset-bottom,0px));width:auto;max-width:none}
+ .theater-startup-prompt button{flex:1 1 115px}
+}
+@media(prefers-reduced-motion:reduce){.theater-startup-prompt{transition:none}}
