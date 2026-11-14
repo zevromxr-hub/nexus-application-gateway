@@ -50,10 +50,10 @@ export function sortVideoLibrary(list,{query='',filter='all',sort='recent'}={}){
   if(filter==='favorites'&&!x.favorite)return false;
   if(filter==='unwatched'&&x.watched>0)return false;
   if(filter==='in-progress'&&!(x.position>0))return false;
-  return !q||(x.name+' '+(x.collection||'')).toLowerCase().includes(q);
+  return !q||((x.displayTitle||'')+' '+x.name+' '+(x.collection||'')).toLowerCase().includes(q);
  });
  return filtered.sort((a,b)=>{
-  if(sort==='name')return a.name.localeCompare(b.name);
+  if(sort==='name')return (a.displayTitle||a.name).localeCompare(b.displayTitle||b.name);
   if(sort==='favorites')return Number(b.favorite)-Number(a.favorite)||b.added-a.added;
   if(sort==='oldest')return a.added-b.added;
   if(sort==='size')return b.bytes-a.bytes;
