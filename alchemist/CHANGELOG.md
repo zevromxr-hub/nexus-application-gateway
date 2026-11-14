@@ -1,5 +1,16 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.5.3 — Sonic Theater: Unified Music Library & Sovereign Reactor (2026-11-13)
+
+- Fixed MP3 file selection in Media Theater with explicitly supported file extensions and descriptive unsupported-codec errors.
+- Merged playlist/library and custom Sovereign Reactor stage into one responsive Sonic Theater screen, keeping previous Theater links as safe aliases rather than clearing stored data.
+- Connected the actual Web Audio spectrum of one playlist player to Reactor IV and five Sonic Dimension environments; original playback, visual effects, A–B loops and export features preserved without doubling music.
+- Added one universal playback dock, volume, Save Song and Now Playing controls.
+- Preserved **Play on Start** in the Saved Music Library, including saved track selection, opt-in toggle and one-tap Safari/iPhone fallback.
+- Added touch-accessible queue reorder controls and metadata-based song ordering restored across visits, with Sync Bridge / Recovery Center settings backup support.
+- Preserved Video Vault, other 18 registered compatibility spaces, previous rollback, direct GitHub-to-Discord release workflow and privacy/local file storage.
+- Previously planned Infinite Realms milestone deferred to prioritize reliability of core music and reactive visuals.
+
 ## v3.5.2 — Cinema Clarity, Saved Music Library & Arcade Daily (2026-11-13)
 
 - Fixed Video Vault transparency: fully opaque black player backing regardless of the global personalized media background or glass identity theme; kept Cinema Atmosphere Sync external to video pixels.
