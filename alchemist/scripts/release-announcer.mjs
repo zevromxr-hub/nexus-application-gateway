@@ -50,7 +50,13 @@ export function buildDiscordPayload(version,release){
  };
 }
 export function isNewRelease(previous,current){
- return versionPattern.test(previous||'')&&versionPattern.test(current||'')&&previous!==current;
+ if(!versionPattern.test(previous||'')||!versionPattern.test(current||''))return false;
+ const a=previous.split('.').map(Number),b=current.split('.').map(Number);
+ for(let i=0;i<3;i++){
+  if(b[i]>a[i])return true;
+  if(b[i]<a[i])return false;
+ }
+ return false;
 }
 export function validateWebhook(secret){
  // Never expose webhook data in thrown errors or Actions logs.
