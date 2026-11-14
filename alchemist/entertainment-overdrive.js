@@ -61,7 +61,7 @@ export function initEntertainmentOverdrive(app){
   updateSelect();ambient.checked=settings.ambient;glow.value=String(settings.glow);quality.value=settings.quality;customColor.value=chosen().color;setStages();
  }
  function applyAndSave(message){
-  settings=normalizeOverdriveSettings(settings);refreshUI();persist();if(message)say(message);
+  settings=normalizeOverdriveSettings(settings);refreshUI();persist();document.dispatchEvent(new CustomEvent('proximus-overdrive-scene-changed',{detail:{color:chosen().color,scene:chosen().id}}));if(message)say(message);
  }
  function selectTheme(){
   const select=$('theaterTheme'),palette=chosen().palette;
