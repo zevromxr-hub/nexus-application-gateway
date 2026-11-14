@@ -174,15 +174,17 @@ export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareSt
      if(await addToQueue(file,item.id))loaded++;
     }catch(e){}
    }
-   if(rows.length&&startup.enabled){
+   if(rows.length){
     try{
      const chosen=await prepareChosen();
+     if(startup.enabled){
      // Attempt once when opening, then respect browser autoplay permission.
      await playSaved();
      if(pending)launchStatus.textContent='Tap Play my music to start '+chosen.name+'.';
      else if(!getCurrent()?.file?.name)launchStatus.textContent='Startup playback could not begin.';
+     }else say(loaded+' saved song'+(loaded===1?'':'s')+' restored to your queue. Choose Play when ready.');
     }catch(error){setPrompt(false);say('Startup music unavailable: '+error.message,true);}
-   }else say(rows.length?loaded+' saved song'+(loaded===1?'':'s')+' restored to your queue. Tap Play when ready.':'Your personal saved music library is ready.');
+   }else say('Your personal saved music library is ready.');
   }catch(error){say('Local music storage is unavailable: '+error.message+'. You can still import session music.',true);}
   finally{setBusy(false);}
  }
