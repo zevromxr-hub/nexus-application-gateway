@@ -1,5 +1,14 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.5.0 — Entertainment Overdrive: Convergence Foundation & Cinema Atmosphere Sync (2026-11-13)
+
+- Created the unified Entertainment Overdrive launch hub within Companion Center; no new top-level studios or retired studio restoration.
+- Released a shared versioned scene format, five built-in scenes, 20 custom-scene capacity, portable JSON backup/import and Project Hub manifest handoff.
+- Added optional, responsive Cinema Atmosphere Sync to Video Vault and Media Theater, using throttled local-frame average color plus safe static fallback.
+- Added adaptive rendering modes, reduced-motion handling, and quality presets designed for PC and iPhone browsers.
+- Preserved the 18 active spaces, v3.4 UI behavior, saved personal media, Project Hub, Token Foundry, existing offline cache strategy, rollback manifests and GitHub-to-Discord release automation.
+- **Staged, not yet implemented:** Sonic Dimension (v3.5.1), Arcade Nexus expansion (v3.5.2), Infinite Realms (v3.5.3), unified Creator Overdrive (v3.5.4), convergence completion (v3.5.5).
+
 ## v3.4.0 — Adaptive Companion: Device Intelligence & Studio Cleanup (2026-11-13)
 
 ### Six studios retired safely
