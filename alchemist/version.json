@@ -1,22 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.5.1",
+  "version": "3.5.2",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Sonic Dimension — Five Living Audio Worlds",
+  "subtitle": "Cinema Clarity, Offline Music Library & Arcade Daily",
   "studio_count": 18,
-  "previous_version": "3.5.0",
+  "previous_version": "3.5.1",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Expanded Sovereign Reactor IV into Sonic Dimension with five original Canvas2D environments: Nebula Collapse, Cyber Tunnel, Celestial Gate, Ember Storm and Frozen Aurora, rendered from measured local audio or permissioned input",
-    "Added an opt-in world mode that preserves all six classic Reactor IV visual modes, local media backdrops, visual overlays, effect routing, saved presets, GIF/PNG/silent video exports and existing playback sources",
-    "Introduced user-adjustable real bass and frequency reactivity, beat-driven color transitions and optional automatic world evolution after eight measured beats with a twelve-second minimum interval",
-    "Connected Sonic Dimension to the v3.5 Convergence scene palette with live cross-studio color updates and a separate versioned local settings backup",
-    "Added settings import/export, save-to-Project Hub, new legacy preset round-tripping, and optional Sync Bridge / Recovery Center backup of Sonic plus Convergence preferences",
-    "Retained the PC/iPhone adaptive interface, browser privacy, original Github Pages URL, 18 existing companion spaces and all prior retirement decisions, with no external audio recording or unauthorized system audio capture",
-    "Maintained GitHub release validation, deployment verification, rollback cache and the pre-existing automatic Discord announcement sender unchanged"
+    "Fixed Video Vault playback clarity by enforcing a fully opaque black stage and isolated video compositor, preventing the personalized website background and glass effects from showing through the player",
+    "Kept Cinema Atmosphere Sync around the outside of the Vault player rather than overlaying video pixels; added original-frame / fill-and-crop presentation and a focused single-player layout",
+    "Added a genuine browser-local Saved Music Library inside Media Theater, allowing visitors to save imported audio, restore stored songs into the listening queue on return, and remove saved copies without deleting original files",
+    "Introduced Media Theater wide-screen layout and frame-fit controls while preserving existing playlists, original playback, visualizers, A–B loops and media-to-Reactor handoff",
+    "Expanded Animation Forge with rapid three-, five- and eight-second GIF clip windows from the loaded video playhead, preserving advanced export settings and memory preflight",
+    "Added an Arcade Nexus daily challenge and streak tracker across the three existing playable games, without resetting past scores or restoring retired studios",
+    "Retained 18 active spaces, PC/iPhone adaptive layouts, user media privacy and browser-local storage, with updated settings backups, regression tests and rollbacks",
+    "Preserved the existing GitHub Pages deployment and direct GitHub-to-Discord release announcement automation without switching to BotGhost"
   ]
 }
