@@ -28,3 +28,15 @@
 @media(max-width:1120px){.sonic-unified-top{grid-template-columns:minmax(0,1fr)}.sonic-unified-visual{position:relative;top:auto}.sonic-unified-library #theaterPlaylist{max-height:310px}}
 @media(max-width:640px){.sonic-unified-top{gap:9px}.sonic-unified-intro{padding:12px}.sonic-unified-library>.panel{padding:12px}.sonic-unified-visual #reactorStage{border-radius:9px}.sonic-unified-library .theater-controls button{flex:1 1 140px}}
 @media(prefers-reduced-motion:reduce){.sonic-unified-top,.sonic-unified-visual{scroll-behavior:auto}}
+
+
+.sonic-unified-dock{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:space-between;
+ background:#16102b;border:1px solid rgba(175,139,250,.46);border-radius:12px;padding:10px 13px;margin-bottom:10px}
+.sonic-unified-dock strong{display:block;flex:1 1 100%;min-width:0;overflow-wrap:anywhere;color:#e5d7ff;font-size:12px}
+.sonic-unified-dock-controls{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.sonic-unified-dock-controls button{min-height:42px;white-space:nowrap}
+.sonic-unified-dock label{display:flex;align-items:center;gap:9px;margin:0;color:#c3b3df;min-width:140px;font-size:11px}
+.sonic-unified-dock input{width:100px;max-width:100%}
+.sonic-theater-integrated #reactorLegacyAudioLabel{display:none!important}
+.sonic-theater-integrated .sonic-unified-advanced .panel{background:#100f23}
+@media(max-width:650px){.sonic-unified-dock{padding:9px}.sonic-unified-dock-controls{width:100%}.sonic-unified-dock-controls button{flex:1 1 105px}.sonic-unified-dock label{width:100%}.sonic-unified-dock input{flex:1;width:auto}}
