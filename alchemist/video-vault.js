@@ -337,7 +337,7 @@ export function initVideoVault(app){
     }catch(error){errors.push(file.name+': '+error.message);skipped++;continue;}
     try{
      let estimated=null;try{estimated=await navigator.storage?.estimate?.();}catch{}
-     const space=Number(estimated?.quota)-Number(estimated?.usage);
+     const space=Number.isFinite(estimated?.quota)&&Number.isFinite(estimated?.usage)?estimated.quota-estimated.usage:null;
      if(Number.isFinite(space)&&space<meta.bytes)
       say('Browser storage may be too small. Attempting import; you can cancel and Play from Files instead.',true);
      else say('Importing '+file.name+' ('+bytes(file.size)+') locally…');
