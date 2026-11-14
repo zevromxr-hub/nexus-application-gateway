@@ -97,3 +97,17 @@
  .web-cinema-help{left:5px;right:5px;bottom:6px;padding:8px 9px;font-size:10px}
  .web-cinema-frame iframe{min-height:100%}
 }
+
+
+/* v3.6.3 — compact Embed First options inside the existing collapsible Gateway. */
+.web-cinema-player-options{min-width:0;max-width:100%}
+.web-cinema-player-options summary{color:#cbeff2}
+.web-cinema-player-options textarea{min-height:84px;width:100%;max-width:100%;resize:vertical;
+ font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.web-cinema-source-actions{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.web-cinema-source-actions button{min-height:43px;flex:0 1 auto}
+.web-cinema-player-options #webCinemaSourceStatus{margin:0 0 11px}
+.web-cinema-player-options #webCinemaSourceStatus[data-error="true"]{color:#ffbec1}
+@media(max-width:620px){.web-cinema-source-actions button{flex:1 1 135px}
+ .web-cinema-player-options textarea{font-size:12px}
+}
