@@ -1,5 +1,16 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.6.1 — Web Cinema Gateway: Embedded Viewing & Saved Video Links (2026-11-14)
+
+- Added one optional collapsible Web Cinema Gateway inside Video Vault, without expanding the ORBIT sidebar or replacing local media playback.
+- Added a restricted HTTPS website viewer and browser-like Back, Forward, Reload, Stop, Fullscreen and Open Externally controls.
+- Added official YouTube privacy-enhanced and Vimeo video players, plus direct video playback where supported by the host and browser.
+- Introduced a private saved-link catalog with titles, collections, favorites, search, watch-later replay and direct-media resume positions.
+- Added explicit JSON link backup import/export and portable saved-link metadata through Recovery Center and Workspace Sync.
+- Preserved website owner restrictions, provider-specific player policies, cross-origin iframe isolation, autoplay limits and external fallback for unsupported sources.
+- Prevented hidden remote playback when the Gateway closes or the user navigates to another studio.
+- Kept existing Video Vault files, Sonic Theater music/Play on Start, iPhone performance controls, ORBIT v3.6.0, rollback files and direct Discord release automation untouched.
+
 ## v3.6.0 — ORBIT Interface: Universal Access & PC/iPhone Redesign (2026-11-14)
 
 - Restyled the entire PROXIMUS UI with a more restrained midnight-navy/aurora design, clearer typography, consistent button/card surfaces and reduced animation.

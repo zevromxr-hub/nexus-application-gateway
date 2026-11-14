@@ -20,6 +20,7 @@ import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
+import {initWebCinemaGateway} from './web-cinema.js';
 import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
 import {initAdaptiveLayout} from './layout-adapter.js';
@@ -34,7 +35,7 @@ const names=[
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
- {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
+ {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local video library plus Web Cinema Gateway external websites online video links supported embeds watch later favorites resume iPhone PC'},
  {id:'life',icon:'◷',title:'Life Command',detail:'Private tasks recurring routines habits streaks due dates planner calendar export important personal dates everyday companion'},
  {id:'reactor',icon:'✺',title:'Sonic Theater',detail:'One connected music player MP3 playlist saved music Play on Start Reactor IV Sonic Dimension visualizer backgrounds audio export'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
@@ -279,7 +280,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.1';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -301,12 +302,12 @@ function setupVersion(){
 function launch(){
  mountUnifiedSonicTheater();
  initOrbitInterface(app);
- initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initAnimationForge(app);initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Orbit Interface v3.6.0 is ready. All studios, saved media, music, presets and private tools remain in place.');
+ notice('PROXIMUS Web Cinema Gateway v3.6.1 is ready. External websites and saved links are available inside Video Vault; all existing media remains intact.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
