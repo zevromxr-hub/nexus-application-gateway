@@ -1,8 +1,5 @@
 import {$,bytes,safe,stem,notice,download,makeZip,sha256,textFile,nowName,wrap} from './core.js';
-import {initImage} from './image-tools.js';
-// Archived v3.1: Audio Forge, Motion Lab and 3D Inspector are no longer mounted.
-import {initProduction,initAudit} from './pro-tools.js';
-import {initLayerForge,initMotionGraphics} from './creator-tools.js';
+// Retired studio source is preserved in v3.3 Git history; shared pack services stay active in Project Hub.
 import {initAnimationForge} from './animation-tools.js';
 import {initMediaPublisher} from './media-publisher.js';
 import {initMediaTheater} from './media-theater.js';
@@ -25,16 +22,11 @@ import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
 import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
+import {initAdaptiveLayout} from './layout-adapter.js';
 import {RETIRED_STUDIOS} from './companion-core.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
- {id:'image',icon:'◈',title:'Image Studio',detail:'Image resize crop filters chroma key overlays'},
- {id:'pack',icon:'▤',title:'Asset Packager',detail:'Collect outputs and download ZIP manifest'},
- {id:'production',icon:'✧',title:'Production Lab',detail:'Professional banners thumbnails branding artwork and presets'},
- {id:'audit',icon:'⌕',title:'Asset Audit',detail:'Inspect file types SHA-256 duplicate detection metadata reports'},
- {id:'layers',icon:'◧',title:'Layer Forge',detail:'Draggable image text layers blends and full-res export'},
- {id:'motiongraphics',icon:'✺',title:'Motion Graphics',detail:'Animated title sequences particles and WebM export'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
  {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
@@ -124,15 +116,14 @@ const app={
    }
    return;
   }
-  const ids={image:'imgFile',icons:'iconFile',animation:'animFile',layers:'layerFiles',
-   production:'prodFile',motion:'motionFile',theater:'theaterFiles',capture:'captureFile',automation:'automationFiles'};
+  const ids={animation:'animFile',theater:'theaterFiles',capture:'captureFile',automation:'automationFiles'};
   const id=ids[dest];if(!id||!$(id))throw Error('No file import is available for this destination.');
   const name=safe(asset.name),mime=asset.data.type||({
    png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif',
    mp4:'video/mp4',webm:'video/webm',mp3:'audio/mpeg',wav:'audio/wav'
   }[name.split('.').pop()?.toLowerCase()]||'application/octet-stream');
   if(dest==='animation'&&!/^(image\/gif|video\/(mp4|webm))$/.test(mime))throw Error('Animation Forge accepts GIF, MP4 or WebM media.');
-  if(['image','icons','layers','production','capture','automation'].includes(dest)&&!mime.startsWith('image/'))throw Error('Choose an image file for this studio.');
+  if(['capture','automation'].includes(dest)&&!mime.startsWith('image/'))throw Error('Choose an image file for this studio.');
   if(dest==='automation'&&mime==='image/gif')throw Error('Automation Lab accepts still images. Use Animation Forge for GIFs.');
   const input=$(id),f=new File([asset.data],name,{type:mime});
   try{
@@ -144,17 +135,17 @@ const app={
  addAsset(name,data,studio){
   if(!(data instanceof Blob))data=new Blob([data]);
   if(data.size>200000000)throw Error('This asset is over 200 MB and cannot be held in the session pack.');
-  if(pack.length>=200)throw Error('The Asset Packager limit is 200 items.');
+  if(pack.length>=200)throw Error('The collected exports limit is 200 items.');
   let filename=safe(name);const used=new Set(pack.map(x=>x.name));let n=2;
   while(used.has(filename)){const dot=filename.lastIndexOf('.');filename=(dot===-1?stem(filename):filename.slice(0,dot))+'-'+n+++(dot===-1?'':filename.slice(dot))}
   pack.push({name:filename,data,studio,when:new Date().toISOString()});
-  drawPack();void vaultPut(pack[pack.length-1]);notice(filename+' added to your Asset Packager');document.dispatchEvent(new Event('proximus-pack-changed'));
+  drawPack();void vaultPut(pack[pack.length-1]);notice(filename+' added to Collected Exports in Project Hub');document.dispatchEvent(new Event('proximus-pack-changed'));
  }
 };
 function changeView(id){
  // Retired studios are safely redirected; old saved last-view preferences
  // never strand users on an empty page after the Companion update.
- if(!names.some(n=>n.id===id))id='command';
+ if(!names.some(n=>n.id===id))id=id==='pack'?'projects':'command';
  document.querySelectorAll('[data-panel]').forEach(n=>n.hidden=n.dataset.panel!==id);
  document.querySelectorAll('[data-view]').forEach(n=>n.classList.toggle('active',n.dataset.view===id));
  localStorage.setItem('nexus-alchemist-last-view',id);
@@ -193,7 +184,7 @@ function drawPack(){
   }
   tag.value=f.tag||'';tag.addEventListener('change',()=>{f.tag=tag.value;void vaultPut(f);});
   const destinations=document.createElement('select');destinations.title='Send to studio';
-  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['master','Master Thumb'],['image','Image'],['icons','Icons'],['animation','Animation'],['layers','Layers'],['production','Production'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
+  for(const [value,label] of [['','Send…'],['reactor','Reactor'],['reactorBg','Reactor BG'],['master','Master Thumb'],['animation','Animation'],['capture','Capture'],['automation','Automation'],['theater','Theater']]){
    const option=document.createElement('option');option.value=value;option.textContent=label;destinations.append(option);
   }
   destinations.addEventListener('change',wrap(()=>{const dest=destinations.value;destinations.value='';if(dest)app.sendAsset(f,dest);}));
@@ -220,7 +211,11 @@ $('packTarget').value=localStorage.getItem('nexus-alchemist-pack-target')||'gene
 $('packTitle').addEventListener('change',()=>localStorage.setItem('nexus-alchemist-pack-title',$('packTitle').value.slice(0,80)));
 $('packTarget').addEventListener('change',()=>localStorage.setItem('nexus-alchemist-pack-target',$('packTarget').value));
 document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>changeView(btn.dataset.view)));
-$('packJump').addEventListener('click',()=>changeView('pack'));
+$('packJump').addEventListener('click',()=>{
+ changeView('projects');
+ const archived=$('projectCollectedExports');if(archived)archived.open=true;
+ archived?.scrollIntoView({behavior:'smooth',block:'start'});
+});
 $('vaultJump').addEventListener('click',()=>changeView('videos'));
 $('lifeJump').addEventListener('click',()=>changeView('life'));
 const dialog=$('cmdDialog'),search=$('cmdSearch'),results=$('cmdResults');
@@ -281,13 +276,12 @@ function setupVersion(){
 }
 
 function launch(){
- initImage(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
- initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);
+ initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Cinematic Life Command v3.3 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
+ notice('PROXIMUS Adaptive Companion v3.4 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
