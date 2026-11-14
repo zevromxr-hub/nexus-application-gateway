@@ -17,7 +17,7 @@ export const SYNC_SETTINGS=[
  'nexus-alchemist-last-view','nexus-alchemist-pack-title','nexus-alchemist-pack-target',
  'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1',
  'proximus-alchemist-arcade-scores-v1','proximus-alchemist-arcade-profile-v2',
- 'proximus-theater-favorites-v2','proximus-cinema-views-v1','proximus-arcade-daily-v1','proximus-reactor-settings-v1','proximus-sonic-dimension-v1','proximus-overdrive-settings-v1','proximus-command-layout-v1',
+ 'proximus-theater-favorites-v2','proximus-cinema-views-v1','proximus-arcade-daily-v1','proximus-music-startup-v1','proximus-reactor-settings-v1','proximus-sonic-dimension-v1','proximus-overdrive-settings-v1','proximus-command-layout-v1',
  'proximus-command-pins-v1','proximus-command-name-v1','proximus-recovery-checkpoints-v1','proximus-visual-identity-v1',
  'proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1',
  'proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1','proximus-life-command-v1','proximus-adaptive-layout-v1'
