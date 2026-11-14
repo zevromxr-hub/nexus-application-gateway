@@ -6,7 +6,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -45,18 +45,18 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.1</div>
+<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.5.2</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.1 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.5.2 · CINEMATIC LIFE COMMAND</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.1</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.5.2</span><h3>One connected entertainment universe.</h3><p>Five flagship experiences · begin with Cinema Overdrive and shared scene profiles, then unlock staged expansions without another wall of studios.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.1</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.5.2</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play existing original mini-games; expanded adventures follow in v3.5.2.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · v3.5.3</span></div>
@@ -222,6 +222,11 @@
   <h3>Import a video or animated GIF</h3><div class="companion-media-pill">CINEMATIC GIF ENGINE · Quality profiles · Smart preflight · Direct Vault import</div>
   <label class="upload"><input id="animFile" type="file" accept="video/mp4,video/webm,video/quicktime,video/x-m4v,image/gif,.mp4,.webm,.mov,.m4v,.gif"><b>＋ IMPORT MP4 / WEBM / GIF</b><span>Local files only · maximum source 250 MB · GIF output is always silent</span></label>
   <p id="animStatus" class="hint">Choose a browser-decodable video or GIF to begin. Nothing is uploaded.</p>
+  <div class="animation-quick-clips" role="group" aria-label="Choose quick GIF clip from current video playhead">
+    <strong>QUICK CLIP</strong><button type="button" class="small-btn" data-animation-clip="3">3 seconds</button>
+    <button type="button" class="small-btn" data-animation-clip="5">5 seconds</button>
+    <button type="button" class="small-btn" data-animation-clip="8">8 seconds</button>
+   </div>
   <div class="two"><label>Clip start (seconds)<input id="animStart" type="number" min="0" max="99999" step=".1" value="0"></label><label>Clip end (seconds)<input id="animEnd" type="number" min=".1" max="99999" step=".1" value="4"></label></div>
   <label>Output type<select id="animMode"><option value="gif" selected>Regular animated GIF — no icon dimensions required</option><option value="icons">Animated GIF icon pack — multiple square sizes</option></select></label>
   <div id="animStandardOptions"><label>GIF dimensions<select id="animSizePreset"><option value="auto" selected>Automatic · source proportions</option><option value="small">Small · up to 240 px</option><option value="medium">Medium · up to 360 px</option><option value="large">Large · up to 600 px</option><option value="custom">Custom width / height</option></select></label>
@@ -287,6 +292,12 @@
   <div class="panel video-vault-cinema">
    <h3>03 / PRIVATE CINEMA PLAYER</h3>
    <div class="video-vault-stage"><video id="videoVaultPlayer" playsinline controls preload="metadata" aria-label="Your saved video library player"></video></div>
+   <div class="video-vault-closing-controls" aria-label="Video Vault picture and focus controls">
+    <label>Picture framing<select id="videoVaultPictureFit"><option value="contain" selected>Original frame · no cropping</option><option value="cover">Fill screen · crop edges</option></select></label>
+    <button class="small-btn" id="videoVaultFocus" type="button" aria-pressed="false">⛶ Focus on player</button>
+    <button class="small-btn" id="videoVaultClarityReset" type="button">↺ Restore picture defaults</button>
+    <p id="videoVaultClarityStatus" class="hint" role="status">Solid black cinema backing is enabled for all saved videos.</p>
+   </div>
    <div class="overdrive-cinema-controls" aria-label="Cinema Overdrive atmosphere controls">
     <label class="overdrive-check"><input id="overdriveAtmosphere" type="checkbox" checked> <strong>Atmosphere Sync</strong> · color-reactive ambient glow around supported local video</label>
     <label>Glow intensity <strong id="overdriveGlowValue">62%</strong><input id="overdriveGlow" type="range" min="0" max="100" step="5" value="62"></label>
@@ -391,6 +402,11 @@
     <audio id="theaterAudio" class="theater-audio" controls preload="metadata" hidden></audio>
     <img id="theaterImage" class="theater-source" alt="Local GIF or image preview" hidden>
     <div class="theater-logo" aria-hidden="true">✦ PROXIMUS THEATER</div>
+   </div>
+   <div class="theater-view-controls" aria-label="Media Theater video presentation settings">
+    <label>Video framing<select id="theaterVideoFit"><option value="contain" selected>Fit full video frame</option><option value="cover">Fill stage / crop edges</option></select></label>
+    <button class="small-btn" id="theaterWide" type="button" aria-pressed="false">▣ Wide theater stage</button>
+    <p id="theaterViewStatus" class="hint" role="status">Picture controls ready.</p>
    </div>
    <div class="theater-ab-controls"><div><strong>AB LOOP · FAVORITE MOMENTS</strong><p class="hint" id="theaterABStatus">Choose A and B in the current audio/video to loop a section.</p></div><button id="theaterMarkA" class="small-btn">A · Start</button><button id="theaterMarkB" class="small-btn">B · End</button><button id="theaterResetAB" class="small-btn">Clear loop</button></div>
    <div class="theater-controls"><button id="theaterFullscreen" class="small-btn">⛶ Cinema mode</button><button id="theaterCapture" class="small-btn">↓ Frame PNG</button><button id="theaterPosterPack" class="small-btn">＋ Poster to Pack</button></div>
@@ -499,7 +515,7 @@
    </div>
 
    <div class="reactor-export-block sonic-dimension-controls" id="sonicDimensionControls">
-    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.5.1</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
+    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.5.2</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
     <div class="checks"><label><input id="reactorDimensionEnabled" type="checkbox"> Enable Sonic Dimension worlds</label><label><input id="reactorDimensionAuto" type="checkbox"> Evolve world every 8 detected beats (12s cooldown)</label></div>
     <div class="two">
      <label>World environment<select id="reactorDimensionWorld">
@@ -652,7 +668,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.1</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.5.2</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
