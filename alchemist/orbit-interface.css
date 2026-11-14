@@ -272,7 +272,7 @@
  .orbit-interface .topbar{padding:9px 12px;flex-wrap:wrap}
  .orbit-interface .content{padding:12px 12px calc(110px + env(safe-area-inset-bottom))}
  .orbit-interface .top-actions{width:100%;justify-content:space-between}
- .orbit-interface #layoutToggle{display:none}
+ .orbit-interface #layoutToggle{display:inline-flex;align-items:center;justify-content:center;white-space:nowrap}
  .orbit-interface .welcome{padding:17px;border-radius:15px}
  .orbit-interface .orb{width:66px;height:66px;font-size:39px;border-radius:18px}
  .orbit-interface .welcome h1{font-size:28px}
