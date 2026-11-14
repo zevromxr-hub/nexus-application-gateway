@@ -73,11 +73,10 @@ assert.ok(html.includes('<details id="webCinemaGateway"'),'Avoid a new cluttered
 assert.equal([...html.matchAll(/<section class="studio" data-panel="([^"]+)"/g)].length,20,'Keep all existing studio routes');
 assert.equal([...html.matchAll(/class="nav[^"]*" data-view="([^"]+)"/g)].length,20,'No new sidebar item');
 assert.ok(app.includes("initVideoVault(app);initWebCinemaGateway();"),'Keep original Video Vault and initialize Gateway separately');
-assert.ok(module.includes('sandbox')&&module.includes('allow-scripts allow-forms allow-presentation'),'Generic websites must run sandboxed');
-assert.ok(module.includes("'allow-scripts allow-same-origin allow-presentation'"),'Trusted provider embeds may use their origin');
-assert.ok(!module.includes('allow-top-navigation'),'Embedded pages cannot navigate the parent app');
-assert.ok(!module.includes('allow-popups'),'Embedded pages cannot spawn popup windows');
-assert.ok(module.includes("iframe.referrerPolicy=trusted?'strict-origin-when-cross-origin':'no-referrer'"),'Official players require referrer while generic websites should not leak it');
+assert.ok(module.includes('webCinemaFramePolicy(link.kind,link.embed'),'All iframe permissions are selected by a verified origin-aware policy');
+assert.ok(module.includes("iframe.setAttribute('sandbox',policy.sandbox)"),'Restricted and compatible website modes must remain sandboxed');
+assert.ok(module.includes("iframe.referrerPolicy=policy.referrerPolicy"),'Referrer is chosen from compatibility/privacy profile');
+assert.ok(!module.includes("iframe.removeAttribute('sandbox')"),'Never remove sandbox restrictions to force playback');
 assert.ok(module.includes('video.addEventListener(')&&module.includes('loadedmetadata'),'Direct video should support resume');
 assert.ok(module.includes('normalizeWebCinemaLibrary([...saved,...imported])'),'Link backup should merge safely without duplicates');
 assert.ok(module.includes("if(event.detail?.studio!=='videos'&&active){stopMedia();}"),'Do not leave hidden external websites playing');
