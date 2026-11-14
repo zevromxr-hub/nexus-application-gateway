@@ -35,7 +35,7 @@ const names=[
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
- {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
+ {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local video library plus Web Cinema Gateway external websites online video links supported embeds watch later favorites resume iPhone PC'},
  {id:'life',icon:'◷',title:'Life Command',detail:'Private tasks recurring routines habits streaks due dates planner calendar export important personal dates everyday companion'},
  {id:'reactor',icon:'✺',title:'Sonic Theater',detail:'One connected music player MP3 playlist saved music Play on Start Reactor IV Sonic Dimension visualizer backgrounds audio export'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
