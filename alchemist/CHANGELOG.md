@@ -5,6 +5,7 @@
 - Fixed Video Vault transparency: fully opaque black player backing regardless of the global personalized media background or glass identity theme; kept Cinema Atmosphere Sync external to video pixels.
 - Added Video Vault full-frame/crop choice, solo-player Focus Mode and reset to defaults.
 - Added Media Theater local music storage backed by IndexedDB: explicit save-current/save-queue, restore into listening queue on later visits, queue/reload/delete individual saved songs, device-local quota/error handling.
+- Added opt-in Startup Music selector and enable/disable toggle, with attempted browser-permitted autoplay and a one-tap fallback for Safari/Chrome restrictions; kept default off.
 - Added Media Theater wide layout, video framing selection, and Animation Forge one-tap 3/5/8-second clip selections.
 - Introduced an Arcade Nexus daily mission, local completion/streak progress and export, using the three original existing games.
 - Included new layout and Arcade Daily preferences in the Recovery Center and Sync Bridge settings backups without embedding large song files.
