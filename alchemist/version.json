@@ -14,6 +14,7 @@
     "Fixed Video Vault playback clarity by enforcing a fully opaque black stage and isolated video compositor, preventing the personalized website background and glass effects from showing through the player",
     "Kept Cinema Atmosphere Sync around the outside of the Vault player rather than overlaying video pixels; added original-frame / fill-and-crop presentation and a focused single-player layout",
     "Added a genuine browser-local Saved Music Library inside Media Theater, allowing visitors to save imported audio, restore stored songs into the listening queue on return, and remove saved copies without deleting original files",
+    "Added opt-in saved-song startup in Media Theater: select a stored track, toggle attempted playback at site opening on or off, and use a one-tap fallback when Chrome/Safari blocks audible autoplay",
     "Introduced Media Theater wide-screen layout and frame-fit controls while preserving existing playlists, original playback, visualizers, A–B loops and media-to-Reactor handoff",
     "Expanded Animation Forge with rapid three-, five- and eight-second GIF clip windows from the loaded video playhead, preserving advanced export settings and memory preflight",
     "Added an Arcade Nexus daily challenge and streak tracker across the three existing playable games, without resetting past scores or restoring retired studios",
