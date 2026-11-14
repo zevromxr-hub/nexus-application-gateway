@@ -141,7 +141,8 @@ export function initWebCinemaGateway(){
   if(!raw){say('Paste a website or video link first.',true);input.focus();return;}
   try{
    const output=addWebCinemaLink(saved,raw,title.value,collection.value);
-   saved=output.items;currentSavedId=output.item.id;
+   saved=output.items;
+   if(active?.url===output.item.url)currentSavedId=output.item.id;
    if(!title.value.trim())title.value=output.item.title;
    if(!collection.value.trim())collection.value=output.item.collection;
    write();renderSaved();
