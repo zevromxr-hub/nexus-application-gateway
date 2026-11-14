@@ -57,6 +57,7 @@ export function initSovereignReactor(app){
  const stage=$('reactorStage');
  let current='off',source=null,stream=null,sourceNode=null,mediaNode=null,selectedAudio=null,audioUrl=null;
  let audioContext=null,analyser=null,frequency=null;
+ let sharedSpectrum=null,sharedSampleRate=44100,sharedFFT=1024,sharedActive=false,sharedUpdated=0;
  let mediaURL=null,mediaRecord=null,videoReady=false,gifBackdrop=null;
  const overlayVideo=$('reactorOverlayVideo'),overlayImage=$('reactorOverlayImage');
  let overlayURL=null,overlayReady=false,gifOverlay=null;
@@ -76,7 +77,7 @@ export function initSovereignReactor(app){
  let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
  let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
  let frameCount=0,frequencySmooth=0,streamCaptureActive=false;
- const inputText={off:'No source connected',file:'Local music file',mic:'Microphone (permission granted)',tab:'Shared desktop tab / screen audio'};
+ const inputText={off:'No source connected',file:'Local music file',playlist:'Saved Sonic Theater playlist',mic:'Microphone (permission granted)',tab:'Shared desktop tab / screen audio'};
  const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='reactor';
 
  function status(s,error=false){sourceStatus.textContent=s;sourceStatus.dataset.error=error?'true':'false';}
@@ -303,6 +304,26 @@ export function initSovereignReactor(app){
   current='off';streamCaptureActive=false;state=initialBeatState();bands={sub:0,bass:0,mid:0,treble:0,energy:0};
   $('reactorSource').textContent='Not connected';$('reactorStop').disabled=true;
  }
+ document.addEventListener('proximus-sonic-playback',e=>{
+  const d=e.detail||{};
+  if(d.kind!=='audio')return;
+  if(d.playing===true){
+   if(current!=='playlist')releaseInput();
+   current='playlist';sharedActive=true;sharedUpdated=performance.now();
+   $('reactorSource').textContent='Sonic Theater playlist';
+   $('reactorStop').disabled=false;
+   status('Playing your saved playlist through the same Reactor · '+safe(d.name||'music'));
+  }else if(current==='playlist'){
+   sharedActive=false;bands={sub:0,bass:0,mid:0,treble:0,energy:0};
+   status('Shared playlist paused. Tap Play to resume and react.');
+  }
+ });
+ document.addEventListener('proximus-sonic-spectrum',e=>{
+  const d=e.detail||{};
+  if(current!=='playlist'||!d.frequency||!Number.isFinite(d.sampleRate)||!Number.isFinite(d.fftSize))return;
+  sharedSpectrum=d.frequency;sharedSampleRate=d.sampleRate;sharedFFT=d.fftSize;
+  sharedActive=d.active===true;sharedUpdated=performance.now();
+ });
  function makeAudioContext(){
   if(!audioContext){
    const AudioCtx=window.AudioContext||window.webkitAudioContext;
@@ -316,6 +337,11 @@ export function initSovereignReactor(app){
  }
  function startFile(){
   if(!selectedAudio)throw Error('Choose a local song, audio file or MP4 with audio first.');
+  if(document.documentElement.classList.contains('sonic-theater-integrated')){
+   document.dispatchEvent(new CustomEvent('proximus-sonic-enqueue',{detail:{file:selectedAudio,play:true}}));
+   status('Playing through shared Sonic Theater playlist · '+safe(selectedAudio.name));
+   return;
+  }
   if(selectedAudio.size>MAX_AUDIO)throw Error('Audio file exceeds the 250 MB local playback limit.');
   releaseInput();const c=makeAudioContext();
   if(!mediaNode)mediaNode=c.createMediaElementSource(audio);
@@ -337,6 +363,7 @@ export function initSovereignReactor(app){
   let captured;
   try{captured=await promise;await resume;}
   catch(e){if(captured)for(const t of captured.getTracks())t.stop();throw e;}
+  document.dispatchEvent(new Event('proximus-sonic-stop-playlist'));
   releaseInput();stream=captured;sourceNode=c.createMediaStreamSource(captured);
   sourceNode.connect(analyser);current='mic';$('reactorSource').textContent='Microphone';
   $('reactorStop').disabled=false;status('Microphone listening to ambient sound · reacts to audible beats');
@@ -356,6 +383,7 @@ export function initSovereignReactor(app){
    for(const t of captured.getTracks())t.stop();
    throw Error('The selected tab or screen did not share an audio track. On desktop, choose a music tab and enable Share tab audio.');
   }
+  document.dispatchEvent(new Event('proximus-sonic-stop-playlist'));
   releaseInput();stream=captured;sourceNode=c.createMediaStreamSource(new MediaStream(captured.getAudioTracks()));
   sourceNode.connect(analyser);current='tab';streamCaptureActive=true;
   $('reactorSource').textContent='Desktop shared audio';$('reactorStop').disabled=false;
@@ -375,12 +403,12 @@ export function initSovereignReactor(app){
  $('reactorFilePlay').addEventListener('click',wrap(startFile));
  $('reactorMic').addEventListener('click',wrap(async()=>{try{await startMic();}catch(e){status('Microphone: '+(e.message||e),true);throw e;}}));
  $('reactorTab').addEventListener('click',wrap(async()=>{try{await startTab();}catch(e){status('Shared tab audio: '+(e.message||e),true);throw e;}}));
- $('reactorStop').addEventListener('click',()=>{releaseInput();status('Audio capture stopped.');});
+ $('reactorStop').addEventListener('click',()=>{if(current==='playlist')document.dispatchEvent(new Event('proximus-sonic-stop-playlist'));releaseInput();status('Audio capture stopped.');});
  audio.addEventListener('ended',()=>{
   if(current==='file'){releaseInput();status('Local audio finished.');}
  });
  audio.addEventListener('error',()=>{if(current==='file')status('Audio decoding failed. Try another browser-supported format.',true);});
- $('reactorVolume').addEventListener('input',()=>{audio.volume=Number($('reactorVolume').value);});
+ $('reactorVolume').addEventListener('input',()=>{audio.volume=Number($('reactorVolume').value);const shared=$('theaterAudio');if(shared)shared.volume=audio.volume;});
  audio.volume=Number($('reactorVolume').value);
 
  function clearBackdrop(){
@@ -449,6 +477,11 @@ export function initSovereignReactor(app){
  document.addEventListener('proximus-reactor-import',e=>{
   const file=e.detail?.file;
   if(!file)return;
+  if(document.documentElement.classList.contains('sonic-theater-integrated')){
+   app.changeView('reactor');
+   status('Sonic Theater already connects your playlist to Reactor. Use the shared Play controls.');
+   return;
+  }
   selectedAudio=file;
   status('Ready from Media Theater: '+safe(file.name)+'. Tap Play local audio.');
   app.changeView('reactor');
@@ -582,7 +615,7 @@ export function initSovereignReactor(app){
  function drawStage(now){
   const w=canvas.width,h=canvas.height,o=options();
   const sceneMode=(o.cycle||fxSettings.beatSceneChange)?runtimeMode:o.mode;
-  const theme=REACTOR_THEMES[o.theme],hasAudio=current!=='off'&&analyser;
+  const theme=REACTOR_THEMES[o.theme],hasAudio=current==='playlist'?sharedActive&&!!sharedSpectrum:current!=='off'&&!!analyser;
   const b=hasAudio?bands:{sub:0,bass:0,mid:0,treble:0,energy:0};
   const punch=(b.bass*.75+b.sub*.25)*o.impact;
   const activeColor=o.autoShift?Object.values(REACTOR_THEMES)[shift%5]:theme;
@@ -606,7 +639,7 @@ export function initSovereignReactor(app){
    drawSonicDimension(ctx,{
     world:sonicSettings.world,now,width:w,height:h,bands:b,lastKick:lastPulse,
     intensity:sonicSettings.intensity,quality:o.quality,
-    active:current!=='off'&&!!analyser&&audioContext?.state==='running',
+    active:hasAudio&&(current==='playlist'||audioContext?.state==='running'),
     reducedMotion:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true,
     colorOverride:sonicSettings.linkedScene?linkedColor:null,
     beatShift:sonicBeatPhase,beatColors:sonicSettings.beatColors,customBackdrop:custom
@@ -778,9 +811,15 @@ export function initSovereignReactor(app){
    }
    sampleFrames=0;sampleStart=now;
   }
-  if(current!=='off'&&analyser&&audioContext?.state==='running'){
-   analyser.getByteFrequencyData(frequency);
-   bands=spectralBands(frequency,audioContext.sampleRate,analyser.fftSize);
+  if(current==='playlist'&&sharedActive&&sharedSpectrum&&now-sharedUpdated<750||
+    current!=='off'&&current!=='playlist'&&analyser&&audioContext?.state==='running'){
+   if(current==='playlist'){
+    frequency=sharedSpectrum;
+    bands=spectralBands(frequency,sharedSampleRate,sharedFFT);
+   }else{
+    analyser.getByteFrequencyData(frequency);
+    bands=spectralBands(frequency,audioContext.sampleRate,analyser.fftSize);
+   }
    state=detectBeat(bands,now,state,o.sensitivity);
    if(state.hit){
     lastPulse=now;sonicBeatPhase++;if(o.autoShift)shift++;
@@ -792,7 +831,7 @@ export function initSovereignReactor(app){
    }
    frequencySmooth=frequencySmooth*.85+bands.energy*.15;
   }else bands={sub:0,bass:0,mid:0,treble:0,energy:0};
-  if(shouldCycleSonic({autoCycle:sonicSettings.autoCycle,active:sonicSettings.enabled&&current!=='off'&&!!analyser&&audioContext?.state==='running',
+  if(shouldCycleSonic({autoCycle:sonicSettings.autoCycle,active:sonicSettings.enabled&&((current==='playlist'&&sharedActive&&now-sharedUpdated<750)||(current!=='off'&&current!=='playlist'&&!!analyser&&audioContext?.state==='running')),
      beats:state.kicks,previousBeats:sonicCycleBeats,now,lastChangeAt:sonicCycleAt})){
     sonicSettings=normalizeSonic({...sonicSettings,world:nextSonicWorld(sonicSettings.world)});
     sonicCycleBeats=state.kicks;sonicCycleAt=now;drawSonicControls();saveSonicSettings();
