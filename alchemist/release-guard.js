@@ -5,7 +5,7 @@ import {$,bytes,download,textFile,wrap} from './core.js';
 export const RELEASE_ASSETS=[
  './index.html','./style.css','./app.js','./media-publisher.js','./companion-core.js','./command-center.js',
  './workspace-sync.js','./reactor-studio.js','./reactor-dsp.js',
- './recovery-center.js','./video-vault-core.js','./video-vault.js','./mobile-navigation.js','./version.json','./releases/index.json'
+ './recovery-center.js','./life-command-core.js','./life-command.js','./media-suite-core.js','./video-vault-core.js','./video-vault.js','./mobile-navigation.js','./version.json','./releases/index.json'
 ];
 export function releaseCheck(manifest,index,installed){
  if(!manifest||typeof manifest.version!=='string'||!/^\d+\.\d+\.\d+$/.test(manifest.version))throw Error('Invalid release version manifest.');
@@ -16,7 +16,7 @@ export function releaseCheck(manifest,index,installed){
  return {installed,published:manifest.version,upToDate:cmp()===0,newer:cmp()>0,studios:manifest.studio_count,
   releaseRecords:index.releases.length,code:'OK'};
 }
-export async function inspectRelease({fetchFn=fetch,cacheApi=typeof caches!=='undefined'?caches:null,installed='3.2.1'}={}){
+export async function inspectRelease({fetchFn=fetch,cacheApi=typeof caches!=='undefined'?caches:null,installed='3.3.0'}={}){
  const entries=[],at=new Date().toISOString();let manifest=null,index=null;
  const add=(part,ok,detail)=>entries.push({part,status:ok?'PASS':'NOTICE',detail:String(detail)});
  const get=async path=>{
