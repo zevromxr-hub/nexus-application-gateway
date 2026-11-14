@@ -86,7 +86,7 @@ assert.ok(html.includes('<link rel="stylesheet" href="./orbit-interface.css">'),
 assert.ok(app.includes('initOrbitInterface(app);'),'New visual access layer must initialize');
 assert.ok(app.indexOf('initOrbitInterface(app);')<app.indexOf('initCommandCenter(app);'),'Group and disclosure UI must exist before controllers initialize');
 assert.ok(app.includes("if(id==='theater')id='reactor'"),'Old Media Theater routes must still function');
-assert.ok(app.includes("LOCAL='3.6.0'"),'Release version should match new interface');
+assert.ok(app.includes("LOCAL='"+JSON.parse(read('version.json')).version+"'"),'ORBIT must remain compatible with current version');
 assert.ok(app.includes("toggleOrbitPin(n.id)"),'Keyboard search should allow favorites');
 assert.ok(app.includes("orbitFilter(names,"),'Search should use one purpose-based tool taxonomy');
 assert.ok(orbit.includes("const historic=oldPinKeys.flatMap"),'Existing favorites should be imported non-destructively');
