@@ -16,6 +16,12 @@ Use **Video Vault → Picture framing** for original uncropped video (default) o
 3. Reopen this website in the same browser and device: saved music is listed and up to 80 songs automatically reappear in the Theater listening queue. Choose Play to start; iPhone does not allow unauthorized audible autoplay.
 4. You can click **＋ Queue** for any stored song, or **Remove** to delete its saved *browser copy*. Removing music from the listening queue is separate from removing its stored copy.
 
+### NEW: Optional Play on Open
+
+Inside **Media Theater → Saved Music Library**, turn on **Attempt to play saved music when I open PROXIMUS** (off by default). Choose a specific saved startup song or leave **Most recently saved song** selected. PROXIMUS attempts audible playback automatically when the site opens. If the browser blocks it, a visible **▶ Play my music** prompt lets you start with one tap. You can also click **Play selected startup song now**.
+
+**Important browser restriction:** iPhone Safari generally does not permit audible music to autoplay without user interaction. PC browsers may allow it depending on site engagement and permissions, but it is not guaranteed. The option saves the *preference* (not the audio bytes) in Recovery Center and Sync Bridge backups. Turning it off stops future startup attempts but does not stop music already playing. All songs must first be explicitly saved to the local music library.
+
 Music is stored only on this device/browser profile, not uploaded to GitHub, Discord or a server. Per-track limit: 250 MB; saved library: 150 titles, subject to free browser storage. Keeping the original songs in iPhone Files/Photos or on your PC is strongly recommended; browser site data may be cleared or evicted. These large audio files are **not** included in the standard Settings Backup or 110 MB Workspace Sync; back up originals separately. Videos continue to belong in Video Vault. Songs that the browser cannot decode cannot be guaranteed to play.
 
 ### Improvements to existing studios
