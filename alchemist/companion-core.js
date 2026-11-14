@@ -5,11 +5,11 @@ export const RETIRED_STUDIOS=Object.freeze({
  batch:'Batch Forge',icons:'Icon Foundry',sprites:'Sprite Atlas',textures:'Texture Lab',
  palette:'Color Lab',audio:'Audio Forge',motion:'Motion Lab',model:'3D Inspector'
 });
-export const ACTIVE_STUDIOS=23;
+export const ACTIVE_STUDIOS=24;
 export const COMPANION_LINKS='proximus-companion-links-v1';
 export const COMPANION_GROUPS={
  entertainment:{label:'Entertainment',items:['videos','theater','reactor','animation','arcade']},
- everyday:{label:'Everyday useful',items:['workflow','utility','documents','qr','capture','automation','sync','projects']},
+ everyday:{label:'Everyday useful',items:['life','workflow','utility','documents','qr','capture','automation','sync','projects']},
  creative:{label:'Creative tools',items:['image','production','layers','motiongraphics','identity','pack']},
  manage:{label:'Manage & protect',items:['command','audit','tokens','recovery','releases','creator']}
 };
