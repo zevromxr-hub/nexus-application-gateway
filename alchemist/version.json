@@ -1,23 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.5.3",
+  "version": "3.5.4",
   "channel": "stable",
-  "release_date": "2026-11-13",
-  "subtitle": "Sonic Theater — Unified Music Library & Reactor",
+  "release_date": "2026-11-14",
+  "subtitle": "Mobile Power Guard — Cool Sonic Theater",
   "studio_count": 18,
-  "previous_version": "3.5.2",
+  "previous_version": "3.5.3",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Fixed Media Theater MP3 selection by explicitly permitting .mp3, .wav, .m4a, .aac, .ogg, .flac and supported audio extensions in its iPhone/PC file picker, with playback errors that identify unsupported codecs",
-    "Merged the previously separate Media Theater and Sovereign Reactor surfaces into one responsive Sonic Theater workspace with the real-time Reactor stage, integrated playlist and Saved Music Library visible together",
-    "One original browser audio player now supplies actual Web Audio frequency measurements to both Media Theater and Sovereign Reactor visuals, avoiding duplicate songs playing simultaneously and retaining all six Reactor IV modes and five Sonic Dimension worlds",
-    "Introduced one universal music dock with play/pause, previous/next, volume, now-playing text and immediate save-song action; existing music source, presets, video tools and microphone/tab inputs remain accessible",
-    "Preserved local music IndexedDB tracks and Play on Start preferences, including the selected startup song, toggle, iPhone tap-to-play fallback, and existing auto-restoration behavior",
-    "Added touch-friendly song reorder controls and saved local queue ordering, preserving the existing 80-item playback queue and 150-song storage capacity",
-    "Retained existing Theater routes as redirects to Sonic Theater, kept previous studios/media/data, and hid duplicate visible menu entries across PC/mobile without deleting the legacy compatibility layer",
-    "Maintained existing GitHub Pages deployment, version validation, release rollback and direct GitHub-to-Discord release automation unchanged; Infinite Realms is deferred to a future standalone release"
+    "Introduced Mobile Power Guard inside the existing unified Sonic Theater; defaults to a conservative 24 FPS 640×360 efficient rendering profile on iPhone/iPad while preserving existing PC presets",
+    "Added user-selectable Cool & Save (15 FPS, 480×270 with animated backgrounds paused), Music Only (stop visual rendering without interrupting local music playback), and Smooth (30 FPS, 640×360) modes",
+    "Auto-pauses the global site ambient/thumbnail video when performing mobile Reactor rendering, with non-destructive playback restoration when returning to other studios",
+    "Pauses Reactor canvas drawing when the stage is offscreen or the page is hidden, and stops painting the collapsed 900×300 Media Theater advanced visualizer while continuing lightweight real-audio FFT updates",
+    "Adaptive profile detects low achieved frame rate and downshifts to a lighter workload; these signals reflect rendering performance, not hardware temperature or battery-health readings",
+    "Keeps custom Reactor worlds, previous Reactor IV effects, background media, saved music, Play on Start, mobile playlist controls, Web Audio and user presets untouched in their existing storage locations",
+    "Temporarily restores existing full-resolution drawing during user-requested PNG, animated GIF and silent video exports, then returns to the selected energy-saving live profile",
+    "Preserves PC visual quality by default, existing adaptive navigation, GitHub Pages, automated release validation, rolling rollback and direct Discord announcements"
   ]
 }

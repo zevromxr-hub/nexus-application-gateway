@@ -1,8 +1,13 @@
 {
   "schema": "proximus.alchemist.release-index/1",
-  "updated": "2026-11-13",
+  "updated": "2026-11-14",
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
+    {
+      "version": "3.5.4",
+      "title": "Mobile Power Guard — Cool Sonic Theater",
+      "date": "2026-11-14"
+    },
     {
       "version": "3.5.3",
       "title": "Sonic Theater — Unified Music Library & Reactor",

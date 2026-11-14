@@ -35,7 +35,7 @@ for(const id of ['overdriveHub','overdriveScene','overdriveSceneName','overdrive
 }
 for(const target of ['videos','reactor','arcade','animation'])assert.ok(html.includes('data-overdrive-target="'+target+'"'),'Missing existing-space launch '+target);
 assert.match(html,/Infinite Realms/);
-assert.match(html,/PLANNED · v3\.5\.3/);
+assert.match(html,/PLANNED · FUTURE RELEASE/);
 assert.match(view,/app\.changeView\(target\)/);
 assert.match(view,/saveOrShare/);
 assert.match(view,/getImageData/);

@@ -1,5 +1,15 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.5.4 — Mobile Power Guard for Sonic Theater (2026-11-14)
+
+- Added iPhone/iPad-aware Sonic Theater power profiles: 24 FPS / 640×360 Adaptive, 15 FPS / 480×270 Cool & Save, zero animation Music Only, and capped 30 FPS Smooth.
+- Reduced star/particle rendering through existing eco-quality modes, paused ambient site videos during optimized Reactor use, and paused custom animated Reactor backgrounds in Cool & Save/Music Only.
+- Stopped canvas repainting when Reactor is out of view and stopped the second Media Theater visualizer from drawing while its Advanced panel is collapsed, without interrupting user audio.
+- Added a render-load auto-downshift if achieved animation throughput stays materially below target, without claiming any direct hardware temperature monitoring.
+- Preserved original desktop performance and temporarily restored original canvas quality for PNG, GIF and supported silent video exports, then returned to mobile power mode.
+- Retained local saved music, Play on Start, all Reactor IV and Sonic Dimension visual modes, user-owned media, iPhone/PC layout and existing GitHub-to-Discord release integration.
+- Added dedicated pure unit tests and full release validation, portable power-profile preferences and offline cache support.
+
 ## v3.5.3 — Sonic Theater: Unified Music Library & Sovereign Reactor (2026-11-13)
 
 - Fixed MP3 file selection in Media Theater with explicitly supported file extensions and descriptive unsupported-codec errors.

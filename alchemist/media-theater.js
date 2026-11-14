@@ -303,9 +303,6 @@ export function initMediaTheater(app){
   let energy=0;
   if(analyser&&visualized){
    analyser.getByteFrequencyData(frequency);analyser.getByteTimeDomainData(timeDomain);
-   if(currentItem()?.kind==='audio')document.dispatchEvent(new CustomEvent('proximus-sonic-spectrum',{
-    detail:{frequency,sampleRate:audioContext.sampleRate,fftSize:analyser.fftSize,active:!audio.paused&&audioContext.state==='running'}
-   }));
    for(let i=0;i<Math.min(50,frequency.length);i++)energy+=frequency[i];
    energy/=Math.min(50,frequency.length)*255;
   }
@@ -366,10 +363,25 @@ export function initMediaTheater(app){
  }
  function animate(t){
   raf=requestAnimationFrame(animate);
-  updateMini();if(document.hidden||!active())return;
-  if(t-tick<32)return;tick=t;
+  if(document.hidden||!active())return;
+  // The collapsed advanced visualizer used to draw 900×300 shadow-heavy graphics
+  // every 32ms, even while the user watched Reactor. Only draw it when opened.
+  // Keep lightweight measured FFT delivery independent from that hidden canvas.
+  const power=document.documentElement.dataset.sonicPower||'auto';
+  const mobile=/iPhone|iPad|iPod/i.test(navigator.userAgent||'');
+  const gap=power==='audio'?Infinity:power==='cool'?67:mobile?power==='smooth'?34:45:32;
+  if(t-tick<gap)return;
+  tick=t;
+  if(analyser&&visualized&&currentItem()?.kind==='audio'&&!audio.paused){
+   analyser.getByteFrequencyData(frequency);
+   document.dispatchEvent(new CustomEvent('proximus-sonic-spectrum',{
+    detail:{frequency,sampleRate:audioContext.sampleRate,fftSize:analyser.fftSize,active:audioContext.state==='running'}
+   }));
+  }
+  if(!$('sonicTheaterAdvanced')?.open)return;
   drawVisualization(t);
  }
+ document.addEventListener('proximus-view-changed',updateMini);
  $('theaterTheme').addEventListener('change',e=>{color=e.target.value;drawVisualization(performance.now());});
  $('theaterVisualizerMode').addEventListener('change',e=>{visualMode=e.target.value;drawVisualization(performance.now());});
  $('theaterEnableAudio').addEventListener('click',wrap(async()=>{

@@ -1,0 +1,12 @@
+/* PROXIMUS Mobile Power Guard 3.5.4 — limited to unified Reactor studio. */
+.sonic-power-panel{display:flex;flex-wrap:wrap;align-items:start;gap:9px 15px;background:linear-gradient(120deg,#121328,#1c1135);border:1px solid #6d578b;border-radius:13px;padding:12px 15px;margin:10px 0 13px;min-width:0}
+.sonic-power-intro{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:1 1 100%;flex-wrap:wrap}
+.sonic-power-intro strong{font-size:12px;font-weight:850;letter-spacing:.075em;color:#e5c7ff}
+.sonic-power-intro span{font-size:10px;font-weight:750;border:1px solid #705593;border-radius:999px;color:#bcdccf;padding:4px 9px;letter-spacing:.05em}
+.sonic-power-panel label{min-width:200px;flex:0 1 350px;margin:0;font-weight:700;color:#e6dbf5}
+.sonic-power-panel select{display:block;width:100%;min-height:43px;margin-top:5px}
+.sonic-power-panel .hint{flex:1 1 100%;margin:2px 0;font-size:11px;line-height:1.5}
+#sonicPowerStatus{color:#aadfc4}
+.sonic-power-ambient-off #ambientMedia{display:none!important;visibility:hidden!important}
+@media(max-width:720px){.sonic-power-panel{padding:12px}.sonic-power-panel label{flex:1 1 100%}.sonic-power-intro span{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.sonic-power-panel{transition:none!important}}

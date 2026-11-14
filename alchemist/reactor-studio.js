@@ -9,6 +9,7 @@ import {REACTOR_THEMES,spectralBands,initialBeatState,detectBeat,normalizeReacto
 import {REACTOR_IV_PRESETS,normalizeEffectSettings,effectLevels,nextSceneInOrder,pulseDecay,transitionProgress} from './reactor-iv.js';
 import {SONIC_KEY,SONIC_SCHEMA,normalizeSonic,sonicWorld,nextSonicWorld,sonicBackup,readSonicBackup,drawSonicDimension,shouldCycleSonic} from './sonic-dimension.js';
 import {OVERDRIVE_KEY,normalizeOverdriveSettings,currentScene} from './overdrive-core.js';
+import {POWER_KEY,normalizePower,isAppleMobileAgent,powerPlan,frameDue} from './sonic-power.js';
 
 const SETTINGS='proximus-reactor-settings-v1',DB='proximus-reactor-media-v1';
 const MAX_BACKDROP=55000000,MAX_AUDIO=250000000;
@@ -74,9 +75,75 @@ export function initSovereignReactor(app){
  window.addEventListener('storage',e=>{if(e.key===OVERDRIVE_KEY)updateLinkedColor();});
  let sampleStart=0,sampleFrames=0,measuredFPS=0;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
- let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
+ let raf=0,previous=0,lastPulse=0,shift=0,recording=false,exportingFrame=false,recordBlob=null,recordName='';
  let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
- let frameCount=0,frequencySmooth=0,streamCaptureActive=false;
+ let frameCount=0,frequencySmooth=0,streamCaptureActive=false,loopCapturing=false;
+ const mobilePowerDevice=isAppleMobileAgent(navigator.userAgent||'');
+ const reduceMotion=window.matchMedia?.('(prefers-reduced-motion:reduce)')?.matches===true;
+ let powerSettings=normalizePower(),autoSlow=false,stageVisible=true,pausedBackdropElements=new Set(),pausedSiteVideos=new Set(),pausedBackdrops=false;
+ let lastPowerDescription='',lastAmbientSuppression=null;
+ try{powerSettings=normalizePower(JSON.parse(localStorage.getItem(POWER_KEY)||'{}'));}catch(e){}
+ function getPowerPlan(){
+  return powerPlan(powerSettings,{mobile:mobilePowerDevice,quality:$('reactorQuality').value,
+   recording:recording||loopCapturing||exportingFrame,reducedMotion:reduceMotion,autoSlow});
+ }
+ function updatePowerUI(){
+  const plan=getPowerPlan(),mode=powerSettings.mode;
+  $('sonicPowerMode').value=mode;
+  $('sonicPowerStatus').textContent=(mobilePowerDevice?'iPhone/iPad':'PC / desktop')+' · '+
+   (plan.draw?plan.fps+' FPS · '+(plan.width||reactorDimensions(plan.quality).width)+'×'+(plan.height||reactorDimensions(plan.quality).height):'graphics paused; music continues')+
+   (mode==='auto'&&autoSlow?' · auto-reduced after slow frames':'')+
+   (plan.backgroundPause?' · animated backdrops paused':'')+
+   '. No temperature data is collected.';
+  document.documentElement.dataset.sonicPower=plan.draw?mode:'audio';
+ }
+ function applyPowerEnvironment(){
+  const plan=getPowerPlan(),suspendBackdrop=(plan.backgroundPause||!active()||!stageVisible||document.hidden)&&!recording&&!loopCapturing;
+  const suppressAmbient=plan.siteAmbientPause&&active();
+  if(suppressAmbient!==lastAmbientSuppression){
+   lastAmbientSuppression=suppressAmbient;
+   document.documentElement.classList.toggle('sonic-power-ambient-off',suppressAmbient);
+   if(suppressAmbient){
+    document.querySelectorAll('#ambientMedia video,#heroOrb video,[data-panel="reactor"] .studio-personal-thumb video')
+     .forEach(el=>{if(!el.paused){el.pause();pausedSiteVideos.add(el);}});
+   }else{
+    for(const el of pausedSiteVideos){if(el.isConnected)void el.play().catch(()=>{});}
+    pausedSiteVideos.clear();
+   }
+  }
+  if(suspendBackdrop===pausedBackdrops&&!suspendBackdrop)return;
+  pausedBackdrops=suspendBackdrop;
+  const videos=[backgroundVideo,overlayVideo];
+  if(suspendBackdrop){
+   for(const el of videos)if(!el.hidden&&!el.paused){el.pause();pausedBackdropElements.add(el);}
+  }else{
+   for(const el of pausedBackdropElements){if(!el.hidden)void el.play().catch(()=>{});}
+   pausedBackdropElements.clear();
+  }
+ }
+ // Newly attached site background videos are stopped if a lightweight profile is active.
+ document.addEventListener('play',e=>{
+  const el=e.target;
+  if(!mobilePowerDevice||!el||el.tagName!=='VIDEO'||!getPowerPlan().siteAmbientPause||!active())return;
+  if(el.closest('#ambientMedia,#heroOrb,[data-panel="reactor"] .studio-personal-thumb')){
+   el.pause();pausedSiteVideos.add(el);
+  }
+ },true);
+ $('sonicPowerMode').addEventListener('change',e=>{
+  powerSettings=normalizePower({mode:e.currentTarget.value});autoSlow=false;previous=0;
+  try{localStorage.setItem(POWER_KEY,JSON.stringify(powerSettings));}catch(e){}
+  resize();applyPowerEnvironment();updatePowerUI();
+  if(powerSettings.mode==='audio')status('Music-only mode: Reactor graphics paused. Saved music and controls keep working.');
+ });
+ document.addEventListener('proximus-view-changed',()=>{applyPowerEnvironment();previous=0;});
+ document.addEventListener('visibilitychange',()=>{applyPowerEnvironment();previous=0;});
+ if(typeof IntersectionObserver==='function'){
+  const observer=new IntersectionObserver(entries=>{stageVisible=entries.some(entry=>entry.isIntersecting);previous=0;},
+   {root:null,threshold:0});
+  observer.observe(stage);
+  window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ }
+
  const inputText={off:'No source connected',file:'Local music file',playlist:'Saved Sonic Theater playlist',mic:'Microphone (permission granted)',tab:'Shared desktop tab / screen audio'};
  const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='reactor';
 
@@ -127,11 +194,14 @@ export function initSovereignReactor(app){
   $('reactorOverlayOpacityOut').textContent=Math.round(o.overlayOpacity*100)+'%';
  }
  function resize(){
-  const {width,height}=reactorDimensions(options().quality);
+  const plan=getPowerPlan();
+  const original=reactorDimensions(options().quality);
+  const {width,height}=plan.width&&plan.height?plan:original;
   if(canvas.width!==width||canvas.height!==height){
    canvas.width=width;canvas.height=height;
   }
   $('reactorResolution').textContent=width+' × '+height;
+  updatePowerUI();
  }
  for(const id of ['reactorTheme','reactorMode','reactorQuality','reactorSensitivity','reactorImpact','reactorLayers',
   'reactorBgOpacity','reactorBgFit','reactorAutoShift','reactorSnow','reactorSignature','reactorShowSignature',
@@ -615,7 +685,7 @@ export function initSovereignReactor(app){
   ctx.restore();return true;
  }
  function drawStage(now){
-  const w=canvas.width,h=canvas.height,o=options();
+  const w=canvas.width,h=canvas.height,o={...options(),quality:getPowerPlan().quality};
   const sceneMode=(o.cycle||fxSettings.beatSceneChange)?runtimeMode:o.mode;
   const theme=REACTOR_THEMES[o.theme],hasAudio=current==='playlist'?sharedActive&&!!sharedSpectrum:current!=='off'&&!!analyser;
   const b=hasAudio?bands:{sub:0,bass:0,mid:0,treble:0,energy:0};
@@ -792,9 +862,12 @@ export function initSovereignReactor(app){
  function tick(now){
   raf=requestAnimationFrame(tick);
   if(document.hidden)return;
-  const o=options(),fps=reactorDimensions(o.quality).fps;
-  if(!active()&&!recording&&!loopCapturing)return;
-  if(now-previous<1000/fps)return;
+  if(!active()&&!recording&&!loopCapturing){applyPowerEnvironment();return;}
+  const power=getPowerPlan();
+  applyPowerEnvironment();
+  if(!recording&&!loopCapturing&&!stageVisible&&document.fullscreenElement!==stage)return;
+  if(!power.draw||!frameDue(now,previous,power.fps))return;
+  const o=options();
   previous=now;frameCount++;
   if(o.cycle&&now>=nextSceneAt){
    runtimeMode=nextSceneInOrder(runtimeMode,fxSettings.sceneOrder);
@@ -806,8 +879,14 @@ export function initSovereignReactor(app){
   if(!sampleStart)sampleStart=now;
   if(now-sampleStart>=3500){
    measuredFPS=Math.round(sampleFrames*1000/(now-sampleStart));
-   $('reactorPerformanceText').textContent='Live '+measuredFPS+' FPS · '+o.quality;
-   if(o.autoPerformance&&o.quality!=='eco'&&measuredFPS<reactorDimensions(o.quality).fps*.48&&!recording&&!loopCapturing){
+   $('reactorPerformanceText').textContent='Live '+measuredFPS+' FPS · '+getPowerPlan().quality+
+    (getPowerPlan().limited?' · Mobile Power Guard':'');
+   if(mobilePowerDevice&&powerSettings.mode==='auto'&&!autoSlow&&
+      measuredFPS<getPowerPlan().fps*.65&&sampleFrames>=8&&!recording&&!loopCapturing){
+     autoSlow=true;previous=0;resize();applyPowerEnvironment();
+     $('reactorPerformanceText').textContent='Adaptive iPhone load reduction · 15 FPS';
+   }
+   if(!mobilePowerDevice&&o.autoPerformance&&o.quality!=='eco'&&measuredFPS<reactorDimensions(o.quality).fps*.48&&!recording&&!loopCapturing){
     $('reactorQuality').value='eco';resize();saveSettings();
     $('reactorPerformanceText').textContent='Auto-switched to battery saver · '+measuredFPS+' FPS';
    }
@@ -847,7 +926,6 @@ export function initSovereignReactor(app){
   drawStage(now);
   if(frameCount%4===0){stats();drawHistory();}
  }
- let loopCapturing=false;
  raf=requestAnimationFrame(tick);
  $('reactorFullscreen').addEventListener('click',wrap(async()=>{
   if(stage.requestFullscreen)await stage.requestFullscreen();
@@ -855,8 +933,11 @@ export function initSovereignReactor(app){
   else status('This device offers the full stage within the page.');
  }));
  async function exportFrame(kind){
-  drawStage(performance.now());
-  const blob=await blobCanvas(canvas,'image/png'),name='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world.toUpperCase():'REACTOR-'+stem(options().mode))+'.png';
+  exportingFrame=true;resize();
+  let blob;
+  try{drawStage(performance.now());blob=await blobCanvas(canvas,'image/png');}
+  finally{exportingFrame=false;resize();applyPowerEnvironment();}
+  const name='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world.toUpperCase():'REACTOR-'+stem(options().mode))+'.png';
   if(kind==='pack')app.addAsset(name,blob,'Sovereign Reactor');
   else if(kind==='share')await saveOrShare(blob,name);
   else download(blob,name);
@@ -870,7 +951,7 @@ export function initSovereignReactor(app){
  // the browser decodes it to a drawable frame. Always keep it within mobile memory.
  $('reactorMakeGif').addEventListener('click',wrap(async()=>{
   if(loopCapturing||recording)throw Error('Finish the current recording first.');
-  loopCapturing=true;$('reactorMakeGif').disabled=true;
+  loopCapturing=true;resize();applyPowerEnvironment();$('reactorMakeGif').disabled=true;
   const frames=[],clip=document.createElement('canvas');clip.width=384;clip.height=216;
   const g=clip.getContext('2d',{willReadFrequently:true});
   const duration=3000,count=24;
@@ -888,7 +969,7 @@ export function initSovereignReactor(app){
    $('reactorSaveGif').hidden=false;$('reactorGifPack').hidden=false;
    download(blob,loopName);
    exportStatus('Animated GIF ready · 384×216 · 24 frames · '+bytes(blob.size));
-  }finally{loopCapturing=false;$('reactorMakeGif').disabled=false;}
+  }finally{loopCapturing=false;resize();applyPowerEnvironment();$('reactorMakeGif').disabled=false;}
  }));
  $('reactorSaveGif').addEventListener('click',wrap(async()=>{
   if(!loopBlob)throw Error('Create an animated reactor GIF first.');
@@ -914,7 +995,7 @@ export function initSovereignReactor(app){
  async function beginRecord(){
   if(recording||loopCapturing)throw Error('Finish the current visual export first.');
   if(!videoCaptureAvailable)throw Error('Canvas video recording is not available; use GIF or PNG exports.');
-  recording=true;recordChunks=[];
+  recording=true;recordChunks=[];resize();applyPowerEnvironment();
   const duration=Math.max(3,Math.min(15,Number($('reactorRecordSeconds').value)||8));
   const stageStream=canvas.captureStream(30);
   try{
@@ -938,7 +1019,7 @@ export function initSovereignReactor(app){
   }finally{
    clearTimeout(recordTimer);
    for(const tr of stageStream.getTracks())tr.stop();
-   recorder=null;recording=false;$('reactorRecord').disabled=false;$('reactorStopRecord').disabled=true;
+   recorder=null;recording=false;resize();applyPowerEnvironment();$('reactorRecord').disabled=false;$('reactorStopRecord').disabled=true;
   }
  }
  $('reactorRecord').addEventListener('click',wrap(beginRecord));
