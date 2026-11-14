@@ -1,3 +1,38 @@
+# PROXIMUS | ASSET ALCHEMIST v3.6.1
+**WEB CINEMA GATEWAY — Compatible Websites, Video Links & Private Watch-Later Library**
+
+Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## Web Cinema Gateway — how to use
+Open **Video Vault** and expand the new **Web Cinema Gateway** section. It is collapsed by default to avoid clutter. Paste an HTTPS website or video link, enter an optional title/collection, and choose **Open link**. For supported sites the Gateway displays a restricted webpage; for approved video providers it uses an official embed; for direct media files it uses the browser video player.
+
+Use **Back, Forward, Reload, Fullscreen, Stop** and **Open externally**. Back/Forward track links opened through the Gateway, not internal navigation inside an embedded external website. Nothing is loaded from a provider merely by opening PROXIMUS.
+
+### Supported and restricted playback
+- **YouTube:** Standard watch/share, shorts, live and embed video URLs are mapped to the official privacy-enhanced YouTube player, which requires a suitable referrer and the video owner's permission to embed.
+- **Vimeo:** Supported numeric video URLs use the official Vimeo iframe player; some privacy-protected videos may not allow embedding.
+- **Direct video:** The browser may play accessible MP4, M4V, WebM, MOV, OGV, OGG or HLS media URLs, depending on platform, codecs and hosting. Safari can support HLS while other browsers may not.
+- **Other websites:** PROXIMUS attempts to display compatible secure sites in a restricted iframe. Many websites block this, require cookies/sign-in, or prevent external playback. In those cases use **Open externally**.
+- **Provider-specific restrictions:** Where an external provider requires a configured player or its own site, PROXIMUS offers an external link rather than bypassing those rules.
+
+Generic website frames run without same-origin privileges, popup permissions, downloads or navigation of the parent page. Official providers use their supported player origin. This is not a proxy, video downloader, authorization bypass, or guarantee of universal embedded access.
+
+### Save video and website links to watch later
+Select **Save for later** to save a pasted URL and optional title to this device. The Gateway supports up to 180 saved links, editable collections, favorites, search and filters. Use **Watch** next to any saved link to reopen it later. Direct-video bookmarks can resume their last saved playback position when the browser supports that source. Third-party players manage their own watch history, and PROXIMUS cannot promise to read it.
+
+Use **Export link library** and **Import saved links** for manual PC/iPhone portability, or include link metadata in user-initiated Recovery Center / Workspace Sync settings backups. These backups include URLs and titles, not downloaded media files. Review backups before sharing because signed or personal URLs may contain sensitive parameters. Links to temporary or expiring content may stop working after their access expires.
+
+### Mobile & preservation
+On iPhone, the Gateway pauses/unloads remote media when collapsed, when another studio is selected, or when the browser becomes hidden. Its responsive video player maintains a fully opaque black backing. The local Video Vault library and all its media, bookmarks and captions are unchanged. Sonic Theater, saved MP3s, Play on Start, Mobile Power Guard, ORBIT favorites, Token Foundry and all existing spaces remain preserved.
+
+Same GitHub Pages URL and direct GitHub-to-Discord release announcements; no new studio navigation item or backend.
+
+**Suggested test:** Open the Gateway on PC and iPhone, try one supported direct video URL and one YouTube or Vimeo URL, save them, reopen from the library, and confirm that ordinary local Video Vault videos still play. Test Open externally with a site that restricts embedding.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.6.0
 **ORBIT INTERFACE — FULL PC / iPHONE FACELIFT · ONE EASY ACCESS SYSTEM**
 
