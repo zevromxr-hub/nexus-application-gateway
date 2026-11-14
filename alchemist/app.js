@@ -23,6 +23,7 @@ import {initVideoVault} from './video-vault.js';
 import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
 import {initAdaptiveLayout} from './layout-adapter.js';
+import {initEntertainmentOverdrive} from './entertainment-overdrive.js';
 import {RETIRED_STUDIOS} from './companion-core.js';
 const names=[
  {id:'command',icon:'⌂',title:'Sovereign Command Center',detail:'Dashboard favorite studios thumbnail cards owner customer layout quick actions recent exports'},
@@ -260,7 +261,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.4.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.5.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -282,10 +283,10 @@ function setupVersion(){
 function launch(){
  initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
- initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();
+ initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Adaptive Companion v3.4.0 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
+ notice('PROXIMUS Entertainment Overdrive v3.5.0 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
