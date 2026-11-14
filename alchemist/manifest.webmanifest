@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.5.3 Sonic Theater — unified locally saved MP3 playlists and Sovereign Reactor music-reactive visuals, plus private media tools",
+  "description": "PROXIMUS v3.5.4 Mobile Power Guard — energy-efficient iPhone music-reactive Sonic Theater, saved MP3 playlists, and protected creator studios.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
