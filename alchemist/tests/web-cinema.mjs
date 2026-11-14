@@ -13,7 +13,7 @@ const html=read('index.html'),app=read('app.js'),style=read('web-cinema.css'),
 assert.equal(WEB_CINEMA_KEY,'proximus-web-cinema-links-v1');
 assert.equal(WEB_CINEMA_SCHEMA,'proximus.web-cinema.links/1');
 assert.equal(WEB_CINEMA_LIMIT,180);
-assert.equal(WEB_CINEMA_MAX_IMPORT,300000);
+assert.equal(WEB_CINEMA_MAX_IMPORT,750000);
 assert.equal(parseWebCinemaUrl('videos.example.org/movie.mp4').href,'https://videos.example.org/movie.mp4');
 assert.equal(classifyWebCinemaUrl('https://cdn.example.org/clip.mp4?token=abc').kind,'direct');
 assert.equal(classifyWebCinemaUrl('https://cdn.example.org/stream.m3u8').kind,'direct');
@@ -27,6 +27,7 @@ assert.equal(classifyWebCinemaUrl('https://www.youtube.com/playlist?list=abc').k
 assert.equal(classifyWebCinemaUrl('https://www.youtube.com.evil.org/watch?v=dQw4w9WgXcQ').kind,'website','Do not trust lookalike hostnames');
 assert.equal(classifyWebCinemaUrl('https://vimeo.com/123456789?h=a1b2c3d4').embed,'https://player.vimeo.com/video/123456789?h=a1b2c3d4');
 assert.equal(classifyWebCinemaUrl('https://vimeo.com/123456789').kind,'vimeo');
+assert.equal(classifyWebCinemaUrl('https://vimeo.com/123456789/a1b2c3d4').embed,'https://player.vimeo.com/video/123456789?h=a1b2c3d4');
 assert.equal(classifyWebCinemaUrl('https://www.dailymotion.com/video/x8abcde').kind,'external','Modern Dailymotion embeds require a player ID');
 assert.equal(classifyWebCinemaUrl('http://example.org/video.mp4').kind,'external','Unencrypted embeds cannot bypass mixed-content safeguards');
 assert.equal(classifyWebCinemaUrl('https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/').kind,'external');
