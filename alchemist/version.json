@@ -1,21 +1,22 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Entertainment Overdrive — Convergence Foundation & Cinema Atmosphere Sync",
+  "subtitle": "Sonic Dimension — Five Living Audio Worlds",
   "studio_count": 18,
-  "previous_version": "3.4.0",
+  "previous_version": "3.5.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Launched a unified Entertainment Overdrive experience inside the existing Companion Center with five flagship paths; existing Cinema, Reactor IV, Arcade Chamber and Animation Forge remain accessible without adding another top-level studio",
-    "Introduced reusable Convergence scene presets with five built-in palettes, up to 20 custom scenes, and local save, restore, JSON import/export and Project Hub handoff",
-    "Added Cinema Overdrive Atmosphere Sync: user-controlled ambient glow around Video Vault and Media Theater players, sampled from supported local video frames with safe static-color fallback",
-    "Added Auto, Efficiency and Overdrive quality modes, reduced-motion awareness and throttled frame sampling for iPhone and PC",
-    "Preserved 18 active companion spaces, all retired-studio decisions, existing video bytes, bookmarks, Reactor settings, projects, Token Foundry and adaptive PC/iPhone interface",
-    "Maintained the existing GitHub Pages URL, release rollback cache, release validation and Discord notification pipeline; Sonic Dimension, Arcade Nexus, Infinite Realms and Creator Overdrive expanded implementations are explicitly staged in v3.5.1–v3.5.4"
+    "Expanded Sovereign Reactor IV into Sonic Dimension with five original Canvas2D environments: Nebula Collapse, Cyber Tunnel, Celestial Gate, Ember Storm and Frozen Aurora, rendered from measured local audio or permissioned input",
+    "Added an opt-in world mode that preserves all six classic Reactor IV visual modes, local media backdrops, visual overlays, effect routing, saved presets, GIF/PNG/silent video exports and existing playback sources",
+    "Introduced user-adjustable real bass and frequency reactivity, beat-driven color transitions and optional automatic world evolution after eight measured beats with a twelve-second minimum interval",
+    "Connected Sonic Dimension to the v3.5 Convergence scene palette with live cross-studio color updates and a separate versioned local settings backup",
+    "Added settings import/export, save-to-Project Hub, new legacy preset round-tripping, and optional Sync Bridge / Recovery Center backup of Sonic plus Convergence preferences",
+    "Retained the PC/iPhone adaptive interface, browser privacy, original Github Pages URL, 18 existing companion spaces and all prior retirement decisions, with no external audio recording or unauthorized system audio capture",
+    "Maintained GitHub release validation, deployment verification, rollback cache and the pre-existing automatic Discord announcement sender unchanged"
   ]
 }
