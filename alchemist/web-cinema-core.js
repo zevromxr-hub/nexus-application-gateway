@@ -91,9 +91,10 @@ export function normalizeWebCinemaLibrary(raw=[]){
   if(seen.has(classified.url))continue;seen.add(classified.url);
   const added=Number.isSafeInteger(row.added)&&row.added>0?row.added:Date.now();
   const lastOpen=Number.isSafeInteger(row.lastOpen)&&row.lastOpen>0?row.lastOpen:0;
-  const position=classified.kind==='direct'&&Number.isFinite(row.position)?Math.max(0,Math.min(432000,row.position)):0;
-  const id=typeof row.id==='string'&&/^[\w-]{8,90}$/.test(row.id)?row.id:'web-'+added.toString(36)+'-'+out.length;
   const playback=safeSource(row);
+  const position=(classified.kind==='direct'||playback.playerMode==='native')&&Number.isFinite(row.position)?
+   Math.max(0,Math.min(432000,row.position)):0;
+  const id=typeof row.id==='string'&&/^[\w-]{8,90}$/.test(row.id)?row.id:'web-'+added.toString(36)+'-'+out.length;
   out.push({id,url:classified.url,kind:classified.kind,title:safeTitle(row.title)||classified.label,
    collection:safeCollection(row.collection),favorite:row.favorite===true,added,lastOpen,position,...playback});
   if(out.length===WEB_CINEMA_LIMIT)break;
