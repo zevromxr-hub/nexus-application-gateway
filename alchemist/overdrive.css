@@ -17,7 +17,7 @@ button.overdrive-card:hover{transform:translateY(-2px);background:rgba(102,77,17
 .overdrive-card .overdrive-tag{margin-top:auto;color:#a9e2fb;font-size:.69rem;font-weight:700;letter-spacing:.025em}
 .overdrive-scene-panel{display:grid;gap:12px;margin-top:15px;padding:15px;border:1px solid rgba(178,151,234,.25);border-radius:14px;background:rgba(6,11,29,.55)}
 .overdrive-scene-panel h4{margin:0;font-size:1rem;color:#eee8ff}
-.overdrive-form{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);gap:10px}
+.overdrive-form{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(85px,.6fr) minmax(0,1fr);gap:10px}
 .overdrive-form label{min-width:0;display:flex;flex-direction:column;gap:5px;font-size:.77rem;color:#cec7e9}
 .overdrive-form input,.overdrive-form select,.overdrive-cinema-controls input,.overdrive-cinema-controls select{width:100%;min-width:0;max-width:100%;border-radius:9px}
 .overdrive-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
@@ -38,3 +38,5 @@ button.overdrive-card:hover{transform:translateY(-2px);background:rgba(102,77,17
 @media(max-width:750px){.overdrive-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.overdrive-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.overdrive-form label:first-child{grid-column:1/-1}.overdrive-card{min-height:137px}.overdrive-heading{align-items:flex-start}.overdrive-ready{white-space:normal}}
 @media(max-width:420px){.overdrive-hub{padding:14px}.overdrive-card{min-height:140px;padding:12px 10px}.overdrive-card strong{font-size:.82rem}.overdrive-form{grid-template-columns:1fr}.overdrive-form label:first-child{grid-column:auto}.overdrive-cinema-controls{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.overdrive-card{transition:none}.overdrive-card:hover{transform:none}.video-vault-stage.overdrive-ambient,.theater-stage.overdrive-ambient{transition:none}}
+
+.overdrive-form input[type="color"]{min-height:39px;padding:3px;border:1px solid rgba(210,190,255,.35);background:#100d21;cursor:pointer}
