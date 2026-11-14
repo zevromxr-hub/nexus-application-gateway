@@ -3,6 +3,7 @@
 // This is not cloud storage, an online downloader or a guaranteed backup service.
 import {$,bytes,download,notice,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
+import {normalizeBookmarks,makeVideoCatalog} from './media-suite-core.js';
 import {
  VIDEO_VAULT_DB,VIDEO_VAULT_SCHEMA,VIDEO_VAULT_MAX_ITEMS,videoFileType,
  createVideoMetadata,validateVideoFile,normalizeVideoCollection,
@@ -84,7 +85,7 @@ export function initVideoVault(app){
   info=$('videoVaultInfo'),storage=$('videoVaultStorage'),listCount=$('videoVaultCount');
  const search=$('videoVaultSearch'),filter=$('videoVaultFilter'),sort=$('videoVaultSort');
  const records=new Map();
- let activeId=null,currentURL=null,lastSave=0,posterWorking=false,persistent=null;
+ let activeId=null,currentURL=null,lastSave=0,posterWorking=false,persistent=null,captionURL=null;
  const AUTO_NEXT='proximus-video-vault-auto-next-v1';
  const autoNext=$('videoVaultAutoNext');
  try{autoNext.checked=localStorage.getItem(AUTO_NEXT)==='1';}catch(e){}
@@ -105,7 +106,7 @@ export function initVideoVault(app){
   const item=active();
   const inVault=document.querySelector('.studio:not([hidden])')?.dataset.panel==='videos';
   mini.hidden=!item||video.paused||inVault;
-  miniTitle.textContent=item?.name||'Saved video';
+  miniTitle.textContent=item?.displayTitle||item?.name||'Saved video';
   miniToggle.textContent=video.paused?'▶':'❚❚';
  }
  miniToggle.addEventListener('click',()=>{if(video.paused)video.play().catch(()=>{});else video.pause();});
@@ -118,6 +119,9 @@ export function initVideoVault(app){
  function releasePosters(){for(const url of posterURLs)URL.revokeObjectURL(url);posterURLs=[];}
  function clearPlayback(){
   video.pause();video.removeAttribute('src');video.load();
+  if(captionURL){URL.revokeObjectURL(captionURL);captionURL=null;}
+  video.querySelectorAll('track[data-vault-caption]').forEach(t=>t.remove());
+  $('videoVaultCaptions').value='';
   if(currentURL)URL.revokeObjectURL(currentURL);
   currentURL=null;activeId=null;lastSave=0;
   metaLabel.textContent='Select a saved video';
@@ -125,7 +129,9 @@ export function initVideoVault(app){
   $('videoVaultDownload').disabled=true;
   $('videoVaultPiP').disabled=true;
   $('videoVaultSendTheater').disabled=true;
-  updateMini();
+  $('videoVaultToGif').disabled=true;
+  $('videoVaultSnapshot').disabled=true;
+  drawBookmarks();updateMini();
  }
  function getVisible(){
   return sortVideoLibrary([...records.values()],{
@@ -150,7 +156,7 @@ export function initVideoVault(app){
    const badge=document.createElement('span');badge.className='video-vault-duration';badge.textContent=item.duration?videoTime(item.duration):'LOCAL';cover.append(badge);
    cover.addEventListener('click',()=>void watch(item.id,true));
    const body=document.createElement('div');body.className='video-vault-card-body';
-   const heading=document.createElement('strong');heading.textContent=item.name;heading.title=item.name;
+   const heading=document.createElement('strong');heading.textContent=item.displayTitle||item.name;heading.title=item.name;
    const details=document.createElement('small');details.textContent=bytes(item.bytes)+' · '+formatDate(item.added)+
     (item.position?' · Resume '+videoTime(item.position):'');
    const row=document.createElement('div');row.className='video-vault-card-actions';
@@ -178,7 +184,19 @@ export function initVideoVault(app){
     item.collection=normalizeVideoCollection(folder.value);item.updated=Date.now();
     await updateStoredVideo(item);render();
    }));
-   row.append(watchButton,fav,del);body.append(heading,details,folder,row);
+   const rename=document.createElement('button');rename.className='small-btn';rename.textContent='Rename';
+   rename.title='Change title without renaming your original video file';
+   rename.addEventListener('click',wrap(async()=>{
+    const name=prompt('Display name for this video (original filename stays unchanged):',item.displayTitle||item.name);
+    if(name===null)return;
+    const clean=String(name).replace(/[\u0000-\u001f]/g,' ').trim().slice(0,120);
+    if(!clean)throw Error('Title cannot be empty.');
+    item.displayTitle=clean;item.updated=Date.now();
+    await updateStoredVideo(item);
+    if(activeId===item.id)metaLabel.textContent=clean;
+    render();
+   }));
+   row.append(watchButton,fav,del,rename);body.append(heading,details,folder,row);
    card.append(cover,body);grid.append(card);
   }
   if(!list.length){const blank=document.createElement('div');blank.className='video-vault-empty';
@@ -273,11 +291,14 @@ export function initVideoVault(app){
    activeId=id;currentURL=URL.createObjectURL(blob);
    video.src=currentURL;video.playsInline=true;video.preload='metadata';
    video.load();
-   metaLabel.textContent=item.name;info.textContent=bytes(item.bytes)+' · '+item.collection+
+   metaLabel.textContent=item.displayTitle||item.name;info.textContent=bytes(item.bytes)+' · '+item.collection+
     (item.position?' · saved position '+videoTime(item.position):' · start from beginning');
    $('videoVaultDownload').disabled=false;$('videoVaultPiP').disabled=false;
    $('videoVaultSendTheater').disabled=false;
-   render();
+   $('videoVaultToGif').disabled=false;
+   $('videoVaultSnapshot').disabled=false;
+   video.playbackRate=Number($('videoVaultSpeed').value)||1;
+   drawBookmarks();render();
   }
   if(autoplay){
    try{await video.play();say('Playing '+item.name+'.');}
@@ -332,6 +353,78 @@ export function initVideoVault(app){
   app.changeView('theater');
   say('Opened '+item.name+' in Media Theater without duplicating the stored file.');
  }));
+
+ function drawBookmarks(){
+  const holder=$('videoVaultBookmarks'),item=active();holder.replaceChildren();
+  if(!item){holder.textContent='Choose a saved video to bookmark its scenes.';return;}
+  const marks=normalizeBookmarks(item.bookmarks);
+  for(const mark of marks){
+   const row=document.createElement('div');row.className='video-vault-bookmark-row';
+   const jump=document.createElement('button');jump.className='small-btn';
+   jump.textContent='▶ '+videoTime(mark.time)+' · '+mark.title;
+   jump.addEventListener('click',()=>{
+    if(!Number.isFinite(video.duration))return;
+    video.currentTime=Math.min(video.duration-.05,mark.time);
+    void video.play().catch(()=>{});
+   });
+   const del=document.createElement('button');del.className='small-btn';del.textContent='×';
+   del.setAttribute('aria-label','Remove '+mark.title+' scene bookmark');
+   del.addEventListener('click',wrap(async()=>{
+    item.bookmarks=marks.filter(x=>x.id!==mark.id);
+    await updateStoredVideo(item);drawBookmarks();
+   }));
+   row.append(jump,del);holder.append(row);
+  }
+  if(!marks.length)holder.textContent='No saved scenes yet. Save the current playback time to create a chapter.';
+ }
+ $('videoVaultBookmarkSave').addEventListener('click',wrap(async()=>{
+  const item=active();if(!item||!Number.isFinite(video.currentTime))throw Error('Choose a saved video and a scene first.');
+  const marks=normalizeBookmarks(item.bookmarks);
+  if(marks.length>=60)throw Error('Up to 60 bookmarks per saved video.');
+  const name=$('videoVaultBookmarkTitle').value.trim().slice(0,70)||'Favorite scene';
+  item.bookmarks=normalizeBookmarks([...marks,{id:newId(),title:name,time:video.currentTime}]);
+  item.updated=Date.now();
+  await updateStoredVideo(item);$('videoVaultBookmarkTitle').value='';drawBookmarks();
+  say('Bookmarked scene at '+videoTime(video.currentTime)+'.');
+ }));
+ $('videoVaultSpeed').addEventListener('change',()=>{
+  video.playbackRate=Number($('videoVaultSpeed').value)||1;
+ });
+ $('videoVaultCaptions').addEventListener('change',wrap(async e=>{
+  const f=e.target.files?.[0];if(!f)return;
+  if(f.size>1500000||!(/\\.vtt$/i.test(f.name)||f.type==='text/vtt'))throw Error('Use a .vtt subtitle file under 1.5 MB.');
+  if(captionURL)URL.revokeObjectURL(captionURL);
+  video.querySelectorAll('track[data-vault-caption]').forEach(t=>t.remove());
+  captionURL=URL.createObjectURL(f);
+  const track=document.createElement('track');
+  track.kind='subtitles';track.srclang='en';track.label='Local captions';track.src=captionURL;
+  track.default=true;track.dataset.vaultCaption='1';video.append(track);
+  say('Loaded local captions for this playback session; the .vtt file is not saved in the Vault.');
+ }));
+ $('videoVaultToGif').addEventListener('click',wrap(async()=>{
+  const item=active();if(!item)throw Error('Choose a saved video first.');
+  if(item.bytes>250000000)throw Error('Animation Forge accepts at most 250 MB per imported video.');
+  const blob=await loadStoredVideo(item.id);
+  document.dispatchEvent(new CustomEvent('proximus-animation-source',
+   {detail:{blob,name:item.name,mime:item.mime}}));
+  app.changeView('animation');
+  say('Saved video passed to Animation Forge without adding a new permanent copy.');
+ }));
+ $('videoVaultSnapshot').addEventListener('click',wrap(async()=>{
+  if(!active()||video.readyState<2||!video.videoWidth)throw Error('Play or seek to a valid video frame first.');
+  const canvas=document.createElement('canvas');canvas.width=Math.min(video.videoWidth,1920);
+  canvas.height=Math.max(1,Math.round(canvas.width*video.videoHeight/video.videoWidth));
+  canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('Could not capture frame.')),'image/png'));
+  await saveOrShare(blob,'PROXIMUS-VIDEO-FRAME-'+Math.round(video.currentTime)+'s.png');
+  say('Exported current video frame as a PNG.');
+ }));
+ $('videoVaultExportCatalog').addEventListener('click',wrap(async()=>{
+  const blob=new Blob([JSON.stringify(makeVideoCatalog([...records.values()]),null,2)],{type:'application/json'});
+  await saveOrShare(blob,'PROXIMUS-VIDEO-VAULT-CATALOG.json');
+  say('Exported video metadata catalog; original video bytes are not included.');
+ }));
+
  $('videoVaultOpenTheater').addEventListener('click',()=>app.changeView('theater'));
  $('videoVaultCinema').addEventListener('click',wrap(async()=>{
   if(!active())throw Error('Choose a saved video first.');
