@@ -47,6 +47,29 @@ assert.equal(typeof initOrbitInterface,'function');
 assert.equal(typeof readOrbitPins,'function');
 assert.equal(typeof readOrbitRecent,'function');
 assert.equal(typeof toggleOrbitPin,'function');
+
+const previousDoc=globalThis.document,previousStorage=globalThis.localStorage,previousEvent=globalThis.CustomEvent;
+const saved=new Map([['proximus-command-pins-v1',JSON.stringify(['theater','life'])],
+ ['proximus-mobile-navigation-recent-v1',JSON.stringify(['theater','videos'])]]);
+let broadcasts=0;
+try{
+ globalThis.localStorage={getItem:key=>saved.get(key)??null,setItem:(key,value)=>saved.set(key,String(value))};
+ globalThis.CustomEvent=class{constructor(type,props){this.type=type;this.detail=props?.detail;}};
+ globalThis.document={dispatchEvent(event){assert.equal(event.type,'proximus-orbit-pins-changed');broadcasts++;}};
+ assert.deepEqual(readOrbitPins(),['reactor','life','videos','projects'],'Old saved favorites should be imported once');
+ assert.deepEqual(readOrbitRecent(),['reactor','videos'],'Old Media Theater history must canonicalize to Sonic Theater');
+ const savedPins=toggleOrbitPin('theater');
+ assert.deepEqual(savedPins,['life','videos','projects'],'Toggling an old Theater alias must remove Sonic shortcut');
+ assert.equal(broadcasts,1,'One favorites change should emit exactly one access update');
+ assert.deepEqual(JSON.parse(saved.get(ORBIT_PIN_KEY)),savedPins,'Pins must be saved under their own new key');
+ assert.deepEqual(toggleOrbitPin('tokens'),['tokens','life','videos','projects']);
+ assert.equal(broadcasts,2);
+}finally{
+ if(previousDoc===undefined)delete globalThis.document;else globalThis.document=previousDoc;
+ if(previousStorage===undefined)delete globalThis.localStorage;else globalThis.localStorage=previousStorage;
+ if(previousEvent===undefined)delete globalThis.CustomEvent;else globalThis.CustomEvent=previousEvent;
+}
+
 const sourceIds=['orbitAccessBar','orbitFind','orbitHome','orbitPinCurrent','orbitCurrent','orbitCurrentCategory',
  'orbitPinned','orbitRecent','orbitCmdCategory','orbitCmdPinned','orbitMobileCategory',
  'cmdDialog','cmdSearch','cmdOpen','layoutToggle','layoutCurrent','mobileDock',
