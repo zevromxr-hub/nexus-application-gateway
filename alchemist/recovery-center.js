@@ -14,7 +14,7 @@ export function backupSettings(storage){
 export function restoreSettings(storage,document){
  if(document?.schema!=='proximus.settings/1'||!document.preferences||typeof document.preferences!=='object')throw Error('Invalid PROXIMUS settings backup.');
  let count=0;
- for(const key of keys)if(typeof document.preferences[key]==='string'&&document.preferences[key].length<150000){
+ for(const key of keys)if(typeof document.preferences[key]==='string'&&document.preferences[key].length<(key==='proximus-life-command-v1'?600000:150000)){
   storage.setItem(key,document.preferences[key]);count++;
  }
  return count;
