@@ -23,6 +23,7 @@ import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
+import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
 import {RETIRED_STUDIOS} from './companion-core.js';
 const names=[
@@ -37,6 +38,7 @@ const names=[
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
  {id:'videos',icon:'▣',title:'Video Vault',detail:'Persistent local device video library watch later favorite resume video playback iPhone PC offline'},
+ {id:'life',icon:'◷',title:'Life Command',detail:'Private tasks recurring routines habits streaks due dates planner calendar export important personal dates everyday companion'},
  {id:'reactor',icon:'✺',title:'Sovereign Reactor',detail:'Music beat bass audio reactive visualizer microphone PC tab YouTube Music local GIF MP4 animated background sovereign'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
  {id:'workflow',icon:'▤',title:'Workflow Desk',detail:'Local notes editable checklist focus timer backup export import portable productivity'},
@@ -220,6 +222,7 @@ $('packTarget').addEventListener('change',()=>localStorage.setItem('nexus-alchem
 document.querySelectorAll('[data-view]').forEach(btn=>btn.addEventListener('click',()=>changeView(btn.dataset.view)));
 $('packJump').addEventListener('click',()=>changeView('pack'));
 $('vaultJump').addEventListener('click',()=>changeView('videos'));
+$('lifeJump').addEventListener('click',()=>changeView('life'));
 const dialog=$('cmdDialog'),search=$('cmdSearch'),results=$('cmdResults');
 function drawCommands(){
  const term=search.value.trim().toLowerCase();results.replaceChildren();
@@ -279,7 +282,7 @@ function setupVersion(){
 
 function launch(){
  initImage(app);initProduction(app);initAudit(app);
- initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initVideoVault(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initLayerForge(app);initMotionGraphics(app);initAnimationForge(app);initMediaPublisher();initVideoVault(app);initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
