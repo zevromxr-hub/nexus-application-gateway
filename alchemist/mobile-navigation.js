@@ -23,8 +23,8 @@ export function initMobileNavigation(app){
  try{pins=JSON.parse(localStorage.getItem(MOBILE_PINS)||'[]');if(!Array.isArray(pins))pins=[];}catch(e){pins=[];}
  try{recent=JSON.parse(localStorage.getItem(MOBILE_RECENT)||'[]');if(!Array.isArray(recent))recent=[];}catch(e){recent=[];}
  const known=new Set(app.studios.map(s=>s.id));
- pins=[...new Set(pins)].filter(s=>known.has(s)).slice(0,18);
- recent=[...new Set(recent)].filter(s=>known.has(s)).slice(0,30);
+ pins=[...new Set(pins.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,18);
+ recent=[...new Set(recent.map(id=>id==='theater'?'reactor':id))].filter(s=>known.has(s)).slice(0,30);
  function save(){
   try{
    localStorage.setItem(MOBILE_PINS,JSON.stringify(pins));
