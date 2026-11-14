@@ -170,19 +170,32 @@ export function initMediaTheater(app){
   video.hidden=true;audio.hidden=true;image.hidden=true;drawList();
   showStatus('Queue cleared');
  }
- input.addEventListener('change',wrap(async e=>{
-  const files=Array.from(e.target.files||[]);
-  let added=0,skipped=0;
+ async function importToQueue(files,{autoplay=false}={}){
+  let added=0,skipped=0,lastIndex=-1;
   for(const file of files){
-   if(playlist.length>=MAX_QUEUE)break;
    const kind=mediaKind(file);
    if(!kind||file.size>MAX_FILE||!file.size){skipped++;continue;}
-   playlist.push({file,kind});added++;
+   const duplicate=playlist.findIndex(row=>row.kind===kind&&row.file.name===file.name&&
+    row.file.size===file.size&&row.file.lastModified===file.lastModified);
+   if(duplicate>=0){lastIndex=duplicate;continue;}
+   if(playlist.length>=MAX_QUEUE){skipped++;continue;}
+   playlist.push({file,kind});added++;lastIndex=playlist.length-1;
   }
-  input.value='';drawList();
-  if(current===-1&&playlist.length)await select(0,false);
-  showStatus(added+' added · '+playlist.length+' in queue'+(skipped?' · '+skipped+' skipped':''));
+  drawList();
+  if(autoplay&&lastIndex>=0)await select(lastIndex,true);
+  else if(current===-1&&playlist.length)await select(0,false);
+  showStatus(added+' added · '+playlist.length+' in Sonic Theater queue'+(skipped?' · '+skipped+' skipped':''));
+  return {added,skipped};
+ }
+ input.addEventListener('change',wrap(async e=>{
+  const files=Array.from(e.target.files||[]);input.value='';
+  await importToQueue(files);
  }));
+ document.addEventListener('proximus-sonic-enqueue',e=>{
+  const files=Array.isArray(e.detail?.files)?e.detail.files:[e.detail?.file].filter(Boolean);
+  if(files.length)void importToQueue(files,{autoplay:e.detail?.play===true}).catch(err=>showStatus('Could not queue music: '+(err?.message||err)));
+ });
+ document.addEventListener('proximus-sonic-stop-playlist',()=>{audio.pause();video.pause();playing=false;showInfo();});
  $('theaterSaveVault').addEventListener('click',()=>{
   const files=playlist.filter(item=>item.kind==='video').map(item=>item.file);
   if(!files.length){showStatus('Add a video to the Media Theater queue first.');return;}
