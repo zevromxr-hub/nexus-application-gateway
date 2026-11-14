@@ -27,7 +27,7 @@ export function normalizeFrameMode(value){return WEB_CINEMA_MODES.includes(value
 
 export function webCinemaFramePolicy(kind,src,{appOrigin='',mode='compatible'}={}){
  let target;try{target=new URL(String(src));}catch{return {allowed:false,reason:'Invalid embed URL'};}
- if(target.protocol!=='https:'||!['website','youtube','vimeo','official-video'].includes(kind))
+ if(target.protocol!=='https:'||!['website','youtube','vimeo','official-video','custom-embed'].includes(kind))
   return {allowed:false,reason:'This address cannot be embedded as a website.'};
  // Scripts + same-origin must never be granted to a page sharing the application's origin.
  // Cross-origin providers stay isolated from PROXIMUS via the browser's same-origin policy.
