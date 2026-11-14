@@ -1,23 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Web Cinema iPhone Compatibility — Player Loading & Share Links",
+  "subtitle": "Web Cinema Embed First — Persistent Player Sources",
   "studio_count": 18,
-  "previous_version": "3.6.1",
+  "previous_version": "3.6.2",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Fixed iPhone and Safari-compatible Web Cinema iframe loading by requesting an external site’s real cross-origin sandbox identity, approved forms, storage-access-by-user-activation and immediate user-initiated loading instead of opaque-origin lazy frames",
-    "Added official embedded-player routing for supported share/video pages that use a video viewing key while keeping the original full saved URL and its access parameters intact",
-    "Added an optional Restricted viewing mode for users who prefer to limit external site identity and browser storage access, with Compatible mode available by default for better website/player functionality",
-    "Introduced a visible delayed recovery hint when an iPhone iframe remains blank, alongside user-initiated Reload, Open Externally, and a Try video source action for actual direct-media links",
-    "Maintained provider-controlled embedding permissions, browser cross-site cookie rules, access controls and encrypted-site restrictions; no proxy, authentication bypass, page scraping or forced iframe access was added",
-    "Retained saved video/website links, favorites, collections, direct-file progress and import/export files, without deleting or migrating existing browser storage",
-    "Preserved the original Video Vault player, live Sonic Theater, local music and Play on Start, iPhone Mobile Power Guard, all ORBIT studios, responsive UI and previously working media features",
-    "Preserved the existing GitHub Pages deployment, automated tests, previous rollback manifests and unchanged direct Discord release announcer"
+    "Brought back the original PROXIMUS Embed First experience inside the existing compact Web Cinema Gateway, accepting official iframe embed snippets or player URLs without executing arbitrary HTML",
+    "Added user-selectable playback routing: automatic detection, official embedded player, native browser video source, or standard website preview, with the more technical controls collapsed by default",
+    "Allowed browser-supported direct media streams and signed HTTPS video URLs even when the URL does not end in a conventional video file extension, subject to hosting permissions and actual media data",
+    "Remembered the chosen official player address or native source on each saved watch-later entry, while preserving the original full watch URL, titles, collections, favorites, and previously saved progress",
+    "Kept manual JSON link import/export and metadata-only Recovery Center/Workspace Sync backups compatible with earlier Web Cinema collections without a destructive migration",
+    "Displayed safer link previews by masking sensitive access tokens in the library while retaining the real full URLs in browser storage and playback requests",
+    "Maintained strict external URL validation and sandboxing; no arbitrary embed HTML execution, proxying, login bypass, site protection evasion, streaming-site scraping, or video downloading",
+    "Preserved existing ORBIT responsive PC/iPhone interface, opaque Video Vault, saved music and Play on Start, Mobile Power Guard, all companion studios, rollback history, and direct GitHub-to-Discord release workflow"
   ]
 }

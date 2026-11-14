@@ -1,5 +1,16 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.6.3 — Web Cinema Embed First: Persistent Player Sources (2026-11-14)
+
+- Restored the proven Embed First workflow from earlier PROXIMUS publishing tools within the existing collapsed Web Cinema Gateway.
+- Added player-source choices for Smart detection, official iframe embeds, native HTTPS video URLs and normal website previews; accepted standard official embed snippets without running raw HTML.
+- Supported explicit direct media addresses with signed URL parameters, including sources with no video file extension, where the iPhone browser and hosting provider permit playback.
+- Saved a selected verified player URL/mode alongside the original user URL in the existing personal watch-later library; supported reuse across reloads and opt-in JSON backups.
+- Kept existing bookmark titles, collections, favorites, direct-file resume progress, mobile layout, fully opaque local Video Vault player and audio-only workflows unchanged.
+- Masked private access parameters in the visible library while keeping the original URL intact for playback and manual backups.
+- Preserved embedded provider permission rules, iPhone playback policies and browser security boundaries without proxying, forcing embedded access or executing pasted third-party scripts.
+- Added regression tests for source parsing, saved playback configuration, safe frame policies and retained studio navigation.
+
 ## v3.6.2 — Web Cinema: iPhone Embed Compatibility & Player Reliability (2026-11-14)
 
 - Corrected a restrictive generic iframe configuration that could produce blank previews on iOS Safari and other browsers: cross-origin site identity, user-approved storage access, normal external-origin referrer policy and eager user-initiated loading.

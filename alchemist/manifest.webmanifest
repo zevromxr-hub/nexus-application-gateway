@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.6.2 ORBIT — iPhone-compatible external website and video viewer, supported official embedded media, and private watch-later link library.",
+  "description": "PROXIMUS v3.6.3 — Web Cinema Embed First with official video player sources, native playback and saved watch-later collections.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

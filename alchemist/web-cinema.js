@@ -7,6 +7,8 @@ import {
  webCinemaBackup,readWebCinemaBackup
 } from './web-cinema-core.js';
 import {WEB_CINEMA_COMPAT_MODE_KEY,normalizeFrameMode,webCinemaFramePolicy} from './web-cinema-compat.js';
+import {WEB_CINEMA_SOURCE_MODES,normalizeWebCinemaSourceMode,parseWebCinemaPlayerInput,
+ normalizeSavedPlayback,webCinemaPlaybackPlan,displayWebCinemaUrl} from './web-cinema-source.js';
 
 export function initWebCinemaGateway(){
  const root=$('webCinemaGateway'),form=$('webCinemaForm'),input=$('webCinemaUrl'),
@@ -19,6 +21,39 @@ export function initWebCinemaGateway(){
  const help=$('webCinemaHelp'),helpText=$('webCinemaHelpText');
  const browserIsMobile=/iPhone|iPad|iPod/i.test(navigator.userAgent||'');
  let helpTimer=null,mode='compatible',directTrial=false;
+ let draftSource=null,draftForUrl='',activeSource={playerMode:'auto',playerUrl:''};
+ const sourceMode=$('webCinemaPlaybackMode'),sourceCode=$('webCinemaEmbedCode'),
+  sourceStatus=$('webCinemaSourceStatus');
+ function sourceMessage(message,bad=false){
+  sourceStatus.textContent=message;sourceStatus.dataset.error=bad?'true':'false';
+ }
+ function setSourceFields(source){
+  const settings=normalizeSavedPlayback(source,{appOrigin:location.origin});
+  sourceMode.value=settings.playerMode;
+  sourceCode.value=settings.playerUrl;
+ }
+ function readSourceFields(raw){
+  const sourceModeValue=normalizeWebCinemaSourceMode(sourceMode.value);
+  if(sourceModeValue==='auto')return {playerMode:'auto',playerUrl:''};
+  if(sourceModeValue==='website')return {playerMode:'website',playerUrl:''};
+  const original=classifyWebCinemaUrl(raw);
+  let rawPlayer=sourceCode.value.trim();
+  if(!rawPlayer&&sourceModeValue==='embed'){
+   if(!original.embed)throw Error('Paste the provider’s official iframe Embed code or HTTPS player URL in Player source.');
+   rawPlayer=original.embed;
+  }
+  if(!rawPlayer&&sourceModeValue==='native')rawPlayer=original.url;
+  return parseWebCinemaPlayerInput(rawPlayer,{hint:sourceModeValue,appOrigin:location.origin});
+ }
+ function saveSourceIfBookmarked(raw,source){
+  let url;try{url=classifyWebCinemaUrl(raw).url;}catch{return;}
+  const row=saved.find(item=>item.url===url);
+  if(!row)return;
+  const parsed=normalizeSavedPlayback(source,{appOrigin:location.origin});
+  row.playerMode=parsed.playerMode;row.playerUrl=parsed.playerUrl;
+  write();renderSaved();
+ }
+
  try{mode=normalizeFrameMode(localStorage.getItem(WEB_CINEMA_COMPAT_MODE_KEY));}catch{}
  $('webCinemaFrameMode').value=mode;
  function showHelp(message){
@@ -61,58 +96,71 @@ export function initWebCinemaGateway(){
  function activeTitle(){
   return findCurrent()?.title||title.value.trim()||active?.label||'Video or website';
  }
- function navigate(raw,{addHistory=true,forceVideo=false}={}){
-  let link;
-  try{link=classifyWebCinemaUrl(raw);}
-  catch(error){say(error.message,true);return false;}
+ function navigate(raw,{addHistory=true,forceVideo=false,sourceOverride=null}={}){
+  let detected,link;
+  try{
+   detected=classifyWebCinemaUrl(raw);
+   const stored=saved.find(item=>item.url===detected.url);
+   const source=forceVideo?{playerMode:'native',playerUrl:detected.url}:
+    sourceOverride||stored||(draftForUrl===detected.url?draftSource:null)||{playerMode:'auto',playerUrl:''};
+   activeSource=normalizeSavedPlayback(source,{appOrigin:location.origin});
+   link=webCinemaPlaybackPlan(detected.url,source,location.origin);
+  }catch(error){say(error.message,true);sourceMessage(error.message,true);return false;}
   stopMedia();
-  directTrial=forceVideo&&link.kind==='website';
-  if(directTrial)link={...link,kind:'direct',label:'Native video trial'};
-
+  directTrial=forceVideo&&detected.kind==='website';
   // Keep a single active Video Vault video audio source on iPhone and PC.
   const localPlayer=$('videoVaultPlayer');if(localPlayer&&!localPlayer.paused)localPlayer.pause();
-  active=link;currentSavedId=saved.find(item=>item.url===link.url)?.id||null;
-  input.value=link.url;
+  active=link;currentSavedId=saved.find(item=>item.url===detected.url)?.id||null;
+  input.value=detected.url;
   if(currentSavedId){
    const item=findCurrent();
    if(item){title.value=item.title;collection.value=item.collection;item.lastOpen=Date.now();write();}
   }
   if(addHistory){
    history=history.slice(0,historyIndex+1);
-   history.push(link.url);if(history.length>40)history.shift();
+   history.push(detected.url);if(history.length>40)history.shift();
    historyIndex=history.length-1;
   }
-  tag.textContent=({youtube:'YOUTUBE',vimeo:'VIMEO','official-video':'VIDEO PLAYER',website:'WEBSITE',direct:'VIDEO FILE',external:'EXTERNAL'})[link.kind]||'LINK';
+  if(!forceVideo){
+   setSourceFields(activeSource);
+   draftSource=activeSource;draftForUrl=detected.url;
+  }
+  tag.textContent=({
+   youtube:'YOUTUBE',vimeo:'VIMEO','official-video':'VIDEO PLAYER','custom-embed':'EMBED PLAYER',
+   website:'WEBSITE',direct:'VIDEO FILE',external:'EXTERNAL'
+  })[link.kind]||'LINK';
   now.textContent=activeTitle();controls();renderSaved();
   if(link.kind==='external'){
-   say(link.reason+' Use Open externally for this address.',true);return true;
+   say((link.reason||'This link needs its own website.')+' Use Open externally, or add an official embeddable player URL under Player source.',true);
+   return true;
   }
   blank.hidden=true;
   if(link.kind==='direct'){
-   video.hidden=false;video.preload='metadata';video.src=link.url;video.load();
-   say(directTrial?'Testing the address as a direct video stream. This works only if it serves video bytes, not a normal webpage.':'Direct media ready. Tap Play. Codec support, range requests and source availability depend on the host and browser.');return true;
+   video.hidden=false;video.preload='metadata';video.setAttribute('playsinline','');
+   video.setAttribute('webkit-playsinline','');video.src=link.mediaUrl||link.url;video.load();
+   say(directTrial?'Testing as a direct video stream. It must serve real video data, not an ordinary web page.':
+    'Native video ready. Tap Play. iPhone Safari can play compatible direct media, including HLS where supported.');
+   return true;
   }
-  // iOS Safari often needs the site's true cross-origin identity and the ability
-  // to request user-approved third-party storage; an opaque-origin sandbox can
-  // cause a blank player even for sites that permit embedding.
-  const policy=webCinemaFramePolicy(link.kind,link.embed,{
-   appOrigin:location.origin,mode
-  });
-  if(!policy.allowed){blank.hidden=false;active={...link,kind:'external'};
-   controls();say(policy.reason+' Use Open externally.',true);return true;}
+  const policy=webCinemaFramePolicy(link.kind,link.embed,{appOrigin:location.origin,mode});
+  if(!policy.allowed){
+   blank.hidden=false;active={...link,kind:'external'};controls();
+   say(policy.reason+' Use a permitted external embed address or Open externally.',true);
+   return true;
+  }
   iframe.setAttribute('sandbox',policy.sandbox);
   iframe.setAttribute('allow',policy.allow);
   iframe.referrerPolicy=policy.referrerPolicy;
   iframe.loading=policy.loading;
   iframe.hidden=false;
   iframe.src=link.embed;
-  say(link.kind==='website'?'Website requested in '+policy.mode+' mode. Some websites may still block framing.':
-   'Official player requested. Tap Play inside the frame; access and embed rules remain controlled by the provider.');
+  say(link.kind==='website'?'Website preview requested. If the site blocks framing, try its official Embed option instead.':
+   'Video player requested inside PROXIMUS. Tap the provider’s Play control; permission to embed is controlled by the provider.');
   if(browserIsMobile){
    const target=link.url;
    helpTimer=setTimeout(()=>{
     if(active?.url!==target||iframe.hidden||!root.open)return;
-    showHelp('Still seeing a blank page? Tap Reload or switch Viewing compatibility options. If the website forbids embedding, it cannot be forced to play inside PROXIMUS.');
+    showHelp('Still blank? Copy the video site’s Share → Embed code into Player source, or try a direct video address. Some sites prohibit embedded playback.');
    },8500);
   }
   return true;
@@ -131,9 +179,9 @@ export function initWebCinemaGateway(){
    const label=document.createElement('div');label.className='web-cinema-saved-label';
    const strong=document.createElement('strong');strong.textContent=item.title;
    const subtitle=document.createElement('small');subtitle.textContent=
-    item.collection+' · '+item.kind.toUpperCase()+
+    item.collection+' · '+(item.playerMode&&item.playerMode!=='auto'?item.playerMode.toUpperCase()+' PLAYER':item.kind.toUpperCase())+
     (item.kind==='direct'&&item.position>0?' · Resume '+Math.floor(item.position)+'s':'')+
-    ' · '+item.url;
+    ' · '+displayWebCinemaUrl(item.url);
    label.append(strong,subtitle);
    const actions=document.createElement('div');actions.className='web-cinema-saved-actions';
    const button=(caption,tip,fn)=>{
@@ -144,7 +192,8 @@ export function initWebCinemaGateway(){
    const play=button('▶ Watch','Open '+item.title,()=>{
     if(!root.open)root.open=true;
     title.value=item.title;collection.value=item.collection;
-    navigate(item.url);frame.scrollIntoView({behavior:'auto',block:'nearest'});
+    setSourceFields(item);draftForUrl=item.url;draftSource=item;
+    navigate(item.url,{sourceOverride:item});frame.scrollIntoView({behavior:'auto',block:'nearest'});
    });
    const fav=button(item.favorite?'★':'☆',item.favorite?'Unfavorite '+item.title:'Favorite '+item.title,()=>{
     item.favorite=!item.favorite;write();renderSaved();
@@ -174,6 +223,12 @@ export function initWebCinemaGateway(){
   try{
    const output=addWebCinemaLink(saved,raw,title.value,collection.value);
    saved=output.items;
+   const entry=saved.find(item=>item.id===output.item.id);
+   const source=(draftForUrl===output.item.url?draftSource:null)||(active?.url===output.item.url?activeSource:null);
+   if(source&&entry){
+    const playback=normalizeSavedPlayback(source,{appOrigin:location.origin});
+    entry.playerMode=playback.playerMode;entry.playerUrl=playback.playerUrl;
+   }
    if(active?.url===output.item.url)currentSavedId=output.item.id;
    if(!title.value.trim())title.value=output.item.title;
    if(!collection.value.trim())collection.value=output.item.collection;
@@ -183,8 +238,46 @@ export function initWebCinemaGateway(){
   }catch(error){say(error.message,true);}
  }
  form.addEventListener('submit',event=>{
-  event.preventDefault();navigate(input.value);
+  event.preventDefault();
+  try{
+   const source=readSourceFields(input.value);
+   const url=classifyWebCinemaUrl(input.value).url;
+   draftForUrl=url;draftSource=source;
+   navigate(url,{sourceOverride:source});
+  }catch(error){sourceMessage(error.message,true);say(error.message,true);}
  });
+ $('webCinemaApplySource').addEventListener('click',()=>{
+  try{
+   // The common Share → Embed paste should work without first changing another dropdown.
+   if(sourceMode.value==='auto'&&sourceCode.value.trim()){
+    const detected=parseWebCinemaPlayerInput(sourceCode.value,{hint:'embed',appOrigin:location.origin});
+    sourceMode.value=detected.playerMode;
+   }
+   let url=input.value.trim();
+   if(!url&&sourceCode.value.trim()){
+    const parsed=parseWebCinemaPlayerInput(sourceCode.value,{hint:sourceMode.value,appOrigin:location.origin});
+    url=parsed.playerUrl;input.value=url;
+   }
+   if(!url)throw Error('Paste a video or website address first.');
+   const source=readSourceFields(url);
+   const canonical=classifyWebCinemaUrl(url).url;
+   draftForUrl=canonical;draftSource=source;
+   if(navigate(canonical,{sourceOverride:source})){
+    saveSourceIfBookmarked(canonical,source);
+    sourceMessage(source.playerMode==='auto'?'Automatic player detection restored.':
+     'Source applied. Save for later to retain this exact player configuration.');
+   }
+  }catch(error){sourceMessage(error.message,true);say(error.message,true);}
+ });
+ $('webCinemaResetSource').addEventListener('click',()=>{
+  const source={playerMode:'auto',playerUrl:''};
+  sourceMode.value='auto';sourceCode.value='';
+  let url;try{url=classifyWebCinemaUrl(input.value).url;}catch{sourceMessage('Player settings reset.');return;}
+  draftSource=source;draftForUrl=url;saveSourceIfBookmarked(url,source);
+  navigate(url,{sourceOverride:source,addHistory:false});
+  sourceMessage('Player restored to automatic detection.');
+ });
+
  $('webCinemaSave').addEventListener('click',saveLink);
  $('webCinemaBack').addEventListener('click',()=>{
   if(historyIndex>0){historyIndex--;navigate(history[historyIndex],{addHistory:false});}
@@ -192,14 +285,14 @@ export function initWebCinemaGateway(){
  $('webCinemaForward').addEventListener('click',()=>{
   if(historyIndex<history.length-1){historyIndex++;navigate(history[historyIndex],{addHistory:false});}
  });
- $('webCinemaReload').addEventListener('click',()=>{if(active)navigate(active.url,{addHistory:false});});
+ $('webCinemaReload').addEventListener('click',()=>{if(active)navigate(active.url,{addHistory:false,sourceOverride:activeSource});});
  $('webCinemaTryVideo').addEventListener('click',()=>{
   if(active?.kind==='website')navigate(active.url,{addHistory:false,forceVideo:true});
  });
  $('webCinemaFrameMode').addEventListener('change',event=>{
   mode=normalizeFrameMode(event.target.value);
   try{localStorage.setItem(WEB_CINEMA_COMPAT_MODE_KEY,mode);}catch{}
-  if(active&&['website','youtube','vimeo','official-video'].includes(active.kind))navigate(active.url,{addHistory:false});
+  if(active&&['website','youtube','vimeo','official-video','custom-embed'].includes(active.kind))navigate(active.url,{addHistory:false,sourceOverride:activeSource});
   else say('Viewing mode saved. It applies to the next embedded website or player you open.');
  });
  $('webCinemaHelpDismiss').addEventListener('click',clearHelp);
