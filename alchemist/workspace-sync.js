@@ -20,7 +20,7 @@ export const SYNC_SETTINGS=[
  'proximus-theater-favorites-v2','proximus-reactor-settings-v1','proximus-command-layout-v1',
  'proximus-command-pins-v1','proximus-command-name-v1','proximus-recovery-checkpoints-v1','proximus-visual-identity-v1',
  'proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1',
- 'proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1','proximus-life-command-v1'
+ 'proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1','proximus-life-command-v1','proximus-adaptive-layout-v1'
 ];
 const MAX_RECORDS=180,MAX_BYTES=110000000,MAX_FILE=150000000;
 const inSpecs=(name,store)=>SYNC_DATABASES.find(x=>x.name===name&&x.store===store);
