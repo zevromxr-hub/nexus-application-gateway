@@ -1,23 +1,21 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Adaptive Companion — Device Intelligence & Studio Cleanup",
+  "subtitle": "Entertainment Overdrive — Convergence Foundation & Cinema Atmosphere Sync",
   "studio_count": 18,
-  "previous_version": "3.3.0",
+  "previous_version": "3.4.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Retired Image Studio, Asset Packager, Production Lab, Asset Audit, Layer Forge, and Motion Graphics from the active website, navigation, commands and application initialization; the 8 previously retired studios remain archived",
-    "Safely removed 3 unused old studio JavaScript modules from the live GitHub tree, preserving their original source in v3.3 Git history and prior release records",
-    "Preserved Asset Packager's shared output library, saved IndexedDB assets, ZIP downloads, per-asset exports and studio handoffs inside Project Hub → Collected Exports; older pack links redirect automatically",
-    "Added Adaptive Interface detection that responds to iPhone/PC screen size, touch and pointer capabilities, orientation and window resizing without reloading projects",
-    "Added a manual Layout selector with Auto, Desktop/PC and Mobile/iPhone modes, saved per browser and included in portable settings and Recovery Center backups",
-    "Fixed desktop/mobile UI crossover, iPhone dock showing in narrow desktop windows, clipped topbar controls, overflowing text, studio tabs and narrow panel grids with responsive CSS layouts",
-    "Maintained 18 focused companion spaces including Video Vault, Animation Forge, Media Theater, Life Command, Reactor IV, utilities, Project Hub, Sync Bridge, Recovery Center and Token Foundry",
-    "Preserved existing local videos, media, settings, token records, GitHub Pages URL, Discord gateway and secure automated release announcement pipeline"
+    "Launched a unified Entertainment Overdrive experience inside the existing Companion Center with five flagship paths; existing Cinema, Reactor IV, Arcade Chamber and Animation Forge remain accessible without adding another top-level studio",
+    "Introduced reusable Convergence scene presets with five built-in palettes, up to 20 custom scenes, and local save, restore, JSON import/export and Project Hub handoff",
+    "Added Cinema Overdrive Atmosphere Sync: user-controlled ambient glow around Video Vault and Media Theater players, sampled from supported local video frames with safe static-color fallback",
+    "Added Auto, Efficiency and Overdrive quality modes, reduced-motion awareness and throttled frame sampling for iPhone and PC",
+    "Preserved 18 active companion spaces, all retired-studio decisions, existing video bytes, bookmarks, Reactor settings, projects, Token Foundry and adaptive PC/iPhone interface",
+    "Maintained the existing GitHub Pages URL, release rollback cache, release validation and Discord notification pipeline; Sonic Dimension, Arcade Nexus, Infinite Realms and Creator Overdrive expanded implementations are explicitly staged in v3.5.1–v3.5.4"
   ]
 }

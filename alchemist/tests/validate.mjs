@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 const ROOT=path.resolve(import.meta.dirname,'..'),read=f=>fs.readFileSync(path.join(ROOT,f),'utf8');
 const version=JSON.parse(read('version.json')),release=JSON.parse(read('releases/v'+version.version+'.json'));
 const html=read('index.html'),app=read('app.js'),service=read('sw.js');
-const modules=['app.js','core.js','companion-core.js','media-tools.js','layout-adapter-core.js','layout-adapter.js','gif-codec.js','gif-reader.js','animation-tools.js','media-suite-core.js','life-command-core.js','life-command.js','video-vault-core.js','video-vault.js','mobile-navigation.js','media-publisher.js','visual-identity-core.js','visual-identity.js','reactor-iv.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','sw.js'];
+const modules=['app.js','core.js','companion-core.js','media-tools.js','layout-adapter-core.js','layout-adapter.js','gif-codec.js','gif-reader.js','animation-tools.js','media-suite-core.js','life-command-core.js','life-command.js','video-vault-core.js','video-vault.js','mobile-navigation.js','media-publisher.js','visual-identity-core.js','visual-identity.js','reactor-iv.js','command-center.js','workspace-sync.js','release-guard.js','media-theater.js','reactor-dsp.js','reactor-studio.js','token-crypto.js','token-foundry.js','arcade-chamber.js','release-center.js','workflow-desk.js','utility-forge.js','portable-kit.js','project-hub.js','automation-lab.js','capture-studio.js','document-forge.js','qr-studio.js','recovery-center.js','overdrive-core.js','entertainment-overdrive.js','sw.js'];
 for(const f of modules){
  const r=spawnSync(process.execPath,['--check',path.join(ROOT,f)],{encoding:'utf8'});
  assert.equal(r.status,0,f+': '+r.stderr);
@@ -152,6 +152,9 @@ const masterTest=spawnSync(process.execPath,[path.join(ROOT,'tests/master-worksp
 assert.equal(masterTest.status,0,'Master thumbnails / Sync Bridge / Reactor III / Release Guard: '+masterTest.stderr+' '+masterTest.stdout);
 const identityTest=spawnSync(process.execPath,[path.join(ROOT,'tests/identity-reactor-iv.mjs')],{encoding:'utf8'});
 assert.equal(identityTest.status,0,'Visual Identity / Reactor IV: '+identityTest.stderr+' '+identityTest.stdout);
+const overdriveTest=spawnSync(process.execPath,[path.join(ROOT,'tests/overdrive.mjs')],{encoding:'utf8'});
+assert.equal(overdriveTest.status,0,'Entertainment Overdrive v3.5.0: '+overdriveTest.stderr+' '+overdriveTest.stdout);
+assert.ok(fs.existsSync(path.join(ROOT,'overdrive.css')),'Overdrive stylesheet must be present');
 assert.ok(app.includes('indexedDB'),'Persistent pack vault must be wired');
 assert.ok(app.includes('setupVersion()'),'Release check must be wired');
 assert.ok(fs.existsSync(path.join(ROOT,'CHANGELOG.md')));

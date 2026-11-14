@@ -1,0 +1,42 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.5.0",
+  "release_date": "2026-11-13",
+  "title": "Entertainment Overdrive — Convergence Foundation & Cinema Atmosphere Sync",
+  "subtitle": "Entertainment Overdrive — Convergence Foundation & Cinema Atmosphere Sync",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Launched a unified Entertainment Overdrive experience inside the existing Companion Center with five flagship paths; existing Cinema, Reactor IV, Arcade Chamber and Animation Forge remain accessible without adding another top-level studio",
+    "Introduced reusable Convergence scene presets with five built-in palettes, up to 20 custom scenes, and local save, restore, JSON import/export and Project Hub handoff",
+    "Added Cinema Overdrive Atmosphere Sync: user-controlled ambient glow around Video Vault and Media Theater players, sampled from supported local video frames with safe static-color fallback",
+    "Added Auto, Efficiency and Overdrive quality modes, reduced-motion awareness and throttled frame sampling for iPhone and PC",
+    "Preserved 18 active companion spaces, all retired-studio decisions, existing video bytes, bookmarks, Reactor settings, projects, Token Foundry and adaptive PC/iPhone interface",
+    "Maintained the existing GitHub Pages URL, release rollback cache, release validation and Discord notification pipeline; Sonic Dimension, Arcade Nexus, Infinite Realms and Creator Overdrive expanded implementations are explicitly staged in v3.5.1–v3.5.4"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Companion Center",
+    "Video Vault",
+    "Media Theater",
+    "Project Hub",
+    "Entertainment Overdrive",
+    "Adaptive Performance"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

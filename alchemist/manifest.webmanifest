@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS Adaptive Companion — device-aware iPhone/PC entertainment, personal videos, GIF editor, Life Command and useful everyday tools",
+  "description": "PROXIMUS v3.5 Entertainment Overdrive — private personal cinema, reusable visual scenes, music visualization, original arcade games and daily companion tools",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
