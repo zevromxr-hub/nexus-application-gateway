@@ -1,0 +1,31 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.2.1",
+  "release_date": "2026-11-13",
+  "title": "Automated Discord Release Announcer",
+  "subtitle": "Automated Discord Release Announcer",
+  "channel": "stable",
+  "studios": 23,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Added a GitHub Actions release notifier that follows successful main-branch release validation and announces new published PROXIMUS versions to Discord automatically",
+    "Created branded Discord embeds with the true release changelog, version, published status, GitHub release notes and application link",
+    "Protected Discord webhook credentials through an encrypted DISCORD_RELEASE_WEBHOOK GitHub Actions secret; credentials are never placed in public code",
+    "Verified that GitHub Pages serves the new version before posting and prevented ordinary commits, pull requests, failed checks or repeated version numbers from triggering notifications",
+    "Added a safe manual dry-run preview and a Send current release action for testing a channel after the encrypted webhook secret is configured",
+    "Preserved PROXIMUS Companion Edition, its 23 active studios, Video Vault, Reactor IV, existing user data, Token Foundry and prior rollback releases"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Release Automation",
+    "Release Center",
+    "GitHub Actions"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}

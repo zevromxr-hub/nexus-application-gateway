@@ -1,25 +1,21 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Companion Edition — Entertainment & Everyday Utility",
+  "subtitle": "Automated Discord Release Announcer",
   "studio_count": 23,
-  "previous_version": "3.1.0",
+  "previous_version": "3.2.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Safely retired eight specialized production studios from the navigation, search, dashboard and startup: Batch Forge, Icon Foundry, Sprite Atlas, Texture Lab, Color Lab, Audio Forge, Motion Lab and 3D Inspector",
-    "Kept original retired studio source modules and immutable v3.1 release history for rollback; never deleted any local user data or license records",
-    "Redirected older saved last-view preferences for retired studios to Companion Center instead of loading a missing page",
-    "Refocused Companion Center around Continue Watching, saved video counts, favorites and entertainment-first categories for the remaining 23 focused spaces",
-    "Added up to 12 private HTTPS personal shortcuts with automatic workspace setting backup, safe URL validation and external no-opener links",
-    "Added optional locally autosaved Pocket Notes with plain TXT share/export, clear confirmation and portable settings backup",
-    "Upgraded Video Vault with 10-second back and 30-second forward, optional autoplay-next, cross-studio mini-player and direct handoff to Media Theater without large duplicate file copies",
-    "Coordinated Video Vault and Media Theater audio focus so starting one pauses the other",
-    "Kept iPhone safe-area navigation, Reactor IV, Animation Forge, existing master media, utility tools and offline workspace compatibility",
-    "Preserved Token Foundry, GitHub Pages deployment location and existing Discord application launchers unchanged"
+    "Added a GitHub Actions release notifier that follows successful main-branch release validation and announces new published PROXIMUS versions to Discord automatically",
+    "Created branded Discord embeds with the true release changelog, version, published status, GitHub release notes and application link",
+    "Protected Discord webhook credentials through an encrypted DISCORD_RELEASE_WEBHOOK GitHub Actions secret; credentials are never placed in public code",
+    "Verified that GitHub Pages serves the new version before posting and prevented ordinary commits, pull requests, failed checks or repeated version numbers from triggering notifications",
+    "Added a safe manual dry-run preview and a Send current release action for testing a channel after the encrypted webhook secret is configured",
+    "Preserved PROXIMUS Companion Edition, its 23 active studios, Video Vault, Reactor IV, existing user data, Token Foundry and prior rollback releases"
   ]
 }
