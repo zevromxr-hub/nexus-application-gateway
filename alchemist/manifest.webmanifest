@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.5.2 — opaque private Video Vault, locally saved music, Sonic Dimension, Arcade daily challenges and adaptive creative studios",
+  "description": "PROXIMUS v3.5.3 Sonic Theater — unified locally saved MP3 playlists and Sovereign Reactor music-reactive visuals, plus private media tools",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
