@@ -1,3 +1,52 @@
+# PROXIMUS | ASSET ALCHEMIST v3.5.4
+**MOBILE POWER GUARD — LIGHTER SONIC THEATER ON iPHONE**
+
+Live website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.5.4 — MOBILE POWER GUARD
+
+### Why this matters
+An iPhone can get noticeably warm when decoding music while simultaneously rendering a full-screen animated Reactor, effects, particles, custom video backdrops and separate visualizers. This update cuts unnecessary browser drawing and decoding activity without removing any music or existing presets.
+
+### One settings panel within Sonic Theater
+Open **Sonic Theater → MOBILE POWER GUARD**, above your custom Reactor stage:
+
+| Choice | Live drawing | Canvas | What changes |
+|---|---|---|---|
+| Adaptive (default on iPhone/iPad) | 24 FPS max | 640×360 | Lower graphics detail and pause the global animated site background while Reactor is active |
+| Cool & Save | 15 FPS max | 480×270 | Efficient particles/effects; also pause custom Reactor MP4/WebM backdrops while active |
+| Music Only | 0 FPS | Graphics frozen | Keep local music/playlist/volume/Play on Start operating with visual rendering disabled; pause custom animated backdrops |
+| Smooth | 30 FPS max | 640×360 | Higher visual refresh while still capped below heavy desktop modes |
+
+The PC **Adaptive** profile keeps the user's current Reactor quality and frame rate unchanged. A user may select another profile manually on PC. The selected power mode stays local to each browser, and metadata is available in the existing Recovery Center and Sync Bridge settings backup.
+
+### What the engine actually does
+- Restricts Canvas2D world drawing to a more conservative frequency and uses the established lower-cost Reactor eco world/particle detail path.
+- Avoids drawing the Reactor stage when the stage itself is scrolled out of view. This leaves music audible without constantly painting hidden pixels.
+- Stops drawing the **separate advanced Media Theater visualizer** while its panel is closed. The single shared music signal still drives the onscreen Reactor.
+- Pauses the personalized site's ambient and thumbnail videos when an optimized iPhone Reactor scene is active; restores their original playback when leaving that view.
+- Suspends custom animated Reactor backdrop playback in Cool & Save and Music Only, while retaining original media files, media settings and presets.
+- Adaptive mode can further reduce to 15 FPS if achieved drawing throughput stays much lower than requested. This is a graphics-load fallback, **not a thermometer** or claim that the iPhone temperature is being monitored.
+- User-initiated full PNG, real animated GIF and supported silent video exports temporarily restore the original renderer quality, then return to the selected power-saving profile.
+
+### Existing functions remain
+The same saved IndexedDB MP3 library, Sonic Theater queue, iPhone audio start fallback, user-selected Play on Start setting, all five Sonic Dimension worlds, all six Reactor IV classic modes, original Reactor presets, shared real Web Audio FFT, GIF/video backgrounds, portable settings, Video Vault, desktop rendering quality and existing Discord announcement sender remain.
+
+**Important:** A website does not receive the iPhone's internal thermal sensor data and cannot guarantee a particular device temperature. Actual heat also depends on screen brightness, charging, ambient temperature and background app activity. If a phone becomes uncomfortably hot or shows a temperature warning, stop heavy visual playback and let it cool; do not rely on a browser setting to override iOS protections.
+
+### Suggested iPhone 17 Pro Max test
+1. Open Sonic Theater and check that Mobile Power Guard reads **Adaptive**. Start a saved song; confirm that Reactor responds to the real beat and music plays only once.
+2. Listen for a few minutes at comfortable brightness; compare with **Cool & Save** while using the same song and similar conditions. The exact heat difference varies.
+3. Select **Music Only**. Graphics should stop updating, but Play/Pause, next/previous, volume and saved tracks should remain functional.
+4. On an iPhone, test **Play on Start** if desired. Audible autoplay still depends on Safari policy and may require a tap.
+5. Return to Adaptive or Smooth, then try a PNG/GIF export, saved custom background and another studio. No originals should be deleted, and export resolution should return to its original profile during capture.
+
+**Release compatibility:** 18 existing registered companion spaces; no new studio tabs, data resets, service dependencies or change to the pre-existing GitHub Pages → Discord release automation. Creator Overdrive is still planned for a later release.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.5.3
 **SONIC THEATER — UNIFIED MUSIC LIBRARY + SOVEREIGN REACTOR**
 
