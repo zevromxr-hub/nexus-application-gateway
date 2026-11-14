@@ -1,5 +1,15 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.2.1 — Automated Discord Release Announcer (2026-11-13)
+
+- Implemented a hosted GitHub Actions → Discord webhook workflow for future PROXIMUS releases.
+- Releases are announced only following successful main-branch validation and a genuine version increment, after checking the published GitHub Pages version.
+- Announcements use professional branded embeds with actual changelog highlights, release version, app link and release notes.
+- Discord webhook URL must be saved as the encrypted repository secret DISCORD_RELEASE_WEBHOOK; no credentials are embedded in public files or logs.
+- Added regression tests, a safe dry-run preview, and a manual Send current release option for first-time Discord setup and recovery.
+- All existing Companion Edition features, 23 active studios, personal media and Token Foundry remain unchanged.
+
+
 ## v3.2.0 — Companion Edition: Entertainment & Everyday Utility (2026-11-13)
 
 ### Eight legacy production studios retired
