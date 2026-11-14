@@ -1,7 +1,8 @@
 // PROXIMUS v3.5.2 | Personal Music Library
 // User-imported music is persisted solely in this browser's IndexedDB, never uploaded.
 import {$,bytes} from './core.js';
-import {listMusic,loadMusic,saveMusic,deleteMusic,storedMusicFile,isLocalAudio,MAX_TRACKS,MUSIC_STARTUP_KEY,normalizeMusicStartup,startupTrack} from './music-library-core.js';
+import {listMusic,loadMusic,saveMusic,deleteMusic,storedMusicFile,isLocalAudio,MAX_TRACKS,MUSIC_STARTUP_KEY,normalizeMusicStartup,startupTrack,audioTrackId} from './music-library-core.js';
+import {SONIC_ORDER_KEY,normalizeSonicOrder,orderStoredMusic} from './sonic-playlist-core.js';
 
 export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareStartup,attemptStartup}){
  const list=$('theaterMusicSavedList'),status=$('theaterMusicStatus'),
@@ -154,7 +155,16 @@ export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareSt
     }catch(error){failed++;say('Could not save "'+file.name+'": '+error.message,true);break;}
    }
    await refresh();
-   if(!failed)say(added+' song'+(added===1?'':'s')+' saved · '+duplicates+' already stored. Library restores when you reopen this browser.');
+   if(!failed){
+    const ordered=getQueued().filter(item=>isLocalAudio(item.file)).map(item=>{
+     try{return item.libraryId||audioTrackId(item.file);}catch{return '';}
+    }).filter(Boolean);
+    try{
+     const existing=normalizeSonicOrder(JSON.parse(localStorage.getItem(SONIC_ORDER_KEY)||'[]'));
+     localStorage.setItem(SONIC_ORDER_KEY,JSON.stringify(normalizeSonicOrder([...ordered,...existing])));
+    }catch(e){}
+    say(added+' song'+(added===1?'':'s')+' saved · '+duplicates+' already stored. Your music and queue order return on the next visit.');
+   }
   }finally{setBusy(false);}
  }
  $('theaterMusicSaveCurrent').addEventListener('click',wrapAsync(async()=>{
@@ -173,7 +183,9 @@ export function initLocalMusicLibrary({getCurrent,getQueued,addToQueue,prepareSt
    let loaded=0;
    // Prioritize the selected startup song so it remains accessible with 80 queue slots.
    const first=startupTrack(rows,startup);
-   const queueOrder=first?[first,...rows.slice().reverse().filter(item=>item.id!==first.id)]:[];
+   let preferred=[];
+   try{preferred=normalizeSonicOrder(JSON.parse(localStorage.getItem(SONIC_ORDER_KEY)||'[]'));}catch(e){}
+   const queueOrder=orderStoredMusic(rows.slice().reverse(),preferred,first?.id||'');
    // Restore queue on each browser visit; only explicitly opted-in users request autoplay.
    for(const item of queueOrder){
     if(getQueued().length>=80)break;
