@@ -1,0 +1,30 @@
+/* PROXIMUS v3.5.3 | Sonic Theater: single cohesive playlist + Reactor visual workspace. */
+.sonic-theater-integrated .nav[data-view="theater"]{display:none!important}
+.sonic-theater-retained-route{display:none!important}
+#sonicUnifiedWorkspace{display:block;min-width:0;margin:15px 0 18px}
+.sonic-unified-intro{padding:15px 18px;margin-bottom:13px;border:1px solid rgba(166,117,255,.39);border-radius:14px;background:linear-gradient(115deg,rgba(56,24,105,.54),rgba(5,9,31,.88));color:#ded6f1}
+.sonic-unified-intro strong{display:block;color:#f7eaff;letter-spacing:.12em;font-size:.78rem}
+.sonic-unified-intro p{font-size:.85rem;line-height:1.5;margin:6px 0 0}
+.sonic-unified-top{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(0,.95fr);align-items:start;gap:14px;min-width:0}
+.sonic-unified-visual{position:sticky;top:15px;min-width:0;align-self:start}
+.sonic-unified-library{min-width:0}
+.sonic-unified-library>.panel{margin:0;max-width:none;min-width:0}
+.sonic-unified-visual #reactorStage{width:100%;max-width:100%;margin:0;aspect-ratio:16/9;min-height:0}
+.sonic-unified-visual #reactorCanvas{display:block;width:100%;height:100%;object-fit:contain}
+.sonic-unified-library #theaterPlaylist{max-height:240px;overflow:auto}
+.sonic-unified-library #theaterMusicSavedList{max-height:190px;overflow:auto}
+.sonic-unified-library #theaterFiles{width:100%;max-width:100%}
+.sonic-unified-library .theater-music-library{margin-top:10px}
+.sonic-unified-library .theater-music-startup{margin:10px 0}
+.sonic-unified-library .theater-music-actions{align-items:stretch}
+.sonic-unified-library .theater-controls{flex-wrap:wrap}
+.sonic-unified-advanced{margin:15px 0;background:rgba(11,8,29,.84);border:1px solid rgba(143,112,203,.4);border-radius:12px;overflow:hidden}
+.sonic-unified-advanced>summary{list-style-position:inside;padding:14px 17px;font-size:.85rem;font-weight:700;letter-spacing:.015em;cursor:pointer;color:#e2cbff}
+.sonic-unified-advanced>summary:focus-visible{outline:2px solid #a58bff;outline-offset:-2px}
+.sonic-unified-advanced>.panel{margin:0;max-width:none;border-radius:0}
+.sonic-theater-integrated .reactor-workspace{margin-top:15px}
+.sonic-theater-integrated #reactorInputFile,.sonic-theater-integrated #reactorAudio{max-width:100%}
+.sonic-theater-integrated #theaterAudio{max-width:100%}
+@media(max-width:1120px){.sonic-unified-top{grid-template-columns:minmax(0,1fr)}.sonic-unified-visual{position:relative;top:auto}.sonic-unified-library #theaterPlaylist{max-height:310px}}
+@media(max-width:640px){.sonic-unified-top{gap:9px}.sonic-unified-intro{padding:12px}.sonic-unified-library>.panel{padding:12px}.sonic-unified-visual #reactorStage{border-radius:9px}.sonic-unified-library .theater-controls button{flex:1 1 140px}}
+@media(prefers-reduced-motion:reduce){.sonic-unified-top,.sonic-unified-visual{scroll-behavior:auto}}
