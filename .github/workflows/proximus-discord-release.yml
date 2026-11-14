@@ -25,7 +25,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: proximus-discord-announcer-\${{ github.event.workflow_run.head_sha || github.ref }}
+  group: proximus-discord-announcer-${{ github.event.workflow_run.head_sha || github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
       - name: Check out validated release commit
         uses: actions/checkout@v4
         with:
-          ref: \${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           fetch-depth: 2
 
       - name: Prepare Node.js
@@ -56,6 +56,6 @@ jobs:
 
       - name: Announce verified release or show safe preview
         env:
-          DISCORD_RELEASE_WEBHOOK: \${{ secrets.DISCORD_RELEASE_WEBHOOK }}
-          ANNOUNCEMENT_MODE: \${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'send-on-release' }}
+          DISCORD_RELEASE_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+          ANNOUNCEMENT_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'send-on-release' }}
         run: node alchemist/scripts/release-announcer.mjs "$ANNOUNCEMENT_MODE"
