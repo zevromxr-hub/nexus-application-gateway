@@ -1,6 +1,17 @@
 // PROXIMUS v3.5.2 | Local Music Library — opt-in IndexedDB audio only, no uploads.
 export const MUSIC_DB='proximus-theater-local-music-v1',MUSIC_STORE='tracks';
 export const MAX_TRACKS=150,MAX_TRACK_BYTES=250000000;
+export const MUSIC_STARTUP_KEY='proximus-music-startup-v1';
+export function normalizeMusicStartup(raw={}){
+ const s=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
+ return {enabled:s.enabled===true,trackId:typeof s.trackId==='string'&&s.trackId.length<=500?s.trackId:''};
+}
+export function startupTrack(rows=[],settings={}){
+ const s=normalizeMusicStartup(settings);
+ if(!Array.isArray(rows)||!rows.length)return null;
+ return rows.find(r=>r.id===s.trackId)||rows[0];
+}
+
 const audioExt=/\.(mp3|wav|ogg|m4a|aac|flac|opus)$/i;
 export function isLocalAudio(file){
  const mime=String(file?.type||'');
