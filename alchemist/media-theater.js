@@ -448,8 +448,8 @@ export function initMediaTheater(app){
   attemptStartup:async()=>{
    if(currentItem()?.kind!=='audio')return {played:false,blocked:false,reason:'Choose a saved audio track first.'};
    try{
-    await audio.play();
-    playing=true;await resumeContext();showInfo();
+    const analysis=ensureTheaterAnalysis();const started=audio.play();
+    await Promise.all([started,analysis]);playing=true;showInfo();
     return {played:true,blocked:false};
    }catch(error){
     playing=false;showInfo();
