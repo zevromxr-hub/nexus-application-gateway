@@ -1,26 +1,56 @@
 // PROXIMUS | Asset Alchemist — local Video Vault model v3.1
 // Only file metadata is listed. Original video Blobs live in a separate IndexedDB store.
 export const VIDEO_VAULT_DB='proximus-video-vault-v1';
-export const VIDEO_VAULT_SCHEMA=1;
+export const VIDEO_VAULT_SCHEMA=2; // additive migration: retains all original 'items' and 'files' stores
 export const VIDEO_VAULT_MAX_ITEMS=500;
-export const VIDEO_VAULT_MAX_BYTES=750*1024*1024;
-export const VIDEO_VAULT_IPHONE_MAX_BYTES=450*1024*1024;
-const VIDEO_EXT=/\.(mp4|m4v|mov|webm|ogv|ogg)$/i;
-const VIDEO_TYPES=new Set(['video/mp4','video/webm','video/quicktime','video/x-m4v','video/ogg']);
+// These are generous guardrails, not guaranteed quotas: the browser/device decides actual capacity.
+export const VIDEO_VAULT_MAX_BYTES=16*1024*1024*1024;
+export const VIDEO_VAULT_IPHONE_MAX_BYTES=8*1024*1024*1024;
+export const VIDEO_VAULT_CHUNK_BYTES=16*1024*1024;
+export const VIDEO_VAULT_OPFS_DIRECTORY='proximus-vault-media-v2';
+// Accept more user-owned video containers without pretending every browser can decode them.
+const VIDEO_EXT=/\.(mp4|m4v|mov|webm|ogv|ogg|mkv|avi|wmv|flv|f4v|mts|m2ts|ts|3gp|3g2|mpg|mpeg|hevc|h264|h265|mxf)$/i;
+const MIME_FOR_EXT={
+ mp4:'video/mp4',m4v:'video/mp4',mov:'video/quicktime',webm:'video/webm',
+ ogv:'video/ogg',ogg:'video/ogg',mkv:'video/x-matroska',avi:'video/x-msvideo',
+ wmv:'video/x-ms-wmv',flv:'video/x-flv',f4v:'video/mp4',mts:'video/mp2t',
+ m2ts:'video/mp2t',ts:'video/mp2t','3gp':'video/3gpp','3g2':'video/3gpp2',
+ mpg:'video/mpeg',mpeg:'video/mpeg',hevc:'video/hevc',h264:'video/mp4',
+ h265:'video/hevc',mxf:'application/mxf'
+};
+const VIDEO_TYPES=new Set([
+ 'video/mp4','video/webm','video/quicktime','video/x-m4v','video/ogg',
+ 'video/x-matroska','video/x-msvideo','video/x-ms-wmv','video/x-flv',
+ 'video/mp2t','video/3gpp','video/3gpp2','video/mpeg','video/hevc',
+ 'video/av1','video/h264','video/h265','application/mxf'
+]);
 export function videoFileType(file){
- const name=String(file?.name||''),mime=String(file?.type||'').toLowerCase();
- if(!VIDEO_EXT.test(name)&&!VIDEO_TYPES.has(mime))return '';
- if(VIDEO_TYPES.has(mime))return mime;
- const ext=name.split('.').pop().toLowerCase();
- return ({mp4:'video/mp4',m4v:'video/mp4',mov:'video/quicktime',webm:'video/webm',ogv:'video/ogg',ogg:'video/ogg'})[ext]||'';
+ const name=String(file?.name||''),mime=String(file?.type||'').toLowerCase().split(';')[0].trim();
+ const ext=name.split('.').pop().toLowerCase(),byExtension=VIDEO_EXT.test(name)?MIME_FOR_EXT[ext]:'';
+ if(!byExtension&&!VIDEO_TYPES.has(mime)&&!/^video\/[a-z0-9][a-z0-9.+-]*$/.test(mime))return '';
+ // Prefer reliable filename inference for iPhone Files imports that report application/octet-stream.
+ if(!mime||mime==='application/octet-stream')return byExtension||'';
+ if(VIDEO_TYPES.has(mime)||mime.startsWith('video/'))return mime;
+ return byExtension||'';
 }
 export function validateVideoFile(file,{mobile=false}={}){
  const mime=videoFileType(file);
- if(!mime)throw Error('Use a local MP4, M4V, MOV, WebM or OGV video.');
+ if(!mime)throw Error('Choose a local video file. MP4, MOV, M4V, WebM, MKV, AVI, MPEG, TS, 3GP and more can be stored.');
  const size=Number(file?.size),max=mobile?VIDEO_VAULT_IPHONE_MAX_BYTES:VIDEO_VAULT_MAX_BYTES;
- if(!Number.isFinite(size)||size<1)throw Error('This video file is empty.');
- if(size>max)throw Error('This video is larger than the '+(mobile?'450 MB mobile':'750 MB desktop')+' per-video limit. Keep a smaller original on your device.');
+ if(!Number.isSafeInteger(size)||size<1)throw Error('This video file is empty or its size could not be read.');
+ if(size>max)throw Error('Video exceeds the '+(mobile?'8 GB iPhone/iPad':'16 GB desktop')+' safety guardrail. Browser storage quotas may be lower.');
  return mime;
+}
+export function videoStorageSlices(size,chunkBytes=VIDEO_VAULT_CHUNK_BYTES){
+ if(!Number.isSafeInteger(size)||size<1)throw Error('Invalid video size.');
+ if(!Number.isSafeInteger(chunkBytes)||chunkBytes<1)throw Error('Invalid local storage chunk size.');
+ return Math.ceil(size/chunkBytes);
+}
+export function videoPlaybackHint(mime,canPlay=''){
+ if(canPlay==='probably'||canPlay==='maybe')return 'Browser-compatible container indicated; its codec must still be supported.';
+ if(mime==='video/mp4'||mime==='video/quicktime'||mime==='video/x-m4v')
+  return 'Stored original. MP4/MOV playback depends on the actual H.264/HEVC/AV1 codec and browser.';
+ return 'Stored original. This container may need conversion for playback in Safari; its bytes remain safe to export.';
 }
 export function safeVideoName(name){
  return String(name||'Untitled video').replace(/[\\/:*?"<>|\x00-\x1f]/g,'_').trim().slice(0,180)||'Untitled video';
