@@ -250,16 +250,18 @@ export function initMediaTheater(app){
   el.addEventListener('ended',()=>{playing=false;void next(1,true);});
   el.addEventListener('play',()=>{
    playing=true;showInfo();
+   try{void ensureTheaterAnalysis().catch(()=>{});}catch(err){showStatus('Audio analysis unavailable: '+(err?.message||err));}
+   document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:el===audio?'audio':'video',playing:true,name:currentItem()?.file?.name||''}}));
    document.dispatchEvent(new CustomEvent('proximus-companion-playing',{detail:{origin:'theater'}}));
   });
-  el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();}});
+  el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:el===audio?'audio':'video',playing:false}}));}});
   el.addEventListener('loadedmetadata',showInfo);
   el.addEventListener('timeupdate',()=>{
    if(el===player()&&loopA!==null&&loopB!==null&&el.currentTime>=loopB){
     el.currentTime=loopA;
    }
   });
-  el.addEventListener('error',()=>{showStatus('Could not decode '+(currentItem()?.file.name||'file')+' in this browser');playing=false;showInfo();});
+  el.addEventListener('error',()=>{showStatus('Cannot decode '+(currentItem()?.file.name||'file')+'. Verify its actual audio codec, not only the .mp3 extension.');playing=false;showInfo();});
  }
  $('theaterFullscreen').addEventListener('click',wrap(async()=>{
   const el=currentItem()?.kind==='video'?video:$('theaterStage');
@@ -280,6 +282,9 @@ export function initMediaTheater(app){
   let energy=0;
   if(analyser&&visualized){
    analyser.getByteFrequencyData(frequency);analyser.getByteTimeDomainData(timeDomain);
+   if(currentItem()?.kind==='audio')document.dispatchEvent(new CustomEvent('proximus-sonic-spectrum',{
+    detail:{frequency,sampleRate:audioContext.sampleRate,fftSize:analyser.fftSize,active:!audio.paused&&audioContext.state==='running'}
+   }));
    for(let i=0;i<Math.min(50,frequency.length);i++)energy+=frequency[i];
    energy/=Math.min(50,frequency.length)*255;
   }
@@ -347,18 +352,7 @@ export function initMediaTheater(app){
  $('theaterTheme').addEventListener('change',e=>{color=e.target.value;drawVisualization(performance.now());});
  $('theaterVisualizerMode').addEventListener('change',e=>{visualMode=e.target.value;drawVisualization(performance.now());});
  $('theaterEnableAudio').addEventListener('click',wrap(async()=>{
-  const AudioCtx=window.AudioContext||window.webkitAudioContext;
-  if(!AudioCtx)throw Error('Web Audio is unavailable in this browser.');
-  if(!audioContext)audioContext=new AudioCtx();
-  if(!analyser){analyser=audioContext.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.76;frequency=new Uint8Array(analyser.frequencyBinCount);timeDomain=new Uint8Array(analyser.fftSize);}
-  for(const el of [audio,video]){
-   if(nodes.has(el))continue;
-   const source=audioContext.createMediaElementSource(el);
-   source.connect(analyser);nodes.set(el,source);
-  }
-  if(!analyser.__wired){analyser.connect(audioContext.destination);analyser.__wired=true;}
-  await resumeContext();visualized=true;
-  $('theaterEnableAudio').textContent='✓ Visualizer active';showStatus('Visualizer connected to local media playback');
+  await ensureTheaterAnalysis();showStatus('Sonic Theater and Sovereign Reactor use one measured audio spectrum.');
  }));
  async function poster(add){
   const item=currentItem();if(!item)throw Error('Choose a video or GIF to capture a poster.');
