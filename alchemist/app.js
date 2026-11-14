@@ -265,7 +265,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.5.3';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.5.4';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -291,7 +291,7 @@ function launch(){
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Unified Sonic Theater v3.5.3 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
+ notice('PROXIMUS Mobile Power Guard v3.5.4 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
