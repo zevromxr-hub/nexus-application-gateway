@@ -18,13 +18,6 @@ const release={
  ]
 };
 assert.equal(checkRelease(version,index,release),true);
-for(const invalid of [
- [{version:'bad'},index,release],
- [version,{releases:[{version:'3.2.0'}]},release],
- [version,index,{...release,features:[]}],
-]){
- if(invalid===undefined)continue;
-}
 assert.throws(()=>checkRelease({version:'bad'},index,release),/Invalid application/);
 assert.throws(()=>checkRelease(version,{releases:[{version:'3.2.0'}]},release),/index/);
 assert.throws(()=>checkRelease(version,index,{...release,version:'3.2.0'}),/inconsistent/);
@@ -43,6 +36,7 @@ assert.equal(JSON.stringify(payload).includes('@everyone'),false,'Mass mention m
 assert.equal(JSON.stringify(payload).includes('@here'),false,'Here mention must be neutralized.');
 assert.equal(isNewRelease('3.2.0','3.2.1'),true);
 assert.equal(isNewRelease('3.2.1','3.2.1'),false);
+assert.equal(isNewRelease('3.2.1','3.2.0'),false,'Never post an older version as a new update.');
 assert.equal(isNewRelease('bad','3.2.1'),false);
 assert.equal(WEBHOOK_SECRET,'DISCORD_RELEASE_WEBHOOK');
 const mockToken='x'.repeat(64);
