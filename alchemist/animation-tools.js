@@ -4,6 +4,7 @@ import {$,safe,stem,bytes,notice,download,makeZip,textFile,blobCanvas,wrap} from
 import {encodeGif} from './gif-codec.js';
 import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
 import {saveOrShare,mobileFileSupport} from './portable-kit.js';
+import {GIF_QUALITY_PROFILES,gifPreflight,combineIdenticalFrames} from './media-suite-core.js';
 const MAX_BYTES=250000000,MAX_FRAMES=120,MAX_GIF_FRAMES=400,MAX_GIF_PIXELS=360000,MAX_FRAME_BUDGET=17000000;
 const ICON_SIZES=[32,64,128,256];
 const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
@@ -253,7 +254,7 @@ export function initAnimationForge(app){
  const fileEl=$('animFile');if(!fileEl)return;
  const video=$('animVideo'),gif=$('animGif'),preview=$('animResult');
  const status=$('animStatus'),progress=$('animProgress');
- let file=null,url=null,resultURL=null,busy=false,cancel=false,lastGif=null,lastGifName='';
+ let file=null,url=null,resultURL=null,busy=false,cancel=false,lastGif=null,lastGifName='',pendingVaultTime=null;
  const say=t=>{progress.textContent=t};
  const quality=()=>({
   fps:Number($('animFPS').value),
@@ -264,7 +265,8 @@ export function initAnimationForge(app){
   mode:$('animFit').value,
   bg:$('animBg').value,
   speed:Number($('animSpeed').value),reverse:$('animReverse').checked,
-  caption:$('animCaption').value,captionColor:$('animCaptionColor').value
+  caption:$('animCaption').value,captionColor:$('animCaptionColor').value,
+  optimize:$('animOptimizeFrames').checked
  });
  function cleanup(){video.pause();video.removeAttribute('src');video.load();gif.removeAttribute('src');if(url)URL.revokeObjectURL(url);url=null}
  fileEl.addEventListener('change',wrap(async e=>{
@@ -276,9 +278,12 @@ export function initAnimationForge(app){
   if(type==='video'){
    video.onloadedmetadata=()=>{
     if(file!==f)return;
-    $('animStart').value=0;
-    $('animEnd').value=Math.min(6,video.duration).toFixed(1);
+    const start=pendingVaultTime!==null?Math.min(Math.max(0,pendingVaultTime),Math.max(0,video.duration-.3)):0;
+    pendingVaultTime=null;
+    $('animStart').value=start.toFixed(2);
+    $('animEnd').value=Math.min(video.duration,start+4).toFixed(2);
     status.textContent='Video · '+video.videoWidth+'×'+video.videoHeight+' · '+video.duration.toFixed(1)+' sec';
+    updatePreflight();
    };
    video.onerror=()=>status.textContent='Video codec unsupported in this browser. Try H.264 MP4 or WebM.';
    video.src=url;video.load();
@@ -286,7 +291,7 @@ export function initAnimationForge(app){
    gif.src=url;$('animStart').value=0;$('animEnd').value=4;
    status.textContent='Animated GIF loaded · click Convert to resize, trim or create GIF icons';
   }
-  say(safe(f.name)+' · '+bytes(f.size)+' · local only');
+  say(safe(f.name)+' · '+bytes(f.size)+' · local only');updatePreflight();
  }));
  $('animCancel').addEventListener('click',()=>{cancel=true;say('Cancellation requested. Finishing the current frame…')});
  async function run(kind){
@@ -310,6 +315,8 @@ export function initAnimationForge(app){
    if(kind==='frame'){
     opts.end=opts.start+opts.speed/opts.fps;
    }
+   const inspection=gifPreflight({start:opts.start,end:opts.end,fps:opts.fps,width,height,speed:opts.speed});
+   if(!inspection.valid&&kind!=='frame')throw Error(inspection.reason);
    const frames=await sampleFrames(src,{...opts,width,height,progress:say,isCancelled:()=>cancel,
     mode:kind==='icons'?'cover':opts.mode});
    if(cancel)throw Error('Conversion cancelled.');
@@ -343,7 +350,8 @@ export function initAnimationForge(app){
     download(blob,base+'-frame.png');status.textContent='PNG keyframe exported';
    }else{
     say('Encoding real '+width+'×'+height+' GIF89a ('+frames.length+' frames)…');
-    const blob=encodeGif({width,height,frames,transparent:opts.transparent,dither:opts.dither});
+    const output=opts.optimize?combineIdenticalFrames(frames):frames;
+    const blob=encodeGif({width,height,frames:output,transparent:opts.transparent,dither:opts.dither});
     if(resultURL)URL.revokeObjectURL(resultURL);
     resultURL=URL.createObjectURL(blob);
     preview.src=resultURL;preview.hidden=false;
@@ -353,7 +361,9 @@ export function initAnimationForge(app){
     lastGif=blob;lastGifName=name;
     $('animUseBg').hidden=false;$('animUseThumb').hidden=false;
     $('animSaveShare').hidden=false;$('animOpenGif').hidden=false;
-    status.textContent='GIF complete · '+frames.length+' frames · '+width+'×'+height+' · '+bytes(blob.size);
+    status.textContent='GIF complete · '+output.length+' encoded frames'+
+     (output.length<frames.length?' · '+(frames.length-output.length)+' identical frames optimized':'')+
+     ' · '+width+'×'+height+' · '+bytes(blob.size);
     say('Completed with true animated GIF89a encoding. Preview below.');
    }
   }finally{
@@ -372,6 +382,67 @@ export function initAnimationForge(app){
  function updateSize(){ $('animCustomFields').hidden=sizePreset.value!=='custom'; }
  mode.addEventListener('change',updateMode);sizePreset.addEventListener('change',updateSize);
  updateMode();updateSize();
+
+ // Quality presets affect real output sizing, FPS, and dither; manual choices
+ // remain available and always take priority when the profile is set to Manual.
+ function applyQualityProfile(){
+  const key=$('animQualityProfile').value,profile=GIF_QUALITY_PROFILES[key];
+  if(!profile)return;
+  $('animFPS').value=String(profile.fps);
+  sizePreset.value=profile.preset;
+  $('animDither').checked=profile.dither;
+  const maxSeconds=Math.min(8,120/profile.fps);
+  const start=Number($('animStart').value)||0,end=Number($('animEnd').value)||0;
+  if(end-start>maxSeconds)$('animEnd').value=String(Math.round((start+maxSeconds)*10)/10);
+  updateSize();updatePreflight();
+ }
+ function updatePreflight(){
+  const w=video.hidden?gif.naturalWidth:video.videoWidth;
+  const h=video.hidden?gif.naturalHeight:video.videoHeight;
+  const target=$('animPreflight');
+  if(!file||!w||!h){target.textContent='Import a local video or GIF to inspect export frame count and memory.';return;}
+  try{
+   const {width,height}=dimensionsForGif(w,h,{
+    preset:sizePreset.value,customWidth:Number($('animCustomWidth').value),
+    customHeight:Number($('animCustomHeight').value),keepRatio:$('animKeepRatio').checked});
+   const check=gifPreflight({width,height,start:Number($('animStart').value),
+    end:Number($('animEnd').value),fps:Number($('animFPS').value),
+    speed:Number($('animSpeed').value)});
+   target.dataset.error=check.valid?'false':'true';
+   target.textContent=(check.valid?'READY':'ADJUST SETTINGS')+' · '+width+'×'+height+' · '+
+    (check.frames||0)+' frames · '+bytes(check.rawBytes||0)+' raw frame memory'+
+    (check.valid?' · '+check.outputSeconds.toFixed(1)+'s of playback':' · '+check.reason);
+  }catch(err){target.dataset.error='true';target.textContent=err.message;}
+ }
+ $('animQualityProfile').addEventListener('change',applyQualityProfile);
+ $('animCheck').addEventListener('click',updatePreflight);
+ for(const key of ['animStart','animEnd','animFPS','animSizePreset','animCustomWidth',
+  'animCustomHeight','animKeepRatio','animSpeed','animFit']){
+  $(key).addEventListener('input',updatePreflight);
+ }
+ $('animTrimStart').addEventListener('click',()=>{
+  if(!file||video.hidden||!Number.isFinite(video.currentTime))return say('Choose and seek a source video first.');
+  $('animStart').value=video.currentTime.toFixed(2);updatePreflight();
+ });
+ $('animTrimEnd').addEventListener('click',()=>{
+  if(!file||video.hidden||!Number.isFinite(video.currentTime))return say('Choose and seek a source video first.');
+  $('animEnd').value=video.currentTime.toFixed(2);updatePreflight();
+ });
+ document.addEventListener('proximus-animation-source',e=>{
+  const data=e.detail||{};
+  if(!(data.blob instanceof Blob)||data.blob.size<1){say('Video Vault source is unavailable.');return;}
+  if(data.blob.size>MAX_BYTES){say('The saved video exceeds the 250 MB GIF Forge import limit.');return;}
+  try{
+   pendingVaultTime=Number.isFinite(Number(data.start))?Number(data.start):null;
+   const filename=String(data.name||'saved-video.mp4').slice(0,160);
+   const fileData=new File([data.blob],filename,{type:data.mime||'video/mp4'});
+   const transfer=new DataTransfer();transfer.items.add(fileData);
+   fileEl.files=transfer.files;fileEl.dispatchEvent(new Event('change',{bubbles:true}));
+  }catch(err){
+   say('Could not hand off video to Animation Forge on this browser: '+err.message);
+  }
+ });
+
  $('animConvert').addEventListener('click',wrap(()=>run(mode.value==='icons'?'icons':'gif')));
  $('animToPack').addEventListener('click',wrap(()=>run(mode.value==='icons'?'iconPack':'pack')));
  $('animIcons').addEventListener('click',wrap(()=>run('icons')));

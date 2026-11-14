@@ -1,4 +1,60 @@
-# PROXIMUS | ASSET ALCHEMIST v3.2.1
+# PROXIMUS | ASSET ALCHEMIST v3.3.0
+**CINEMATIC LIFE COMMAND — 24 active spaces · Entertainment, Media & Everyday Utility**
+
+Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## New Studio 32 — Life Command
+
+Life Command is a standalone, private organizer designed as the new flagship everyday-utility feature inside PROXIMUS.
+
+Create **tasks, recurring routines, important dates, renewals and personal to-dos**. Manage each with custom category, priority, due date, private note and status. Repeating routines can run **daily, weekly or monthly**, with monthly day-of-month handling for leap years and shorter months. Daily habits track completion streaks. The board includes searches, category/kind filters, completed or overdue views, upcoming dates and a clear personal dashboard.
+
+The Companion Center shows your upcoming entries and recent completion count, and the iPhone navigation dock opens Life Command directly. Changes save only in the current browser's localStorage (no uploads). Existing Sync Bridge/Recovery settings backups now include your Life Command records. You can also **share or save a JSON backup**, import/merge/replace another backup, and export dated records as an **.ics calendar** for calendar applications.
+
+**Important:** Life Command does not send server notifications or guaranteed alarms when the website is closed. For real device alarms, import an .ics file into a calendar app and configure its native alerts. Clearing website data can remove local plans; export backups regularly.
+
+## Animation Forge — cinematic GIF upgrades
+
+- Four real output profiles: **Mobile** (compact), **Balanced**, **Smooth** (20 FPS) and **Cinematic** (24 FPS), plus fully manual controls.
+- See your estimated frame count, uncompressed frame memory and clip playback duration before encoding.
+- Set trim start/end from the source video's current playhead instead of entering timestamps manually.
+- Optionally combine exactly identical frames while keeping their total timing.
+- Open a saved Video Vault video directly in Animation Forge. The converter preselects a short clip starting from your playback position.
+- Existing corrected GIF89a/LZW encoding, 120-frame maximum, native file export and iPhone sharing remain unchanged.
+
+GIF visual smoothness still depends on the source framerate, codec and iPhone/browser decoder. High-quality output remains subject to memory constraints and silent GIF format limitations.
+
+## Video Vault — private personal cinema upgrades
+
+- Save named **scene bookmarks** at exact playback positions (up to 60 per video), reopen those moments in one tap and remove bookmarks individually.
+- Change the display title of a saved video without altering its original filename/bytes.
+- Set playback speed from 0.5× to 2×.
+- Load a local **.vtt captions file** for the current playback session (session-only; subtitles are not permanently stored).
+- Save the current video frame as a PNG.
+- Transfer a stored video into Animation Forge for a quick GIF, without adding another permanent Vault copy.
+- Export a searchable JSON catalog of saved video metadata and bookmarks. **This does not back up original video bytes.**
+- Preserve existing favorites, collections, local IndexedDB videos, resume playback, storage controls and Media Theater handoff.
+
+## Media Theater — repeat your favorite moments
+
+- Back 10 seconds or forward 30 seconds using dedicated buttons.
+- Mark an **A** start and **B** end point during a local song or video; replay only that interval until you clear the A/B loop or change tracks.
+- Preserve playback controls, album visualization, audio-reactive features, Video Vault integration and native screenshots.
+
+## Existing data, safety and platform compatibility
+
+All 23 prior active spaces plus Life Command are preserved (24 focused spaces). The eight previously deprecated studios remain archived and are not reactivated. Token Foundry, Master Thumbnail Publisher, Reactor IV, the GitHub Pages application URL, Discord webhook secret, encrypted access codes and original application gateway are untouched.
+
+Personal media/organizer records stay device- and browser-local. Back up anything important; PROXIMUS is not cloud synchronization or a background push service.
+
+**Automatic Discord release announcements** remain enabled for successful new published main-branch versions as long as the encrypted GitHub Actions webhook secret is valid.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+## Previous release notes
+
+## v3.2.1 — Discord Release Announcer
 **COMPANION EDITION — 23 focused spaces · entertainment and usefulness · iPhone + PC**
 
 Open: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/

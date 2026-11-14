@@ -1,5 +1,24 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.3.0 — Cinematic Life Command (2026-11-13)
+
+### New flagship: Life Command (Studio 32)
+- Private daily dashboard with tasks, habits, deadlines, categories, priorities, notes and recurring daily/weekly/monthly schedules.
+- Habit streaks, completed/overdue filters, important-date calendar exports and portable JSON backup/import.
+- Added iPhone dock and Companion Center daily-summary shortcuts. Synced through existing manual workspace settings backup, not external cloud storage.
+
+### Animation Forge
+- New Mobile, Balanced, Smooth and Cinematic GIF quality profiles; live frame-count/memory preflight.
+- Playhead-selected start/end trim controls, optional exact duplicate-frame optimization and a Video Vault → GIF short-clip pipeline.
+
+### Video Vault and Media Theater
+- Scene timestamp bookmarks, local VTT subtitles, variable playback speed, display title editing, PNG snapshots, metadata catalog export.
+- Video Vault clip handoff to Animation Forge, plus 10/30-second seek and A-B segment repeat inside Media Theater.
+
+### Preserved
+- All previous 23 active spaces, 8 archived inactive studios, browser-local video database, Token Foundry, original Discord announcement workflow and prior release records.
+
+
 ## v3.2.1 — Automated Discord Release Announcer (2026-11-13)
 
 - Implemented a hosted GitHub Actions → Discord webhook workflow for future PROXIMUS releases.

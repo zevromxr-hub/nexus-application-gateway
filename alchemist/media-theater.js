@@ -38,7 +38,7 @@ export function initMediaTheater(app){
  const level=$('theaterLevels'),status=$('theaterStatus');
  const playlist=[];let current=-1,mode='off',shuffle=false,visualMode='bars',color='violet',currentURL=null;
  let audioContext=null,analyser=null,frequency=null,timeDomain=null,nodes=new Map(),visualized=false;
- let playing=false,raf=0,tick=0,pausedByVisibility=false;
+ let playing=false,raf=0,tick=0,pausedByVisibility=false,loopA=null,loopB=null;
  let themeImage=null;
  const FAVORITES='proximus-theater-favorites-v2';
  let favorites=[];try{favorites=JSON.parse(localStorage.getItem(FAVORITES)||'[]');if(!Array.isArray(favorites))favorites=[];}catch(e){}
@@ -70,6 +70,17 @@ export function initMediaTheater(app){
  };
  function revoke(){if(currentURL)URL.revokeObjectURL(currentURL);currentURL=null;}
  function stopMedia(){video.pause();audio.pause();playing=false;}
+ function updateAB(){
+  $('theaterABStatus').textContent=loopA===null?'Choose the beginning (A), then the end (B).':
+   loopB===null?'A: '+formatTime(loopA)+' · choose B to finish segment.':
+   'Repeating '+formatTime(loopA)+' → '+formatTime(loopB)+' within this track.';
+ }
+ function clearAB(){loopA=null;loopB=null;updateAB();}
+ function currentPlayable(){
+  const item=currentItem();
+  if(!item||item.kind==='image')return null;
+  return player();
+ }
  function drawList(){
   list.replaceChildren();for(let i=0;i<playlist.length;i++){
    const item=playlist[i];
@@ -96,7 +107,7 @@ export function initMediaTheater(app){
  }
  async function select(index,autoplay=false){
   if(index<0||index>=playlist.length)return;
-  stopMedia();revoke();current=index;
+  stopMedia();revoke();current=index;clearAB();
   const item=playlist[index],kind=item.kind;
   currentURL=URL.createObjectURL(item.file);
   video.hidden=kind!=='video';audio.hidden=kind!=='audio';image.hidden=kind!=='image';
@@ -132,7 +143,7 @@ export function initMediaTheater(app){
   showInfo();
  }
  function clearQueue(){
-  stopMedia();revoke();playlist.length=0;current=-1;
+  stopMedia();revoke();playlist.length=0;current=-1;clearAB();
   video.removeAttribute('src');audio.removeAttribute('src');video.load();audio.load();image.removeAttribute('src');
   video.hidden=true;audio.hidden=true;image.hidden=true;drawList();
   showStatus('Queue cleared');
@@ -177,6 +188,25 @@ export function initMediaTheater(app){
  $('theaterPlay').addEventListener('click',wrap(togglePlay));
  $('theaterNext').addEventListener('click',wrap(()=>next(1)));
  $('theaterPrev').addEventListener('click',wrap(()=>next(-1)));
+ function theaterSkip(seconds){
+  const media=currentPlayable();
+  if(!media||!Number.isFinite(media.duration))return showStatus('Choose audio or video to seek.');
+  media.currentTime=Math.max(0,Math.min(media.duration-.05,media.currentTime+seconds));
+ }
+ $('theaterSkipBack').addEventListener('click',()=>theaterSkip(-10));
+ $('theaterSkipForward').addEventListener('click',()=>theaterSkip(30));
+ $('theaterMarkA').addEventListener('click',()=>{
+  const media=currentPlayable();
+  if(!media||!Number.isFinite(media.currentTime))return showStatus('Play audio or video before setting loop points.');
+  loopA=media.currentTime;loopB=null;updateAB();
+ });
+ $('theaterMarkB').addEventListener('click',()=>{
+  const media=currentPlayable();
+  if(!media||loopA===null||!Number.isFinite(media.currentTime)||media.currentTime<=loopA+.3)
+   return showStatus('Choose an end point at least 0.3 seconds after point A.');
+  loopB=media.currentTime;updateAB();
+ });
+ $('theaterResetAB').addEventListener('click',clearAB);
  $('theaterClear').addEventListener('click',()=>{if(playlist.length&&confirm('Clear the local theater playlist?'))clearQueue();});
  $('theaterLoop').addEventListener('change',e=>{mode=e.target.value;video.loop=mode==='one';audio.loop=mode==='one';});
  $('theaterShuffle').addEventListener('change',e=>{shuffle=e.target.checked;});
@@ -189,6 +219,11 @@ export function initMediaTheater(app){
   });
   el.addEventListener('pause',()=>{if(el===player()){playing=false;showInfo();}});
   el.addEventListener('loadedmetadata',showInfo);
+  el.addEventListener('timeupdate',()=>{
+   if(el===player()&&loopA!==null&&loopB!==null&&el.currentTime>=loopB){
+    el.currentTime=loopA;
+   }
+  });
   el.addEventListener('error',()=>{showStatus('Could not decode '+(currentItem()?.file.name||'file')+' in this browser');playing=false;showInfo();});
  }
  $('theaterFullscreen').addEventListener('click',wrap(async()=>{

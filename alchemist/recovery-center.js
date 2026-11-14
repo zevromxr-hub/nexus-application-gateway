@@ -4,7 +4,7 @@ import {mobileFileSupport} from './portable-kit.js';
 const keys=[
  'nexus-alchemist-last-view','nexus-alchemist-pack-title','nexus-alchemist-pack-target',
  'proximus-sovereign-shortcuts-v1','proximus-automations-v1','proximus-alchemist-workflow-v1','proximus-alchemist-arcade-scores-v1',
- 'proximus-command-layout-v1','proximus-command-pins-v1','proximus-command-name-v1','proximus-reactor-settings-v1','proximus-visual-identity-v1','proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1','proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1'
+ 'proximus-command-layout-v1','proximus-command-pins-v1','proximus-command-name-v1','proximus-reactor-settings-v1','proximus-visual-identity-v1','proximus-mobile-navigation-pins-v1','proximus-mobile-navigation-recent-v1','proximus-companion-links-v1','proximus-companion-pocket-notes-v1','proximus-video-vault-auto-next-v1','proximus-life-command-v1'
 ];
 export function backupSettings(storage){
  const prefs={};
@@ -14,7 +14,7 @@ export function backupSettings(storage){
 export function restoreSettings(storage,document){
  if(document?.schema!=='proximus.settings/1'||!document.preferences||typeof document.preferences!=='object')throw Error('Invalid PROXIMUS settings backup.');
  let count=0;
- for(const key of keys)if(typeof document.preferences[key]==='string'&&document.preferences[key].length<150000){
+ for(const key of keys)if(typeof document.preferences[key]==='string'&&document.preferences[key].length<(key==='proximus-life-command-v1'?600000:150000)){
   storage.setItem(key,document.preferences[key]);count++;
  }
  return count;
