@@ -47,6 +47,7 @@ function render(){
  $('wowRecipeList').innerHTML=db.recipes.map(x=>listItem(x.name,'Cost: '+gold(x.cost)+'g · Net: '+gold(x.net)+'g','recipes',x)).join('')||empty;
  $('wowGearList').innerHTML=db.gear.map(x=>listItem(x.name,'Current '+x.old.toFixed(1)+' · Candidate '+x.next.toFixed(1)+' · Delta '+(x.next-x.old).toFixed(1),'gear',x)).join('')||empty;
 }
+insert();
 function bindForm(id,fn){$(id).addEventListener('submit',e=>{e.preventDefault();fn();save();e.target.reset()})}
 bindForm('wowWeeklyForm',()=>db.weeklies.unshift({id:id(),title:$('wowWeekly').value.trim(),group:$('wowWeeklyGroup').value,done:false}));
 bindForm('wowEncounterForm',()=>db.encounters.unshift({id:id(),name:$('wowBoss').value.trim(),difficulty:$('wowDifficulty').value,notes:$('wowMechanics').value.trim()}));
@@ -80,5 +81,5 @@ async function releaseInfo(manual=false){const status=$('wowUpdateStatus');statu
  status.textContent='Latest published manifest: v'+version.version+' · '+(manual?'Checked just now':'Release data loaded')+'.';
 }catch(err){status.textContent='Cannot check the live release manifest right now. Local tools remain available.'}}
 $('wowCheckUpdates').addEventListener('click',()=>releaseInfo(true));
-insert();render();releaseInfo();
+render();releaseInfo();
 })();
