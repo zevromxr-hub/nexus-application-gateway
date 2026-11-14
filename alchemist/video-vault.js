@@ -426,6 +426,7 @@ export function initVideoVault(app){
    $('videoVaultToGif').disabled=false;
    $('videoVaultSnapshot').disabled=false;
    video.playbackRate=Number($('videoVaultSpeed').value)||1;
+   info.textContent+=' · '+videoPlaybackHint(item.mime,video.canPlayType(item.mime));
    drawBookmarks();render();
   }
   if(autoplay){
@@ -551,7 +552,7 @@ export function initVideoVault(app){
   say('Saved video passed to Animation Forge without adding a new permanent copy.');
  }));
  $('videoVaultSnapshot').addEventListener('click',wrap(async()=>{
-  if(!active()||video.readyState<2||!video.videoWidth)throw Error('Play or seek to a valid video frame first.');
+  if(!(active()||sessionFile)||video.readyState<2||!video.videoWidth)throw Error('Play or seek to a valid video frame first.');
   const canvas=document.createElement('canvas');canvas.width=Math.min(video.videoWidth,1920);
   canvas.height=Math.max(1,Math.round(canvas.width*video.videoHeight/video.videoWidth));
   canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
@@ -567,13 +568,13 @@ export function initVideoVault(app){
 
  $('videoVaultOpenTheater').addEventListener('click',()=>app.changeView('theater'));
  $('videoVaultCinema').addEventListener('click',wrap(async()=>{
-  if(!active())throw Error('Choose a saved video first.');
+  if(!(active()||sessionFile))throw Error('Choose a saved video or session preview first.');
   if(video.requestFullscreen)await video.requestFullscreen();
   else if(video.webkitEnterFullscreen)video.webkitEnterFullscreen();
   else say('Use the native video controls to enter full-screen playback.');
  }));
  $('videoVaultPiP').addEventListener('click',wrap(async()=>{
-  if(!active())throw Error('Choose a video first.');
+  if(!(active()||sessionFile))throw Error('Choose a saved video or session preview first.');
   if(document.pictureInPictureEnabled&&video.requestPictureInPicture){
    await video.requestPictureInPicture();
   }else if(video.webkitSetPresentationMode){
@@ -606,7 +607,11 @@ export function initVideoVault(app){
   }
  });
  video.addEventListener('error',()=>{
-  const item=active();if(item)say('This browser cannot decode '+item.name+'. The original saved file is still in Video Vault. Try MP4/H.264 or a device-native MOV.',true);
+  const item=active();
+  if(item||sessionFile){
+   const name=item?.name||sessionFile?.name;
+   say('This browser could not decode '+name+'. The Vault can store more formats than Safari plays. For reliable iPhone playback, use a compatible MP4 (H.264/AAC) or MOV (supported HEVC).',true);
+  }
  });
  document.addEventListener('proximus-video-vault-watch',e=>{
   const id=e.detail?.id;
@@ -627,7 +632,9 @@ export function initVideoVault(app){
   if(files.length)void importFiles(files);
  });
  document.addEventListener('proximus-view-changed',e=>{
-  if(e.detail?.studio!=='videos'&&!video.paused)void persistPosition(true);
+  if(e.detail?.studio!=='videos'&&!video.paused){
+   if(sessionFile)video.pause();else void persistPosition(true);
+  }
   updateMini();
  });
  window.addEventListener('pagehide',()=>{
