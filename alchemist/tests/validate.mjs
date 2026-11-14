@@ -67,7 +67,7 @@ assert.ok(read('video-vault.js').includes('proximus-animation-source'),'Video Va
 assert.ok(read('animation-tools.js').includes('combineIdenticalFrames'),'Duplicate GIF frames must be optimized');
 assert.ok(read('media-theater.js').includes('theaterMarkA'),'A/B loop controls must be wired');
 assert.ok(html.includes('data-mobile-target="life"'),'Life Command must be reachable directly from iPhone dock');
-assert.ok(app.includes("if(!names.some(n=>n.id===id))id='command';"),'Retired saved routes must safely fall back to Companion Center');
+assert.ok(app.includes("if(!names.some(n=>n.id===id))id=collectedExports?'projects':'command';"),'Retired routes must redirect safely; Packager stays accessible through Project Hub');
 assert.ok(app.includes('initMobileNavigation(app)'),'Mobile studio navigation must initialize');
 assert.ok(read('video-vault.js').includes("['items','files']"),'Videos must save original binary and metadata atomically in separate IDB stores');
 assert.ok(read('video-vault.js').includes('navigator.storage.persist'),'Video Vault must support persistent storage request');
