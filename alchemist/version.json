@@ -1,23 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.5.4",
+  "version": "3.6.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Mobile Power Guard — Cool Sonic Theater",
+  "subtitle": "ORBIT Interface — Unified Access & Adaptive Redesign",
   "studio_count": 18,
-  "previous_version": "3.5.3",
+  "previous_version": "3.5.4",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Introduced Mobile Power Guard inside the existing unified Sonic Theater; defaults to a conservative 24 FPS 640×360 efficient rendering profile on iPhone/iPad while preserving existing PC presets",
-    "Added user-selectable Cool & Save (15 FPS, 480×270 with animated backgrounds paused), Music Only (stop visual rendering without interrupting local music playback), and Smooth (30 FPS, 640×360) modes",
-    "Auto-pauses the global site ambient/thumbnail video when performing mobile Reactor rendering, with non-destructive playback restoration when returning to other studios",
-    "Pauses Reactor canvas drawing when the stage is offscreen or the page is hidden, and stops painting the collapsed 900×300 Media Theater advanced visualizer while continuing lightweight real-audio FFT updates",
-    "Adaptive profile detects low achieved frame rate and downshifts to a lighter workload; these signals reflect rendering performance, not hardware temperature or battery-health readings",
-    "Keeps custom Reactor worlds, previous Reactor IV effects, background media, saved music, Play on Start, mobile playlist controls, Web Audio and user presets untouched in their existing storage locations",
-    "Temporarily restores existing full-resolution drawing during user-requested PNG, animated GIF and silent video exports, then returns to the selected energy-saving live profile",
-    "Preserves PC visual quality by default, existing adaptive navigation, GitHub Pages, automated release validation, rolling rollback and direct Discord announcements"
+    "Introduced ORBIT, a full site-wide interface redesign using modern midnight navy and soft aurora accents, consistent readable cards and controls, restrained motion, and a cleaner hierarchy across PC and iPhone",
+    "Reorganized the original desktop sidebar into collapsible purpose groups: Start, Entertainment, Create, Everyday, Workspace, Customize & Protect, and Information; all existing studio routes and legacy redirects remain intact",
+    "Added a universal quick-access bar visible in every workspace with the current studio, Find any tool, favorite pinned shortcuts, recently visited spaces, and one-tap Home navigation",
+    "Expanded the existing Ctrl/Cmd+K search into a category-aware launcher with immediate opening and one-tap pin/unpin controls, without creating a competing search interface or new studio",
+    "Unified favorites between the existing Companion Center studio cards, the mobile studio navigator, and the new global access bar; previous favorites are reused as initial shortcuts instead of discarded",
+    "Simplified the top bar by moving secondary existing actions into a More menu while preserving their original IDs and behavior, and added direct Sonic Theater access to the touch-friendly mobile dock",
+    "Removed the redundant global welcome hero from individual studio pages while retaining the complete home page, and collapsed advanced dashboard, catalog and scene controls behind accessible details rather than deleting features",
+    "Preserved the adaptive PC/iPhone layout override, saved video and music library, Play on Start, Reactor IV and Sonic Dimension worlds, mobile power profiles, original media/themes, encrypted Token Foundry, exports and existing offline/Discord release automation"
   ]
 }
