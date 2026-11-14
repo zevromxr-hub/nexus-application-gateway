@@ -1,24 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "channel": "stable",
   "release_date": "2026-11-13",
-  "subtitle": "Cinematic Life Command — Entertainment & Everyday Utility",
-  "studio_count": 24,
-  "previous_version": "3.2.1",
+  "subtitle": "Adaptive Companion — Device Intelligence & Studio Cleanup",
+  "studio_count": 18,
+  "previous_version": "3.3.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "NEW Life Command Studio 32: private everyday organizer with tasks, important dates, priority, categories, notes and recurring daily, weekly or monthly routines",
-    "Life Command adds daily completion tracking, habit streaks, overdue and upcoming-date summaries, searchable task boards, and one-tap access from Companion Center and the iPhone navigation dock",
-    "Export or import Life Command JSON backups and share an ICS calendar for dated events, with local-only browser storage and no account or background notification claims",
-    "Enhanced Animation Forge with mobile, balanced, smooth and cinematic quality profiles, GIF frame/memory preflight, playhead trim shortcuts and exact duplicate-frame reduction",
-    "Improved Video Vault with saved scene bookmarks, renamable display titles, playback speed controls, session-only local VTT captions, frame PNG snapshots and metadata catalog export",
-    "Integrated direct Video Vault to Animation Forge handoff for saved local videos, automatically selecting a short GIF clip from the chosen playback timestamp",
-    "Expanded Media Theater with 10-second rewind, 30-second skip and precise A/B section loops for music or video",
-    "Refined iPhone-responsive interface while preserving 24 active Companion spaces, existing video files, projects, Reactor IV, Master Visual Identity and Token Foundry unchanged",
-    "Maintained secure automated GitHub-to-Discord release announcements with real changelog and no PC hosting required"
+    "Retired Image Studio, Asset Packager, Production Lab, Asset Audit, Layer Forge, and Motion Graphics from the active website, navigation, commands and application initialization; the 8 previously retired studios remain archived",
+    "Safely removed 3 unused old studio JavaScript modules from the live GitHub tree, preserving their original source in v3.3 Git history and prior release records",
+    "Preserved Asset Packager's shared output library, saved IndexedDB assets, ZIP downloads, per-asset exports and studio handoffs inside Project Hub → Collected Exports; older pack links redirect automatically",
+    "Added Adaptive Interface detection that responds to iPhone/PC screen size, touch and pointer capabilities, orientation and window resizing without reloading projects",
+    "Added a manual Layout selector with Auto, Desktop/PC and Mobile/iPhone modes, saved per browser and included in portable settings and Recovery Center backups",
+    "Fixed desktop/mobile UI crossover, iPhone dock showing in narrow desktop windows, clipped topbar controls, overflowing text, studio tabs and narrow panel grids with responsive CSS layouts",
+    "Maintained 18 focused companion spaces including Video Vault, Animation Forge, Media Theater, Life Command, Reactor IV, utilities, Project Hub, Sync Bridge, Recovery Center and Token Foundry",
+    "Preserved existing local videos, media, settings, token records, GitHub Pages URL, Discord gateway and secure automated release announcement pipeline"
   ]
 }
