@@ -197,7 +197,7 @@ export function initWebCinemaGateway(){
   const file=event.target.files?.[0];event.target.value='';
   if(!file)return;
   try{
-   if(file.size>WEB_CINEMA_MAX_IMPORT)throw Error('Link backup is too large (300 KB maximum).');
+   if(file.size>WEB_CINEMA_MAX_IMPORT)throw Error('Link backup is too large (750 KB maximum).');
    const imported=readWebCinemaBackup(JSON.parse(await file.text()));
    const before=saved.length;saved=normalizeWebCinemaLibrary([...saved,...imported]);
    const added=saved.length-before;write();renderSaved();
