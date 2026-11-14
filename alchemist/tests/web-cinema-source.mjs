@@ -47,6 +47,7 @@ assert.equal(res.url,site);
 assert.equal(webCinemaPlaybackPlan(site,{playerMode:'native',playerUrl:'https://media.example.org/watch?key=abc'}).kind,'direct');
 assert.equal(webCinemaPlaybackPlan(site,{playerMode:'native',playerUrl:'https://media.example.org/watch?key=abc'}).mediaUrl,
  'https://media.example.org/watch?key=abc','Direct URL does not require .mp4 extension');
+assert.equal(normalizeWebCinemaLibrary([{url:site,playerMode:'native',playerUrl:'https://media.example.org/watch?key=abc',position:76.5}])[0].position,76.5,'Native source without a file extension retains direct video resume progress');
 assert.equal(webCinemaPlaybackPlan(site,{playerMode:'website'}).kind,'website');
 assert.equal(webCinemaPlaybackPlan(site,{}).kind,'website');
 assert.equal(webCinemaPlaybackPlan('https://www.dailymotion.com/video/x8abcde',{playerMode:'embed',playerUrl:embed}).kind,'custom-embed');
