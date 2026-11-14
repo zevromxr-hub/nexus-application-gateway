@@ -1,0 +1,42 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.6.4",
+  "release_date": "2026-11-14",
+  "title": "Video Vault Ultra Import — Large Local Files & Wider Format Support",
+  "subtitle": "Video Vault Ultra Import — Large Local Files & Wider Format Support",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Removed the previous 450 MB iPhone/iPad and 750 MB PC single-video limits, replacing them with generous 8 GB mobile and 16 GB desktop safety guardrails while respecting actual browser storage quotas and free device capacity",
+    "Introduced chunked large-file saves in the browser’s private origin filesystem (OPFS) where writable; older or unsupported browsers use smaller 16 MB IndexedDB chunks instead of one enormous Blob transaction",
+    "Preserved the exact existing Video Vault database and all previously saved videos, thumbnails, watch history, favorites and collections; the additive database upgrade creates a new chunk store without deleting original files",
+    "Expanded the import picker and filename/MIME validation to accept MP4, MOV, M4V, WebM, OGV, MKV, AVI, WMV, FLV, MPEG, TS/MTS/M2TS, 3GP, HEVC and additional supported video MIME types, keeping unsupported codecs exportable rather than pretending they play",
+    "Added import progress with bytes and percentage, cancellation that discards partial imports on supported paths, clearer failure reasons for quota/unsupported files and browser storage guidance",
+    "Added Play from Files — no copy: play a user-selected large video directly from its iPhone/PC file picker without copying its data into browser-managed storage; Save this preview optionally persists it when quotas permit",
+    "Added safer streamed-file integrity checks and native video playback with existing full-screen, picture-in-picture, snapshots and existing resume/bookmark controls where applicable",
+    "Preserved Web Cinema Embed First, Sonic Theater saved music and Play on Start, Mobile Power Guard, ORBIT PC/iPhone layout, all other studios, media exports, previous rollback packages and direct Discord release automation"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Video Vault",
+    "Video Import",
+    "Local Storage",
+    "iPhone Media Playback"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
