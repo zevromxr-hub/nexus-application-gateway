@@ -4,6 +4,7 @@
 // changing a browser interface profile provides authorization or access control.
 import {$,bytes,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
+import {readOrbitPins,writeOrbitPins} from './orbit-interface.js';
 import {listStoredVideos} from './video-vault.js';
 import {LIFE_STORAGE,normalizeLifeData,lifeStats,filterLife,localDay} from './life-command-core.js';
 import {COMPANION_LINKS,companionCategory,companionWatchlist,companionSavedOverview,
@@ -29,8 +30,9 @@ export function initCommandCenter(app){
  let library=[],bookmarks=[];
  try{bookmarks=cleanCompanionLinks(JSON.parse(localStorage.getItem(COMPANION_LINKS)||'[]'));}catch(e){bookmarks=[];}
  try{pins=normalizePins(JSON.parse(localStorage.getItem(PINS)||'[]'),all.map(x=>x.id));}catch(e){pins=[];}
+ pins=normalizePins(readOrbitPins(),all.map(x=>x.id));
  if(!MODES.includes(profile))profile='creator';
- const savePins=()=>{try{localStorage.setItem(PINS,JSON.stringify(pins));}catch(e){}};
+ const savePins=()=>{try{localStorage.setItem(PINS,JSON.stringify(pins));}catch(e){}writeOrbitPins(pins);};
  function useProfile(value){
   profile=MODES.includes(value)?value:'creator';document.body.dataset.proximusProfile=profile;
   localStorage.setItem(PROFILE,profile);
@@ -40,6 +42,9 @@ export function initCommandCenter(app){
    'Customer layout: simpler navigation and creation shortcuts. This is a display preference, not a secure login or permissions system.';
   draw();
  }
+ document.addEventListener('proximus-orbit-pins-changed',event=>{
+  pins=normalizePins(event.detail?.pins||[],all.map(x=>x.id));draw();
+ });
  const advanced=new Set(['audit','production','motiongraphics','recovery','tokens','utility','projects','automation','motion','model']);
  function draw(){
   grid.replaceChildren();
