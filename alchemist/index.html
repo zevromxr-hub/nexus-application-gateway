@@ -6,7 +6,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -45,11 +45,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.6.0</div>
+<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.6.1</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.6.0 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.6.1 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
  <div class="orbit-access-current">
   <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
@@ -69,9 +69,9 @@
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.6.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.6.1</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.6.0</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.6.1</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
@@ -286,6 +286,57 @@
   <div><span class="eyebrow">PROXIMUS / PERSONAL CINEMA ARCHIVE</span><h3>Save it once. Watch it whenever you return.</h3>
    <p>Import videos from iPhone Files/Photos or your PC. The actual video files are stored privately in this browser’s local library—not merely saved as filenames or temporary links.</p></div>
   <div class="video-vault-metrics"><div><b id="videoVaultCount">0 saved</b><span>LOCAL LIBRARY</span></div><div><b id="videoVaultFavorites">0</b><span>FAVORITES</span></div><div><b id="videoVaultSavedBytes">0 B</b><span>VIDEO FILE BYTES</span></div></div>
+
+ <details id="webCinemaGateway" class="web-cinema-gateway" aria-label="Web Cinema Gateway — external websites and saved video links">
+  <summary>
+   <span class="web-cinema-summary-icon" aria-hidden="true">◎</span>
+   <span class="web-cinema-summary-text"><strong>WEB CINEMA GATEWAY</strong><small>Open compatible websites &amp; video links · save links to watch later</small></span>
+   <span class="web-cinema-summary-label">EXPAND WHEN NEEDED</span>
+  </summary>
+  <div class="web-cinema-content">
+   <p class="hint">Paste a link to view supported media or explore websites that permit embedding. Some platforms restrict in-site playback; Open Externally remains available. Links are saved in this browser, not copied as video files.</p>
+   <form id="webCinemaForm" class="web-cinema-form">
+    <label class="web-cinema-url-label">Website or video address
+     <input id="webCinemaUrl" type="text" inputmode="url" maxlength="2200" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="https://example.com/video.mp4 or a supported video page" required>
+    </label>
+    <label>Optional title<input id="webCinemaTitle" type="text" maxlength="120" placeholder="Name this link"></label>
+    <label>Collection<input id="webCinemaCollection" type="text" maxlength="40" value="General" placeholder="General, Movies, Favorites…"></label>
+    <div class="web-cinema-form-actions">
+     <button type="submit" class="primary" id="webCinemaLoad">▶ Open link</button>
+     <button type="button" class="small-btn" id="webCinemaSave">＋ Save for later</button>
+    </div>
+   </form>
+   <div class="web-cinema-player-panel">
+    <div class="web-cinema-viewbar"><strong id="webCinemaNow">No external content loaded</strong><span id="webCinemaType" class="web-cinema-type">READY</span></div>
+    <div class="web-cinema-frame" id="webCinemaFrame">
+     <div id="webCinemaEmpty" class="web-cinema-placeholder"><strong>Paste a link to open the Gateway</strong><span>Supported video embeds, direct MP4/WebM files, and compatible websites.</span></div>
+     <iframe id="webCinemaIframe" title="External website or approved video player" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen; picture-in-picture; encrypted-media" allowfullscreen loading="lazy" hidden></iframe>
+     <video id="webCinemaVideo" playsinline controls preload="metadata" aria-label="Linked video player" hidden></video>
+    </div>
+    <div class="web-cinema-player-controls" role="group" aria-label="Gateway navigation and playback">
+     <button type="button" id="webCinemaBack" class="small-btn" disabled>← Back</button>
+     <button type="button" id="webCinemaForward" class="small-btn" disabled>Forward →</button>
+     <button type="button" id="webCinemaReload" class="small-btn" disabled>↻ Reload</button>
+     <button type="button" id="webCinemaFullscreen" class="small-btn" disabled>⛶ Fullscreen</button>
+     <button type="button" id="webCinemaExternal" class="small-btn" disabled>↗ Open externally</button>
+     <button type="button" id="webCinemaStop" class="small-btn">■ Stop</button>
+    </div>
+    <p id="webCinemaStatus" class="hint" role="status" aria-live="polite">No website is contacted until you open a link.</p>
+    <p class="hint web-cinema-privacy">For safety, ordinary websites are isolated and cannot access PROXIMUS data. Sites that block embedding, require sign-in, or have unsupported codecs must open in their own browser tabs. Back and Forward track addresses opened through this Gateway, not clicks inside an embedded website.</p>
+   </div>
+   <div class="web-cinema-library-head"><div><h3>SAVED VIDEO &amp; WEBSITE LINKS</h3><p class="hint">Reopen saved links any time on this device. Direct video files can remember playback position; third-party players manage their own resume behavior.</p></div><span id="webCinemaCount">0 saved</span></div>
+   <div class="web-cinema-library-filters">
+    <label>Find saved links<input id="webCinemaSearch" type="search" autocomplete="off" placeholder="Search titles, collections or addresses"></label>
+    <label>Show<select id="webCinemaFilter"><option value="all">All links</option><option value="videos">Video links</option><option value="sites">Websites</option><option value="favorites">Favorites ★</option></select></label>
+   </div>
+   <div id="webCinemaSavedList" class="web-cinema-saved-list" aria-label="Personal saved video and website links"></div>
+   <div class="web-cinema-backup-actions">
+    <button type="button" class="small-btn" id="webCinemaExport">↓ Export link library</button>
+    <label class="web-cinema-import">＋ Import saved links <input id="webCinemaImport" type="file" accept=".json,application/json"></label>
+   </div>
+   <p class="hint">Your saved links and titles are private to this browser unless you export them. Original media is not downloaded, cached or copied. Temporary, signed or expiring URLs may stop working later; keep the original source when possible.</p>
+  </div>
+ </details>
  </div>
  <div class="workspace image-grid video-vault-layout">
   <div class="panel">
@@ -562,7 +613,7 @@
    </div>
 
    <div class="reactor-export-block sonic-dimension-controls" id="sonicDimensionControls">
-    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.6.0</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
+    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.6.1</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
     <div class="checks"><label><input id="reactorDimensionEnabled" type="checkbox"> Enable Sonic Dimension worlds</label><label><input id="reactorDimensionAuto" type="checkbox"> Evolve world every 8 detected beats (12s cooldown)</label></div>
     <div class="two">
      <label>World environment<select id="reactorDimensionWorld">
@@ -724,7 +775,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.6.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.6.1</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
