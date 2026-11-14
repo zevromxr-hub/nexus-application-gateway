@@ -245,5 +245,5 @@ export function initCommandCenter(app){
  });
 
  useProfile(profile);liveStats();drawGreeting();
- summary.textContent='Companion Edition · entertainment, Life Command planning, saved videos and 24 focused spaces.';
+ summary.textContent='Companion Edition · entertainment, Life Command planning, saved videos and 18 focused spaces.';
 }

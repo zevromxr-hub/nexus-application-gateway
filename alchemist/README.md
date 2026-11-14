@@ -1,7 +1,35 @@
-# PROXIMUS | ASSET ALCHEMIST v3.3.0
+# PROXIMUS | ASSET ALCHEMIST v3.4.0
 **CINEMATIC LIFE COMMAND — 24 active spaces · Entertainment, Media & Everyday Utility**
 
 Official app: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## NEW IN v3.4.0 — ADAPTIVE COMPANION EDITION
+
+The active application is now focused on **18 companion spaces**. Six additional production studios were retired at the user's request: Image Studio, Asset Packager, Production Lab, Asset Audit, Layer Forge and Motion Graphics. They no longer appear in desktop or iPhone navigation, dashboard search or startup initialization. The previous eight deprecated studios stay retired.
+
+**Source cleanup:** Three unused source files (image-tools.js, pro-tools.js and creator-tools.js) were deleted from the live GitHub source tree after confirming the remaining active modules do not import them. The complete original source is still recoverable from the previous **v3.3.0 commit** (f7c5bb31120160b13c5b4bc53911d808441ac6a8), and previous release manifests are retained. No personal media, SQLite databases, localStorage, IndexedDB video stores, project snapshots or Token Foundry data were cleared or migrated.
+
+**Shared asset exports preserved:** The Asset Packager standalone screen is retired, but the actual collected export engine remains enabled. All generated files, per-asset downloads, tags, portable ZIP exports, saved project snapshots and compatible studio handoffs are available under **Project Hub → Collected Exports**. The Exports button goes there directly. Old saved "pack" URLs or last-view settings automatically redirect to this section. Removing the production UI does **not** remove accumulated outputs.
+
+### Intelligent iPhone and PC layout
+
+New **Layout** control in the top toolbar:
+- **Auto (default)** uses phone user-agent hints, viewport dimensions, coarse-pointer/hover capabilities and responsive CSS to choose the appropriate navigation mode. It recalculates on screen rotation and resize.
+- **Desktop / PC** presents desktop navigation and hides the iPhone bottom dock, even in a narrow PC browser window. Small windows retain compact, scrollable nav and single-column content.
+- **Mobile / iPhone** opens the touch-optimized bottom dock, searchable Studio Navigator and swipe-capable mobile experience, including when landscape orientation widens the screen.
+- The preference is browser-local and included in the manual Sync Bridge / Recovery Center settings backups. The user can switch without losing the current open studio or local project data.
+- Overflow fixes protect topbar action buttons, long filenames, media stages, forms, card grids and two-column studio interfaces from being cut off on small displays.
+
+A phone or desktop can still have unusual display metrics (e.g., iPad Stage Manager, desktop mobile emulation). Manual overrides are available for these cases. Features that depend on browser APIs such as native video fullscreen or local media decoding continue to depend on iOS/Windows browser support, not the layout setting.
+
+### Preserved
+
+Animation Forge GIF engine, Video Vault saved movies and resume positions, Life Command routines and JSON/.ics export, Media Theater, Reactor IV, Master Visual Identity, Automation Lab, Arcade Chamber, Workflow Desk, Project Hub, encrypted Token Foundry, all remaining utilities and GitHub Pages deployment paths remain intact.
+
+**Automatic release announcements** continue using the existing GitHub Actions encrypted Discord webhook secret. A new v3.4.0 changelog is used for the release embed after successful validation and actual website deployment.
+
+POWERED BY ZEVRO | PROXIMUS
+
 
 ## New Studio 32 — Life Command
 

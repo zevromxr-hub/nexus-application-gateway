@@ -75,14 +75,15 @@ export function initProjectHub(app){
     const restore=document.createElement('button');restore.className='small-btn';restore.textContent='↗ Restore';
     restore.addEventListener('click',wrap(async()=>{
      for(const item of project.items)app.addAsset(item.name,item.data,'Project Hub');
-     title.value=project.title;notes.value=project.notes;status.textContent='Restored '+project.items.length+' project assets into Packager.';
-     app.changeView('pack');
+     title.value=project.title;notes.value=project.notes;status.textContent='Restored '+project.items.length+' project assets into Collected Exports.';
+     app.changeView('projects');
+     const exportsPanel=$('projectCollectedExports');if(exportsPanel)exportsPanel.open=true;
     }));
     const del=document.createElement('button');del.className='small-btn';del.textContent='×';
     del.title='Delete saved project';del.addEventListener('click',wrap(async()=>{if(!confirm('Delete locally saved project '+project.title+'?'))return;await tx('readwrite',s=>s.delete(project.id));refreshProjects();}));
     row.append(details,restore,exportBtn,del);list.append(row);
    }
-   if(!projects.length)list.textContent='No saved projects yet. Save an Asset Packager snapshot or import a portable project ZIP.';
+   if(!projects.length)list.textContent='No saved projects yet. Save an Asset Collected Exports snapshot or import a portable project ZIP.';
    $('projectCount').textContent=projects.length+' saved projects';
   }catch(err){status.textContent='Project storage: '+err.message;}
  }
@@ -93,7 +94,7 @@ export function initProjectHub(app){
    const row=document.createElement('div');row.className='sovereign-project-row';
    const label=document.createElement('span');label.textContent=item.name+' · '+bytes(item.data.size);
    const send=document.createElement('select');send.setAttribute('aria-label','Send '+item.name+' to studio');
-   for(const [value,label] of [['','Send to…'],['reactor','Sovereign Reactor'],['reactorBg','Reactor Background'],['master','Master Thumbnails'],['image','Image Studio'],['icons','Icon Foundry'],['animation','Animation Forge'],['layers','Layer Forge'],['production','Production Lab'],['motion','Motion Lab'],['theater','Media Theater'],['capture','Capture Studio'],['automation','Automation Lab']]){
+   for(const [value,label] of [['','Send to…'],['reactor','Sovereign Reactor'],['reactorBg','Reactor Background'],['master','Master Thumbnails'],['animation','Animation Forge'],['theater','Media Theater'],['capture','Capture Studio'],['automation','Automation Lab']]){
     const option=document.createElement('option');option.value=value;option.textContent=label;send.append(option);
    }
    send.addEventListener('change',wrap(async()=>{
@@ -102,7 +103,7 @@ export function initProjectHub(app){
    }));
    row.append(label,send);assetList.append(row);
   }
-  if(!assets.length)assetList.textContent='Complete something in any studio and use Add to Pack to make it available here.';
+  if(!assets.length)assetList.textContent='Complete something in any studio and use Collect output to make it available here.';
  }
  function dashboard(){
   const shortcuts=$('projectShortcuts');shortcuts.replaceChildren();
@@ -125,9 +126,9 @@ export function initProjectHub(app){
  }
  async function snapshot(){
   const assets=app.listAssets();
-  if(!assets.length)throw Error('Add files to Asset Packager before saving a project.');
+  if(!assets.length)throw Error('Add files to Asset Collected Exports before saving a project.');
   const total=assets.reduce((s,a)=>s+a.data.size,0);
-  if(total>120000000)throw Error('Project snapshots are limited to 120 MB; export a smaller pack.');
+  if(total>120000000)throw Error('Project snapshots are limited to 120 MB; export a smaller collected exports.');
   const project={
    id:crypto.randomUUID?.()||Date.now()+'-'+Math.random(),title:safe(title.value||'My Project'),notes:notes.value.slice(0,6000),
    items:assets.map(x=>({name:x.name,studio:x.studio,data:x.data})),
@@ -139,7 +140,7 @@ export function initProjectHub(app){
  }
  $('projectSave').addEventListener('click',wrap(snapshot));
  $('projectExport').addEventListener('click',wrap(async()=>{
-  const assets=app.listAssets();if(!assets.length)throw Error('Add assets to Packager first.');
+  const assets=app.listAssets();if(!assets.length)throw Error('Add assets to Collected Exports first.');
   const zip=await zipProject(title.value||'My Project',assets,notes.value);
   download(zip,stem(title.value||'My Project')+'-PROXIMUS-PROJECT.zip');
   status.textContent='Portable project ZIP created · '+assets.length+' assets';

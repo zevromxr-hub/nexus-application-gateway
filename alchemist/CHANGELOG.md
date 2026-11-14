@@ -1,5 +1,28 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.4.0 — Adaptive Companion: Device Intelligence & Studio Cleanup (2026-11-13)
+
+### Six studios retired safely
+- Removed Image Studio, Asset Packager, Production Lab, Asset Audit, Layer Forge and Motion Graphics from active navigation, dashboard search and app initialization.
+- Confirmed no active feature imports the three legacy production modules; removed image-tools.js, pro-tools.js and creator-tools.js from the live GitHub source tree, with original code preserved in the v3.3.0 Git history.
+- The prior eight studio deprecations remain unchanged, leaving 18 focused companion spaces.
+- Existing personal projects, videos, browser collections and Token Foundry records are left untouched.
+
+### Shared Collected Exports retained in Project Hub
+- Relocated the collected ZIP export interface into expandable **Project Hub → Collected Exports**, keeping all saved output files, download controls, ZIP generation, tags and source routing.
+- Redirected old Packager links/bookmarks to Project Hub with the exports panel expanded.
+- Removed unused handoff destinations from Project Hub menus rather than navigating users to retired tools.
+
+### Device-aware iPhone and PC presentation
+- Added automatic detection based on viewport width, phone/touch capabilities and orientation changes; updates layout without reloading studio state.
+- Added user-accessible Layout dropdown: Automatic, Desktop/PC, Mobile/iPhone; overrides remain in this browser's preferences.
+- Desktop mode hides the iPhone bottom dock, including when the PC window is narrow. Mobile mode offers a touch-friendly dock and Studio Navigator even in landscape.
+- Added cross-device CSS overflow safeguards for top navigation actions, panels, media, small screens, safe areas and inputs. Included layout preferences in Sync Bridge and Recovery backups.
+
+### Preserved
+- Video Vault, Animation Forge, Media Theater, Life Command, Reactor IV, project library, themes, existing local storage, secure Token Foundry, prior release history, the unchanged GitHub gateway and the Discord release announcer.
+
+
 ## v3.3.0 — Cinematic Life Command (2026-11-13)
 
 ### New flagship: Life Command (Studio 32)
