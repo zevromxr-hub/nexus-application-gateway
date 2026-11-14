@@ -295,6 +295,7 @@ export function initSovereignReactor(app){
  });
 
  function releaseInput(){
+  if(current==='playlist'&&analyser)frequency=new Uint8Array(analyser.frequencyBinCount);
   audio.pause();
   audio.removeAttribute('src');audio.load();
   if(audioUrl){URL.revokeObjectURL(audioUrl);audioUrl=null;}
@@ -478,8 +479,9 @@ export function initSovereignReactor(app){
   const file=e.detail?.file;
   if(!file)return;
   if(document.documentElement.classList.contains('sonic-theater-integrated')){
+   document.dispatchEvent(new CustomEvent('proximus-sonic-enqueue',{detail:{file,play:false}}));
    app.changeView('reactor');
-   status('Sonic Theater already connects your playlist to Reactor. Use the shared Play controls.');
+   status('Sent '+safe(file.name)+' to the shared Sonic Theater queue. Use Play in the unified player.');
    return;
   }
   selectedAudio=file;
