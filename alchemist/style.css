@@ -735,3 +735,133 @@ body[data-identity-enabled="on"] .studio[data-identity-exempt="true"]{--accent:#
  .theater-ab-controls button{flex:1}
  .life-form input,.life-form textarea{font-size:16px}
 }
+
+
+/* PROXIMUS v3.4 — adaptive cross-device shell, usable on PC, tablet, iPhone
+   Interaction and viewport determine layout; CSS never changes personal data. */
+html,body{max-width:100%;overflow-x:clip}
+.shell,.content,.studio,.workspace,.workspace>*,
+.panel,.preview-panel,.section-heading,.command-top,.theater-stage{min-width:0;max-width:100%}
+.studio p,.studio h2,.studio h3,.studio label,.command-studio-info,
+.mobile-studio-open,.companion-links-panel,.project-collected-exports{
+ overflow-wrap:anywhere
+}
+.studio img,.studio video,.studio canvas,.studio svg{max-width:100%}
+.studio input,.studio textarea,.studio select{min-width:0;max-width:100%}
+.studio .workspace,.studio .two,.studio .three{min-width:0}
+.studio .panel{overflow-wrap:anywhere}
+.studio .buttons,.studio .theater-controls,.studio .video-vault-player-actions{
+ display:flex;flex-wrap:wrap;max-width:100%;min-width:0;gap:8px
+}
+.studio .buttons button,.studio .theater-controls button,
+.studio .video-vault-player-actions button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.layout-dialog{width:min(600px,calc(100vw - 24px));max-height:min(88dvh,820px);
+ overflow-y:auto;border:1px solid #8968b2;background:linear-gradient(135deg,#231835,#0c0a1b);
+ border-radius:15px;color:#efe0ff}
+.layout-dialog-body{padding:20px;max-width:100%}
+.layout-dialog .cmd-head{gap:10px;letter-spacing:1px}
+.layout-dialog #layoutStatus{padding:13px;border:1px solid #665088;border-radius:9px;
+ background:#17112b;color:#d7beff}
+.layout-dialog .small-btn,.layout-dialog button.primary{min-height:43px}
+.top-actions{min-width:0;flex-wrap:wrap;white-space:normal;justify-content:flex-end}
+.top-actions .tool-btn{flex:none;white-space:nowrap}
+.rail{min-height:0}
+.rail nav{min-width:0}
+.project-collected-exports{margin-top:21px;border:1px solid #674b88;border-radius:14px;
+ padding:14px;background:linear-gradient(120deg,#20182f,#0c0b1c)}
+.project-collected-exports>summary{cursor:pointer;padding:8px;color:#ead7ff;font-size:13px;
+ font-weight:800;line-height:1.5}
+.project-collected-exports .workspace{margin-top:12px}
+.project-collected-exports .panel{box-shadow:none}
+.project-collected-exports .section-heading{align-items:center;flex-wrap:wrap}
+.project-collected-exports .section-heading h2{font-size:21px}
+.project-collected-exports .file-row{flex-wrap:wrap;gap:7px}
+.project-collected-exports .file-row .name{flex:1 0 180px;white-space:normal}
+.project-collected-exports .file-row select{max-width:190px}
+@media(max-width:1180px){
+ .topbar{flex-wrap:wrap;align-items:center;min-height:64px;padding:10px 16px;gap:8px}
+ .crumb{min-width:0;overflow-wrap:anywhere}
+ .top-actions{width:100%;justify-content:flex-start}
+ .content{padding-left:20px;padding-right:20px}
+ .studio .workspace.image-grid,.studio .workspace.split{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:850px){
+ .shell{min-width:0}
+ .content{padding:14px}
+ .top-actions{gap:6px;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;
+  overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+ .top-actions .tool-btn{flex:0 0 auto;padding:9px 11px;font-size:11px}
+ .studio .two,.studio .three{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .section-heading{align-items:flex-start;flex-wrap:wrap}
+ .section-heading .subtitle{display:block;margin:4px 0;font-size:12px}
+ .command-top,.companion-hero-pulse{min-width:0}
+ .project-collected-exports .workspace{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:560px){
+ .content{padding:12px}
+ .welcome{padding:15px}
+ .studio .two,.studio .three{grid-template-columns:minmax(0,1fr)}
+ .studio .panel,.studio .preview-panel{padding:13px}
+ .command-grid,.video-vault-grid{grid-template-columns:minmax(0,1fr)}
+ .studio .video-vault-player-actions button{flex:1 1 125px;min-height:42px}
+ .studio .theater-controls button{flex:1 1 125px}
+ .life-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .layout-dialog-body{padding:14px}
+}
+/* Handheld mode can remain active in landscape when the screen is wider than
+   the legacy 760px breakpoint; it must not inherit desktop sidebar geometry. */
+body[data-device-layout="mobile"] .rail{position:relative;inset:auto;width:auto;height:auto;
+ overflow:visible;box-shadow:none;border-right:0}
+body[data-device-layout="mobile"] .rail nav{display:none}
+body[data-device-layout="mobile"] .rail-label,
+body[data-device-layout="mobile"] .rail-bottom{display:none}
+body[data-device-layout="mobile"] .rail .brand{padding:11px 16px}
+body[data-device-layout="mobile"] .shell{margin-left:0;min-height:0;width:100%}
+body[data-device-layout="mobile"] .content{max-width:860px;padding-bottom:calc(128px + env(safe-area-inset-bottom,0px))}
+body[data-device-layout="mobile"] .topbar{padding:9px 12px;min-height:52px}
+body[data-device-layout="mobile"] .crumb{display:none}
+body[data-device-layout="mobile"] .top-actions{width:100%;justify-content:flex-start;
+ flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+body[data-device-layout="mobile"] .top-actions .tool-btn{flex:0 0 auto}
+body[data-device-layout="mobile"] .workspace.image-grid,
+body[data-device-layout="mobile"] .workspace.split,
+body[data-device-layout="mobile"] .life-workspace,
+body[data-device-layout="mobile"] .companion-home-grid{grid-template-columns:minmax(0,1fr)}
+body[data-device-layout="mobile"] .preview-panel{position:static}
+body[data-device-layout="mobile"] .mobile-dock{display:flex;position:fixed;left:0;right:0;
+ bottom:0;z-index:70;background:#0d0a1bf5;backdrop-filter:blur(20px);
+ border-top:1px solid #705392;box-shadow:0 -14px 45px #000a;
+ justify-content:flex-start;overflow-x:auto;overscroll-behavior-x:contain;
+ padding:7px 5px calc(7px + env(safe-area-inset-bottom,0px));gap:3px}
+body[data-device-layout="mobile"] .mobile-dock button{flex:1 0 53px;min-width:53px;
+ min-height:50px;max-width:110px;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:2px;background:transparent;border:1px solid transparent;
+ border-radius:10px;color:#b7a5cb}
+body[data-device-layout="mobile"] .mobile-dock button.active{background:#47306d9c;
+ border-color:#9568c7;color:#fff}
+body[data-device-layout="mobile"] .mobile-dock button b{font-size:20px;line-height:1.1;color:#d8baff}
+body[data-device-layout="mobile"] .mobile-dock button small{font-size:9px}
+body[data-device-layout="mobile"] .mobile-studio-dialog{width:calc(100vw - 16px);
+ max-width:660px;max-height:85dvh}
+body[data-device-layout="mobile"] .companion-video-mini{bottom:calc(79px + env(safe-area-inset-bottom,0px))}
+/* Even at ≤760px a PC with keyboard/mouse keeps desktop navigation,
+   preventing accidental iPhone dock UI from appearing in a resized PC window. */
+body[data-device-layout="desktop"] .mobile-dock{display:none!important}
+body[data-device-layout="desktop"] .mobile-studio-dialog:not([open]){display:none}
+@media(max-width:760px){
+ body[data-device-layout="desktop"].mobile-navigation-ready .rail nav{
+  display:flex;flex-direction:row;overflow-x:auto;padding:5px 10px 10px;
+  -webkit-overflow-scrolling:touch
+ }
+ body[data-device-layout="desktop"].mobile-navigation-ready .nav{
+  flex:none;width:auto;padding:9px 11px;white-space:nowrap
+ }
+ body[data-device-layout="desktop"].mobile-navigation-ready .content{
+  padding-bottom:45px
+ }
+ body[data-device-layout="desktop"] .companion-video-mini{bottom:16px}
+}
+/* Touch controls should never be smaller than the iOS recommended target;
+   desktop mouse controls stay naturally compact. */
+body[data-device-input="touch"] button,
+body[data-device-input="touch"] .small-btn{touch-action:manipulation}
