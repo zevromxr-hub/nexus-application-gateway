@@ -71,6 +71,17 @@ export function classifyWebCinemaUrl(input){
 export const isWebCinemaVideo=kind=>['youtube','vimeo','official-video','direct'].includes(kind);
 function safeTitle(s){return clean(s).slice(0,120);}
 function safeCollection(s){return clean(s).slice(0,40)||'General';}
+function safeSource(row){
+ const mode=['embed','native','website'].includes(row?.playerMode)?row.playerMode:'auto';
+ if(mode==='website')return {playerMode:mode,playerUrl:''};
+ if(mode==='auto'||typeof row?.playerUrl!=='string')return {playerMode:'auto',playerUrl:''};
+ try{
+  const src=parseWebCinemaUrl(row.playerUrl);
+  if(src.protocol!=='https:'||src.hostname==='zevromxr-hub.github.io')
+   return {playerMode:'auto',playerUrl:''};
+  return {playerMode:mode,playerUrl:src.href};
+ }catch{return {playerMode:'auto',playerUrl:''};}
+}
 export function normalizeWebCinemaLibrary(raw=[]){
  if(!Array.isArray(raw))return [];
  const out=[],seen=new Set();
@@ -82,8 +93,9 @@ export function normalizeWebCinemaLibrary(raw=[]){
   const lastOpen=Number.isSafeInteger(row.lastOpen)&&row.lastOpen>0?row.lastOpen:0;
   const position=classified.kind==='direct'&&Number.isFinite(row.position)?Math.max(0,Math.min(432000,row.position)):0;
   const id=typeof row.id==='string'&&/^[\w-]{8,90}$/.test(row.id)?row.id:'web-'+added.toString(36)+'-'+out.length;
+  const playback=safeSource(row);
   out.push({id,url:classified.url,kind:classified.kind,title:safeTitle(row.title)||classified.label,
-   collection:safeCollection(row.collection),favorite:row.favorite===true,added,lastOpen,position});
+   collection:safeCollection(row.collection),favorite:row.favorite===true,added,lastOpen,position,...playback});
   if(out.length===WEB_CINEMA_LIMIT)break;
  }
  return out;
@@ -95,13 +107,13 @@ export function addWebCinemaLink(rows,url,title='',collection='General',now=Date
  if(items.length>=WEB_CINEMA_LIMIT)throw Error('Saved link library is full. Remove an old link before saving more.');
  const id='web-'+Math.trunc(now).toString(36)+'-'+(nonce||Math.random().toString(36).slice(2,11));
  const item={id,url:info.url,kind:info.kind,title:safeTitle(title)||info.label,
-  collection:safeCollection(collection),favorite:false,added:now,lastOpen:0,position:0};
+  collection:safeCollection(collection),favorite:false,added:now,lastOpen:0,position:0,playerMode:'auto',playerUrl:''};
  return {items:[item,...items],item,duplicate:false};
 }
 export function filterWebCinemaLibrary(rows,{search='',filter='all'}={}){
  const q=clean(search).toLowerCase();
  return normalizeWebCinemaLibrary(rows).filter(x=>
-  (filter==='all'||filter==='favorites'&&x.favorite||filter==='videos'&&isWebCinemaVideo(x.kind)||filter==='sites'&&!isWebCinemaVideo(x.kind))&&
+  (filter==='all'||filter==='favorites'&&x.favorite||filter==='videos'&&(isWebCinemaVideo(x.kind)||['embed','native'].includes(x.playerMode))||filter==='sites'&&!isWebCinemaVideo(x.kind)&&!['embed','native'].includes(x.playerMode))&&
   (!q||[x.title,x.collection,x.url].join(' ').toLowerCase().includes(q))
  ).sort((a,b)=>(b.lastOpen||b.added)-(a.lastOpen||a.added));
 }
