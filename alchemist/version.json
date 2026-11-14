@@ -1,23 +1,23 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "ORBIT Interface — Unified Access & Adaptive Redesign",
+  "subtitle": "Web Cinema Gateway — Embedded Viewing & Saved Video Links",
   "studio_count": 18,
-  "previous_version": "3.5.4",
+  "previous_version": "3.6.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Introduced ORBIT, a full site-wide interface redesign using modern midnight navy and soft aurora accents, consistent readable cards and controls, restrained motion, and a cleaner hierarchy across PC and iPhone",
-    "Reorganized the original desktop sidebar into collapsible purpose groups: Start, Entertainment, Create, Everyday, Workspace, Customize & Protect, and Information; all existing studio routes and legacy redirects remain intact",
-    "Added a universal quick-access bar visible in every workspace with the current studio, Find any tool, favorite pinned shortcuts, recently visited spaces, and one-tap Home navigation",
-    "Expanded the existing Ctrl/Cmd+K search into a category-aware launcher with immediate opening and one-tap pin/unpin controls, without creating a competing search interface or new studio",
-    "Unified favorites between the existing Companion Center studio cards, the mobile studio navigator, and the new global access bar; previous favorites are reused as initial shortcuts instead of discarded",
-    "Simplified the top bar by moving secondary existing actions into a More menu while preserving their original IDs and behavior, and added direct Sonic Theater access to the touch-friendly mobile dock",
-    "Removed the redundant global welcome hero from individual studio pages while retaining the complete home page, and collapsed advanced dashboard, catalog and scene controls behind accessible details rather than deleting features",
-    "Preserved the adaptive PC/iPhone layout override, saved video and music library, Play on Start, Reactor IV and Sonic Dimension worlds, mobile power profiles, original media/themes, encrypted Token Foundry, exports and existing offline/Discord release automation"
+    "Added the compact Web Cinema Gateway as one optional expandable section within the existing Video Vault, with no new studio or extra ORBIT navigation tab",
+    "Provided a safe in-site website viewer for HTTPS pages that allow embedding, with isolated iframe permissions, browser-level Back/Forward/Reload controls, fullscreen and an explicit Open Externally fallback",
+    "Added compatible online video playback using official YouTube privacy-enhanced and Vimeo embed players, plus native direct MP4, WebM, MOV and HLS links where the current browser supports the source and codec",
+    "Recognizes unsupported or restricted providers and HTTP pages with a clear external-opening option instead of bypassing embed permissions, authentication, DRM, platform restrictions or browser security",
+    "Added a browser-local library of up to 180 saved video and website URLs with titles, editable collections, favorites, search, replay, recently opened sorting and no automatic external requests on site startup",
+    "Remembers direct-file video playback position when a link is saved; third-party providers retain their own player behavior and may not support independent resume controls",
+    "Included explicitly initiated JSON import/export and opted-in settings backup portability for saved link metadata, without copying, downloading or storing remote video files",
+    "Optimized iPhone and PC layouts to keep the Gateway collapsed by default, unload third-party embeds when leaving or closing it, and preserve all existing Video Vault, Sonic Theater and release automation features"
   ]
 }
