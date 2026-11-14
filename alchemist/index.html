@@ -575,6 +575,15 @@
    <button class="arcade-tab" data-game="pulse">⚡ Pulse Reflex</button>
    <button class="arcade-tab" data-game="memory">◇ Memory Matrix</button>
   </div>
+
+  <div class="arcade-daily-panel" aria-label="Arcade Nexus rotating daily challenge">
+   <div class="arcade-daily-heading"><div><span class="eyebrow">ARCADE NEXUS · DAILY CHALLENGE</span><h3 id="arcadeDailyTitle">Preparing today's mission…</h3></div><span class="arcade-daily-badge">LOCAL PROGRESS</span></div>
+   <p id="arcadeDailyGoal" class="hint">Complete a daily mission in one of your existing arcade games.</p>
+   <progress id="arcadeDailyProgress" max="100" value="0" aria-label="Daily challenge completion"></progress>
+   <div class="arcade-daily-meta"><strong id="arcadeDailyScore">BEST TODAY 0</strong><span id="arcadeDailyStreak">Completed 0 · Current streak 0 days</span></div>
+   <div class="arcade-actions"><button id="arcadeDailyPlay" class="primary" type="button">▶ Play today's challenge</button><button id="arcadeDailyExport" class="small-btn" type="button">↓ Export daily progress</button></div>
+   <p class="hint">A new mission rotates each day. Progress is kept privately in this browser and requires a finished run. Your existing high scores are never reset.</p>
+  </div>
   <p id="arcadeBest" class="arcade-highscores">BEST — COMET 0 · PULSE 0 · MEMORY 0</p>
   <div class="arcade-game" data-game="comet">
    <h3>COMET CATCH</h3><p class="hint">Collect falling violet and gold comets. Dodge crimson hazards. Score as much as possible in 45 seconds.</p>
