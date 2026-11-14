@@ -23,7 +23,7 @@ let data=blank();
 function valid(x){return x&&typeof x==='object'&&!Array.isArray(x)&&['characters','builds','tasks','collections'].every(k=>Array.isArray(x[k])&&x[k].length<=5000)&&['characters','builds','tasks','collections'].every(k=>x[k].every(v=>v&&typeof v==='object'&&!Array.isArray(v)))}
 try{const x=JSON.parse(localStorage.getItem(KEY)||'null');if(valid(x))data=x;}catch(e){}
 const $=s=>document.querySelector(s);const byId=id=>document.getElementById(id);
-const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>globalThis.crypto&&crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random().toString(36).slice(2);
 const cls=['Death Knight','Demon Hunter','Druid','Evoker','Hunter','Mage','Monk','Paladin','Priest','Rogue','Shaman','Warlock','Warrior'];
 byId('charClass').innerHTML=cls.map(c=>'<option>'+esc(c)+'</option>').join('');
