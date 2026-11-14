@@ -7,6 +7,8 @@ import {encodeGif} from './gif-codec.js';
 import {parseGifFrames,createGifFrameRenderer} from './gif-reader.js';
 import {REACTOR_THEMES,spectralBands,initialBeatState,detectBeat,normalizeReactorPreset,reactorDimensions,nextReactorScene} from './reactor-dsp.js';
 import {REACTOR_IV_PRESETS,normalizeEffectSettings,effectLevels,nextSceneInOrder,pulseDecay,transitionProgress} from './reactor-iv.js';
+import {SONIC_KEY,SONIC_SCHEMA,normalizeSonic,sonicWorld,nextSonicWorld,sonicBackup,readSonicBackup,drawSonicDimension,shouldCycleSonic} from './sonic-dimension.js';
+import {OVERDRIVE_KEY,normalizeOverdriveSettings,currentScene} from './overdrive-core.js';
 
 const SETTINGS='proximus-reactor-settings-v1',DB='proximus-reactor-media-v1';
 const MAX_BACKDROP=55000000,MAX_AUDIO=250000000;
@@ -60,6 +62,15 @@ export function initSovereignReactor(app){
  let overlayURL=null,overlayReady=false,gifOverlay=null;
  let runtimeMode='sovereign',nextSceneAt=0,history=[],lastHistory=0,sceneChangedAt=-10000;
  let fxSettings=normalizeEffectSettings(),identityColors=null;
+ let sonicSettings=normalizeSonic(),linkedColor=null,sonicBeatPhase=0,sonicCycleAt=performance.now(),sonicCycleBeats=0;
+ try{sonicSettings=normalizeSonic(JSON.parse(localStorage.getItem(SONIC_KEY)||'{}'));}catch(e){}
+ function updateLinkedColor(){
+  try{linkedColor=currentScene(normalizeOverdriveSettings(JSON.parse(localStorage.getItem(OVERDRIVE_KEY)||'{}'))).color;}
+  catch(e){linkedColor=null;}
+ }
+ updateLinkedColor();
+ document.addEventListener('proximus-overdrive-scene-changed',updateLinkedColor);
+ window.addEventListener('storage',e=>{if(e.key===OVERDRIVE_KEY)updateLinkedColor();});
  let sampleStart=0,sampleFrames=0,measuredFPS=0;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
  let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
@@ -99,6 +110,7 @@ export function initSovereignReactor(app){
   $('reactorOverlayOpacity').value=String(v.overlayOpacity);
   $('reactorOverlayBlend').value=v.overlayBlend;
   if(p?.fx){fxSettings=normalizeEffectSettings(p.fx);drawFxControls();}
+  if(p?.sonic){sonicSettings=normalizeSonic(p.sonic);drawSonicControls();saveSonicSettings();}
   runtimeMode=v.mode;nextSceneAt=performance.now()+v.cycleSeconds*1000;
   resize();drawStage(performance.now());updateReadouts();
  }
@@ -138,6 +150,79 @@ export function initSovereignReactor(app){
   drawFxControls();
  }catch(e){}
  resize();updateReadouts();
+
+ // Sonic Dimension v3.5.1: separate local preferences; legacy Reactor presets remain valid.
+ function saveSonicSettings(){
+  try{localStorage.setItem(SONIC_KEY,JSON.stringify(sonicSettings));}
+  catch(e){$('reactorDimensionStatus').textContent='Settings applied, but this browser could not save them. Export a JSON backup.';}
+ }
+ function drawSonicControls(){
+  $('reactorDimensionEnabled').checked=sonicSettings.enabled;
+  $('reactorDimensionWorld').value=sonicSettings.world;
+  $('reactorDimensionIntensity').value=String(sonicSettings.intensity);
+  $('reactorDimensionIntensityOut').textContent=sonicSettings.intensity+'%';
+  $('reactorDimensionAuto').checked=sonicSettings.autoCycle;
+  $('reactorDimensionLink').checked=sonicSettings.linkedScene;
+  $('reactorDimensionColors').checked=sonicSettings.beatColors;
+  $('reactorDimensionNow').textContent=sonicSettings.enabled?sonicWorld(sonicSettings.world).name:'Reactor IV Classic';
+ }
+ function reportSonic(message,error=false){
+  const line=$('reactorDimensionStatus');line.textContent=message;line.dataset.error=error?'true':'false';
+ }
+ function activateSonic(patch,message){
+  sonicSettings=normalizeSonic({...sonicSettings,...patch});
+  sonicCycleAt=performance.now();sonicCycleBeats=state.kicks;
+  drawSonicControls();saveSonicSettings();drawStage(performance.now());
+  if(message)reportSonic(message);
+ }
+ $('reactorDimensionJump').addEventListener('click',()=>{
+  $('sonicDimensionControls').scrollIntoView({behavior:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'auto':'smooth',block:'start'});
+  $('reactorDimensionWorld').focus({preventScroll:true});
+ });
+ $('reactorDimensionEnabled').addEventListener('change',e=>{
+  activateSonic({enabled:e.currentTarget.checked},e.currentTarget.checked?'Sonic Dimension activated. Select a local song to see real audio reactions.':'Returned to the complete original Reactor IV visualizer.');
+ });
+ $('reactorDimensionWorld').addEventListener('change',e=>{
+  const world=e.currentTarget.value;
+  activateSonic({enabled:true,world},'Now exploring '+sonicWorld(world).name+'.');
+ });
+ $('reactorDimensionIntensity').addEventListener('input',e=>{
+  sonicSettings=normalizeSonic({...sonicSettings,intensity:Number(e.currentTarget.value)});
+  $('reactorDimensionIntensityOut').textContent=sonicSettings.intensity+'%';
+  drawStage(performance.now());
+ });
+ $('reactorDimensionIntensity').addEventListener('change',()=>{saveSonicSettings();reportSonic('Reactive intensity saved at '+sonicSettings.intensity+'%.');});
+ $('reactorDimensionAuto').addEventListener('change',e=>activateSonic({autoCycle:e.currentTarget.checked},e.currentTarget.checked?'Adaptive world progression enabled: 8 beats with a 12-second cooldown.':'World progression disabled.'));
+ $('reactorDimensionLink').addEventListener('change',e=>{
+  updateLinkedColor();
+  activateSonic({linkedScene:e.currentTarget.checked},e.currentTarget.checked?'Sonic Dimension linked to the Entertainment Overdrive scene color.':'World palettes restored.');
+ });
+ $('reactorDimensionColors').addEventListener('change',e=>activateSonic({beatColors:e.currentTarget.checked},e.currentTarget.checked?'Color shifts enabled for real detected beats.':'Color shifts disabled.'));
+ $('reactorDimensionNext').addEventListener('click',()=>{
+  const world=nextSonicWorld(sonicSettings.world);
+  activateSonic({enabled:true,world},'Opened '+sonicWorld(world).name+'.');
+ });
+ $('reactorDimensionReset').addEventListener('click',()=>activateSonic(normalizeSonic({}),'Restored Sonic Dimension defaults. Reactor IV preferences remain unchanged.'));
+ $('reactorDimensionExport').addEventListener('click',wrap(async()=>{
+  const doc=textFile(sonicBackup(sonicSettings));
+  await saveOrShare(doc,'PROXIMUS-SONIC-DIMENSION-PRESET.json');
+  reportSonic('Dimension settings exported. Songs, media and sensitive data are not included.');
+ }));
+ $('reactorDimensionImport').addEventListener('change',wrap(async e=>{
+  const file=e.target.files?.[0];
+  if(!file)return;
+  try{
+   if(file.size>80000)throw Error('Dimension backup is too large (80 KB max).');
+   const value=readSonicBackup(JSON.parse(await file.text()));
+   activateSonic(value,'Imported Sonic Dimension preferences from '+safe(file.name)+'.');
+  }finally{e.target.value='';}
+ }));
+ $('reactorDimensionPack').addEventListener('click',wrap(()=>{
+  app.addAsset('PROXIMUS-SONIC-DIMENSION-PRESET.json',textFile(sonicBackup(sonicSettings)),'Sonic Dimension');
+  reportSonic('Sonic Dimension preset added to Project Hub → Collected Exports.');
+ }));
+ drawSonicControls();
+ reportSonic(sonicSettings.enabled?'Sonic Dimension ready · '+sonicWorld(sonicSettings.world).name+' · real audio needed for reactive visuals.':'Original Reactor IV is active. Enable Sonic Dimension for five living music worlds.');
 
  // Reactor IV: route actual band energy into independently adjustable effects.
  const fxSliders={sub:'reactorFxSub',bass:'reactorFxBass',mid:'reactorFxMid',
@@ -517,6 +602,16 @@ export function initSovereignReactor(app){
   ctx.fillStyle=aura;ctx.fillRect(0,0,w,h);
   // Render bounds are normalized to stage size; no per-frame image allocations.
   const cx=w*.5,cy=h*.5,scale=w/960,t=now/1000;
+  if(sonicSettings.enabled){
+   drawSonicDimension(ctx,{
+    world:sonicSettings.world,now,width:w,height:h,bands:b,lastKick:lastPulse,
+    intensity:sonicSettings.intensity,quality:o.quality,
+    active:current!=='off'&&!!analyser&&audioContext?.state==='running',
+    reducedMotion:window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches===true,
+    colorOverride:sonicSettings.linkedScene?linkedColor:null,
+    beatShift:sonicBeatPhase,beatColors:sonicSettings.beatColors,customBackdrop:custom
+   });
+  }else{
   if(sceneMode==='spectrum'||sceneMode==='sovereign'||sceneMode==='starlight'){
    const bars=o.quality==='eco'?42:70;
    const gap=Math.max(2,Math.round(w*.003)),bw=(w*.88-(bars-1)*gap)/bars;
@@ -617,6 +712,7 @@ export function initSovereignReactor(app){
    }
    ctx.restore();
   }
+  }
   const transition=transitionProgress(now,sceneChangedAt,640);
   if(transition<1){
    const level=(1-transition);
@@ -639,7 +735,7 @@ export function initSovereignReactor(app){
   }
   const font=Math.max(14,18*scale);
   ctx.fillStyle=color(glow,.9);ctx.textAlign='left';ctx.font='800 '+font+'px system-ui';
-  ctx.fillText('PROXIMUS  |  SOVEREIGN REACTOR',24*scale,36*scale);
+  ctx.fillText(sonicSettings.enabled?'PROXIMUS  |  SONIC DIMENSION':'PROXIMUS  |  SOVEREIGN REACTOR',24*scale,36*scale);
   ctx.fillStyle=color(primary,.8);ctx.font='700 '+Math.max(11,13*scale)+'px system-ui';
   ctx.fillText(current==='off'?'VISUAL AMBIENCE · SOURCE NOT CONNECTED':inputText[current].toUpperCase(),24*scale,57*scale);
   if(o.showSignature){
@@ -687,7 +783,7 @@ export function initSovereignReactor(app){
    bands=spectralBands(frequency,audioContext.sampleRate,analyser.fftSize);
    state=detectBeat(bands,now,state,o.sensitivity);
    if(state.hit){
-    lastPulse=now;if(o.autoShift)shift++;
+    lastPulse=now;sonicBeatPhase++;if(o.autoShift)shift++;
     if(fxSettings.beatSceneChange&&now-sceneChangedAt>1300){
      runtimeMode=nextSceneInOrder(runtimeMode,fxSettings.sceneOrder);
      sceneChangedAt=now;
@@ -696,6 +792,12 @@ export function initSovereignReactor(app){
    }
    frequencySmooth=frequencySmooth*.85+bands.energy*.15;
   }else bands={sub:0,bass:0,mid:0,treble:0,energy:0};
+  if(shouldCycleSonic({autoCycle:sonicSettings.autoCycle,active:sonicSettings.enabled&&current!=='off'&&!!analyser&&audioContext?.state==='running',
+     beats:state.kicks,previousBeats:sonicCycleBeats,now,lastChangeAt:sonicCycleAt})){
+    sonicSettings=normalizeSonic({...sonicSettings,world:nextSonicWorld(sonicSettings.world)});
+    sonicCycleBeats=state.kicks;sonicCycleAt=now;drawSonicControls();saveSonicSettings();
+    reportSonic('Sonic Dimension evolved into '+sonicWorld(sonicSettings.world).name+' after 8 measured beats.');
+   }
   if(now-lastHistory>125){
    history.push({bass:bands.bass,mid:bands.mid,treble:bands.treble,beat:state.hit});
    if(history.length>120)history.shift();
@@ -713,7 +815,7 @@ export function initSovereignReactor(app){
  }));
  async function exportFrame(kind){
   drawStage(performance.now());
-  const blob=await blobCanvas(canvas,'image/png'),name='PROXIMUS-REACTOR-'+stem(options().mode)+'.png';
+  const blob=await blobCanvas(canvas,'image/png'),name='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world.toUpperCase():'REACTOR-'+stem(options().mode))+'.png';
   if(kind==='pack')app.addAsset(name,blob,'Sovereign Reactor');
   else if(kind==='share')await saveOrShare(blob,name);
   else download(blob,name);
@@ -741,7 +843,7 @@ export function initSovereignReactor(app){
     await pause(duration/count);
    }
    const blob=encodeGif({width:384,height:216,frames,dither:true});
-   loopBlob=blob;loopName='PROXIMUS-REACTOR-'+options().mode+'-LIVE.gif';
+   loopBlob=blob;loopName='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world:'REACTOR-'+options().mode)+'-LIVE.gif';
    $('reactorSaveGif').hidden=false;$('reactorGifPack').hidden=false;
    download(blob,loopName);
    exportStatus('Animated GIF ready · 384×216 · 24 frames · '+bytes(blob.size));
@@ -789,7 +891,7 @@ export function initSovereignReactor(app){
    if(!recordChunks.length)throw Error('No video frames were recorded.');
    const blob=new Blob(recordChunks,{type:recorder.mimeType||mediaType});
    recordBlob=blob;const ext=blob.type.includes('mp4')?'mp4':'webm';
-   recordName='PROXIMUS-REACTOR-'+options().mode+'-'+duration+'s.'+ext;
+   recordName='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world:'REACTOR-'+options().mode)+'-'+duration+'s.'+ext;
    $('reactorSaveRecord').hidden=false;$('reactorRecordPack').hidden=false;
    $('reactorRecordingStatus').textContent='Silent visualizer recording ready · '+bytes(blob.size);
   }finally{
@@ -821,7 +923,7 @@ export function initSovereignReactor(app){
  $('reactorPresetSave').addEventListener('click',wrap(()=>{
   const name=safe($('reactorPresetName').value.trim()).slice(0,55);
   if(!name||name==='asset')throw Error('Name your Reactor preset.');
-  presets[name]={...options(),fx:{...fxSettings}};if(Object.keys(presets).length>24)throw Error('Keep no more than 24 saved presets.');
+  presets[name]={...options(),fx:{...fxSettings},sonic:{...sonicSettings}};if(Object.keys(presets).length>24)throw Error('Keep no more than 24 saved presets.');
   saveSettings();presetOptions();status('Saved appearance preset '+name);
  }));
  $('reactorPresetExport').addEventListener('click',()=>{
@@ -832,7 +934,12 @@ export function initSovereignReactor(app){
   if(file.size>150000)throw Error('Reactor preset backup is too large.');
   const input=JSON.parse(await file.text());
   if(input.schema!=='proximus.reactor.presets/1'||typeof input.presets!=='object'||Array.isArray(input.presets))throw Error('This is not a Reactor preset backup.');
-  for(const [key,val] of Object.entries(input.presets).slice(0,24))presets[safe(key).slice(0,55)]=normalizeReactorPreset(val);
+  for(const [key,val] of Object.entries(input.presets).slice(0,24)){
+   const normalized=normalizeReactorPreset(val);
+   presets[safe(key).slice(0,55)]={...normalized,
+    ...(val?.fx?{fx:normalizeEffectSettings(val.fx)}:{}),
+    ...(val?.sonic?{sonic:normalizeSonic(val.sonic)}:{})};
+  }
   saveSettings();presetOptions();e.target.value='';status('Reactor presets imported.');
  }));
  $('reactorPresetPack').addEventListener('click',()=>{
