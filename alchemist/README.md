@@ -1,3 +1,50 @@
+# PROXIMUS | ASSET ALCHEMIST v3.6.3
+**WEB CINEMA EMBED FIRST — PLAYER SOURCE OPTIONS & PERSISTENT WATCH-LATER LINKS**
+
+Website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## What's new
+This update brings the original PROXIMUS "Embed First" approach to the compact Web Cinema Gateway. Existing Video Vault controls and ORBIT tabs remain unchanged. No additional studio is added.
+
+### Open a website or video using its actual player source
+1. In **Video Vault → Web Cinema Gateway**, paste the original watch-page address as usual.
+2. If the full page does not play on iPhone, open **Player source · Embed First / Native video**.
+3. For a provider that supplies it, use the official **Share → Embed** iframe snippet (or official HTTPS embedded-player address). Paste into **Official embed code or video source address**, then select **Apply & Open player**. The Gateway extracts *only* its validated HTTPS \`src\` URL; it never executes the pasted HTML.
+4. For a true direct media URL with or without a file extension, choose **Native video** and paste that address. Safari can play certain compatible MP4/MOV/HLS sources inline if the hosting server and browser allow it.
+5. If the page itself is embeddable and you want to browse it, use **Website preview**. **Smart** remains the default and recognizes previously supported links.
+6. Tap **Save for later**. The bookmark keeps both your original URL and the chosen official player/native source. Reopen the entry with **Watch** to use the saved method automatically.
+
+A saved source can also be changed later by opening the saved link, adjusting the collapsed Player source settings, and tapping Apply & Open. **Reset to automatic** returns the entry to original smart link handling without deleting the bookmark.
+
+### Player-source behavior
+- **Smart**: choose supported official provider players, recognized direct media, or an eligible website frame.
+- **Official embed**: use the actual validated embed address from the website's publisher. Best for web pages that cannot themselves be embedded but offer a separate sanctioned video player.
+- **Native video**: send an authorized HTTPS file/stream address directly to Safari's HTML video element, with \`playsinline\`, platform-native controls and preserved direct-video position where supported. A signed link must still be valid and serve actual video bytes. A webpage address cannot be turned into video just by selecting Native.
+- **Website preview**: show an HTTPS webpage within the existing isolated frame when the website permits it.
+
+### Safety, reliability and compatibility
+- Only recognized \`<iframe>\`, \`<video>\` and \`<source>\` snippet formats have their URL extracted. Arbitrary markup, JavaScript and injected HTML are never executed or retained.
+- Every player URL is validated against the existing web-address rules; PROXIMUS-origin embed sources, local network addresses, embedded credentials and unsafe protocols are rejected.
+- External frames still operate under browser origin isolation and a restrictive sandbox; scripts in pasted source text cannot run inside the PROXIMUS page.
+- The original link and its query parameters are preserved in the saved library, and sensitive access parameters are masked in the list display. JSON exports still contain the full addresses necessary to restore links, so do not share private link backups publicly.
+- This is **not an embedded-page bypass**: if a provider blocks iframe embeds with its CSP / X-Frame-Options, requires a first-party login, disallows the specific content for embedding or uses a protected stream, there is no guarantee Safari can play it inside another website. PROXIMUS cannot override those restrictions or extract a private media source from a remote page. No new proxy, downloader or external server was introduced.
+- Existing saved Web Cinema links and collection metadata stay in the same localStorage key; missing source fields default to Smart automatically. No destructive schema migration.
+- The v3.6.2 Compatible/Restricted iframe modes remain available, alongside the previous YouTube/Vimeo adapters and eligible supported share players.
+
+### What has *not* changed
+All existing local Video Vault files, thumbnails, saved playback positions, opaque video-player surface, Sonic Theater music and Play on Start, iPhone Mobile Power Guard, original Reactor modes, ORBIT favorites, privacy settings, Token Foundry, other 18 studios, and earlier rollback manifests remain unchanged. The existing GitHub Pages deployment and direct Discord release announcement workflow are preserved.
+
+### Suggested acceptance test
+- On iPhone, first test a provider's **actual Embed code** (not just its watch-page URL).
+- Test a direct HTTPS MP4 or other Safari-supported media source using Native video.
+- Save both configurations, reload the website and reopen them from Saved links.
+- Confirm existing Video Vault films, music playlists and all original controls continue functioning.
+- If the same provider blocks even its official iframe on iPhone, record the provider name and observed message, not a private access key, for a targeted compatibility investigation.
+
+POWERED BY ZEVRO | PROXIMUS
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.6.2
 **WEB CINEMA GATEWAY — iPHONE PLAYER COMPATIBILITY & EMBED RELIABILITY**
 
