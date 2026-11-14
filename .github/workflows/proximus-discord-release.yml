@@ -1,0 +1,61 @@
+name: PROXIMUS — Discord Release Announcer
+
+# Only announce validated release version changes on the main branch.
+# Pull requests, ordinary commits and a failed release check never post.
+on:
+  workflow_run:
+    workflows:
+      - Proximus Asset Alchemist — Release Validation
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Preview or manually send the current verified release
+        type: choice
+        required: true
+        default: dry-run
+        options:
+          - dry-run
+          - send-current
+
+permissions:
+  contents: read
+
+concurrency:
+  group: proximus-discord-announcer-\${{ github.event.workflow_run.head_sha || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    name: Validate release and notify Discord
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out validated release commit
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 2
+
+      - name: Prepare Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test Discord release announcement payload and secret handling
+        run: node alchemist/tests/release-announcer.mjs
+
+      - name: Announce verified release or show safe preview
+        env:
+          DISCORD_RELEASE_WEBHOOK: \${{ secrets.DISCORD_RELEASE_WEBHOOK }}
+          ANNOUNCEMENT_MODE: \${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'send-on-release' }}
+        run: node alchemist/scripts/release-announcer.mjs "$ANNOUNCEMENT_MODE"
