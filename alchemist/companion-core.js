@@ -2,16 +2,18 @@
 // Deprecated studios are not mounted. Source and user-created data stay available
 // via the immutable previous v3.1 release and repository history.
 export const RETIRED_STUDIOS=Object.freeze({
+ image:'Image Studio',pack:'Asset Packager',production:'Production Lab',
+ audit:'Asset Audit',layers:'Layer Forge',motiongraphics:'Motion Graphics',
  batch:'Batch Forge',icons:'Icon Foundry',sprites:'Sprite Atlas',textures:'Texture Lab',
  palette:'Color Lab',audio:'Audio Forge',motion:'Motion Lab',model:'3D Inspector'
 });
-export const ACTIVE_STUDIOS=24;
+export const ACTIVE_STUDIOS=18;
 export const COMPANION_LINKS='proximus-companion-links-v1';
 export const COMPANION_GROUPS={
- entertainment:{label:'Entertainment',items:['videos','theater','reactor','animation','arcade']},
+ entertainment:{label:'Entertainment',items:['videos','theater','reactor','arcade']},
  everyday:{label:'Everyday useful',items:['life','workflow','utility','documents','qr','capture','automation','sync','projects']},
- creative:{label:'Creative tools',items:['image','production','layers','motiongraphics','identity','pack']},
- manage:{label:'Manage & protect',items:['command','audit','tokens','recovery','releases','creator']}
+ creative:{label:'Creative tools',items:['animation','identity']},
+ manage:{label:'Manage & protect',items:['command','tokens','recovery','releases','creator']}
 };
 export function activeStudioList(studios){
  return (studios||[]).filter(s=>s&&typeof s.id==='string'&&!Object.hasOwn(RETIRED_STUDIOS,s.id));
