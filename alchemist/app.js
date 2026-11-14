@@ -280,7 +280,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.3';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.4';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -307,7 +307,7 @@ function launch(){
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Web Cinema Embed First v3.6.3 is ready. External websites and saved links are available inside Video Vault; all existing media remains intact.');
+ notice('PROXIMUS Video Vault Ultra Import v3.6.4 is ready. External websites and saved links are available inside Video Vault; all existing media remains intact.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
