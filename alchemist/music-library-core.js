@@ -44,9 +44,21 @@ async function inStore(mode,transaction){
 export async function listMusic(){
  const db=await openMusicDB();
  try{return await new Promise((resolve,reject)=>{
-  const tx=db.transaction(MUSIC_STORE,'readonly'),request=tx.objectStore(MUSIC_STORE).getAll();
-  request.onsuccess=()=>resolve(request.result||[]);
+  const tx=db.transaction(MUSIC_STORE,'readonly'),request=tx.objectStore(MUSIC_STORE).openCursor(),results=[];
+  request.onsuccess=()=>{
+   const cursor=request.result;
+   if(cursor){try{results.push(sanitizeSavedTrack(cursor.value));}catch{}cursor.continue();}
+   else resolve(results);
+  };
   request.onerror=()=>reject(Error('Could not load saved music.'));
+ });}finally{db.close();}
+}
+export async function loadMusic(id){
+ const db=await openMusicDB();
+ try{return await new Promise((resolve,reject)=>{
+  const tx=db.transaction(MUSIC_STORE,'readonly'),request=tx.objectStore(MUSIC_STORE).get(id);
+  request.onsuccess=()=>resolve(request.result||null);
+  request.onerror=()=>reject(Error('Could not load this saved track.'));
  });}finally{db.close();}
 }
 export async function saveMusic(file){
