@@ -440,7 +440,7 @@
    <label class="upload"><input id="theaterFiles" type="file" accept="audio/*,video/*,image/gif,image/png,image/jpeg,image/webp,.m4a,.mov" multiple><b>＋ ADD MUSIC, VIDEOS OR GIFS</b><span>Your files stay on this device · 80 queue items max</span></label>
    <p class="hint">Create a listening or cinema session from local files. Playback continues while you browse other studios.</p>
    <div class="theater-controls">
-    <button id="theaterPrev" class="small-btn">⏮ Previous</button><button id="theaterPlay" class="primary">▶ Play</button><button id="theaterNext" class="small-btn">Next ⏭</button>
+    <button id="theaterPrev" class="small-btn">⏮ Previous</button><button id="theaterPlay" class="primary">▶ Play</button><button id="theaterNext" class="small-btn">Next ⏭</button><button id="theaterSkipBack" class="small-btn">↶ 10s</button><button id="theaterSkipForward" class="small-btn">30s ↷</button>
    </div>
    <div class="two"><label>Playback speed<select id="theaterSpeed"><option value=".75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label><label>Loop mode<select id="theaterLoop"><option value="off">Stop at playlist end</option><option value="all">Repeat playlist</option><option value="one">Repeat current track</option></select></label></div>
    <div class="checks"><label><input type="checkbox" id="theaterShuffle"> Shuffle tracks</label></div>
@@ -457,6 +457,7 @@
     <img id="theaterImage" class="theater-source" alt="Local GIF or image preview" hidden>
     <div class="theater-logo" aria-hidden="true">✦ PROXIMUS THEATER</div>
    </div>
+   <div class="theater-ab-controls"><div><strong>AB LOOP · FAVORITE MOMENTS</strong><p class="hint" id="theaterABStatus">Choose A and B in the current audio/video to loop a section.</p></div><button id="theaterMarkA" class="small-btn">A · Start</button><button id="theaterMarkB" class="small-btn">B · End</button><button id="theaterResetAB" class="small-btn">Clear loop</button></div>
    <div class="theater-controls"><button id="theaterFullscreen" class="small-btn">⛶ Cinema mode</button><button id="theaterCapture" class="small-btn">↓ Frame PNG</button><button id="theaterPosterPack" class="small-btn">＋ Poster to Pack</button></div>
    <h3>Audio-reactive visualizer</h3>
    <div class="two"><label>Mode<select id="theaterVisualizerMode"><option value="bars">Neon bars</option><option value="wave">Waveform</option><option value="rings">Resonance rings</option><option value="stars">Nebula stars</option><option value="tunnel">Energy tunnel</option></select></label><label>Palette<select id="theaterTheme"><option value="violet">Imperial violet</option><option value="cyan">Nebula cyan</option><option value="gold">Solar gold</option><option value="ember">Crimson ember</option><option value="emerald">Emerald realm</option></select></label></div>
