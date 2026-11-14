@@ -1,0 +1,45 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.5.2",
+  "release_date": "2026-11-13",
+  "title": "Cinema Clarity, Offline Music Library & Arcade Daily",
+  "subtitle": "Cinema Clarity, Offline Music Library & Arcade Daily",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Fixed Video Vault playback clarity by enforcing a fully opaque black stage and isolated video compositor, preventing the personalized website background and glass effects from showing through the player",
+    "Kept Cinema Atmosphere Sync around the outside of the Vault player rather than overlaying video pixels; added original-frame / fill-and-crop presentation and a focused single-player layout",
+    "Added a genuine browser-local Saved Music Library inside Media Theater, allowing visitors to save imported audio, restore stored songs into the listening queue on return, and remove saved copies without deleting original files",
+    "Introduced Media Theater wide-screen layout and frame-fit controls while preserving existing playlists, original playback, visualizers, A–B loops and media-to-Reactor handoff",
+    "Expanded Animation Forge with rapid three-, five- and eight-second GIF clip windows from the loaded video playhead, preserving advanced export settings and memory preflight",
+    "Added an Arcade Nexus daily challenge and streak tracker across the three existing playable games, without resetting past scores or restoring retired studios",
+    "Retained 18 active spaces, PC/iPhone adaptive layouts, user media privacy and browser-local storage, with updated settings backups, regression tests and rollbacks",
+    "Preserved the existing GitHub Pages deployment and direct GitHub-to-Discord release announcement automation without switching to BotGhost"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Video Vault",
+    "Media Theater",
+    "Animation Forge",
+    "Arcade Chamber",
+    "Recovery Center",
+    "Sync Bridge",
+    "Entertainment Overdrive"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
