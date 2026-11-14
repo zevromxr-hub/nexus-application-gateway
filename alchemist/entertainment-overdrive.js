@@ -6,6 +6,7 @@ import {OVERDRIVE_KEY,BUILTIN_SCENES,normalizeOverdriveSettings,currentScene,exp
 export function initEntertainmentOverdrive(app){
  const hub=$('overdriveHub'),select=$('overdriveScene'),name=$('overdriveSceneName');
  const ambient=$('overdriveAtmosphere'),glow=$('overdriveGlow'),quality=$('overdriveQuality');
+ const customColor=$('overdriveColor');
  const status=$('overdriveStatus'),cinemaStatus=$('overdriveCinemaStatus');
  if(!hub||!select||!ambient||!glow||!quality)return;
  const vaultVideo=$('videoVaultPlayer'),theaterVideo=$('theaterVideo');
@@ -57,7 +58,7 @@ export function initEntertainmentOverdrive(app){
   $('overdriveDelete').disabled=!settings.customScenes.some(x=>x.id===settings.sceneId);
  }
  function refreshUI(){
-  updateSelect();ambient.checked=settings.ambient;glow.value=String(settings.glow);quality.value=settings.quality;setStages();
+  updateSelect();ambient.checked=settings.ambient;glow.value=String(settings.glow);quality.value=settings.quality;customColor.value=chosen().color;setStages();
  }
  function applyAndSave(message){
   settings=normalizeOverdriveSettings(settings);refreshUI();persist();if(message)say(message);
@@ -111,7 +112,7 @@ export function initEntertainmentOverdrive(app){
   if(!title){say('Enter a preset name before saving.',true);name.focus();return;}
   if(settings.customScenes.length>=20){say('Maximum 20 custom scenes; remove one before saving another.',true);return;}
   const source=chosen();
-  const preset={id:'custom-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7),name:title,color:source.color,palette:source.palette};
+  const preset={id:'custom-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7),name:title,color:customColor.value,palette:source.palette};
   settings.customScenes.push(preset);settings.sceneId=preset.id;
   name.value='';applyAndSave('Custom scene saved on this browser: '+title+'.');
  });
