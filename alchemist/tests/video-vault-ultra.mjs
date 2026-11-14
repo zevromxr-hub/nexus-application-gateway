@@ -86,7 +86,7 @@ assert.equal(progress.at(-1).done,data.size);
 assert.equal(progress.at(-1).mode,'OPFS');
 const copy=await readVideoOpfs({...testMeta,opfsName:out.fileName},{storage:store.storage});
 assert.equal(copy.size,data.size);
-assert.equal(copy.type,'video/mp4');
+assert.equal(copy.type,testMeta.mime,'OPFS file MIME must follow the original saved metadata, not a fabricated codec');
 await deleteVideoOpfs({...testMeta,opfsName:out.fileName},{storage:store.storage});
 assert.equal(store.entries.size,0,'Deletion must free local media bytes');
 const legacy=fakeStorage({writable:false});
