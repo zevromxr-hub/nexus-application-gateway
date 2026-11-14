@@ -13,7 +13,7 @@ const app=fs.readFileSync(path.join(root,'app.js'),'utf8');
 const command=fs.readFileSync(path.join(root,'command-center.js'),'utf8');
 const theater=fs.readFileSync(path.join(root,'media-theater.js'),'utf8');
 const video=fs.readFileSync(path.join(root,'video-vault.js'),'utf8');
-assert.equal(Object.keys(RETIRED_STUDIOS).length,8);
+assert.equal(Object.keys(RETIRED_STUDIOS).length,14);
 for(const [id,title] of Object.entries(RETIRED_STUDIOS)){
  assert.equal(html.includes('data-panel="'+id+'"'),false,'Retired '+title+' must not render');
  assert.equal(html.includes('data-view="'+id+'"'),false,'Retired '+title+' must not appear in navigation');
@@ -23,7 +23,7 @@ for(const oldInit of ['initBatch(app)','initIcons(app)','initSprites(app)','init
  'initPalette(app)','initAudio(app)','initMotion(app)','initModel(app)']){
  assert.equal(app.includes(oldInit),false,oldInit+' must not mount a retired studio');
 }
-for(const file of ['image-tools.js','media-tools.js','releases/v3.1.0.json']){
+for(const file of ['media-tools.js','releases/v3.1.0.json','releases/v3.3.0.json']){
  assert.ok(fs.existsSync(path.join(root,file)),'Do not delete archived studio source or prior release '+file);
 }
 assert.ok(app.includes("if(!names.some(n=>n.id===id))id='command';"),
@@ -79,4 +79,4 @@ assert.ok(video.includes('videoVaultBack10'));
 assert.ok(fs.readFileSync(path.join(root,'workspace-sync.js'),'utf8').includes('proximus-companion-links-v1'));
 assert.ok(!fs.readFileSync(path.join(root,'workspace-sync.js'),'utf8').includes('proximus-video-vault-v1'),
  'Large local video files must never leak into general Sync Bridge');
-console.log('PASS v3.2 Companion: eight retired studios archived without deletion, 23 focused studios, safe legacy route fallback, video watchlist, quick links and media playback handoff.');
+console.log('PASS Companion: fourteen retired studios protected by Git history, 18 focused spaces, safe legacy routes, video watchlist and personal links.');
