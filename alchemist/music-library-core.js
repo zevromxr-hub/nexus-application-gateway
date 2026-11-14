@@ -78,5 +78,5 @@ export async function deleteMusic(id){
 }
 export async function storedMusicFile(record){
  const safe=sanitizeSavedTrack(record);
- return new File([record.blob],safe.name,{type:safe.mime,lastModified:record.modified||Date.now()});
+ return new File([record.blob],safe.name,{type:safe.mime,lastModified:Number.isSafeInteger(record.modified)?record.modified:0});
 }
