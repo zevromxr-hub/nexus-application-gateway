@@ -84,7 +84,7 @@ export function initSovereignReactor(app){
  let lastPowerDescription='',lastAmbientSuppression=null;
  try{powerSettings=normalizePower(JSON.parse(localStorage.getItem(POWER_KEY)||'{}'));}catch(e){}
  function getPowerPlan(){
-  return powerPlan(powerSettings,{mobile:mobilePowerDevice,quality:options().quality,
+  return powerPlan(powerSettings,{mobile:mobilePowerDevice,quality:$('reactorQuality').value,
    recording:recording||loopCapturing||exportingFrame,reducedMotion:reduceMotion,autoSlow});
  }
  function updatePowerUI(){
@@ -861,12 +861,12 @@ export function initSovereignReactor(app){
  function tick(now){
   raf=requestAnimationFrame(tick);
   if(document.hidden)return;
-  const o=options();
   if(!active()&&!recording&&!loopCapturing){applyPowerEnvironment();return;}
   const power=getPowerPlan();
   applyPowerEnvironment();
   if(!recording&&!loopCapturing&&!stageVisible&&document.fullscreenElement!==stage)return;
   if(!power.draw||!frameDue(now,previous,power.fps))return;
+  const o=options();
   previous=now;frameCount++;
   if(o.cycle&&now>=nextSceneAt){
    runtimeMode=nextSceneInOrder(runtimeMode,fxSettings.sceneOrder);
