@@ -75,7 +75,7 @@ assert.ok(theater.includes("playlist.push({file,kind:'audio',libraryId:id})"));
 assert.ok(library.includes('void autoRestore()'),'Saved music must return on visit');
 assert.ok(library.includes('if(startup.enabled)'),'Do not autoplay unless user has opted in');
 assert.ok(library.includes('await playSaved()'),'Opening saved songs must attempt playback when authorized');
-assert.ok(library.includes("const first=startupTrack(rows,startup)"),'Restore user's chosen song first');
+assert.ok(library.includes("const first=startupTrack(rows,startup)"),"Restore user's chosen song first");
 assert.ok(library.includes("trigger.addEventListener('click'"),'Autoplay blocked must have one-tap fallback');
 assert.ok(library.includes("setPrompt(false)"),'Disabling autoplay and successful playback should close fallback prompt');
 assert.ok(theater.includes('prepareStartup:async(id)=>'),'Startup song must be prepared before playback click');
