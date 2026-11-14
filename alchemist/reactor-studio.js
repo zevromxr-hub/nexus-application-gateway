@@ -75,7 +75,7 @@ export function initSovereignReactor(app){
  window.addEventListener('storage',e=>{if(e.key===OVERDRIVE_KEY)updateLinkedColor();});
  let sampleStart=0,sampleFrames=0,measuredFPS=0;
  let presets={},state=initialBeatState(),bands={sub:0,bass:0,mid:0,treble:0,energy:0};
- let raf=0,previous=0,lastPulse=0,shift=0,recording=false,recordBlob=null,recordName='';
+ let raf=0,previous=0,lastPulse=0,shift=0,recording=false,exportingFrame=false,recordBlob=null,recordName='';
  let loopBlob=null,loopName='',recordTimer=0,recordChunks=[],recorder=null;
  let frameCount=0,frequencySmooth=0,streamCaptureActive=false,loopCapturing=false;
  const mobilePowerDevice=isAppleMobileAgent(navigator.userAgent||'');
@@ -85,7 +85,7 @@ export function initSovereignReactor(app){
  try{powerSettings=normalizePower(JSON.parse(localStorage.getItem(POWER_KEY)||'{}'));}catch(e){}
  function getPowerPlan(){
   return powerPlan(powerSettings,{mobile:mobilePowerDevice,quality:options().quality,
-   recording:recording||loopCapturing,reducedMotion:reduceMotion,autoSlow});
+   recording:recording||loopCapturing||exportingFrame,reducedMotion:reduceMotion,autoSlow});
  }
  function updatePowerUI(){
   const plan=getPowerPlan(),mode=powerSettings.mode;
@@ -104,7 +104,7 @@ export function initSovereignReactor(app){
    lastAmbientSuppression=suppressAmbient;
    document.documentElement.classList.toggle('sonic-power-ambient-off',suppressAmbient);
   }
-  if(suspendBackdrop===pausedBackdrops)return;
+  if(suspendBackdrop===pausedBackdrops&&!suspendBackdrop)return;
   pausedBackdrops=suspendBackdrop;
   const videos=[backgroundVideo,overlayVideo];
   if(suspendBackdrop){
@@ -917,8 +917,11 @@ export function initSovereignReactor(app){
   else status('This device offers the full stage within the page.');
  }));
  async function exportFrame(kind){
-  drawStage(performance.now());
-  const blob=await blobCanvas(canvas,'image/png'),name='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world.toUpperCase():'REACTOR-'+stem(options().mode))+'.png';
+  exportingFrame=true;resize();
+  let blob;
+  try{drawStage(performance.now());blob=await blobCanvas(canvas,'image/png');}
+  finally{exportingFrame=false;resize();applyPowerEnvironment();}
+  const name='PROXIMUS-'+(sonicSettings.enabled?'SONIC-'+sonicSettings.world.toUpperCase():'REACTOR-'+stem(options().mode))+'.png';
   if(kind==='pack')app.addAsset(name,blob,'Sovereign Reactor');
   else if(kind==='share')await saveOrShare(blob,name);
   else download(blob,name);
@@ -932,7 +935,7 @@ export function initSovereignReactor(app){
  // the browser decodes it to a drawable frame. Always keep it within mobile memory.
  $('reactorMakeGif').addEventListener('click',wrap(async()=>{
   if(loopCapturing||recording)throw Error('Finish the current recording first.');
-  loopCapturing=true;$('reactorMakeGif').disabled=true;
+  loopCapturing=true;resize();applyPowerEnvironment();$('reactorMakeGif').disabled=true;
   const frames=[],clip=document.createElement('canvas');clip.width=384;clip.height=216;
   const g=clip.getContext('2d',{willReadFrequently:true});
   const duration=3000,count=24;
@@ -950,7 +953,7 @@ export function initSovereignReactor(app){
    $('reactorSaveGif').hidden=false;$('reactorGifPack').hidden=false;
    download(blob,loopName);
    exportStatus('Animated GIF ready · 384×216 · 24 frames · '+bytes(blob.size));
-  }finally{loopCapturing=false;$('reactorMakeGif').disabled=false;}
+  }finally{loopCapturing=false;resize();applyPowerEnvironment();$('reactorMakeGif').disabled=false;}
  }));
  $('reactorSaveGif').addEventListener('click',wrap(async()=>{
   if(!loopBlob)throw Error('Create an animated reactor GIF first.');
@@ -976,7 +979,7 @@ export function initSovereignReactor(app){
  async function beginRecord(){
   if(recording||loopCapturing)throw Error('Finish the current visual export first.');
   if(!videoCaptureAvailable)throw Error('Canvas video recording is not available; use GIF or PNG exports.');
-  recording=true;recordChunks=[];
+  recording=true;recordChunks=[];resize();applyPowerEnvironment();
   const duration=Math.max(3,Math.min(15,Number($('reactorRecordSeconds').value)||8));
   const stageStream=canvas.captureStream(30);
   try{
@@ -1000,7 +1003,7 @@ export function initSovereignReactor(app){
   }finally{
    clearTimeout(recordTimer);
    for(const tr of stageStream.getTracks())tr.stop();
-   recorder=null;recording=false;$('reactorRecord').disabled=false;$('reactorStopRecord').disabled=true;
+   recorder=null;recording=false;resize();applyPowerEnvironment();$('reactorRecord').disabled=false;$('reactorStopRecord').disabled=true;
   }
  }
  $('reactorRecord').addEventListener('click',wrap(beginRecord));
