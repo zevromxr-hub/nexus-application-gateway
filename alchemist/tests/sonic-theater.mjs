@@ -46,6 +46,7 @@ assert.ok(css.includes('grid-template-columns:minmax(0,1.22fr)'),'PC side-by-sid
 assert.ok(css.includes('@media(max-width:1120px)'),'Mobile stacked layout required');
 assert.ok(css.includes('.sonic-theater-integrated .nav[data-view="theater"]'),'No duplicate visible desktop nav');
 assert.ok(mobile.includes("s.id!=='theater'"),'No duplicate visible iPhone studio entry');
+assert.ok(mobile.includes("id==='theater'?'reactor':id"),'Old iPhone Theater pins must carry over to Sonic Theater');
 assert.ok(html.includes('id="theaterFiles" type="file" accept="audio/*,.mp3,'),'File picker must explicitly allow MP3 and AAC');
 assert.ok(html.includes('id="reactorFilePlay">▶ Queue & play in Sonic Theater'),'Old Reactor file importer must use shared queue');
 assert.ok(html.includes('id="theaterMusicAutostart"'),'Keep user choice of opening music');
