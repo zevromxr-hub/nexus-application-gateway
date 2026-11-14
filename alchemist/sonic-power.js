@@ -13,11 +13,11 @@ export function powerPlan(raw={},{
 }={}){
  const {mode}=normalizePower(raw);
  // Desktop stays at the user's chosen Reactor quality unless they explicitly request a power profile.
- if(!mobile&&mode==='auto')return {mode,fps:quality==='eco'?30:quality==='cinema'?60:45,
+ if(!mobile&&mode==='auto')return {mode,fps:quality==='eco'?24:quality==='cinema'?45:36,
   width:null,height:null,quality,backgroundPause:false,siteAmbientPause:false,draw:true,limited:false};
  // Capturing exports should never silently become blank or lower quality: the app's
  // original rendering path is temporarily restored when explicitly recording.
- if(recording)return {mode,fps:quality==='eco'?30:quality==='cinema'?60:45,
+ if(recording)return {mode,fps:quality==='eco'?24:quality==='cinema'?45:36,
   width:null,height:null,quality,backgroundPause:false,siteAmbientPause:false,draw:true,limited:false};
  if(mode==='audio')return {mode,fps:0,width:480,height:270,quality:'eco',
   backgroundPause:true,siteAmbientPause:true,draw:false,limited:true};
