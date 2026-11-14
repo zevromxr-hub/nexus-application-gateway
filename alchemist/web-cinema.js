@@ -224,7 +224,7 @@ export function initWebCinemaGateway(){
    const output=addWebCinemaLink(saved,raw,title.value,collection.value);
    saved=output.items;
    const entry=saved.find(item=>item.id===output.item.id);
-   const source=(draftForUrl===output.item.url?draftSource:null)||active?.url===output.item.url?activeSource:null;
+   const source=(draftForUrl===output.item.url?draftSource:null)||(active?.url===output.item.url?activeSource:null);
    if(source&&entry){
     const playback=normalizeSavedPlayback(source,{appOrigin:location.origin});
     entry.playerMode=playback.playerMode;entry.playerUrl=playback.playerUrl;
