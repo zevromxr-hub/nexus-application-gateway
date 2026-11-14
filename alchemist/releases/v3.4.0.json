@@ -1,0 +1,44 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.4.0",
+  "release_date": "2026-11-13",
+  "title": "Adaptive Companion — Device Intelligence & Studio Cleanup",
+  "subtitle": "Adaptive Companion — Device Intelligence & Studio Cleanup",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Retired Image Studio, Asset Packager, Production Lab, Asset Audit, Layer Forge, and Motion Graphics from the active website, navigation, commands and application initialization; the 8 previously retired studios remain archived",
+    "Safely removed 3 unused old studio JavaScript modules from the live GitHub tree, preserving their original source in v3.3 Git history and prior release records",
+    "Preserved Asset Packager's shared output library, saved IndexedDB assets, ZIP downloads, per-asset exports and studio handoffs inside Project Hub → Collected Exports; older pack links redirect automatically",
+    "Added Adaptive Interface detection that responds to iPhone/PC screen size, touch and pointer capabilities, orientation and window resizing without reloading projects",
+    "Added a manual Layout selector with Auto, Desktop/PC and Mobile/iPhone modes, saved per browser and included in portable settings and Recovery Center backups",
+    "Fixed desktop/mobile UI crossover, iPhone dock showing in narrow desktop windows, clipped topbar controls, overflowing text, studio tabs and narrow panel grids with responsive CSS layouts",
+    "Maintained 18 focused companion spaces including Video Vault, Animation Forge, Media Theater, Life Command, Reactor IV, utilities, Project Hub, Sync Bridge, Recovery Center and Token Foundry",
+    "Preserved existing local videos, media, settings, token records, GitHub Pages URL, Discord gateway and secure automated release announcement pipeline"
+  ],
+  "retired_studios": [
+    "Image Studio",
+    "Asset Packager",
+    "Production Lab",
+    "Asset Audit",
+    "Layer Forge",
+    "Motion Graphics"
+  ],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Adaptive Interface",
+    "Project Hub",
+    "Mobile Navigation",
+    "Companion Center",
+    "Sync Bridge",
+    "Recovery Center"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
