@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "1.0.0",
+  "title": "Genesis — Character Command Center & Progression",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Manual character roster",
+    "Saved build library and notes",
+    "Progression checklists",
+    "Collection goal tracking",
+    "Genesis JSON backup and restore"
+  ]
+}

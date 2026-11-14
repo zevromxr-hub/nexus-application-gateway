@@ -1,0 +1,25 @@
+name: NEXUS Azeroth Companion — Release Validation
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'azeroth-companion/**'
+      - 'hub/index.html'
+      - '.github/workflows/azeroth-validate.yml'
+  pull_request:
+    paths:
+      - 'azeroth-companion/**'
+      - 'hub/index.html'
+      - '.github/workflows/azeroth-validate.yml'
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate Azeroth Companion and versioned release metadata
+        run: node azeroth-companion/tests/validate.mjs
