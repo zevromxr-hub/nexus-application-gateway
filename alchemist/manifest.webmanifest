@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.6 ORBIT — adaptive iPhone/PC workspace with universal search, favorite tools, locally saved music and cinema, and private creator utilities.",
+  "description": "PROXIMUS v3.6.1 ORBIT — integrated Web Cinema Gateway for compatible external websites, supported video players and privately saved link libraries.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
