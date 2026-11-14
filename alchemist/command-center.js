@@ -5,6 +5,7 @@
 import {$,bytes,wrap} from './core.js';
 import {saveOrShare} from './portable-kit.js';
 import {listStoredVideos} from './video-vault.js';
+import {LIFE_STORAGE,normalizeLifeData,lifeStats,filterLife,localDay} from './life-command-core.js';
 import {COMPANION_LINKS,companionCategory,companionWatchlist,companionSavedOverview,
  cleanCompanionLinks,validateCompanionUrl} from './companion-core.js';
 const PROFILE='proximus-command-layout-v1',PINS='proximus-command-pins-v1',NAME='proximus-command-name-v1',NOTES='proximus-companion-pocket-notes-v1';
@@ -94,6 +95,7 @@ export function initCommandCenter(app){
  $('commandOpenVideos').addEventListener('click',()=>app.changeView('videos'));
  $('commandOpenTheater').addEventListener('click',()=>app.changeView('theater'));
  $('commandOpenArcade').addEventListener('click',()=>app.changeView('arcade'));
+ $('commandOpenLife').addEventListener('click',()=>app.changeView('life'));
  $('commandOpenWorkflow').addEventListener('click',()=>app.changeView('workflow'));
  $('commandOpenAnimation').addEventListener('click',()=>app.changeView('animation'));
  $('commandOpenRelease').addEventListener('click',()=>app.changeView('releases'));
@@ -205,6 +207,24 @@ export function initCommandCenter(app){
  });
  renderBookmarks();void refreshOverview();
 
+ function refreshLife(){
+  const summary=$('commandLifeSummary'),detail=$('commandLifeDetail');
+  try{
+   const state=normalizeLifeData(JSON.parse(localStorage.getItem(LIFE_STORAGE)||'{}'));
+   const now=localDay(),stats=lifeStats(state.items,now);
+   summary.textContent=stats.soon+' upcoming · '+stats.doneToday+' completed today';
+   const active=filterLife(state.items,{status:'active',today:now}).slice(0,2);
+   detail.textContent=active.length?active.map(x=>x.title).join(' · '):
+    'No unfinished tasks. Open Life Command to plan your next day.';
+  }catch(e){summary.textContent='Your Life Command is ready';detail.textContent='Open to plan your day.';}
+ }
+ $('commandLifeNow').addEventListener('click',()=>app.changeView('life'));
+ document.addEventListener('proximus-life-changed',refreshLife);
+ document.addEventListener('proximus-view-changed',e=>{
+  if(e.detail?.studio==='command')refreshLife();
+ });
+ refreshLife();
+
  const notes=$('commandPocketNotes'),notesStatus=$('commandNotesStatus');
  try{notes.value=(localStorage.getItem(NOTES)||'').slice(0,8000);}catch(e){}
  notes.addEventListener('input',()=>{
@@ -225,5 +245,5 @@ export function initCommandCenter(app){
  });
 
  useProfile(profile);liveStats();drawGreeting();
- summary.textContent='Companion Edition · entertainment, saved videos, personal shortcuts and 23 focused spaces.';
+ summary.textContent='Companion Edition · entertainment, Life Command planning, saved videos and 24 focused spaces.';
 }
