@@ -80,7 +80,7 @@ export function initSovereignReactor(app){
  let frameCount=0,frequencySmooth=0,streamCaptureActive=false,loopCapturing=false;
  const mobilePowerDevice=isAppleMobileAgent(navigator.userAgent||'');
  const reduceMotion=window.matchMedia?.('(prefers-reduced-motion:reduce)')?.matches===true;
- let powerSettings=normalizePower(),autoSlow=false,stageVisible=true,pausedBackdropElements=new Set(),pausedBackdrops=false;
+ let powerSettings=normalizePower(),autoSlow=false,stageVisible=true,pausedBackdropElements=new Set(),pausedSiteVideos=new Set(),pausedBackdrops=false;
  let lastPowerDescription='',lastAmbientSuppression=null;
  try{powerSettings=normalizePower(JSON.parse(localStorage.getItem(POWER_KEY)||'{}'));}catch(e){}
  function getPowerPlan(){
@@ -103,6 +103,13 @@ export function initSovereignReactor(app){
   if(suppressAmbient!==lastAmbientSuppression){
    lastAmbientSuppression=suppressAmbient;
    document.documentElement.classList.toggle('sonic-power-ambient-off',suppressAmbient);
+   if(suppressAmbient){
+    document.querySelectorAll('#ambientMedia video,#heroOrb video,[data-panel="reactor"] .studio-personal-thumb video')
+     .forEach(el=>{if(!el.paused){el.pause();pausedSiteVideos.add(el);}});
+   }else{
+    for(const el of pausedSiteVideos){if(el.isConnected)void el.play().catch(()=>{});}
+    pausedSiteVideos.clear();
+   }
   }
   if(suspendBackdrop===pausedBackdrops&&!suspendBackdrop)return;
   pausedBackdrops=suspendBackdrop;
@@ -114,6 +121,14 @@ export function initSovereignReactor(app){
    pausedBackdropElements.clear();
   }
  }
+ // Newly attached site background videos are stopped if a lightweight profile is active.
+ document.addEventListener('play',e=>{
+  const el=e.target;
+  if(!mobilePowerDevice||!el||el.tagName!=='VIDEO'||!getPowerPlan().siteAmbientPause||!active())return;
+  if(el.closest('#ambientMedia,#heroOrb,[data-panel="reactor"] .studio-personal-thumb')){
+   el.pause();pausedSiteVideos.add(el);
+  }
+ },true);
  $('sonicPowerMode').addEventListener('change',e=>{
   powerSettings=normalizePower({mode:e.currentTarget.value});autoSlow=false;previous=0;
   try{localStorage.setItem(POWER_KEY,JSON.stringify(powerSettings));}catch(e){}
