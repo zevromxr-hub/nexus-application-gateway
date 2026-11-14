@@ -13,7 +13,7 @@ const THEMES={
  ember:['#ffa09c','#eb496c','#ffd5a8'],
  emerald:['#80f8bc','#25be9a','#e2fff5']
 };
-const audioExt=/\.(?:mp3|wav|ogg|m4a|aac|flac|opus)$/i;
+const audioExt=/\.(?:mp3|wav|ogg|m4a|aac|flac|opus|aiff|aif)$/i;
 const videoExt=/\.(?:mp4|m4v|mov|webm|ogv|ogg)$/i;
 const imageExt=/\.(?:gif|png|jpe?g|webp)$/i;
 export function mediaKind(file){
@@ -58,7 +58,7 @@ export function initMediaTheater(app){
   miniPlay.textContent=playing?'❚❚':'▶';
   $('theaterFavorite').textContent=item&&favorites.includes(item.file.name)?'★ Favorited':'☆ Favorite track';
  }
- const active=()=>document.querySelector('.studio:not([hidden])')?.dataset.panel==='theater';
+ const active=()=>['theater','reactor'].includes(document.querySelector('.studio:not([hidden])')?.dataset.panel);
  const currentItem=()=>playlist[current]||null;
  const player=()=>currentItem()?.kind==='video'?video:audio;
  const showStatus=(s)=>{status.textContent=s;};
@@ -71,7 +71,7 @@ export function initMediaTheater(app){
   updateMini();
  };
  function revoke(){if(currentURL)URL.revokeObjectURL(currentURL);currentURL=null;}
- function stopMedia(){video.pause();audio.pause();playing=false;}
+ function stopMedia(){video.pause();audio.pause();playing=false;document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind:'audio',playing:false}}));}
  function updateAB(){
   $('theaterABStatus').textContent=loopA===null?'Choose the beginning (A), then the end (B).':
    loopB===null?'A: '+formatTime(loopA)+' · choose B to finish segment.':
@@ -113,16 +113,36 @@ export function initMediaTheater(app){
   const item=playlist[index],kind=item.kind;
   currentURL=URL.createObjectURL(item.file);
   video.hidden=kind!=='video';audio.hidden=kind!=='audio';image.hidden=kind!=='image';
+  if(kind==='video'||kind==='image')$('sonicTheaterAdvanced')?.setAttribute('open','');
+  document.dispatchEvent(new CustomEvent('proximus-sonic-playback',{detail:{kind,playing:false}}));
   if(kind==='video'||kind==='audio'){
    const media=player();
    media.src=currentURL;media.load();media.playbackRate=Number($('theaterSpeed').value)||1;
    media.loop=mode==='one';
-   if(autoplay)try{await media.play();playing=true;await resumeContext();}catch(e){showStatus('Tap Play to start playback');}
+   if(autoplay)try{const analysis=ensureTheaterAnalysis();const started=media.play();await Promise.all([started,analysis]);playing=true;}
+   catch(e){showStatus('Tap Play to start music. '+(e?.message||'Browser may block autoplay'));}
   }else{image.src=currentURL;playing=false;}
   showInfo();drawList();
  }
  async function resumeContext(){
   if(audioContext&&audioContext.state==='suspended')try{await audioContext.resume();}catch(e){}
+ }
+ function ensureTheaterAnalysis(){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return Promise.resolve();
+  if(!audioContext)audioContext=new AudioCtx();
+  if(!analyser){
+   analyser=audioContext.createAnalyser();analyser.fftSize=1024;analyser.smoothingTimeConstant=.76;
+   frequency=new Uint8Array(analyser.frequencyBinCount);timeDomain=new Uint8Array(analyser.fftSize);
+  }
+  // Exactly one MediaElementSourceNode per source; both visualizers use the same playing audio.
+  for(const el of [audio,video]){
+   if(nodes.has(el))continue;
+   const node=audioContext.createMediaElementSource(el);node.connect(analyser);nodes.set(el,node);
+  }
+  if(!analyser.__wired){analyser.connect(audioContext.destination);analyser.__wired=true;}
+  visualized=true;$('theaterEnableAudio').textContent='✓ Shared analysis active';
+  return resumeContext();
  }
  async function next(direction=1,fromEnded=false){
   if(!playlist.length)return;
@@ -139,7 +159,7 @@ export function initMediaTheater(app){
   if(currentItem()?.kind==='image'){showStatus('GIF and image items play in the preview');return;}
   const media=player();
   if(media.paused){
-   try{await media.play();playing=true;await resumeContext();showStatus('Playing · '+safe(currentItem().file.name))}
+   try{const analysis=ensureTheaterAnalysis();const started=media.play();await Promise.all([started,analysis]);playing=true;showStatus('Playing in Sonic Theater · '+safe(currentItem().file.name))}
    catch(e){showStatus('Tap the native player button to play this file.');}
   }else{media.pause();playing=false;}
   showInfo();
