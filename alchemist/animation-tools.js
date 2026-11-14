@@ -254,7 +254,7 @@ export function initAnimationForge(app){
  const fileEl=$('animFile');if(!fileEl)return;
  const video=$('animVideo'),gif=$('animGif'),preview=$('animResult');
  const status=$('animStatus'),progress=$('animProgress');
- let file=null,url=null,resultURL=null,busy=false,cancel=false,lastGif=null,lastGifName='';
+ let file=null,url=null,resultURL=null,busy=false,cancel=false,lastGif=null,lastGifName='',pendingVaultTime=null;
  const say=t=>{progress.textContent=t};
  const quality=()=>({
   fps:Number($('animFPS').value),
@@ -278,8 +278,10 @@ export function initAnimationForge(app){
   if(type==='video'){
    video.onloadedmetadata=()=>{
     if(file!==f)return;
-    $('animStart').value=0;
-    $('animEnd').value=Math.min(6,video.duration).toFixed(1);
+    const start=pendingVaultTime!==null?Math.min(Math.max(0,pendingVaultTime),Math.max(0,video.duration-.3)):0;
+    pendingVaultTime=null;
+    $('animStart').value=start.toFixed(2);
+    $('animEnd').value=Math.min(video.duration,start+4).toFixed(2);
     status.textContent='Video · '+video.videoWidth+'×'+video.videoHeight+' · '+video.duration.toFixed(1)+' sec';
     updatePreflight();
    };
@@ -431,6 +433,7 @@ export function initAnimationForge(app){
   if(!(data.blob instanceof Blob)||data.blob.size<1){say('Video Vault source is unavailable.');return;}
   if(data.blob.size>MAX_BYTES){say('The saved video exceeds the 250 MB GIF Forge import limit.');return;}
   try{
+   pendingVaultTime=Number.isFinite(Number(data.start))?Number(data.start):null;
    const filename=String(data.name||'saved-video.mp4').slice(0,160);
    const fileData=new File([data.blob],filename,{type:data.mime||'video/mp4'});
    const transfer=new DataTransfer();transfer.items.add(fileData);
