@@ -261,7 +261,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.2.1';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.3.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -287,7 +287,7 @@ function launch(){
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Companion Edition v3.2 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
+ notice('PROXIMUS Cinematic Life Command v3.3 loaded. Your personal media, projects and Token Foundry data remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
