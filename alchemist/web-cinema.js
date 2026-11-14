@@ -50,6 +50,8 @@ export function initWebCinemaGateway(){
   try{link=classifyWebCinemaUrl(raw);}
   catch(error){say(error.message,true);return false;}
   stopMedia();
+  // Keep a single active Video Vault video audio source on iPhone and PC.
+  const localPlayer=$('videoVaultPlayer');if(localPlayer&&!localPlayer.paused)localPlayer.pause();
   active=link;currentSavedId=saved.find(item=>item.url===link.url)?.id||null;
   input.value=link.url;
   if(currentSavedId){
@@ -210,6 +212,10 @@ export function initWebCinemaGateway(){
  });
  document.addEventListener('visibilitychange',()=>{
   if(document.hidden&&active){stopMedia();}
+ });
+ // Starting a locally saved Video Vault film stops the separate external viewer.
+ $('videoVaultPlayer')?.addEventListener('play',()=>{
+  if(active&&(!video.hidden||!iframe.hidden)){stopMedia();say('External preview paused while playing a local Video Vault video.');}
  });
  window.addEventListener('storage',event=>{
   if(event.key!==WEB_CINEMA_KEY)return;
