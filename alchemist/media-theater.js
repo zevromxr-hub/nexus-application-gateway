@@ -389,6 +389,27 @@ export function initMediaTheater(app){
  initLocalMusicLibrary({
   getCurrent:currentItem,
   getQueued:()=>playlist,
+  // Only a user-selected saved audio track is allowed to auto-start.
+  // Playback can be refused by the browser and must always remain controllable.
+  prepareStartup:async(id)=>{
+   const index=playlist.findIndex(item=>item.kind==='audio'&&item.libraryId===id);
+   if(index<0)throw Error('Selected startup song is no longer in the queue.');
+   if(index!==current)await select(index,false);
+   else if(!audio.src)await select(index,false);
+  },
+  attemptStartup:async()=>{
+   if(currentItem()?.kind!=='audio')return {played:false,blocked:false,reason:'Choose a saved audio track first.'};
+   try{
+    await audio.play();
+    playing=true;await resumeContext();showInfo();
+    return {played:true,blocked:false};
+   }catch(error){
+    playing=false;showInfo();
+    return {played:false,blocked:error?.name==='NotAllowedError',
+     reason:error?.name==='NotAllowedError'?'Your browser requires a tap before playing audio.':
+      'Audio playback failed. Confirm this file is supported by your browser.'};
+   }
+  },
   addToQueue:async(file,id)=>{
    if(playlist.length>=MAX_QUEUE)throw Error('Media Theater queue is full (80 items). Remove a queue item before adding another.');
    if(!isLocalAudio(file))throw Error('The stored audio file is invalid.');
