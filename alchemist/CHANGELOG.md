@@ -1,5 +1,18 @@
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
+## v3.6.0 — ORBIT Interface: Universal Access & PC/iPhone Redesign (2026-11-14)
+
+- Restyled the entire PROXIMUS UI with a more restrained midnight-navy/aurora design, clearer typography, consistent button/card surfaces and reduced animation.
+- Introduced one global Access Bar on every studio: current workspace, pinned favorites, recent history, Home, and direct access to the existing tool finder.
+- Converted the PC's long flat navigation into seven collapsible purpose groups, automatically opening the group for the active studio.
+- Expanded Ctrl/Command+K search with purpose categories, favorites-only filtering, and per-result ☆ / ★ pinning.
+- Reused existing Command Center/mobile favorites in the new ORBIT access system and synchronized changes among the PC dashboard and iPhone studio picker. Added new preference keys to Recovery Center / Sync Bridge backup.
+- Streamlined the top bar into primary search, layout settings and a More menu retaining original Videos, Life, Media, and Exports actions.
+- Improved iPhone quick-access dock with direct Sonic Theater entry; kept history navigation and Auto/PC/iPhone override.
+- Reduced the repetitive page chrome by hiding the giant Welcome banner on individual studio pages, and folded less-common dashboard/catalog/scene controls into accessible expandable sections.
+- Preserved existing 18 active companion spaces + 2 information pages, saved local music and videos, Play on Start, graphics/power modes, media publisher, Token Foundry, original service endpoints and pre-existing direct Discord release automation.
+- Added dedicated pure navigation and static compatibility regression tests; unchanged personal data stores, GitHub Pages URL and rollback history.
+
 ## v3.5.4 — Mobile Power Guard for Sonic Theater (2026-11-14)
 
 - Added iPhone/iPad-aware Sonic Theater power profiles: 24 FPS / 640×360 Adaptive, 15 FPS / 480×270 Cool & Save, zero animation Music Only, and capped 30 FPS Smooth.
