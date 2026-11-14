@@ -3,7 +3,7 @@
 // repository permissions and branch protections, not these browser checks.
 import {$,bytes,download,textFile,wrap} from './core.js';
 export const RELEASE_ASSETS=[
- './index.html','./style.css','./app.js','./media-publisher.js','./companion-core.js','./command-center.js',
+ './index.html','./style.css','./app.js','./media-publisher.js','./layout-adapter-core.js','./layout-adapter.js','./companion-core.js','./command-center.js',
  './workspace-sync.js','./reactor-studio.js','./reactor-dsp.js',
  './recovery-center.js','./life-command-core.js','./life-command.js','./media-suite-core.js','./video-vault-core.js','./video-vault.js','./mobile-navigation.js','./version.json','./releases/index.json'
 ];
