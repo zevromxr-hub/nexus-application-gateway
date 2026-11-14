@@ -349,7 +349,7 @@ export function initVideoVault(app){
   const item=active();if(!item)throw Error('Choose a saved video first.');
   const blob=await loadStoredVideo(item.id);
   document.dispatchEvent(new CustomEvent('proximus-video-vault-send-theater',
-   {detail:{blob,name:item.name,mime:item.mime}}));
+   {detail:{blob,name:item.name,mime:item.mime,start:Number.isFinite(video.currentTime)?video.currentTime:0}}));
   app.changeView('theater');
   say('Opened '+item.name+' in Media Theater without duplicating the stored file.');
  }));
