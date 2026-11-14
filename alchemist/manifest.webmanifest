@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS Cinematic Life Command — private video library, animation studio, music theater, personal routines and everyday companion",
+  "description": "PROXIMUS Adaptive Companion — device-aware iPhone/PC entertainment, personal videos, GIF editor, Life Command and useful everyday tools",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
