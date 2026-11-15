@@ -182,7 +182,7 @@ assert.ok(moduleCode.includes('const authorized='),'Equipment endpoint must veri
 assert.ok(moduleCode.includes("if(!authorized)return response"),'Equipment endpoint must deny cross-account lookup');
 assert.ok(singleWorker.includes("path==='/api/me/equipment'"));
 assert.ok(!targets.includes('BLIZZARD_CLIENT_SECRET')&&!targets.includes('AZEROTH_SESSION_SECRET'));
-assert.match(html,/progress-command\\.js/);assert.match(html,/progress-command\\.css/);
+assert.match(html,/progress-command\.js/);assert.match(html,/progress-command\.css/);
 const command=await read('azeroth-companion/progress-command.js');new vm.Script(command);
 for(const marker of ['nexus_azeroth_item_atlas_v1','nexus_azeroth_character_targets_v1','nexus_azeroth_loot_hunter_v1','nexus_azeroth_farm_operations_v1','pcMetrics','pcCharacters','pcObjectives','pcInsights','pcSnapshot','nexus-azeroth-progress-summary-v1'])assert.ok(command.includes(marker),'Progress Command missing '+marker);
 assert.ok(!command.includes('BLIZZARD_CLIENT_SECRET')&&!command.includes('AZEROTH_SESSION_SECRET')&&!command.includes('/api/me/'),'Public progress view must not touch private account APIs');
