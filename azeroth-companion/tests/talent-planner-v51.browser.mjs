@@ -80,7 +80,7 @@ async function run(engine,phone){
   assert.ok(await page.locator('#tfBuildIntel').isVisible(),'Build Intelligence should mount on desktop and mobile');
   await page.locator('#tfBiNode').selectOption('1002');
   const links=await page.locator('#tfBiConnections').textContent();
-  assert.ok(links.includes('Fixture Class Node')&&links.includes('Reported downstream links'),'Source-linked node explorer must show real fixture references');
+  assert.ok(links.includes('#1001')&&links.includes('Reported downstream links'),'Source-linked node explorer must show real fixture references');
   assert.ok(await page.locator('#tfBiInspect').isEnabled(),'New inspector should open existing rank detail controls');
   await page.locator('#tfBiInspect').click();
   assert.ok((await page.locator('#tfSourceTalent').textContent()).includes('Node ID: #1002'),'Source spotlight must delegate to existing official inspector');
