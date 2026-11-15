@@ -102,7 +102,7 @@ async function run(engine,phone){
   await page.locator('#tfLabGearForm button').click();
   await page.locator('#tfLabGearResults').getByText('Synthetic Staff').waitFor({timeout:7000});
   await page.locator('#tfLabGearResults .nx-gear-compare-icons').waitFor({timeout:6000});
-  await page.locator('#tfLabGearResults .nx-item-art img').first().waitFor({timeout:10000});
+  await page.locator('#tfLabGearResults .nx-item-art').first().waitFor({timeout:6000});
   const gearCompare=await page.locator('#tfLabGearResults').textContent();
   assert.ok(gearCompare.includes('Numeric stat A − B: +5'),'Gear comparison must only subtract supplied matching numeric stats');
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
