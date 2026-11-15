@@ -62,6 +62,7 @@ function addPanels(){
 </section>`;
  main.insertBefore(wrap,footer);return true
 }
+if(!addPanels())return;
 const slots=$('puPartySlots');
 function renderSlots(){slots.innerHTML=state.party.map((p,i)=>`<div class="pu-slot"><span class="pu-slotnum">${i+1}</span><div class="field"><label for="puClass${i}">Class</label><select data-class="${i}" id="puClass${i}">${classOptions(p.className)}</select></div><div class="field"><label for="puSpec${i}">Specialization</label><select data-spec="${i}" id="puSpec${i}">${specOptions(p.className,p.spec)}</select></div><div class="field"><label for="puName${i}">Player (optional)</label><input id="puName${i}" data-name="${i}" maxlength="45" value="${esc(p.name)}" placeholder="Player name"></div><span class="pu-role pu-${roleOf(p).toLowerCase()}">${roleOf(p)}</span></div>`).join('');renderFeedback()}
 function renderFeedback(){const roles=state.party.map(roleOf),tanks=roles.filter(r=>r==='Tank').length,healers=roles.filter(r=>r==='Healer').length,dps=roles.filter(r=>r==='Damage').length,covered=[...new Set(state.party.flatMap(p=>BUFFS[p.className]||[]))];const balanced=tanks===1&&healers===1&&dps===3;
@@ -91,7 +92,6 @@ $('puResetVault').addEventListener('click',()=>{if(!confirm('Start a fresh week 
 $('puExportVault').addEventListener('click',()=>download('nexus-weekly-vault.json',{format:'nexus-wow-vault-v1',vaults:state.vaults,exportedAt:new Date().toISOString()}));
 function notice(t){const n=$('puNotice');if(n){n.textContent=t;n.hidden=false;clearTimeout(notice.t);notice.t=setTimeout(()=>n.hidden=true,3200)}}
 const note=document.createElement('div');note.id='puNotice';note.className='pu-notice';note.hidden=true;document.body.appendChild(note);
-if(!addPanels())return;
 renderSlots();renderProfiles();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)renderProfiles()});
 window.addEventListener('storage',e=>{if(e.key===GENESIS)renderProfiles()});
