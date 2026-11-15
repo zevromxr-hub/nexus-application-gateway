@@ -64,7 +64,7 @@ assert.match(backend,/talent-tree/);
 for(const feature of ['tfFindNode','tfLayout','tfBudget','tfUndo','tfRedo','recordUndo','travelHistory'])assert.ok(talent.includes(feature),'Missing v2.4 talent functionality '+feature);
 assert.ok((await read('azeroth-companion/talent-forge.css')).includes('.tf-positioned'),'Visual position-aware tree CSS missing');
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Preserve existing v2.3 local draft key');
-for(const feature of ['tfHeroTree','tfCompare','tfCompareSummary','countPointChanges','tf-default-points','heroSelection','coordinatesUsable','indexRequest'])assert.ok(talent.includes(feature),'Missing v2.5 Talent Intelligence feature '+feature);
+for(const feature of ['tfHeroTree','tfCompare','tfCompareSummary','countPointChanges','tf-default-points','heroSelection','NexusTalentLayout','indexRequest'])assert.ok(talent.includes(feature),'Missing v2.5 Talent Intelligence feature '+feature);
 assert.ok((await read('azeroth-companion/talent-forge.css')).includes('.tf-node.tf-more'));
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Preserve legacy talent save compatibility');
 for(const feature of ['tfShowLinks','tfRelations','tfRelationDetails','relationshipEdges','focusRelations','renderLinks','locked_by'])assert.ok(talent.includes(feature),'Missing v2.6 source connection feature '+feature);
