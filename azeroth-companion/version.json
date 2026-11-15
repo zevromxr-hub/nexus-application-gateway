@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Command Experience — Unified Website Milestone",
-  "previous_version": "4.9.0",
+  "subtitle": "Talent Forge Planner — Sovereign Build Architect",
+  "previous_version": "5.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Sovereign Command v5: a new homepage experience with guided paths for first-time players, returning visitors and friends organizing adventures, linking only to existing installed studios.",
-    "Integrated each journey with the current Command Launcher, Character Dominion, Player Guide, Item Atlas, War Room, Progress Command and Sovereign Data Vault; no duplicated studios or account features.",
-    "Added website-shell readability controls for Standard, Comfortable and Large text plus a Quiet and focused homepage atmosphere, stored in a separate local browser preference.",
-    "Expanded accessibility through Skip to main content, current-tool page titles, screen-reader navigation announcements, active navigation markers and a discreet Return to Top control.",
-    "Preserved the complete Assassin Dominion appearance, Quick Deck, update center, on-demand startup, long-list rendering and all pre-v5.0 studio modules.",
-    "Preserved secure Battle.net verification and Cloudflare Worker boundaries without new API requests, OAuth permissions, telemetry, account sync or changes to gameplay storage.",
-    "Maintained the four-resource site delivery, updated the deterministic bundle source manifest for the new website-only module, and added desktop/mobile browser regression coverage.",
-    "Added a dedicated v5 user guide describing journeys, settings, privacy boundaries, accessibility, safe rollback and future maintenance."
+    "Transformed Talent Forge into a complete manual Build Architect workspace with Raid, Mythic+, PvP, Solo, Open World and general planning purposes, role/style annotations and up to 1,800 characters of encounter or rotation notes.",
+    "Added separate user-defined Class, Specialization and Hero point targets, plus a source-aware live rank breakdown and review panel that clearly distinguishes structural issues from unverified Blizzard gameplay rules.",
+    "Added browser-local unsaved draft recovery for ranks, choices, notes and targets, with explicit Restore/Discard controls so a working copy does not silently overwrite a loaded draft.",
+    "Expanded the existing saved library with draft duplication and a human-readable copyable build brief identifying selected talent names and allocated ranks; kept existing comparison, Undo/Redo and JSON export.",
+    "Retained the original v1 saved-draft JSON and browser storage key while adding optional planner metadata, preserving old saves and allowing strict backward-compatible import.",
+    "Hardened imported build JSON with bounded size, specialization identifiers, numeric node/choice limits, cleanup against the current Blizzard-returned tree, and safe local-only persistence.",
+    "Preserved the secure Blizzard Worker, all existing Azeroth studios, v5.0 website experience, source-link analysis, responsive layouts and four-resource delivery without new API endpoints or OAuth permissions.",
+    "Added dedicated desktop Chromium and mobile WebKit browser integration tests with explicitly synthetic talent data, plus pure engine validation tests and maintenance documentation."
   ]
 }
