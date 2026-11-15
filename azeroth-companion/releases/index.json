@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "3.0.0",
+      "title": "My Azeroth — Secure Battle.net Account Portal",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.9.0",
       "title": "Character Farming Operations — Assignments & Session Ledger",
       "date": "2026-11-14"

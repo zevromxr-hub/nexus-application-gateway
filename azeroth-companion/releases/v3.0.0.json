@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "3.0.0",
+  "title": "My Azeroth — Secure Battle.net Account Portal",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Built a secure first-party My Azeroth Battle.net account portal using the official wow.profile authorization-code flow",
+    "Added encrypted short-lived HttpOnly sessions and validated OAuth state with no personal access tokens sent to GitHub Pages",
+    "Added private read-only account character discovery and mount/pet collection summaries",
+    "Added return links from owned characters to the existing public Live Armory and a secure disconnect option",
+    "Preserved all v2.9 public Armory, Talent Forge, Loot Hunter, Farming Operations and browser-local data",
+    "Added Wrangler Worker deployment instructions, encrypted secret setup, redirect URI registration and privacy disclosures",
+    "Staged activation until the owner configures Battle.net OAuth and deploys/tests the Cloudflare Worker"
+  ]
+}
