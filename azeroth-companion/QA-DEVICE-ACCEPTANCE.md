@@ -6,7 +6,10 @@ The GitHub Actions workflow `azeroth-device-audit.yml` loads a locally served
 copy of Azeroth in desktop Chromium and phone-sized Chromium / WebKit. It checks
 the home shell, responsive horizontal overflow, JavaScript exceptions, Quick Deck
 keyboard focus and persistence, appearance settings, update center, tour,
-All Tools search, navigation and phone-to-desktop resizing.
+All Tools search, navigation and phone-to-desktop resizing. **Live Cloudflare
+API requests are stubbed as unavailable during localhost tests**, since the
+Worker rightly restricts requests from unapproved browser origins. The test
+never invents character information, account sessions or successful API calls.
 
 This is **not a physical iPhone Safari test**, a Lighthouse performance score,
 a private Battle.net test, or proof that Blizzard endpoints are available.
