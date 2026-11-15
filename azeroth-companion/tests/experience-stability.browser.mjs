@@ -15,7 +15,7 @@ async function audit(engine,label,mobile){
    body:'{"message":"Private API intentionally disabled during the website-shell audit"}'}));
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.sp-portal-ready').waitFor({timeout:20000});
-  await page.locator('#sxHeroVersion').getByText('Azeroth v5.0.0').waitFor({timeout:12000});
+  await page.locator('#sxHeroVersion').getByText('Azeroth v5.1.0').waitFor({timeout:12000});
   // The favorite editor must not replace its entire list on every checkbox.
   await page.locator('#spCustomize').click();
   await page.evaluate(()=>{
