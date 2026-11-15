@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.3.0",
+  "title": "Talent Forge — Live Specialization Explorer",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced Talent Forge with official Blizzard Retail specialization talent-tree data",
+    "Explore class, specialization and hero talent nodes whenever supplied by Blizzard",
+    "Allocate manual node ranks and explore alternate talent choices within an interactive planning workspace",
+    "Save up to 40 named talent drafts locally with portable JSON import and export",
+    "Retain existing Item Codex, Blizzard character Armory, Loot Hunter, party planning and progression studios",
+    "Use the existing secure Cloudflare API Worker with Blizzard client credentials kept outside the browser",
+    "Clearly identify talent drafts as unvalidated planning records rather than in-game import codes"
+  ]
+}
