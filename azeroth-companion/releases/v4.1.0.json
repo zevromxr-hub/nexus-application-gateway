@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.1.0",
+  "title": "Player Information Center — Complete Guide & Compatibility",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added a dedicated Information & Player Guide tab accessible throughout the companion on PC and iPhone.",
+    "Introduced a nine-step beginner walkthrough with saved checklist, optional Battle.net connection and direct links to working tools.",
+    "Documented sixteen feature areas with searchable descriptions of practical gameplay value, limitations and manual versus Blizzard-reported information.",
+    "Added real-world party, dungeon, raid, farming, equipment and cross-device scenarios for players and friends.",
+    "Added a release panel that retrieves the latest hosted Azeroth companion version and recent releases from validated site metadata.",
+    "Published honest modern Retail WoW support boundaries, a dated 12.1.5 game-patch reference and official Blizzard patch-note links, with Classic and PTR support explicitly unverified.",
+    "Added clear FAQs for secure account login, missing characters, verified-session expiry, manual ownership tracking, backup transfer and browser deployment.",
+    "Published a clearly labeled future roadmap and responsive accessibility-aware guide without modifying account permissions or player records."
+  ]
+}
