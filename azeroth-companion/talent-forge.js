@@ -308,7 +308,7 @@ async function findItemById(id){
   const strings=[['Item level',data.level],['Required level',data.required_level],['Quality',data.quality?.name],['Item class',data.item_class?.name],['Item subclass',data.item_subclass?.name],['Inventory type',data.inventory_type?.name],['Purchase price',data.purchase_price]];
   const stats=Array.isArray(data.preview_item?.stats)?data.preview_item.stats:[];
   output.innerHTML='<div class="tf-source-identity"><strong>'+esc(name)+'</strong>'+sourceLine('Item ID',detailId(data.id))+'</div><div class="tf-item-facts">'+strings.filter(([,v])=>v!==null&&v!==undefined&&v!=='').map(([k,v])=>'<span><b>'+esc(k)+':</b> '+esc(typeof v==='object'?(v.name||'Not available'):v)+'</span>').join('')+'</div>'+
-   (stats.length?'<h5>Reported item stats</h5><ul>'+stats.slice(0,32).map(stat=>'<li>'+esc(stat.type?.name||stat.type?.type||'Stat')+': '+esc(stat.display?.display_string||stat.value??'Not provided')+'</li>').join('')+'</ul>':'<p>No numeric stat breakdown returned in this item response.</p>')+
+   (stats.length?'<h5>Reported item stats</h5><ul>'+stats.slice(0,32).map(stat=>'<li>'+esc(stat.type?.name||stat.type?.type||'Stat')+': '+esc((stat.display?.display_string||stat.value||'Not provided'))+'</li>').join('')+'</ul>':'<p>No numeric stat breakdown returned in this item response.</p>')+
    '<p class="hint">Item properties vary by level, difficulty, bonuses and character context. This is source lookup, not an equipped-character DPS comparison.</p>';
  }catch(e){if(token!==itemRequest)return;output.textContent='Blizzard item lookup unavailable: '+e.message}
 }
