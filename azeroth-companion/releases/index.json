@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "5.8.0",
+      "title": "Visual Build Architect — Independent A/B Scenarios",
+      "date": "2026-11-15"
+    },
+    {
       "version": "5.7.0",
       "title": "Talent Command — Tree Navigator & Point Sandbox",
       "date": "2026-11-15"

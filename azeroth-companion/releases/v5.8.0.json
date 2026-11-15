@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.8.0",
+  "title": "Visual Build Architect — Independent A/B Scenarios",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Two temporary side-by-side A/B planning scenarios seeded from live or locally saved matching-specialization builds, or blank.",
+    "Official node IDs, rank limits, selected rank tooltip details and source-reported links on per-scenario skill inspectors.",
+    "Non-destructive rank editing in both scenarios with true comparison of allocated points and saved choice indices.",
+    "Guided structural and source-link advisory review, never an unsupported talent eligibility or performance verdict.",
+    "Copyable comparison summary, with no writing to existing user saves and no modification to local recovery state.",
+    "Existing Blizzard Worker, existing icon media, source Studio, Talent Command, and PC/iPhone UI remain intact."
+  ]
+}

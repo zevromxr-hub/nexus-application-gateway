@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.7.0",
+  "version": "5.8.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Command — Tree Navigator, Source Paths & Point Sandbox",
-  "previous_version": "5.6.0",
+  "subtitle": "Visual Build Architect — Independent A/B Scenarios & Guided Review",
+  "previous_version": "5.7.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Talent Command Center with all-pool Blizzard talent search, source-ID navigation and selected/review-linked talent filters.",
-    "Added bounded upstream source-path exploration and direct native talent tree spotlight and rank inspection.",
-    "Added a non-destructive point sandbox showing proposed rank, category total and source-link review impact before an explicit user-applied change.",
-    "Added native rank-control handoff so applied previews honor original undo/redo, local auto-recovery and manual talent draft limits.",
-    "Added visible source-link counts to talent nodes and optional focus highlighting for reported connections without changing Blizzard placement or user allocations.",
-    "Retained v5.6 adjustable spell/item artwork, comparisons, official Blizzard data API and existing four-bundle architecture."
+    "Added two isolated talent planning scenarios initialized from live draft, blank allocations or existing saved builds of the same Blizzard specialization.",
+    "Added a skill inspector with returned node IDs, optional Blizzard spell/talent IDs, current scenario ranks, and available official tooltip descriptions.",
+    "Added temporary rank adjustments on each scenario independently, with strict returned rank limits and zero writes to live drafts or saved build storage.",
+    "Added side-by-side comparison of points, categories, node changes, choice-index differences and structural/source-link advisories.",
+    "Added optional clipboard comparison brief and safe handoff to the existing official Talent Forge inspector.",
+    "Preserved four existing website bundles, Blizzard image routes, authentication, saved build formats, and existing native undo/recovery behavior."
   ]
 }
