@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Source Studio — Official Spell Media & Side-by-Side Research",
-  "previous_version": "5.3.0",
+  "subtitle": "Build Intelligence — Source Links, Draft Review & Saved-Loadout Diffs",
+  "previous_version": "5.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added optional official Blizzard spell icons with lazy loading from a documented Cloudflare spell-media route; no guessed icons.",
-    "Added a side-by-side talent comparison for returned rank tooltips, source IDs and manually allocated points.",
-    "Added a two-item research comparison of the actual Blizzard item fields and overlapping numeric stats.",
-    "Kept all talent allocation, saved drafts, existing talent graph, Blizzard login, and four-bundle performance architecture unchanged.",
-    "If the Cloudflare media route is not deployed, images gracefully remain decorative placeholders; manual Cloudflare Worker deployment is required for live spell icons."
+    "Added source-reported upstream/downstream talent connection exploration with exact node IDs and current planned points.",
+    "Added a read-only allocation audit for source rank counts, unknown nodes and zero-point linked upstream talents; advisory flags are not game legality verdicts.",
+    "Added side-by-side comparison of any two saved talent drafts or current working draft, including choice changes and point deltas.",
+    "Improved desktop/iPhone research panels and navigation to existing official skill inspection without modifying existing draft keys.",
+    "Fixed repeated DOM writes for unavailable spell icons while preserving the live Blizzard spell-media integration and four-bundle architecture."
   ]
 }
