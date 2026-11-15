@@ -99,6 +99,7 @@ async function run(engine,phone){
   assert.ok(currentRank.includes('2 / 2'),'Restored source rank must match');
   const bad={format:'nexus-azeroth-talent-draft-v1',identity:'us/../auth',name:'bad',rankByNode:{1001:2}};
   await page.locator('#tfImport').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(bad))});
+  await page.locator('#tfStatus').getByText('Import failed',{exact:false}).waitFor({state:'visible',timeout:7000});
   assert.ok((await page.locator('#tfStatus').textContent()).includes('Import failed'),'Unsafe imports must be rejected');
   const finish=await page.evaluate(()=>({w:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
   assert.ok(finish.w<=finish.client+2,'Planner should not create horizontal overflow '+JSON.stringify(finish));
