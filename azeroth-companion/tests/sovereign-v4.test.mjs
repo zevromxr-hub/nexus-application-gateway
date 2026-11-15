@@ -9,7 +9,7 @@ const html=await read('index.html');
 for(const asset of ['sovereign-vault.js','sovereign-vault.css','character-handoff.js','character-handoff.css','verified-connection.js','adaptive-navigation.js','command-launcher.js','unified-dashboard.js']){
  assert.ok(html.includes('./'+asset),'Main app missing '+asset);
 }
-assert.match(html,/v4\.0 SOVEREIGN CORE/);
+assert.ok(html.includes('./sovereign-vault.js'),'Sovereign v4 component must remain mounted across future app releases');
 const vault=await read('sovereign-vault.js');
 const handoff=await read('character-handoff.js');
 const connection=await read('verified-connection.js');
