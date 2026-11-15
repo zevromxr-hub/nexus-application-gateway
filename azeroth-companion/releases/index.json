@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.7.1",
+      "title": "Talent Tree Layout Reliability Patch",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.7.0",
       "title": "Talent Path Intelligence — Source-Aware Planning",
       "date": "2026-11-14"
