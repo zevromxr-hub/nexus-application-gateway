@@ -96,6 +96,13 @@ if(!consumeReturn()){
  const stored=safeRead();
  if(stored){void verify(stored)}
 }
+document.addEventListener('nexus:account-status',e=>{
+ if(!personal)return;
+ const d=e.detail||{};
+ if(d.state==='verified')personal.textContent='Connected · Verified ('+(d.region||'').toUpperCase()+'). Verification is recent and time-limited; click Verify Again to refresh.';
+ else if(d.state==='checking')personal.textContent='Checking your Battle.net account connection securely…';
+ else personal.textContent='No current verified session on this website. Open the secure My Azeroth portal to sign in, then choose Verify & Return.';
+});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)expire()});
 window.addEventListener('pageshow',expire);
 })();
