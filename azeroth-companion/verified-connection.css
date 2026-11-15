@@ -1,0 +1,6 @@
+/* NEXUS | AZEROTH v3.8 verified status: colors correspond to confirmed evidence. */
+.ud-account-badge.ud-verified{border-color:#7ccfa795;background:linear-gradient(120deg,#13372dcc,#102d31dd);color:#b5f4d7}
+.ud-account-badge.ud-verified .ud-dot{background:#71e2aa;box-shadow:0 0 0 3px #71e2aa35,0 0 12px #55dc9a7a}
+.ud-account-badge.ud-checking{border-color:#c6b48399;color:#e9d5aa}
+.ud-account-badge.ud-checking .ud-dot{background:#e0bf83;box-shadow:0 0 0 3px #e0bf8328}
+.ud-account-badge.ud-unverified .ud-dot{background:#b7a7a0;box-shadow:0 0 0 3px #b7a7a029}
