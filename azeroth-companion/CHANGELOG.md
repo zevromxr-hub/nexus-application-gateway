@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.7.0 · 2026-11-14 — Talent Path Intelligence
+
+- **Source-aware path dashboard:** displays manually planned talents, source-linked nodes with ranks on both ends, zero-rank upstream review flags, and references not resolved within the current talent category.
+- **Upstream path explorer:** selecting RELATIONS inspects upstream talent nodes through Blizzard-reported `locked_by` references; traversal is cycle-safe and depth-limited.
+- **Review-only filter:** optionally focus the tree on planned talents whose source-reported incoming link has no manually planned ranks at the other end.
+- **Faithful data separation:** no invented dependency edges, prerequisites or item information. An apparent missing upstream allocation is a review prompt, not proof a talent is locked or invalid in-game.
+- **Persistence:** all existing v2.3–v2.6 talent drafts retain their previous JSON format and local storage key. Prior Warcraft studios remain available.
+
+**Important limits:** Blizzard API talent data may be incomplete or contain cross-category references. This release does not validate actual talent budgets, prerequisites, levels, hero paths or in-game loadout import strings. No Cloudflare Worker changes are required.
+
 ## v2.6.0 · 2026-11-14 — Talent Connections
 
 - **Reported talent links:** display connections based on the `locked_by` node IDs in Blizzard's response, where these are provided.
