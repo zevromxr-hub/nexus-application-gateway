@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.9.0",
+      "title": "Character Farming Operations — Assignments & Session Ledger",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.8.0",
       "title": "Armory Command Bridge — Connected Gear & Loot Goals",
       "date": "2026-11-14"
