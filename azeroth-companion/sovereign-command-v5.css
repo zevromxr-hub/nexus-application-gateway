@@ -1,0 +1,49 @@
+/* NEXUS | AZEROTH v5.0 — SOVEREIGN COMMAND EXPERIENCE
+   Website shell only; never changes the studios' own layout rules or data. */
+.nx-command-v5{min-width:0;display:grid;gap:17px;padding:clamp(17px,2.5vw,25px);border:1px solid var(--sx-accent-edge,#d4aa6e5c);background:linear-gradient(130deg,#0e1b2af2,#132334e8);border-radius:19px;box-shadow:0 12px 35px #0003}
+.nx-command-top{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.nx-command-top h3{font-size:clamp(19px,2vw,25px);color:#f4ddbb;margin:5px 0 7px;letter-spacing:-.3px}
+.nx-command-top p{font-size:12px;color:#c1cbd4;line-height:1.8;max-width:760px;margin:0}
+.nx-command-top>button{flex:none;min-height:43px;font-size:11px;color:var(--sx-accent);background:#203040;border:1px solid var(--sx-accent-edge)}
+.nx-command-top>button span{font-size:18px;margin-left:4px}
+.nx-path-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-width:0}
+.nx-path-tabs button{min-height:51px;display:flex;justify-content:center;align-items:center;gap:9px;padding:10px 12px;border:1px solid #e6cc9c3e;border-radius:10px;font-size:11px;letter-spacing:.3px;color:#d4e0e4;background:#142432;white-space:normal}
+.nx-path-tabs button span{color:var(--sx-accent);font-size:17px}
+.nx-path-tabs button[aria-pressed=true]{background:var(--sx-accent-soft);border-color:var(--sx-accent);color:#fff2d7;box-shadow:inset 0 -2px var(--sx-accent)}
+.nx-command-story{display:grid;gap:9px;padding:19px;background:linear-gradient(130deg,#101e2de5,#0b1522d9);border:1px solid #ffffff22;border-radius:13px;min-width:0}
+.nx-command-story h4{font-size:20px;color:#f2d7a9;margin:0}
+.nx-command-story>p{font-size:12px;line-height:1.75;color:#bfcdd4;max-width:790px;margin:0 0 4px}
+.nx-journey-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.nx-journey-steps button{min-height:132px;display:flex;flex-direction:column;align-items:flex-start;gap:9px;position:relative;text-align:left;padding:14px 31px 14px 14px;border:1px solid #b0a68b42;background:#182a3a;border-radius:11px;min-width:0}
+.nx-journey-steps button:hover{background:#243e51;border-color:var(--sx-accent)}
+.nx-journey-steps button strong{font-size:12px;color:#e9d6af;overflow-wrap:anywhere}
+.nx-journey-steps button small{font-size:11px;line-height:1.7;color:#b4c4d0;overflow-wrap:anywhere}
+.nx-step-arrow{position:absolute;top:10px;right:11px;color:var(--sx-accent);font-size:17px}
+.nx-command-trust{display:flex;gap:8px 20px;flex-wrap:wrap;color:#bbcdd4;font-size:10px;line-height:1.6}
+.nx-command-trust strong{color:var(--sx-accent)}
+.nx-display-settings{margin:18px 0 6px;padding:15px;border:1px solid #d7ba8555;border-radius:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px;min-width:0;background:#10212d}
+.nx-display-settings legend{color:var(--sx-accent,#e7c58b);font-size:12px;font-weight:850;padding:0 7px}
+.nx-display-settings label{font-size:12px;font-weight:760;color:#e8d1a8;display:grid;gap:8px;min-width:0}
+.nx-display-settings select{min-height:44px;padding:10px;border:1px solid #d5b98c5c;border-radius:10px;background:#0a1927;color:#f2f1e9;width:100%;font-size:12px}
+.nx-display-settings p{grid-column:1/-1;margin:0;color:#afc2cb;font-size:11px;line-height:1.7}
+.nx-skip-link{position:fixed;z-index:950;top:10px;left:12px;transform:translateY(-160%);padding:12px 15px;background:#f5dfaf;color:#111c23;border:2px solid #3e6c83;border-radius:10px;font-weight:850;font-size:13px}
+.nx-skip-link:focus{transform:translateY(0)}
+.nx-screen-reader-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.nx-to-top{position:fixed;right:22px;bottom:24px;z-index:185;display:grid;place-items:center;width:45px;height:45px;border-radius:50%;border:1px solid var(--sx-accent-edge);box-shadow:0 8px 25px #0009;color:#f0d4a2;background:#1b2f3cf5;font-size:22px;padding:0}
+.nx-to-top[hidden]{display:none!important}
+.nx-to-top:hover{border-color:var(--sx-accent);background:#2b4556}
+body[data-nx-home=quiet] .sx-welcome{background:linear-gradient(115deg,#101c29,#142432)!important;box-shadow:none}
+body[data-nx-home=quiet] .sx-art-seal,body[data-nx-home=quiet] .sx-welcome::after{display:none!important}
+body[data-nx-home=quiet] .nx-command-v5{background:#101e2b;box-shadow:none}
+body[data-nx-home=quiet] .nx-command-story{background:#10202e}
+body[data-nx-text=comfortable] .sx-experience p,body[data-nx-text=comfortable] .sp-deck p,body[data-nx-text=comfortable] .nx-command-v5 p{font-size:13px;line-height:1.9}
+body[data-nx-text=large] .sx-experience p,body[data-nx-text=large] .sp-deck p,body[data-nx-text=large] .nx-command-v5 p{font-size:15px;line-height:1.9}
+body[data-nx-text=comfortable] .sidebar .nav .sx-nav-items button[data-view],body[data-nx-text=comfortable] .nx-journey-steps button strong{font-size:13px}
+body[data-nx-text=large] .sidebar .nav .sx-nav-items button[data-view],body[data-nx-text=large] .nx-journey-steps button strong{font-size:15px}
+body[data-nx-text=large] .nx-journey-steps button small,body[data-nx-text=large] .nx-command-trust{font-size:12px}
+body.nx-v5-ready .nx-command-v5 button:focus-visible,body.nx-v5-ready .nx-to-top:focus-visible,body.nx-v5-ready .nx-display-settings select:focus-visible{outline:2px solid #8ce3dc;outline-offset:3px}
+@media(max-width:1050px){.nx-journey-steps{grid-template-columns:1fr}.nx-journey-steps button{min-height:88px}}
+@media(max-width:800px){.nx-to-top{bottom:calc(88px + env(safe-area-inset-bottom,0px));right:13px;width:42px;height:42px}.nx-command-top{align-items:flex-start;flex-wrap:wrap}.nx-command-top>button{width:100%}.nx-command-trust{display:grid;gap:6px}}
+@media(max-width:600px){.nx-command-v5{padding:15px;gap:12px}.nx-path-tabs{grid-template-columns:1fr;gap:6px}.nx-path-tabs button{min-height:42px;justify-content:flex-start;font-size:11px}.nx-command-story{padding:14px}.nx-command-story h4{font-size:18px}.nx-display-settings{grid-template-columns:1fr}.nx-journey-steps button{min-height:91px}}
+@media(prefers-reduced-motion:reduce){.nx-skip-link,.nx-to-top,.nx-command-v5 *{transition:none!important;animation:none!important}}
+body[data-sx-motion=reduce] .nx-skip-link,body[data-sx-motion=reduce] .nx-to-top,body[data-sx-motion=reduce] .nx-command-v5 *{transition:none!important;animation:none!important}
