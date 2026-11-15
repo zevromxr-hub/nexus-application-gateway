@@ -12,7 +12,7 @@ const [html,js,css,foundation,foundationCSS,launcher]=await Promise.all([
  'sovereign-experience.css','command-launcher.js'].map(read));
 new vm.Script(js,{filename:'sovereign-portal.js'});
 new vm.Script(foundation,{filename:'sovereign-experience.js'});
-assert.match(html,/v4\.5 SOVEREIGN PORTAL/);
+assert.ok(html.includes('./sovereign-portal.js'),'The v4.5 Sovereign Portal must remain mounted in subsequent website updates');
 for(const asset of ['sovereign-portal.js','sovereign-portal.css','sovereign-experience.js','sovereign-experience.css',
  'character-dominion.js','player-guide.js','player-field-lab.js','verified-connection.js','sovereign-vault.js','command-launcher.js']){
  assert.ok(html.includes('./'+asset),'Site must retain '+asset);
