@@ -62,13 +62,21 @@ categorize();
 // Keep the existing iPhone All Tools filter useful after moving links into groups.
 // This reads the original search field without modifying the adaptive-navigation studio.
 const legacySearch=document.querySelector('.ac-search-wrap input');
+const sxGroups=[...nav.querySelectorAll('.sx-nav-group')];
+let searchFrame=0;
 function syncMobileSearch(){
+ if(searchFrame){cancelAnimationFrame(searchFrame);searchFrame=0}
  const filtering=Boolean(legacySearch?.value.trim());
- for(const group of nav.querySelectorAll('.sx-nav-group')){
-  group.hidden=filtering&&![...group.querySelectorAll('button[data-view]')].some(b=>!b.hidden);
+ for(const group of sxGroups){
+  const hidden=filtering&&!group.querySelector('.sx-nav-items button[data-view]:not([hidden])');
+  if(group.hidden!==hidden)group.hidden=hidden;
  }
 }
-legacySearch?.addEventListener('input',()=>requestAnimationFrame(syncMobileSearch));
+function scheduleMobileSearch(){
+ if(searchFrame)return;
+ searchFrame=requestAnimationFrame(()=>{searchFrame=0;syncMobileSearch()});
+}
+legacySearch?.addEventListener('input',scheduleMobileSearch);
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-ac-more]'))syncMobileSearch();
 });
@@ -81,7 +89,7 @@ sxMobileMedia.addEventListener?.('change',()=>{
   legacySearch.value='';
   legacySearch.dispatchEvent(new Event('input',{bubbles:true}));
  }
- requestAnimationFrame(syncMobileSearch);
+ scheduleMobileSearch();
 });
 const drawerObserver=new MutationObserver(rs=>{
  if(rs.some(r=>r.attributeName==='class'&&document.body.classList.contains('ac-menu-open')))
@@ -102,16 +110,21 @@ nav.addEventListener('click',e=>{
 });
 function recordVisit(view){
  if(!/^[a-z0-9-]{2,30}$/.test(view))return;
- data.recent=[view,...data.recent.filter(x=>x!==view)].slice(0,8);save();
- renderRecent();
- requestAnimationFrame(updateSelectedView);
+ const next=[view,...data.recent.filter(x=>x!==view)].slice(0,8);
+ if(next.join('|')!==data.recent.join('|')){
+  data.recent=next;save();renderRecent();
+ }
+ scheduleSelectedView();
 }
 document.addEventListener('click',e=>{
  const jump=e.target.closest('[data-jump]');if(jump)recordVisit(jump.dataset.jump);
 });
+let selectedFrame=0,lastSelectedView='';
 function updateSelectedView(){
  const active=nav.querySelector('button[data-view].active');
  const id=active?.dataset.view||'overview';
+ if(lastSelectedView===id&&document.body.classList.contains('sx-home')===(id==='overview'))return;
+ lastSelectedView=id;
  document.body.classList.toggle('sx-home',id==='overview');
  const wrapper=active?.closest('.sx-nav-group');
  if(wrapper&&wrapper.dataset.collapsed==='true'&&window.matchMedia('(min-width:801px)').matches){
@@ -121,13 +134,18 @@ function updateSelectedView(){
   data.collapsed=data.collapsed.filter(x=>x!==g);save();
  }
 }
+function scheduleSelectedView(){
+ if(selectedFrame)return;
+ selectedFrame=requestAnimationFrame(()=>{selectedFrame=0;updateSelectedView()});
+}
 const activeObserver=new MutationObserver(records=>{
- if(records.some(x=>x.type==='attributes'&&x.attributeName==='class'))requestAnimationFrame(updateSelectedView);
+ if(records.some(x=>x.type==='attributes'&&x.attributeName==='class'))scheduleSelectedView();
 });
 activeObserver.observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
+document.addEventListener('nexus:view-activated',scheduleSelectedView);
 function navigate(id){
  const btn=buttonMap().get(id);if(!btn)return;
- btn.click();recordVisit(id);
+ btn.click();
  window.scrollTo({top:0,behavior:'instant'});
 }
 const root=document.createElement('div');root.id='sxExperience';root.className='sx-experience';
@@ -141,10 +159,14 @@ overview.prepend(root);
 const legacyStats=main.querySelector(':scope > .stats');
 if(legacyStats)root.after(legacyStats);
 function labelFor(id){const b=buttonMap().get(id);return b?b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||id:id}
+let recentSignature=null;
 function renderRecent(){
  const region=$('sxRecent');if(!region)return;
  const launch=(()=>{try{const v=JSON.parse(localStorage.getItem('nexus_azeroth_quick_launch_v36')||'null');return Array.isArray(v?.pinned)?v.pinned.filter(x=>typeof x==='string').slice(0,3):[]}catch(_){return[]}})();
- const keys=[...new Set([...launch,...data.recent.filter(x=>x!=='overview')])].filter(id=>buttonMap().has(id)).slice(0,6);
+ const available=buttonMap(),keys=[...new Set([...launch,...data.recent.filter(x=>x!=='overview')])].filter(id=>available.has(id)).slice(0,6);
+ const signature=keys.map(id=>id+':'+(launch.includes(id)?'p':'r')).join('|');
+ if(signature===recentSignature)return;
+ recentSignature=signature;
  region.replaceChildren();
  if(!keys.length){const p=document.createElement('p');p.className='sx-muted';p.textContent='No recent tools yet. Try Character Dominion, Item Atlas, or the Information & Guide.';region.append(p);return}
  for(const id of keys){const btn=document.createElement('button');btn.type='button';btn.dataset.sxGo=id;
