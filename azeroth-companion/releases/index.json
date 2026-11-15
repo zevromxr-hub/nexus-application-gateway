@@ -1,8 +1,13 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-14",
+  "updated": "2026-11-15",
   "releases": [
+    {
+      "version": "3.9.0",
+      "title": "Assassin Dominion & Verified Connected Player",
+      "date": "2026-11-15"
+    },
     {
       "version": "3.4.0",
       "title": "Progress Command — Unified Planning Intelligence",

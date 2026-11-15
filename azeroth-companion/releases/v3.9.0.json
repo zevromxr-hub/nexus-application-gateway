@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "3.9.0",
+  "title": "Assassin Dominion & Verified Connected Player",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Refreshed the companion with the dark Assassin Dominion theme, custom artwork, app icons and iPhone Home Screen support.",
+    "Improved navigation on PC and iPhone with adaptive sidebar scrolling, bottom navigation, responsive layouts and accessibility.",
+    "Added a searchable Command Launcher with favorites, recent tools and Ctrl/Cmd+K shortcut.",
+    "Introduced the Unified Character Dashboard for locally tracked item targets, loot goals and farming activity.",
+    "Implemented secure Battle.net connection verification through short-lived Cloudflare receipts; no OAuth tokens are exposed to GitHub Pages.",
+    "Corrected verification for Battle.net accounts without World of Warcraft characters or account collection data.",
+    "Added a Connected Player view with verified region, last check, expiration countdown and one-click recheck; verification is revalidated after refresh.",
+    "Restored coherent release metadata so successful validated Azeroth version updates can trigger automated Discord announcements."
+  ]
+}
