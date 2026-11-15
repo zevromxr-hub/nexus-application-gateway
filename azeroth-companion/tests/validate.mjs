@@ -27,8 +27,8 @@ const utility=await read('azeroth-companion/player-utility.js');new vm.Script(ut
 for(const name of ['Party Architect','Weekly Vault','Devourer','puImportParty','puCopyParty','puExportVault','puCharacter','puPartyFeedback'])assert.ok(utility.includes(name),'Missing player utility '+name);
 assert.ok(!utility.includes('fetch('),'Player utility must work locally without third-party requests');
 const css=await read('azeroth-companion/player-utility.css');assert.ok(css.includes('@media(max-width:760px)'));
-assert.match(html,/connected-armory\\.js/);
-assert.match(html,/connected-armory\\.css/);
+assert.match(html,/connected-armory\.js/);
+assert.match(html,/connected-armory\.css/);
 const live=await read('azeroth-companion/connected-armory.js');new vm.Script(live);
 assert.ok(live.includes('nexus-azeroth-api.zevromxr.workers.dev'));
 for(const part of ['cxCharacterForm','cxItemForm','cxEquipment','cxWishlist','cxRecent','/api/item/','/api/character/'])assert.ok(live.includes(part),'Missing connected feature '+part);
