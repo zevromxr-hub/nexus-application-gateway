@@ -91,12 +91,23 @@ function decorate(){
   if(n++>=36)break;
   const btn=row.querySelector('[data-cxopen]');if(btn)iconSlot(row,btn.dataset.cxopen,btn.dataset.cxregion);
  }
+ const comparison=document.getElementById('tfLabGearResults');
+ if(comparison?.querySelector('table')&&!comparison.querySelector('.nx-gear-compare-icons')){
+  const region=regions.has(document.getElementById('tfRegion')?.value)?document.getElementById('tfRegion').value:'us';
+  const ids=[document.getElementById('tfLabItemA')?.value,document.getElementById('tfLabItemB')?.value];
+  const deck=document.createElement('div');deck.className='nx-gear-compare-icons';
+  ids.forEach((id,i)=>{if(!validId(id))return;const card=document.createElement('div');card.className='nx-gear-compare-item';
+   const caption=document.createElement('span');caption.textContent='Item '+(i?'B':'A')+' · #'+id;
+   card.append(caption);deck.append(card);iconSlot(card,id,region);
+  });
+  comparison.prepend(deck);
+ }
  for(const card of document.querySelectorAll('#cxItemResult .cx-item')){
   const match=card.querySelector('[data-cxsave]');if(match)iconSlot(card,match.dataset.cxsave,match.dataset.cxregion);
  }
 }
 let scheduled=false;const mutation=new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;decorate()})});
-for(const id of ['atlasSearchResults','atlasIdResult','atlasBoard','cxEquipment','cxItemResult','tfTree']){
+for(const id of ['atlasSearchResults','atlasIdResult','atlasBoard','cxEquipment','cxItemResult','tfTree','tfLabGearResults']){
  const host=document.getElementById(id);if(host)mutation.observe(host,{childList:true});
 }
 decorate();
