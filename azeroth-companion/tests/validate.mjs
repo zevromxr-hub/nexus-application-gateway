@@ -54,6 +54,14 @@ for(const item of sources.items)assert.ok(Number.isSafeInteger(item.id)&&/^https
 
 assert.match(html,/talent-forge\.js/);
 assert.match(html,/talent-forge\.css/);
+const atlas=await read('azeroth-companion/talent-canvas-v5.3.js');
+new vm.Script(atlas);
+assert.match(html,/talent-canvas-v5\\.3\\.js/);
+assert.match(html,/talent-canvas-v5\\.3\\.css/);
+for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap','applyScale','drawMap','MutationObserver'])
+ assert.ok(atlas.includes(name),'Talent Atlas missing '+name);
+const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
+assert.ok(atlasStyle.includes('touch-action:none')&&atlasStyle.includes('.tf-canvas-stage'));
 const talent=await read('azeroth-companion/talent-forge.js');
 new vm.Script(talent);
 for(const required of ['tfRegion','tfSpec','tfTree','tfSave','tfImport','tfExport','tfSaved','class_talent_nodes','spec_talent_nodes','hero_talent_trees','/api/talent-index/','/api/talent-tree/'])assert.ok(talent.includes(required),'Talent Forge missing '+required);
