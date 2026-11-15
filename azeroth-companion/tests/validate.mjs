@@ -51,4 +51,14 @@ for(const name of ['lootCatalog','lootBoard','lootWish','lootExport','lootImport
 const sources=JSON.parse(await read('azeroth-companion/loot-sources.json'));
 assert.ok(Array.isArray(sources.items)&&sources.items.length>=4);
 for(const item of sources.items)assert.ok(Number.isSafeInteger(item.id)&&/^https:\/\/(www\.)?(wowhead\.com|warcraft\.wiki\.gg)\//.test(item.guide)&&Array.isArray(item.steps));
+
+assert.match(html,/talent-forge\.js/);
+assert.match(html,/talent-forge\.css/);
+const talent=await read('azeroth-companion/talent-forge.js');
+new vm.Script(talent);
+for(const required of ['tfRegion','tfSpec','tfTree','tfSave','tfImport','tfExport','tfSaved','class_talent_nodes','spec_talent_nodes','hero_talent_trees','/api/talent-index/','/api/talent-tree/'])assert.ok(talent.includes(required),'Talent Forge missing '+required);
+assert.ok(!talent.includes('BLIZZARD_CLIENT_SECRET')&&!talent.includes('BLIZZARD_CLIENT_ID'));
+assert.match(backend,/talent-index/);
+assert.match(backend,/talent-tree/);
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
