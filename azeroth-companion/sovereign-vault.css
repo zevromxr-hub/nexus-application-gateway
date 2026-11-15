@@ -1,0 +1,15 @@
+/* NEXUS | AZEROTH v4.0 Sovereign Data Vault */
+.sv-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.sv-list,.sv-preview{display:grid;gap:8px;margin:12px 0}
+.sv-preview{min-height:92px;max-height:400px;overflow:auto}
+.sv-record{display:flex;align-items:center;gap:11px;background:#0c1722c9;border:1px solid #d5ac5d32;border-radius:11px;padding:11px;cursor:pointer;min-width:0}
+.sv-record input{width:17px;height:17px;accent-color:#d5a66f;flex:none}
+.sv-record span{display:grid;gap:4px;min-width:0}
+.sv-record strong{font-size:12px;color:#e7d0a6}
+.sv-record small{font-size:11px;color:#aebbc6;overflow-wrap:anywhere}
+.sv-actions{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 10px}
+.sv-actions button{min-height:42px}
+.sv-actions button:disabled{opacity:.44;cursor:not-allowed}
+#sovereignDataVault .field{display:grid;gap:12px;font-size:12px}
+#sovereignDataVault input[type=file]{width:100%;max-width:100%;font-size:12px}
+@media(max-width:850px){.sv-grid{grid-template-columns:minmax(0,1fr)}.sv-actions button{flex:1}}
