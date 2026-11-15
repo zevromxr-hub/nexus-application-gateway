@@ -1,6 +1,5 @@
-/* NEXUS | AZEROTH COMPANION v3.1 — Cloudflare single-file Worker source.
- * Preserve BLIZZARD_CLIENT_ID, BLIZZARD_CLIENT_SECRET, AZEROTH_SESSION_SECRET as encrypted settings.
- * Do not paste credential values into the source code.
+/* NEXUS | AZEROTH COMPANION v3.1 — single-file Worker for Cloudflare Dashboard.
+ * Preserve existing encrypted BLIZZARD_CLIENT_ID, BLIZZARD_CLIENT_SECRET and AZEROTH_SESSION_SECRET.
  */
 /* NEXUS | My Azeroth first-party private account portal.
  * Backend: Cloudflare Workers, user OAuth authorization code and wow.profile.
@@ -97,7 +96,7 @@ async function handlePersonal(request,env,url){
  }catch(e){return response({success:false,message:String(e?.message||'Account data unavailable').slice(0,180)},Number(e?.status)||502)}
 }
 
-/* NEXUS Azeroth API v3.0 — Cloudflare Workers module
+/* NEXUS Azeroth API v3.1 — Cloudflare Workers module
  * Deploy this file through Cloudflare's Worker editor. Never insert credentials here.
  * BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET stay in encrypted Worker secrets.
  */
@@ -135,7 +134,7 @@ export default {
   if(u.pathname==='/account'||u.pathname==='/account/privacy'||u.pathname==='/account/app.js'||u.pathname.startsWith('/auth/')||u.pathname.startsWith('/api/me/'))return handlePersonal(request,env,u);
   if(request.method==='OPTIONS')return json({ok:true});
   if(request.method!=='GET')return fail('Method not allowed',405);
-  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.0.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
+  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.1.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
   const p=u.pathname.split('/').filter(Boolean);
   if(p[0]!=='api'||p.length>6)return fail('Unknown route',404);
   const type=p[1],region=p[2],arg=p[3],arg2=p[4];
