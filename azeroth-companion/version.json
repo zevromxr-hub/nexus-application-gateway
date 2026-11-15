@@ -1,20 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Warcraft Overdrive — War Room, Routes & Player Labs",
-  "previous_version": "1.0.0",
+  "subtitle": "Party Architect — Player Utility Expansion",
+  "previous_version": "1.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "War Room tracks weekly objectives with manual resets and raid encounter strategy notes",
-    "Dungeon Route Architect stores ordered path and pull plans with shareable copy text",
-    "Profession Profit Lab calculates per-material crafting costs and fee-adjusted estimated gold profits",
-    "Gear Comparison Laboratory compares equipment using custom stat weights and saves comparisons",
-    "Release Center displays live version, changelog and historical releases",
-    "Upgraded Warcraft-only responsive styling on desktop and iPhone",
-    "Added independent advanced-data JSON export and import while preserving v1.0 local profiles and backups"
+    "New five-player Party Architect with selectable World of Warcraft classes and specializations, including Devourer Demon Hunter",
+    "Party role validation highlights standard one-tank, one-healer, three-damage coverage and selected class-wide utility examples",
+    "Copy a group summary or export/import a portable party JSON for coordination with friends",
+    "Per-character weekly activity tracker for dungeons, raids, and world activities with custom player-selected targets",
+    "Character selector reads existing Genesis profiles while preserving every prior character, build, route, collection, and gear note",
+    "Quick Reference gives direct links to official Warcraft resources and established external tools",
+    "Dedicated responsive Party Architect and Weekly Vault panels for desktop and iPhone; no game-client automation",
+    "Independent Azeroth release versioning, validation and Discord announcement behavior remain unchanged"
   ]
 }
