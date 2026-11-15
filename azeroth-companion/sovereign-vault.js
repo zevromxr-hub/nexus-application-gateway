@@ -28,13 +28,27 @@ const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 let candidate=null;
 function read(key){try{return localStorage.getItem(key)}catch(_){return null}}
 function shape(v,type){return type==='array'?Array.isArray(v):v!==null&&typeof v==='object'&&!Array.isArray(v)}
-function valid(value,type){if(typeof value!=='string'||value.length>4*1024*1024)return false;try{return shape(JSON.parse(value),type)}catch(_){return false}}
+function schema(key,x){
+ if(key==='nexus_azeroth_companion_genesis_v1')return ['characters','builds','tasks','collections'].every(k=>Array.isArray(x[k]));
+ if(key==='nexus_azeroth_overdrive_v1')return ['routes','encounters','recipes','gear','weeklies'].every(k=>Array.isArray(x[k]));
+ if(key==='nexus_azeroth_player_utility_v1')return Array.isArray(x.party)&&x.party.length===5;
+ if(key==='nexus_azeroth_connected_v2')return Array.isArray(x.wishlist)&&Array.isArray(x.recent);
+ if(key==='nexus_azeroth_armory_bookmarks_v1')return x.length<=300&&x.every(p=>p&&typeof p==='object');
+ if(key==='nexus_azeroth_loot_hunter_v1')return x.length<=200&&x.every(p=>p&&Number.isSafeInteger(Number(p.id))&&Number(p.id)>0&&typeof p.name==='string');
+ if(key==='nexus_azeroth_farm_operations_v1')return Array.isArray(x.characters)&&Array.isArray(x.sessions)&&x.assignments&&typeof x.assignments==='object';
+ if(key==='nexus_azeroth_item_atlas_v1')return x.length<=5000&&x.every(p=>p&&Number.isSafeInteger(Number(p.id))&&Number(p.id)>0&&['us','eu','kr','tw'].includes(p.region));
+ if(key==='nexus_azeroth_character_targets_v1')return Array.isArray(x.characters)&&Array.isArray(x.targets);
+ if(key==='nexus_azeroth_talent_forge_v1')return x.length<=40&&x.every(p=>p&&typeof p.name==='string'&&typeof p.identity==='string'&&p.rankByNode&&typeof p.rankByNode==='object');
+ if(key==='nexus_azeroth_quick_launch_v36')return Array.isArray(x.pinned)&&Array.isArray(x.recent);
+ return false;
+}
+function valid(value,type,key){if(typeof value!=='string'||value.length>4*1024*1024)return false;try{const data=JSON.parse(value);return shape(data,type)&&schema(key,data)}catch(_){return false}}
 function getSelected(){return [...section.querySelectorAll('input[type="checkbox"]:checked')].map(x=>x.dataset.key)}
 function render(){
  const count=STORE.filter(([key])=>read(key)!==null).length;
  section.innerHTML=STORE.map(([key,label,type])=>{
   const raw=read(key),exists=raw!==null;
-  const stored=exists&&valid(raw,type);
+  const stored=exists&&valid(raw,type,key);
   return '<label class="sv-record"><input type="checkbox" data-key="'+esc(key)+'" '+(stored?'checked':'disabled')+'><span><strong>'+esc(label)+'</strong><small>'+(stored?'Saved locally · '+new Blob([raw]).size.toLocaleString()+' bytes':exists?'Unreadable local record (excluded)':'No local record yet')+'</small></span></label>';
  }).join('');
  status.textContent=count+' / '+STORE.length+' supported modules contain records on this device. Missing or unreadable modules are never added to exports.';
@@ -48,7 +62,7 @@ function download(data){
 }
 $('svExport').addEventListener('click',()=>{
  const chosen=getSelected(),items={};
- for(const key of chosen){const type=STORE.find(x=>x[0]===key)?.[2],raw=read(key);if(raw!==null&&valid(raw,type))items[key]=JSON.parse(raw)}
+ for(const key of chosen){const type=STORE.find(x=>x[0]===key)?.[2],raw=read(key);if(raw!==null&&valid(raw,type,key))items[key]=JSON.parse(raw)}
  if(!Object.keys(items).length){status.textContent='Select at least one saved module to export.';return}
  download({format:FORMAT,app:'NEXUS | AZEROTH',version:'4.0.0',exportedAt:new Date().toISOString(),items});
 });
@@ -63,7 +77,7 @@ $('svFile').addEventListener('change',async e=>{
   if(!data||data.format!==FORMAT||!data.items||typeof data.items!=='object'||Array.isArray(data.items))throw Error('Not a supported Sovereign Vault backup');
   const keys=Object.keys(data.items);
   if(keys.length<1||keys.length>STORE.length||keys.some(k=>!STORE.some(x=>x[0]===k)))throw Error('Unknown or missing data sections');
-  const records=keys.map(key=>{const type=STORE.find(x=>x[0]===key)[2];const value=JSON.stringify(data.items[key]);if(!valid(value,type))throw Error('Invalid '+key+' data');return{key,value}});
+  const records=keys.map(key=>{const type=STORE.find(x=>x[0]===key)[2];const value=JSON.stringify(data.items[key]);if(!valid(value,type,key))throw Error('Invalid '+key+' data');return{key,value}});
   candidate=records;
   preview.innerHTML='<strong>Preview — '+records.length+' section(s)</strong><p class="muted">Imported '+esc(data.exportedAt||'unknown date')+'. Existing local data in these sections will be replaced:</p>'+records.map(r=>'<label class="sv-record"><input type="checkbox" data-restore="'+esc(r.key)+'" checked><span>'+esc(STORE.find(x=>x[0]===r.key)[1])+'</span></label>').join('');
   $('svRestore').disabled=false;$('svCancel').disabled=false;
