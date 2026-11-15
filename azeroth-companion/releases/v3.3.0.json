@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "3.3.0",
+  "title": "Character Progression — Equipped Gear & Personal Targets",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added a signed-in My Azeroth equipment viewer showing Blizzard-reported currently equipped items for account-listed characters",
+    "Restricted personal gear requests to the authorized Battle.net account's own character list; no private gear or tokens are sent to GitHub Pages",
+    "Added independent Character Targets planner with Atlas item assignments, per-character priorities, manual completion flags and notes",
+    "Connected the planner to browser-local Farming Operations character shortcuts and existing Item Atlas saved items without rewriting either dataset",
+    "Added standalone JSON export/import for manual character targets, and responsive desktop/iPhone layouts",
+    "Repaired a pre-existing Armory Command Bridge CSS section selector issue that prevented legacy bridge initialization",
+    "Preserved public item search, secure Battle.net login, v3.1 Collection Intelligence and all previous studios"
+  ]
+}

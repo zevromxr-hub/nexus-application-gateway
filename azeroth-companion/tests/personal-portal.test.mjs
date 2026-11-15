@@ -19,6 +19,7 @@ let res=await call('/account');assert.equal(res.status,200);assert.match(await r
 res=await call('/api/me/status');assert.equal(res.status,401);
 res=await call('/api/me/characters');assert.equal(res.status,401);
 res=await call('/api/me/collection-intelligence');assert.equal(res.status,401);
+res=await call('/api/me/equipment?realm=area-52&name=knight');assert.equal(res.status,401);
 res=await call('/auth/logout','','GET');assert.equal(res.status,405);
 res=await call('/auth/logout','','POST','https://attacker.example');assert.equal(res.status,403);
 
@@ -42,6 +43,7 @@ globalThis.fetch=async(url,options)=>{
  requests.push({url:String(url),options});
  if(String(url)==='https://oauth.battle.net/token')return new Response(JSON.stringify({access_token:'example-very-private-token-never-put-in-response',expires_in:3600}),{status:200,headers:{'content-type':'application/json'}});
  if(String(url).endsWith('/profile/user/wow?namespace=profile-us&locale=en_US'))return new Response(JSON.stringify({wow_accounts:[{characters:[{name:'Knight',realm:{slug:'area-52',name:'Area 52'},level:80,playable_class:{name:'Paladin'}}]}]}),{status:200});
+ if(String(url).includes('/profile/wow/character/area-52/knight/equipment'))return new Response(JSON.stringify({equipped_items:[{item:{id:19019},name:'Thunderfury',slot:{name:'Main Hand'},level:{value:100}}]}),{status:200});
  if(String(url).includes('/collections/mounts'))return new Response(JSON.stringify({mounts:[{mount:{name:"Ashes of Al'ar"}}]}),{status:200});
  if(String(url).includes('/collections/pets'))return new Response(JSON.stringify({pets:[{species:{name:'Companion Pet'}}]}),{status:200});
  throw Error('Unexpected remote endpoint '+url);
@@ -55,6 +57,12 @@ try{
  assert.ok(cookies(callback).some(x=>/Max-Age=3600/.test(x)));
  const status=await call('/api/me/status',session);assert.equal(status.status,200);assert.equal((await status.json()).region,'us');
  const chars=await call('/api/me/characters',session);assert.equal(chars.status,200);assert.equal((await chars.json()).characters[0].realmSlug,'area-52');
+ const unauthorizedGear=await call('/api/me/equipment?realm=area-52&name=other',session);assert.equal(unauthorizedGear.status,403);
+ const badGear=await call('/api/me/equipment?realm=!!!&name=knight',session);assert.equal(badGear.status,400);
+ const gear=await call('/api/me/equipment?realm=area-52&name=knight',session);assert.equal(gear.status,200);
+ const gearValue=await gear.json();assert.equal(gearValue.items[0].id,19019);assert.equal(gearValue.items[0].slot,'Main Hand');
+ assert.ok(!gear.headers.get('access-control-allow-origin'),'Private equipment response must remain same-origin');
+ assert.ok(!JSON.stringify(gearValue).includes('example-very-private-token'));
  const mounts=await call('/api/me/collections/mounts',session);assert.equal((await mounts.json()).total,1);
  const pets=await call('/api/me/collections/pets',session);assert.equal((await pets.json()).total,1);
  const ownership=await call('/api/me/collection-intelligence',session);assert.equal(ownership.status,200);

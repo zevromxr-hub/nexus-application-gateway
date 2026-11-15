@@ -1,20 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "channel": "release-candidate",
   "release_date": "2026-11-14",
-  "subtitle": "Universal Item Atlas — Search, Organize & Track Items",
-  "previous_version": "3.1.0",
+  "subtitle": "Character Progression — Equipped Gear & Personal Targets",
+  "previous_version": "3.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Universal Item Atlas for tracking any valid Blizzard item ID",
-    "Expanded official Retail name search with bounded page navigation and Blizzard search-cap disclosures",
-    "Added official item-ID verification, Item Codex shortcuts, and manual statuses: wishlist, farming, owned, archived",
-    "Added saved-item board, filters, notes, and independent JSON import/export for up to 5000 local records",
-    "Clarified manual ownership is not Battle.net-verified and no search guarantees all historical items",
-    "Preserved My Azeroth, Collection Intelligence, Loot Hunter, and existing features",
-    "Prepared v3.2 Cloudflare single-file Worker update without changing encrypted secrets"
+    "Added a signed-in My Azeroth equipment viewer showing Blizzard-reported currently equipped items for account-listed characters",
+    "Restricted personal gear requests to the authorized Battle.net account's own character list; no private gear or tokens are sent to GitHub Pages",
+    "Added independent Character Targets planner with Atlas item assignments, per-character priorities, manual completion flags and notes",
+    "Connected the planner to browser-local Farming Operations character shortcuts and existing Item Atlas saved items without rewriting either dataset",
+    "Added standalone JSON export/import for manual character targets, and responsive desktop/iPhone layouts",
+    "Repaired a pre-existing Armory Command Bridge CSS section selector issue that prevented legacy bridge initialization",
+    "Preserved public item search, secure Battle.net login, v3.1 Collection Intelligence and all previous studios"
   ]
 }

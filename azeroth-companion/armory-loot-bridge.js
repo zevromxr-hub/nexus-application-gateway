@@ -6,7 +6,7 @@
 const c=window.NexusArmoryBridgeCore;if(!c)return;
 const ARM='nexus_azeroth_connected_v2',LOOT='nexus_azeroth_loot_hunter_v1',PROFILES='nexus_azeroth_armory_bookmarks_v1';
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const arm=$('[data-section="armory"]'),loot=$('[data-section="loot"]'),codex=$('[data-section="codex"]');if(!arm||!loot||!codex)return;
+const arm=document.querySelector('[data-section="armory"]'),loot=document.querySelector('[data-section="loot"]'),codex=document.querySelector('[data-section="codex"]');if(!arm||!loot||!codex)return;
 let bookmarks=[];
 try{const x=JSON.parse(localStorage.getItem(PROFILES)||'[]');if(Array.isArray(x))bookmarks=x.map(c.profile).filter(Boolean).slice(0,20)}catch(_){}
 const jump=view=>{const tab=document.querySelector('[data-view="'+view+'"]');if(tab)tab.click()};
