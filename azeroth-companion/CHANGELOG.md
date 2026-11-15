@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.7.1 · 2026-11-14 — Tree Layout Reliability Patch
+
+- **Fixed reported PC issue:** selecting Tree mode no longer automatically switches the entire talent view to compact cards when Blizzard returns overlapping, missing or out-of-range display coordinates.
+- **Collision-safe placement:** unique talent nodes are assigned separate visual cells, keeping valid unique Blizzard coordinates unchanged where possible.
+- **Transparent adjustment labels:** repositioned nodes show `POSITION ADJUSTED` while original Blizzard row/column metadata remains visible.
+- **Regression coverage:** tests cover duplicate coordinates, absent positions and unique visual placement.
+- **No migration:** Talent Forge drafts and local storage, path diagnostics, other Warcraft tools and Cloudflare Worker remain untouched.
+
+The adjusted tree is a visual planner, not Blizzard's canonical layout. Missing source metadata and talent path eligibility are not inferred.
+
 ## v2.7.0 · 2026-11-14 — Talent Path Intelligence
 
 - **Source-aware path dashboard:** displays manually planned talents, source-linked nodes with ranks on both ends, zero-rank upstream review flags, and references not resolved within the current talent category.
