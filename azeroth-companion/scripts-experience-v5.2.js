@@ -2595,5 +2595,6 @@ const observer=new MutationObserver(()=>{if(updateQueued)return;updateQueued=tru
 observer.observe(tree,{childList:true});
 document.getElementById('tfSaved')?.addEventListener('click',()=>requestAnimationFrame(render));
 document.getElementById('tfSave')?.addEventListener('click',()=>requestAnimationFrame(render));
+document.getElementById('tfPlanDuplicate')?.addEventListener('click',()=>requestAnimationFrame(render));
 render();
 })();
