@@ -85,7 +85,7 @@ await captured('chromium-desktop',async page=>{
  await page.keyboard.press('Escape');
  check(await page.locator('#spTour').isHidden(),'Escape should dismiss tour');
  await page.locator('#sxUpdatesButton').click();
- await page.locator('#sxReleaseVersion').getByText('Azeroth v4.9.0').waitFor({timeout:12000});
+ await page.locator('#sxReleaseVersion').getByText('Azeroth v5.0.0').waitFor({timeout:12000});
  await page.keyboard.press('Escape');
  await page.locator('.sidebar [data-view="dominion"]').click();
  await page.locator('#spContext').waitFor({state:'visible',timeout:5000});
@@ -123,4 +123,4 @@ for(const engine of ['chromium','webkit']){
   check(await page.locator('.sidebar [data-view="atlas"]').isVisible(),'Desktop transition must preserve other grouped links');
  });
 }
-console.log('All v4.9 desktop/mobile Chromium and mobile WebKit browser audits passed.');
+console.log('All v5.0 desktop/mobile Chromium and mobile WebKit browser audits passed.');
