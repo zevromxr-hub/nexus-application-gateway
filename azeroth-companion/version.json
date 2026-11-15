@@ -1,20 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "channel": "release-candidate",
   "release_date": "2026-11-14",
-  "subtitle": "My Azeroth — Secure Battle.net Account Portal",
-  "previous_version": "2.9.0",
+  "subtitle": "Collection Intelligence — Secure Mount Recognition",
+  "previous_version": "3.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Built a secure first-party My Azeroth Battle.net account portal using the official wow.profile authorization-code flow",
-    "Added encrypted short-lived HttpOnly sessions and validated OAuth state with no personal access tokens sent to GitHub Pages",
-    "Added private read-only account character discovery and mount/pet collection summaries",
-    "Added return links from owned characters to the existing public Live Armory and a secure disconnect option",
-    "Preserved all v2.9 public Armory, Talent Forge, Loot Hunter, Farming Operations and browser-local data",
-    "Added Wrangler Worker deployment instructions, encrypted secret setup, redirect URI registration and privacy disclosures",
-    "Staged activation until the owner configures Battle.net OAuth and deploys/tests the Cloudflare Worker"
+    "Added an authenticated Collection Intelligence section inside the secure My Azeroth portal",
+    "Recognizes Invincible and Ashes of Al'ar via exact normalized names from Blizzard's authorized account mount collection",
+    "Displays Reported Owned only on positive API matches and Not Confirmed for absence; missing and inaccessible collection responses remain unknown",
+    "Keeps collection lookup strictly first-party on Cloudflare, not transferred to GitHub Pages or localStorage",
+    "Preserves v3.0 Battle.net sign-in, original public APIs, saved Loot Hunter goals, and all existing planning studios",
+    "Added regression tests, single-file Cloudflare deployment build and future player-testing guide entries"
   ]
 }
