@@ -66,7 +66,7 @@ try{
 const worker=await readFile(new URL('../backend/worker.js',import.meta.url),'utf8');
 assert.match(worker,/import \{handlePersonal\} from '\.\/personal-portal\.js'/);
 new vm.Script(worker.replace(/^import .*?;\s*/,'').replace('export default','const worker ='));
-for(const route of ['/api/item/','/api/character/','talent-index','talent-tree','search','media'])assert.ok(worker.includes(route));
+for(const route of ["type==='item'","type==='character'",'talent-index','talent-tree',"type==='search'","type==='media'"])assert.ok(worker.includes(route),'Original public API route must remain: '+route);
 const frontend=await readFile(new URL('../personal-azeroth.js',import.meta.url),'utf8');new vm.Script(frontend);
 assert.ok(!frontend.includes('BLIZZARD_CLIENT_SECRET'));
 console.log('My Azeroth private portal validation passed: state, cookies, secure authorization, collections, compatibility.');
