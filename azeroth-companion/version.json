@@ -1,19 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Talent Forge Overdrive — Visual Builder & Draft Controls",
-  "previous_version": "2.3.0",
+  "subtitle": "Talent Intelligence — Hero Paths & Build Comparison",
+  "previous_version": "2.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Reorganized the official Blizzard class, specialization and hero talent nodes into a coordinate-aware visual talent grid",
-    "Added a compact card view and search by talent names, descriptions and node IDs",
-    "Added multi-step Undo and Redo for manual rank and choice edits",
-    "Added a configurable personal allocation reminder, clearly separated from Blizzard's game-validation rules",
-    "Preserved v2.3 saved build storage, portable JSON drafts, and original item/character/loot workflows",
-    "Improved small-screen scrolling and reduced clutter in talent exploration"
+    "Introduced hero-talent tree selection using the actual hero groups supplied by Blizzard for the selected specialization",
+    "Added saved-build comparison showing changed nodes and planned rank additions and reductions",
+    "Highlighted talent nodes that have more or fewer planned ranks than the chosen saved draft",
+    "Displayed Blizzard-provided default_points values without presenting them as manually earned points",
+    "Added a safe compact-layout fallback when Blizzard positions are unavailable, duplicated or outside supported grid bounds",
+    "Protected against stale region/index fetch results changing the active specialization list",
+    "Preserved the v2.3-v2.4 talent draft storage format and all existing Azeroth studios"
   ]
 }
