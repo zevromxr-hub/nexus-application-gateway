@@ -99,11 +99,9 @@ function refreshContext(){
  if(p.textContent!==label)p.textContent=label;
  context.hidden=view==='overview';
 }
-nav.addEventListener('click',e=>{if(e.target.closest('button[data-view]'))requestAnimationFrame(refreshContext)});
-const observer=new MutationObserver(rs=>{
- if(rs.some(r=>r.attributeName==='class'))requestAnimationFrame(refreshContext);
-});
-observer.observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
+// The core router emits one event after it has updated active studio classes.
+// Avoid observing each class mutation when dozens of navigation buttons change.
+document.addEventListener('nexus:view-activated',refreshContext);
 refreshContext();
 const online=document.createElement('div');online.className='sp-offline';online.id='spOffline';online.setAttribute('role','status');online.textContent='Your device appears offline. Saved planning tools may still be available, but Blizzard lookups and release checks require a connection.';
 top.after(online);
