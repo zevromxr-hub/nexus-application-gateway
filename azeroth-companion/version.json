@@ -1,18 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Visual Intelligence — Enlarged Official Artwork & Guided Research",
-  "previous_version": "5.5.0",
+  "subtitle": "Talent Command — Tree Navigator, Source Paths & Point Sandbox",
+  "previous_version": "5.6.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added persistent 48/64/80/96px official-artwork sizing independent of Talent Atlas pan/zoom and stored drafts.",
-    "Extended lazy official Blizzard item icon previews to Item Atlas results, equipped items, Codex item details, and side-by-side gear comparisons.",
-    "Added contextual descriptions for recent Talent Forge, Source Studio, Build Intelligence, Item Atlas, and local draft backup tools.",
-    "Added live source coverage counts for returned talent nodes, reported links, spell IDs and rank descriptions without making game legality assertions.",
-    "Preserved Blizzard login, read-only Cloudflare API access, source-data comparisons, saved builds and mobile usability in the existing 4 frontend bundles."
+    "Added Talent Command Center with all-pool Blizzard talent search, source-ID navigation and selected/review-linked talent filters.",
+    "Added bounded upstream source-path exploration and direct native talent tree spotlight and rank inspection.",
+    "Added a non-destructive point sandbox showing proposed rank, category total and source-link review impact before an explicit user-applied change.",
+    "Added native rank-control handoff so applied previews honor original undo/redo, local auto-recovery and manual talent draft limits.",
+    "Added visible source-link counts to talent nodes and optional focus highlighting for reported connections without changing Blizzard placement or user allocations.",
+    "Retained v5.6 adjustable spell/item artwork, comparisons, official Blizzard data API and existing four-bundle architecture."
   ]
 }
