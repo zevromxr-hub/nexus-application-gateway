@@ -29,7 +29,7 @@
   const o=plain(source);if(!o||Object.keys(o).length>400)throw Error('Node data is missing or too large');
   const target=Object.create(null);
   for(const [id,v] of Object.entries(o)){
-   if(!/^[1-9]\d{0,9}$/.test(id)||!Number.isSafeInteger(Number(v))||v<0||v>allowedMax)
+   if(!/^[1-9]\d{0,9}$/.test(id)||!Number.isSafeInteger(v)||v<0||v>allowedMax)
     throw Error('Unsupported node rank or choice value');
    target[id]=v;
   }
@@ -63,7 +63,7 @@
  }
  function analyze(tree,ranks,choiceByNode,rawMeta,paths){
   const meta=sanitizeMeta(rawMeta),pools=nodesByPool(tree),scores={class:0,spec:0,hero:0},
-   notes=[],issues=[],nodeKinds=new Map(),heroSelected=new Set();
+   notes=[],issues=[],nodeKinds=new Map(),heroSelected=new Set(),selected=[];
   for(const category of ['class','spec','hero']){
    for(const node of pools[category]){
     const id=Number(node?.id);
@@ -79,6 +79,12 @@
    const entry=nodeKinds.get(id);
    if(!entry){issues.push('Planned node #'+id+' is not in the currently loaded Blizzard tree.');continue}
    scores[entry.category]+=rank;
+   const rankChoices=Array.isArray(entry.node?.ranks)?entry.node.ranks:[];
+   const current=rankChoices[Math.min(Math.max(rank-1,0),rankChoices.length-1)]||{};
+   const choiceIndex=Number(choiceMap[id]||0);
+   const chosen=Array.isArray(current.choice_of_tooltips)?current.choice_of_tooltips[choiceIndex]:null;
+   const name=chosen?.talent?.name||chosen?.spell_tooltip?.spell?.name||current?.tooltip?.talent?.name||current?.tooltip?.spell_tooltip?.spell?.name||entry.node?.name||('Node #'+id);
+   selected.push({id,category:entry.category,name:cleanText(name,95),rank});
    const max=Math.max(1,Array.isArray(entry.node?.ranks)?entry.node.ranks.length:0);
    if(rank>max)issues.push('Node #'+id+' exceeds the source-reported rank count.');
   }
@@ -109,7 +115,7 @@
   if(linksForReview)notes.push(linksForReview+' source-linked connections merit review. A missing planned upstream rank does not prove an in-game invalid build.');
   if(!chosenNodes)notes.push('No ranks are allocated yet. Choose talents to begin a planning draft.');
   return{
-   scores,allocated,chosenNodes,goal:{...meta.targets},meta,
+   scores,allocated,chosenNodes,selected:selected.slice(0,120),goal:{...meta.targets},meta,
    issues:issues.slice(0,12),moreIssues:Math.max(0,issues.length-12),
    advisory:notes.slice(0,12),linksForReview,
    gameValidated:false,hasTree:Boolean(tree)
@@ -125,6 +131,7 @@
    'Planned ranks — Class: '+p.scores.class+' | Specialization: '+p.scores.spec+' | Hero: '+p.scores.hero,
    'Personal planning targets — Class: '+p.meta.targets.class+' | Specialization: '+p.meta.targets.spec+' | Hero: '+p.meta.targets.hero,
    'Notes: '+(p.meta.notes||'(none)'),
+   'Planned talents: '+(p.selected?.length?p.selected.slice(0,45).map(n=>n.category+': '+n.name+' ('+n.rank+')').join(' | '):'(none)'),
    'Structural review: '+(p.issues.length?p.issues.join(' | '):'No structural issues detected in the currently loaded data'),
    'Advisories: '+(p.advisory.length?p.advisory.join(' | '):'None'),
    'NOT an in-game-valid loadout or Blizzard import code. Verify talents in World of Warcraft.'
