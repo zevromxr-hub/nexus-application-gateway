@@ -49,7 +49,7 @@ async function validateBlizzardSession(session,env){
  const details=await res.json();
  if(!details||typeof details!=='object'||details.client_id!==env.BLIZZARD_CLIENT_ID)return {valid:false};
  const scopes=Array.isArray(details.scope)?details.scope.join(' '):String(details.scope||'');
- if(!scopes.split(/\\s+/).includes('wow.profile'))return {valid:false};
+ if(!scopes.split(/\s+/).includes('wow.profile'))return {valid:false};
  if(details.expires_in!==undefined&&(!Number.isFinite(Number(details.expires_in))||Number(details.expires_in)<=0))return {valid:false};
  return {valid:true};
 }
