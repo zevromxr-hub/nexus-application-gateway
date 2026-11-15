@@ -34,8 +34,10 @@ deck.innerHTML='<div class="sp-deck-top"><div><span class="sx-eyebrow">YOUR COMM
  '<div class="sp-deck-editor" id="spDeckEditor" hidden><div class="sp-deck-editor-head"><strong>Choose your quick access tools</strong><span id="spDeckCount" role="status"></span></div><div class="sp-deck-checks" id="spDeckChoices"></div><p class="sp-muted" id="spDeckMessage" role="status">Select up to six destinations. Your existing studios are not modified.</p><div class="sp-deck-footer"><button type="button" id="spResetShortcuts">RESET SHORTCUTS</button><button type="button" id="spDoneShortcuts">DONE</button></div></div>'+
  '<div class="sp-tour-prompt" id="spTourPrompt" hidden><span>New here? Take a short tour of the website, navigation and account safety.</span><div><button type="button" data-sp-tour>START WEBSITE TOUR</button><button type="button" id="spDismissTour">NOT NOW</button></div></div>';
 const split=home.querySelector('.sx-home-split');if(split)split.after(deck);else home.append(deck);
-function renderDeck(){
+function renderDeck(focusId=null){
  const known=names();const choices=[...new Set(state.favorites)].filter(id=>known.has(id));
+ // Ignore shortcuts for removed tools and prevent invisible choices consuming a slot.
+ if(choices.length!==state.favorites.length){state.favorites=choices;persist()}
  const zone=document.getElementById('spFavorites');zone.replaceChildren();
  if(!choices.length){
   const p=document.createElement('p');p.className='sp-muted';p.textContent='No shortcuts chosen. Select Customize Shortcuts to add your favorite destinations.';zone.append(p);
@@ -56,6 +58,10 @@ function renderDeck(){
   label.append(check,title);choicesWrap.append(label);
  }
  document.getElementById('spDeckCount').textContent=choices.length+' / '+MAX+' selected';
+ // Rebuilding checkbox nodes should not discard keyboard focus after each change.
+ if(focusId&&document.getElementById('spDeckEditor')?.hidden===false){
+  [...choicesWrap.querySelectorAll('input[data-sp-favorite]')].find(x=>x.dataset.spFavorite===focusId)?.focus({preventScroll:true});
+ }
 }
 function editing(open){
  const editor=document.getElementById('spDeckEditor');editor.hidden=!open;
@@ -78,7 +84,7 @@ document.getElementById('spDeckChoices').addEventListener('change',e=>{
   if(state.favorites.length>=MAX){input.checked=false;document.getElementById('spDeckMessage').textContent='Maximum six shortcuts. Uncheck an existing item first.';return}
   state.favorites.push(id);
  }else if(!input.checked)state.favorites=state.favorites.filter(x=>x!==id);
- persist();renderDeck();
+ persist();renderDeck(id);
  document.getElementById('spDeckMessage').textContent='Shortcuts updated on this device.';
 });
 deck.addEventListener('click',e=>{const b=e.target.closest('[data-sp-go]');if(b)jump(b.dataset.spGo)});

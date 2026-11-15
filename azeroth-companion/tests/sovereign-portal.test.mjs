@@ -12,7 +12,7 @@ const [html,js,css,foundation,foundationCSS,launcher]=await Promise.all([
  'sovereign-experience.css','command-launcher.js'].map(read));
 new vm.Script(js,{filename:'sovereign-portal.js'});
 new vm.Script(foundation,{filename:'sovereign-experience.js'});
-assert.match(html,/v4\.5 SOVEREIGN PORTAL/);
+assert.ok(html.includes('./sovereign-portal.js'),'The v4.5 Sovereign Portal must remain mounted in subsequent website updates');
 for(const asset of ['sovereign-portal.js','sovereign-portal.css','sovereign-experience.js','sovereign-experience.css',
  'character-dominion.js','player-guide.js','player-field-lab.js','verified-connection.js','sovereign-vault.js','command-launcher.js']){
  assert.ok(html.includes('./'+asset),'Site must retain '+asset);
@@ -22,7 +22,7 @@ assert.ok(js.includes('nexus_azeroth_portal_v45'),'v4.5 preferences must be sepa
 assert.ok(js.includes("const MAX=6")||js.includes("MAX=6"),'Limit homepage shortcuts to six');
 assert.ok(js.includes('new Set(x.favorites.filter(validId))'),'Saved preferences must reject unknown or malformed shortcut identifiers');
 assert.ok(js.includes('state.favorites.length>=MAX'),'Shortcut limit must be checked before saving');
-assert.ok(js.includes("function renderDeck()")&&js.includes('spQuickDeck')&&js.includes('spDeckChoices'),'Quick Deck must render and be customizable');
+assert.ok(js.includes("function renderDeck(")&&js.includes('spQuickDeck')&&js.includes('spDeckChoices'),'Quick Deck must render and be customizable');
 assert.ok(js.includes('state.favorites.filter')&&js.includes('names().has'),'Shortcut reset should use actual installed studio links');
 assert.ok(js.includes("const button=navButtons().find"),'Navigation must reuse existing working studio buttons');
 assert.ok(js.includes("button.click()"),'Quick actions must call the actual existing navigation');

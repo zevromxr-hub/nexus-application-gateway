@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.6.0 · 2026-11-15 — Device Reliability: Mobile & Desktop Experience Audit
+
+- **Quick Deck focus recovery:** Favorite checkboxes now keep their keyboard focus after re-render, improving desktop accessibility and device interactions. Shortcuts for removed studio views no longer silently occupy the six-shortcut quota.
+- **Mobile search and responsive navigation:** The grouped All Tools menu now resets visibility after re-opening. Resizing from phone to desktop clears the mobile-only filter, avoiding unexpectedly hidden sidebar categories or studios.
+- **Browser-level regression:** A dedicated GitHub Actions workflow now exercises the hosted source via localhost in Chromium desktop and phone-sized Chromium/WebKit. Checks cover site initialization, error-free scripting, responsive overflow, Quick Deck, appearance persistence, modal dismissal, live release metadata, tool navigation and drawer search.
+- **Physical-device test plan:** A separate checklist covers iPhone Safari and desktop behaviors that browser emulation cannot certify, including safe areas, real touch controls and manually verified connection awareness.
+- **Security and compatibility:** Website-shell changes only. Existing studios, planning records, Blizzard sign-in, secure Cloudflare Worker, v4.4 appearance options, v4.5 personal quick links and Discord release flow are preserved.
+- **Testing transparency:** Automated source and browser tests can catch regressions, but are not a benchmark of actual phone hardware, Blizzard account API access or live network latency.
+
+**No Cloudflare deployment or customer software installation required.**
+
+
 ## v4.5.0 · 2026-11-15 — Sovereign Portal: Personalized Website Experience
 
 - **My Quick Deck:** Customize up to six direct links to existing studios on Home. Shortcuts can be added, removed or restored without affecting any studio data. Favorites are saved locally to this device.

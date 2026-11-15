@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.6.0",
+  "title": "Device Reliability — Mobile & Desktop Experience Audit",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Fixed the Quick Deck editor losing keyboard focus after toggling a favorite and prevented stale shortcuts from consuming its six-button limit.",
+    "Fixed grouped mobile tool-search visibility when reopening the All Tools drawer and when resizing from phone to desktop widths.",
+    "Added real automated browser interaction audits in desktop Chromium and phone-sized Chromium/WebKit, including responsive overflow, JavaScript exceptions, update center, navigation and preferences.",
+    "Added GitHub Actions device testing on pull requests and main-branch releases, with failure screenshots to support troubleshooting without requiring local Node.",
+    "Published a practical physical iPhone Safari and desktop acceptance checklist to distinguish browser emulation from real-device testing.",
+    "Preserved the v4.5 Sovereign Portal, v4.4 appearance controls, all character/item studios, Cloudflare Worker and existing browser-local planning data.",
+    "Added source-level regression protections for site-shell isolation, keyboard focus, responsive transitions and non-sensitive browser tests."
+  ]
+}

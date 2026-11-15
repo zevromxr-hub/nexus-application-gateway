@@ -1,0 +1,41 @@
+name: NEXUS Azeroth Companion — Device Browser Audit
+on:
+  pull_request:
+    paths:
+      - 'azeroth-companion/**'
+      - 'hub/index.html'
+      - '.github/workflows/azeroth-device-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'azeroth-companion/**'
+      - 'hub/index.html'
+      - '.github/workflows/azeroth-device-audit.yml'
+permissions:
+  contents: read
+jobs:
+  browser-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser test runtime
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium webkit
+      - name: Test local Azeroth website on desktop and phone browsers
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/azeroth-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          node azeroth-companion/tests/device-audit.browser.mjs
+      - name: Upload screenshots if a browser check failed
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: azeroth-device-audit-screenshots
+          path: test-results/azeroth-device-audit/
+          if-no-files-found: ignore

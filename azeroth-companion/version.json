@@ -1,21 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.5.0",
+  "version": "4.6.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Portal — My Quick Deck, Orientation & Navigation",
-  "previous_version": "4.4.0",
+  "subtitle": "Device Reliability — Mobile & Desktop Experience Audit",
+  "previous_version": "4.5.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added My Quick Deck to the redesigned homepage with up to six customizable shortcuts to any existing installed tool, stored only in an isolated website-preferences record.",
-    "Introduced a compact, optional five-step website orientation covering navigation, personal shortcuts, Blizzard account safety and manual backup practices.",
-    "Added a site-level page-context bar on studio pages with a clear Return Home action and automatic view-name updates.",
-    "Added a device-offline notice so visitors know when Blizzard lookups and release checks may need connectivity, without claiming the game or API is down.",
-    "Improved keyboard-accessible tour controls, discoverability, responsive quick-access cards, mobile safe-area treatment and reduced-motion handling.",
-    "Preserved every existing studio, Cloudflare Worker, Battle.net session, character database and stored progress record; made all v4.5 preferences separate from v4.4.",
-    "Retained the v4.4 cinematic homepage, appearance settings, grouped navigation and release center while adding a stronger personalized starting experience.",
-    "Expanded automated regression coverage for site isolation, accessibility, shortcut limits, mobile layouts and authenticated-data boundaries."
+    "Fixed the Quick Deck editor losing keyboard focus after toggling a favorite and prevented stale shortcuts from consuming its six-button limit.",
+    "Fixed grouped mobile tool-search visibility when reopening the All Tools drawer and when resizing from phone to desktop widths.",
+    "Added real automated browser interaction audits in desktop Chromium and phone-sized Chromium/WebKit, including responsive overflow, JavaScript exceptions, update center, navigation and preferences.",
+    "Added GitHub Actions device testing on pull requests and main-branch releases, with failure screenshots to support troubleshooting without requiring local Node.",
+    "Published a practical physical iPhone Safari and desktop acceptance checklist to distinguish browser emulation from real-device testing.",
+    "Preserved the v4.5 Sovereign Portal, v4.4 appearance controls, all character/item studios, Cloudflare Worker and existing browser-local planning data.",
+    "Added source-level regression protections for site-shell isolation, keyboard focus, responsive transitions and non-sensitive browser tests."
   ]
 }
