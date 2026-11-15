@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.4.0 · 2026-11-14 — Progress Command
+
+- Added **Progress Command**: one responsive, read-only view across Item Atlas, Character Targets, Loot Hunter and Farming Operations.
+- Summarizes items manually marked owned, open/completed targets, Loot Hunter goals, and Farming Operations session attempts without altering or conflating their underlying sources.
+- Shows per-character open priorities and manual session totals; filters open objectives and links back to the originating studios.
+- Highlights assignments whose item no longer exists in Atlas, open targets for items manually marked owned, and overlapping Atlas/Loot Hunter records as **review suggestions**, never automatic corrections.
+- Supports an aggregate JSON **read-only progress summary** export (counts, character totals, discrepancy counts). No Blizzard tokens or account profile payloads.
+- Preserves all v3.3 modules, prior data formats and account privacy boundaries.
+- **No Cloudflare update needed**: v3.4 uses existing browser-local storage and does not change Blizzard endpoints.
+
 ## v3.3.0 · 2026-11-14 — Character Progression (Cloudflare deployment required)
 
 - **My Azeroth Equipped Gear:** signed-in players can select their own account-listed character and request Blizzard-reported currently equipped gear using a protected, first-party Cloudflare endpoint. The Worker verifies the character belongs to the authorized Battle.net account before retrieving gear. This is **not** full inventory, banks, bags, or real-time ownership.
