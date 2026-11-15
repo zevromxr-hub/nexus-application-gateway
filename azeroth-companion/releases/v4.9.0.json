@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.9.0",
+  "title": "Stability Engine — Responsive Lists & Unified Navigation",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Reduced redundant website work by using one central view-change notification for the homepage history, breadcrumb, desktop sidebar state and iPhone quick navigation.",
+    "Prevented reselecting an already-active studio from dispatching another activation or unnecessarily rebuilding expensive character and progress summaries.",
+    "Eliminated repeated recent-tool storage writes and homepage shortcut redraws when selecting a tool that's already the most recent destination.",
+    "Improved long collection-list responsiveness with feature-detected offscreen paint containment for planning checklists, Item Atlas, Progress Command, Character Dominion, Loot Hunter and guide cards, without hiding or discarding data.",
+    "Preserved the four-resource loading model, existing appearance, Secure My Azeroth verification, Cloudflare Worker, original studio controls and all browser-local character/item records.",
+    "Added desktop Chromium and phone-sized WebKit browser regression tests for single-event navigation, local preference write counts and 320 synthetic task-row scroll/interaction.",
+    "Maintained deterministic source-to-bundle integrity validation and published v4.9 cache-safe shell CSS/JavaScript bundles; existing unrelated core bundles remain unchanged."
+  ]
+}
