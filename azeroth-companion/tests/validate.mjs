@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/v5\.7 TALENT COMMAND/);
+assert.match(html,/v5\.8 VISUAL BUILD ARCHITECT/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(inline.length,1);
