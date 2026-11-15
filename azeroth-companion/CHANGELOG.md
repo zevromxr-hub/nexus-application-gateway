@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.3.0 · 2026-11-15 — Character Dominion: Unified Objectives & Armory Handoff
+
+- **Character Dominion:** Choose any manually saved character to view high-priority objectives, completed targets and recent logged farming attempts in one responsive view. Counters and objectives remain based on local planning records.
+- **Next objective:** Highlight the next open target by manual high/normal/later priority. Add a new goal from an existing Item Atlas record and mark goals complete or reopen them without changing underlying storage formats. Atlas records marked owned while their targets remain open are flagged for manual review, not silently corrected.
+- **Public Armory research:** Open Live Armory with a chosen saved character prefilled. Once the player requests a public Blizzard profile, a small in-memory summary can appear in Character Dominion. This is not private account data, full inventory or proof of account ownership.
+- **Direct portal handoff:** The secure My Azeroth character link now opens the corresponding Public Armory and provides an adjacent, explicit Save Character to My Planners button. Saving requires confirmation; URL data alone never proves a Blizzard session. The character query is removed from the address bar on arrival.
+- **Reliable same-tab updates:** Existing Character Targets, Farming Operations and Item Atlas emit or consume local-only refresh events so the views stay in sync when a character or goal is saved.
+- **Documentation and testing:** Added a Character Dominion entry in Information & Guide, corrected the Player Field Lab's outdated hardcoded report version, and expanded release regression tests.
+- **Preservation:** No Cloudflare deployment, OAuth permission, database migration or change to current Battle.net verification is necessary. Existing v4.2 tools and records are preserved.
+
+**Scope:** Manual planner intelligence and opt-in public Retail API lookups only; authenticated private WoW character and collection data stays on the Cloudflare-hosted My Azeroth portal. Real WoW account and iPhone acceptance testing remain necessary.
+
+
 ## v4.2.0 · 2026-11-15 — Player Field Lab & Planning Readiness
 
 - **Player Field Lab:** Added a dedicated acceptance-testing section for players and friends with 12 tests for navigation, first-time onboarding, secure Battle.net verification, WoW character data, item and talent tools, mobile behavior, storage, and backups.

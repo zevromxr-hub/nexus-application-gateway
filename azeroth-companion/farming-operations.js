@@ -25,7 +25,7 @@ function clean(value){
  return next;
 }
 try{state=clean(JSON.parse(localStorage.getItem(KEY)||'null'))}catch(_){}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));message('Farming operations saved on this device.');return true}catch(_){message('Storage unavailable. Export a backup before leaving.');return false}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(state));window.dispatchEvent(new Event('nexus:farm-operations-changed'));message('Farming operations saved on this device.');return true}catch(_){message('Storage unavailable. Export a backup before leaving.');return false}}
 function readGoals(){try{const x=JSON.parse(localStorage.getItem(GOALS)||'null');return Array.isArray(x)?x.filter(g=>g&&idOf(g.id)&&typeof g.name==='string').slice(0,200):[]}catch(_){return []}}
 function syncedProfiles(){try{const x=JSON.parse(localStorage.getItem(PROFILES)||'null');return Array.isArray(x)?x.map(validProfile).filter(Boolean):[]}catch(_){return []}}
 function message(t){$('foStatus').textContent=t}
@@ -84,5 +84,6 @@ $('foExport').addEventListener('click',()=>{const b=new Blob([JSON.stringify({fo
 $('foImport').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>500000)throw Error('Backup exceeds 500 KB');const data=JSON.parse(await file.text());if(data.format!=='nexus-farming-operations-v1'||!data.data||!Array.isArray(data.data.characters)||data.data.characters.length>30||!Array.isArray(data.data.sessions)||data.data.sessions.length>500)throw Error('Invalid operations backup');if(confirm('Replace character assignments and session history? Existing Loot Hunter goals will not be altered.')){state=clean(data.data);persist();render();message('Farming Operations backup imported.')}}catch(err){message('Import failed: '+err.message)}e.target.value=''});
 window.addEventListener('nexus:loot-updated',render);
 window.addEventListener('storage',e=>{if(e.key===GOALS||e.key===PROFILES)render();if(e.key===KEY){try{state=clean(JSON.parse(e.newValue||'null'));render()}catch(_){message('Another tab supplied an unreadable update; current farming records remain intact.')}}});
+window.addEventListener('nexus:farm-operations-updated',()=>{try{state=clean(JSON.parse(localStorage.getItem(KEY)||'null'));render()}catch(_){message('Could not reload the updated character profile; existing farm records are unchanged.')}});
 render();
 })();

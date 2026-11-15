@@ -14,7 +14,7 @@ const flag='nexus_azeroth_player_guide_v41';
 const steps=[
  ['Launch and explore','Open the live web companion on iPhone or PC. Use All Tools on mobile or the left navigation on desktop. No install or Battle.net account is required for manual planners.','overview'],
  ['Connect Battle.net (optional)','Open My Azeroth, select your Blizzard account region, authorize the read-only wow.profile scope, and choose Verify & Return. The green Connected · Verified badge represents a short-lived server check, not permanent login.','personal'],
- ['Find a character','On the secure portal, use My Characters when Blizzard provides a roster. Open a character in Public Armory. In Connected Character Center, explicitly choose whether to save the character selector to local planners.','armory'],
+ ['Find a character','On the secure portal, use My Characters when Blizzard provides a roster. Open a character in Public Armory. Use Add to My Planners beside Public Armory (part of the Connected Character Center) to save a character selector with your consent, then open Character Dominion to manage their goals.','armory'],
  ['Research items and equipment','Use Item Codex to look up an item ID, Item Atlas to research and manually organize goals, and Live Armory to inspect Blizzard-reported public gear where available.','atlas'],
  ['Create progression targets','Assign item goals in Character Targets, research acquisition in Loot Hunter, then log manual attempts and character sessions in Farming Operations.','targets'],
  ['Organize group play','Prepare weekly goals in War Room, sketch dungeon routes, write raid encounter notes and assemble a party plan for your friends. Share exported notes or route text deliberately.','warcraft'],
@@ -27,6 +27,7 @@ const sections=[
  {id:'armory',title:'Live Character Armory',desc:'Look up public Retail character profiles and equipped gear by region, realm and character name. Data can lag behind the game and does not show bags or bank inventory.',view:'armory',tag:'Blizzard-reported'},
  {id:'codex',title:'Item Codex & Discovery',desc:'Search and inspect official Retail items by name or numeric ID. Discoverable results depend on Blizzard index coverage and are not a guarantee of a complete item catalog.',view:'codex',tag:'Blizzard data'},
  {id:'atlas',title:'Universal Item Atlas',desc:'Save your own item wishlist, farming targets, ownership notes and priorities. The “owned” marker is manually set by you, not automatically verified.',view:'atlas',tag:'Manual tracking'},
+ {id:'dominion',title:'Character Dominion',desc:'Select a saved character, see next manual item objectives and logged farming sessions together, assign Atlas items and open public Blizzard profile research on demand.',view:'dominion',tag:'Character command'},
  {id:'targets',title:'Character Targets',desc:'Assign personal item goals and priorities to local character profiles, whether typed by hand or explicitly imported from a selected character link.',view:'targets',tag:'Manual tracking'},
  {id:'loot',title:'Loot Hunter',desc:'Research curated acquisition references, maintain loot wishlists and record farming attempts. Guides should be checked against the current game patch.',view:'loot',tag:'Reference & planner'},
  {id:'farm',title:'Farming Operations',desc:'Log character-specific farming sessions and assignments. Attempts are entered by players; the site does not monitor the WoW client.',view:'loot',tag:'Manual tracking'},
@@ -54,7 +55,7 @@ const faqs=[
 ];
 const roadmap=[
  ['Next reliability work','Expand end-to-end browser testing, verify backups across devices, confirm real-player account data and keep a clean Worker recovery process.','Planned'],
- ['Character Intelligence expansion','Improve character dashboards, roster selection and Blizzard-reported equipped gear context where APIs and permissions permit.','Exploration'],
+ ['Character Dominion follow-ons','Continue improving character identity, goals and public gear research after real-player feedback, without exposing private account data in GitHub Pages.','Exploration'],
  ['Collection Atlas improvements','Improve mount and pet reference information, sorting, acquisition notes and supported collection comparisons; never fabricate ownership.','Exploration'],
  ['Party & dungeon workflow','Better group preparation, portable route checklists and planning handoffs, without intrusive game automation.','Exploration'],
  ['Release & compatibility upkeep','Maintain release manifests, Discord announcements, game-patch reference reviews and compatibility notes as Blizzard changes Retail.','Ongoing']

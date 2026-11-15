@@ -1,0 +1,41 @@
+/* NEXUS | AZEROTH v4.3 — Character Dominion */
+#characterDominion{min-width:0}
+#characterDominion h2{margin:8px 0;color:#e8d5b8}
+#characterDominion h3{margin:0 0 12px;color:#e7cb9c;font-size:16px}
+#characterDominion .cd-heading{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#characterDominion .cd-heading p{max-width:760px;line-height:1.75}
+#characterDominion .cd-heading>button{min-height:40px}
+#characterDominion .cd-hero{display:flex;align-items:center;gap:17px;margin:16px 0;padding:18px;background:linear-gradient(110deg,#172d3ad8,#191d2fd5)}
+#characterDominion .cd-portrait{width:68px;height:68px;display:flex;align-items:center;justify-content:center;border-radius:15px;border:1px solid #bdb08470;background:#18273b;color:#e7c48c;font-weight:850;font-size:28px;flex:none}
+#characterDominion .cd-head-copy{flex:1;display:grid;gap:8px;min-width:0}
+#characterDominion .cd-head-copy label,#characterDominion .cd-form label,#characterDominion .cd-filters label{color:#d4bb8e;font-size:11px;font-weight:800;display:grid;gap:6px}
+#characterDominion .cd-head-copy select,#characterDominion .cd-form select,#characterDominion .cd-filters select{min-height:42px;border-radius:10px;color:#e6e5dc;background:#0d1927;border:1px solid #bcb08172;padding:9px;max-width:100%;width:100%}
+#characterDominion .cd-head-copy span{color:#b6cad3;font-size:11px}
+#characterDominion .cd-hero-actions,#characterDominion .cd-section-actions,#characterDominion .cd-record-actions{display:flex;flex-wrap:wrap;gap:8px}
+#characterDominion .cd-hero-actions button,#characterDominion .cd-record-actions button,#characterDominion .cd-section-actions button{font-size:10px;min-height:39px}
+#characterDominion .cd-profile-source{background:#10232bc7;border:1px solid #9ab99846;color:#bedacc;font-size:11px;border-radius:11px;padding:12px 14px;margin-bottom:13px;line-height:1.8}
+#characterDominion .cd-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:15px 0}
+#characterDominion .cd-metrics>div{background:#101d2bdb;border:1px solid #c3a9774f;border-radius:13px;padding:14px;min-width:0}
+#characterDominion .cd-metrics strong{font-size:23px;font-variant-numeric:tabular-nums;color:#e6c992;display:block}
+#characterDominion .cd-metrics span{font-size:10px;color:#b0c2ce}
+#characterDominion .cd-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:15px 0}
+#characterDominion .cd-cols>.panel{min-width:0}
+#characterDominion .cd-form{display:grid;gap:12px}
+#characterDominion .cd-form>button{min-height:43px}
+#characterDominion .cd-list{display:grid;gap:8px;max-height:580px;overflow:auto;margin:12px 0}
+#characterDominion .cd-record{padding:12px;background:#0e1a27d8;border:1px solid #ffffff27;border-radius:12px;display:flex;justify-content:space-between;align-items:center;gap:9px;min-width:0}
+#characterDominion .cd-record>div:first-child{display:grid;gap:6px;min-width:0}
+#characterDominion .cd-record strong{color:#eed7ae;font-size:12px;overflow-wrap:anywhere}
+#characterDominion .cd-record small{font-size:10px;color:#aebec9;line-height:1.7;overflow-wrap:anywhere}
+#characterDominion .cd-record-actions{flex-shrink:0}
+#characterDominion .cd-record-actions button{white-space:nowrap}
+#characterDominion .cd-discrepancy{font-weight:800;color:#e0b978}
+#characterDominion .cd-notice{border-radius:12px;border:1px solid #bba36652;padding:14px;background:#0f1d2bc2;color:#b9c9d3;line-height:1.8;font-size:11px;margin:16px 0}
+#characterDominion .cd-filters{display:flex;justify-content:flex-end;gap:10px}
+#characterDominion .cd-filters label{min-width:150px}
+.nx-armory-import{display:grid;gap:10px;margin-top:14px}
+.nx-armory-import>strong{font-size:12px;color:#e4c993}
+.nx-armory-import p{margin:0;font-size:11px;line-height:1.7;color:#b5c8d0}
+.nx-armory-import button{min-height:42px}
+@media(max-width:1000px){#characterDominion .cd-cols{grid-template-columns:1fr}#characterDominion .cd-hero{flex-wrap:wrap}#characterDominion .cd-hero-actions{width:100%}#characterDominion .cd-hero-actions button{flex:1}}
+@media(max-width:650px){#characterDominion .cd-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}#characterDominion .cd-record{flex-direction:column;align-items:stretch}#characterDominion .cd-record-actions button{flex:1}#characterDominion .cd-hero{padding:13px}#characterDominion .cd-portrait{height:56px;width:56px;font-size:23px}#characterDominion .cd-section-actions button{flex:1}}
