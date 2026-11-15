@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "3.2.0",
+      "title": "Universal Item Atlas — Search, Organize & Track Items",
+      "date": "2026-11-14"
+    },
+    {
       "version": "3.1.0",
       "title": "Collection Intelligence — Secure Mount Recognition",
       "date": "2026-11-14"

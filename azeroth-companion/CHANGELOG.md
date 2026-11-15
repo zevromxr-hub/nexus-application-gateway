@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.2.0 · 2026-11-14 — Universal Item Atlas (Backend-Gated)
+
+- Introduced **Universal Item Atlas** for official Blizzard item-name search, numeric item-ID lookup, and personal tracking.
+- Name search supports bounded pages (up to 50 pages of 20); Blizzard's underlying search index can cap results. Searches are not a complete enumeration of all obtainable or historical WoW items.
+- Players can save an officially resolved item with status **Wishlist**, **Farming**, **I own this (manual)**, or **Archived**. This does not assert account ownership.
+- Up to 5,000 manually saved item records per browser with notes, filtering, and independent JSON export/import.
+- Item records link to Item Codex; old personal wishlist and Loot Hunter progress remain preserved.
+- Existing authenticated Collection Intelligence stays isolated on Cloudflare; no account data or tokens are copied to the public tracker.
+- **Deployment gate:** publish v3.2 Worker before merging public release. No new encrypted secrets or Battle.net permissions.
+
 ## v3.1.0 · 2026-11-14 — Collection Intelligence (Deployment-Gated)
 
 - Added **Collection Intelligence** to the first-party Cloudflare **My Azeroth** portal.

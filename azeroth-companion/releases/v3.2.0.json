@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "3.2.0",
+  "title": "Universal Item Atlas — Search, Organize & Track Items",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added Universal Item Atlas for tracking any valid Blizzard item ID",
+    "Expanded official Retail name search with bounded page navigation and Blizzard search-cap disclosures",
+    "Added official item-ID verification, Item Codex shortcuts, and manual statuses: wishlist, farming, owned, archived",
+    "Added saved-item board, filters, notes, and independent JSON import/export for up to 5000 local records",
+    "Clarified manual ownership is not Battle.net-verified and no search guarantees all historical items",
+    "Preserved My Azeroth, Collection Intelligence, Loot Hunter, and existing features",
+    "Prepared v3.2 Cloudflare single-file Worker update without changing encrypted secrets"
+  ]
+}

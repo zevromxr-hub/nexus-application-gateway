@@ -1,0 +1,25 @@
+/* NEXUS | AZEROTH COMPANION v3.2 - Universal Item Atlas */
+#itemAtlas .atlas-stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:17px 0}
+#itemAtlas .atlas-stats>div{background:#1b3246;border:1px solid #d7b87d44;padding:12px;border-radius:11px}
+#itemAtlas .atlas-stats strong,#itemAtlas .atlas-stats span{display:block}
+#itemAtlas .atlas-stats strong{font-size:23px;color:#efd5a5}
+#itemAtlas .atlas-stats span{font-size:10px;margin-top:4px;color:#bbccdb}
+#itemAtlas .atlas-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:15px}
+#itemAtlas .atlas-grid .panel{min-width:0}
+#itemAtlas .atlas-controls{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:12px 0}
+#itemAtlas .atlas-controls label{font-size:11px;color:#beccdd;display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+#itemAtlas .atlas-controls select,#itemAtlas .atlas-controls input,#itemAtlas .atlas-actions select,#itemAtlas .atlas-note-label input{background:#122338;border:1px solid #ffffff50;color:#f0ead8;border-radius:9px;padding:10px;min-width:0}
+#itemAtlas .atlas-controls button{font-size:11px}
+#itemAtlas .atlas-list{display:grid;gap:9px;margin-top:13px}
+#itemAtlas .atlas-entry{border:1px solid #ffffff29;border-radius:11px;background:#ffffff08;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;min-width:0}
+#itemAtlas .atlas-entry strong,#itemAtlas .atlas-entry small{display:block;overflow-wrap:anywhere}
+#itemAtlas .atlas-entry strong{font-size:13px;color:#edd6ae}
+#itemAtlas .atlas-entry small{font-size:11px;color:#b8c9da;margin-top:5px}
+#itemAtlas .atlas-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#itemAtlas .atlas-actions button{font-size:10px;padding:9px}
+#itemAtlas .atlas-note-label{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:10px;color:#bccdd4}
+#itemAtlas .atlas-note-label input{width:100%;max-width:350px;font-size:11px}
+#itemAtlas .atlas-board{margin-top:15px}
+#itemAtlas .atlas-board .top{gap:10px}
+@media(max-width:970px){#itemAtlas .atlas-grid{grid-template-columns:1fr}#itemAtlas .atlas-stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){#itemAtlas .atlas-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#itemAtlas .atlas-entry{flex-direction:column;align-items:stretch}#itemAtlas .atlas-actions{width:100%}#itemAtlas .atlas-actions button,#itemAtlas .atlas-actions select{flex:1}#itemAtlas .atlas-controls input{max-width:100%;width:100%}#itemAtlas .atlas-controls label{width:100%}}
