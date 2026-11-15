@@ -262,8 +262,61 @@ function nodeDesc(n,rank=0){
 }
 const maxRanks=n=>Math.max(1,Array.isArray(n.ranks)?n.ranks.length:1);
 function cleanDraft(raw){const result={},valid=new Map(allNodes().map(n=>[String(n.id),n]));if(!raw||typeof raw!=='object')return result;for(const [id,v] of Object.entries(raw)){const node=valid.get(id);if(node&&Number.isInteger(v)&&v>=0&&v<=maxRanks(node))result[id]=v}return result}
+
+// v5.2 — source-identifiable talent inspector and item-by-ID research.
+// Never claim actual in-game talent legality or numerical gameplay simulation.
+const intelPanel=document.createElement('section');
+intelPanel.id='tfSourceIntel';intelPanel.className='panel tf-source-intel';
+intelPanel.innerHTML='<div class="tf-source-head"><div><span class="wow-kicker">OFFICIAL SOURCE RECORDS</span><h3>Talent & Gear Intelligence</h3><p>Inspect the official IDs, descriptions, ranked tooltips and saved-build deltas. Live item details use the existing Blizzard item API. Missing fields remain unavailable, not estimated.</p></div></div>'+
+ '<div class="tf-intel-columns"><section><h4>Selected talent details</h4><div id="tfSourceTalent" role="status" aria-live="polite">Choose INSPECT on a Blizzard talent node to see its rank details.</div></section>'+
+ '<section><h4>Gear ID Research</h4><form id="tfSourceItemForm" class="tf-source-item-form"><label for="tfSourceItemId">Blizzard item ID</label><div><input id="tfSourceItemId" type="number" inputmode="numeric" min="1" max="9999999999" step="1" required placeholder="Enter real item ID"><button type="submit">LOOK UP</button></div></form><div id="tfSourceItem" role="status" aria-live="polite">Item lookup uses Blizzard data, not theoretical gear optimization.</div></section></div>';
+$('tfPlanner').after(intelPanel);
+let inspectedNode=null,itemRequest=0;
+const detailId=v=>Number.isSafeInteger(Number(v))&&Number(v)>0&&Number(v)<=9999999999?Number(v):null;
+const tooltipFor=(rank,choice)=>{
+ const entry=Array.isArray(rank?.choice_of_tooltips)?rank.choice_of_tooltips[choice]||rank.choice_of_tooltips[0]:null;
+ return entry?.spell_tooltip||rank?.tooltip?.spell_tooltip||{};
+};
+function nodeIdentity(n,r){
+ const tooltip=tooltipFor(r,Number(choices[n.id]||0));
+ const entry=Array.isArray(r?.choice_of_tooltips)?r.choice_of_tooltips[Number(choices[n.id]||0)]:null;
+ return {node:detailId(n.id),talent:detailId(entry?.talent?.id??r?.tooltip?.talent?.id),
+ spell:detailId(tooltip?.spell?.id),description:typeof tooltip.description==='string'?tooltip.description:'',
+ name:entry?.talent?.name||tooltip?.spell?.name||r?.tooltip?.talent?.name||n.name||('Node '+n.id)};
+}
+const sourceLine=(name,id)=>'<span class="tf-source-id">'+esc(name)+': '+(id===null?'Not provided by Blizzard':'#'+id)+(id!==null&&(name==='Spell ID'||name==='Item ID')?' <a target="_blank" rel="noopener noreferrer" href="https://www.wowhead.com/'+(name==='Spell ID'?'spell':'item')+'='+id+'">REFERENCE ↗</a>':'')+'</span>';
+function renderSourceTalent(){
+ const dest=$('tfSourceTalent');if(!dest)return;
+ const node=allNodes().find(n=>Number(n.id)===inspectedNode);
+ if(!node){dest.textContent=tree?'Select INSPECT on a talent to review Blizzard IDs and each returned rank.':'Load an official specialization and select INSPECT on a talent.';return}
+ const selected=Number(draft[String(node.id)]||0),prior=baseline(),previous=Number(prior?.rankByNode?.[String(node.id)]||0),ranks=Array.isArray(node.ranks)?node.ranks:[],current=ranks[Math.max(0,Math.min(ranks.length-1,selected-1))]||ranks[0]||{};
+ const id=nodeIdentity(node,current),delta=selected-previous;
+ dest.innerHTML='<div class="tf-source-identity"><strong>'+esc(id.name)+'</strong><div class="tf-source-ids">'+sourceLine('Node ID',id.node)+sourceLine('Talent ID',id.talent)+sourceLine('Spell ID',id.spell)+'</div></div>'+
+ '<p><strong>Allocation:</strong> '+selected+' / '+maxRanks(node)+' manually planned ranks'+(prior?' · saved comparison '+previous+' → '+selected+' ('+(delta>0?'+':'')+delta+')':'')+'</p>'+
+ '<p><strong>Type:</strong> '+(node.hero_group?'Hero · '+esc(node.hero_group):groups().class.some(n=>Number(n.id)===Number(node.id))?'Class':'Specialization')+' · <strong>Blizzard default points:</strong> '+esc(node.default_points??'Not supplied')+'</p>'+
+ '<div class="tf-rank-catalog"><strong>Blizzard-returned rank descriptions</strong>'+
+ (ranks.length?ranks.map((r,i)=>{const info=nodeIdentity(node,r);const choicesList=Array.isArray(r.choice_of_tooltips)?r.choice_of_tooltips:[];return '<div class="tf-rank-detail'+(i+1===selected?' is-planned':'')+'"><strong>Rank '+(i+1)+(i+1===selected?' · allocated':'')+'</strong><div class="tf-source-ids">'+sourceLine('Talent ID',info.talent)+sourceLine('Spell ID',info.spell)+'</div><p>'+esc(info.description||'Description not supplied in this Blizzard response.')+'</p>'+(choicesList.length>1?'<small>Choice alternatives: '+choicesList.map((x,k)=>esc(x.talent?.name||x.spell_tooltip?.spell?.name||'Choice '+(k+1))+(k===Number(choices[node.id]||0)?' [selected]':'')).join(' · ')+'</small>':'')+'</div>'}).join(''):'<p>No rank-specific tooltips returned for this node.</p>')+'</div>'+
+ '<p class="hint">IDs and descriptions come from the loaded specialization response. Effects are text descriptions; no simulated damage, spell coefficients, or gameplay legality is inferred.</p>';
+}
+async function findItemById(id){
+ const output=$('tfSourceItem');if(!detailId(id)){output.textContent='Enter a valid positive numeric Blizzard item ID.';return}
+ const token=++itemRequest;output.textContent='Retrieving Blizzard item #'+id+'…';
+ try{
+  const data=await api('/api/item/'+$('tfRegion').value+'/'+id);if(token!==itemRequest)return;
+  if(!data||Number(data.id)!==Number(id))throw Error('Item ID did not match the Blizzard response');
+  const name=typeof data.name==='string'?data.name:'Item #'+id;
+  const strings=[['Item level',data.level],['Required level',data.required_level],['Quality',data.quality?.name],['Item class',data.item_class?.name],['Item subclass',data.item_subclass?.name],['Inventory type',data.inventory_type?.name],['Purchase price',data.purchase_price]];
+  const stats=Array.isArray(data.preview_item?.stats)?data.preview_item.stats:[];
+  output.innerHTML='<div class="tf-source-identity"><strong>'+esc(name)+'</strong>'+sourceLine('Item ID',detailId(data.id))+'</div><div class="tf-item-facts">'+strings.filter(([,v])=>v!==null&&v!==undefined&&v!=='').map(([k,v])=>'<span><b>'+esc(k)+':</b> '+esc(typeof v==='object'?(v.name||'Not available'):v)+'</span>').join('')+'</div>'+
+   (stats.length?'<h5>Reported item stats</h5><ul>'+stats.slice(0,32).map(stat=>'<li>'+esc(stat.type?.name||stat.type?.type||'Stat')+': '+esc(stat.display?.display_string||stat.value??'Not provided')+'</li>').join('')+'</ul>':'<p>No numeric stat breakdown returned in this item response.</p>')+
+   '<p class="hint">Item properties vary by level, difficulty, bonuses and character context. This is source lookup, not an equipped-character DPS comparison.</p>';
+ }catch(e){if(token!==itemRequest)return;output.textContent='Blizzard item lookup unavailable: '+e.message}
+}
+$('tfSourceItemForm').addEventListener('submit',e=>{e.preventDefault();findItemById(Number($('tfSourceItemId').value))});
+
 function render(){
  renderPlanner();
+ renderSourceTalent();
  const pools=groups();
  const current=active==='hero'&&heroSelection!=='all'?(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes||[]):pools[active];
  const relationship=relationshipEdges(current);
@@ -290,10 +343,10 @@ function render(){
   const id=Number(n.id),max=maxRanks(n),rank=draft[String(id)]||0,previous=Number(priorRanks[String(id)]||0),difference=prior?(rank>previous?'tf-more':rank<previous?'tf-less':''):'',freePoints=Number(n.default_points||0);
   const choiceNames=Array.isArray(n.ranks?.[0]?.choice_of_tooltips)?n.ranks[0].choice_of_tooltips:[];
   const option=choiceNames.length>1?'<div class="tf-choice"><label for="tfChoice'+id+'">Choice branch</label><select id="tfChoice'+id+'" data-tf-choice="'+id+'">'+choiceNames.map((x,i)=>'<option value="'+i+'" '+((choices[id]||0)===i?'selected':'')+'>'+esc(x.talent?.name||x.spell_tooltip?.spell?.name||('Option '+(i+1)))+'</option>').join('')+'</select></div>':'';
-  return '<div data-tf-node="'+id+'" class="tf-node '+(rank?'tf-selected':'')+' '+difference+' '+(focusedNode===id?'tf-focused':'')+'" style="'+(effectiveLayout==='grid'?'--tf-col:'+(positioned?.locations[id]?.col||1)+';--tf-row:'+(positioned?.locations[id]?.row||1)+';':'')+'"><small>'+(freePoints>0?'<span class="tf-default-points">Blizzard default points: '+freePoints+'</span> · ':'')+(Number.isInteger(n.display_row)&&Number.isInteger(n.display_col)?'BLIZZARD ROW '+esc(n.display_row+1)+' · COL '+esc(n.display_col+1):'BLIZZARD POSITION NOT PROVIDED')+(positioned?.locations[id]?.adjusted?' · POSITION ADJUSTED':'')+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div><button class="tf-relation-button" type="button" data-tf-relations="'+id+'">RELATIONS</button></div>';
+  return '<div data-tf-node="'+id+'" class="tf-node '+(rank?'tf-selected':'')+' '+difference+' '+(focusedNode===id?'tf-focused':'')+'" style="'+(effectiveLayout==='grid'?'--tf-col:'+(positioned?.locations[id]?.col||1)+';--tf-row:'+(positioned?.locations[id]?.row||1)+';':'')+'"><small>'+(freePoints>0?'<span class="tf-default-points">Blizzard default points: '+freePoints+'</span> · ':'')+(Number.isInteger(n.display_row)&&Number.isInteger(n.display_col)?'BLIZZARD ROW '+esc(n.display_row+1)+' · COL '+esc(n.display_col+1):'BLIZZARD POSITION NOT PROVIDED')+(positioned?.locations[id]?.adjusted?' · POSITION ADJUSTED':'')+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div><div class="tf-source-actions"><button class="tf-relation-button" type="button" data-tf-relations="'+id+'">RELATIONS</button><button class="tf-relation-button" type="button" data-tf-inspect="'+id+'">INSPECT</button></div></div>';
  }).join('')+'</div>'; updateBudget();if(typeof requestAnimationFrame==='function')requestAnimationFrame(renderLinks);
  if(!filtered.length)$('tfTree').innerHTML='<div class="empty">No talents match the current filter. Disable “Show only flagged links” or clear the search to see all nodes.</div>';
- if(prior){const d=countPointChanges(draft,prior.rankByNode);$('tfCompareSummary').textContent='Compared with '+prior.name+': '+d.changed+' changed nodes · '+d.added+' additional planned ranks · '+d.removed+' fewer planned ranks. Green outlines indicate more; amber indicate fewer.'}
+ if(prior){const d=countPointChanges(draft,prior.rankByNode);const changed=allNodes().filter(n=>Number(draft[String(n.id)]||0)!==Number(prior.rankByNode?.[String(n.id)]||0)).slice(0,12).map(n=>nodeName(n)+' '+Number(prior.rankByNode?.[String(n.id)]||0)+'→'+Number(draft[String(n.id)]||0));$('tfCompareSummary').textContent='Compared with '+prior.name+': '+d.changed+' changed nodes · '+d.added+' additional planned ranks · '+d.removed+' fewer planned ranks. '+(changed.length?'Rank differences: '+changed.join(' · ')+(d.changed>12?' …':'')+'. ':'')+'Select INSPECT for descriptions and exact source IDs.'}
  else $('tfCompareSummary').textContent='Choose a saved draft of the same specialization to compare planned ranks.';
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(_){notice('Local storage unavailable. Export your saved plans.')}}
@@ -324,6 +377,7 @@ async function load(spec,region,restored=null){if(!spec)return notice('Choose a 
 $('tfRegion').addEventListener('change',e=>{loadRequest++;clearTimeout(recoveryTimer);tree=null;draft={};choices={};identity='';plannerMeta=PLANNER?.defaultMeta()||plannerMeta;recoveryPending=false;$('tfPlanRecover').hidden=true;plannerToFields();render();indexFetch(e.target.value)});
 $('tfLoad').addEventListener('click',()=>{const s=index[Number($('tfSpec').value)];load(s,$('tfRegion').value)});
 document.addEventListener('click',e=>{
+ const inspect=e.target.closest('[data-tf-inspect]');if(inspect){inspectedNode=Number(inspect.dataset.tfInspect);renderSourceTalent();$('tfSourceIntel').scrollIntoView({behavior:'smooth',block:'nearest'});return}
  const relation=e.target.closest('[data-tf-relations]');if(relation){focusedNode=Number(relation.dataset.tfRelations);render();return}
  const tab=e.target.closest('[data-tf-tab]');if(tab){active=tab.dataset.tfTab;render();return}
  const plus=e.target.closest('[data-tf-inc]'),minus=e.target.closest('[data-tf-dec]');
