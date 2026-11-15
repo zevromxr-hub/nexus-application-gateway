@@ -1,0 +1,79 @@
+/* NEXUS | AZEROTH COMPANION v2.3 — Talent Forge.
+ * Blizzard-provided talent nodes only; rankings and choices are manual research drafts.
+ * No made-up talent data, no game-valid export claims.
+ */
+(()=>{'use strict';
+const API='https://nexus-azeroth-api.zevromxr.workers.dev',KEY='nexus_azeroth_talent_forge_v1';
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const validId=id=>Number.isSafeInteger(Number(id))&&Number(id)>0&&Number(id)<=9999999999;
+let index=[],tree=null,active='class',draft={},saved=[],identity='',loadedRegion='us',loading=false,choices={};
+try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(v))saved=v.filter(x=>x&&typeof x.name==='string'&&typeof x.identity==='string'&&x.rankByNode&&typeof x.rankByNode==='object').slice(0,40)}catch(_){}
+const main=document.querySelector('.main'),foot=main?.querySelector('.footer'),nav=document.querySelector('.nav');if(!main||!foot||!nav)return;
+const button=document.createElement('button');button.type='button';button.dataset.view='talents';button.textContent='✧ Talent Forge';nav.appendChild(button);
+const mount=document.createElement('div');mount.id='talentForge';mount.innerHTML="<section class=\"section\" data-section=\"talents\"><div class=\"wow-kicker\">LIVE BLIZZARD TALENT DATA · RETAIL</div><h2>Talent Forge</h2><p class=\"muted\">Explore class, specialization, and hero talent nodes from Blizzard’s Retail API. Plan ranks and choice nodes, then save a personal draft. This is a research planner—not an in-game-valid loadout validator or import-code generator.</p><div class=\"panel\"><div class=\"tf-selectors\"><div class=\"field\"><label for=\"tfRegion\">Region</label><select id=\"tfRegion\"><option value=\"us\">Americas</option><option value=\"eu\">Europe</option><option value=\"kr\">Korea</option><option value=\"tw\">Taiwan</option></select></div><div class=\"field\"><label for=\"tfSpec\">Playable specialization</label><select id=\"tfSpec\"><option value=\"\">Load official specializations…</option></select></div><button class=\"primary\" id=\"tfLoad\" type=\"button\">LOAD TALENT TREE</button></div><p class=\"hint\" id=\"tfStatus\" role=\"status\" aria-live=\"polite\">Loading official specialization index…</p></div><div class=\"tf-stats\"><div><strong id=\"tfClassPoints\">0</strong><span>Planned class points</span></div><div><strong id=\"tfSpecPoints\">0</strong><span>Planned spec points</span></div><div><strong id=\"tfHeroPoints\">0</strong><span>Planned hero points</span></div></div><div class=\"panel tf-toolbar\"><div class=\"top\"><h3>Talent Workspace</h3><div class=\"actions\"><button type=\"button\" id=\"tfSave\">SAVE BUILD</button><button type=\"button\" id=\"tfClear\">CLEAR DRAFT</button><button type=\"button\" id=\"tfExport\">EXPORT BUILD JSON</button><label class=\"wow-file\">IMPORT BUILD JSON<input id=\"tfImport\" type=\"file\" accept=\".json,application/json\"></label></div></div><div class=\"tf-tabs\"><button data-tf-tab=\"class\" type=\"button\" class=\"active\">CLASS</button><button data-tf-tab=\"spec\" type=\"button\">SPECIALIZATION</button><button data-tf-tab=\"hero\" type=\"button\">HERO</button></div><div id=\"tfTree\" class=\"tf-tree\"><div class=\"empty\">Select a specialization, then load the talent tree.</div></div></div><div class=\"panel tf-library\"><h3>My Saved Talent Drafts</h3><div class=\"field\"><label for=\"tfBuildName\">Current draft name</label><input id=\"tfBuildName\" maxlength=\"75\" placeholder=\"My raid talent draft\"></div><div id=\"tfSaved\" class=\"tf-saved-list\"></div><p class=\"hint\">Drafts use Blizzard node IDs but do not promise correct prerequisites, allowed points, current meta, hero paths, or game import-string compatibility. Use the in-game talent interface to validate before playing.</p></div></section>";main.insertBefore(mount,foot);
+const notice=message=>{$('tfStatus').textContent=message};
+const groups=()=>({class:Array.isArray(tree?.class_talent_nodes)?tree.class_talent_nodes:[],spec:Array.isArray(tree?.spec_talent_nodes)?tree.spec_talent_nodes:[],hero:Array.isArray(tree?.hero_talent_trees)?tree.hero_talent_trees.flatMap(t=>Array.isArray(t.hero_talent_nodes)?t.hero_talent_nodes.map(n=>({...n,hero_group:t.name||'Hero'})):[]):[]});
+const allNodes=()=>Object.values(groups()).flat();
+function nodeName(n,rank=0){
+ const ranks=Array.isArray(n.ranks)?n.ranks:[],r=ranks[Math.min(Math.max(rank,0),ranks.length-1)];
+ const ch=Array.isArray(r?.choice_of_tooltips)?r.choice_of_tooltips:[],choice=choices[n.id]||0;
+ return ch[choice]?.talent?.name||ch[choice]?.spell_tooltip?.spell?.name||r?.tooltip?.talent?.name||r?.tooltip?.spell_tooltip?.spell?.name||n.name||('Talent node #'+n.id);
+}
+function nodeDesc(n,rank=0){
+ const ranks=Array.isArray(n.ranks)?n.ranks:[],r=ranks[Math.min(Math.max(rank,0),ranks.length-1)];
+ const c=Array.isArray(r?.choice_of_tooltips)?r.choice_of_tooltips:[],choice=choices[n.id]||0;
+ return c[choice]?.spell_tooltip?.description||r?.tooltip?.spell_tooltip?.description||'No spell description supplied by Blizzard.';
+}
+const maxRanks=n=>Math.max(1,Array.isArray(n.ranks)?n.ranks.length:1);
+function cleanDraft(raw){const result={},valid=new Map(allNodes().map(n=>[String(n.id),n]));if(!raw||typeof raw!=='object')return result;for(const [id,v] of Object.entries(raw)){const node=valid.get(id);if(node&&Number.isInteger(v)&&v>=0&&v<=maxRanks(node))result[id]=v}return result}
+function render(){
+ const pools=groups();
+ for(const kind of ['class','spec','hero']){$('tf'+kind[0].toUpperCase()+kind.slice(1)+'Points').textContent=pools[kind].reduce((n,x)=>n+(draft[String(x.id)]||0),0)}
+ document.querySelectorAll('[data-tf-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tfTab===active));
+ if(!tree){$('tfTree').innerHTML='<div class="empty">Load a Blizzard specialization tree to begin.</div>';return}
+ const pool=pools[active];
+ if(!pool.length){$('tfTree').innerHTML='<div class="empty">Blizzard did not return nodes for this talent category. This does not necessarily mean the class has no such talents.</div>';return}
+ const sorted=pool.slice().sort((a,b)=>(a.display_row??0)-(b.display_row??0)||(a.display_col??0)-(b.display_col??0));
+ $('tfTree').innerHTML='<div class="tf-node-grid">'+sorted.map(n=>{
+  const id=Number(n.id),max=maxRanks(n),rank=draft[String(id)]||0;
+  const choiceNames=Array.isArray(n.ranks?.[0]?.choice_of_tooltips)?n.ranks[0].choice_of_tooltips:[];
+  const option=choiceNames.length>1?'<div class="tf-choice"><label for="tfChoice'+id+'">Choice branch</label><select id="tfChoice'+id+'" data-tf-choice="'+id+'">'+choiceNames.map((x,i)=>'<option value="'+i+'" '+((choices[id]||0)===i?'selected':'')+'>'+esc(x.talent?.name||x.spell_tooltip?.spell?.name||('Option '+(i+1)))+'</option>').join('')+'</select></div>':'';
+  return '<div class="tf-node '+(rank?'tf-selected':'')+'"><small>ROW '+esc((n.display_row??0)+1)+' · COL '+esc((n.display_col??0)+1)+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div></div>';
+ }).join('')+'</div>';
+}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(_){notice('Local storage unavailable. Export your saved plans.')}}
+function renderSaved(){$('tfSaved').innerHTML=saved.map((x,i)=>'<div class="tf-save-entry"><div><strong>'+esc(x.name)+'</strong><small>'+esc(x.specName||'Talent draft')+' · '+esc(x.region||'us')+' · '+esc(x.savedAt?.slice(0,10)||'')+'</small></div><div class="actions"><button data-tf-open="'+i+'" type="button">LOAD</button><button data-tf-remove="'+i+'" type="button">REMOVE</button></div></div>').join('')||'<div class="empty">No saved talent drafts yet.</div>'}
+async function api(path){const c=new AbortController(),timeout=setTimeout(()=>c.abort(),17000);try{const r=await fetch(API+path,{headers:{Accept:'application/json'},credentials:'omit',cache:'no-store',signal:c.signal});const d=await r.json().catch(()=>null);if(!r.ok||!d||d.success===false)throw Error(String(d?.message||'Talent API unavailable').slice(0,120));return d.data}catch(e){if(e.name==='AbortError')throw Error('Blizzard request timed out');throw e}finally{clearTimeout(timeout)}}
+function parseSpec(x){
+ const href=x?.key?.href||'';
+ const m=href.match(/\/talent-tree\/(\d+)\/playable-specialization\/(\d+)/);
+ return m?{treeId:Number(m[1]),specId:Number(m[2]),name:typeof x.name==='string'?x.name:('Specialization '+m[2])}:null;
+}
+async function indexFetch(region){
+ notice('Loading Blizzard talent-tree index…');index=[];$('tfSpec').innerHTML='<option value="">Loading specializations…</option>';
+ try{const data=await api('/api/talent-index/'+region),raw=Array.isArray(data?.spec_talent_trees)?data.spec_talent_trees:[];index=raw.map(parseSpec).filter(Boolean).filter((v,i,a)=>a.findIndex(x=>x.treeId===v.treeId&&x.specId===v.specId)===i).sort((a,b)=>a.name.localeCompare(b.name));if(!index.length)throw Error('Blizzard returned no usable specialization-tree links');$('tfSpec').innerHTML='<option value="">Select a specialization</option>'+index.map((s,i)=>'<option value="'+i+'">'+esc(s.name)+' (ID '+s.specId+')</option>').join('');notice('Loaded '+index.length+' official talent tree entries. Select a specialization.')}
+ catch(e){$('tfSpec').innerHTML='<option value="">Talent index unavailable</option>';notice('Talent index unavailable: '+e.message+'. The current Cloudflare Worker may need the v2.3 upgrade.')}
+}
+async function load(spec,region,restored=null){if(!spec)return notice('Choose a specialization first.');if(loading)return;loading=true;$('tfLoad').disabled=true;notice('Loading '+spec.name+' specialization data from Blizzard…');try{
+ const data=await api('/api/talent-tree/'+region+'/'+spec.treeId+'/'+spec.specId);
+ if(!Array.isArray(data?.class_talent_nodes)||!Array.isArray(data?.spec_talent_nodes))throw Error('Blizzard response lacks class or specialization talent nodes');
+ tree=data;loadedRegion=region;identity=region+'/'+spec.treeId+'/'+spec.specId;draft=cleanDraft(restored?.rankByNode||{});choices=restored?.choiceByNode&&typeof restored.choiceByNode==='object'?restored.choiceByNode:{};active='class';
+ $('tfBuildName').value=restored?.name||spec.name+' Draft';render();notice('Loaded official '+spec.name+' data. Allocate nodes as a planning draft; validation is not automatic.');
+ }catch(e){notice('Could not load this specialization: '+e.message+'. You can try a different specialization or region.')}finally{loading=false;$('tfLoad').disabled=false}}
+$('tfRegion').addEventListener('change',e=>{tree=null;draft={};choices={};render();indexFetch(e.target.value)});
+$('tfLoad').addEventListener('click',()=>{const s=index[Number($('tfSpec').value)];load(s,$('tfRegion').value)});
+document.addEventListener('click',e=>{
+ const tab=e.target.closest('[data-tf-tab]');if(tab){active=tab.dataset.tfTab;render();return}
+ const plus=e.target.closest('[data-tf-inc]'),minus=e.target.closest('[data-tf-dec]');
+ if(plus||minus){const id=Number((plus||minus).dataset.tfInc||(plus||minus).dataset.tfDec),n=allNodes().find(x=>x.id===id);if(!n)return;draft[String(id)]=Math.max(0,Math.min(maxRanks(n),(draft[String(id)]||0)+(plus?1:-1)));render();return}
+ const open=e.target.closest('[data-tf-open]');if(open){const x=saved[Number(open.dataset.tfOpen)];if(!x)return;const [region,treeId,specId]=x.identity.split('/');$('tfRegion').value=region;indexFetch(region).then(()=>{const i=index.findIndex(v=>v.treeId===Number(treeId)&&v.specId===Number(specId));if(i>=0){$('tfSpec').value=String(i);load(index[i],region,x)}else notice('Saved specialization is not present in the current Blizzard index.')});return}
+ const remove=e.target.closest('[data-tf-remove]');if(remove){if(confirm('Remove this saved talent draft?')){saved.splice(Number(remove.dataset.tfRemove),1);persist();renderSaved()}}
+});
+document.addEventListener('change',e=>{const id=e.target.dataset.tfChoice;if(id&&tree){choices[id]=Number(e.target.value)||0;render()}});
+function draftRecord(){const selected=index[Number($('tfSpec').value)];return{format:'nexus-azeroth-talent-draft-v1',name:$('tfBuildName').value.trim().slice(0,75)||'My talent draft',identity,region:loadedRegion,treeId:tree.id,specName:selected?.name||tree.playable_specialization?.name||'Spec',rankByNode:draft,choiceByNode:choices,savedAt:new Date().toISOString(),notice:'Manual talent research plan; not validated for game import or points/prerequisites.'}}
+$('tfSave').addEventListener('click',()=>{if(!tree)return notice('Load a talent tree before saving.');const x=draftRecord();saved=[x,...saved.filter(v=>!(v.identity===x.identity&&v.name===x.name))].slice(0,40);persist();renderSaved();notice('Talent draft saved locally.')});
+$('tfClear').addEventListener('click',()=>{if(!tree)return;if(confirm('Clear all allocated ranks and choices from the current draft?')){draft={};choices={};render();notice('Draft cleared.')}})
+$('tfExport').addEventListener('click',()=>{if(!tree)return notice('Load a talent tree to export.');const text=JSON.stringify(draftRecord(),null,2),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='nexus-talent-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)});
+$('tfImport').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>1000000)throw Error('File too large');const v=JSON.parse(await f.text());if(v.format!=='nexus-azeroth-talent-draft-v1'||typeof v.identity!=='string'||typeof v.name!=='string'||!v.rankByNode||typeof v.rankByNode!=='object')throw Error('Invalid talent draft');if(!/^(us|eu|kr|tw)\/\d{1,10}\/\d{1,10}$/.test(v.identity))throw Error('Invalid specialization reference');const [region,treeId,specId]=v.identity.split('/');$('tfRegion').value=region;await indexFetch(region);const i=index.findIndex(s=>s.treeId===Number(treeId)&&s.specId===Number(specId));if(i<0)throw Error('Spec not found in current Blizzard index');$('tfSpec').value=String(i);await load(index[i],region,v)}catch(err){notice('Import failed: '+err.message)}e.target.value=''});
+renderSaved();indexFetch('us');
+})();

@@ -1,4 +1,4 @@
-/* NEXUS Azeroth API v2.1 — Cloudflare Workers module
+/* NEXUS Azeroth API v2.3 — Cloudflare Workers module
  * Deploy this file through Cloudflare's Worker editor. Never insert credentials here.
  * BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET stay in encrypted Worker secrets.
  */
@@ -35,15 +35,19 @@ export default {
   const u=new URL(request.url);
   if(request.method==='OPTIONS')return json({ok:true});
   if(request.method!=='GET')return fail('Method not allowed',405);
-  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'2.1.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET)});
+  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'2.3.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET)});
   const p=u.pathname.split('/').filter(Boolean);
-  if(p[0]!=='api'||p.length>5)return fail('Unknown route',404);
+  if(p[0]!=='api'||p.length>6)return fail('Unknown route',404);
   const type=p[1],region=p[2],arg=p[3],arg2=p[4];
   if(!Object.hasOwn(LOCALE,region))return fail('Unsupported region');
   const goodId=/^[1-9][0-9]{0,9}$/,slug=/^[a-z0-9-]{2,80}$/,name=/^[a-z0-9-]{2,50}$/;
   let path,namespace,params={};
   if((type==='item'||type==='media')&&p.length===4&&goodId.test(arg)){
    path=type==='media'?'/data/wow/media/item/'+arg:'/data/wow/item/'+arg;namespace='static';
+   }else if(type==='talent-index'&&p.length===3){
+   path='/data/wow/talent-tree/index';namespace='static';
+  }else if(type==='talent-tree'&&p.length===5&&goodId.test(arg)&&goodId.test(arg2)){
+   path='/data/wow/talent-tree/'+arg+'/playable-specialization/'+arg2;namespace='static';
   }else if(type==='search'&&p.length===3){
    const q=(u.searchParams.get('q')||'').trim();
    if(q.length<2||q.length>70||/[<>]/.test(q))return fail('Search needs 2–70 valid characters');

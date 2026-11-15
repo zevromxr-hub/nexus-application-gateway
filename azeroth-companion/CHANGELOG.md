@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.3.0 · 2026-11-14 — Talent Forge
+
+- **Blizzard talent exploration:** retrieve Retail specialization talent trees and browse their class, spec, and hero nodes when supplied by the official API.
+- **Interactive draft builder:** plan rank investments and choice nodes against the retrieved talent reference data.
+- **Saved drafts:** name and store up to 40 independent planning builds in browser storage, with JSON export/import.
+- **Secure integration:** uses the existing Cloudflare Blizzard gateway; no client credentials or OAuth tokens in public website code.
+- **Preservation:** retained existing item-name search, Loot Hunter, character Armory, Party Architect, progression studios, and saved profiles.
+
+**Limitations:** Talent allocations are manually planned and not validated against Blizzard's current in-game prerequisite, level, hero-path, or point-budget rules. JSON drafts are not in-game import strings. Talent availability depends on Blizzard's API completeness and the installed v2.3 Worker.
+
 ## v2.2.0 · 2026-11-14 — Loot Hunter
 
 - **Acquisition guide explorer:** four documented legacy collectible/legendary acquisition routes with per-item source links, explicitly distinguished from Blizzard's official game data.
