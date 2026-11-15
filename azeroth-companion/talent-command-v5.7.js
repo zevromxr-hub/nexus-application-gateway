@@ -12,6 +12,8 @@ const el=id=>document.getElementById(id);
 const box=document.createElement('section');box.id='tfCommand';box.className='panel tf-command';
 box.innerHTML='<header class="tf-cmd-head"><div><span class="wow-kicker">NEXUS / TALENT FORGE v5.7</span><h3>Talent Command Center</h3><p>Explore the full Blizzard-returned talent catalog, jump directly to real tree nodes and preview individual allocation changes before committing them through the existing undo-safe planner.</p></div><span class="tf-cmd-tag">SOURCE-DRIVEN PLANNER</span></header>'+
 '<div id="tfCmdStats" class="tf-cmd-stats" role="status" aria-live="polite">Load a specialization to activate Talent Command.</div>'+
+'<label class="tf-cmd-path-toggle"><input type="checkbox" id="tfCmdPathFocus"> Focus selected source connections on the actual talent tree (visual only)</label>'+
+
 '<div class="tf-cmd-layout"><div class="tf-cmd-pane"><div class="tf-cmd-fields"><label>Find any talent<input id="tfCmdSearch" type="search" maxlength="90" placeholder="Name, description or real node ID"></label><label>Talent pool<select id="tfCmdCategory"><option value="all">All returned pools</option><option value="class">Class</option><option value="spec">Specialization</option><option value="hero">Hero</option></select></label><label>Show<select id="tfCmdFilter"><option value="all">Every returned node</option><option value="selected">Allocated talents</option><option value="linked">Source-linked talents</option><option value="review">Review-linked talents</option><option value="unselected">Unallocated talents</option></select></label></div><p id="tfCmdListStatus" class="hint" aria-live="polite">Select a specialization to explore.</p><div id="tfCmdList" class="tf-cmd-list" role="listbox" aria-label="Blizzard talent results"></div></div>'+
 '<div class="tf-cmd-pane tf-cmd-detail"><h4>Skill Spotlight</h4><div id="tfCmdSpotlight" aria-live="polite" role="status">Select a talent from the navigator to see its real IDs, planned ranks and connected-source path.</div><div id="tfCmdActions" class="tf-cmd-actions"><button type="button" id="tfCmdJump" disabled>LOCATE IN TREE</button><button type="button" id="tfCmdInspect" disabled>OFFICIAL RANK DETAILS</button></div><div class="tf-cmd-preview"><h4>Point Sandbox</h4><p>Preview one point at a time without changing the draft. APPLY uses Talent Forge’s existing rank controls, undo history and recovery checks.</p><div class="tf-cmd-actions"><button type="button" id="tfCmdMinus" disabled>PREVIEW −1</button><button type="button" id="tfCmdPlus" disabled>PREVIEW +1</button><button type="button" id="tfCmdApply" disabled>APPLY PREVIEW</button></div><div id="tfCmdPreview" role="status" aria-live="polite">Choose a talent before previewing an allocation change.</div></div></div></div>'+
 '<details class="tf-cmd-guide"><summary>How to use the upgraded talent trees safely</summary><p><strong>Find:</strong> Search across class, specialization and hero nodes by Blizzard-returned name, ID or rank tooltip. <strong>Locate:</strong> Switches to that pool, resets conflicting filters and shows the original interactive node. <strong>Inspect:</strong> Opens the existing full Blizzard rank/choice inspector. <strong>Preview:</strong> Computes an isolated one-point scenario. <strong>Apply:</strong> delegates to the existing +/− buttons, preserving undo and unsaved-draft recovery.</p><p>Path links originate from the current Blizzard talent-tree response. They do not establish minimum player level, talent tiers, all prerequisite alternatives, hero-path eligibility or a legal in-game build. There are no auto-generated talent recommendations or game import codes.</p></details>';
@@ -27,6 +29,22 @@ function showEmpty(){
  el('tfCmdListStatus').textContent='Choose a specialization first.';
  el('tfCmdSpotlight').textContent='Select a talent after loading a specialization.';
  for(const id of ['tfCmdJump','tfCmdInspect','tfCmdMinus','tfCmdPlus','tfCmdApply'])el(id).disabled=true;
+}
+function decorateTree(s){
+ const focus=el('tfCmdPathFocus')?.checked&&selected!==null;
+ const neighbors=new Set([selected]);
+ if(focus)for(const e of s.linkEdges||[])if(e.from===selected||e.to===selected){neighbors.add(e.from);neighbors.add(e.to)}
+ for(const node of tree.querySelectorAll('[data-tf-node]')){
+  const id=Number(node.dataset.tfNode),up=(s.linkEdges||[]).filter(e=>e.to===id);
+  const needs=up.filter(e=>Number(s.allocations[String(id)]||0)>0&&(e.resolved?Number(s.allocations[String(e.from)]||0)===0:true)).length;
+  node.classList.toggle('tf-cmd-muted',Boolean(focus&&!neighbors.has(id)));
+  node.classList.toggle('tf-cmd-linked-focus',Boolean(focus&&neighbors.has(id)));
+  let badge=node.querySelector('.tf-cmd-tree-hint');
+  if(!badge){badge=document.createElement('span');badge.className='tf-cmd-tree-hint';const control=node.querySelector('.tf-node-controls');control?.before(badge)}
+  const label=up.length+' source links'+(needs?' · '+needs+' to review':'');
+  if(badge&&badge.textContent!==label)badge.textContent=label;
+  if(badge)badge.title='Blizzard-reported upstream links. This is not a game eligibility check.';
+ }
 }
 function update(){
  const s=get();latestSnapshot=s;
@@ -54,6 +72,7 @@ function update(){
  }
  if(selected!==null&&!s.catalog.some(n=>n.id===selected)){selected=null;preview=null}
  spotlight(s,audit);
+ decorateTree(s);
 }
 function spotlight(s,audit){
  const n=s.catalog.find(x=>x.id===selected),target=el('tfCmdSpotlight');
@@ -94,6 +113,7 @@ function locate(id){
  if(item){item.scrollIntoView({behavior:'instant',block:'nearest',inline:'center'});item.classList.add('tf-cmd-pulse');setTimeout(()=>item.isConnected&&item.classList.remove('tf-cmd-pulse'),1700)}
  return item;
 }
+el('tfCmdPathFocus').addEventListener('change',update);
 el('tfCmdSearch').addEventListener('input',update);
 for(const id of ['tfCmdCategory','tfCmdFilter'])el(id).addEventListener('change',update);
 el('tfCmdList').addEventListener('click',e=>{const b=e.target.closest('[data-tf-cmd-node]');if(b)pick(Number(b.dataset.tfCmdNode))});
