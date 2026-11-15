@@ -12,8 +12,8 @@ const TREE={success:true,data:{
  id:111,playable_specialization:{id:222,name:'Fixture Specialization'},
  class_talent_nodes:[
   {id:1001,name:'Fixture Class Node',display_row:0,display_col:0,ranks:[
-   {tooltip:{talent:{name:'Fixture Class Rank 1'},spell_tooltip:{description:'Synthetic test first rank'}}},
-   {tooltip:{talent:{name:'Fixture Class Rank 2'},spell_tooltip:{description:'Synthetic test second rank'}}}
+   {tooltip:{talent:{id:71001,name:'Fixture Class Rank 1'},spell_tooltip:{spell:{id:81001,name:'Fixture Spell'},description:'Synthetic test first rank'}}},
+   {tooltip:{talent:{id:71002,name:'Fixture Class Rank 2'},spell_tooltip:{spell:{id:81002,name:'Fixture Spell 2'},description:'Synthetic test second rank'}}}
   ]},
   {id:1002,name:'Fixture Choice Node',display_row:0,display_col:2,ranks:[
    {choice_of_tooltips:[
@@ -39,7 +39,7 @@ async function run(engine,phone){
   page.on('pageerror',e=>errors.push(String(e)));
   await page.route('https://nexus-azeroth-api.zevromxr.workers.dev/**',route=>{
    const url=route.request().url();
-   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:null;
+   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:url.includes('/api/item/us/19019')?{success:true,data:{id:19019,name:'Synthetic Sword',level:80,quality:{name:'Legendary'},preview_item:{stats:[{type:{name:'Strength'},value:25}]}}}:null;
    return route.fulfill({status:data?200:503,contentType:'application/json',
     headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
     body:JSON.stringify(data||{success:false,message:'API disabled during website test'})});
@@ -59,6 +59,16 @@ async function run(engine,phone){
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
+  assert.ok(await page.locator('#tfSourceIntel').isVisible(),'Talent source intelligence must appear');
+  await page.locator('[data-tf-inspect="1001"]').click();
+  const first=await page.locator('#tfSourceTalent').textContent();
+  assert.ok(first.includes('Node ID: #1001')&&first.includes('Talent ID: #71001')&&first.includes('Spell ID: #81001'),'Inspector should show only source-supplied IDs');
+  assert.ok(first.includes('Synthetic test second rank'),'Rank inspector should include returned descriptions');
+  await page.locator('#tfSourceItemId').fill('19019');
+  await page.locator('#tfSourceItemForm button').click();
+  await page.locator('#tfSourceItem').getByText('Synthetic Sword').waitFor({timeout:7000});
+  assert.ok((await page.locator('#tfSourceItem').textContent()).includes('Strength: 25'),'Gear inspector should display Blizzard-returned fixture stats');
+
   assert.ok((await page.locator('#tfPlanAdvisories').textContent()).includes('legal loadout checker'),'Planner should disclaim game validation');
   await page.locator('[data-tf-inc="1001"]').click();
   await page.locator('[data-tf-inc="1002"]').click();
@@ -83,6 +93,8 @@ async function run(engine,phone){
   assert.equal(copied.length,2,'Duplicating must create a separate saved draft');
   assert.ok(copied[0].name.endsWith('Copy'));
   await page.locator('[data-tf-inc="1001"]').click();
+  await page.locator('#tfCompare').selectOption({index:1});
+  assert.ok((await page.locator('#tfCompareSummary').textContent()).includes('1→2'),'Saved comparison should name source allocation deltas');
   await page.locator('#tfPlanNotes').fill('Unsaved recovery note for the current build.');
   await page.waitForTimeout(900);
   const auto=await page.evaluate(()=>JSON.parse(localStorage.getItem('nexus_azeroth_talent_planner_autorecover_v51')));

@@ -1,21 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Forge Planner — Sovereign Build Architect",
-  "previous_version": "5.0.0",
+  "subtitle": "Talent Intelligence — Verified IDs & Comparative Research",
+  "previous_version": "5.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Transformed Talent Forge into a complete manual Build Architect workspace with Raid, Mythic+, PvP, Solo, Open World and general planning purposes, role/style annotations and up to 1,800 characters of encounter or rotation notes.",
-    "Added separate user-defined Class, Specialization and Hero point targets, plus a source-aware live rank breakdown and review panel that clearly distinguishes structural issues from unverified Blizzard gameplay rules.",
-    "Added browser-local unsaved draft recovery for ranks, choices, notes and targets, with explicit Restore/Discard controls so a working copy does not silently overwrite a loaded draft.",
-    "Expanded the existing saved library with draft duplication and a human-readable copyable build brief identifying selected talent names and allocated ranks; kept existing comparison, Undo/Redo and JSON export.",
-    "Retained the original v1 saved-draft JSON and browser storage key while adding optional planner metadata, preserving old saves and allowing strict backward-compatible import.",
-    "Hardened imported build JSON with bounded size, specialization identifiers, numeric node/choice limits, cleanup against the current Blizzard-returned tree, and safe local-only persistence.",
-    "Preserved the secure Blizzard Worker, all existing Azeroth studios, v5.0 website experience, source-link analysis, responsive layouts and four-resource delivery without new API endpoints or OAuth permissions.",
-    "Added dedicated desktop Chromium and mobile WebKit browser integration tests with explicitly synthetic talent data, plus pure engine validation tests and maintenance documentation."
+    "Added click-to-inspect talent source records with Blizzard node, talent and spell IDs, and returned spell descriptions for each available rank or choice.",
+    "Added per-node current allocation versus saved-build point deltas, with a concise list of changed talent names and allocations.",
+    "Added optional gear lookup by exact Blizzard item ID using the existing protected Cloudflare item endpoint, displaying available item properties and stat fields.",
+    "Provided external reference links for official-source spell and item IDs, while explicitly marking unreported stats or talent descriptions as unavailable.",
+    "Preserved browser-local saved builds, legacy import/export, all previous studios, existing Worker credentials/API routes and four bundled site resources.",
+    "Descriptions and item stats come from Blizzard returned data; no game-valid talent export, live character combat simulation, or DPS estimates are claimed."
   ]
 }

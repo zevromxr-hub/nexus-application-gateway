@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v5.2.0 · 2026-11-15 — Talent Intelligence: Verified IDs & Comparative Research
+
+- **Talent source inspector:** INSPECT an official returned talent node to view its node ID, related talent and spell IDs when supplied, selected rank, per-rank tooltips and choice options.
+- **Build comparisons:** Saved-draft comparison now identifies changed talent names and previous → current planned allocations, with selected-node details and IDs.
+- **Gear ID lookup:** Retrieve Blizzard item data through the existing item API without new credentials or Cloudflare deployment; show only returned item level, quality, inventory class, and optional stat details.
+- **Explicit limits:** Spell descriptions and equipment attributes are informational; numerical combat effects, live gear scoring, prerequisites, and legal in-game loadouts are not calculated.
+- **Compatibility:** Existing local data, UI studios, API endpoints, and four compiled resource requests are preserved. New assets use versioned filenames for Safari/GitHub Pages cache safety.
+
+
 ## v5.1.0 · 2026-11-15 — Talent Forge Planner: Sovereign Build Architect
 
 - **Build planning workspace:** Talent Forge now supports planned activities (General, Raid, Mythic+, PvP, Solo, Open World), roles, playstyles and detailed encounter/rotation notes. All annotations are player-entered; no automated meta-ranking or gameplay recommendations are implied.

@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.2.0",
+  "title": "Talent Intelligence — Verified IDs & Comparative Research",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added click-to-inspect talent source records with Blizzard node, talent and spell IDs, and returned spell descriptions for each available rank or choice.",
+    "Added per-node current allocation versus saved-build point deltas, with a concise list of changed talent names and allocations.",
+    "Added optional gear lookup by exact Blizzard item ID using the existing protected Cloudflare item endpoint, displaying available item properties and stat fields.",
+    "Provided external reference links for official-source spell and item IDs, while explicitly marking unreported stats or talent descriptions as unavailable.",
+    "Preserved browser-local saved builds, legacy import/export, all previous studios, existing Worker credentials/API routes and four bundled site resources.",
+    "Descriptions and item stats come from Blizzard returned data; no game-valid talent export, live character combat simulation, or DPS estimates are claimed."
+  ]
+}
