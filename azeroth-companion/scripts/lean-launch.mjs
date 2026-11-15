@@ -20,7 +20,7 @@ const html=await readFile(path.join(ROOT,'index.html'),'utf8');
 let cssCount=0,jsCount=0,bytes=0;
 for(const plan of plans){
  const contents=await Promise.all(plan.files.map(async f=>readFile(path.join(ROOT,f),'utf8')));
- if(plan.kind==='css')for(let i=0;i<contents.length;i++)assert.ok(!/@import\\b|@charset\\b/i.test(contents[i]),'CSS directives must not be moved into bundled middle: '+plan.files[i]);
+ if(plan.kind==='css')for(let i=0;i<contents.length;i++)assert.ok(!/@import\b|@charset\b/i.test(contents[i]),'CSS directives must not be moved into bundled middle: '+plan.files[i]);
  const serialized=plan.header+plan.files.map((name,i)=>plan.kind==='js'?'\n;/* BUNDLE SOURCE: '+name+' */\n'+contents[i]+'\n':'\n/* BUNDLE SOURCE: '+name+' */\n'+contents[i]+'\n').join('');
  if(plan.kind==='js')new vm.Script(serialized,{filename:plan.out});
  const meta=plan.files.map(name=>'./'+name).join(' ');
