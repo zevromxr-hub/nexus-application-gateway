@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/v5\.2 TALENT INTELLIGENCE/);
+assert.match(html,/v5\.3 TALENT ATLAS/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(inline.length,1);
@@ -17,9 +17,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'5.2.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'5.3.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v5\.2 • Talent Intelligence/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v5\.3 • Talent Atlas/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
@@ -54,6 +54,14 @@ for(const item of sources.items)assert.ok(Number.isSafeInteger(item.id)&&/^https
 
 assert.match(html,/talent-forge\.js/);
 assert.match(html,/talent-forge\.css/);
+const talentAtlasCanvas=await read('azeroth-companion/talent-canvas-v5.3.js');
+new vm.Script(talentAtlasCanvas);
+assert.match(html,/talent-canvas-v5\.3\.js/);
+assert.match(html,/talent-canvas-v5\.3\.css/);
+for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap','applyScale','drawMap','MutationObserver'])
+ assert.ok(talentAtlasCanvas.includes(name),'Talent Atlas missing '+name);
+const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
+assert.ok(atlasStyle.includes('touch-action:none')&&atlasStyle.includes('.tf-canvas-stage'));
 const talent=await read('azeroth-companion/talent-forge.js');
 new vm.Script(talent);
 for(const required of ['tfRegion','tfSpec','tfTree','tfSave','tfImport','tfExport','tfSaved','class_talent_nodes','spec_talent_nodes','hero_talent_trees','/api/talent-index/','/api/talent-tree/'])assert.ok(talent.includes(required),'Talent Forge missing '+required);
