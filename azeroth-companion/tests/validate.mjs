@@ -35,4 +35,14 @@ for(const part of ['cxCharacterForm','cxItemForm','cxEquipment','cxWishlist','cx
 assert.ok(!live.includes('BLIZZARD_CLIENT_SECRET')&&!live.includes('BLIZZARD_CLIENT_ID'),'Do not expose Blizzard credentials in the browser');
 assert.ok(!live.includes('access_token'),'Do not expose OAuth tokens in the browser');
 assert.match(await read('azeroth-companion/connected-armory.css'),/@media\(max-width:600px\)/);
+
+// Optional v2.1 item discovery must be backwards compatible with v2.0.
+assert.match(html,/item-discovery\.js/);
+assert.match(html,/item-discovery\.css/);
+const discovery=await read('azeroth-companion/item-discovery.js');new vm.Script(discovery);
+const backend=await read('azeroth-companion/backend/worker.js');
+new vm.Script(backend.replace('export default','const worker ='));
+for(const route of ['/api/','search','media','equipment','character','BLIZZARD_CLIENT_SECRET'])assert.ok(backend.includes(route),'Missing backend route or secret binding '+route);
+assert.ok(discovery.includes('data-cxopen')&&discovery.includes('/api/search/'),'Item discovery must open existing v2.0 item inspector');
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
