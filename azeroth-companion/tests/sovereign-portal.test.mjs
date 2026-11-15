@@ -22,7 +22,7 @@ assert.ok(js.includes('nexus_azeroth_portal_v45'),'v4.5 preferences must be sepa
 assert.ok(js.includes("const MAX=6")||js.includes("MAX=6"),'Limit homepage shortcuts to six');
 assert.ok(js.includes('new Set(x.favorites.filter(validId))'),'Saved preferences must reject unknown or malformed shortcut identifiers');
 assert.ok(js.includes('state.favorites.length>=MAX'),'Shortcut limit must be checked before saving');
-assert.ok(js.includes("function renderDeck()")&&js.includes('spQuickDeck')&&js.includes('spDeckChoices'),'Quick Deck must render and be customizable');
+assert.ok(js.includes("function renderDeck(")&&js.includes('spQuickDeck')&&js.includes('spDeckChoices'),'Quick Deck must render and be customizable');
 assert.ok(js.includes('state.favorites.filter')&&js.includes('names().has'),'Shortcut reset should use actual installed studio links');
 assert.ok(js.includes("const button=navButtons().find"),'Navigation must reuse existing working studio buttons');
 assert.ok(js.includes("button.click()"),'Quick actions must call the actual existing navigation');
