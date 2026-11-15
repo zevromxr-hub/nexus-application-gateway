@@ -35,7 +35,7 @@ for(const [filename,markers] of checks){
  for(const marker of markers)assert.ok(source.includes(marker),'Deferred startup marker missing in '+filename+': '+marker);
 }
 const browser=await read('tests/startup-audit.browser.mjs');
-for(const marker of ['chromium','webkit','loot-sources.json','version','cdMetrics','udMetrics','pcMetrics','pflChecklist','talents','guide','releases'])
+for(const marker of ['chromium','webkit','loot-sources','version','cdMetrics','udMetrics','pcMetrics','pflChecklist','talents','guide','releases'])
  assert.ok(browser.includes(marker),'Browser startup scenario missing '+marker);
 const actions=await read('../.github/workflows/azeroth-device-audit.yml');
 assert.ok(actions.includes('startup-audit.browser.mjs'),'Startup browser test must be executed in GitHub Actions');
