@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.6.0",
+      "title": "Talent Connections — Source Relationship Explorer",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.5.0",
       "title": "Talent Intelligence — Hero Paths & Build Comparison",
       "date": "2026-11-14"

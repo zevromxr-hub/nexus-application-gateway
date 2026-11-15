@@ -6,7 +6,7 @@
 const API='https://nexus-azeroth-api.zevromxr.workers.dev',KEY='nexus_azeroth_talent_forge_v1';
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validId=id=>Number.isSafeInteger(Number(id))&&Number(id)>0&&Number(id)<=9999999999;
-let index=[],tree=null,active='class',draft={},saved=[],identity='',loadedRegion='us',loading=false,choices={},undoStack=[],redoStack=[],heroSelection='all',compareId='',indexRequest=0;
+let index=[],tree=null,active='class',draft={},saved=[],identity='',loadedRegion='us',loading=false,choices={},undoStack=[],redoStack=[],heroSelection='all',compareId='',indexRequest=0,focusedNode=null,showLinks=true;
 try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(v))saved=v.filter(x=>x&&typeof x.name==='string'&&typeof x.identity==='string'&&x.rankByNode&&typeof x.rankByNode==='object').slice(0,40)}catch(_){}
 const main=document.querySelector('.main'),foot=main?.querySelector('.footer'),nav=document.querySelector('.nav');if(!main||!foot||!nav)return;
 const button=document.createElement('button');button.type='button';button.dataset.view='talents';button.textContent='✧ Talent Forge';nav.appendChild(button);
@@ -17,6 +17,46 @@ const notice=message=>{$('tfStatus').textContent=message};
 const inspectBar=document.createElement('div');inspectBar.id='tfIntel';inspectBar.className='tf-intelligence';
 inspectBar.innerHTML='<div class="tf-intel-row"><label for="tfHeroTree">Hero tree</label><select id="tfHeroTree"><option value="all">All returned hero trees</option></select><label for="tfCompare">Compare saved build</label><select id="tfCompare"><option value="">No comparison</option></select></div><div id="tfCompareSummary" class="tf-compare-summary" aria-live="polite">Compare against a saved draft of the same specialization to highlight differences in planned ranks.</div><div class="tf-help">Official API display positions and default points are reference data. Comparisons and allocations are drafts only: no in-game prerequisites or talent point validity are being inferred.</div>';
 $('tfTree').before(inspectBar);
+const relationUI=document.createElement('div');relationUI.id='tfRelations';relationUI.className='tf-relations';
+relationUI.innerHTML='<div class="tf-relation-controls"><label><input type="checkbox" id="tfShowLinks" checked> Show source-reported links</label><span id="tfLinkCounts">Load a talent tree to inspect its relationships.</span></div><div id="tfRelationDetails" class="tf-relation-details" role="status" aria-live="polite">Click RELATIONS on a talent node to inspect the relationships Blizzard reports for that node.</div>';
+$('tfTree').before(relationUI);
+$('tfShowLinks').addEventListener('change',e=>{showLinks=e.target.checked;render()});
+function relationshipEdges(nodes){
+ const known=new Set(nodes.map(n=>Number(n.id)));
+ const edges=[],missing=[];
+ for(const node of nodes){
+  if(!Array.isArray(node.locked_by))continue;
+  for(const ref of node.locked_by){const id=Number(typeof ref==='object'?(ref?.id??ref?.node_id):ref);if(!Number.isSafeInteger(id)||id<=0)continue;
+   if(known.has(id))edges.push({from:id,to:Number(node.id)});
+   else missing.push({from:id,to:Number(node.id)});
+  }
+ }
+ return{edges,missing};
+}
+function focusRelations(id){
+ focusedNode=Number(id);const visible=groups()[active],node=visible.find(n=>Number(n.id)===focusedNode);
+ if(!node){$('tfRelationDetails').textContent='The selected node is not in this talent category.';return}
+ const {edges,missing}=relationshipEdges(visible),incoming=edges.filter(x=>x.to===focusedNode).map(x=>x.from),outgoing=edges.filter(x=>x.from===focusedNode).map(x=>x.to),label=n=>{const found=visible.find(v=>Number(v.id)===n);return found?nodeName(found):'Node #'+n};
+ $('tfRelationDetails').innerHTML='<strong>'+esc(nodeName(node))+'</strong> · Node #'+focusedNode+'<p>Blizzard reports this node is locked by: '+(incoming.length?incoming.map(label).map(esc).join(', '):'None referenced in this category')+'.</p><p>Nodes reporting a lock from this node: '+(outgoing.length?outgoing.map(label).map(esc).join(', '):'None referenced in this category')+'.</p><p>'+missing.filter(x=>x.to===focusedNode).length+' references could not be resolved in this category. These source-reported links are NOT a complete eligibility or prerequisite validator.</p>';
+}
+function renderLinks(){
+ const grid=$('tfTree').querySelector('.tf-positioned');
+ if(!grid||!showLinks)return;
+ const elements=new Map([...grid.querySelectorAll('[data-tf-node]')].map(el=>[Number(el.dataset.tfNode),el]));
+ const visible=groups()[active],{edges}=relationshipEdges(visible);
+ const width=grid.scrollWidth,height=grid.scrollHeight;
+ if(!width||!height)return;
+ const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
+ svg.setAttribute('class','tf-link-layer');svg.setAttribute('width',width);svg.setAttribute('height',height);svg.setAttribute('viewBox','0 0 '+width+' '+height);svg.setAttribute('aria-hidden','true');
+ for(const {from,to} of edges.slice(0,400)){const a=elements.get(from),b=elements.get(to);if(!a||!b||a===b)continue;
+ const x1=a.offsetLeft+a.offsetWidth/2,y1=a.offsetTop+a.offsetHeight/2,x2=b.offsetLeft+b.offsetWidth/2,y2=b.offsetTop+b.offsetHeight/2;
+ const path=document.createElementNS(ns,'path');const delta=Math.max(25,Math.abs(y2-y1)*.45);
+ path.setAttribute('d','M'+x1+' '+y1+' C'+x1+' '+(y1+delta)+' '+x2+' '+(y2-delta)+' '+x2+' '+y2);
+ path.setAttribute('fill','none');path.setAttribute('stroke',focusedNode===from||focusedNode===to?'#e7c17c':'#64bbb0');path.setAttribute('stroke-width',focusedNode===from||focusedNode===to?'3':'1.5');path.setAttribute('stroke-opacity',focusedNode===from||focusedNode===to?'0.85':'0.42');svg.appendChild(path);
+ }
+ grid.prepend(svg);
+}
+
 function countPointChanges(current,baseline){const ids=new Set([...Object.keys(current||{}),...Object.keys(baseline||{})]);let changed=0,added=0,removed=0;for(const id of ids){const a=Number(current?.[id]||0),b=Number(baseline?.[id]||0);if(a!==b){changed++;if(a>b)added+=a-b;else removed+=b-a}}return{changed,added,removed}}
 function baseline(){return saved.find(x=>x.identity===identity&&x.savedAt===compareId)||null}
 function refreshComparison(){const prior=$('tfCompare').value;const items=saved.filter(x=>x.identity===identity);$('tfCompare').innerHTML='<option value="">No comparison</option>'+items.map(x=>'<option value="'+esc(x.savedAt)+'">'+esc(x.name)+' · '+esc((x.savedAt||'').slice(0,16))+'</option>').join('');$('tfCompare').value=items.some(x=>x.savedAt===prior)?prior:'';compareId=$('tfCompare').value}
@@ -45,9 +85,14 @@ const maxRanks=n=>Math.max(1,Array.isArray(n.ranks)?n.ranks.length:1);
 function cleanDraft(raw){const result={},valid=new Map(allNodes().map(n=>[String(n.id),n]));if(!raw||typeof raw!=='object')return result;for(const [id,v] of Object.entries(raw)){const node=valid.get(id);if(node&&Number.isInteger(v)&&v>=0&&v<=maxRanks(node))result[id]=v}return result}
 function render(){
  const pools=groups();
+ const current=active==='hero'&&heroSelection!=='all'?(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes||[]):pools[active];
+ const relationship=relationshipEdges(current);
+ $('tfLinkCounts').textContent=relationship.edges.length+' source-reported links · '+relationship.missing.length+' references outside this category. Not game validation.';
+ if(focusedNode!==null)focusRelations(focusedNode);
+
  for(const kind of ['class','spec','hero']){$('tf'+kind[0].toUpperCase()+kind.slice(1)+'Points').textContent=pools[kind].reduce((n,x)=>n+(draft[String(x.id)]||0),0)}
  document.querySelectorAll('[data-tf-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tfTab===active));
- if(!tree){$('tfTree').innerHTML='<div class="empty">Load a Blizzard specialization tree to begin.</div>';return}
+ if(!tree){$('tfTree').innerHTML='<div class="empty">Load a Blizzard specialization tree to begin.</div>';$('tfLinkCounts').textContent='Load a talent tree to see its source-reported connections.';return}
  const pool=active==='hero'&&heroSelection!=='all'?(Array.isArray(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes)?tree.hero_talent_trees[Number(heroSelection)].hero_talent_nodes:[]):pools[active];
  if(!pool.length){$('tfTree').innerHTML='<div class="empty">Blizzard did not return nodes for this talent category. This does not necessarily mean the class has no such talents.</div>';return}
  const sorted=pool.slice().sort((a,b)=>(a.display_row??0)-(b.display_row??0)||(a.display_col??0)-(b.display_col??0));
@@ -61,8 +106,8 @@ function render(){
   const id=Number(n.id),max=maxRanks(n),rank=draft[String(id)]||0,previous=Number(priorRanks[String(id)]||0),difference=prior?(rank>previous?'tf-more':rank<previous?'tf-less':''):'',freePoints=Number(n.default_points||0);
   const choiceNames=Array.isArray(n.ranks?.[0]?.choice_of_tooltips)?n.ranks[0].choice_of_tooltips:[];
   const option=choiceNames.length>1?'<div class="tf-choice"><label for="tfChoice'+id+'">Choice branch</label><select id="tfChoice'+id+'" data-tf-choice="'+id+'">'+choiceNames.map((x,i)=>'<option value="'+i+'" '+((choices[id]||0)===i?'selected':'')+'>'+esc(x.talent?.name||x.spell_tooltip?.spell?.name||('Option '+(i+1)))+'</option>').join('')+'</select></div>':'';
-  return '<div class="tf-node '+(rank?'tf-selected':'')+' '+difference+'" style="'+(effectiveLayout==='grid'?'--tf-col:'+Math.max(1,Math.min(14,Number(n.display_col??0)+1))+';--tf-row:'+Math.max(1,Math.min(70,Number(n.display_row??0)+1))+';':'')+'"><small>'+(freePoints>0?'<span class="tf-default-points">Blizzard default points: '+freePoints+'</span> · ':'')+'ROW '+esc((n.display_row??0)+1)+' · COL '+esc((n.display_col??0)+1)+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div></div>';
- }).join('')+'</div>'; updateBudget();
+  return '<div data-tf-node="'+id+'" class="tf-node '+(rank?'tf-selected':'')+' '+difference+' '+(focusedNode===id?'tf-focused':'')+'" style="'+(effectiveLayout==='grid'?'--tf-col:'+Math.max(1,Math.min(14,Number(n.display_col??0)+1))+';--tf-row:'+Math.max(1,Math.min(70,Number(n.display_row??0)+1))+';':'')+'"><small>'+(freePoints>0?'<span class="tf-default-points">Blizzard default points: '+freePoints+'</span> · ':'')+'ROW '+esc((n.display_row??0)+1)+' · COL '+esc((n.display_col??0)+1)+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div><button class="tf-relation-button" type="button" data-tf-relations="'+id+'">RELATIONS</button></div>';
+ }).join('')+'</div>'; updateBudget();if(typeof requestAnimationFrame==='function')requestAnimationFrame(renderLinks);
  if(prior){const d=countPointChanges(draft,prior.rankByNode);$('tfCompareSummary').textContent='Compared with '+prior.name+': '+d.changed+' changed nodes · '+d.added+' additional planned ranks · '+d.removed+' fewer planned ranks. Green outlines indicate more; amber indicate fewer.'}
  else $('tfCompareSummary').textContent='Choose a saved draft of the same specialization to compare planned ranks.';
 }
@@ -86,12 +131,13 @@ async function indexFetch(region){
 async function load(spec,region,restored=null){if(!spec)return notice('Choose a specialization first.');if(loading)return;loading=true;$('tfLoad').disabled=true;notice('Loading '+spec.name+' specialization data from Blizzard…');try{
  const data=await api('/api/talent-tree/'+region+'/'+spec.treeId+'/'+spec.specId);
  if(!Array.isArray(data?.class_talent_nodes)||!Array.isArray(data?.spec_talent_nodes))throw Error('Blizzard response lacks class or specialization talent nodes');
- tree=data;loadedRegion=region;identity=region+'/'+spec.treeId+'/'+spec.specId;draft=cleanDraft(restored?.rankByNode||{});choices=restored?.choiceByNode&&typeof restored.choiceByNode==='object'?restored.choiceByNode:{};undoStack=[];redoStack=[];updateUndoButtons();active='class';
+ tree=data;focusedNode=null;loadedRegion=region;identity=region+'/'+spec.treeId+'/'+spec.specId;draft=cleanDraft(restored?.rankByNode||{});choices=restored?.choiceByNode&&typeof restored.choiceByNode==='object'?restored.choiceByNode:{};undoStack=[];redoStack=[];updateUndoButtons();active='class';
  $('tfBuildName').value=restored?.name||spec.name+' Draft';refreshHeroTrees();refreshComparison();render();notice('Loaded official '+spec.name+' data. Allocate nodes as a planning draft; validation is not automatic.');
  }catch(e){notice('Could not load this specialization: '+e.message+'. You can try a different specialization or region.')}finally{loading=false;$('tfLoad').disabled=false}}
 $('tfRegion').addEventListener('change',e=>{tree=null;draft={};choices={};render();indexFetch(e.target.value)});
 $('tfLoad').addEventListener('click',()=>{const s=index[Number($('tfSpec').value)];load(s,$('tfRegion').value)});
 document.addEventListener('click',e=>{
+ const relation=e.target.closest('[data-tf-relations]');if(relation){focusedNode=Number(relation.dataset.tfRelations);render();return}
  const tab=e.target.closest('[data-tf-tab]');if(tab){active=tab.dataset.tfTab;render();return}
  const plus=e.target.closest('[data-tf-inc]'),minus=e.target.closest('[data-tf-dec]');
  if(plus||minus){const id=Number((plus||minus).dataset.tfInc||(plus||minus).dataset.tfDec),n=allNodes().find(x=>x.id===id);if(!n)return;const next=Math.max(0,Math.min(maxRanks(n),(draft[String(id)]||0)+(plus?1:-1)));if(next===(draft[String(id)]||0))return;recordUndo();draft[String(id)]=next;render();return}
