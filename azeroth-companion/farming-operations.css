@@ -1,0 +1,31 @@
+/* NEXUS Azeroth Companion v2.9 — Character Farming Operations */
+.fo-panel{margin:18px 0;padding:18px}
+.fo-title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.fo-title h3{margin:4px 0 8px;color:#efd5ac}
+.fo-title p{font-size:12px;line-height:1.6;max-width:680px}
+.fo-version{border:1px solid #bc9b685c;color:#f1d2a1;border-radius:24px;padding:6px 11px;font-size:11px}
+.fo-controls{display:flex;flex-wrap:wrap;align-items:center;gap:9px;margin:13px 0}
+.fo-controls label{font-size:11px;color:#bfd3dd}
+.fo-controls input,.fo-controls select{min-width:0;background:#102134;color:#f8f3e6;border:1px solid #ffffff40;border-radius:9px;padding:10px}
+.fo-controls input[type="number"]{width:75px}
+.fo-controls input[type="date"]{width:150px}
+.fo-controls button{font-size:10px;min-height:38px}
+.fo-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.fo-stats>div{background:#1b3245;border:1px solid #d7b87d40;border-radius:11px;padding:13px}
+.fo-stats strong,.fo-stats span{display:block}
+.fo-stats strong{font-size:23px;color:#eac88f}
+.fo-stats span{font-size:10px;color:#b8cad6;margin-top:5px}
+.fo-columns{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fo-columns h4{color:#e2c99f;margin:8px 0}
+.fo-goal,.fo-session{border:1px solid #ffffff29;border-radius:11px;padding:12px;margin:9px 0;background:#ffffff09}
+.fo-goal strong,.fo-goal small,.fo-session strong,.fo-session small{display:block}
+.fo-goal strong,.fo-session strong{font-size:13px;color:#edd6ad}
+.fo-goal small,.fo-session small{font-size:10px;color:#b5cbd6;margin-top:6px}
+.fo-picks{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.fo-picks label{display:flex;align-items:center;gap:5px;padding:6px;border:1px solid #ffffff1a;border-radius:8px;font-size:11px;color:#c7dadb}
+.fo-picks input{accent-color:#a2d6bb}
+.fo-session{display:flex;justify-content:space-between;align-items:center;gap:9px}
+.fo-session button{font-size:10px}
+.fo-session p{font-size:11px;line-height:1.4}
+.fo-status{font-size:11px;line-height:1.65;color:#afd7c9;margin-top:13px}
+@media(max-width:860px){.fo-columns{grid-template-columns:1fr}.fo-controls input{flex:1 1 120px}.fo-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.fo-title{flex-wrap:wrap}.fo-panel{padding:12px}}
