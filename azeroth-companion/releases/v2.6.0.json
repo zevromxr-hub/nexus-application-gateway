@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.6.0",
+  "title": "Talent Connections — Source Relationship Explorer",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added a read-only talent relationship explorer using locked_by node references supplied by Blizzard's Retail API",
+    "Drawn source-reported connections between visible talent nodes in the positional tree layout",
+    "Added individual node relationship inspection for incoming links and nodes that report links back to the selected node",
+    "Reported missing or unresolved node references instead of inferring prerequisite rules",
+    "Added a switch to hide source connection lines and highlighting for the selected node",
+    "Retained all prior Talent Forge drafts, Hero Path selection, build comparison, Item Codex, Loot Hunter and Armory studios",
+    "Made no changes to Blizzard credentials or the existing Cloudflare Worker"
+  ]
+}
