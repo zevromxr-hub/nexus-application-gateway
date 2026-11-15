@@ -68,8 +68,8 @@ for(const id of ['tfBuildIntel','tfBiNode','tfBiConnections','tfBiReview','tfBiS
  assert.ok(buildIntel.includes(id),'Missing v5.5 Build Intelligence '+id);
 for(const marker of ['savedDrafts:','linkEdges:','catalog:','allocations:'])
  assert.ok((await read('azeroth-companion/talent-forge.js')).includes(marker),'Missing source bridge '+marker);
-assert.match(html,/talent-build-intel-v5\\.5\\.js/);
-assert.match(html,/talent-build-intel-v5\\.5\\.css/);
+assert.match(html,/talent-build-intel-v5\.5\.js/);
+assert.match(html,/talent-build-intel-v5\.5\.css/);
 assert.ok(buildIntelCSS.includes('@media(max-width:520px)'));
 const sourceStudio=await read('azeroth-companion/talent-source-plus-v5.4.js');new vm.Script(sourceStudio);
 const sourceStudioCSS=await read('azeroth-companion/talent-source-plus-v5.4.css');
