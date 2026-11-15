@@ -123,11 +123,12 @@ let selectedFrame=0,lastSelectedView='';
 function updateSelectedView(){
  const active=nav.querySelector('button[data-view].active');
  const id=active?.dataset.view||'overview';
- if(lastSelectedView===id&&document.body.classList.contains('sx-home')===(id==='overview'))return;
+ const wrapper=active?.closest('.sx-nav-group');
+ const needsExpansion=Boolean(wrapper&&wrapper.dataset.collapsed==='true'&&window.matchMedia('(min-width:801px)').matches);
+ if(lastSelectedView===id&&document.body.classList.contains('sx-home')===(id==='overview')&&!needsExpansion)return;
  lastSelectedView=id;
  document.body.classList.toggle('sx-home',id==='overview');
- const wrapper=active?.closest('.sx-nav-group');
- if(wrapper&&wrapper.dataset.collapsed==='true'&&window.matchMedia('(min-width:801px)').matches){
+ if(needsExpansion){
   delete wrapper.dataset.collapsed;
   wrapper.querySelector('[data-sx-group-toggle]')?.setAttribute('aria-expanded','true');
   const g=wrapper.dataset.sxGroupId;
