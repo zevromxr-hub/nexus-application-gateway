@@ -119,14 +119,15 @@ host.addEventListener('click',e=>{
 document.addEventListener('nexus:public-profile-loaded',e=>{
  const d=e.detail||{};if(!validProfile(d))return;
  publicResult={identity:key(d),level:d.level,className:d.className,spec:d.spec,itemLevel:d.itemLevel,fetchedAt:new Date().toLocaleTimeString()};
- render();
+ refreshVisible();
 });
-window.addEventListener('nexus:character-profile-updated',render);
-window.addEventListener('nexus:character-targets-changed',render);
-window.addEventListener('nexus:farm-operations-changed',render);
-window.addEventListener('nexus:item-atlas-changed',render);
-window.addEventListener('nexus:loot-updated',render);
-window.addEventListener('storage',e=>{if(Object.values(KEYS).includes(e.key))render()});
-window.addEventListener('pageshow',render);
-render();
+function refreshVisible(){if(document.querySelector('[data-section="dominion"].active'))render()}
+window.addEventListener('nexus:character-profile-updated',refreshVisible);
+window.addEventListener('nexus:character-targets-changed',refreshVisible);
+window.addEventListener('nexus:farm-operations-changed',refreshVisible);
+window.addEventListener('nexus:item-atlas-changed',refreshVisible);
+window.addEventListener('nexus:loot-updated',refreshVisible);
+window.addEventListener('storage',e=>{if(Object.values(KEYS).includes(e.key))refreshVisible()});
+window.addEventListener('pageshow',refreshVisible);
+if(window.NexusStartup?.whenView)window.NexusStartup.whenView('dominion',render,{once:false});else render();
 })();
