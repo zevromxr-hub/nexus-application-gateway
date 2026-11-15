@@ -12,7 +12,7 @@ new vm.Script(js,{filename:'player-guide.js'});
 assert.match(html,/\.\/player-guide\.js/);
 assert.match(html,/\.\/player-guide\.css/);
 assert.ok(html.indexOf('character-handoff.js')<html.indexOf('player-guide.js'),'Guide should mount after existing tools');
-for(const required of ['data-section="guide"','Information & Player Guide','Your first 10 minutes','Tools, practical uses and benefits','How it helps during a WoW session','Which versions does Azeroth support?','Frequently asked questions','Future development','Classic / Anniversary','PTR / Beta','12.1.5','PATCH_REVIEW_DATE','release manifest','wow.profile','Sovereign Data Vault','Connected Character Center']){
+for(const required of ['data-section="guide"','Information & Player Guide','Your first 10 minutes','Tools, practical uses and benefits','How it helps during a WoW session','Which versions does Azeroth support?','Frequently asked questions','FUTURE DEVELOPMENT','Classic / Anniversary','PTR / Beta','12.1.5','PATCH_REVIEW_DATE','release manifest','wow.profile','Sovereign Data Vault','Connected Character Center']){
  assert.ok(js.includes(required),'Player guide missing '+required);
 }
 assert.ok(js.includes("fetch('./version.json'")&&js.includes("fetch('./releases/index.json'"),'Version card must use published release metadata');
