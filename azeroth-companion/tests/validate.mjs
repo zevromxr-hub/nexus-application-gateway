@@ -62,6 +62,12 @@ for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap'
  assert.ok(talentAtlasCanvas.includes(name),'Talent Atlas missing '+name);
 const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
 assert.ok(atlasStyle.includes('touch-action:none')&&atlasStyle.includes('.tf-canvas-stage'));
+const media56=await read('azeroth-companion/official-media-v5.6.js');new vm.Script(media56);
+const media56CSS=await read('azeroth-companion/official-media-v5.6.css');
+for(const feature of ['nxVisualIntel','nxOfficialIconSize','nxSourceCoverage','nx-gear-compare-icons','/api/media/','IntersectionObserver','source completeness','nexus_azeroth_media_scale_v56'])
+ assert.ok((media56+media56CSS).toLowerCase().includes(feature.toLowerCase()),'Missing v5.6 media feature '+feature);
+assert.match(html,/official-media-v5\.6\.js/);
+assert.match(html,/official-media-v5\.6\.css/);
 const buildIntel=await read('azeroth-companion/talent-build-intel-v5.5.js');new vm.Script(buildIntel);
 const buildIntelCSS=await read('azeroth-companion/talent-build-intel-v5.5.css');
 for(const id of ['tfBuildIntel','tfBiNode','tfBiConnections','tfBiReview','tfBiSaveA','tfBiSaveB','tfBiDiff','tfBiInspect'])
