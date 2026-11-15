@@ -10,7 +10,7 @@ const [html,js,css,portal,launcher,engine]=await Promise.all([
  'sovereign-portal.js','command-launcher.js','scripts/lean-launch.mjs'].map(read));
 new vm.Script(js,{filename:'sovereign-command-v5.js'});
 assert.ok(html.includes('./sovereign-command-v5.js'),'Sovereign Command should remain active after Talent Forge upgrade');
-for(const p of ['styles-core-v4.7.css','styles-experience-v5.0.css','scripts-core-v4.8.js','scripts-experience-v5.1.js'])
+for(const p of ['styles-core-v5.1.css','styles-experience-v5.0.css','scripts-core-v4.8.js','scripts-experience-v5.1.js'])
  assert.ok(html.includes('./'+p),'Versioned bundled asset missing '+p);
 for(const p of ['sovereign-command-v5.js','sovereign-command-v5.css','sovereign-portal.js','sovereign-experience.js','character-dominion.js'])
  assert.ok(html.includes('./'+p),'Sovereign source manifest missing '+p);
