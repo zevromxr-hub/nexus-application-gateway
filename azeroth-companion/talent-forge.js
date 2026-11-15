@@ -7,6 +7,8 @@ const API='https://nexus-azeroth-api.zevromxr.workers.dev',KEY='nexus_azeroth_ta
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validId=id=>Number.isSafeInteger(Number(id))&&Number(id)>0&&Number(id)<=9999999999;
 let index=[],tree=null,active='class',draft={},saved=[],identity='',loadedRegion='us',loading=false,choices={},undoStack=[],redoStack=[],heroSelection='all',compareId='',indexRequest=0,focusedNode=null,showLinks=true;
+const PLANNER=window.NexusTalentPlanner,AUTOKEY='nexus_azeroth_talent_planner_autorecover_v51';
+let plannerMeta=PLANNER?.defaultMeta()||{activity:'general',role:'unspecified',style:'balanced',notes:'',targets:{class:0,spec:0,hero:0}},recoveryPending=false,recoveryTimer=null,loadRequest=0;
 try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(v))saved=v.filter(x=>x&&typeof x.name==='string'&&typeof x.identity==='string'&&x.rankByNode&&typeof x.rankByNode==='object').slice(0,40)}catch(_){}
 const main=document.querySelector('.main'),foot=main?.querySelector('.footer'),nav=document.querySelector('.nav');if(!main||!foot||!nav)return;
 const button=document.createElement('button');button.type='button';button.dataset.view='talents';button.textContent='✧ Talent Forge';nav.appendChild(button);
@@ -23,6 +25,21 @@ $('tfTree').before(relationUI);
 const pathPanel=document.createElement('div');pathPanel.id='tfPathIntel';pathPanel.className='tf-path-intel';
 pathPanel.innerHTML='<div class="tf-path-header"><div><strong>Talent Path Intelligence</strong><p>Review source-linked nodes with no manually allocated points. A warning is not proof a build is invalid.</p></div><label class="tf-path-filter"><input type="checkbox" id="tfReviewOnly"> Show only flagged links</label></div><div id="tfPathSummary" class="tf-path-summary" aria-live="polite">Load a talent tree to inspect reported paths.</div><div id="tfPathDetails" class="tf-path-details">Choose RELATIONS on a node to inspect its reported upstream path.</div>';
 $('tfTree').before(pathPanel);
+
+const plannerPanel=document.createElement('section');plannerPanel.id='tfPlanner';plannerPanel.className='tf-planner panel';plannerPanel.setAttribute('aria-labelledby','tfPlannerTitle');
+plannerPanel.innerHTML='<div class="tf-plan-head"><div><span class="wow-kicker">NEXUS / TALENT FORGE PLANNER</span><h3 id="tfPlannerTitle">Build Architect Workspace</h3><p>Choose a purpose, allocate official Blizzard-returned talent nodes below, and document your decisions. Structural checks and custom targets are planning aids only.</p></div><span class="tf-plan-mode">MANUAL BUILD PLANNER</span></div>'+
+'<div class="tf-plan-fields"><label>Content focus<select id="tfPlanActivity"><option value="general">General purpose</option><option value="raid">Raids</option><option value="mythic-plus">Mythic+</option><option value="pvp">PvP</option><option value="solo">Solo</option><option value="open-world">Open world</option></select></label>'+
+'<label>Planned role<select id="tfPlanRole"><option value="unspecified">Not specified</option><option value="damage">Damage</option><option value="tank">Tank</option><option value="healer">Healer</option></select></label>'+
+'<label>Build approach<select id="tfPlanStyle"><option value="balanced">Balanced</option><option value="burst">Burst</option><option value="sustain">Sustained damage / output</option><option value="utility">Utility</option><option value="survival">Survivability</option></select></label></div>'+
+'<div class="tf-plan-targets"><strong>Personal point targets <small>(optional reminders, NOT official Blizzard caps)</small></strong><div class="tf-plan-target-grid">'+
+'<label>Class target<input id="tfPlanGoalClass" type="number" min="0" max="150" step="1" value="0"></label>'+
+'<label>Specialization target<input id="tfPlanGoalSpec" type="number" min="0" max="150" step="1" value="0"></label>'+
+'<label>Hero target<input id="tfPlanGoalHero" type="number" min="0" max="150" step="1" value="0"></label></div><p class="tf-plan-hint">0 = no target. This does not enforce or calculate legal in-game point budgets.</p></div>'+
+'<label class="tf-plan-notes">Build notes / rotation ideas / encounter reminders<textarea id="tfPlanNotes" rows="4" maxlength="1800" placeholder="Why you chose these talents, open questions, and situations you want to test in game..."></textarea></label>'+
+'<div class="tf-plan-recover" id="tfPlanRecover" hidden><strong>Unsaved local recovery found for this specialization.</strong><p>Choose Restore to recover your most recent working draft, or Discard to start with the loaded build. Recovery is stored only in this browser.</p><div class="actions"><button type="button" id="tfPlanRestore">RESTORE DRAFT</button><button type="button" id="tfPlanDiscard">DISCARD RECOVERY</button></div></div>'+
+'<div class="tf-plan-reviews"><div><strong>Build allocation review</strong><div class="tf-plan-summary" id="tfPlanSummary" aria-live="polite">Load a specialization to begin.</div></div><div><strong>Review & advisories</strong><ul class="tf-plan-advisories" id="tfPlanAdvisories"><li>This is a manual planning tool, not an in-game loadout validator.</li></ul></div></div>'+
+'<div class="tf-plan-foot"><span id="tfPlanRecoveryStatus" role="status" aria-live="polite">Draft recovery is local to this browser.</span><div class="actions"><button id="tfPlanCopy" type="button">COPY BUILD BRIEF</button><button id="tfPlanDuplicate" type="button">DUPLICATE TO LIBRARY</button></div></div>';
+const talentWorkspace=$('tfTree').closest('.panel');talentWorkspace.before(plannerPanel);
 $('tfReviewOnly').addEventListener('change',render);
 function pathAnalysis(nodes){return window.NexusTalentPaths?.analyze(nodes,draft)||null}
 function pathLabel(id,nodes){const n=nodes.find(x=>Number(x.id)===Number(id));return n?nodeName(n):'Node #'+id}
