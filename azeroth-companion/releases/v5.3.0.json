@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.3.0",
+  "title": "Talent Atlas — Interactive Canvas & Visual Performance",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Touch and mouse drag-to-pan on the talent tree, including direct drag on node cards outside their interactive controls.",
+    "Interactive zoom from 25% to 140%, Fit and Reset options, and a tappable mini-map.",
+    "Refreshed visual tree with clearer allocation states, readable source connections, and mobile-friendly controls.",
+    "Navigation additions do not write to planned rank, choice, or saved-build data; v5.2 Blizzard source intelligence is retained.",
+    "All visuals are decorative; no unsupported official skill icon, game-valid loadout, combat simulation, or theoretical item results are claimed."
+  ]
+}
