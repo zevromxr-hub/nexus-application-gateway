@@ -1,5 +1,5 @@
-/* NEXUS | AZEROTH COMPANION v3.1 — single-file Worker for Cloudflare Dashboard.
- * Preserve existing encrypted BLIZZARD_CLIENT_ID, BLIZZARD_CLIENT_SECRET and AZEROTH_SESSION_SECRET.
+/* NEXUS | AZEROTH COMPANION v3.2 — Cloudflare dashboard single-file Worker.
+ * Preserve encrypted BLIZZARD_CLIENT_ID, BLIZZARD_CLIENT_SECRET and AZEROTH_SESSION_SECRET.
  */
 /* NEXUS | My Azeroth first-party private account portal.
  * Backend: Cloudflare Workers, user OAuth authorization code and wow.profile.
@@ -96,7 +96,7 @@ async function handlePersonal(request,env,url){
  }catch(e){return response({success:false,message:String(e?.message||'Account data unavailable').slice(0,180)},Number(e?.status)||502)}
 }
 
-/* NEXUS Azeroth API v3.1 — Cloudflare Workers module
+/* NEXUS Azeroth API v3.2 — Cloudflare Workers module
  * Deploy this file through Cloudflare's Worker editor. Never insert credentials here.
  * BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET stay in encrypted Worker secrets.
  */
@@ -134,7 +134,7 @@ export default {
   if(u.pathname==='/account'||u.pathname==='/account/privacy'||u.pathname==='/account/app.js'||u.pathname.startsWith('/auth/')||u.pathname.startsWith('/api/me/'))return handlePersonal(request,env,u);
   if(request.method==='OPTIONS')return json({ok:true});
   if(request.method!=='GET')return fail('Method not allowed',405);
-  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.1.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
+  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.2.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
   const p=u.pathname.split('/').filter(Boolean);
   if(p[0]!=='api'||p.length>6)return fail('Unknown route',404);
   const type=p[1],region=p[2],arg=p[3],arg2=p[4];
@@ -150,7 +150,8 @@ export default {
   }else if(type==='search'&&p.length===3){
    const q=(u.searchParams.get('q')||'').trim();
    if(q.length<2||q.length>70||/[<>]/.test(q))return fail('Search needs 2–70 valid characters');
-   path='/data/wow/search/item';namespace='static';params['name.'+LOCALE[region]]=q;params._pageSize=20;params._page=1;
+   const page=Number(u.searchParams.get('page')||1);if(!Number.isSafeInteger(page)||page<1||page>50)return fail('Search page must be 1–50');
+   path='/data/wow/search/item';namespace='static';params['name.'+LOCALE[region]]=q;params._pageSize=20;params._page=page;
   }else if((type==='character'||type==='equipment')&&p.length===5&&slug.test(arg)&&name.test(arg2)){
    path='/profile/wow/character/'+arg+'/'+arg2+(type==='equipment'?'/equipment':'');namespace='profile';
   }else return fail('Unknown or invalid API route',404);
@@ -159,7 +160,7 @@ export default {
    if(r.error)return fail(r.error===404?'Blizzard record not found':r.error===429?'Blizzard rate limit reached':'Blizzard request unavailable',r.error===404?404:r.error===429?429:502);
    let data=r.data;
    if(type==='search'){
-    data={query:u.searchParams.get('q'),items:(Array.isArray(data.results)?data.results:[]).map(row=>({id:Number(row?.data?.id),name:nameOf(row?.data?.name,region),quality:nameOf(row?.data?.quality?.name,region),level:row?.data?.level??null})).filter(row=>Number.isSafeInteger(row.id)&&row.id>0&&row.name).slice(0,20),page:data.page||1};
+    data={query:u.searchParams.get('q'),items:(Array.isArray(data.results)?data.results:[]).map(row=>({id:Number(row?.data?.id),name:nameOf(row?.data?.name,region),quality:nameOf(row?.data?.quality?.name,region),level:row?.data?.level??null})).filter(row=>Number.isSafeInteger(row.id)&&row.id>0&&row.name).slice(0,20),page:Number(data.page)||1,pageCount:Number(data.pageCount)||1,resultCount:Number(data.resultCount)||0,resultCountCapped:Boolean(data.resultCountCapped),pageSize:Number(data.pageSize)||20};
    }
    if(type==='media'){
     data={id:Number(arg),assets:(Array.isArray(data.assets)?data.assets:[]).filter(a=>a&&a.key&&typeof a.value==='string'&&/^https:\/\//.test(a.value)).slice(0,10).map(a=>({key:a.key,url:a.value}))};
