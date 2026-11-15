@@ -1,20 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Talent Connections — Source Relationship Explorer",
-  "previous_version": "2.5.0",
+  "subtitle": "Talent Path Intelligence — Source-Aware Planning",
+  "previous_version": "2.6.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a read-only talent relationship explorer using locked_by node references supplied by Blizzard's Retail API",
-    "Drawn source-reported connections between visible talent nodes in the positional tree layout",
-    "Added individual node relationship inspection for incoming links and nodes that report links back to the selected node",
-    "Reported missing or unresolved node references instead of inferring prerequisite rules",
-    "Added a switch to hide source connection lines and highlighting for the selected node",
-    "Retained all prior Talent Forge drafts, Hero Path selection, build comparison, Item Codex, Loot Hunter and Armory studios",
-    "Made no changes to Blizzard credentials or the existing Cloudflare Worker"
+    "Added Talent Path Intelligence using only Blizzard-reported locked_by references",
+    "Included a read-only dashboard for planned talents, source-linked nodes, potential review flags and unresolved references",
+    "Added cycle-safe upstream talent path inspection up to 16 levels",
+    "Added an optional filter to focus on nodes with points allocated but a reported source link that has zero planned points",
+    "Distinguished review prompts from full in-game prerequisite and point-budget validation",
+    "Preserved all existing v2.6 Talent Forge draft storage, Loot Hunter, Armory, Item Codex and planning studios",
+    "Kept Cloudflare API routes and Blizzard secrets unchanged; no Worker redeployment required"
   ]
 }
