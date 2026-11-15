@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "1.2.0",
+  "title": "Party Architect — Player Utility Expansion",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "New five-player Party Architect with selectable World of Warcraft classes and specializations, including Devourer Demon Hunter",
+    "Party role validation highlights standard one-tank, one-healer, three-damage coverage and selected class-wide utility examples",
+    "Copy a group summary or export/import a portable party JSON for coordination with friends",
+    "Per-character weekly activity tracker for dungeons, raids, and world activities with custom player-selected targets",
+    "Character selector reads existing Genesis profiles while preserving every prior character, build, route, collection, and gear note",
+    "Quick Reference gives direct links to official Warcraft resources and established external tools",
+    "Dedicated responsive Party Architect and Weekly Vault panels for desktop and iPhone; no game-client automation",
+    "Independent Azeroth release versioning, validation and Discord announcement behavior remain unchanged"
+  ]
+}
