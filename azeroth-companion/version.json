@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Atlas — Interactive Canvas & Visual Performance",
-  "previous_version": "5.2.0",
+  "subtitle": "Source Studio — Official Spell Media & Side-by-Side Research",
+  "previous_version": "5.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Drag the tree directly with mouse or touch without relying on horizontal and vertical scrollbars.",
-    "Use zoom controls, Fit, Reset and an interactive mini-map to move rapidly between tree sections.",
-    "Refreshed the visual tree with clearer selected talent states, elegant surfaces, readable connectors and responsive tools.",
-    "Preserved the v5.2 source IDs, Blizzard rank descriptions, gear-ID research, local saves, recovery, and JSON format.",
-    "Decorative tree visuals do not represent official WoW spell icons or inferred gameplay performance."
+    "Added optional official Blizzard spell icons with lazy loading from a documented Cloudflare spell-media route; no guessed icons.",
+    "Added a side-by-side talent comparison for returned rank tooltips, source IDs and manually allocated points.",
+    "Added a two-item research comparison of the actual Blizzard item fields and overlapping numeric stats.",
+    "Kept all talent allocation, saved drafts, existing talent graph, Blizzard login, and four-bundle performance architecture unchanged.",
+    "If the Cloudflare media route is not deployed, images gracefully remain decorative placeholders; manual Cloudflare Worker deployment is required for live spell icons."
   ]
 }
