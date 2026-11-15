@@ -74,3 +74,53 @@
 .tf-path-chips .tf-path-chosen{border-color:#7bc9a485}
 .tf-path-chips .tf-path-review{border-color:#eab5748a;color:#ffd4a6}
 @media(max-width:760px){.tf-path-header{flex-direction:column}.tf-path-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.tf-path-intel{padding:12px}}
+
+/* NEXUS | AZEROTH v5.1 — Sovereign Talent Forge Planner
+ * Separate planning controls; unchanged original Blizzard talent-node UI.
+ */
+.tf-planner{display:grid;gap:17px;border:1px solid #bd9f6c73!important;border-radius:17px;background:linear-gradient(130deg,#101e31f2,#162a3ef5);padding:clamp(15px,3vw,23px);margin:16px 0;min-width:0}
+.tf-plan-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.tf-plan-head h3{margin:6px 0 8px;color:#f2d7aa;font-size:clamp(19px,2.5vw,25px)}
+.tf-plan-head p{font-size:12px;line-height:1.8;color:#c6d3d9;max-width:780px;margin:0}
+.tf-plan-mode{white-space:nowrap;border:1px solid #d8bd8c72;padding:8px 11px;border-radius:8px;color:#f1d5a0;font-size:10px;letter-spacing:1px;font-weight:900}
+.tf-plan-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tf-plan-fields label,.tf-plan-target-grid label,.tf-plan-notes{display:grid;gap:7px;min-width:0;color:#edd5ac;font-size:11px;font-weight:750}
+.tf-plan-fields select,.tf-plan-target-grid input,.tf-plan-notes textarea{background:#0c1d2d;color:#f3f0e7;border:1px solid #c9bdac54;border-radius:9px;padding:10px;min-width:0;width:100%;font:inherit;font-size:12px}
+.tf-plan-fields select{min-height:45px}
+.tf-plan-targets{display:grid;gap:9px;background:#101f2ebc;padding:15px;border:1px solid #ffffff24;border-radius:12px}
+.tf-plan-targets>strong{font-size:12px;color:#f1d7a5}
+.tf-plan-targets small{font-size:10px;color:#abc3ce;font-weight:450}
+.tf-plan-target-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tf-plan-target-grid input{min-height:43px}
+.tf-plan-hint{font-size:10px;line-height:1.7;color:#aec0c8;margin:0}
+.tf-plan-notes textarea{font-size:12px;line-height:1.65;resize:vertical;min-height:90px}
+.tf-plan-recover{display:grid;gap:9px;border:1px solid #e5b477a6;background:#3c30239c;border-radius:12px;padding:15px}
+.tf-plan-recover[hidden]{display:none!important}
+.tf-plan-recover strong{font-size:13px;color:#ffe3a8}
+.tf-plan-recover p{margin:0;font-size:11px;line-height:1.75;color:#f2e1c4}
+.tf-plan-recover .actions{display:flex;flex-wrap:wrap;gap:9px}
+.tf-plan-recover button{min-height:42px;font-size:11px}
+.tf-plan-reviews{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px}
+.tf-plan-reviews>div{min-width:0;border:1px solid #ffffff24;border-radius:13px;background:#112235d4;padding:14px}
+.tf-plan-reviews>div>strong{display:block;color:#ebd9b2;font-size:13px;margin-bottom:13px}
+.tf-plan-summary{display:grid;gap:7px}
+.tf-plan-score{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px;background:#20344a9c;border-radius:9px}
+.tf-plan-score span{font-size:12px;color:#c8d6d6}
+.tf-plan-score strong{font-size:12px;color:#c9f1da;text-align:right}
+.tf-plan-advisories{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.tf-plan-advisories li{border-left:3px solid #c0ae8c66;border-radius:5px;padding:9px 11px;background:#172939a9;color:#cad5d9;font-size:11px;line-height:1.7}
+.tf-plan-advisories .tf-plan-good{border-color:#77cba2;color:#c9f4da}
+.tf-plan-advisories .tf-plan-issue{border-color:#ee927e;color:#ffd9cf}
+.tf-plan-advisories .tf-plan-advisory{border-color:#e3bd75;color:#f2dec1}
+.tf-plan-advisories .tf-plan-disclaimer{border-color:#97a8b4;background:#111e2b;color:#b6cbd4}
+.tf-plan-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid #ffffff26;padding-top:15px}
+.tf-plan-foot>span{font-size:11px;color:#afc6ce;line-height:1.6;max-width:560px}
+.tf-plan-foot .actions{display:flex;flex-wrap:wrap;gap:8px}
+.tf-plan-foot button{min-height:43px;font-size:10px}
+.tf-planner button:focus-visible,.tf-planner select:focus-visible,.tf-planner textarea:focus-visible,.tf-planner input:focus-visible{outline:2px solid #87dcbd;outline-offset:3px}
+.tf-save-entry .actions{flex-wrap:wrap}
+@media(max-width:950px){.tf-plan-head{flex-wrap:wrap}.tf-plan-reviews{grid-template-columns:1fr}}
+@media(max-width:700px){.tf-plan-fields{grid-template-columns:1fr}.tf-plan-target-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tf-plan-targets{padding:12px}.tf-plan-foot .actions{width:100%}.tf-plan-foot button{flex:1}}
+@media(max-width:390px){.tf-plan-target-grid{grid-template-columns:1fr}.tf-plan-head h3{font-size:19px}.tf-plan-mode{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.tf-planner *{animation:none!important;transition:none!important}}
+body[data-sx-motion=reduce] .tf-planner *{animation:none!important;transition:none!important}

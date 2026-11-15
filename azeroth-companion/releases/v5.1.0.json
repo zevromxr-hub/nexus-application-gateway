@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.1.0",
+  "title": "Talent Forge Planner — Sovereign Build Architect",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Transformed Talent Forge into a complete manual Build Architect workspace with Raid, Mythic+, PvP, Solo, Open World and general planning purposes, role/style annotations and up to 1,800 characters of encounter or rotation notes.",
+    "Added separate user-defined Class, Specialization and Hero point targets, plus a source-aware live rank breakdown and review panel that clearly distinguishes structural issues from unverified Blizzard gameplay rules.",
+    "Added browser-local unsaved draft recovery for ranks, choices, notes and targets, with explicit Restore/Discard controls so a working copy does not silently overwrite a loaded draft.",
+    "Expanded the existing saved library with draft duplication and a human-readable copyable build brief identifying selected talent names and allocated ranks; kept existing comparison, Undo/Redo and JSON export.",
+    "Retained the original v1 saved-draft JSON and browser storage key while adding optional planner metadata, preserving old saves and allowing strict backward-compatible import.",
+    "Hardened imported build JSON with bounded size, specialization identifiers, numeric node/choice limits, cleanup against the current Blizzard-returned tree, and safe local-only persistence.",
+    "Preserved the secure Blizzard Worker, all existing Azeroth studios, v5.0 website experience, source-link analysis, responsive layouts and four-resource delivery without new API endpoints or OAuth permissions.",
+    "Added dedicated desktop Chromium and mobile WebKit browser integration tests with explicitly synthetic talent data, plus pure engine validation tests and maintenance documentation."
+  ]
+}

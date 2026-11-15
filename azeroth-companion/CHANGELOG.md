@@ -1,5 +1,19 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v5.1.0 · 2026-11-15 — Talent Forge Planner: Sovereign Build Architect
+
+- **Build planning workspace:** Talent Forge now supports planned activities (General, Raid, Mythic+, PvP, Solo, Open World), roles, playstyles and detailed encounter/rotation notes. All annotations are player-entered; no automated meta-ranking or gameplay recommendations are implied.
+- **Live allocation review:** Separate Class, Specialization and Hero planned-rank totals appear alongside optional personal targets. Structural review flags unknown nodes, out-of-range ranks/choices, source-linked advisory relationships and mixed returned hero-tree selections. None of these diagnostics establishes whether a build is legal in-game.
+- **Editable build workflow:** Existing Blizzard-returned tree positions, node choices, rank selection, undo/redo, saved comparisons and local JSON export/import remain. Duplicate any saved build, or save the current working draft as a copy.
+- **Browser-local recovery:** Unsaved ranks, choices, names and planner annotations are periodically backed up under a separate storage key, capped at eight specializations. Restoring or discarding a prior draft requires explicit player action. Local recovery is not server backup or cross-device synchronization.
+- **Backward-compatible saves:** Keeps `nexus_azeroth_talent_forge_v1` and the `nexus-azeroth-talent-draft-v1` JSON format, adding optional sanitized `planner` metadata. Import limits prevent oversized, unsupported or malformed node references.
+- **Build brief:** Copy a human-readable summary of planned talent names, ranks and notes. This is a **planning summary**, not a World of Warcraft import code.
+- **Stable site architecture:** No changes to secure Battle.net, Cloudflare Worker, OAuth scopes, other studios, v5.0 Sovereign Command or local player records. The site remains exactly two CSS plus two JavaScript resources, with source-verified compiled bundles.
+- **Validation:** New pure-helper and desktop Chromium/mobile WebKit tests use explicitly synthetic talent fixtures to check editing, saving, saved copies, autosave recovery and rejection of unsafe import files. A dedicated user guide documents limitations and backup practices.
+
+**Important:** Official Blizzard talent nodes do not by themselves establish valid prerequisites, tier gates, hero selections, level or live game import-string encoding. Always verify draft allocations in the game's own talent editor. No Cloudflare deployment or local Node installation required.
+
+
 ## v5.0.0 · 2026-11-15 — Sovereign Command Experience
 
 - **Unified website milestone:** A new guided Sovereign Command panel directly on Home offers three ways to start: New Player, Returning Player, and Playing with Friends. Each displays three contextual links into existing studios instead of adding competing tools.

@@ -7,6 +7,8 @@ const API='https://nexus-azeroth-api.zevromxr.workers.dev',KEY='nexus_azeroth_ta
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validId=id=>Number.isSafeInteger(Number(id))&&Number(id)>0&&Number(id)<=9999999999;
 let index=[],tree=null,active='class',draft={},saved=[],identity='',loadedRegion='us',loading=false,choices={},undoStack=[],redoStack=[],heroSelection='all',compareId='',indexRequest=0,focusedNode=null,showLinks=true;
+const PLANNER=window.NexusTalentPlanner,AUTOKEY='nexus_azeroth_talent_planner_autorecover_v51';
+let plannerMeta=PLANNER?.defaultMeta()||{activity:'general',role:'unspecified',style:'balanced',notes:'',targets:{class:0,spec:0,hero:0}},recoveryPending=false,recoveryTimer=null,loadRequest=0;
 try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(v))saved=v.filter(x=>x&&typeof x.name==='string'&&typeof x.identity==='string'&&x.rankByNode&&typeof x.rankByNode==='object').slice(0,40)}catch(_){}
 const main=document.querySelector('.main'),foot=main?.querySelector('.footer'),nav=document.querySelector('.nav');if(!main||!foot||!nav)return;
 const button=document.createElement('button');button.type='button';button.dataset.view='talents';button.textContent='✧ Talent Forge';nav.appendChild(button);
@@ -23,7 +25,166 @@ $('tfTree').before(relationUI);
 const pathPanel=document.createElement('div');pathPanel.id='tfPathIntel';pathPanel.className='tf-path-intel';
 pathPanel.innerHTML='<div class="tf-path-header"><div><strong>Talent Path Intelligence</strong><p>Review source-linked nodes with no manually allocated points. A warning is not proof a build is invalid.</p></div><label class="tf-path-filter"><input type="checkbox" id="tfReviewOnly"> Show only flagged links</label></div><div id="tfPathSummary" class="tf-path-summary" aria-live="polite">Load a talent tree to inspect reported paths.</div><div id="tfPathDetails" class="tf-path-details">Choose RELATIONS on a node to inspect its reported upstream path.</div>';
 $('tfTree').before(pathPanel);
+
+const plannerPanel=document.createElement('section');plannerPanel.id='tfPlanner';plannerPanel.className='tf-planner panel';plannerPanel.setAttribute('aria-labelledby','tfPlannerTitle');
+plannerPanel.innerHTML='<div class="tf-plan-head"><div><span class="wow-kicker">NEXUS / TALENT FORGE PLANNER</span><h3 id="tfPlannerTitle">Build Architect Workspace</h3><p>Choose a purpose, allocate official Blizzard-returned talent nodes below, and document your decisions. Structural checks and custom targets are planning aids only.</p></div><span class="tf-plan-mode">MANUAL BUILD PLANNER</span></div>'+
+'<div class="tf-plan-fields"><label>Content focus<select id="tfPlanActivity"><option value="general">General purpose</option><option value="raid">Raids</option><option value="mythic-plus">Mythic+</option><option value="pvp">PvP</option><option value="solo">Solo</option><option value="open-world">Open world</option></select></label>'+
+'<label>Planned role<select id="tfPlanRole"><option value="unspecified">Not specified</option><option value="damage">Damage</option><option value="tank">Tank</option><option value="healer">Healer</option></select></label>'+
+'<label>Build approach<select id="tfPlanStyle"><option value="balanced">Balanced</option><option value="burst">Burst</option><option value="sustain">Sustained damage / output</option><option value="utility">Utility</option><option value="survival">Survivability</option></select></label></div>'+
+'<div class="tf-plan-targets"><strong>Personal point targets <small>(optional reminders, NOT official Blizzard caps)</small></strong><div class="tf-plan-target-grid">'+
+'<label>Class target<input id="tfPlanGoalClass" type="number" min="0" max="150" step="1" value="0"></label>'+
+'<label>Specialization target<input id="tfPlanGoalSpec" type="number" min="0" max="150" step="1" value="0"></label>'+
+'<label>Hero target<input id="tfPlanGoalHero" type="number" min="0" max="150" step="1" value="0"></label></div><p class="tf-plan-hint">0 = no target. This does not enforce or calculate legal in-game point budgets.</p></div>'+
+'<label class="tf-plan-notes">Build notes / rotation ideas / encounter reminders<textarea id="tfPlanNotes" rows="4" maxlength="1800" placeholder="Why you chose these talents, open questions, and situations you want to test in game..."></textarea></label>'+
+'<div class="tf-plan-recover" id="tfPlanRecover" hidden><strong>Unsaved local recovery found for this specialization.</strong><p>Choose Restore to recover your most recent working draft, or Discard to start with the loaded build. Recovery is stored only in this browser.</p><div class="actions"><button type="button" id="tfPlanRestore">RESTORE DRAFT</button><button type="button" id="tfPlanDiscard">DISCARD RECOVERY</button></div></div>'+
+'<div class="tf-plan-reviews"><div><strong>Build allocation review</strong><div class="tf-plan-summary" id="tfPlanSummary" aria-live="polite">Load a specialization to begin.</div></div><div><strong>Review & advisories</strong><ul class="tf-plan-advisories" id="tfPlanAdvisories"><li>This is a manual planning tool, not an in-game loadout validator.</li></ul></div></div>'+
+'<div class="tf-plan-foot"><span id="tfPlanRecoveryStatus" role="status" aria-live="polite">Draft recovery is local to this browser.</span><div class="actions"><button id="tfPlanCopy" type="button">COPY BUILD BRIEF</button><button id="tfPlanDuplicate" type="button">DUPLICATE TO LIBRARY</button></div></div>';
+const talentWorkspace=$('tfTree').closest('.panel');talentWorkspace.before(plannerPanel);
 $('tfReviewOnly').addEventListener('change',render);
+
+function recoveryRecords(){
+ try{
+  const x=JSON.parse(localStorage.getItem(AUTOKEY)||'null');
+  return x&&typeof x==='object'&&!Array.isArray(x)?x:{};
+ }catch(_){return{}}
+}
+function dropRecovery(id){
+ if(!id)return;
+ try{const records=recoveryRecords();delete records[id];localStorage.setItem(AUTOKEY,JSON.stringify(records))}
+ catch(_){/* fail closed; exported drafts remain available */}
+}
+function queueRecovery(){
+ if(!tree||!identity||recoveryPending)return;
+ clearTimeout(recoveryTimer);
+ recoveryTimer=setTimeout(()=>{
+  if(!tree||!identity||recoveryPending)return;
+  try{
+   const records=recoveryRecords(),name=$('tfBuildName').value.trim().slice(0,75)||'Working draft';
+   records[identity]={format:'nexus-azeroth-talent-draft-v1',identity,name,region:loadedRegion,
+    rankByNode:{...draft},choiceByNode:{...choices},planner:PLANNER?.sanitizeMeta(plannerMeta)||plannerMeta,
+    savedAt:new Date().toISOString()};
+   const limited=Object.entries(records).filter(([id])=>PLANNER?.identityOK(id))
+    .sort((a,b)=>String(b[1]?.savedAt||'').localeCompare(String(a[1]?.savedAt||''))).slice(0,8);
+   localStorage.setItem(AUTOKEY,JSON.stringify(Object.fromEntries(limited)));
+   $('tfPlanRecoveryStatus').textContent='Working draft backed up locally on this browser.';
+  }catch(_){$('tfPlanRecoveryStatus').textContent='Automatic recovery is unavailable. Export your draft JSON to protect it.'}
+ },650);
+}
+function markPlannerEdit(){
+ if(recoveryPending){
+  notice('Resolve the existing draft recovery first: Restore or Discard.');
+  return false;
+ }
+ queueRecovery();return true;
+}
+function recoveryPrompt(){
+ clearTimeout(recoveryTimer);
+ const record=identity?recoveryRecords()[identity]:null;
+ recoveryPending=Boolean(record);
+ $('tfPlanRecover').hidden=!recoveryPending;
+ $('tfPlanRecoveryStatus').textContent=recoveryPending
+  ?'An unsaved working draft is available. Restore or discard it before editing.'
+  :'Changes to your ranks, choices, notes and targets receive local recovery backups.';
+}
+function plannerFromFields(){
+ if(!PLANNER)return;
+ plannerMeta=PLANNER.sanitizeMeta({
+  activity:$('tfPlanActivity').value,role:$('tfPlanRole').value,style:$('tfPlanStyle').value,
+  notes:$('tfPlanNotes').value,
+  targets:{class:Number($('tfPlanGoalClass').value),spec:Number($('tfPlanGoalSpec').value),hero:Number($('tfPlanGoalHero').value)}
+ });
+}
+function plannerToFields(){
+ const meta=PLANNER?.sanitizeMeta(plannerMeta)||plannerMeta;
+ $('tfPlanActivity').value=meta.activity;$('tfPlanRole').value=meta.role;
+ $('tfPlanStyle').value=meta.style;$('tfPlanNotes').value=meta.notes;
+ for(const key of ['class','spec','hero'])$('tfPlanGoal'+key[0].toUpperCase()+key.slice(1)).value=String(meta.targets[key]);
+}
+function cleanChoices(raw){
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))return{};
+ const valid=new Map(allNodes().map(n=>[String(n.id),n])),result={};
+ for(const [id,choice]of Object.entries(raw).slice(0,400)){
+  const n=valid.get(id);
+  const count=Math.max(0,...(Array.isArray(n?.ranks)?n.ranks:[]).map(rank=>
+   Array.isArray(rank?.choice_of_tooltips)?rank.choice_of_tooltips.length:0));
+  if(n&&Number.isInteger(choice)&&choice>=0&&choice<Math.max(count,1))result[id]=choice;
+ }
+ return result;
+}
+function plannerReview(){
+ if(!PLANNER)return null;
+ return PLANNER.analyze(tree,draft,choices,plannerMeta,(nodes,ranks)=>window.NexusTalentPaths?.analyze(nodes,ranks));
+}
+function renderPlanner(){
+ if(!PLANNER)return;
+ const result=plannerReview();
+ const status=$('tfPlanSummary'),review=$('tfPlanAdvisories');
+ const counts=result.scores,goals=result.goal;
+ status.replaceChildren();
+ for(const [type,label]of [['class','Class'],['spec','Specialization'],['hero','Hero']]){
+  const row=document.createElement('div');row.className='tf-plan-score';
+  const title=document.createElement('span');title.textContent=label+' points';
+  const value=document.createElement('strong');value.textContent=counts[type]+(goals[type]>0?' / '+goals[type]+' personal target':' allocated');
+  row.append(title,value);status.append(row);
+ }
+ review.replaceChildren();
+ const messages=result.issues.map(text=>({text,kind:'issue'}))
+  .concat(result.advisory.map(text=>({text,kind:'advisory'})));
+ if(!result.hasTree)messages.unshift({text:'Load Blizzard talent data to begin allocating nodes. All point targets are personal planning reminders.',kind:'advisory'});
+ if(!result.issues.length&&result.hasTree)messages.unshift({text:'No structural rank or choice inconsistencies detected in the returned talent nodes. This does NOT verify a game-valid build.',kind:'good'});
+ for(const msg of messages.slice(0,12)){
+  const li=document.createElement('li');li.className='tf-plan-'+msg.kind;li.textContent=msg.text;review.append(li);
+ }
+ const footer=document.createElement('li');footer.className='tf-plan-disclaimer';
+ footer.textContent='Not a Blizzard talent-rule validator, legal loadout checker, meta recommendation, or in-game import-string generator.';
+ review.append(footer);
+}
+function restoreRecovery(){
+ if(!tree||!recoveryPending)return;
+ const raw=recoveryRecords()[identity];
+ try{
+  const record=PLANNER.sanitizeImported(raw);
+  if(record.identity!==identity)throw Error('Specialization mismatch');
+  draft=cleanDraft(record.rankByNode);choices=cleanChoices(record.choiceByNode);
+  plannerMeta=PLANNER.sanitizeMeta(record.planner);
+  $('tfBuildName').value=record.name;undoStack=[];redoStack=[];updateUndoButtons();
+  recoveryPending=false;$('tfPlanRecover').hidden=true;
+  plannerToFields();render();queueRecovery();
+  notice('Restored your locally backed-up working draft. Save or export it when ready.');
+ }catch(error){notice('Recovery could not be opened: '+error.message+'. You can discard the damaged copy.')}
+}
+$('tfPlanRestore').addEventListener('click',restoreRecovery);
+$('tfPlanDiscard').addEventListener('click',()=>{
+ if(!tree)return;
+ clearTimeout(recoveryTimer);dropRecovery(identity);recoveryPending=false;
+ $('tfPlanRecover').hidden=true;
+ $('tfPlanRecoveryStatus').textContent='Old recovery discarded. Your currently loaded build is unchanged.';
+ notice('Previous local recovery discarded.');renderPlanner();
+});
+for(const id of ['tfPlanActivity','tfPlanRole','tfPlanStyle','tfPlanGoalClass','tfPlanGoalSpec','tfPlanGoalHero','tfPlanNotes']){
+ $(id).addEventListener(id==='tfPlanNotes'?'input':'change',()=>{
+  if(recoveryPending){plannerToFields();markPlannerEdit();return}
+  plannerFromFields();renderPlanner();markPlannerEdit();
+ });
+}
+$('tfBuildName').addEventListener('input',()=>{if(tree)markPlannerEdit()});
+$('tfPlanCopy').addEventListener('click',async()=>{
+ if(!tree||!PLANNER)return notice('Load a specialization to copy its build brief.');
+ try{
+  if(!navigator.clipboard?.writeText)throw Error('Clipboard access unavailable');
+  await navigator.clipboard.writeText(PLANNER.summaryText(plannerReview(),$('tfBuildName').value||'Talent draft'));
+  notice('Build brief copied. It contains your own planning notes, not a game-importable loadout.');
+ }catch(_){notice('Clipboard unavailable. Export the build JSON to share your draft.')}
+});
+$('tfPlanDuplicate').addEventListener('click',()=>{
+ if(!tree)return notice('Load a talent tree before duplicating.');
+ if(recoveryPending)return notice('Resolve the unsaved draft recovery before duplicating.');
+ const record=draftRecord();record.name=(record.name.slice(0,65)+' Copy').slice(0,75);
+ record.savedAt=uniqueSavedAt();
+ saved=[record,...saved].slice(0,40);persist();renderSaved();
+ notice('Created a separate saved copy. Choose LOAD in My Saved Talent Drafts to edit it.');
+});
+plannerToFields();renderPlanner();
 function pathAnalysis(nodes){return window.NexusTalentPaths?.analyze(nodes,draft)||null}
 function pathLabel(id,nodes){const n=nodes.find(x=>Number(x.id)===Number(id));return n?nodeName(n):'Node #'+id}
 function renderPathIntel(nodes){
@@ -85,7 +246,7 @@ $('tfCompare').addEventListener('change',e=>{compareId=e.target.value;render()})
 function snapshot(){return{ranks:{...draft},choices:{...choices}}}
 function recordUndo(){undoStack.push(snapshot());if(undoStack.length>60)undoStack.shift();redoStack=[];updateUndoButtons()}
 function updateUndoButtons(){const u=$('tfUndo'),r=$('tfRedo');if(u)u.disabled=!undoStack.length;if(r)r.disabled=!redoStack.length}
-function travelHistory(from,to){if(!from.length)return;to.push(snapshot());if(to.length>60)to.shift();const state=from.pop();draft=cleanDraft(state.ranks);choices={...state.choices};render();updateUndoButtons();notice('Draft history restored; use the in-game builder to validate any points.')}
+function travelHistory(from,to){if(recoveryPending){markPlannerEdit();return}if(!from.length)return;to.push(snapshot());if(to.length>60)to.shift();const state=from.pop();draft=cleanDraft(state.ranks);choices={...state.choices};render();markPlannerEdit();updateUndoButtons();notice('Draft history restored; use the in-game builder to validate any points.')}
 
 const groups=()=>({class:Array.isArray(tree?.class_talent_nodes)?tree.class_talent_nodes:[],spec:Array.isArray(tree?.spec_talent_nodes)?tree.spec_talent_nodes:[],hero:Array.isArray(tree?.hero_talent_trees)?tree.hero_talent_trees.flatMap(t=>Array.isArray(t.hero_talent_nodes)?t.hero_talent_nodes.map(n=>({...n,hero_group:t.name||'Hero'})):[]):[]});
 const allNodes=()=>Object.values(groups()).flat();
@@ -102,6 +263,7 @@ function nodeDesc(n,rank=0){
 const maxRanks=n=>Math.max(1,Array.isArray(n.ranks)?n.ranks.length:1);
 function cleanDraft(raw){const result={},valid=new Map(allNodes().map(n=>[String(n.id),n]));if(!raw||typeof raw!=='object')return result;for(const [id,v] of Object.entries(raw)){const node=valid.get(id);if(node&&Number.isInteger(v)&&v>=0&&v<=maxRanks(node))result[id]=v}return result}
 function render(){
+ renderPlanner();
  const pools=groups();
  const current=active==='hero'&&heroSelection!=='all'?(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes||[]):pools[active];
  const relationship=relationshipEdges(current);
@@ -138,7 +300,7 @@ function persist(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(_){
 function updateBudget(){const custom=Number($('tfBudget').value)||31;const count=Object.values(draft).reduce((a,b)=>a+(Number(b)||0),0);const target=$('tfBudgetStatus');target.textContent=count>custom?'Personal planning alert: '+count+' allocated points exceeds your chosen '+custom+'-point reminder. This does not validate Blizzard limits.':count+' planned points · custom '+custom+'-point reminder (not game validation).';target.dataset.over=count>custom?'true':'false'}
 ['tfFindNode','tfLayout','tfBrief'].forEach(id=>$(id).addEventListener(id==='tfFindNode'?'input':'change',render));
 $('tfBudget').addEventListener('input',updateBudget);
-function renderSaved(){if(tree)refreshComparison();$('tfSaved').innerHTML=saved.map((x,i)=>'<div class="tf-save-entry"><div><strong>'+esc(x.name)+'</strong><small>'+esc(x.specName||'Talent draft')+' · '+esc(x.region||'us')+' · '+esc(x.savedAt?.slice(0,10)||'')+'</small></div><div class="actions"><button data-tf-open="'+i+'" type="button">LOAD</button><button data-tf-remove="'+i+'" type="button">REMOVE</button></div></div>').join('')||'<div class="empty">No saved talent drafts yet.</div>'}
+function renderSaved(){if(tree)refreshComparison();$('tfSaved').innerHTML=saved.map((x,i)=>'<div class="tf-save-entry"><div><strong>'+esc(x.name)+'</strong><small>'+esc(x.specName||'Talent draft')+' · '+esc(x.region||'us')+' · '+esc(x.savedAt?.slice(0,10)||'')+'</small></div><div class="actions"><button data-tf-open="'+i+'" type="button">LOAD</button><button data-tf-clone="'+i+'" type="button">DUPLICATE</button><button data-tf-remove="'+i+'" type="button">REMOVE</button></div></div>').join('')||'<div class="empty">No saved talent drafts yet.</div>'}
 async function api(path){const c=new AbortController(),timeout=setTimeout(()=>c.abort(),17000);try{const r=await fetch(API+path,{headers:{Accept:'application/json'},credentials:'omit',cache:'no-store',signal:c.signal});const d=await r.json().catch(()=>null);if(!r.ok||!d||d.success===false)throw Error(String(d?.message||'Talent API unavailable').slice(0,120));return d.data}catch(e){if(e.name==='AbortError')throw Error('Blizzard request timed out');throw e}finally{clearTimeout(timeout)}}
 function parseSpec(x){
  const href=x?.key?.href||'';
@@ -151,27 +313,31 @@ async function indexFetch(region){
  try{const data=await api('/api/talent-index/'+region),raw=Array.isArray(data?.spec_talent_trees)?data.spec_talent_trees:[];if(requestId!==indexRequest)return;index=raw.map(parseSpec).filter(Boolean).filter((v,i,a)=>a.findIndex(x=>x.treeId===v.treeId&&x.specId===v.specId)===i).sort((a,b)=>a.name.localeCompare(b.name));if(!index.length)throw Error('Blizzard returned no usable specialization-tree links');$('tfSpec').innerHTML='<option value="">Select a specialization</option>'+index.map((s,i)=>'<option value="'+i+'">'+esc(s.name)+' (ID '+s.specId+')</option>').join('');notice('Loaded '+index.length+' official talent tree entries. Select a specialization.')}
  catch(e){if(requestId!==indexRequest)return;$('tfSpec').innerHTML='<option value="">Talent index unavailable</option>';notice('Talent index unavailable: '+e.message+'. The current Cloudflare Worker may need the v2.3 upgrade.')}
 }
-async function load(spec,region,restored=null){if(!spec)return notice('Choose a specialization first.');if(loading)return;loading=true;$('tfLoad').disabled=true;notice('Loading '+spec.name+' specialization data from Blizzard…');try{
+async function load(spec,region,restored=null){if(!spec)return notice('Choose a specialization first.');if(loading)return;const token=++loadRequest;clearTimeout(recoveryTimer);loading=true;$('tfLoad').disabled=true;notice('Loading '+spec.name+' specialization data from Blizzard…');try{
  const data=await api('/api/talent-tree/'+region+'/'+spec.treeId+'/'+spec.specId);
+ if(token!==loadRequest)return;
  if(!Array.isArray(data?.class_talent_nodes)||!Array.isArray(data?.spec_talent_nodes))throw Error('Blizzard response lacks class or specialization talent nodes');
- tree=data;focusedNode=null;loadedRegion=region;identity=region+'/'+spec.treeId+'/'+spec.specId;draft=cleanDraft(restored?.rankByNode||{});choices=restored?.choiceByNode&&typeof restored.choiceByNode==='object'?restored.choiceByNode:{};undoStack=[];redoStack=[];updateUndoButtons();active='class';
- $('tfBuildName').value=restored?.name||spec.name+' Draft';refreshHeroTrees();refreshComparison();render();notice('Loaded official '+spec.name+' data. Allocate nodes as a planning draft; validation is not automatic.');
+ if(restored&&PLANNER)restored=PLANNER.sanitizeImported(restored);
+ tree=data;focusedNode=null;loadedRegion=region;identity=region+'/'+spec.treeId+'/'+spec.specId;draft=cleanDraft(restored?.rankByNode||{});choices=cleanChoices(restored?.choiceByNode||{});plannerMeta=PLANNER?.sanitizeMeta(restored?.planner)||PLANNER?.defaultMeta()||plannerMeta;undoStack=[];redoStack=[];updateUndoButtons();active='class';
+ $('tfBuildName').value=restored?.name||spec.name+' Draft';plannerToFields();refreshHeroTrees();refreshComparison();render();recoveryPrompt();notice('Loaded official '+spec.name+' data. This is a manual planning workspace, not an in-game validator.'+(recoveryPending?' An unsaved local draft is available to restore.':''));
  }catch(e){notice('Could not load this specialization: '+e.message+'. You can try a different specialization or region.')}finally{loading=false;$('tfLoad').disabled=false}}
-$('tfRegion').addEventListener('change',e=>{tree=null;draft={};choices={};render();indexFetch(e.target.value)});
+$('tfRegion').addEventListener('change',e=>{loadRequest++;clearTimeout(recoveryTimer);tree=null;draft={};choices={};identity='';plannerMeta=PLANNER?.defaultMeta()||plannerMeta;recoveryPending=false;$('tfPlanRecover').hidden=true;plannerToFields();render();indexFetch(e.target.value)});
 $('tfLoad').addEventListener('click',()=>{const s=index[Number($('tfSpec').value)];load(s,$('tfRegion').value)});
 document.addEventListener('click',e=>{
  const relation=e.target.closest('[data-tf-relations]');if(relation){focusedNode=Number(relation.dataset.tfRelations);render();return}
  const tab=e.target.closest('[data-tf-tab]');if(tab){active=tab.dataset.tfTab;render();return}
  const plus=e.target.closest('[data-tf-inc]'),minus=e.target.closest('[data-tf-dec]');
- if(plus||minus){const id=Number((plus||minus).dataset.tfInc||(plus||minus).dataset.tfDec),n=allNodes().find(x=>x.id===id);if(!n)return;const next=Math.max(0,Math.min(maxRanks(n),(draft[String(id)]||0)+(plus?1:-1)));if(next===(draft[String(id)]||0))return;recordUndo();draft[String(id)]=next;render();return}
+ if(plus||minus){const id=Number((plus||minus).dataset.tfInc||(plus||minus).dataset.tfDec),n=allNodes().find(x=>x.id===id);if(!n)return;const next=Math.max(0,Math.min(maxRanks(n),(draft[String(id)]||0)+(plus?1:-1)));if(next===(draft[String(id)]||0))return;if(!markPlannerEdit())return;recordUndo();draft[String(id)]=next;render();return}
  const open=e.target.closest('[data-tf-open]');if(open){const x=saved[Number(open.dataset.tfOpen)];if(!x)return;const [region,treeId,specId]=x.identity.split('/');$('tfRegion').value=region;indexFetch(region).then(()=>{const i=index.findIndex(v=>v.treeId===Number(treeId)&&v.specId===Number(specId));if(i>=0){$('tfSpec').value=String(i);load(index[i],region,x)}else notice('Saved specialization is not present in the current Blizzard index.')});return}
+ const clone=e.target.closest('[data-tf-clone]');if(clone){const source=saved[Number(clone.dataset.tfClone)];if(!source)return;const copy={...source,name:(String(source.name).slice(0,65)+' Copy').slice(0,75),rankByNode:{...source.rankByNode},choiceByNode:{...source.choiceByNode},planner:PLANNER?.sanitizeMeta(source.planner),savedAt:uniqueSavedAt()};saved=[copy,...saved].slice(0,40);persist();renderSaved();notice('Duplicated the saved draft. The original is unchanged.');return}
  const remove=e.target.closest('[data-tf-remove]');if(remove){if(confirm('Remove this saved talent draft?')){saved.splice(Number(remove.dataset.tfRemove),1);persist();renderSaved();render()}}
 });
-document.addEventListener('change',e=>{const id=e.target.dataset.tfChoice;if(id&&tree){const next=Number(e.target.value)||0;if(next!==Number(choices[id]||0)){recordUndo();choices[id]=next;render()}}});
-function draftRecord(){const selected=index[Number($('tfSpec').value)];return{format:'nexus-azeroth-talent-draft-v1',name:$('tfBuildName').value.trim().slice(0,75)||'My talent draft',identity,region:loadedRegion,treeId:tree.id,specName:selected?.name||tree.playable_specialization?.name||'Spec',rankByNode:draft,choiceByNode:choices,savedAt:new Date().toISOString(),notice:'Manual talent research plan; not validated for game import or points/prerequisites.'}}
-$('tfSave').addEventListener('click',()=>{if(!tree)return notice('Load a talent tree before saving.');const x=draftRecord();saved=[x,...saved.filter(v=>!(v.identity===x.identity&&v.name===x.name))].slice(0,40);persist();renderSaved();render();notice('Talent draft saved locally.')});
-$('tfClear').addEventListener('click',()=>{if(!tree)return;if(confirm('Clear all allocated ranks and choices from the current draft?')){recordUndo();draft={};choices={};render();notice('Draft cleared.')}})
+document.addEventListener('change',e=>{const id=e.target.dataset.tfChoice;if(id&&tree){const next=Number(e.target.value)||0;if(next!==Number(choices[id]||0)){if(!markPlannerEdit()){render();return}recordUndo();choices[id]=next;render()}}});
+function uniqueSavedAt(){let ms=Date.now();while(saved.some(x=>x.savedAt===new Date(ms).toISOString()))ms++;return new Date(ms).toISOString()}
+function draftRecord(){const selected=index[Number($('tfSpec').value)];return{format:'nexus-azeroth-talent-draft-v1',name:$('tfBuildName').value.trim().slice(0,75)||'My talent draft',identity,region:loadedRegion,treeId:tree.id,specName:selected?.name||tree.playable_specialization?.name||'Spec',rankByNode:{...draft},choiceByNode:{...choices},planner:PLANNER?.sanitizeMeta(plannerMeta)||plannerMeta,savedAt:uniqueSavedAt(),notice:'Manual talent research plan; not validated for game import or points/prerequisites.'}}
+$('tfSave').addEventListener('click',()=>{if(!tree)return notice('Load a talent tree before saving.');if(recoveryPending)return notice('Resolve the existing unsaved recovery before saving.');clearTimeout(recoveryTimer);const x=draftRecord();saved=[x,...saved.filter(v=>!(v.identity===x.identity&&v.name===x.name))].slice(0,40);persist();dropRecovery(identity);$('tfPlanRecoveryStatus').textContent='Saved to My Saved Talent Drafts. Export JSON for a portable backup.';renderSaved();render();notice('Build planner draft saved locally. This is not an in-game-valid import code.')});
+$('tfClear').addEventListener('click',()=>{if(!tree)return;if(confirm('Clear all allocated ranks and choices from the current draft?')){if(!markPlannerEdit())return;recordUndo();draft={};choices={};render();notice('Draft cleared.')}})
 $('tfExport').addEventListener('click',()=>{if(!tree)return notice('Load a talent tree to export.');const text=JSON.stringify(draftRecord(),null,2),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='nexus-talent-draft.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000)});
-$('tfImport').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>1000000)throw Error('File too large');const v=JSON.parse(await f.text());if(v.format!=='nexus-azeroth-talent-draft-v1'||typeof v.identity!=='string'||typeof v.name!=='string'||!v.rankByNode||typeof v.rankByNode!=='object')throw Error('Invalid talent draft');if(!/^(us|eu|kr|tw)\/\d{1,10}\/\d{1,10}$/.test(v.identity))throw Error('Invalid specialization reference');const [region,treeId,specId]=v.identity.split('/');$('tfRegion').value=region;await indexFetch(region);const i=index.findIndex(s=>s.treeId===Number(treeId)&&s.specId===Number(specId));if(i<0)throw Error('Spec not found in current Blizzard index');$('tfSpec').value=String(i);await load(index[i],region,v)}catch(err){notice('Import failed: '+err.message)}e.target.value=''});
+$('tfImport').addEventListener('change',async e=>{const f=e.target.files?.[0];if(!f)return;try{if(f.size>1000000)throw Error('File too large');if(!PLANNER)throw Error('Planner helper unavailable');const v=PLANNER.sanitizeImported(JSON.parse(await f.text()));const [region,treeId,specId]=v.identity.split('/');$('tfRegion').value=region;await indexFetch(region);const i=index.findIndex(s=>s.treeId===Number(treeId)&&s.specId===Number(specId));if(i<0)throw Error('Spec not found in current Blizzard index');$('tfSpec').value=String(i);await load(index[i],region,v)}catch(err){notice('Import failed: '+err.message)}e.target.value=''});
 $('tfUndo').addEventListener('click',()=>travelHistory(undoStack,redoStack));$('tfRedo').addEventListener('click',()=>travelHistory(redoStack,undoStack));updateUndoButtons();renderSaved();if(window.NexusStartup?.whenView)window.NexusStartup.whenView('talents',()=>indexFetch($('tfRegion').value));else indexFetch('us');
 })();
