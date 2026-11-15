@@ -14,7 +14,7 @@ const flag='nexus_azeroth_player_guide_v41';
 const steps=[
  ['Launch and explore','Open the live web companion on iPhone or PC. Use All Tools on mobile or the left navigation on desktop. No install or Battle.net account is required for manual planners.','overview'],
  ['Connect Battle.net (optional)','Open My Azeroth, select your Blizzard account region, authorize the read-only wow.profile scope, and choose Verify & Return. The green Connected · Verified badge represents a short-lived server check, not permanent login.','personal'],
- ['Find a character','On the secure portal, use My Characters when Blizzard provides a roster. Open a character in Public Armory. Use Add to My Planners beside Public Armory to save a character selector with your consent, then open Character Dominion to manage their goals.','armory'],
+ ['Find a character','On the secure portal, use My Characters when Blizzard provides a roster. Open a character in Public Armory. Use Add to My Planners beside Public Armory (part of the Connected Character Center) to save a character selector with your consent, then open Character Dominion to manage their goals.','armory'],
  ['Research items and equipment','Use Item Codex to look up an item ID, Item Atlas to research and manually organize goals, and Live Armory to inspect Blizzard-reported public gear where available.','atlas'],
  ['Create progression targets','Assign item goals in Character Targets, research acquisition in Loot Hunter, then log manual attempts and character sessions in Farming Operations.','targets'],
  ['Organize group play','Prepare weekly goals in War Room, sketch dungeon routes, write raid encounter notes and assemble a party plan for your friends. Share exported notes or route text deliberately.','warcraft'],
