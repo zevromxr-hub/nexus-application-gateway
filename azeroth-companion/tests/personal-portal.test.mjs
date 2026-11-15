@@ -18,6 +18,7 @@ const extract=(res,k)=>new URL(res.headers.get('location')).searchParams.get(k);
 let res=await call('/account');assert.equal(res.status,200);assert.match(await res.text(),/My Azeroth/);assert.ok(!res.headers.get('access-control-allow-origin'));
 res=await call('/api/me/status');assert.equal(res.status,401);
 res=await call('/api/me/characters');assert.equal(res.status,401);
+res=await call('/api/me/collection-intelligence');assert.equal(res.status,401);
 res=await call('/auth/logout','','GET');assert.equal(res.status,405);
 res=await call('/auth/logout','','POST','https://attacker.example');assert.equal(res.status,403);
 
@@ -41,7 +42,7 @@ globalThis.fetch=async(url,options)=>{
  requests.push({url:String(url),options});
  if(String(url)==='https://oauth.battle.net/token')return new Response(JSON.stringify({access_token:'example-very-private-token-never-put-in-response',expires_in:3600}),{status:200,headers:{'content-type':'application/json'}});
  if(String(url).endsWith('/profile/user/wow?namespace=profile-us&locale=en_US'))return new Response(JSON.stringify({wow_accounts:[{characters:[{name:'Knight',realm:{slug:'area-52',name:'Area 52'},level:80,playable_class:{name:'Paladin'}}]}]}),{status:200});
- if(String(url).includes('/collections/mounts'))return new Response(JSON.stringify({mounts:[{mount:{name:'Ashes of Alar'}}]}),{status:200});
+ if(String(url).includes('/collections/mounts'))return new Response(JSON.stringify({mounts:[{mount:{name:"Ashes of Al'ar"}}]}),{status:200});
  if(String(url).includes('/collections/pets'))return new Response(JSON.stringify({pets:[{species:{name:'Companion Pet'}}]}),{status:200});
  throw Error('Unexpected remote endpoint '+url);
 };
@@ -56,6 +57,11 @@ try{
  const chars=await call('/api/me/characters',session);assert.equal(chars.status,200);assert.equal((await chars.json()).characters[0].realmSlug,'area-52');
  const mounts=await call('/api/me/collections/mounts',session);assert.equal((await mounts.json()).total,1);
  const pets=await call('/api/me/collections/pets',session);assert.equal((await pets.json()).total,1);
+ const ownership=await call('/api/me/collection-intelligence',session);assert.equal(ownership.status,200);
+ const checked=await ownership.json();assert.equal(checked.checked,1);assert.equal(checked.targets.length,2);
+ assert.equal(checked.targets.find(x=>x.itemId===32458).status,'reported-owned');
+ assert.equal(checked.targets.find(x=>x.itemId===50818).status,'not-confirmed');
+ assert.ok(!ownership.headers.get('access-control-allow-origin'));
  assert.ok(!chars.headers.get('access-control-allow-origin'),'Private routes must not expose cross-origin CORS access');
  assert.ok(requests.find(x=>x.url.includes('/profile/user/wow')).options.headers.Authorization.startsWith('Bearer '));
  const logout=await call('/auth/logout',session,'POST',domain);assert.equal(logout.status,303);assert.ok(cookies(logout).some(x=>x.startsWith('__Host-nx_bnet_session=;')&&x.includes('Max-Age=0')));
