@@ -20,6 +20,24 @@ $('tfTree').before(inspectBar);
 const relationUI=document.createElement('div');relationUI.id='tfRelations';relationUI.className='tf-relations';
 relationUI.innerHTML='<div class="tf-relation-controls"><label><input type="checkbox" id="tfShowLinks" checked> Show source-reported links</label><span id="tfLinkCounts">Load a talent tree to inspect its relationships.</span></div><div id="tfRelationDetails" class="tf-relation-details" role="status" aria-live="polite">Click RELATIONS on a talent node to inspect the relationships Blizzard reports for that node.</div>';
 $('tfTree').before(relationUI);
+const pathPanel=document.createElement('div');pathPanel.id='tfPathIntel';pathPanel.className='tf-path-intel';
+pathPanel.innerHTML='<div class="tf-path-header"><div><strong>Talent Path Intelligence</strong><p>Review source-linked nodes with no manually allocated points. A warning is not proof a build is invalid.</p></div><label class="tf-path-filter"><input type="checkbox" id="tfReviewOnly"> Show only flagged links</label></div><div id="tfPathSummary" class="tf-path-summary" aria-live="polite">Load a talent tree to inspect reported paths.</div><div id="tfPathDetails" class="tf-path-details">Choose RELATIONS on a node to inspect its reported upstream path.</div>';
+$('tfTree').before(pathPanel);
+$('tfReviewOnly').addEventListener('change',render);
+function pathAnalysis(nodes){return window.NexusTalentPaths?.analyze(nodes,draft)||null}
+function pathLabel(id,nodes){const n=nodes.find(x=>Number(x.id)===Number(id));return n?nodeName(n):'Node #'+id}
+function renderPathIntel(nodes){
+ const result=pathAnalysis(nodes);
+ if(!result){$('tfPathSummary').textContent='Path analyzer unavailable; source relationships can still be inspected.';return}
+ const {summary}=result;
+ $('tfPathSummary').innerHTML='<div><strong>'+summary.planned+'</strong><span>Planned nodes</span></div><div><strong>'+summary.satisfied+'</strong><span>Links with points on both ends</span></div><div><strong>'+summary.flagged+'</strong><span>Linked sources with zero planned points</span></div><div><strong>'+summary.unresolved+'</strong><span>Outside this view</span></div>';
+ if(focusedNode===null){$('tfPathDetails').textContent='Choose RELATIONS on a talent node to inspect its reported upstream links.';return}
+ const current=result.details(focusedNode);
+ if(!current){$('tfPathDetails').textContent='The selected talent is not in this view.';return}
+ const upstream=result.ancestors(focusedNode);
+ const incomplete=upstream.filter(x=>x.points===0);
+ $('tfPathDetails').innerHTML='<strong>'+esc(pathLabel(focusedNode,nodes))+'</strong> · '+current.points+' manually planned rank(s)<p>'+current.incoming.length+' direct source link(s) reported · '+current.unresolved.length+' unresolved reference(s) · '+upstream.length+' upstream nodes discovered, up to 16 levels.</p><div class="tf-path-chips">'+(upstream.length?upstream.map(x=>'<span class="'+(x.points?'tf-path-chosen':'tf-path-review')+'">'+esc(pathLabel(x.id,nodes))+' · '+x.points+' pt'+(x.points===1?'':'s')+'</span>').join(''):'<span>No upstream connections reported in this view</span>')+'</div><p>'+(incomplete.length?incomplete.length+' upstream source-linked node(s) have zero manually planned points. Review them in the game talent interface.':'No zero-point upstream nodes detected among reported connections.')+' This check does not validate game prerequisites or hero path eligibility.</p>';
+}
 $('tfShowLinks').addEventListener('change',e=>{showLinks=e.target.checked;render()});
 function relationshipEdges(nodes){
  const known=new Set(nodes.map(n=>Number(n.id)));
@@ -88,11 +106,12 @@ function render(){
  const current=active==='hero'&&heroSelection!=='all'?(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes||[]):pools[active];
  const relationship=relationshipEdges(current);
  $('tfLinkCounts').textContent=relationship.edges.length+' source-reported links · '+relationship.missing.length+' references outside this category. Not game validation.';
+ renderPathIntel(current);
  if(focusedNode!==null)focusRelations(focusedNode);
 
  for(const kind of ['class','spec','hero']){$('tf'+kind[0].toUpperCase()+kind.slice(1)+'Points').textContent=pools[kind].reduce((n,x)=>n+(draft[String(x.id)]||0),0)}
  document.querySelectorAll('[data-tf-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tfTab===active));
- if(!tree){$('tfTree').innerHTML='<div class="empty">Load a Blizzard specialization tree to begin.</div>';$('tfLinkCounts').textContent='Load a talent tree to see its source-reported connections.';return}
+ if(!tree){$('tfTree').innerHTML='<div class="empty">Load a Blizzard specialization tree to begin.</div>';$('tfLinkCounts').textContent='Load a talent tree to see its source-reported connections.';$('tfPathSummary').textContent='Load a talent tree to analyze paths.';$('tfPathDetails').textContent='Select a specialization to begin.';return}
  const pool=active==='hero'&&heroSelection!=='all'?(Array.isArray(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes)?tree.hero_talent_trees[Number(heroSelection)].hero_talent_nodes:[]):pools[active];
  if(!pool.length){$('tfTree').innerHTML='<div class="empty">Blizzard did not return nodes for this talent category. This does not necessarily mean the class has no such talents.</div>';return}
  const sorted=pool.slice().sort((a,b)=>(a.display_row??0)-(b.display_row??0)||(a.display_col??0)-(b.display_col??0));
@@ -101,13 +120,15 @@ function render(){
  const coords=new Set(),coordinatesUsable=sorted.every(n=>{if(!Number.isInteger(n.display_row)||!Number.isInteger(n.display_col)||n.display_row<0||n.display_col<0||n.display_col>13||n.display_row>69)return false;const k=n.display_row+':'+n.display_col;if(coords.has(k))return false;coords.add(k);return true});
  const effectiveLayout=layout==='grid'&&!coordinatesUsable?'cards':layout;
  if(layout==='grid'&&!coordinatesUsable){$('tfLayoutNotice').textContent='Some Blizzard node positions are missing or overlapping. Compact cards are used to prevent visual overlap.'}else $('tfLayoutNotice').textContent='';
- const filtered=query?sorted.filter(n=>nodeName(n,draft[String(n.id)]||0).toLowerCase().includes(query)||nodeDesc(n,draft[String(n.id)]||0).toLowerCase().includes(query)||String(n.id)===query):sorted;
+ const review=$('tfReviewOnly').checked,flaggedTargets=new Set((pathAnalysis(current)?.flagged||[]).map(e=>e.to));
+ const filtered=sorted.filter(n=>(!review||flaggedTargets.has(Number(n.id)))&&(!query||nodeName(n,draft[String(n.id)]||0).toLowerCase().includes(query)||nodeDesc(n,draft[String(n.id)]||0).toLowerCase().includes(query)||String(n.id)===query));
  $('tfTree').innerHTML='<div class="tf-node-grid '+(effectiveLayout==='grid'?'tf-positioned':'tf-cards')+($('tfBrief').checked?' tf-brief':'')+'">'+filtered.map(n=>{
   const id=Number(n.id),max=maxRanks(n),rank=draft[String(id)]||0,previous=Number(priorRanks[String(id)]||0),difference=prior?(rank>previous?'tf-more':rank<previous?'tf-less':''):'',freePoints=Number(n.default_points||0);
   const choiceNames=Array.isArray(n.ranks?.[0]?.choice_of_tooltips)?n.ranks[0].choice_of_tooltips:[];
   const option=choiceNames.length>1?'<div class="tf-choice"><label for="tfChoice'+id+'">Choice branch</label><select id="tfChoice'+id+'" data-tf-choice="'+id+'">'+choiceNames.map((x,i)=>'<option value="'+i+'" '+((choices[id]||0)===i?'selected':'')+'>'+esc(x.talent?.name||x.spell_tooltip?.spell?.name||('Option '+(i+1)))+'</option>').join('')+'</select></div>':'';
   return '<div data-tf-node="'+id+'" class="tf-node '+(rank?'tf-selected':'')+' '+difference+' '+(focusedNode===id?'tf-focused':'')+'" style="'+(effectiveLayout==='grid'?'--tf-col:'+Math.max(1,Math.min(14,Number(n.display_col??0)+1))+';--tf-row:'+Math.max(1,Math.min(70,Number(n.display_row??0)+1))+';':'')+'"><small>'+(freePoints>0?'<span class="tf-default-points">Blizzard default points: '+freePoints+'</span> · ':'')+'ROW '+esc((n.display_row??0)+1)+' · COL '+esc((n.display_col??0)+1)+' · #'+id+'</small><strong>'+esc(nodeName(n,Math.max(0,rank-1)))+'</strong><p>'+esc(nodeDesc(n,Math.max(0,rank-1)))+'</p>'+option+'<div class="tf-node-controls"><button type="button" data-tf-dec="'+id+'" '+(rank===0?'disabled':'')+' aria-label="Reduce rank">−</button><span>'+rank+' / '+max+'</span><button type="button" data-tf-inc="'+id+'" '+(rank===max?'disabled':'')+' aria-label="Increase rank">+</button></div><button class="tf-relation-button" type="button" data-tf-relations="'+id+'">RELATIONS</button></div>';
  }).join('')+'</div>'; updateBudget();if(typeof requestAnimationFrame==='function')requestAnimationFrame(renderLinks);
+ if(!filtered.length)$('tfTree').innerHTML='<div class="empty">No talents match the current filter. Disable “Show only flagged links” or clear the search to see all nodes.</div>';
  if(prior){const d=countPointChanges(draft,prior.rankByNode);$('tfCompareSummary').textContent='Compared with '+prior.name+': '+d.changed+' changed nodes · '+d.added+' additional planned ranks · '+d.removed+' fewer planned ranks. Green outlines indicate more; amber indicate fewer.'}
  else $('tfCompareSummary').textContent='Choose a saved draft of the same specialization to compare planned ranks.';
 }
