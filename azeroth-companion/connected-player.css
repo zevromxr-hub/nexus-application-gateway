@@ -1,0 +1,18 @@
+/* NEXUS | AZEROTH v3.9 Connected Player Experience */
+.ud-account-badge.ud-verified{border-color:#73d6a999!important;background:linear-gradient(115deg,#153a2dbb,#102d2ddf)!important;color:#c6f7de!important}
+.ud-account-badge.ud-verified .ud-dot{background:#69e5a6;box-shadow:0 0 0 3px #69e5a63b,0 0 12px #4fe4a278}
+.ud-account-badge.ud-checking .ud-dot{background:#e2c17c;box-shadow:0 0 0 3px #e2c17c39}
+.nx-account-details{margin-top:10px;padding:14px 15px;border:1px solid #b39b7760;border-radius:13px;background:#0b1822a6;max-width:100%}
+.nx-account-title{font-size:11px;font-weight:900;color:#d9b87f;letter-spacing:.7px;text-transform:uppercase}
+.nx-account-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.nx-account-stats>div{min-width:0;display:grid;gap:5px}
+.nx-account-stats small{font-size:10px;color:#9fb5c5}
+.nx-account-stats strong{font-size:12px;color:#e9e6db;font-variant-numeric:tabular-nums}
+.nx-account-details[data-state="verified"] .nx-account-stats strong{color:#b6efd3}
+.nx-account-details p{font-size:11px;line-height:1.6;color:#a5b7c5;margin:6px 0 12px}
+.nx-account-actions{display:flex;flex-wrap:wrap;gap:8px}
+.nx-account-actions a{font-size:11px;padding:9px 12px;border-radius:9px;text-decoration:none;font-weight:800;min-height:40px;display:inline-flex;align-items:center;border:1px solid #c5a47764;background:#1b2a34;color:#e4ceb0}
+.nx-account-actions .nx-recheck{background:#ae8657;color:#131414}
+.nx-account-actions a:hover{filter:brightness(1.12)}
+@media(max-width:750px){.nx-account-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.nx-account-details{padding:12px}.nx-account-actions a{flex:1;justify-content:center;text-align:center}}
+@media(max-width:360px){.nx-account-stats{grid-template-columns:1fr}.nx-account-stats>div{display:flex;justify-content:space-between;gap:8px}}
