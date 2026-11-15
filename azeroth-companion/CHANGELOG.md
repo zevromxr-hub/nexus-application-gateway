@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.9.0 · 2026-11-14 — Character Farming Operations
+
+- **Character-specific farm planning:** assign existing Loot Hunter goals to any combination of manually added characters, with optional import of saved public Armory shortcuts.
+- **Manual session ledger:** track date, character, item, attempt count (1–100 per session), and optional personal note for each farming run.
+- **Useful filters and metrics:** view assigned goals by character, obtained/open status, recorded sessions and session attempts.
+- **Dedicated backup:** independently export or import assignment and session data without replacing existing Loot Hunter goals, item wishlists or progress.
+- **Compatibility:** retains all v2.8 Armory Command Bridge, Talent Forge, prior modules, and existing Cloudflare API configuration.
+
+**Important:** The new session ledger is separate from Loot Hunter's legacy total attempts. Session records do not automatically increase the global Loot Hunter attempt counter. Farming progress and character assignments are manual and browser-local; they are not validated against in-game drops, saved instance lockouts, or account activity.
+
 ## v2.8.0 · 2026-11-14 — Armory Command Bridge
 
 - **Connected gear planning:** one-click TRACK GOAL action for live equipped items, official Blizzard Item Codex results, searchable item records, saved wishlist and inspection history.
