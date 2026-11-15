@@ -138,7 +138,7 @@ assert.equal(stat.untrackedWishlist,1);assert.equal(stat.farming,1);
 assert.ok(bridge.includes('nexus:loot-track')&&bridge.includes('data-ab-track')&&bridge.includes('abBookmarkCurrent'));
 assert.ok(loot.includes('nexus:loot-track')&&loot.includes('nexus:loot-updated'));
 assert.ok(!bridge.includes('BLIZZARD_CLIENT_SECRET')&&!bridge.includes('BLIZZARD_CLIENT_ID'));
-assert.match(html,/farming-operations\\.js/);assert.match(html,/farming-operations\\.css/);
+assert.match(html,/farming-operations\.js/);assert.match(html,/farming-operations\.css/);
 const farming=await read('azeroth-companion/farming-operations.js');
 new vm.Script(farming);
 for(const token of ['nexus_azeroth_farm_operations_v1','nexus_azeroth_loot_hunter_v1','foImportProfiles','foSessionItem','foSessionCharacter','foLog','foAssignments','foExport','foImport','nexus-farming-operations-v1','foSessionDate'])assert.ok(farming.includes(token),'Farming Operations missing '+token);
