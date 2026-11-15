@@ -11,7 +11,7 @@ new vm.Script(experience,{filename:'sovereign-experience.js'});
 new vm.Script(portal,{filename:'sovereign-portal.js'});
 assert.ok(html.includes('./sovereign-experience.js'),'v4.9 site shell must remain included across v5 releases');
 assert.ok(html.includes('./styles-experience-v5.0.css')&&html.includes('./scripts-experience-v5.1.js'),'Both v4.9 assets must be cache-busted');
-assert.ok(html.includes('./styles-core-v4.7.css')&&html.includes('./scripts-core-v4.8.js'),'Unchanged core assets should stay intact');
+assert.ok(html.includes('./styles-core-v5.1.css')&&html.includes('./scripts-core-v4.8.js'),'Unchanged core assets should stay intact');
 assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,2);
 assert.equal((html.match(/<script defer src=/g)||[]).length,2);
 for(const required of ['function scheduleSelectedView()','if(selectedFrame)return','function scheduleMobileSearch()','if(searchFrame)return','if(group.hidden!==hidden)group.hidden=hidden','lastSelectedView','recentSignature','scheduleSelectedView();']){
