@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.0.0",
+  "title": "Sovereign Core — Universal Data Vault & Connected Character Center",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced Sovereign Data Vault: export and selectively restore planning data from eleven independent browser-local modules in a single versioned backup.",
+    "Added privacy-conscious backup previews, recognized-key allowlisting, size limits, restore confirmation and best-effort rollback on storage failure.",
+    "Added Connected Character Center with explicit opt-in import of public character selectors into Character Targets and Farming Operations.",
+    "Versioned the verified Battle.net Cloudflare Worker reference in the repository for recovery without exposing credentials or changing the live deployment.",
+    "Protected Farming Operations against malformed cross-tab storage updates and synchronized initial Battle.net account status across panels.",
+    "Reduced repetitive accessibility announcements from the verification timer while retaining short-lived server-validated status and expiration.",
+    "Organized the command launcher into Character, Collection, Progress, Account and utility groupings without removing existing tools.",
+    "Expanded automated validation to cover v4.0 modules, authentication boundaries, navigation and the preserved Worker verification routes."
+  ]
+}
