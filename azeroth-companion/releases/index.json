@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "4.0.0",
+      "title": "Sovereign Core — Universal Data Vault & Connected Character Center",
+      "date": "2026-11-15"
+    },
+    {
       "version": "3.9.0",
       "title": "Assassin Dominion & Verified Connected Player",
       "date": "2026-11-15"

@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.0.0 · 2026-11-15 — Sovereign Core: Reliability & Unified Experience
+
+- **Sovereign Data Vault:** Generate one privacy-conscious JSON backup covering all supported browser-local planning modules. Inspect included records and selectively restore with explicit confirmation; missing or invalid sections are excluded. Encrypted Battle.net sessions, access tokens and private collections are never placed into backup files.
+- **Connected Character Center:** From the first-party My Azeroth portal, players can open a Blizzard-reported character in public Armory. They may then explicitly add its selector to local Character Targets and Farming Operations. Imported URL values are **not** independently verified account ownership; the authenticated character listing always remains on the secure Cloudflare origin.
+- **Verified source recovery:** Added a separately maintained reference Cloudflare Worker incorporating the validated v3.8.1 verification handoff. This GitHub source is not deployed automatically and contains no OAuth secrets; the currently tested Worker stays unchanged.
+- **Reliability:** Gracefully handle damaged cross-tab Farming Operations records, refresh the dashboard after local character import, and correct initial My Azeroth account text synchronization.
+- **Accessibility:** Avoid repeatedly announcing the 1-second verification timer to assistive technologies; preserve responsive iPhone and desktop layouts.
+- **Navigation:** Group command-launcher discovery into meaningful categories and preserve favorites, recents, and original tools.
+- **Release regression suite:** Add v4.0 syntax and integration checks for Data Vault, character handoff, existing authentication boundaries, and recovery Worker.
+
+**Compatibility:** Existing v3.9 data and modules remain unchanged. A Cloudflare update is **not** required for the v4.0 web app; Worker source is archived as a recovery reference. No automatic cross-device cloud sync or OAuth identity export is claimed.
+
+
 ## v3.9.0 · 2026-11-15 — Assassin Dominion & Verified Connected Player
 
 - **Interface v3.4.1:** Fixed desktop sidebar scrolling and redesigned iPhone navigation with bottom tabs, an all-tools drawer and responsive controls.

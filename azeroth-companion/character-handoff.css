@@ -1,0 +1,8 @@
+/* NEXUS | AZEROTH v4.0 opt-in Connected Character Center */
+.nx-character-handoff{margin-top:18px}
+.nx-character-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.nx-character-actions a{min-height:42px;display:inline-flex;align-items:center;text-decoration:none}
+.nx-character-selection{margin-top:12px;border:1px solid #b69d6455;border-radius:12px;padding:13px;color:#c6d4dd;font-size:12px;line-height:1.65;background:#101c26d9}
+.nx-character-selection p{margin:0 0 12px}
+.nx-character-selection button{min-height:42px}
+@media(max-width:620px){.nx-character-actions>*{flex:1;justify-content:center;text-align:center}.nx-character-selection button{width:100%}}

@@ -32,6 +32,6 @@ $('udFarm').innerHTML=sessions.slice(-8).reverse().map(x=>card(lookup.get((x.cha
 $('udUpdated').textContent='Refreshed at '+new Date().toLocaleTimeString()+'. All numbers shown are browser-local manual records.';}
 $('udCharacter').addEventListener('change',e=>{selected=e.target.value;render()});$('udRefresh').addEventListener('click',render);
 host.addEventListener('click',e=>{const b=e.target.closest('[data-ud-goto]');if(!b)return;document.querySelector('.nav [data-view="'+b.dataset.udGoto+'"]')?.click()});
-window.addEventListener('storage',e=>{if(Object.values(KEYS).includes(e.key))render()});window.addEventListener('pageshow',render);
+window.addEventListener('storage',e=>{if(Object.values(KEYS).includes(e.key))render()});window.addEventListener('nexus:character-profile-updated',render);window.addEventListener('pageshow',render);
 render();
 })();
