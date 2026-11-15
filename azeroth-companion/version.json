@@ -1,20 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "3.3.0",
+  "version": "3.4.0",
   "channel": "release-candidate",
   "release_date": "2026-11-14",
-  "subtitle": "Character Progression — Equipped Gear & Personal Targets",
-  "previous_version": "3.2.0",
+  "subtitle": "Progress Command — Unified Planning Intelligence",
+  "previous_version": "3.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a signed-in My Azeroth equipment viewer showing Blizzard-reported currently equipped items for account-listed characters",
-    "Restricted personal gear requests to the authorized Battle.net account's own character list; no private gear or tokens are sent to GitHub Pages",
-    "Added independent Character Targets planner with Atlas item assignments, per-character priorities, manual completion flags and notes",
-    "Connected the planner to browser-local Farming Operations character shortcuts and existing Item Atlas saved items without rewriting either dataset",
-    "Added standalone JSON export/import for manual character targets, and responsive desktop/iPhone layouts",
-    "Repaired a pre-existing Armory Command Bridge CSS section selector issue that prevented legacy bridge initialization",
-    "Preserved public item search, secure Battle.net login, v3.1 Collection Intelligence and all previous studios"
+    "Added Progress Command, a read-only cross-studio dashboard combining manually saved Item Atlas, Character Targets, Loot Hunter, and Farming Operations records",
+    "Summarizes local items, manual ownership, active goals, completed targets, and recorded farming-session attempts without double-counting separate tracking systems",
+    "Added character-level overview, prioritized open objectives, and one-click navigation back to the source studios",
+    "Surfaces orphaned Character Targets, manually owned items still marked as open objectives, and overlapping Item Atlas/Loot Hunter records as review suggestions only",
+    "Exports a compact privacy-conscious JSON summary of counts and character progress; no private Blizzard account tokens or account profile payloads",
+    "Preserves v3.3 secure Battle.net My Azeroth, read-only gear intelligence, item API, and all existing storage formats",
+    "No Cloudflare Worker update or additional variables required for this browser-local release"
   ]
 }
