@@ -1,19 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Intelligence — Verified IDs & Comparative Research",
-  "previous_version": "5.1.0",
+  "subtitle": "Talent Atlas — Interactive Canvas & Visual Performance",
+  "previous_version": "5.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added click-to-inspect talent source records with Blizzard node, talent and spell IDs, and returned spell descriptions for each available rank or choice.",
-    "Added per-node current allocation versus saved-build point deltas, with a concise list of changed talent names and allocations.",
-    "Added optional gear lookup by exact Blizzard item ID using the existing protected Cloudflare item endpoint, displaying available item properties and stat fields.",
-    "Provided external reference links for official-source spell and item IDs, while explicitly marking unreported stats or talent descriptions as unavailable.",
-    "Preserved browser-local saved builds, legacy import/export, all previous studios, existing Worker credentials/API routes and four bundled site resources.",
-    "Descriptions and item stats come from Blizzard returned data; no game-valid talent export, live character combat simulation, or DPS estimates are claimed."
+    "Drag the tree directly with mouse or touch without relying on horizontal and vertical scrollbars.",
+    "Use zoom controls, Fit, Reset and an interactive mini-map to move rapidly between tree sections.",
+    "Refreshed the visual tree with clearer selected talent states, elegant surfaces, readable connectors and responsive tools.",
+    "Preserved the v5.2 source IDs, Blizzard rank descriptions, gear-ID research, local saves, recovery, and JSON format.",
+    "Decorative tree visuals do not represent official WoW spell icons or inferred gameplay performance."
   ]
 }
