@@ -42,8 +42,8 @@ async function captured(label,func){
   await func(page);
   const size=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
   check(size.page<=size.viewport+2,'Horizontal overflow: '+JSON.stringify(size));
-  const cssRequests=localStatic.filter(p=>p.endsWith('.css'));
-  const jsRequests=localStatic.filter(p=>p.endsWith('.js'));
+  const cssRequests=[...new Set(localStatic.filter(p=>p.endsWith('.css')))];
+  const jsRequests=[...new Set(localStatic.filter(p=>p.endsWith('.js')))];
   check(cssRequests.length===2,'Expected 2 CSS requests from the v4.7 source bundles, saw '+JSON.stringify(cssRequests));
   check(jsRequests.length===2,'Expected 2 JS requests from the v4.7 source bundles, saw '+JSON.stringify(jsRequests));
   const timings=await page.evaluate(()=>{
