@@ -9,13 +9,13 @@ const html=await read('index.html');
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
 assert.equal(inline.length,1);
 new vm.Script(inline[0],{filename:'azeroth-index-inline.js'});
-assert.match(html,/v4\.8 INTELLIGENT STARTUP/);
+assert.ok(html.includes("Object.defineProperty(window,'NexusStartup'")||inline[0].includes("Object.defineProperty(window,'NexusStartup'"),'v4.8 startup coordinator must remain present in later site releases');
 assert.ok(inline[0].includes("Object.defineProperty(window,'NexusStartup'"),'Startup coordinator should initialize before bundled scripts');
 assert.ok(inline[0].includes("new CustomEvent('nexus:view-activated'"),'Site router should notify view-aware startup tasks');
 assert.ok(inline[0].includes("const once=options?.once!==false"),'Deferred callbacks need one-shot and revisit modes');
 assert.ok(inline[0].includes("if(once)document.removeEventListener(EVENT,handler)"),'One-shot startup listeners must detach after first view');
 assert.ok(inline[0].includes('queueMicrotask('),'Already-active views should initialize reliably');
-assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v4.8.js'));
+assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v4.9.js'));
 assert.equal((html.match(/<script defer src=/g)||[]).length,2);
 assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,2);
 const checks=[
