@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.4.0",
+  "title": "Talent Forge Overdrive — Visual Builder & Draft Controls",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Reorganized the official Blizzard class, specialization and hero talent nodes into a coordinate-aware visual talent grid",
+    "Added a compact card view and search by talent names, descriptions and node IDs",
+    "Added multi-step Undo and Redo for manual rank and choice edits",
+    "Added a configurable personal allocation reminder, clearly separated from Blizzard's game-validation rules",
+    "Preserved v2.3 saved build storage, portable JSON drafts, and original item/character/loot workflows",
+    "Improved small-screen scrolling and reduced clutter in talent exploration"
+  ]
+}

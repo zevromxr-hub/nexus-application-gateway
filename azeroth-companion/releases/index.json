@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.4.0",
+      "title": "Talent Forge Overdrive — Visual Builder & Draft Controls",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.3.0",
       "title": "Talent Forge — Live Specialization Explorer",
       "date": "2026-11-14"
