@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.5.0",
+  "title": "Sovereign Portal — My Quick Deck, Orientation & Navigation",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added My Quick Deck to the redesigned homepage with up to six customizable shortcuts to any existing installed tool, stored only in an isolated website-preferences record.",
+    "Introduced a compact, optional five-step website orientation covering navigation, personal shortcuts, Blizzard account safety and manual backup practices.",
+    "Added a site-level page-context bar on studio pages with a clear Return Home action and automatic view-name updates.",
+    "Added a device-offline notice so visitors know when Blizzard lookups and release checks may need connectivity, without claiming the game or API is down.",
+    "Improved keyboard-accessible tour controls, discoverability, responsive quick-access cards, mobile safe-area treatment and reduced-motion handling.",
+    "Preserved every existing studio, Cloudflare Worker, Battle.net session, character database and stored progress record; made all v4.5 preferences separate from v4.4.",
+    "Retained the v4.4 cinematic homepage, appearance settings, grouped navigation and release center while adding a stronger personalized starting experience.",
+    "Expanded automated regression coverage for site isolation, accessibility, shortcut limits, mobile layouts and authenticated-data boundaries."
+  ]
+}

@@ -1,0 +1,64 @@
+/* NEXUS | AZEROTH v4.5 — Sovereign Portal website-shell extensions.
+ * Existing studios and user planning records are unchanged.
+ */
+.sp-deck{display:grid;gap:13px;min-width:0;border:1px solid var(--sx-accent-edge,#c3a56b60);border-radius:18px;background:linear-gradient(125deg,#0c1b2be8,#13202bdc);padding:20px;box-shadow:0 9px 34px #0003}
+.sp-deck-top{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.sp-deck-top h3{font-size:18px;color:#f1d9ac;margin:5px 0 6px}
+.sp-deck-top p{margin:0;font-size:11px;color:#bdcbd2;line-height:1.7}
+.sp-deck-top>button{flex:none;min-height:42px;font-size:10px;color:var(--sx-accent);background:#172733;border:1px solid var(--sx-accent-edge)}
+.sp-deck-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.sp-deck-buttons button{min-height:59px;min-width:0;display:flex;align-items:center;gap:10px;padding:12px;background:#142331ef;border:1px solid #d4b67f3b;border-radius:12px;color:#ece0c8;text-align:left}
+.sp-deck-buttons button:hover{background:#1f3545;border-color:var(--sx-accent-edge)}
+.sp-deck-icon{color:var(--sx-accent);font-size:21px;flex:none}
+.sp-deck-label{font-size:12px;font-weight:780;line-height:1.35;flex:1;min-width:0;overflow-wrap:anywhere}
+.sp-deck-arrow{color:var(--sx-accent);font-size:14px;flex:none}
+.sp-deck-editor[hidden],.sp-tour-prompt[hidden],.sp-contextbar[hidden],.sp-offline[hidden],.sp-tour-overlay[hidden]{display:none!important}
+.sp-deck-editor{display:grid;gap:12px;border-top:1px solid #ffffff25;padding-top:14px}
+.sp-deck-editor-head{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#f1d7ac;font-size:12px}
+.sp-deck-editor-head span{font-size:11px;color:#aabcc7}
+.sp-deck-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;max-height:260px;overflow:auto;padding-right:3px}
+.sp-deck-choice{display:flex;align-items:center;gap:9px;border-radius:9px;border:1px solid #ffffff25;padding:9px 10px;color:#d8e2df;font-size:11px;min-width:0;background:#0d1a28d0;cursor:pointer}
+.sp-deck-choice span{overflow-wrap:anywhere}
+.sp-deck-choice input{flex:none;width:17px;height:17px;accent-color:#dab178}
+.sp-deck-choice:has(input:disabled){opacity:.52}
+.sp-muted{font-size:11px;color:#b6c9d0;line-height:1.7;margin:4px 0}
+.sp-deck-footer{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.sp-deck-footer button{min-height:40px;font-size:10px}
+.sp-deck-footer button:last-child{background:var(--sx-accent);color:#141317;border-color:transparent}
+.sp-tour-prompt{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:13px;border-radius:11px;background:#1a2634d8;border:1px solid #c3ab7a48;color:#c8d4d2;font-size:11px;line-height:1.7}
+.sp-tour-prompt>div{display:flex;gap:7px;flex-wrap:wrap}
+.sp-tour-prompt button{min-height:39px;font-size:10px}
+.sp-tour-prompt [data-sp-tour]{background:var(--sx-accent);color:var(--sx-on-accent);border-color:transparent}
+.sp-contextbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#10202ba8;border:1px solid #ffffff22;border-radius:11px;padding:9px 14px;margin:14px 0 0;min-height:46px}
+.sp-context-location{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:#b8c8cd;font-size:10px;letter-spacing:.3px}
+.sp-context-location strong{color:var(--sx-accent,#e3cb9c);font-size:11px}
+.sp-context-location span:first-child{color:var(--sx-accent);font-size:19px;line-height:1}
+.sp-context-actions button{padding:8px 10px;min-height:39px;white-space:nowrap;font-size:10px;background:#203544a8;border:1px solid var(--sx-accent-edge);color:#e7d4b0}
+.sp-offline{margin:14px 0;padding:12px 14px;border-left:3px solid #e6bc79;background:#41321ad9;color:#fff0d0;border-radius:9px;font-size:11px;line-height:1.75}
+#spTourButton{font-size:20px;font-weight:900;color:var(--sx-accent);line-height:1;padding:7px 11px}
+body.sp-tour-open{overflow:hidden}
+.sp-tour-overlay{position:fixed;inset:0;z-index:510;display:grid;place-items:center;padding:13px}
+.sp-tour-shade{position:absolute;inset:0;background:#02070de8;backdrop-filter:blur(6px)}
+.sp-tour-dialog{position:relative;z-index:1;width:min(100%,530px);max-height:90dvh;overflow:auto;background:linear-gradient(145deg,#1b2a37,#0b1722);border:1px solid var(--sx-accent-edge,#be9d6e);border-radius:20px;box-shadow:0 24px 100px #000d;padding:clamp(18px,4vw,29px);outline:none}
+.sp-tour-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sp-tour-close{min-width:42px;min-height:42px;font-size:24px;background:#1c2a36;border-color:#ffffff32;padding:4px}
+.sp-tour-progress{display:flex;gap:6px;margin:20px 0}
+.sp-tour-progress span{height:5px;border-radius:5px;background:#596674;flex:1}
+.sp-tour-progress span.active{background:var(--sx-accent,#dcb87d)}
+.sp-tour-dialog h2{font-size:25px;line-height:1.3;color:#f4dfbf;margin:12px 0}
+.sp-tour-dialog>p{font-size:13px;line-height:1.8;color:#beced6}
+.sp-tour-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin:19px 0 9px}
+.sp-tour-actions button{min-height:43px;font-size:11px}
+.sp-tour-actions .sp-tour-next{background:var(--sx-accent);color:var(--sx-on-accent);border-color:transparent}
+.sp-tour-actions button:disabled{opacity:.48}
+.sp-tour-hint{font-size:10px!important;color:#92adb9!important}
+body.sp-portal-ready .sp-deck button:focus-visible,body.sp-portal-ready .sp-contextbar button:focus-visible,body.sp-portal-ready .sp-tour-dialog button:focus-visible,body.sp-portal-ready .sp-deck input:focus-visible{outline:2px solid #83d5d6;outline-offset:3px}
+@media(min-width:1201px){.sp-deck-buttons{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1050px){.sp-deck-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-deck-checks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:800px){.sp-deck{padding:15px}.sp-deck-top{align-items:start;flex-wrap:wrap}.sp-deck-top>button{width:100%}.sp-contextbar{margin-top:11px}.sp-tour-overlay{padding:10px}.sp-tour-dialog{max-height:calc(92dvh - env(safe-area-inset-bottom,0px))}}
+@media(max-width:500px){.sp-deck-buttons{grid-template-columns:1fr 1fr;gap:7px}.sp-deck-buttons button{padding:11px 9px;min-height:62px}.sp-deck-label{font-size:11px}.sp-deck-icon{font-size:17px}.sp-deck-checks{grid-template-columns:1fr}.sp-contextbar{align-items:start;flex-direction:column}.sp-context-actions{width:100%}.sp-context-actions button{width:100%}.sp-tour-actions button{flex:1}}
+@media(max-width:350px){.sp-deck-buttons{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.sp-deck *, .sp-tour-overlay *{animation:none!important;transition:none!important}}
+body[data-sx-motion=reduce] .sp-deck *,body[data-sx-motion=reduce] .sp-tour-overlay *{animation:none!important;transition:none!important}
+
+.sp-tour-actions button[hidden]{display:none!important}

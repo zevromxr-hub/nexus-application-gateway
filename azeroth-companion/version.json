@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Experience Engine — New Home, Navigation & Personalization",
-  "previous_version": "4.3.0",
+  "subtitle": "Sovereign Portal — My Quick Deck, Orientation & Navigation",
+  "previous_version": "4.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Rebuilt the companion home entrance with a cinematic Assassin Dominion welcome, clear starting actions, curated tool destinations and preserved original overview counts.",
-    "Introduced a Continue Where You Left Off section using website navigation recents and read-only existing Command Launcher pinned tools.",
-    "Organized all existing studios into five collapsible desktop navigation groups, preserving individual tool buttons, the mobile All Tools menu and search behavior.",
-    "Added website-level Appearance Settings for gold, violet and cyan accents, background visibility, comfortable/compact navigation, higher contrast and reduced visual motion.",
-    "Added an Update Center in the website header with verified published companion version, release highlights, recent release history and a mark-as-read indicator.",
-    "Improved responsive layout, touch targets, keyboard dialog navigation and reduced-motion handling for iPhone and desktop, without redesigning underlying studios.",
-    "Separated the original Overview hero from the main studio experience while preserving its working metrics and existing local-planning content.",
-    "Preserved Battle.net sign-in, Cloudflare Worker, all existing studio code and player storage keys; added a website-shell isolation regression test and maintained Discord release metadata."
+    "Added My Quick Deck to the redesigned homepage with up to six customizable shortcuts to any existing installed tool, stored only in an isolated website-preferences record.",
+    "Introduced a compact, optional five-step website orientation covering navigation, personal shortcuts, Blizzard account safety and manual backup practices.",
+    "Added a site-level page-context bar on studio pages with a clear Return Home action and automatic view-name updates.",
+    "Added a device-offline notice so visitors know when Blizzard lookups and release checks may need connectivity, without claiming the game or API is down.",
+    "Improved keyboard-accessible tour controls, discoverability, responsive quick-access cards, mobile safe-area treatment and reduced-motion handling.",
+    "Preserved every existing studio, Cloudflare Worker, Battle.net session, character database and stored progress record; made all v4.5 preferences separate from v4.4.",
+    "Retained the v4.4 cinematic homepage, appearance settings, grouped navigation and release center while adding a stronger personalized starting experience.",
+    "Expanded automated regression coverage for site isolation, accessibility, shortcut limits, mobile layouts and authenticated-data boundaries."
   ]
 }

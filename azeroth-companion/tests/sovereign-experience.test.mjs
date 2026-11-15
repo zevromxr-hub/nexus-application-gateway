@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'..');
 const read=file=>readFile(path.join(root,file),'utf8');
 const [html,js,css,nav,launcher]=await Promise.all(['index.html','sovereign-experience.js','sovereign-experience.css','adaptive-navigation.js','command-launcher.js'].map(read));
 new vm.Script(js,{filename:'sovereign-experience.js'});
-assert.match(html,/v4\.4 SOVEREIGN EXPERIENCE/);
+assert.ok(html.includes('./sovereign-experience.js'),'Sovereign Experience must remain mounted after newer website releases');
 for(const asset of ['sovereign-experience.js','sovereign-experience.css','character-dominion.js','player-field-lab.js','player-guide.js','sovereign-vault.js','verified-connection.js','adaptive-navigation.js','command-launcher.js']){
  assert.ok(html.includes('./'+asset),'Existing studio or new shell missing '+asset);
 }
