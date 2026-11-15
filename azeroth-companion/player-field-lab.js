@@ -58,7 +58,7 @@ function render(){
 function category(){const ua=navigator.userAgent||'';const mobile=/iPhone|iPad|Android/i.test(ua);return mobile?'Mobile browser':'Desktop browser'}
 function report(){
  const withNotes=$('pflNotes').checked,withEnv=$('pflEnvironment').checked;
- const lines=['NEXUS | AZEROTH — PLAYER TEST REPORT','Companion release: v4.2.0','Created: '+new Date().toISOString().slice(0,10),'Report source: voluntary browser-local checklist'];
+ const lines=['NEXUS | AZEROTH — PLAYER TEST REPORT','Companion UI version: '+(document.querySelector('.main .top .chip')?.textContent?.match(/v\\d+\\.\\d+(?:\\.\\d+)?/)?.[0]||'unavailable')+' (see Release Center for verified release metadata)','Created: '+new Date().toISOString().slice(0,10),'Report source: voluntary browser-local checklist'];
  if(withEnv)lines.push('Environment: '+category());
  lines.push('','Test results:');
  checks.forEach(([name],i)=>{const r=record(i);lines.push((i+1)+'. '+name+' — '+states[r.state]);if(withNotes&&r.note.trim())lines.push('   Note: '+r.note.trim().replace(/[\r\n]+/g,' ').slice(0,MAX_NOTE))});
