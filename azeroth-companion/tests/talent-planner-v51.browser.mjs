@@ -59,7 +59,7 @@ async function run(engine,phone){
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
-  assert.ok((await page.locator('#tfPlanAdvisories').textContent()).includes('game-valid'),'Planner should disclaim game validation');
+  assert.ok((await page.locator('#tfPlanAdvisories').textContent()).includes('legal loadout checker'),'Planner should disclaim game validation');
   await page.locator('[data-tf-inc="1001"]').click();
   await page.locator('[data-tf-inc="1002"]').click();
   await page.locator('#tfChoice1002').selectOption('1');
