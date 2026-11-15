@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/v5\.4 SOURCE INTELLIGENCE/);
+assert.match(html,/v5\.5 BUILD INTELLIGENCE/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(inline.length,1);
@@ -17,9 +17,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'5.4.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'5.5.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v5\.4 • Source Studio/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v5\.5 • Build Intelligence/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
@@ -62,6 +62,15 @@ for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap'
  assert.ok(talentAtlasCanvas.includes(name),'Talent Atlas missing '+name);
 const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
 assert.ok(atlasStyle.includes('touch-action:none')&&atlasStyle.includes('.tf-canvas-stage'));
+const buildIntel=await read('azeroth-companion/talent-build-intel-v5.5.js');new vm.Script(buildIntel);
+const buildIntelCSS=await read('azeroth-companion/talent-build-intel-v5.5.css');
+for(const id of ['tfBuildIntel','tfBiNode','tfBiConnections','tfBiReview','tfBiSaveA','tfBiSaveB','tfBiDiff','tfBiInspect'])
+ assert.ok(buildIntel.includes(id),'Missing v5.5 Build Intelligence '+id);
+for(const marker of ['savedDrafts:','linkEdges:','catalog:','allocations:'])
+ assert.ok((await read('azeroth-companion/talent-forge.js')).includes(marker),'Missing source bridge '+marker);
+assert.match(html,/talent-build-intel-v5\.5\.js/);
+assert.match(html,/talent-build-intel-v5\.5\.css/);
+assert.ok(buildIntelCSS.includes('@media(max-width:520px)'));
 const sourceStudio=await read('azeroth-companion/talent-source-plus-v5.4.js');new vm.Script(sourceStudio);
 const sourceStudioCSS=await read('azeroth-companion/talent-source-plus-v5.4.css');
 for(const symbol of ['NexusTalentSourceBridge','tfLabTalentA','tfLabTalentB','tfLabGearForm','tfMediaStatus','api/spell-media/'])assert.ok((sourceStudio+(symbol==='NexusTalentSourceBridge'?'':'' )+await read('azeroth-companion/talent-forge.js')).includes(symbol),'Source Studio missing '+symbol);

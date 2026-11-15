@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.5.0",
+  "title": "Build Intelligence — Source Links & Saved-Loadout Diffs",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Explore real Blizzard-reported incoming and outgoing talent-node relationships, IDs, rank allocation and unresolved references.",
+    "Audit saved draft structural rank limits, unknown nodes and zero-point source-linked upstream nodes as cautious research advisories, not authoritative WoW game eligibility.",
+    "Compare the current draft or any two locally saved builds with per-node point deltas and choice-index differences, without modifying saved data.",
+    "Open the existing official rank inspector directly from the new connected-source research panel.",
+    "Preserve all v5.4 Blizzard icons, item comparisons, v5.3 canvas pan/zoom, local recovery and legacy JSON import/export.",
+    "Avoid redundant placeholder DOM mutations for missing spell icons; maintain two CSS and two JS bundles."
+  ]
+}
