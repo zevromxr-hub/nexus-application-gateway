@@ -24,7 +24,7 @@ const blank=()=>({partyName:'Dungeon Team',party:defaultParty(),vaults:{},active
 let state=blank();
 try{const prior=JSON.parse(localStorage.getItem(STORAGE)||'null');if(prior&&typeof prior==='object'&&Array.isArray(prior.party)&&prior.party.length===5)state={...blank(),...prior}}catch(_){}
 const $=id=>document.getElementById(id);
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;':'&quot;',"'":'&#39;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const save=()=>{try{state.lastUpdated=new Date().toISOString();localStorage.setItem(STORAGE,JSON.stringify(state))}catch(_){alert('Storage is unavailable. Check your Safari or browser storage settings.')}};
 const specs=className=>CLASS_SPECS[className]||[];
 const roleOf=p=>specs(p.className).find(s=>s[0]===p.spec)?.[1]||'Damage';
