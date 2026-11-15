@@ -1,18 +1,17 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Source Studio — Official Spell Media & Side-by-Side Research",
-  "previous_version": "5.3.0",
+  "subtitle": "Official Icon Stability & Safe Worker Integration",
+  "previous_version": "5.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added optional official Blizzard spell icons with lazy loading from a documented Cloudflare spell-media route; no guessed icons.",
-    "Added a side-by-side talent comparison for returned rank tooltips, source IDs and manually allocated points.",
-    "Added a two-item research comparison of the actual Blizzard item fields and overlapping numeric stats.",
-    "Kept all talent allocation, saved drafts, existing talent graph, Blizzard login, and four-bundle performance architecture unchanged.",
-    "If the Cloudflare media route is not deployed, images gracefully remain decorative placeholders; manual Cloudflare Worker deployment is required for live spell icons."
+    "Eliminated repeated placeholder DOM writes in Talent Atlas, preventing unnecessary mutation observer redraws when spell icons are missing.",
+    "Preserved the official spell media loader, Blizzard item/talent comparison, existing talent atlas navigation, and every saved build.",
+    "Added a minimal, documented Cloudflare Worker route patch rather than replacing a potentially newer live Battle.net authentication Worker.",
+    "Cloudflare deployment remains a separate owner-controlled action until the actual live Worker source can be compared and backed up."
   ]
 }
