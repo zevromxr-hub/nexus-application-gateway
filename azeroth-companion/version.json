@@ -1,20 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.6.0",
+  "version": "4.7.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Device Reliability — Mobile & Desktop Experience Audit",
-  "previous_version": "4.5.0",
+  "subtitle": "Lean Launch — Compiled Resources & Performance Budgets",
+  "previous_version": "4.6.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Fixed the Quick Deck editor losing keyboard focus after toggling a favorite and prevented stale shortcuts from consuming its six-button limit.",
-    "Fixed grouped mobile tool-search visibility when reopening the All Tools drawer and when resizing from phone to desktop widths.",
-    "Added real automated browser interaction audits in desktop Chromium and phone-sized Chromium/WebKit, including responsive overflow, JavaScript exceptions, update center, navigation and preferences.",
-    "Added GitHub Actions device testing on pull requests and main-branch releases, with failure screenshots to support troubleshooting without requiring local Node.",
-    "Published a practical physical iPhone Safari and desktop acceptance checklist to distinguish browser emulation from real-device testing.",
-    "Preserved the v4.5 Sovereign Portal, v4.4 appearance controls, all character/item studios, Cloudflare Worker and existing browser-local planning data.",
-    "Added source-level regression protections for site-shell isolation, keyboard focus, responsive transitions and non-sensitive browser tests."
+    "Introduced Lean Launch delivery: reduced 25 stylesheet plus 26 deferred JavaScript requests to two CSS and two JavaScript bundles while preserving all original source files and their order.",
+    "Preserved all existing World of Warcraft studios, data formats, character tools, Battle.net verification, Cloudflare Worker and the current Assassin Dominion visual design.",
+    "Added a deterministic dependency-free Node 22 bundle maintenance tool that verifies byte-for-byte compiled asset parity with all 51 original sources.",
+    "Added a strict site asset request budget and browser startup timing logs to the existing desktop Chromium and mobile Chromium/WebKit GitHub Actions audit.",
+    "Kept the full suite of per-studio source tests and website-shell regressions with a versioned v4.7 release record for the existing Discord announcement pipeline.",
+    "Documented how future site or studio source edits should regenerate compiled assets without requiring end users to install Node or change Cloudflare.",
+    "Reduced repeated network request overhead, without claiming untested improvements to real-device speed, CPU time or Blizzard API latency."
   ]
 }
