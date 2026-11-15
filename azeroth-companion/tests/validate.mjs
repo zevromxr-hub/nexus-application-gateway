@@ -71,4 +71,30 @@ for(const feature of ['tfShowLinks','tfRelations','tfRelationDetails','relations
 const talentCSS=await read('azeroth-companion/talent-forge.css');
 assert.ok(talentCSS.includes('.tf-link-layer')&&talentCSS.includes('.tf-node.tf-focused'));
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Preserve old talent draft storage');
+
+assert.match(html,/talent-paths\.js/);
+assert.ok(html.indexOf('talent-paths.js')<html.indexOf('talent-forge.js'),'Path analyzer must load before Talent Forge');
+const paths=await read('azeroth-companion/talent-paths.js');new vm.Script(paths);
+const ctx={module:{exports:{}}};new vm.Script(paths).runInNewContext(ctx);
+const analyze=ctx.module.exports.analyze;
+assert.equal(typeof analyze,'function');
+const nodes=[
+ {id:10,locked_by:[30]},
+ {id:20,locked_by:[10,{id:99}]},
+ {id:30,locked_by:[20]},
+ {id:40}
+];
+const a=analyze(nodes,{'20':1,'10':0,'30':1});
+assert.equal(a.summary.nodes,4);
+assert.equal(a.summary.linked,3);
+assert.equal(a.summary.unresolved,1);
+assert.equal(a.summary.flagged,1);
+assert.equal(a.summary.satisfied,1);
+assert.equal(a.ancestors(20).length,2,'Cycle-safe graph traversal should terminate');
+assert.equal(a.details(20).unresolved.length,1);
+const noLinks=analyze([{id:1},{id:2}],{'2':1});
+assert.equal(noLinks.summary.flagged,0,'Missing link data must not be misrepresented as invalid');
+for(const name of ['tfPathIntel','tfReviewOnly','renderPathIntel','tfPathDetails','pathAnalysis'])assert.ok(talent.includes(name),'Missing Talent Path Intelligence '+name);
+assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Old saved talent data key must remain unchanged');
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
