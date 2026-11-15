@@ -21,6 +21,13 @@ async function captured(label,func){
    reducedMotion:'reduce'
   });
   page=await context.newPage();
+  // A localhost test origin is intentionally NOT authorized to query the live
+  // Blizzard-backed Cloudflare API. Stub only that external dependency with a
+  // non-success response; never simulate authenticated accounts or game data.
+  await page.route('https://nexus-azeroth-api.zevromxr.workers.dev/**',route=>
+   route.fulfill({status:503,contentType:'application/json',
+    headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
+    body:JSON.stringify({message:'Remote API disabled during local website-shell test'})}));
   page.on('pageerror',e=>errors.push(String(e)));
   await page.goto(BASE,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.sp-portal-ready').waitFor({timeout:25000});
