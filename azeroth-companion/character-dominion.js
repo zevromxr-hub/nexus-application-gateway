@@ -75,7 +75,7 @@ function saveTargets(next,previous){
  catch(_){try{if(previous===null)localStorage.removeItem(KEYS.targets);else localStorage.setItem(KEYS.targets,previous)}catch(__){}notice('Could not save objectives. Storage may be unavailable; create a backup.');return false}
 }
 function safeTargets(){
- const raw=localStorage.getItem(KEYS.targets);if(raw===null)return{raw:null,data:{characters:[],targets:[]}};
+ let raw;try{raw=localStorage.getItem(KEYS.targets)}catch(_){return null}if(raw===null)return{raw:null,data:{characters:[],targets:[]}};
  let parsed;try{parsed=JSON.parse(raw)}catch(_){return null}
  if(!parsed||!Array.isArray(parsed.characters)||!Array.isArray(parsed.targets)||parsed.targets.length>1500)return null;
  return{raw,data:parsed};
@@ -107,7 +107,7 @@ $('cdAssign').addEventListener('click',()=>{
 });
 host.addEventListener('click',e=>{
  const button=e.target.closest('[data-cd-toggle],[data-cd-item]');if(!button)return;
- if(button.dataset.cdItem){const reg=button.dataset.cdRegion,id=idOf(button.dataset.cdItem);if(!REGIONS.includes(reg)||!id)return;go('codex');if($('cxItemRegion'))$('cxItemRegion').value=reg;if($('cxItemId'))$('cxItemId').value=id;return}
+ if(button.dataset.cdItem){const reg=button.dataset.cdRegion,id=idOf(button.dataset.cdItem);if(!REGIONS.includes(reg)||!id)return;go('codex');if($('cxItemRegion'))$('cxItemRegion').value=reg;if($('cxItemId'))$('cxItemId').value=id;document.getElementById('cxItemForm')?.requestSubmit();return}
  const ref=String(button.dataset.cdToggle||''),pos=ref.lastIndexOf('|');if(pos<0)return;
  const identity=ref.slice(0,pos),match=/^(us|eu|kr|tw):([1-9][0-9]{0,9})$/.exec(ref.slice(pos+1));if(!match)return;
  const record=safeTargets();if(!record)return notice('Character Targets data is unreadable. No changes made.');
