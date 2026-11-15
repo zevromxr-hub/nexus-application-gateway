@@ -72,6 +72,22 @@ legacySearch?.addEventListener('input',()=>requestAnimationFrame(syncMobileSearc
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-ac-more]'))requestAnimationFrame(syncMobileSearch);
 });
+// The adaptive drawer resets its search when reopened. Reset group visibility too.
+// When widening from phone to desktop, remove the old mobile-only filter so all
+// studio buttons and categories become available again.
+const sxMobileMedia=window.matchMedia('(max-width: 800px)');
+sxMobileMedia.addEventListener?.('change',()=>{
+ if(!sxMobileMedia.matches&&legacySearch){
+  legacySearch.value='';
+  legacySearch.dispatchEvent(new Event('input',{bubbles:true}));
+ }
+ requestAnimationFrame(syncMobileSearch);
+});
+const drawerObserver=new MutationObserver(rs=>{
+ if(rs.some(r=>r.attributeName==='class'&&document.body.classList.contains('ac-menu-open')))
+  requestAnimationFrame(syncMobileSearch);
+});
+drawerObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
 nav.addEventListener('click',e=>{
  const toggle=e.target.closest('[data-sx-group-toggle]');
  if(toggle){
