@@ -1,20 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Item Discovery — Official Search & Media",
-  "previous_version": "2.0.0",
+  "subtitle": "Loot Hunter — Acquisition Library & Farm Planner",
+  "previous_version": "2.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Search real World of Warcraft Retail items by name through Blizzard’s official item search endpoint",
-    "Open an item-name result directly in the existing live Item Codex inspector",
-    "Show official item icons when Blizzard’s item media endpoint returns an icon",
-    "Preserve item-ID lookups, public character Armory, equipped gear and local wishlists",
-    "Support existing Warcraft planning studios and saved profiles without migrations",
-    "Updated secure Cloudflare gateway v2.1 deployed and verified separately before publication",
-    "Keep automatic GitHub validation, release history and Discord announcement independent of other NEXUS products"
+    "Add Loot Hunter studio with a curated, sourced acquisition guide library for legacy Warcraft collectibles",
+    "Track farm goals, number of attempts, acquired status, personal notes and per-item quest steps",
+    "Import saved Blizzard Item Codex wishlist entries into the farming board without falsely claiming their drop sources",
+    "Open tracked items in the existing live Blizzard Item Codex",
+    "Import/export farming plans as portable JSON backups; preserve all v2.1 features and saved records",
+    "Display verified third-party acquisition references separately from official Blizzard item information"
   ]
 }

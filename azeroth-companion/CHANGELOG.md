@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.2.0 · 2026-11-14 — Loot Hunter
+
+- **Acquisition guide explorer:** four documented legacy collectible/legendary acquisition routes with per-item source links, explicitly distinguished from Blizzard's official game data.
+- **Farm tracker:** user-managed attempts, obtained status, notes, and acquisition checklist.
+- **Wishlist import:** turn existing Item Codex wishlist entries into farming goals; items without verified acquisition guides are marked unverified.
+- **Item Codex integration:** inspect any farm goal using the existing real Blizzard item-ID API.
+- **Portability:** export and import the independent Loot Hunter JSON plan, without touching prior character, build, collection or planner data.
+
+Guides may become outdated as game versions change. Players should check each linked source and confirm in-game requirements, availability and raid lockout rules. Progress is manual, not connected to Blizzard account activity.
+
 ## v2.1.0 · 2026-11-14 — Item Discovery
 
 - **Official item name search:** search Blizzard's current Retail item database by name rather than numeric ID alone.

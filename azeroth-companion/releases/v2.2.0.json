@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.2.0",
+  "title": "Loot Hunter — Acquisition Library & Farm Planner",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Add Loot Hunter studio with a curated, sourced acquisition guide library for legacy Warcraft collectibles",
+    "Track farm goals, number of attempts, acquired status, personal notes and per-item quest steps",
+    "Import saved Blizzard Item Codex wishlist entries into the farming board without falsely claiming their drop sources",
+    "Open tracked items in the existing live Blizzard Item Codex",
+    "Import/export farming plans as portable JSON backups; preserve all v2.1 features and saved records",
+    "Display verified third-party acquisition references separately from official Blizzard item information"
+  ]
+}
