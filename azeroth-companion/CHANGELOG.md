@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.2.0 · 2026-11-15 — Player Field Lab & Planning Readiness
+
+- **Player Field Lab:** Added a dedicated acceptance-testing section for players and friends with 12 tests for navigation, first-time onboarding, secure Battle.net verification, WoW character data, item and talent tools, mobile behavior, storage, and backups.
+- **Private feedback:** Per-test outcome and optional notes are stored locally in this browser. Export a privacy-conscious text report by copying or downloading it. Personal notes and device category are optional; nothing is posted directly to Discord or any external service.
+- **Planning Readiness:** Read-only summary of local character profiles, open item targets, farming sessions, manually marked Atlas-owned records, and open Loot Hunter goals. These counts do not represent Blizzard-confirmed equipment, ownership or gameplay progress.
+- **Useful integrations:** Quick links to Character Dashboard, Character Targets, Loot Hunter/Farming Operations, and Sovereign Data Vault; direct shortcut from the Information & Player Guide.
+- **Safe handling:** Clearing the Player Field Lab removes only its test results. Battle.net sessions, saved player goals, and other studios remain untouched.
+- **Validation:** Added regression coverage for source boundaries, report opt-ins, local planning data, navigation and responsive UI.
+
+**Compatibility and privacy:** No changes to the Cloudflare Worker, Blizzard scopes, account credentials, or existing player storage keys. Friends can test using their own accounts. The v4.1 Information & Player Guide remains available.
+
+
 ## v4.1.0 · 2026-11-15 — Player Information Center & Compatibility Guide
 
 - **Dedicated information tab:** A searchable guide is now integrated directly into the main Azeroth interface on both PC and iPhone.
