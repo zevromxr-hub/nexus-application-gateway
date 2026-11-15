@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Player Information Center — Complete Guide & Compatibility",
-  "previous_version": "4.0.0",
+  "subtitle": "Player Field Lab — Feedback & Character Planning Intelligence",
+  "previous_version": "4.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a dedicated Information & Player Guide tab accessible throughout the companion on PC and iPhone.",
-    "Introduced a nine-step beginner walkthrough with saved checklist, optional Battle.net connection and direct links to working tools.",
-    "Documented sixteen feature areas with searchable descriptions of practical gameplay value, limitations and manual versus Blizzard-reported information.",
-    "Added real-world party, dungeon, raid, farming, equipment and cross-device scenarios for players and friends.",
-    "Added a release panel that retrieves the latest hosted Azeroth companion version and recent releases from validated site metadata.",
-    "Published honest modern Retail WoW support boundaries, a dated 12.1.5 game-patch reference and official Blizzard patch-note links, with Classic and PTR support explicitly unverified.",
-    "Added clear FAQs for secure account login, missing characters, verified-session expiry, manual ownership tracking, backup transfer and browser deployment.",
-    "Published a clearly labeled future roadmap and responsive accessibility-aware guide without modifying account permissions or player records."
+    "Introduced Player Field Lab: a 12-check acceptance-testing workflow for friends using the companion with real Retail characters, with clear Pass, Issue, Blocked and Not Tested states.",
+    "Added browser-local player feedback notes and privacy-safe copy/download reports; notes and device category are optional, and no reports are sent automatically.",
+    "Added Planning Readiness: a read-only summary of locally saved characters, open item targets, logged farming sessions, manual Atlas ownership marks and Loot Hunter objectives.",
+    "Linked Player Field Lab from the Information & Player Guide and retained the existing desktop sidebar and iPhone All Tools navigation.",
+    "Provided one-click links from Planning Readiness to character dashboards, targets, farming operations and Sovereign Data Vault.",
+    "Added controlled test-result deletion without altering existing WoW planning records, Blizzard authentication, or account sessions.",
+    "Preserved separation between Blizzard-reported game data and manually recorded player progress, with no additional OAuth scopes or backend deployment.",
+    "Expanded automated regression checks for report privacy, tool navigation, character summary inputs and mobile styling."
   ]
 }
