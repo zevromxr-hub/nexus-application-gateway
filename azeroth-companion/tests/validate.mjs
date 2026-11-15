@@ -122,7 +122,7 @@ assert.ok(placement.locations[2].adjusted&&placement.locations[4].adjusted);
 assert.ok(talent.includes('POSITION ADJUSTED')&&talent.includes('NexusTalentLayout'));
 assert.ok(!talent.includes('Compact cards are used to prevent visual overlap.'),'Regression: forced cards fallback should be removed');
 
-assert.match(html,/armory-bridge-core\\.js/);assert.match(html,/armory-loot-bridge\\.js/);assert.match(html,/armory-loot-bridge\\.css/);
+assert.match(html,/armory-bridge-core\.js/);assert.match(html,/armory-loot-bridge\.js/);assert.match(html,/armory-loot-bridge\.css/);
 const core=await read('azeroth-companion/armory-bridge-core.js'),bridge=await read('azeroth-companion/armory-loot-bridge.js');
 new vm.Script(core);new vm.Script(bridge);
 const context={module:{exports:{}}};new vm.Script(core).runInNewContext(context);
