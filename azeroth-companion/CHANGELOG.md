@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.9.0 · 2026-11-15 — Stability Engine: Responsive Lists & Unified Navigation
+
+- **One view, one update:** Website-level Home history, breadcrumb and mobile navigation now use the single canonical `nexus:view-activated` notification. Removed redundant class observers and repeated activation work when a visitor selects their already-active studio.
+- **Less storage churn:** Recent-tool preferences no longer save or rerender when their current order is unchanged. The existing Quick Deck, sidebar favorites, account tools and navigation interactions remain intact.
+- **Long-list paint optimizations:** Where supported by the browser, offscreen rows in Progression checklists, Item Atlas, Progress Command, Character Dominion, Loot Hunter and the Player Guide postpone painting until near the viewport. Underlying records, clicks, filters and saved-data formats remain untouched.
+- **Device audit:** Added browser-level tests on desktop Chromium and phone-sized WebKit for repeated navigation, avoiding duplicate local preference writes, and interacting with the last item in a 320-record local planning list.
+- **Cache-safe bundles:** Preserved the original compiled core files while publishing new `styles-experience-v4.9.css` and `scripts-experience-v4.9.js`. All four resources remain validated against their original editable sources.
+- **Safe boundaries:** Does not alter the Cloudflare Worker, OAuth scopes, authenticated Blizzard portal, studio data formats or user-planning storage. No new permissions, external analytics or account tracking.
+
+**Limitations:** Content visibility reduces offscreen rendering overhead but does not reduce the number of saved records or the CPU work needed to construct their DOM. Browser tests use synthetic records; real iPhone Safari performance still requires hands-on acceptance testing.
+
+
 ## v4.8.0 · 2026-11-15 — Intelligent Startup Engine
 
 - **View-aware startup coordination:** The existing app router now announces which studio was opened, letting optional tasks initialize only when relevant. The event carries a view ID, not Blizzard account data or a login claim.
