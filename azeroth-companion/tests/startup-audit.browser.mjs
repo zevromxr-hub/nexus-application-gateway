@@ -43,14 +43,10 @@ async function run(label,engine,phone){
   await go('fieldlab');
   assert.equal(await page.locator('#pflChecklist [data-pfl-check]').count(),12,'Field Lab must render checklist when opened');
   await go('loot');
-  await page.waitForRequest(req=>req.url().includes('/loot-sources.json'),{timeout:12000}).catch(()=>{
-   if(count(/\/loot-sources\.json/)===0)throw Error('Opening Loot Hunter did not request catalog');
-  });
+  await page.waitForTimeout(150);
   assert.equal(count(/\/loot-sources\.json/),1,'Loot catalog should be fetched once after visit');
   await go('talents');
-  await page.waitForRequest(req=>req.url().includes('/api/talent-index/'),{timeout:12000}).catch(()=>{
-   if(count(/\/api\/talent-index\//)===0)throw Error('Opening Talent Forge did not request index');
-  });
+  await page.waitForTimeout(150);
   assert.equal(count(/\/api\/talent-index\//),1,'Talents index should be requested once upon visit');
   await go('guide');
   await page.locator('#pgAppVersion').getByText('Azeroth v4.8.0').waitFor({timeout:12000});
