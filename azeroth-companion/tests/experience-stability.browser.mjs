@@ -15,7 +15,7 @@ async function audit(engine,label,mobile){
    body:'{"message":"Private API intentionally disabled during the website-shell audit"}'}));
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.sp-portal-ready').waitFor({timeout:20000});
-  await page.locator('#sxHeroVersion').getByText('Azeroth v4.9.0').waitFor({timeout:12000});
+  await page.locator('#sxHeroVersion').getByText('Azeroth v5.0.0').waitFor({timeout:12000});
   // The favorite editor must not replace its entire list on every checkbox.
   await page.locator('#spCustomize').click();
   await page.evaluate(()=>{
@@ -87,9 +87,9 @@ async function audit(engine,label,mobile){
   const viewport=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,width:document.documentElement.clientWidth}));
   assert.ok(viewport.scroll<=viewport.width+2,'Large list must not introduce horizontal overflow');
   assert.deepEqual(errors,[],'Browser JavaScript errors are not allowed');
-  console.log('PASS v4.9 stability '+label+' — stable Quick Deck controls, latest navigation and large-list scrolling');
+  console.log('PASS v5.0 stability '+label+' — stable Quick Deck controls, latest navigation and large-list scrolling');
  }finally{await context?.close().catch(()=>{});await browser.close().catch(()=>{})}
 }
 await audit(chromium,'desktop-chromium',false);
 await audit(webkit,'phone-webkit',true);
-console.log('Azeroth v4.9 Website Stability browser audits passed.');
+console.log('Azeroth v5.0 Website Stability browser audits passed.');

@@ -34,6 +34,7 @@ jobs:
           node azeroth-companion/tests/device-audit.browser.mjs
           node azeroth-companion/tests/startup-audit.browser.mjs
           node azeroth-companion/tests/experience-stability.browser.mjs
+          node azeroth-companion/tests/sovereign-command-v5.browser.mjs
       - name: Upload screenshots if a browser check failed
         if: failure()
         uses: actions/upload-artifact@v4

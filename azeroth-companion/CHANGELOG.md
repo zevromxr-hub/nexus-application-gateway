@@ -1,5 +1,19 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v5.0.0 · 2026-11-15 — Sovereign Command Experience
+
+- **Unified website milestone:** A new guided Sovereign Command panel directly on Home offers three ways to start: New Player, Returning Player, and Playing with Friends. Each displays three contextual links into existing studios instead of adding competing tools.
+- **Improved first-run and returning workflows:** Players can follow a sensible learning and planning route while preserving the existing personalized Quick Deck, recent tools, full tool search, website tour and latest-release notice. Journey choice is browser-local.
+- **Website readability:** Appearance Settings now offers Standard, Comfortable and Large text sizing plus a cinematic or quiet homepage atmosphere. These settings change the website shell only and preserve existing studio styling and data.
+- **Accessible experience:** Added keyboard Skip to main content, current-page titles, screen-reader navigation announcements and current-view indicators. A Return to Top control appears on longer pages, with phone safe-area styling.
+- **Personal-data clarity:** The homepage distinguishes local planning records from the separate secure Blizzard account portal. Journey actions are ordinary navigation shortcuts, never account verification or automatic ownership checks.
+- **Preserved infrastructure:** All prior studios, secure Cloudflare Worker, v4.8 view-aware startup, v4.9 responsive optimizations, Backups, Discord release metadata and per-browser appearance settings remain untouched. No additional API requests or OAuth permissions.
+- **Versioned builds and tests:** Still exactly two CSS and two JS requests. The original source manifest includes the new v5 shell files, the compiled assets are versioned to v5.0, and desktop Chromium/mobile WebKit tests exercise journeys, settings, navigation and accessibility.
+- **Documentation:** The standalone `SOVEREIGN-COMMAND-v5-GUIDE.md` explains usage, device testing, privacy boundaries and source maintenance.
+
+**Testing scope:** Automated browser checks do not certify physical iPhone Safari performance or private Blizzard-account availability. A real player should verify their own optional account flow separately. No Cloudflare deployment required.
+
+
 ## v4.9.0 · 2026-11-15 — Website Stability & Experience Refinement
 
 - **Smoother navigation:** Sidebar class-change notifications and iPhone tool-search group refreshes are now coalesced per animation frame, avoiding redundant website shell calculations when many buttons change together.

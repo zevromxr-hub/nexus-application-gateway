@@ -1,20 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.9.0",
+  "version": "5.0.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Website Stability & Experience Refinement",
-  "previous_version": "4.8.0",
+  "subtitle": "Sovereign Command Experience — Unified Website Milestone",
+  "previous_version": "4.9.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Reduced redundant website navigation work by coalescing repeated sidebar class changes and mobile-search updates into one animation-frame refresh.",
-    "Stopped rewriting identical recent-tool shortcuts and removed a duplicate recent-visit update when navigating through the website hero or quick-access actions.",
-    "Improved My Quick Deck stability by reusing existing checkbox elements instead of destroying and recreating the editor on every favorite change, preserving keyboard focus and scroll position.",
-    "Made page-context breadcrumbs update only when the active studio actually changes, without changing any studio navigation or player data.",
-    "Added progressive offscreen painting to common long-list entries where supported, plus isolated layout containment for homepage cards; unsupported browsers retain normal rendering.",
-    "Preserved all v4.8 startup optimizations, four bundled site resources, Battle.net authentication, the Cloudflare Worker, Sovereign Data Vault, existing studios, and saved user records.",
-    "Added source and Chromium/WebKit browser regression tests for Quick Deck node identity, repeated navigation, 240-row list interactions, responsive overflow and continued v4.8 startup behavior."
+    "Introduced Sovereign Command v5: a new homepage experience with guided paths for first-time players, returning visitors and friends organizing adventures, linking only to existing installed studios.",
+    "Integrated each journey with the current Command Launcher, Character Dominion, Player Guide, Item Atlas, War Room, Progress Command and Sovereign Data Vault; no duplicated studios or account features.",
+    "Added website-shell readability controls for Standard, Comfortable and Large text plus a Quiet and focused homepage atmosphere, stored in a separate local browser preference.",
+    "Expanded accessibility through Skip to main content, current-tool page titles, screen-reader navigation announcements, active navigation markers and a discreet Return to Top control.",
+    "Preserved the complete Assassin Dominion appearance, Quick Deck, update center, on-demand startup, long-list rendering and all pre-v5.0 studio modules.",
+    "Preserved secure Battle.net verification and Cloudflare Worker boundaries without new API requests, OAuth permissions, telemetry, account sync or changes to gameplay storage.",
+    "Maintained the four-resource site delivery, updated the deterministic bundle source manifest for the new website-only module, and added desktop/mobile browser regression coverage.",
+    "Added a dedicated v5 user guide describing journeys, settings, privacy boundaries, accessibility, safe rollback and future maintenance."
   ]
 }
