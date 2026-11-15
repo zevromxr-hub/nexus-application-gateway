@@ -10,7 +10,7 @@ new vm.Script(code,{filename:'player-field-lab.js'});
 assert.match(index,/player-field-lab\.js/);
 assert.match(index,/player-field-lab\.css/);
 assert.ok(index.indexOf('player-guide.js')<index.indexOf('player-field-lab.js'));
-assert.match(index,/v4\.2 PLAYER FIELD LAB/);
+assert.ok(index.includes('./player-field-lab.js'),'Player Field Lab must remain mounted across subsequent app versions');
 for(const phrase of ['Player Testing & Character Insights','Player test checklist','Planning Readiness','COPY REPORT','DOWNLOAD REPORT','data-section="fieldlab"','nexus_azeroth_player_fieldlab_v42','nexus:character-profile-updated','untrusted','not']){/* see explicit checks below */}
 for(const phrase of ['Player Testing & Character Insights','Player test checklist','Planning Readiness','COPY REPORT','DOWNLOAD REPORT','data-section="fieldlab"','nexus_azeroth_player_fieldlab_v42','nexus:character-profile-updated','No Blizzard tokens','review','no WoW','vault']) {
  if(phrase==='no WoW')continue;
