@@ -52,7 +52,7 @@ async function run(label,engine,phone){
   await page.locator('#pgAppVersion').getByText('Azeroth v4.9.0').waitFor({timeout:12000});
   assert.ok(count(/\/version\.json(?:\?|$)/)>=2,'Player Guide must load its version info on opening');
   await go('releases');
-  await page.locator('#wowVersion').getByText('v4.8.0').waitFor({timeout:12000});
+  await page.locator('#wowVersion').getByText('v4.9.0').waitFor({timeout:12000});
   assert.ok(count(/\/version\.json(?:\?|$)/)>=3,'Release Center must load its reference info on opening');
   assert.deepEqual(errors,[],'No browser JavaScript errors allowed');
   console.log('PASS v4.9 startup '+label+' — one initial release check, zero unused talent/loot requests, 4 deferred local rollups and all on-demand views operational');
