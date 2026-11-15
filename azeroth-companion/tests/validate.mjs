@@ -56,8 +56,8 @@ assert.match(html,/talent-forge\.js/);
 assert.match(html,/talent-forge\.css/);
 const talentAtlasCanvas=await read('azeroth-companion/talent-canvas-v5.3.js');
 new vm.Script(talentAtlasCanvas);
-assert.match(html,/talent-canvas-v5\\.3\\.js/);
-assert.match(html,/talent-canvas-v5\\.3\\.css/);
+assert.match(html,/talent-canvas-v5\.3\.js/);
+assert.match(html,/talent-canvas-v5\.3\.css/);
 for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap','applyScale','drawMap','MutationObserver'])
  assert.ok(talentAtlasCanvas.includes(name),'Talent Atlas missing '+name);
 const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
