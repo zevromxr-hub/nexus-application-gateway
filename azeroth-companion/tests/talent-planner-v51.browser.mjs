@@ -15,7 +15,7 @@ const TREE={success:true,data:{
    {tooltip:{talent:{id:71001,name:'Fixture Class Rank 1'},spell_tooltip:{spell:{id:81001,name:'Fixture Spell'},description:'Synthetic test first rank'}}},
    {tooltip:{talent:{id:71002,name:'Fixture Class Rank 2'},spell_tooltip:{spell:{id:81002,name:'Fixture Spell 2'},description:'Synthetic test second rank'}}}
   ]},
-  {id:1002,name:'Fixture Choice Node',display_row:0,display_col:2,ranks:[
+  {id:1002,name:'Fixture Choice Node',display_row:0,display_col:2,locked_by:[{id:1001}],ranks:[
    {choice_of_tooltips:[
     {talent:{name:'Fixture Choice A'},spell_tooltip:{description:'First synthetic option'}},
     {talent:{name:'Fixture Choice B'},spell_tooltip:{description:'Second synthetic option'}}
@@ -77,6 +77,13 @@ async function run(engine,phone){
     const after=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
     assert.ok(after>before,'Desktop drag gesture must pan the talent tree');
   }
+  assert.ok(await page.locator('#tfBuildIntel').isVisible(),'Build Intelligence should mount on desktop and mobile');
+  await page.locator('#tfBiNode').selectOption('1002');
+  const links=await page.locator('#tfBiConnections').textContent();
+  assert.ok(links.includes('Fixture Class Node')&&links.includes('Reported downstream links'),'Source-linked node explorer must show real fixture references');
+  assert.ok(await page.locator('#tfBiInspect').isEnabled(),'New inspector should open existing rank detail controls');
+  await page.locator('#tfBiInspect').click();
+  assert.ok((await page.locator('#tfSourceTalent').textContent()).includes('Node ID: #1002'),'Source spotlight must delegate to existing official inspector');
   assert.ok(await page.locator('#tfCompareLab').isVisible(),'Source comparison studio must be available');
   await page.locator('#tfLabTalentA').selectOption('1001');
   await page.locator('#tfLabTalentB').selectOption('1002');
@@ -121,6 +128,10 @@ async function run(engine,phone){
   await page.locator('#tfPlanDuplicate').click();
   const copied=await page.evaluate(()=>JSON.parse(localStorage.getItem('nexus_azeroth_talent_forge_v1')));
   assert.equal(copied.length,2,'Duplicating must create a separate saved draft');
+  await page.locator('#tfBiSaveA').selectOption({index:1});
+  await page.locator('#tfBiSaveB').selectOption({index:2});
+  assert.ok((await page.locator('#tfBiDiff').textContent()).includes('changed nodes'),'Saved-to-saved comparison must work without writing to local drafts');
+
   assert.ok(copied[0].name.endsWith('Copy'));
   await page.locator('[data-tf-inc="1001"]').click();
   await page.locator('#tfCompare').selectOption({index:1});
