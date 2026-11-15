@@ -132,3 +132,10 @@ body[data-sx-contrast=high] .sx-muted,body[data-sx-contrast=high] .sx-destinatio
 @media(max-width:360px){.sx-destinations{grid-template-columns:1fr}.sx-destinations button{min-height:125px}}
 @media(prefers-reduced-motion:reduce){.sx-nav-group *, .sx-experience *, .sx-overlay *{animation:none!important;transition:none!important}}
 body[data-sx-motion=reduce] .sx-nav-group *,body[data-sx-motion=reduce] .sx-experience *,body[data-sx-motion=reduce] .sx-overlay *{animation:none!important;transition:none!important}
+
+/* Hover energy stays lightweight, respects system and in-app reduced-motion choices. */
+.sx-nav-group[hidden]{display:none!important}
+.sx-destinations button,.sx-recent button,.sx-tool-button{transition:transform .16s ease,border-color .16s ease,background-color .16s ease}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.sx-destinations button:hover,.sx-recent button:hover{transform:translateY(-2px)}}
+@media(prefers-reduced-motion:reduce){.sx-destinations button,.sx-recent button,.sx-tool-button{transition:none!important;transform:none!important}}
+body[data-sx-motion=reduce] .sx-destinations button,body[data-sx-motion=reduce] .sx-recent button,body[data-sx-motion=reduce] .sx-tool-button{transition:none!important;transform:none!important}
