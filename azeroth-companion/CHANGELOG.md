@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.4.0 · 2026-11-14 — Talent Forge Overdrive
+
+- **Position-aware visual layout:** arranged official Blizzard talent nodes according to supplied display rows and columns, with horizontal scrolling for wide talent layouts.
+- **Focused research tools:** node search, compact cards, and optional shorter descriptions.
+- **Draft history:** undo and redo recent rank and choice edits. Existing saved builds retain their exact v2.3 storage format.
+- **Planning reminder:** choose a personal point threshold and receive a warning if the draft exceeds it. The threshold is not a real Blizzard point cap or prerequisites check.
+- **Compatibility:** saved talent drafts, JSON transfers, other Warcraft studios, and existing encrypted Cloudflare Worker secrets are preserved.
+
+**Limitations:** positional information may be missing for some talent nodes, causing overlap or unstructured placement. Point allocations are planning drafts, not verified legal in-game talents or importable talent codes. No Cloudflare Worker replacement is required for this frontend-only upgrade.
+
 ## v2.3.0 · 2026-11-14 — Talent Forge
 
 - **Blizzard talent exploration:** retrieve Retail specialization talent trees and browse their class, spec, and hero nodes when supplied by the official API.
