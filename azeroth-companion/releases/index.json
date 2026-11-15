@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.1.0",
+      "title": "Item Discovery — Official Search & Media",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.0.0",
       "title": "Living Azeroth Engine — Connected Armory & Item Codex",
       "date": "2026-11-14"

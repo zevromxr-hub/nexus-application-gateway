@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/v2\.0 LIVING AZEROTH ENGINE/);
+assert.match(html,/v2\.1 ITEM DISCOVERY/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(inline.length,1);
@@ -17,9 +17,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'2.0.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'2.1.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v2\.0 • Living Azeroth/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v2\.1 • Item Discovery/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
@@ -35,4 +35,14 @@ for(const part of ['cxCharacterForm','cxItemForm','cxEquipment','cxWishlist','cx
 assert.ok(!live.includes('BLIZZARD_CLIENT_SECRET')&&!live.includes('BLIZZARD_CLIENT_ID'),'Do not expose Blizzard credentials in the browser');
 assert.ok(!live.includes('access_token'),'Do not expose OAuth tokens in the browser');
 assert.match(await read('azeroth-companion/connected-armory.css'),/@media\(max-width:600px\)/);
+
+// Optional v2.1 item discovery must be backwards compatible with v2.0.
+assert.match(html,/item-discovery\.js/);
+assert.match(html,/item-discovery\.css/);
+const discovery=await read('azeroth-companion/item-discovery.js');new vm.Script(discovery);
+const backend=await read('azeroth-companion/backend/worker.js');
+new vm.Script(backend.replace('export default','const worker ='));
+for(const route of ['search','media','equipment','character','BLIZZARD_CLIENT_SECRET'])assert.ok(backend.includes(route),'Missing backend route or secret binding '+route);
+assert.ok(discovery.includes('data-cxopen')&&discovery.includes('/api/search/'),'Item discovery must open existing v2.0 item inspector');
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');

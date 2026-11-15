@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.1.0 · 2026-11-14 — Item Discovery
+
+- **Official item name search:** search Blizzard's current Retail item database by name rather than numeric ID alone.
+- **Clickable search results:** open results directly inside the detailed Item Codex.
+- **Item imagery:** show Blizzard item icons whenever the game's media endpoint provides them.
+- **Backwards compatible:** existing Armory, equipment inspector, item-ID lookups, wishlist, character plans and every prior studio remain available.
+- **Secure gateway:** compatible with the separately deployed v2.1 Cloudflare Worker; Blizzard credentials stay in encrypted Cloudflare secrets.
+- **Versioned release:** independent changelog and automatic Discord announcements after validation.
+
+**Limits:** Search results depend on Blizzard's index and regional locale. Item acquisition locations, fully validated talent builds, authenticated account linking, cross-device account saves and production-grade abuse mitigation are not included.
+
 ## v2.0.0 · 2026-11-14 — Connected Armory & Item Codex
 
 - **Live Character Armory:** official Retail character profiles retrieved by region, realm slug and character name.

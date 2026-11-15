@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.1.0",
+  "title": "Item Discovery — Official Search & Media",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Search real World of Warcraft Retail items by name through Blizzard’s official item search endpoint",
+    "Open an item-name result directly in the existing live Item Codex inspector",
+    "Show official item icons when Blizzard’s item media endpoint returns an icon",
+    "Preserve item-ID lookups, public character Armory, equipped gear and local wishlists",
+    "Support existing Warcraft planning studios and saved profiles without migrations",
+    "Updated secure Cloudflare gateway v2.1 deployed and verified separately before publication",
+    "Keep automatic GitHub validation, release history and Discord announcement independent of other NEXUS products"
+  ]
+}
