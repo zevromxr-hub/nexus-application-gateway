@@ -9,10 +9,10 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const ROOT=path.resolve(import.meta.dirname,'..');
 const plans=[
- {out:'styles-core-v5.2.css',kind:'css',header:'/* NEXUS | AZEROTH v5.2 — compiled core stylesheet with Talent Intelligence. DO NOT EDIT: generated from existing module CSS. */\n',files:["warcraft-overdrive.css","player-utility.css","connected-armory.css","item-discovery.css","item-atlas.css","character-targets.css","progress-command.css","loot-hunter.css","armory-loot-bridge.css","farming-operations.css","personal-azeroth.css","talent-forge.css","adaptive-navigation.css","talent-canvas-v5.3.css","talent-source-plus-v5.4.css","talent-build-intel-v5.5.css","official-media-v5.6.css"]},
+ {out:'styles-core-v5.2.css',kind:'css',header:'/* NEXUS | AZEROTH v5.2 — compiled core stylesheet with Talent Intelligence. DO NOT EDIT: generated from existing module CSS. */\n',files:["warcraft-overdrive.css","player-utility.css","connected-armory.css","item-discovery.css","item-atlas.css","character-targets.css","progress-command.css","loot-hunter.css","armory-loot-bridge.css","farming-operations.css","personal-azeroth.css","talent-forge.css","adaptive-navigation.css","talent-canvas-v5.3.css","talent-source-plus-v5.4.css","talent-build-intel-v5.5.css","official-media-v5.6.css","talent-command-v5.7.css"]},
  {out:'styles-experience-v5.0.css',kind:'css',header:'/* NEXUS | AZEROTH v5.0 — compiled visual stylesheet with Sovereign Command website shell. DO NOT EDIT: generated from existing module CSS. */\n',files:["assassin-dominion.css","command-launcher.css","unified-dashboard.css","verified-connection.css","connected-player.css","sovereign-vault.css","character-handoff.css","player-guide.css","player-field-lab.css","character-dominion.css","sovereign-experience.css","sovereign-portal.css","sovereign-command-v5.css"]},
  {out:'scripts-core-v4.8.js',kind:'js',header:'/* NEXUS | AZEROTH v4.8 — compiled core script with view-aware startup. DO NOT EDIT: generated from original studio scripts in order. */\n',files:["warcraft-overdrive.js","player-utility.js","connected-armory.js","item-discovery.js","item-atlas.js","character-targets.js","progress-command.js","loot-hunter.js","armory-bridge-core.js","armory-loot-bridge.js","farming-operations.js","personal-azeroth.js","talent-layout.js"]},
- {out:'scripts-experience-v5.2.js',kind:'js',header:'/* NEXUS | AZEROTH v5.2 — compiled experience script including Talent Source Intelligence. DO NOT EDIT: generated from original studio and shell scripts in order. */\n',files:["talent-paths.js","talent-planner-core.js","talent-forge.js","adaptive-navigation.js","command-launcher.js","unified-dashboard.js","verified-connection.js","sovereign-vault.js","character-handoff.js","player-guide.js","player-field-lab.js","character-dominion.js","sovereign-experience.js","sovereign-portal.js","sovereign-command-v5.js","talent-canvas-v5.3.js","talent-source-plus-v5.4.js","talent-build-intel-v5.5.js","official-media-v5.6.js"]}
+ {out:'scripts-experience-v5.2.js',kind:'js',header:'/* NEXUS | AZEROTH v5.2 — compiled experience script including Talent Source Intelligence. DO NOT EDIT: generated from original studio and shell scripts in order. */\n',files:["talent-paths.js","talent-planner-core.js","talent-forge.js","adaptive-navigation.js","command-launcher.js","unified-dashboard.js","verified-connection.js","sovereign-vault.js","character-handoff.js","player-guide.js","player-field-lab.js","character-dominion.js","sovereign-experience.js","sovereign-portal.js","sovereign-command-v5.js","talent-canvas-v5.3.js","talent-source-plus-v5.4.js","talent-build-intel-v5.5.js","official-media-v5.6.js","talent-command-core-v5.7.js","talent-command-v5.7.js"]}
 ];
 const mode=process.argv[2]||'--check';
 assert.ok(['--check','--write'].includes(mode),'Use --check or --write');
@@ -34,8 +34,8 @@ for(const plan of plans){
  bytes+=serialized.length;
  if(plan.kind==='js')jsCount+=plan.files.length;else cssCount+=plan.files.length;
 }
-assert.equal(cssCount,30);
-assert.equal(jsCount,32);
+assert.equal(cssCount,31);
+assert.equal(jsCount,34);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
 assert.equal(stylesheetCount,2,'Exactly two active bundled stylesheets expected');
