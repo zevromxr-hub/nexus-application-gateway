@@ -56,7 +56,7 @@ async function run(label,engine,phone){
   assert.deepEqual(afterDeck.activations,['dominion','atlas','overview','dominion'],'Quick Deck should use one central router event');
   assert.equal(afterDeck.shellWrites-afterHome.shellWrites,1,'Quick Deck navigation must not double-save recents');
   // Test long-list paint containment without altering, truncating, or paging original records.
-  await select('plans');
+  await select('progress');
   const entries=page.locator('#taskList > .entry');
   assert.equal(await entries.count(),320,'All 320 synthetic task records must remain available');
   const last=entries.last();
