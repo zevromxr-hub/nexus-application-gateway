@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.6.0 · 2026-11-14 — Talent Connections
+
+- **Reported talent links:** display connections based on the `locked_by` node IDs in Blizzard's response, where these are provided.
+- **Node inspector:** click RELATIONS on a talent to see which visible nodes it reports as locked by, which other nodes report a link to it, and whether any references cannot be resolved.
+- **Visual tree paths:** draw optional lines across the Blizzard position-aware talent grid, with highlighted relationships around the selected talent.
+- **Honest data reporting:** unresolved or absent relationships are explicitly described as unknown. No guessed prerequisite, rank, level, required-point, or hero-unlock rules.
+- **Preservation:** v2.3–v2.5 saved drafts and local storage stay compatible; existing Warcraft tools and Cloudflare API remain unchanged.
+
+**Scope:** The relationship display is not a WoW game-valid build verifier. Certain Blizzard talent-tree records may omit connections or reference nodes outside the current class/spec/hero category. No new Worker deployment is required.
+
 ## v2.5.0 · 2026-11-14 — Talent Intelligence
 
 - **Hero tree selector:** independently display the separate hero talent groups returned by Blizzard for a loaded specialization, without losing other hero tree data.
