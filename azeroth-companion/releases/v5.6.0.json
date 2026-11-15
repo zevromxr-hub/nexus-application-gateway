@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.6.0",
+  "title": "Visual Intelligence — Enlarged Official Artwork & Guided Research",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "User-selectable and locally remembered official artwork size (48, 64, 80, 96 pixels); safe on desktop and iPhone.",
+    "Lazy official Blizzard icons from existing item-media endpoints in Item Atlas, equipment, Codex and two-item source comparisons.",
+    "Expanded, plain-language contextual help on talent allocation, linked paths, safe source comparisons, and backup behavior.",
+    "Source coverage metrics distinguish returned nodes, linked references, spell IDs and rank descriptions without inferring game loadout validity.",
+    "Bounded maximum three concurrent image metadata requests and graceful fallback to decorative glyphs.",
+    "Existing Blizzard Worker v3.8.2 remains unchanged; saved talent drafts, local item tracking, authentication and four-bundle website architecture preserved."
+  ]
+}
