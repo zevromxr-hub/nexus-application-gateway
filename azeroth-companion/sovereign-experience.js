@@ -59,6 +59,19 @@ function categorize(){
  }
 }
 categorize();
+// Keep the existing iPhone All Tools filter useful after moving links into groups.
+// This reads the original search field without modifying the adaptive-navigation studio.
+const legacySearch=document.querySelector('.ac-search-wrap input');
+function syncMobileSearch(){
+ const filtering=Boolean(legacySearch?.value.trim());
+ for(const group of nav.querySelectorAll('.sx-nav-group')){
+  group.hidden=filtering&&![...group.querySelectorAll('button[data-view]')].some(b=>!b.hidden);
+ }
+}
+legacySearch?.addEventListener('input',()=>requestAnimationFrame(syncMobileSearch));
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-ac-more]'))requestAnimationFrame(syncMobileSearch);
+});
 nav.addEventListener('click',e=>{
  const toggle=e.target.closest('[data-sx-group-toggle]');
  if(toggle){
