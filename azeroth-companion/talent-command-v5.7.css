@@ -46,3 +46,10 @@
 @media(max-width:900px){.tf-cmd-layout{grid-template-columns:1fr}.tf-cmd-list{max-height:300px}}
 @media(max-width:420px){.tf-command{padding:12px}.tf-cmd-fields{grid-template-columns:1fr}.tf-cmd-fields label:first-child{grid-column:auto}.tf-cmd-pane{padding:10px}}
 @media(prefers-reduced-motion:reduce){.tf-command *{animation:none!important;transition:none!important}}
+
+.tf-cmd-path-toggle{display:flex;align-items:center;gap:9px;color:#dbcfb5;font-size:12px;margin:-2px 0 14px;line-height:1.5}
+.tf-cmd-path-toggle input{width:18px;height:18px;accent-color:#d8aa6e;flex-shrink:0}
+.tf-cmd-tree-hint{display:block;margin:9px 0 3px;padding:5px 7px;width:fit-content;border-radius:7px;border:1px solid #84c4b76e;color:#bfe8d5;background:#0b3b3a67;font-size:10px;line-height:1.3}
+.tf-node.tf-cmd-muted{opacity:.38;filter:saturate(.45)}
+.tf-node.tf-cmd-linked-focus{outline:2px solid #ddbd80;outline-offset:1px}
+.tf-node:focus-within{opacity:1!important;filter:none!important}
