@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.9.0 · 2026-11-15 — Assassin Dominion & Verified Connected Player
+
+- **Interface v3.4.1:** Fixed desktop sidebar scrolling and redesigned iPhone navigation with bottom tabs, an all-tools drawer and responsive controls.
+- **Assassin Dominion v3.5:** Added a darker visual identity, custom hooded-assassin artwork and iPhone Home Screen app icons.
+- **Command Launcher v3.6:** Added fast tool search, pinned favorites, recent tools and Ctrl/Cmd+K support.
+- **Unified Character Dashboard v3.7:** Combined manually saved character targets, loot goals, farming history and shortcuts into one dashboard without claiming Blizzard-verified item ownership.
+- **Battle.net Verification v3.8–v3.8.1:** Added short-lived account verification proofs and corrected the flow for valid Battle.net accounts without WoW characters.
+- **Connected Player v3.9:** Displays verified account region, last verification, expiration countdown and easy recheck. Short-lived receipts can be revalidated on refresh; no permanent green status or OAuth tokens stored in GitHub Pages.
+- **Release notifications:** Synced the version manifest and release validation to v3.9.0 so new validated versioned releases can reach the configured Discord webhook.
+
+**Notes:** v3.5–v3.9 website upgrades are consolidated into this single release record. The first-party Cloudflare verification Worker must be deployed separately for live authentication. Azeroth remains an unofficial fan companion; account ownership and saved manual goals are distinct.
+
+
 ## v3.4.0 · 2026-11-14 — Progress Command
 
 - Added **Progress Command**: one responsive, read-only view across Item Atlas, Character Targets, Loot Hunter and Farming Operations.
