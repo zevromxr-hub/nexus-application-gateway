@@ -70,7 +70,7 @@ function syncMobileSearch(){
 }
 legacySearch?.addEventListener('input',()=>requestAnimationFrame(syncMobileSearch));
 document.addEventListener('click',e=>{
- if(e.target.closest('[data-ac-more]'))requestAnimationFrame(syncMobileSearch);
+ if(e.target.closest('[data-ac-more]'))syncMobileSearch();
 });
 // The adaptive drawer resets its search when reopened. Reset group visibility too.
 // When widening from phone to desktop, remove the old mobile-only filter so all
@@ -85,7 +85,7 @@ sxMobileMedia.addEventListener?.('change',()=>{
 });
 const drawerObserver=new MutationObserver(rs=>{
  if(rs.some(r=>r.attributeName==='class'&&document.body.classList.contains('ac-menu-open')))
-  requestAnimationFrame(syncMobileSearch);
+  syncMobileSearch();
 });
 drawerObserver.observe(document.body,{attributes:true,attributeFilter:['class']});
 nav.addEventListener('click',e=>{
