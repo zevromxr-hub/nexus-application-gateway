@@ -33,6 +33,7 @@ jobs:
           trap 'kill "$SERVER_PID" || true' EXIT
           node azeroth-companion/tests/device-audit.browser.mjs
           node azeroth-companion/tests/startup-audit.browser.mjs
+          node azeroth-companion/tests/stability-audit.browser.mjs
       - name: Upload screenshots if a browser check failed
         if: failure()
         uses: actions/upload-artifact@v4
