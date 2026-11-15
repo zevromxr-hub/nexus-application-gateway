@@ -58,6 +58,25 @@ async function run(engine,phone){
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
+  await page.locator('.tf-canvas-stage').waitFor({timeout:6000});
+  assert.ok(await page.locator('#tfCanvasTools').isVisible(),'Talent Atlas controls must be available in tree layout');
+  const originalZoom=await page.locator('#tfCanvasZoom').textContent();
+  await page.locator('#tfCanvasTools [data-canvas="in"]').click();
+  const enlargedZoom=await page.locator('#tfCanvasZoom').textContent();
+  assert.ok(parseInt(enlargedZoom)>parseInt(originalZoom),'Zoom in should scale the talent canvas');
+  await page.locator('#tfCanvasTools [data-canvas="reset"]').click();
+  assert.equal((await page.locator('#tfCanvasZoom').textContent()).trim(),'100%','Reset should restore canvas scale');
+  assert.ok(await page.locator('#tfCanvasMap').isVisible(),'Tree overview map should be visible');
+  if(!phone){
+    const n=await page.locator('#tfTree [data-tf-node="1001"]').boundingBox();
+    const before=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
+    await page.mouse.move(n.x+n.width/2,n.y+22);
+    await page.mouse.down();
+    await page.mouse.move(n.x+n.width/2-120,n.y+10,{steps:6});
+    await page.mouse.up();
+    const after=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
+    assert.ok(after>before,'Desktop drag gesture must pan the talent tree');
+  }
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
   assert.ok(await page.locator('#tfSourceIntel').isVisible(),'Talent source intelligence must appear');
   await page.locator('[data-tf-inspect="1001"]').click();
