@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.2.0",
+  "title": "Player Field Lab — Feedback & Character Planning Intelligence",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced Player Field Lab: a 12-check acceptance-testing workflow for friends using the companion with real Retail characters, with clear Pass, Issue, Blocked and Not Tested states.",
+    "Added browser-local player feedback notes and privacy-safe copy/download reports; notes and device category are optional, and no reports are sent automatically.",
+    "Added Planning Readiness: a read-only summary of locally saved characters, open item targets, logged farming sessions, manual Atlas ownership marks and Loot Hunter objectives.",
+    "Linked Player Field Lab from the Information & Player Guide and retained the existing desktop sidebar and iPhone All Tools navigation.",
+    "Provided one-click links from Planning Readiness to character dashboards, targets, farming operations and Sovereign Data Vault.",
+    "Added controlled test-result deletion without altering existing WoW planning records, Blizzard authentication, or account sessions.",
+    "Preserved separation between Blizzard-reported game data and manually recorded player progress, with no additional OAuth scopes or backend deployment.",
+    "Expanded automated regression checks for report privacy, tool navigation, character summary inputs and mobile styling."
+  ]
+}
