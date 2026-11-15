@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.7.0",
+  "title": "Talent Command — Tree Navigator & Point Sandbox",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Search all official returned class/spec/hero nodes by name or node ID, with allocated and source-linked views.",
+    "Jump directly to a node in the original tree canvas, select the correct tab, and inspect existing rank-specific source descriptions.",
+    "Explore up to 18 levels of returned upstream locked_by links without assuming they are mandatory game prerequisites.",
+    "Preview adding or removing one rank, with a read-only before/after point and source advisory count; apply only through original native talent controls and undo history.",
+    "Highlight immediate reported links from a selected skill directly on Blizzard-positioned tree nodes, with per-node relationship badges.",
+    "Keep mobile-specific layout, saved builds, auth isolation, official artwork, user backup format, and four deterministic bundles."
+  ]
+}
