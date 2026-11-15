@@ -402,3 +402,55 @@ html{scroll-padding-top:18px}body{overflow-x:hidden}.layout{align-items:start}.m
 @media(max-width:520px){.tf-bi-selectors{grid-template-columns:1fr}.tf-bi-section{padding:11px}.tf-bi-heading h3{font-size:19px}}
 @media(prefers-reduced-motion:reduce){.tf-build-intel *{animation:none!important;transition:none!important}}
 
+
+/* BUNDLE SOURCE: official-media-v5.6.css */
+/* NEXUS | AZEROTH v5.6 — official artwork sizing and research clarity.
+ * An icon changes only its presentation. Zoom and saved plan data are untouched.
+ */
+:root{--nx-official-icon-size:64px}
+.nx-media-guide{background:radial-gradient(ellipse at 12% 0%,#6f4e3033,transparent 60%),linear-gradient(145deg,#142c3e,#101a30);border-color:#b9925f72;margin:15px 0}
+.nx-guide-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.nx-guide-top h3{margin:5px 0 7px;color:#f9d49c;font-size:clamp(17px,2.5vw,23px)}
+.nx-guide-top p{max-width:650px;line-height:1.65;font-size:12px;color:#c2d0d9}
+.nx-size-field{display:grid;gap:7px;min-width:175px;color:#f4d5a9;font-size:11px;font-weight:750}
+.nx-size-field select{background:#0c1d30;color:#f8eacf;border:1px solid #b7a17e80;border-radius:9px;padding:11px 12px;min-height:44px}
+.nx-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+.nx-guide-grid article{padding:12px;border:1px solid #738a9b55;background:#0a1929a8;border-radius:11px;min-width:0}
+.nx-guide-grid strong{font-size:12px;color:#f2d8ad}
+.nx-guide-grid p{line-height:1.6;color:#b8cbd7;font-size:11px;margin:8px 0 0}
+.tf-canvas-stage .tf-node .tf-spell-art,.tf-node .tf-spell-art{
+ width:min(var(--nx-official-icon-size),100%);height:auto;aspect-ratio:1/1;
+ display:grid;place-items:center;overflow:hidden;flex:none;
+ border-radius:12px;border:1px solid #c9a56f8c;
+ background:radial-gradient(circle,#556a82,#1e2b42);box-shadow:0 0 12px #d9a75921;
+ color:#f6d69c;font-size:clamp(18px,3vw,29px);margin:9px 0 11px
+}
+.tf-spell-art img{width:100%;height:100%;object-fit:cover;display:block}
+.tf-node{min-height:0}
+.tf-node strong{line-height:1.4}
+.tf-node p{font-size:12px;line-height:1.72;max-height:145px}
+.tf-bi-list,.tf-lab-card p,.tf-source-intel p{line-height:1.75}
+.tf-bi-list .tf-bi-note{font-size:12px}
+.tf-rank-detail p{font-size:12px;line-height:1.7}
+.nx-item-art{width:var(--nx-official-icon-size);height:var(--nx-official-icon-size);min-width:var(--nx-official-icon-size);aspect-ratio:1;display:grid;place-items:center;overflow:hidden;flex:none;
+ border:1px solid #bfa1788f;background:radial-gradient(circle,#324e64,#172538);border-radius:13px;color:#e9c998;font-size:26px;box-shadow:0 2px 15px #0005}
+.nx-item-art img{display:block;width:100%;height:100%;object-fit:cover}
+.atlas-entry:has(.nx-item-art),.cx-saved:has(.nx-item-art){display:flex;align-items:center;gap:13px}
+.atlas-entry:has(.nx-item-art)>div:first-of-type,.cx-saved:has(.nx-item-art)>div:first-of-type{min-width:0;flex:1}
+.cx-item:has(.nx-item-art){display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.cx-item:has(.nx-item-art)>:not(.nx-item-art){flex-basis:calc(100% - var(--nx-official-icon-size) - 14px)}
+.nx-skill-coverage{margin-top:12px;padding:13px;border:1px solid #a0b0a95c;border-radius:10px;background:#0b1d2bc9}
+.nx-skill-coverage strong{color:#f0d4a2;font-size:12px}
+.nx-skill-coverage p{font-size:11px;color:#b9cdd7;line-height:1.6}
+.nx-skill-coverage .nx-coverage-stats{display:flex;gap:7px;flex-wrap:wrap}
+.nx-coverage-stats span{padding:7px 9px;background:#132f3c;border:1px solid #6b9c9f7c;border-radius:8px;font-size:11px;color:#cee8e8}
+@media(max-width:760px){
+ .nx-guide-grid{grid-template-columns:1fr}
+ .nx-guide-top{flex-direction:column}
+ .nx-size-field{width:100%}
+ .tf-node p{font-size:12px}
+ .atlas-entry:has(.nx-item-art),.cx-saved:has(.nx-item-art){flex-wrap:wrap}
+ .nx-item-art{max-width:25vw;max-height:25vw}
+}
+@media(prefers-reduced-motion:reduce){.nx-media-guide *{animation:none!important;transition:none!important}}
+
