@@ -1,0 +1,48 @@
+/* NEXUS | AZEROTH v5.7 — talent command workspace. Accessible, mobile-first. */
+.tf-command{margin:15px 0;border-color:#cba66e78;background:radial-gradient(ellipse at 85% 0%,#a47b4423,transparent 60%),linear-gradient(140deg,#182a3a,#0b172b 75%)}
+.tf-cmd-head{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.tf-cmd-head h3{margin:5px 0 9px;color:#f2d5a1;font-size:clamp(20px,2.7vw,28px)}
+.tf-cmd-head p{color:#bfd0d6;font-size:12px;line-height:1.7;max-width:790px}
+.tf-cmd-tag{font-size:10px;letter-spacing:.1em;font-weight:800;color:#b9e9ce;background:#16403565;border:1px solid #6cc09d6a;padding:8px 12px;border-radius:100px;white-space:nowrap}
+.tf-cmd-stats{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.tf-cmd-stats span{background:#0b2232;border:1px solid #90a89b62;border-radius:9px;font-size:11px;padding:9px 11px;color:#bbcfda}
+.tf-cmd-stats b{color:#ffdca9;font-size:15px}
+.tf-cmd-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.06fr);gap:14px}
+.tf-cmd-pane{border:1px solid #a0a9a663;background:#0a1829d9;border-radius:13px;padding:14px;min-width:0}
+.tf-cmd-pane h4{color:#edcb9c;margin:0 0 12px}
+.tf-cmd-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.tf-cmd-fields label{display:grid;gap:6px;color:#d3be9e;font-size:11px;font-weight:700;min-width:0}
+.tf-cmd-fields label:first-child{grid-column:1/-1}
+.tf-cmd-fields input,.tf-cmd-fields select{padding:11px;min-height:44px;border-radius:9px;border:1px solid #97a5ac69;background:#10283b;color:#f4e8d8;width:100%;min-width:0}
+#tfCmdListStatus{padding:8px 0;line-height:1.5}
+.tf-cmd-list{max-height:390px;overflow-y:auto;display:grid;gap:6px;overscroll-behavior:contain;scrollbar-width:thin}
+.tf-cmd-result{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;min-height:54px;border-radius:10px;padding:10px 12px;border:1px solid #a1abb74d;background:#122c40}
+.tf-cmd-result b{font-size:12px;display:block;color:#f3d7aa;overflow-wrap:anywhere}
+.tf-cmd-result small{font-size:10px;color:#bfccdc;display:block;margin-top:6px}
+.tf-cmd-result strong{white-space:nowrap;font-size:11px;color:#d3edec;border:1px solid #72b1b273;border-radius:8px;padding:7px}
+.tf-cmd-result.is-active{border-color:#f1c484;background:#3a423d}
+.tf-cmd-result:hover{border-color:#e5c48c}
+.tf-cmd-detail{display:grid;align-content:start;gap:11px}
+#tfCmdSpotlight{font-size:12px;line-height:1.65;color:#c9d7df;overflow-wrap:anywhere}
+#tfCmdSpotlight>strong{font-size:17px;color:#f4d3a0}
+.tf-cmd-meta{font-size:11px;color:#a4dacb}
+.tf-cmd-description{border-left:3px solid #c3a675;background:#ffffff08;padding:10px 12px;line-height:1.7}
+.tf-cmd-facts{display:flex;flex-wrap:wrap;gap:6px}
+.tf-cmd-facts span{font-size:10px;padding:6px 8px;border-radius:7px;background:#1b3643;color:#bfe1dc}
+.tf-cmd-detail details{margin:10px 0;padding:8px 10px;border:1px solid #738f9873;border-radius:10px}
+.tf-cmd-detail summary,.tf-cmd-guide summary{cursor:pointer;color:#f6d49c;font-weight:800}
+.tf-cmd-detail ol{max-height:210px;overflow-y:auto;padding-left:20px;font-size:11px}
+.tf-cmd-actions{display:flex;flex-wrap:wrap;gap:8px}
+.tf-cmd-actions button{flex:1 1 115px;padding:11px 10px;min-height:44px;font-size:11px;border:1px solid #baa1796e}
+.tf-cmd-actions button:disabled{opacity:.45;cursor:not-allowed}
+.tf-cmd-preview{margin-top:7px;padding:13px;background:linear-gradient(130deg,#192d3d,#14233b);border:1px solid #c49f6f68;border-radius:12px}
+.tf-cmd-preview h4{margin:0 0 6px}
+.tf-cmd-preview p{color:#b7cdd4;line-height:1.65;font-size:11px}
+#tfCmdPreview{font-size:12px;line-height:1.65;color:#edd3a8;margin-top:10px}
+#tfCmdApply:not(:disabled){background:#9d7644;color:#fff1d2}
+.tf-cmd-guide{padding:12px 15px;margin-top:15px;border:1px solid #829c9a78;border-radius:11px;color:#b9cad7;font-size:12px;line-height:1.7}
+.tf-cmd-guide p{font-size:12px;line-height:1.7}
+.tf-cmd-pulse{outline:3px solid #f8ca83;outline-offset:3px;box-shadow:0 0 25px #e4bb6475!important}
+@media(max-width:900px){.tf-cmd-layout{grid-template-columns:1fr}.tf-cmd-list{max-height:300px}}
+@media(max-width:420px){.tf-command{padding:12px}.tf-cmd-fields{grid-template-columns:1fr}.tf-cmd-fields label:first-child{grid-column:auto}.tf-cmd-pane{padding:10px}}
+@media(prefers-reduced-motion:reduce){.tf-command *{animation:none!important;transition:none!important}}
