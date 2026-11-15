@@ -103,14 +103,15 @@ function readiness(){
  $('pflPlannerState').textContent=ids.size?'Planning data found for '+ids.size+' character profile(s). Your next action: review open targets or start a new farming session.':'No local character planning profiles found. Add a character in Character Targets or manually via Farming Operations. Battle.net sign-in is optional.';
 }
 $('pflRefresh').addEventListener('click',readiness);
-window.addEventListener('pageshow',()=>{readiness();refreshReport()});
-window.addEventListener('storage',e=>{if(['nexus_azeroth_farm_operations_v1','nexus_azeroth_character_targets_v1','nexus_azeroth_item_atlas_v1','nexus_azeroth_loot_hunter_v1'].includes(e.key))readiness()});
-window.addEventListener('nexus:character-profile-updated',readiness);
+const refreshVisible=()=>{if(document.querySelector('[data-section="fieldlab"].active')){readiness();refreshReport()}};
+window.addEventListener('pageshow',refreshVisible);
+window.addEventListener('storage',e=>{if(['nexus_azeroth_farm_operations_v1','nexus_azeroth_character_targets_v1','nexus_azeroth_item_atlas_v1','nexus_azeroth_loot_hunter_v1'].includes(e.key))refreshVisible()});
+window.addEventListener('nexus:character-profile-updated',refreshVisible);
 const guide=document.querySelector('#pg-friends');if(guide){
  const shortcut=document.createElement('div');shortcut.className='pg-note';
  shortcut.textContent='Testing with friends? Record their results without sharing Battle.net secrets.';
  const open=document.createElement('button');open.type='button';open.dataset.pgNav='fieldlab';open.textContent='OPEN PLAYER FIELD LAB';
  shortcut.append(document.createTextNode(' '),open);guide.append(shortcut);
 }
-render();readiness();
+if(window.NexusStartup?.whenView)window.NexusStartup.whenView('fieldlab',()=>{render();readiness()},{once:true});else{render();readiness()}
 })();
