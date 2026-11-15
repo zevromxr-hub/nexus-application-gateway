@@ -1,0 +1,8 @@
+name = "nexus-azeroth-api"
+main = "worker.js"
+compatibility_date = "2026-11-14"
+workers_dev = true
+
+# Do not add secrets here. Existing BLIZZARD_CLIENT_ID and
+# BLIZZARD_CLIENT_SECRET remain encrypted Worker secrets.
+# Add a new encrypted AZEROTH_SESSION_SECRET secret using Wrangler or Cloudflare.
