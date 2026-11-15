@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "3.9.0",
+  "version": "4.0.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Assassin Dominion & Verified Connected Player",
-  "previous_version": "3.4.0",
+  "subtitle": "Sovereign Core — Universal Data Vault & Connected Character Center",
+  "previous_version": "3.9.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Refreshed the companion with the dark Assassin Dominion theme, custom artwork, app icons and iPhone Home Screen support.",
-    "Improved navigation on PC and iPhone with adaptive sidebar scrolling, bottom navigation, responsive layouts and accessibility.",
-    "Added a searchable Command Launcher with favorites, recent tools and Ctrl/Cmd+K shortcut.",
-    "Introduced the Unified Character Dashboard for locally tracked item targets, loot goals and farming activity.",
-    "Implemented secure Battle.net connection verification through short-lived Cloudflare receipts; no OAuth tokens are exposed to GitHub Pages.",
-    "Corrected verification for Battle.net accounts without World of Warcraft characters or account collection data.",
-    "Added a Connected Player view with verified region, last check, expiration countdown and one-click recheck; verification is revalidated after refresh.",
-    "Restored coherent release metadata so successful validated Azeroth version updates can trigger automated Discord announcements."
+    "Introduced Sovereign Data Vault: export and selectively restore planning data from eleven independent browser-local modules in a single versioned backup.",
+    "Added privacy-conscious backup previews, recognized-key allowlisting, size limits, restore confirmation and best-effort rollback on storage failure.",
+    "Added Connected Character Center with explicit opt-in import of public character selectors into Character Targets and Farming Operations.",
+    "Versioned the verified Battle.net Cloudflare Worker reference in the repository for recovery without exposing credentials or changing the live deployment.",
+    "Protected Farming Operations against malformed cross-tab storage updates and synchronized initial Battle.net account status across panels.",
+    "Reduced repetitive accessibility announcements from the verification timer while retaining short-lived server-validated status and expiration.",
+    "Organized the command launcher into Character, Collection, Progress, Account and utility groupings without removing existing tools.",
+    "Expanded automated validation to cover v4.0 modules, authentication boundaries, navigation and the preserved Worker verification routes."
   ]
 }
