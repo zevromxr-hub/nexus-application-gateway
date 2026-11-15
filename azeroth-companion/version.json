@@ -1,19 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.9.0",
-  "channel": "stable",
+  "version": "3.0.0",
+  "channel": "release-candidate",
   "release_date": "2026-11-14",
-  "subtitle": "Character Farming Operations — Assignments & Session Ledger",
-  "previous_version": "2.8.0",
+  "subtitle": "My Azeroth — Secure Battle.net Account Portal",
+  "previous_version": "2.9.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added character-specific Farming Operations inside Loot Hunter, with assignments to multiple manually selected characters",
-    "Added an optional import of previously saved public Armory character shortcuts",
-    "Added dated manual farming session records with attempt counts and notes per character and item",
-    "Added character and goal filters with progress summaries for assigned goals and session activity",
-    "Added standalone JSON export/import for character assignments and session history, without touching legacy Loot Hunter backups",
-    "Preserved all v2.8 and Talent Forge features, the original farming goals, and existing Cloudflare Worker credentials"
+    "Built a secure first-party My Azeroth Battle.net account portal using the official wow.profile authorization-code flow",
+    "Added encrypted short-lived HttpOnly sessions and validated OAuth state with no personal access tokens sent to GitHub Pages",
+    "Added private read-only account character discovery and mount/pet collection summaries",
+    "Added return links from owned characters to the existing public Live Armory and a secure disconnect option",
+    "Preserved all v2.9 public Armory, Talent Forge, Loot Hunter, Farming Operations and browser-local data",
+    "Added Wrangler Worker deployment instructions, encrypted secret setup, redirect URI registration and privacy disclosures",
+    "Staged activation until the owner configures Battle.net OAuth and deploys/tests the Cloudflare Worker"
   ]
 }
