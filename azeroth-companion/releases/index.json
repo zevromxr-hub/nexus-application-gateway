@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.3.0",
+      "title": "Talent Forge — Live Specialization Explorer",
+      "date": "2026-11-14"
+    },
+    {
       "version": "2.2.0",
       "title": "Loot Hunter — Acquisition Library & Farm Planner",
       "date": "2026-11-14"
