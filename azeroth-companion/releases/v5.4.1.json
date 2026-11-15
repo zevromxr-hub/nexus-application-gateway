@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.4.1",
+  "title": "Official Icon Stability & Safe Worker Integration",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Prevent repeated DOM writes for absent spell icons and reduce needless tree mutation cycles on PC and iPhone.",
+    "Preserve all v5.4 talent and gear source comparisons, saved drafts, and v5.3 draggable atlas.",
+    "Provide explicit minimal Cloudflare Worker patch instructions, backup and rollback plan without overwriting personal portal scripts.",
+    "Live spell icons require a separate Cloudflare owner deployment; publishing GitHub Pages does not update the Worker.",
+    "Keep client OAuth secrets and private sessions server-side; no made-up talent data or stat values."
+  ]
+}
