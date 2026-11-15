@@ -113,5 +113,6 @@ const guide=document.querySelector('#pg-friends');if(guide){
  const open=document.createElement('button');open.type='button';open.dataset.pgNav='fieldlab';open.textContent='OPEN PLAYER FIELD LAB';
  shortcut.append(document.createTextNode(' '),open);guide.append(shortcut);
 }
-if(window.NexusStartup?.whenView)window.NexusStartup.whenView('fieldlab',()=>{render();readiness()},{once:true});else{render();readiness()}
+let labInitialized=false;
+if(window.NexusStartup?.whenView)window.NexusStartup.whenView('fieldlab',()=>{if(!labInitialized){labInitialized=true;render()}readiness();refreshReport()},{once:false});else{render();readiness()}
 })();
