@@ -81,5 +81,5 @@ async function releaseInfo(manual=false){const status=$('wowUpdateStatus');statu
  status.textContent='Latest published manifest: v'+version.version+' · '+(manual?'Checked just now':'Release data loaded')+'.';
 }catch(err){status.textContent='Cannot check the live release manifest right now. Local tools remain available.'}}
 $('wowCheckUpdates').addEventListener('click',()=>releaseInfo(true));
-render();releaseInfo();
+if(window.NexusStartup?.whenView){for(const view of ['warcraft','dungeons','professions','equipment','releases'])window.NexusStartup.whenView(view,render,{once:false});window.NexusStartup.whenView('releases',()=>releaseInfo());}else{render();releaseInfo();}
 })();

@@ -1,5 +1,5 @@
 # NEXUS | AZEROTH — Lean Launch assets
-Release baseline: **v4.7.0**
+Release baseline: **v4.7.0**, updated for **v4.8.0 Intelligent Startup**
 
 ## What changed
 The v4.6 website requested 25 stylesheet files and 26 deferred JavaScript
@@ -10,8 +10,8 @@ delivers them in **two CSS + two deferred JavaScript files**:
 |---|---:|---|
 | `styles-core-v4.7.css` | 13 CSS | Earlier studio layout and navigation styles |
 | `styles-experience-v4.7.css` | 12 CSS | Visual themes, additional studios and website shell |
-| `scripts-core-v4.7.js` | 13 JS | Original data, item and character module scripts |
-| `scripts-experience-v4.7.js` | 13 JS | Talents, later studios, account UI and site shell |
+| `scripts-core-v4.8.js` | 13 JS | Original data, item and character module scripts |
+| `scripts-experience-v4.8.js` | 13 JS | Talents, later studios, account UI and site shell |
 
 **This reduces the number of site stylesheet/JavaScript network requests
 from 51 to four.** It does not guarantee the page is 12× faster, reduce

@@ -133,5 +133,5 @@ async function fetchVersion(){
  }finally{$('pgCheckVersion').disabled=false}
 }
 $('pgCheckVersion').addEventListener('click',fetchVersion);
-renderSteps();renderTools();void fetchVersion();
+renderSteps();renderTools();if(window.NexusStartup?.whenView)window.NexusStartup.whenView('guide',()=>void fetchVersion());else void fetchVersion();
 })();

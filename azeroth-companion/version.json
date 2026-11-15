@@ -1,20 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.7.0",
+  "version": "4.8.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Lean Launch — Compiled Resources & Performance Budgets",
-  "previous_version": "4.6.0",
+  "subtitle": "Intelligent Startup Engine — View-Aware Loading & Processing",
+  "previous_version": "4.7.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Lean Launch delivery: reduced 25 stylesheet plus 26 deferred JavaScript requests to two CSS and two JavaScript bundles while preserving all original source files and their order.",
-    "Preserved all existing World of Warcraft studios, data formats, character tools, Battle.net verification, Cloudflare Worker and the current Assassin Dominion visual design.",
-    "Added a deterministic dependency-free Node 22 bundle maintenance tool that verifies byte-for-byte compiled asset parity with all 51 original sources.",
-    "Added a strict site asset request budget and browser startup timing logs to the existing desktop Chromium and mobile Chromium/WebKit GitHub Actions audit.",
-    "Kept the full suite of per-studio source tests and website-shell regressions with a versioned v4.7 release record for the existing Discord announcement pipeline.",
-    "Documented how future site or studio source edits should regenerate compiled assets without requiring end users to install Node or change Cloudflare.",
-    "Reduced repeated network request overhead, without claiming untested improvements to real-device speed, CPU time or Blizzard API latency."
+    "Introduced Intelligent Startup Engine: the existing site router now triggers view-specific initialization instead of doing every optional task on Home.",
+    "Deferred Blizzard Talent Forge index requests, Loot Hunter reference catalog downloads, and the extra Release Center and Player Guide release-manifest checks until those tools are opened.",
+    "Deferred hidden-view processing for Character Dominion, Unified Dashboard, Progress Command, Item Atlas, Player Field Lab and the War Room group, refreshing their data when revisited.",
+    "Preserved the existing studio interfaces, manual gameplay data, short-lived verified Battle.net handoff, player backups and Cloudflare Worker without adding any new account permissions.",
+    "Maintained four CSS/JS network resources, retained the v4.7 compiled stylesheets and versioned the two JavaScript bundles to v4.8 for safer cache updates.",
+    "Extended deterministic bundle integrity checks plus a browser startup audit that verifies deferred requests and correct studio initialization in desktop Chromium and mobile WebKit.",
+    "Documented what is actually deferred and what remains eagerly downloaded, so reduced startup work is not incorrectly advertised as complete lazy code loading."
   ]
 }

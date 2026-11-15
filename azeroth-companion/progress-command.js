@@ -66,7 +66,8 @@ $('pcSnapshot').addEventListener('click',()=>{
  const d=snapshot(),payload={format:'nexus-azeroth-progress-summary-v1',generatedAt:new Date().toISOString(),readOnly:true,source:'Browser-local manual planning records; NOT Blizzard verified',summary:d.summary,characters:d.perCharacter,review:{assignmentsMissingFromAtlas:d.targetOrphans.length,atlasOwnedWithOpenTargets:d.contradictions.length,sharedAtlasAndLoot:d.atlasLootLinks.length}};
  const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='nexus-azeroth-progress-summary.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
 });
-window.addEventListener('storage',e=>{if(Object.values(IDS).includes(e.key))render()});
-window.addEventListener('nexus:loot-updated',()=>render());
-render();
+const refreshVisible=()=>{if(document.querySelector('[data-section="command"].active'))render()};
+window.addEventListener('storage',e=>{if(Object.values(IDS).includes(e.key))refreshVisible()});
+window.addEventListener('nexus:loot-updated',refreshVisible);
+if(window.NexusStartup?.whenView)window.NexusStartup.whenView('command',render,{once:false});else render();
 })();

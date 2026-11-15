@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.8.0 · 2026-11-15 — Intelligent Startup Engine
+
+- **View-aware startup coordination:** The existing app router now announces which studio was opened, letting optional tasks initialize only when relevant. The event carries a view ID, not Blizzard account data or a login claim.
+- **Fewer background lookups:** Blizzard Talent Forge index, Loot Hunter curated source reference, and separate Information Guide/Release Center version-manifest calls now run when opened rather than during the initial Home load. The website update center still loads the current release manifest at startup.
+- **Deferred hidden-view calculations:** Character Dominion, Unified Character Dashboard, Progress Command, Item Atlas, Player Field Lab and War Room group now compute their heavier browser-local summaries on first visit. Shared planning dashboards refresh on subsequent visits so manual changes remain visible.
+- **Preserved functionality:** All existing studios, navigation, data keys, Sovereign Data Vault, account verification, Cloudflare Worker, accessibility controls and v4.6 responsiveness remain. No additional OAuth scopes or new dependencies.
+- **Cache-safe asset build:** Still two CSS and two JavaScript requests. Existing v4.7 styles are preserved, while the script bundles are versioned to v4.8 and checked against the original editable source files for byte-for-byte parity.
+- **Real browser tests:** Added automated desktop Chromium and phone-sized WebKit tests for idle startup behavior and post-navigation loading, alongside the existing desktop/mobile audit and static checks.
+- **Maintenance guide:** Explains deferred versus eager work and how to rebuild the compiled scripts for future changes without requiring local Node for end users.
+
+**Scope and limitations:** This reduces unnecessary startup network and computation; JavaScript sources still download and parse eagerly. Real physical-device performance measurements are still required before claiming specific speedups. No Cloudflare deployment required.
+
+
 ## v4.7.0 · 2026-11-15 — Lean Launch: Performance-Focused Website Delivery
 
 - **Four bundled resources:** The site now loads the existing 25 CSS sources as two ordered stylesheets and the existing 26 deferred JavaScript sources as two ordered script bundles. This reduces stylesheet/script network requests from **51 to four** without removing studios or altering their logic.
