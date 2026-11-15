@@ -1,0 +1,43 @@
+/* NEXUS | Talent Atlas v5.3 — cosmetic canvas only. */
+.tf-canvas-tools{display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 14px;margin:14px 0 10px;border:1px solid #d6b47169;border-radius:16px;background:radial-gradient(ellipse at left,#85612a36,transparent 65%),linear-gradient(120deg,#132c43,#0d192b);box-shadow:inset 0 1px #ffffff13,0 8px 25px #0003}
+.tf-canvas-tools[hidden]{display:none!important}
+.tf-canvas-title{display:flex;align-items:center;gap:11px;margin-right:auto;min-width:160px}
+.tf-canvas-title strong,.tf-canvas-title small{display:block}
+.tf-canvas-title strong{color:#f9d49e;letter-spacing:.08em;font-size:13px}
+.tf-canvas-title small{color:#acbdce;font-size:10px;line-height:1.5}
+.tf-canvas-emblem{display:grid;place-items:center;width:41px;height:41px;flex:none;border-radius:50%;border:1px solid #ffdca79b;box-shadow:0 0 20px #c8944240,inset 0 0 15px #e9af5140;color:#ffe3a2;background:radial-gradient(circle,#6d4a36,#182d43);font-size:24px}
+.tf-canvas-actions{display:flex;align-items:center;gap:5px}
+.tf-canvas-actions button{min-height:37px;min-width:37px;padding:8px 10px;border:1px solid #b9956682;background:#1e344b;color:#f9dfb8;border-radius:9px;touch-action:manipulation}
+.tf-canvas-actions button:hover{background:#365471}
+#tfCanvasZoom{min-width:43px;text-align:center;font-size:11px;font-variant-numeric:tabular-nums;color:#f6dbb2}
+.tf-minimap-wrap{display:flex;align-items:center;gap:8px}
+.tf-minimap-wrap canvas{width:140px;height:82px;max-width:30vw;cursor:crosshair;border:1px solid #d3b06c75;border-radius:8px;background:#0a1524;touch-action:manipulation}
+.tf-minimap-wrap small{font-size:9px;line-height:1.4;color:#b6c5ce;max-width:45px}
+.tf-tree.tf-canvas-active{position:relative;overflow:auto!important;max-height:min(74vh,750px);min-height:320px;border-radius:15px;border:1px solid #d0b17860;padding:12px!important;scrollbar-color:#c9a477 #132538;overscroll-behavior:contain;touch-action:none;cursor:grab;background:radial-gradient(ellipse at 50% 15%,#6a5c3d22,transparent 58%),radial-gradient(circle,#b5d1e012 1px,transparent 1.5px) 0 0/24px 24px,linear-gradient(160deg,#111e33,#0c1626)}
+.tf-tree.tf-canvas-active.tf-is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
+.tf-tree.tf-canvas-active button,.tf-tree.tf-canvas-active select{touch-action:manipulation;cursor:pointer}
+.tf-canvas-stage{position:relative;display:block;overflow:visible}
+.tf-canvas-stage>.tf-positioned{position:absolute;left:0;top:0;min-width:0;overflow:visible;will-change:auto}
+.tf-canvas-stage>.tf-positioned .tf-link-layer{z-index:0}
+.tf-canvas-stage .tf-node{position:relative;z-index:1;min-height:132px;border:1px solid #6f95aa73;border-radius:15px;background:linear-gradient(145deg,#233b52f5,#111f34f5 72%);box-shadow:0 8px 18px #0005,inset 0 1px #ffffff12;transition:border-color .16s,background .16s,box-shadow .16s;overflow:hidden}
+.tf-canvas-stage .tf-node:before{content:'✧';position:absolute;right:10px;top:4px;pointer-events:none;font-size:26px;color:#9abfc72d}
+.tf-canvas-stage .tf-node.tf-selected{border-color:#efc77b;box-shadow:0 0 0 1px #f1c57573,0 0 24px #d99c3b38,inset 0 1px #fff3ca30;background:linear-gradient(145deg,#483e37f5,#1b3040f5 78%)}
+.tf-canvas-stage .tf-node.tf-selected:before{content:'✦';color:#f1c87999}
+.tf-canvas-stage .tf-node.tf-focused{outline:2px solid #8cd9d0;outline-offset:3px}
+.tf-canvas-stage .tf-node strong{color:#fff0cf;font-size:14px;line-height:1.35}
+.tf-canvas-stage .tf-node small{color:#a7c0d0;font-size:9px;line-height:1.5}
+.tf-canvas-stage .tf-node p{color:#c8d6df}
+.tf-canvas-stage .tf-node-controls button{border-color:#e0b76d80;min-height:35px}
+.tf-canvas-stage .tf-node-controls span{color:#ffdfac;font-weight:800}
+.tf-canvas-stage .tf-source-actions{position:relative}
+@media(max-width:760px){
+ .tf-canvas-tools{padding:10px;gap:9px}
+ .tf-canvas-title{flex:1 1 100%}
+ .tf-canvas-actions{flex:1 1 auto}
+ .tf-minimap-wrap{margin-left:auto}
+ .tf-minimap-wrap canvas{width:105px;height:68px}
+ .tf-minimap-wrap small{display:none}
+ .tf-tree.tf-canvas-active{max-height:65vh;min-height:350px}
+ .tf-canvas-stage .tf-node{min-height:110px}
+}
+@media(prefers-reduced-motion:reduce){.tf-canvas-stage .tf-node{transition:none}}
