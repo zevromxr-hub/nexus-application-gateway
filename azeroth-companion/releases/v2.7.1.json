@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.7.1",
+  "title": "Talent Tree Layout Reliability Patch",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Fixed Talent Forge Tree mode reverting to cards when Blizzard reports missing or overlapping node positions",
+    "Added deterministic collision-safe placement while keeping available Blizzard row/column positions",
+    "Visually labels adjusted node positions and keeps original reported coordinates visible for comparison",
+    "Added regression tests for overlapping nodes, missing metadata and unique grid cells",
+    "Preserved existing Talent Path Intelligence, saved drafts, item research, Armory, Loot Hunter and Discord releases",
+    "No changes to the Cloudflare Worker or Blizzard credentials"
+  ]
+}

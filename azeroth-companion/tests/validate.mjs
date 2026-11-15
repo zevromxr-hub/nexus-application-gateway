@@ -7,7 +7,7 @@ const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/v2\.7 PATH INTELLIGENCE/);
+assert.match(html,/v2\.7\.1 TREE LAYOUT PATCH/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.equal(inline.length,1);
@@ -17,9 +17,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'2.7.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'2.7.1');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v2\.7 • Path Intelligence/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v2\.7\.1 • Tree Layout Fix/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
@@ -64,7 +64,7 @@ assert.match(backend,/talent-tree/);
 for(const feature of ['tfFindNode','tfLayout','tfBudget','tfUndo','tfRedo','recordUndo','travelHistory'])assert.ok(talent.includes(feature),'Missing v2.4 talent functionality '+feature);
 assert.ok((await read('azeroth-companion/talent-forge.css')).includes('.tf-positioned'),'Visual position-aware tree CSS missing');
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Preserve existing v2.3 local draft key');
-for(const feature of ['tfHeroTree','tfCompare','tfCompareSummary','countPointChanges','tf-default-points','heroSelection','coordinatesUsable','indexRequest'])assert.ok(talent.includes(feature),'Missing v2.5 Talent Intelligence feature '+feature);
+for(const feature of ['tfHeroTree','tfCompare','tfCompareSummary','countPointChanges','tf-default-points','heroSelection','NexusTalentLayout','indexRequest'])assert.ok(talent.includes(feature),'Missing v2.5 Talent Intelligence feature '+feature);
 assert.ok((await read('azeroth-companion/talent-forge.css')).includes('.tf-node.tf-more'));
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Preserve legacy talent save compatibility');
 for(const feature of ['tfShowLinks','tfRelations','tfRelationDetails','relationshipEdges','focusRelations','renderLinks','locked_by'])assert.ok(talent.includes(feature),'Missing v2.6 source connection feature '+feature);
@@ -96,5 +96,30 @@ const noLinks=analyze([{id:1},{id:2}],{'2':1});
 assert.equal(noLinks.summary.flagged,0,'Missing link data must not be misrepresented as invalid');
 for(const name of ['tfPathIntel','tfReviewOnly','renderPathIntel','tfPathDetails','pathAnalysis'])assert.ok(talent.includes(name),'Missing Talent Path Intelligence '+name);
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Old saved talent data key must remain unchanged');
+
+
+assert.match(html,/talent-layout\.js/);
+assert.ok(html.indexOf('talent-layout.js')<html.indexOf('talent-forge.js'));
+const layoutScript=await read('azeroth-companion/talent-layout.js');
+new vm.Script(layoutScript);
+const layoutContext={module:{exports:{}}};
+new vm.Script(layoutScript).runInNewContext(layoutContext);
+const arrange=layoutContext.module.exports.arrange;
+const placement=arrange([
+ {id:1,display_row:0,display_col:0},
+ {id:2,display_row:0,display_col:0},
+ {id:3,display_row:0,display_col:1},
+ {id:4},
+ {id:5,display_row:-1,display_col:-1}
+]);
+assert.equal(placement.total,5);
+assert.equal(placement.locations[1].row,1);
+assert.equal(placement.locations[1].col,1);
+assert.equal(placement.locations[3].col,2);
+assert.equal(placement.adjusted,3);
+assert.equal(new Set(Object.values(placement.locations).map(x=>x.row+':'+x.col)).size,5,'Every talent should have a unique grid cell');
+assert.ok(placement.locations[2].adjusted&&placement.locations[4].adjusted);
+assert.ok(talent.includes('POSITION ADJUSTED')&&talent.includes('NexusTalentLayout'));
+assert.ok(!talent.includes('Compact cards are used to prevent visual overlap.'),'Regression: forced cards fallback should be removed');
 
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');

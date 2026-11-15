@@ -1,20 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Talent Path Intelligence — Source-Aware Planning",
-  "previous_version": "2.6.0",
+  "subtitle": "Talent Tree Layout Reliability Patch",
+  "previous_version": "2.7.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Talent Path Intelligence using only Blizzard-reported locked_by references",
-    "Included a read-only dashboard for planned talents, source-linked nodes, potential review flags and unresolved references",
-    "Added cycle-safe upstream talent path inspection up to 16 levels",
-    "Added an optional filter to focus on nodes with points allocated but a reported source link that has zero planned points",
-    "Distinguished review prompts from full in-game prerequisite and point-budget validation",
-    "Preserved all existing v2.6 Talent Forge draft storage, Loot Hunter, Armory, Item Codex and planning studios",
-    "Kept Cloudflare API routes and Blizzard secrets unchanged; no Worker redeployment required"
+    "Fixed Talent Forge Tree mode reverting to cards when Blizzard reports missing or overlapping node positions",
+    "Added deterministic collision-safe placement while keeping available Blizzard row/column positions",
+    "Visually labels adjusted node positions and keeps original reported coordinates visible for comparison",
+    "Added regression tests for overlapping nodes, missing metadata and unique grid cells",
+    "Preserved existing Talent Path Intelligence, saved drafts, item research, Armory, Loot Hunter and Discord releases",
+    "No changes to the Cloudflare Worker or Blizzard credentials"
   ]
 }
