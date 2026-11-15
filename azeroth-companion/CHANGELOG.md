@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.0.0 · 2026-11-14 — My Azeroth (Release Candidate)
+
+- **Personal Battle.net sign-in:** separate first-party Cloudflare Worker account portal with Blizzard OAuth authorization-code consent and `wow.profile` scope.
+- **Secure sessions:** encrypted, short-lived first-party cookies; protected Blizzard account information never goes to GitHub Pages or localStorage.
+- **Personal characters:** discover characters Blizzard reports for the signed-in account and jump into the existing public Live Armory.
+- **My collections:** read-only totals and examples for mounts and pets when Blizzard supplies them.
+- **Privacy by design:** explicit disclosures, session disconnect, no account database, and no password collection.
+- **Preservation:** all v2.9 features, public Armory, Talent Forge, farming plans and saved browser-local records remain untouched.
+
+**Deployment gate:** Do not merge or announce this release until the new Cloudflare Worker module is deployed with `AZEROTH_SESSION_SECRET` and the exact Battle.net OAuth callback is registered. See `backend/BATTLENET-PORTAL-DEPLOY.md`. The public v2.9 app remains stable until that verification.
+
 ## v2.9.0 · 2026-11-14 — Character Farming Operations
 
 - **Character-specific farm planning:** assign existing Loot Hunter goals to any combination of manually added characters, with optional import of saved public Armory shortcuts.
