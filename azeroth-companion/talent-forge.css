@@ -37,3 +37,19 @@
 .tf-node.tf-more{outline:2px solid #6ec9a1;outline-offset:-2px}
 .tf-node.tf-less{outline:2px solid #eab77d;outline-offset:-2px}
 @media(max-width:760px){.tf-intel-row{grid-template-columns:1fr}.tf-intelligence{padding:12px}}
+
+/* v2.6 — Blizzard source-reported node relationships */
+.tf-relations{margin:14px 0;background:linear-gradient(130deg,#142c3b,#192537);border:1px solid #7ebeb273;border-radius:12px;padding:14px}
+.tf-relation-controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:11px;color:#b7d6d5}
+.tf-relation-controls label{display:flex;align-items:center;gap:8px;font-weight:700}
+.tf-relation-controls input{accent-color:#8ad6c0}
+.tf-relation-details{font-size:12px;line-height:1.7;color:#c6d6d9;margin-top:12px;border-top:1px solid #ffffff20;padding-top:12px}
+.tf-relation-details p{margin:5px 0}
+.tf-relation-details strong{color:#f4d5a5}
+.tf-relation-button{margin-top:11px;font-size:10px;padding:8px 10px;border-color:#78bbb368}
+.tf-node.tf-focused{outline:2px solid #b6f3e1;outline-offset:-2px}
+.tf-positioned{position:relative;isolation:isolate}
+.tf-positioned .tf-node{z-index:1;position:relative}
+.tf-positioned .tf-node.tf-focused{z-index:2}
+.tf-link-layer{position:absolute;left:0;top:0;pointer-events:none;z-index:0;overflow:visible}
+@media(max-width:760px){.tf-relations{padding:11px}.tf-relation-controls{align-items:flex-start;flex-direction:column}}
