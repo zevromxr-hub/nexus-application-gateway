@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.5.0 · 2026-11-14 — Talent Intelligence
+
+- **Hero tree selector:** independently display the separate hero talent groups returned by Blizzard for a loaded specialization, without losing other hero tree data.
+- **Saved draft comparison:** compare the active ranks with a previously saved draft of the same specialization; highlight increases and decreases and summarize planned changes.
+- **Source-aware nodes:** display Blizzard's `default_points` when supplied, while avoiding invented point totals or talent rules.
+- **Layout resilience:** if real nodes omit position data, share a location, or exceed supported bounds, switch to compact cards instead of overlapping in the visual tree.
+- **Safer asynchronous browsing:** prevent stale talent-index responses from replacing another region's list.
+- **Preservation:** existing v2.3/v2.4 JSON draft format and local storage key, all prior Warcraft studios, and Cloudflare gateway endpoints remain unchanged.
+
+**Important:** The updated Forge does not validate Blizzard's actual prerequisites, character levels, talent point limits, or import codes. Build comparisons are informational, not recommendations or game-legal simulations. This is a GitHub-only frontend release; no Cloudflare Worker replacement is required.
+
 ## v2.4.0 · 2026-11-14 — Talent Forge Overdrive
 
 - **Position-aware visual layout:** arranged official Blizzard talent nodes according to supplied display rows and columns, with horizontal scrolling for wide talent layouts.
