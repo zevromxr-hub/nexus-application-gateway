@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v1.2.0 · 2026-11-14 — Party Architect / Player Utility Expansion
+
+- Build five-player groups using current class and specialization options, including Devourer Demon Hunter.
+- Check expected 1 tank / 1 healer / 3 damage party distribution and common class utility examples.
+- Export, import or copy party compositions to coordinate with teammates.
+- Track per-character dungeon, raid and world activity counts with fully adjustable goals and manual reset.
+- Pull selectable character names from the existing Genesis character roster without rewriting old saves.
+- Add a curated quick-reference portal to official Blizzard pages and external Warcraft resources.
+- Deliver desktop/iPhone-specific responsive panels without changing prior modules.
+
+**Notes:** These tools assist planning and are not automatic WoW API or combat integrations. Activity targets are user-defined, not validated Great Vault thresholds. All existing v1.0 and v1.1 data is retained.
+
 ## v1.1.0 · 2026-11-14 — Warcraft Overdrive
 
 - **War Room:** weekly objectives and saved raid encounter plans.
