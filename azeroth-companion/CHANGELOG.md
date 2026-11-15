@@ -1,5 +1,19 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.1.0 · 2026-11-15 — Player Information Center & Compatibility Guide
+
+- **Dedicated information tab:** A searchable guide is now integrated directly into the main Azeroth interface on both PC and iPhone.
+- **Getting started:** Nine checklist-based steps explain navigating the site, optional Battle.net sign-in, character research, item tracking, group planning and safe backups.
+- **Feature reference:** Searchable descriptions and direct navigation for the existing studios, including which data is manually entered and which information Blizzard reports.
+- **Real gameplay benefits:** Examples for dungeon/raid preparation, shared party plans, mount and item farming, gear/talent research and transferring saved plans between devices.
+- **Compatibility transparency:** Separate current companion release metadata from the latest known official Retail patch reference (Midnight **12.1.5** as of November 15, 2026). Retail is the primary modern Blizzard API target, but version-by-version client support is not certified. Classic, PTR and beta connected data are not represented as supported.
+- **Live release center:** The guide fetches the current published companion manifest and recent version history; it does not claim to detect the installed WoW client patch.
+- **FAQ, security and roadmap:** Explains the account connection, short-lived verification, missing WoW data, manual versus reported ownership, local-only backup transfer and future development as exploration rather than promises.
+- **Regression tests:** New checks preserve truthful patch framing, safe release metadata, guide routing and authentication privacy.
+
+No new OAuth scopes, Cloudflare secrets, game modification or account access are introduced; v4.0 tools and stored records are preserved.
+
+
 ## v4.0.0 · 2026-11-15 — Sovereign Core: Reliability & Unified Experience
 
 - **Sovereign Data Vault:** Generate one privacy-conscious JSON backup covering all supported browser-local planning modules. Inspect included records and selectively restore with explicit confirmation; missing or invalid sections are excluded. Encrypted Battle.net sessions, access tokens and private collections are never placed into backup files.
