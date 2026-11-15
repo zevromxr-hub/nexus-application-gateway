@@ -57,7 +57,8 @@ const heading=document.createElement('strong');heading.textContent='Add this cha
 const info=document.createElement('p');info.textContent='Save the selected public character identifier to Character Targets and Farming Operations. This is an untrusted selector, not proof you own the character.';
 const saveButton=document.createElement('button');saveButton.type='button';saveButton.className='primary';saveButton.textContent='SAVE CHARACTER TO MY PLANNERS';
 const state=document.createElement('p');state.id='nxArmorySaveStatus';state.setAttribute('role','status');state.textContent='Choose a character above, then save it manually.';
-control.append(heading,info,saveButton,state);form.append(control);
+const openDominion=document.createElement('button');openDominion.type='button';openDominion.textContent='VIEW CHARACTER DOMINION';openDominion.addEventListener('click',()=>document.querySelector('.nav [data-view="dominion"]')?.click());
+control.append(heading,info,saveButton,openDominion,state);form.append(control);
 saveButton.addEventListener('click',()=>{
  const selected=current();const result=save(selected);state.textContent=result.message;message.textContent=result.message;
 });
