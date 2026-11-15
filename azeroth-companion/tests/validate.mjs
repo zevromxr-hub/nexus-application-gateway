@@ -97,4 +97,29 @@ assert.equal(noLinks.summary.flagged,0,'Missing link data must not be misreprese
 for(const name of ['tfPathIntel','tfReviewOnly','renderPathIntel','tfPathDetails','pathAnalysis'])assert.ok(talent.includes(name),'Missing Talent Path Intelligence '+name);
 assert.ok(talent.includes('nexus_azeroth_talent_forge_v1'),'Old saved talent data key must remain unchanged');
 
+
+assert.match(html,/talent-layout\.js/);
+assert.ok(html.indexOf('talent-layout.js')<html.indexOf('talent-forge.js'));
+const layoutScript=await read('azeroth-companion/talent-layout.js');
+new vm.Script(layoutScript);
+const layoutContext={module:{exports:{}}};
+new vm.Script(layoutScript).runInNewContext(layoutContext);
+const arrange=layoutContext.module.exports.arrange;
+const placement=arrange([
+ {id:1,display_row:0,display_col:0},
+ {id:2,display_row:0,display_col:0},
+ {id:3,display_row:0,display_col:1},
+ {id:4},
+ {id:5,display_row:-1,display_col:-1}
+]);
+assert.equal(placement.total,5);
+assert.equal(placement.locations[1].row,1);
+assert.equal(placement.locations[1].col,1);
+assert.equal(placement.locations[3].col,2);
+assert.equal(placement.adjusted,3);
+assert.equal(new Set(Object.values(placement.locations).map(x=>x.row+':'+x.col)).size,5,'Every talent should have a unique grid cell');
+assert.ok(placement.locations[2].adjusted&&placement.locations[4].adjusted);
+assert.ok(talent.includes('POSITION ADJUSTED')&&talent.includes('NexusTalentLayout'));
+assert.ok(!talent.includes('Compact cards are used to prevent visual overlap.'),'Regression: forced cards fallback should be removed');
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
