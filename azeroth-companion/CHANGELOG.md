@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.9.0 · 2026-11-15 — Website Stability & Experience Refinement
+
+- **Smoother navigation:** Sidebar class-change notifications and iPhone tool-search group refreshes are now coalesced per animation frame, avoiding redundant website shell calculations when many buttons change together.
+- **Stable Quick Deck:** The shortcut editor reuses its checkbox DOM rather than rebuilding it after every toggle. Keyboard focus and editor scroll position remain intact. The six-shortcut cap and existing local preferences are preserved.
+- **Less repeated painting:** The recent-tools shelf no longer rerenders when its contents have not changed. Breadcrumbs skip repeated writes for the same active view, and duplicate hero navigation writes have been removed.
+- **Long-list responsiveness:** Browsers supporting CSS `content-visibility:auto` defer painting offscreen records in selected long lists; those without support render them normally. Homepage card layout work is isolated from nearby elements. This changes presentation work only, not stored data.
+- **Compatible functionality:** All v4.8 on-demand loading, original studio sources, Character Dominion, Battle.net verification, Cloudflare Worker, site preferences and local planning data remain preserved.
+- **Regression protection:** New source validation plus browser interaction tests cover stable Quick Deck checkbox identity, rapid repeated navigation, long-list scrolling/click targets, and mobile WebKit. The existing four-asset bundle and startup/device checks remain required.
+
+**Scope and limitations:** No studio data format, OAuth permissions, API endpoints or Cloudflare deployment changes. Actual physical iPhone FPS/CPU speedups remain unmeasured; this release reduces known redundant interface operations and uses progressive rendering when supported.
+
+
 ## v4.8.0 · 2026-11-15 — Intelligent Startup Engine
 
 - **View-aware startup coordination:** The existing app router now announces which studio was opened, letting optional tasks initialize only when relevant. The event carries a view ID, not Blizzard account data or a login claim.
