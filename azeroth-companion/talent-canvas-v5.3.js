@@ -159,7 +159,7 @@
  observer.observe(host,{childList:true});
  document.querySelectorAll('[data-tf-tab]').forEach(b=>b.addEventListener('click',savePosition,true));
  document.getElementById('tfHeroTree')?.addEventListener('change',savePosition,true);
- const resize=typeof ResizeObserver==='function'?new ResizeObserver(()=>{if(active()){const {w,h}=geometry();stage.style.width=w*scale+'px';stage.style.height=h*scale+'px';drawMap();}}):null;
- if(resize)resize.observe(host);
+ const resize=()=>{requestAnimationFrame(()=>{if(active()){const {w,h}=geometry();stage.style.width=w*scale+'px';stage.style.height=h*scale+'px';drawMap();}})};
+ window.addEventListener('resize',resize,{passive:true});
  install();
 })();
