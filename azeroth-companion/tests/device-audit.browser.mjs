@@ -64,7 +64,7 @@ await captured('chromium-desktop',async page=>{
  await page.locator('#sxReleaseVersion').getByText('Azeroth v4.6.0').waitFor({timeout:12000});
  await page.keyboard.press('Escape');
  await page.locator('.sidebar [data-view="dominion"]').click();
- check(await page.locator('#spContext').isVisible(),'Return Home control must appear on studio pages');
+ await page.locator('#spContext').waitFor({state:'visible',timeout:5000});
  await page.locator('#spContextHome').click();
  check(await page.locator('section[data-section="overview"]').evaluate(el=>el.classList.contains('active')),'Return Home must restore overview');
 });
@@ -83,7 +83,7 @@ for(const engine of ['chromium','webkit']){
   await menu.click();
   check(await page.locator('.sidebar [data-view="dominion"]').isVisible(),'Opening drawer again must reset prior search');
   await page.locator('.sidebar [data-view="dominion"]').click();
-  check(await page.locator('#spContext').isVisible(),'Context bar must appear on a studio');
+  await page.locator('#spContext').waitFor({state:'visible',timeout:5000});
   await page.locator('#spContextHome').click();
   await page.locator('#spCustomize').click();
   check(await page.locator('#spDeckEditor').isVisible(),'Quick Deck editor should be usable on phone');
