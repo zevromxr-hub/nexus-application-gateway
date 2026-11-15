@@ -41,6 +41,150 @@ plannerPanel.innerHTML='<div class="tf-plan-head"><div><span class="wow-kicker">
 '<div class="tf-plan-foot"><span id="tfPlanRecoveryStatus" role="status" aria-live="polite">Draft recovery is local to this browser.</span><div class="actions"><button id="tfPlanCopy" type="button">COPY BUILD BRIEF</button><button id="tfPlanDuplicate" type="button">DUPLICATE TO LIBRARY</button></div></div>';
 const talentWorkspace=$('tfTree').closest('.panel');talentWorkspace.before(plannerPanel);
 $('tfReviewOnly').addEventListener('change',render);
+
+function recoveryRecords(){
+ try{
+  const x=JSON.parse(localStorage.getItem(AUTOKEY)||'null');
+  return x&&typeof x==='object'&&!Array.isArray(x)?x:{};
+ }catch(_){return{}}
+}
+function dropRecovery(id){
+ if(!id)return;
+ try{const records=recoveryRecords();delete records[id];localStorage.setItem(AUTOKEY,JSON.stringify(records))}
+ catch(_){/* fail closed; exported drafts remain available */}
+}
+function queueRecovery(){
+ if(!tree||!identity||recoveryPending)return;
+ clearTimeout(recoveryTimer);
+ recoveryTimer=setTimeout(()=>{
+  if(!tree||!identity||recoveryPending)return;
+  try{
+   const records=recoveryRecords(),name=$('tfBuildName').value.trim().slice(0,75)||'Working draft';
+   records[identity]={format:'nexus-azeroth-talent-draft-v1',identity,name,region:loadedRegion,
+    rankByNode:{...draft},choiceByNode:{...choices},planner:PLANNER?.sanitizeMeta(plannerMeta)||plannerMeta,
+    savedAt:new Date().toISOString()};
+   const limited=Object.entries(records).filter(([id])=>PLANNER?.identityOK(id))
+    .sort((a,b)=>String(b[1]?.savedAt||'').localeCompare(String(a[1]?.savedAt||''))).slice(0,8);
+   localStorage.setItem(AUTOKEY,JSON.stringify(Object.fromEntries(limited)));
+   $('tfPlanRecoveryStatus').textContent='Working draft backed up locally on this browser.';
+  }catch(_){$('tfPlanRecoveryStatus').textContent='Automatic recovery is unavailable. Export your draft JSON to protect it.'}
+ },650);
+}
+function markPlannerEdit(){
+ if(recoveryPending){
+  notice('Resolve the existing draft recovery first: Restore or Discard.');
+  return false;
+ }
+ queueRecovery();return true;
+}
+function recoveryPrompt(){
+ clearTimeout(recoveryTimer);
+ const record=identity?recoveryRecords()[identity]:null;
+ recoveryPending=Boolean(record);
+ $('tfPlanRecover').hidden=!recoveryPending;
+ $('tfPlanRecoveryStatus').textContent=recoveryPending
+  ?'An unsaved working draft is available. Restore or discard it before editing.'
+  :'Changes to your ranks, choices, notes and targets receive local recovery backups.';
+}
+function plannerFromFields(){
+ if(!PLANNER)return;
+ plannerMeta=PLANNER.sanitizeMeta({
+  activity:$('tfPlanActivity').value,role:$('tfPlanRole').value,style:$('tfPlanStyle').value,
+  notes:$('tfPlanNotes').value,
+  targets:{class:Number($('tfPlanGoalClass').value),spec:Number($('tfPlanGoalSpec').value),hero:Number($('tfPlanGoalHero').value)}
+ });
+}
+function plannerToFields(){
+ const meta=PLANNER?.sanitizeMeta(plannerMeta)||plannerMeta;
+ $('tfPlanActivity').value=meta.activity;$('tfPlanRole').value=meta.role;
+ $('tfPlanStyle').value=meta.style;$('tfPlanNotes').value=meta.notes;
+ for(const key of ['class','spec','hero'])$('tfPlanGoal'+key[0].toUpperCase()+key.slice(1)).value=String(meta.targets[key]);
+}
+function cleanChoices(raw){
+ if(!raw||typeof raw!=='object'||Array.isArray(raw))return{};
+ const valid=new Map(allNodes().map(n=>[String(n.id),n])),result={};
+ for(const [id,choice]of Object.entries(raw).slice(0,400)){
+  const n=valid.get(id);
+  const count=Math.max(0,...(Array.isArray(n?.ranks)?n.ranks:[]).map(rank=>
+   Array.isArray(rank?.choice_of_tooltips)?rank.choice_of_tooltips.length:0));
+  if(n&&Number.isInteger(choice)&&choice>=0&&choice<Math.max(count,1))result[id]=choice;
+ }
+ return result;
+}
+function plannerReview(){
+ if(!PLANNER)return null;
+ return PLANNER.analyze(tree,draft,choices,plannerMeta,(nodes,ranks)=>window.NexusTalentPaths?.analyze(nodes,ranks));
+}
+function renderPlanner(){
+ if(!PLANNER)return;
+ const result=plannerReview();
+ const status=$('tfPlanSummary'),review=$('tfPlanAdvisories');
+ const counts=result.scores,goals=result.goal;
+ status.replaceChildren();
+ for(const [type,label]of [['class','Class'],['spec','Specialization'],['hero','Hero']]){
+  const row=document.createElement('div');row.className='tf-plan-score';
+  const title=document.createElement('span');title.textContent=label+' points';
+  const value=document.createElement('strong');value.textContent=counts[type]+(goals[type]>0?' / '+goals[type]+' personal target':' allocated');
+  row.append(title,value);status.append(row);
+ }
+ review.replaceChildren();
+ const messages=result.issues.map(text=>({text,kind:'issue'}))
+  .concat(result.advisory.map(text=>({text,kind:'advisory'})));
+ if(!result.hasTree)messages.unshift({text:'Load Blizzard talent data to begin allocating nodes. All point targets are personal planning reminders.',kind:'advisory'});
+ if(!result.issues.length&&result.hasTree)messages.unshift({text:'No structural rank or choice inconsistencies detected in the returned talent nodes. This does NOT verify a game-valid build.',kind:'good'});
+ for(const msg of messages.slice(0,12)){
+  const li=document.createElement('li');li.className='tf-plan-'+msg.kind;li.textContent=msg.text;review.append(li);
+ }
+ const footer=document.createElement('li');footer.className='tf-plan-disclaimer';
+ footer.textContent='Not a Blizzard talent-rule validator, legal loadout checker, meta recommendation, or in-game import-string generator.';
+ review.append(footer);
+}
+function restoreRecovery(){
+ if(!tree||!recoveryPending)return;
+ const raw=recoveryRecords()[identity];
+ try{
+  const record=PLANNER.sanitizeImported(raw);
+  if(record.identity!==identity)throw Error('Specialization mismatch');
+  draft=cleanDraft(record.rankByNode);choices=cleanChoices(record.choiceByNode);
+  plannerMeta=PLANNER.sanitizeMeta(record.planner);
+  $('tfBuildName').value=record.name;undoStack=[];redoStack=[];updateUndoButtons();
+  recoveryPending=false;$('tfPlanRecover').hidden=true;
+  plannerToFields();render();queueRecovery();
+  notice('Restored your locally backed-up working draft. Save or export it when ready.');
+ }catch(error){notice('Recovery could not be opened: '+error.message+'. You can discard the damaged copy.')}
+}
+$('tfPlanRestore').addEventListener('click',restoreRecovery);
+$('tfPlanDiscard').addEventListener('click',()=>{
+ if(!tree)return;
+ clearTimeout(recoveryTimer);dropRecovery(identity);recoveryPending=false;
+ $('tfPlanRecover').hidden=true;
+ $('tfPlanRecoveryStatus').textContent='Old recovery discarded. Your currently loaded build is unchanged.';
+ notice('Previous local recovery discarded.');renderPlanner();
+});
+for(const id of ['tfPlanActivity','tfPlanRole','tfPlanStyle','tfPlanGoalClass','tfPlanGoalSpec','tfPlanGoalHero','tfPlanNotes']){
+ $(id).addEventListener(id==='tfPlanNotes'?'input':'change',()=>{
+  if(recoveryPending){plannerToFields();markPlannerEdit();return}
+  plannerFromFields();renderPlanner();markPlannerEdit();
+ });
+}
+$('tfBuildName').addEventListener('input',()=>{if(tree)markPlannerEdit()});
+$('tfPlanCopy').addEventListener('click',async()=>{
+ if(!tree||!PLANNER)return notice('Load a specialization to copy its build brief.');
+ try{
+  if(!navigator.clipboard?.writeText)throw Error('Clipboard access unavailable');
+  await navigator.clipboard.writeText(PLANNER.summaryText(plannerReview(),$('tfBuildName').value||'Talent draft'));
+  notice('Build brief copied. It contains your own planning notes, not a game-importable loadout.');
+ }catch(_){notice('Clipboard unavailable. Export the build JSON to share your draft.')}
+});
+$('tfPlanDuplicate').addEventListener('click',()=>{
+ if(!tree)return notice('Load a talent tree before duplicating.');
+ if(recoveryPending)return notice('Resolve the unsaved draft recovery before duplicating.');
+ const record=draftRecord();record.name=(record.name.slice(0,65)+' Copy').slice(0,75);
+ record.savedAt=new Date().toISOString();
+ saved=[record,...saved].slice(0,40);persist();renderSaved();
+ notice('Created a separate saved copy. Choose LOAD in My Saved Talent Drafts to edit it.');
+});
+plannerToFields();renderPlanner();
 function pathAnalysis(nodes){return window.NexusTalentPaths?.analyze(nodes,draft)||null}
 function pathLabel(id,nodes){const n=nodes.find(x=>Number(x.id)===Number(id));return n?nodeName(n):'Node #'+id}
 function renderPathIntel(nodes){
