@@ -98,16 +98,18 @@ nav.addEventListener('click',e=>{
   data.collapsed=collapsed?[...new Set([...data.collapsed,id])]:data.collapsed.filter(x=>x!==id);
   save();return;
  }
- const btn=e.target.closest('button[data-view]');if(btn)recordVisit(btn.dataset.view);
 });
 function recordVisit(view){
  if(!/^[a-z0-9-]{2,30}$/.test(view))return;
- data.recent=[view,...data.recent.filter(x=>x!==view)].slice(0,8);save();
- renderRecent();
- requestAnimationFrame(updateSelectedView);
+ const next=[view,...data.recent.filter(x=>x!==view)].slice(0,8);
+ // Navigation can be triggered by the sidebar, Quick Deck and guide at once.
+ // Avoid repeating storage writes and rebuilding recent buttons for the same view.
+ if(next.length===data.recent.length&&next.every((id,i)=>id===data.recent[i]))return;
+ data.recent=next;save();renderRecent();
 }
-document.addEventListener('click',e=>{
- const jump=e.target.closest('[data-jump]');if(jump)recordVisit(jump.dataset.jump);
+document.addEventListener('nexus:view-activated',event=>{
+ recordVisit(event.detail?.view);
+ updateSelectedView();
 });
 function updateSelectedView(){
  const active=nav.querySelector('button[data-view].active');
@@ -121,13 +123,11 @@ function updateSelectedView(){
   data.collapsed=data.collapsed.filter(x=>x!==g);save();
  }
 }
-const activeObserver=new MutationObserver(records=>{
- if(records.some(x=>x.type==='attributes'&&x.attributeName==='class'))requestAnimationFrame(updateSelectedView);
-});
-activeObserver.observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
 function navigate(id){
  const btn=buttonMap().get(id);if(!btn)return;
- btn.click();recordVisit(id);
+ // The existing router emits nexus:view-activated, which is now the sole
+ // recent-history and page-selection notification.
+ btn.click();
  window.scrollTo({top:0,behavior:'instant'});
 }
 const root=document.createElement('div');root.id='sxExperience';root.className='sx-experience';
