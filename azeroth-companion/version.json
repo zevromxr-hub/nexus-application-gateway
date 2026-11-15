@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "5.5.0",
+  "version": "5.6.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Build Intelligence — Source Links, Draft Review & Saved-Loadout Diffs",
-  "previous_version": "5.4.0",
+  "subtitle": "Visual Intelligence — Enlarged Official Artwork & Guided Research",
+  "previous_version": "5.5.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added source-reported upstream/downstream talent connection exploration with exact node IDs and current planned points.",
-    "Added a read-only allocation audit for source rank counts, unknown nodes and zero-point linked upstream talents; advisory flags are not game legality verdicts.",
-    "Added side-by-side comparison of any two saved talent drafts or current working draft, including choice changes and point deltas.",
-    "Improved desktop/iPhone research panels and navigation to existing official skill inspection without modifying existing draft keys.",
-    "Fixed repeated DOM writes for unavailable spell icons while preserving the live Blizzard spell-media integration and four-bundle architecture."
+    "Added persistent 48/64/80/96px official-artwork sizing independent of Talent Atlas pan/zoom and stored drafts.",
+    "Extended lazy official Blizzard item icon previews to Item Atlas results, equipped items, Codex item details, and side-by-side gear comparisons.",
+    "Added contextual descriptions for recent Talent Forge, Source Studio, Build Intelligence, Item Atlas, and local draft backup tools.",
+    "Added live source coverage counts for returned talent nodes, reported links, spell IDs and rank descriptions without making game legality assertions.",
+    "Preserved Blizzard login, read-only Cloudflare API access, source-data comparisons, saved builds and mobile usability in the existing 4 frontend bundles."
   ]
 }

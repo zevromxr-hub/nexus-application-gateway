@@ -85,7 +85,7 @@ await captured('chromium-desktop',async page=>{
  await page.keyboard.press('Escape');
  check(await page.locator('#spTour').isHidden(),'Escape should dismiss tour');
  await page.locator('#sxUpdatesButton').click();
- await page.locator('#sxReleaseVersion').getByText('Azeroth v5.5.0').waitFor({timeout:12000});
+ await page.locator('#sxReleaseVersion').getByText('Azeroth v5.6.0').waitFor({timeout:12000});
  await page.keyboard.press('Escape');
  await page.locator('.sidebar [data-view="dominion"]').click();
  await page.locator('#spContext').waitFor({state:'visible',timeout:5000});

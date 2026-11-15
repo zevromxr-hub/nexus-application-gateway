@@ -39,7 +39,7 @@ async function run(engine,phone){
   page.on('pageerror',e=>errors.push(String(e)));
   await page.route('https://nexus-azeroth-api.zevromxr.workers.dev/**',route=>{
    const url=route.request().url();
-   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:url.includes('/api/item/us/19019')?{success:true,data:{id:19019,name:'Synthetic Sword',level:80,quality:{name:'Legendary'},preview_item:{stats:[{type:{name:'Strength'},value:25}]}}}:url.includes('/api/item/us/19020')?{success:true,data:{id:19020,name:'Synthetic Staff',level:83,quality:{name:'Epic'},preview_item:{stats:[{type:{name:'Strength'},value:20}]}}}:url.includes('/api/spell-media/us/81001')?{success:true,data:{id:81001,assets:[{key:'icon',url:'https://render.worldofwarcraft.com/fixture-icon.jpg'}]}}:null;
+   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:url.includes('/api/item/us/19019')?{success:true,data:{id:19019,name:'Synthetic Sword',level:80,quality:{name:'Legendary'},preview_item:{stats:[{type:{name:'Strength'},value:25}]}}}:url.includes('/api/item/us/19020')?{success:true,data:{id:19020,name:'Synthetic Staff',level:83,quality:{name:'Epic'},preview_item:{stats:[{type:{name:'Strength'},value:20}]}}}:url.includes('/api/media/us/19019')?{success:true,data:{id:19019,assets:[{key:'icon',url:'https://render.worldofwarcraft.com/fixture-item-19019.jpg'}]}}:url.includes('/api/media/us/19020')?{success:true,data:{id:19020,assets:[{key:'icon',url:'https://render.worldofwarcraft.com/fixture-item-19020.jpg'}]}}:url.includes('/api/spell-media/us/81001')?{success:true,data:{id:81001,assets:[{key:'icon',url:'https://render.worldofwarcraft.com/fixture-icon.jpg'}]}}:null;
    return route.fulfill({status:data?200:503,contentType:'application/json',
     headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
     body:JSON.stringify(data||{success:false,message:'API disabled during website test'})});
@@ -77,6 +77,14 @@ async function run(engine,phone){
     const after=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
     assert.ok(after>before,'Desktop drag gesture must pan the talent tree');
   }
+  assert.ok(await page.locator('#nxVisualIntel').isVisible(),'Source imagery and guidance must appear in Talent Forge');
+  assert.ok((await page.locator('#nxVisualIntel').textContent()).includes('Build Intelligence'),'New features must be explained');
+  await page.locator('#nxOfficialIconSize').selectOption('96');
+  const iconSize=await page.locator('html').evaluate(el=>getComputedStyle(el).getPropertyValue('--nx-official-icon-size').trim());
+  assert.equal(iconSize,'96px','Official media size control should update scale without altering draft ranks');
+  assert.equal(await page.evaluate(()=>localStorage.getItem('nexus_azeroth_media_scale_v56')),'96','Artwork preference should persist locally');
+  await page.locator('#nxSourceCoverage .nx-coverage-stats').waitFor({timeout:6000});
+  assert.ok((await page.locator('#nxSourceCoverage').textContent()).includes('reported references'),'Source completeness must identify supported API records');
   assert.ok(await page.locator('#tfBuildIntel').isVisible(),'Build Intelligence should mount on desktop and mobile');
   await page.locator('#tfBiNode').selectOption('1002');
   const links=await page.locator('#tfBiConnections').textContent();
@@ -93,6 +101,8 @@ async function run(engine,phone){
   await page.locator('#tfLabItemB').fill('19020');
   await page.locator('#tfLabGearForm button').click();
   await page.locator('#tfLabGearResults').getByText('Synthetic Staff').waitFor({timeout:7000});
+  await page.locator('#tfLabGearResults .nx-gear-compare-icons').waitFor({timeout:6000});
+  await page.locator('#tfLabGearResults .nx-item-art').first().waitFor({timeout:6000});
   const gearCompare=await page.locator('#tfLabGearResults').textContent();
   assert.ok(gearCompare.includes('Numeric stat A − B: +5'),'Gear comparison must only subtract supplied matching numeric stats');
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
