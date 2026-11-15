@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "3.4.0",
+  "title": "Progress Command — Unified Planning Intelligence",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added Progress Command, a read-only cross-studio dashboard combining manually saved Item Atlas, Character Targets, Loot Hunter, and Farming Operations records",
+    "Summarizes local items, manual ownership, active goals, completed targets, and recorded farming-session attempts without double-counting separate tracking systems",
+    "Added character-level overview, prioritized open objectives, and one-click navigation back to the source studios",
+    "Surfaces orphaned Character Targets, manually owned items still marked as open objectives, and overlapping Item Atlas/Loot Hunter records as review suggestions only",
+    "Exports a compact privacy-conscious JSON summary of counts and character progress; no private Blizzard account tokens or account profile payloads",
+    "Preserves v3.3 secure Battle.net My Azeroth, read-only gear intelligence, item API, and all existing storage formats",
+    "No Cloudflare Worker update or additional variables required for this browser-local release"
+  ]
+}
