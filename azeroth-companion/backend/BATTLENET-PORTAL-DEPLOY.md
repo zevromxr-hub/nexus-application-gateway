@@ -16,9 +16,22 @@ Adds an optional first-party **My Azeroth** account portal to the existing Cloud
    It must match the redirect URI in the OAuth request and code exchange, character for character.
 3. Leave the existing Cloudflare Worker encrypted secrets `BLIZZARD_CLIENT_ID` and `BLIZZARD_CLIENT_SECRET` as they are unless you changed Blizzard clients; never paste credentials into GitHub, the app, Discord, or chat.
 4. Create a new **32+ character high-entropy encrypted Worker secret** named `AZEROTH_SESSION_SECRET`. Generate a random value locally, not a memorable password. Treat changing this value as a sign-out of all sessions.
-5. Deploy **both** `backend/worker.js` and `backend/personal-portal.js` as an ES module Worker using Wrangler. The original one-file dashboard copy/paste procedure is **not sufficient** because the new Worker imports a second module.
+5. **Preferred — Cloudflare Dashboard:** open [`worker-v3-single.js`](./worker-v3-single.js), select **Raw**, copy all its contents, open Workers & Pages → `nexus-azeroth-api` → **Edit code**, replace the old Worker code, and deploy. This is the single-file, self-contained version of the two source modules. Do **not** paste your actual secrets into the code. Alternatively, use Wrangler below to deploy the two source modules together.
 
-## Wrangler deployment from Windows PC
+## Simpler deployment through the Cloudflare dashboard
+
+1. Add the new encrypted `AZEROTH_SESSION_SECRET` binding and register the exact callback URI above.
+2. Open [`worker-v3-single.js`](./worker-v3-single.js) on GitHub (choose **Raw**).
+3. Copy its complete contents into the editor for your existing `nexus-azeroth-api` Worker and select **Deploy**.
+4. Test `/health`, the original item/talent routes and `/account` as listed below **before merging the v3 GitHub PR**.
+
+**Generating a session secret:** If Node.js is installed, run this locally on your PC, copy the result into the Cloudflare encrypted secret prompt, then close the terminal. Never share the generated value in chat or GitHub:
+
+```powershell
+node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"
+```
+
+## Alternative: Wrangler deployment from Windows PC
 
 Prerequisites: install current Node.js, have the repo checked out, and ensure you can sign into your existing Cloudflare account.
 
