@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.4.0",
+  "title": "Sovereign Experience Engine — New Home, Navigation & Personalization",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Rebuilt the companion home entrance with a cinematic Assassin Dominion welcome, clear starting actions, curated tool destinations and preserved original overview counts.",
+    "Introduced a Continue Where You Left Off section using website navigation recents and read-only existing Command Launcher pinned tools.",
+    "Organized all existing studios into five collapsible desktop navigation groups, preserving individual tool buttons, the mobile All Tools menu and search behavior.",
+    "Added website-level Appearance Settings for gold, violet and cyan accents, background visibility, comfortable/compact navigation, higher contrast and reduced visual motion.",
+    "Added an Update Center in the website header with verified published companion version, release highlights, recent release history and a mark-as-read indicator.",
+    "Improved responsive layout, touch targets, keyboard dialog navigation and reduced-motion handling for iPhone and desktop, without redesigning underlying studios.",
+    "Separated the original Overview hero from the main studio experience while preserving its working metrics and existing local-planning content.",
+    "Preserved Battle.net sign-in, Cloudflare Worker, all existing studio code and player storage keys; added a website-shell isolation regression test and maintained Discord release metadata."
+  ]
+}

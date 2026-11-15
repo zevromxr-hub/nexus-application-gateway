@@ -9,7 +9,7 @@ const [html,core,css,handoff,armory,targets,farm,atlas,guide,fieldlab]=await Pro
  'index.html','character-dominion.js','character-dominion.css','character-handoff.js','connected-armory.js',
  'character-targets.js','farming-operations.js','item-atlas.js','player-guide.js','player-field-lab.js'].map(read));
 for(const [name,source] of [['dominion',core],['handoff',handoff],['armory',armory],['targets',targets],['farm',farm],['atlas',atlas],['guide',guide],['fieldlab',fieldlab]])new vm.Script(source,{filename:name+'.js'});
-assert.match(html,/v4\.3 CHARACTER DOMINION/);
+assert.ok(html.includes('./character-dominion.js'),'Character Dominion must survive subsequent website releases');
 assert.match(html,/\.\/character-dominion\.js/);
 assert.match(html,/\.\/character-dominion\.css/);
 assert.ok(html.indexOf('player-field-lab.js')<html.indexOf('character-dominion.js'));

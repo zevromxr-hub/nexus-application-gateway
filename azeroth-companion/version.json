@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Character Dominion — Unified Objectives & Armory Handoff",
-  "previous_version": "4.2.0",
+  "subtitle": "Sovereign Experience Engine — New Home, Navigation & Personalization",
+  "previous_version": "4.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Character Dominion: a responsive character-centered command view unifying manually saved characters, priority item targets, completed objectives and recent farming activity.",
-    "Added a next-objective recommendation based on existing manual target priorities and recorded character attempts; item ownership is never inferred from Blizzard data.",
-    "Added quick assignment of Item Atlas items to a selected character, manual complete/reopen actions, and direct item inspection while preserving Character Targets formats and limits.",
-    "Repaired the My Azeroth to Public Armory handoff: character selectors prefill Armory, appear beside an explicit Save Character to My Planners action, and are removed from the public URL after arrival.",
-    "Synchronized same-tab character imports and objective changes between Character Targets, Farming Operations, Item Atlas and the new character dashboard.",
-    "Added an opt-in public Blizzard character profile research summary in Character Dominion, visible only after a player initiates a Live Armory lookup and never treated as authenticated account ownership.",
-    "Updated the Information & Player Guide with Character Dominion and corrected Player Field Lab reports so they no longer hardcode v4.2 as the active app.",
-    "Preserved Battle.net verification, Cloudflare Worker, all existing studios, independent manual data and Discord release automation; added v4.3 integration regression checks."
+    "Rebuilt the companion home entrance with a cinematic Assassin Dominion welcome, clear starting actions, curated tool destinations and preserved original overview counts.",
+    "Introduced a Continue Where You Left Off section using website navigation recents and read-only existing Command Launcher pinned tools.",
+    "Organized all existing studios into five collapsible desktop navigation groups, preserving individual tool buttons, the mobile All Tools menu and search behavior.",
+    "Added website-level Appearance Settings for gold, violet and cyan accents, background visibility, comfortable/compact navigation, higher contrast and reduced visual motion.",
+    "Added an Update Center in the website header with verified published companion version, release highlights, recent release history and a mark-as-read indicator.",
+    "Improved responsive layout, touch targets, keyboard dialog navigation and reduced-motion handling for iPhone and desktop, without redesigning underlying studios.",
+    "Separated the original Overview hero from the main studio experience while preserving its working metrics and existing local-planning content.",
+    "Preserved Battle.net sign-in, Cloudflare Worker, all existing studio code and player storage keys; added a website-shell isolation regression test and maintained Discord release metadata."
   ]
 }
