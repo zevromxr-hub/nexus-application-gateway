@@ -1,4 +1,4 @@
-/* NEXUS | AZEROTH — v4.6 browser-level device audit
+/* NEXUS | AZEROTH — v4.7 browser-level device audit
  * Hosted GitHub Actions supplies Chromium/WebKit and local HTTP serving.
  * No Blizzard credentials, API connectivity, or user data are required.
  */
@@ -21,6 +21,14 @@ async function captured(label,func){
    reducedMotion:'reduce'
   });
   page=await context.newPage();
+  const localStatic=[];
+  page.on('request',request=>{
+   try{
+    const url=new URL(request.url());
+    if(url.origin===new URL(BASE).origin&&url.pathname.startsWith('/azeroth-companion/')&&/\.(?:js|css)$/.test(url.pathname))
+     localStatic.push(url.pathname);
+   }catch(_){}
+  });
   // A localhost test origin is intentionally NOT authorized to query the live
   // Blizzard-backed Cloudflare API. Stub only that external dependency with a
   // non-success response; never simulate authenticated accounts or game data.
@@ -34,6 +42,15 @@ async function captured(label,func){
   await func(page);
   const size=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
   check(size.page<=size.viewport+2,'Horizontal overflow: '+JSON.stringify(size));
+  const cssRequests=[...new Set(localStatic.filter(p=>p.endsWith('.css')))];
+  const jsRequests=[...new Set(localStatic.filter(p=>p.endsWith('.js')))];
+  check(cssRequests.length===2,'Expected 2 CSS requests from the v4.7 source bundles, saw '+JSON.stringify(cssRequests));
+  check(jsRequests.length===2,'Expected 2 JS requests from the v4.7 source bundles, saw '+JSON.stringify(jsRequests));
+  const timings=await page.evaluate(()=>{
+   const n=performance.getEntriesByType('navigation')[0];
+   return {domContentLoadedMs:Math.round(n?.domContentLoadedEventEnd||0),loadMs:Math.round(n?.loadEventEnd||0)};
+  });
+  console.log('RESOURCE BUDGET '+label+' 2 CSS + 2 JS; navigation timings '+JSON.stringify(timings));
   check(errors.length===0,'Unexpected browser JavaScript errors: '+errors.slice(0,8).join('; '));
   console.log('PASS '+label+' width='+size.viewport+'px');
  }catch(e){
@@ -68,7 +85,7 @@ await captured('chromium-desktop',async page=>{
  await page.keyboard.press('Escape');
  check(await page.locator('#spTour').isHidden(),'Escape should dismiss tour');
  await page.locator('#sxUpdatesButton').click();
- await page.locator('#sxReleaseVersion').getByText('Azeroth v4.6.0').waitFor({timeout:12000});
+ await page.locator('#sxReleaseVersion').getByText('Azeroth v4.7.0').waitFor({timeout:12000});
  await page.keyboard.press('Escape');
  await page.locator('.sidebar [data-view="dominion"]').click();
  await page.locator('#spContext').waitFor({state:'visible',timeout:5000});
@@ -106,4 +123,4 @@ for(const engine of ['chromium','webkit']){
   check(await page.locator('.sidebar [data-view="atlas"]').isVisible(),'Desktop transition must preserve other grouped links');
  });
 }
-console.log('All v4.6 desktop/mobile Chromium and mobile WebKit browser audits passed.');
+console.log('All v4.7 desktop/mobile Chromium and mobile WebKit browser audits passed.');

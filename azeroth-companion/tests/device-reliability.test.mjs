@@ -11,7 +11,7 @@ const [html,portal,experience,css,workflow,browser]=await Promise.all([
 ].map(read));
 new vm.Script(portal,{filename:'sovereign-portal.js'});
 new vm.Script(experience,{filename:'sovereign-experience.js'});
-assert.match(html,/v4\.6 DEVICE RELIABILITY/);
+assert.ok(html.includes('./sovereign-experience.js'),'v4.6 navigation fixes must remain available in the compiled site');
 for(const file of ['sovereign-portal.js','sovereign-experience.js','adaptive-navigation.js','command-launcher.js',
  'character-dominion.js','verified-connection.js','player-guide.js','player-field-lab.js']){
  assert.ok(html.includes('./'+file),'Must retain installed '+file);

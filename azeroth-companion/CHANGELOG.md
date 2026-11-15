@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.7.0 · 2026-11-15 — Lean Launch: Performance-Focused Website Delivery
+
+- **Four bundled resources:** The site now loads the existing 25 CSS sources as two ordered stylesheets and the existing 26 deferred JavaScript sources as two ordered script bundles. This reduces stylesheet/script network requests from **51 to four** without removing studios or altering their logic.
+- **Original source retained:** Every individual source file remains in the repository, editable and available for independent module review. Bundle source order and CSS cascade order are maintained, with the exact manifest recorded in HTML.
+- **Deterministic build safety:** New zero-dependency `scripts/lean-launch.mjs` checks that compiled assets match original sources byte-for-byte and that combined JavaScript parses. Stale bundles fail CI before release; rebuild with `--write` when future studio/source work happens.
+- **Browser performance measurements:** Existing desktop Chromium and mobile Chromium/WebKit audits now enforce a two-CSS/two-JavaScript network budget and log browser navigation timings for comparison. Timings are diagnostic and not advertised as guarantees.
+- **Compatibility:** The Assassin Dominion look, v4.6 responsive reliability fixes, all past studios, planning data keys, Battle.net verification, Cloudflare Worker and GitHub-to-Discord release system remain unchanged.
+- **Maintenance documentation:** Instructions explain how future updates regenerate the combined resources using GitHub Actions or Node 22 without requiring players to install anything.
+
+**Limitations:** Bundling primarily reduces network request overhead; the combined source bytes and studio initialization work remain. Real iPhone Safari and real-player acceptance testing are still needed before making device-specific speed claims. No Cloudflare editing required.
+
+
 ## v4.6.0 · 2026-11-15 — Device Reliability: Mobile & Desktop Experience Audit
 
 - **Quick Deck focus recovery:** Favorite checkboxes now keep their keyboard focus after re-render, improving desktop accessibility and device interactions. Shortcuts for removed studio views no longer silently occupy the six-shortcut quota.
