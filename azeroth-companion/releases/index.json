@@ -4,6 +4,11 @@
   "updated": "2026-11-14",
   "releases": [
     {
+      "version": "2.0.0",
+      "title": "Living Azeroth Engine — Connected Armory & Item Codex",
+      "date": "2026-11-14"
+    },
+    {
       "version": "1.2.0",
       "title": "Party Architect — Player Utility Expansion",
       "date": "2026-11-14"

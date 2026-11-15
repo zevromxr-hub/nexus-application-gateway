@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.0.0 · 2026-11-14 — Connected Armory & Item Codex
+
+- **Live Character Armory:** official Retail character profiles retrieved by region, realm slug and character name.
+- **Equipment Inspector:** show equipped item names, levels and item IDs, with direct item lookup.
+- **Blizzard Item Codex:** live item ID lookups with preview stats, effects and item requirements where supplied.
+- **Saved items:** personal wishlist and recent item history, stored locally with the existing independent save sets preserved.
+- **Resilience:** API timeouts and missing data produce clear errors; no invented items or current-patch meta advice.
+- **Integration:** securely connects to the previously deployed Cloudflare gateway without browser-side Blizzard credentials.
+
+**Important limits:** This version does not provide name-based item searching, verified loot source locations, OAuth login, talent validation, or item icon images. These will require backend/data catalog upgrades. Read-only public character data can lag behind in-game updates. The Cloudflare Worker must remain deployed and reachable for connected features to work.
+
 ## v1.2.0 · 2026-11-14 — Party Architect / Player Utility Expansion
 
 - Build five-player groups using current class and specialization options, including Devourer Demon Hunter.

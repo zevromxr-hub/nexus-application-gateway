@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "2.0.0",
+  "title": "Living Azeroth Engine — Connected Armory & Item Codex",
+  "release_date": "2026-11-14",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Connected Blizzard Item Codex: official item names, quality, equipment types, preview stats and effects by item ID",
+    "Read-only character Armory: retrieve public character data by region, realm slug and character name",
+    "Show equipped gear from Blizzard's profile equipment endpoint and inspect selected items in the Codex",
+    "Save up to 100 item wishlist entries and a local history of recently inspected equipment",
+    "Server credentials stay inside the existing Cloudflare Worker, never in GitHub Pages or browser storage",
+    "Retain all Genesis, Overdrive and Party Architect tools and their existing saved data",
+    "Handle API timeouts, unavailable characters, unsupported names and incomplete equipment responses without fabricating game data",
+    "Keep independent release validation and Discord announcement automation"
+  ]
+}
