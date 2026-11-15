@@ -81,5 +81,5 @@ async function releaseInfo(manual=false){const status=$('wowUpdateStatus');statu
  status.textContent='Latest published manifest: v'+version.version+' · '+(manual?'Checked just now':'Release data loaded')+'.';
 }catch(err){status.textContent='Cannot check the live release manifest right now. Local tools remain available.'}}
 $('wowCheckUpdates').addEventListener('click',()=>releaseInfo(true));
-render();releaseInfo();
+render();if(window.NexusStartup?.whenView)window.NexusStartup.whenView('releases',()=>releaseInfo());else releaseInfo();
 })();
