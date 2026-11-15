@@ -17,7 +17,7 @@
 .tf-tree.tf-canvas-active.tf-is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
 .tf-tree.tf-canvas-active button,.tf-tree.tf-canvas-active select{touch-action:manipulation;cursor:pointer}
 .tf-canvas-stage{position:relative;display:block;overflow:visible}
-.tf-canvas-stage>.tf-positioned{position:absolute;left:0;top:0;min-width:0;overflow:visible;will-change:auto}
+.tf-canvas-stage>.tf-positioned{position:absolute;left:0;top:0;min-width:0;width:max-content;overflow:visible;will-change:auto}
 .tf-canvas-stage>.tf-positioned .tf-link-layer{z-index:0}
 .tf-canvas-stage .tf-node{position:relative;z-index:1;min-height:132px;border:1px solid #6f95aa73;border-radius:15px;background:linear-gradient(145deg,#233b52f5,#111f34f5 72%);box-shadow:0 8px 18px #0005,inset 0 1px #ffffff12;transition:border-color .16s,background .16s,box-shadow .16s;overflow:hidden}
 .tf-canvas-stage .tf-node:before{content:'✧';position:absolute;right:10px;top:4px;pointer-events:none;font-size:26px;color:#9abfc72d}
