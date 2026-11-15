@@ -1,5 +1,5 @@
 import {handlePersonal} from './personal-portal.js';
-/* NEXUS Azeroth API v3.2 — Cloudflare Workers module
+/* NEXUS Azeroth API v3.3 — Cloudflare Workers module
  * Deploy this file through Cloudflare's Worker editor. Never insert credentials here.
  * BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET stay in encrypted Worker secrets.
  */
@@ -37,7 +37,7 @@ export default {
   if(u.pathname==='/account'||u.pathname==='/account/privacy'||u.pathname==='/account/app.js'||u.pathname.startsWith('/auth/')||u.pathname.startsWith('/api/me/'))return handlePersonal(request,env,u);
   if(request.method==='OPTIONS')return json({ok:true});
   if(request.method!=='GET')return fail('Method not allowed',405);
-  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.2.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
+  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'3.3.0',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
   const p=u.pathname.split('/').filter(Boolean);
   if(p[0]!=='api'||p.length>6)return fail('Unknown route',404);
   const type=p[1],region=p[2],arg=p[3],arg2=p[4];
