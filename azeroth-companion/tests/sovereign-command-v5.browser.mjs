@@ -51,7 +51,7 @@ async function run(label,browserType,phone){
   assert.equal(await page.evaluate(()=>document.body.dataset.nxHome),'quiet','Homepage atmosphere should persist');
   assert.equal(await page.locator('[data-nx-journey="group"]').getAttribute('aria-pressed'),'true','Last path should persist');
   await page.evaluate(()=>document.querySelector('.nx-skip-link').click());
-  assert.equal(await page.evaluate(()=>document.activeElement?.id),'nxMain','Skip link must focus real main landmark');
+  assert.ok(await page.evaluate(()=>document.activeElement===document.querySelector('main.main')),'Skip link must focus the existing main landmark regardless of its original ID');
   await page.locator('#sxSettingsButton').click();
   await page.locator('#sxResetSettings').click();
   await page.keyboard.press('Escape');
