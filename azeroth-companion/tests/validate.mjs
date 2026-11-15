@@ -17,7 +17,7 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'5.3.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'5.4.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
 const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v5\.3 • Talent Atlas/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
@@ -62,6 +62,15 @@ for(const name of ['pointerdown','pointermove','setPointerCapture','tfCanvasMap'
  assert.ok(talentAtlasCanvas.includes(name),'Talent Atlas missing '+name);
 const atlasStyle=await read('azeroth-companion/talent-canvas-v5.3.css');
 assert.ok(atlasStyle.includes('touch-action:none')&&atlasStyle.includes('.tf-canvas-stage'));
+const sourceStudio=await read('azeroth-companion/talent-source-plus-v5.4.js');new vm.Script(sourceStudio);
+const sourceStudioCSS=await read('azeroth-companion/talent-source-plus-v5.4.css');
+for(const symbol of ['NexusTalentSourceBridge','tfLabTalentA','tfLabTalentB','tfLabGearForm','tfMediaStatus','api/spell-media/'])assert.ok((sourceStudio+(symbol==='NexusTalentSourceBridge'?'':'' )+await read('azeroth-companion/talent-forge.js')).includes(symbol),'Source Studio missing '+symbol);
+assert.match(html,/talent-source-plus-v5\\.4\\.js/);
+assert.match(html,/talent-source-plus-v5\\.4\\.css/);
+assert.ok(sourceStudioCSS.includes('.tf-lab-pair'));
+const worker54=await read('azeroth-companion/backend/worker-v5.4-spell-media-reference.js');
+new vm.Script(worker54.replace(/^import .*?;\\s*/,'').replace('export default','const worker ='));
+assert.ok(worker54.includes("type==='spell-media'")&&worker54.includes('/data/wow/media/spell/'));
 const talent=await read('azeroth-companion/talent-forge.js');
 new vm.Script(talent);
 for(const required of ['tfRegion','tfSpec','tfTree','tfSave','tfImport','tfExport','tfSaved','class_talent_nodes','spec_talent_nodes','hero_talent_trees','/api/talent-index/','/api/talent-tree/'])assert.ok(talent.includes(required),'Talent Forge missing '+required);
