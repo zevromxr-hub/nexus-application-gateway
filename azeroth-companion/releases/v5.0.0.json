@@ -1,0 +1,18 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.0.0",
+  "title": "Sovereign Command Experience — Unified Website Milestone",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced Sovereign Command v5: a new homepage experience with guided paths for first-time players, returning visitors and friends organizing adventures, linking only to existing installed studios.",
+    "Integrated each journey with the current Command Launcher, Character Dominion, Player Guide, Item Atlas, War Room, Progress Command and Sovereign Data Vault; no duplicated studios or account features.",
+    "Added website-shell readability controls for Standard, Comfortable and Large text plus a Quiet and focused homepage atmosphere, stored in a separate local browser preference.",
+    "Expanded accessibility through Skip to main content, current-tool page titles, screen-reader navigation announcements, active navigation markers and a discreet Return to Top control.",
+    "Preserved the complete Assassin Dominion appearance, Quick Deck, update center, on-demand startup, long-list rendering and all pre-v5.0 studio modules.",
+    "Preserved secure Battle.net verification and Cloudflare Worker boundaries without new API requests, OAuth permissions, telemetry, account sync or changes to gameplay storage.",
+    "Maintained the four-resource site delivery, updated the deterministic bundle source manifest for the new website-only module, and added desktop/mobile browser regression coverage.",
+    "Added a dedicated v5 user guide describing journeys, settings, privacy boundaries, accessibility, safe rollback and future maintenance."
+  ]
+}
