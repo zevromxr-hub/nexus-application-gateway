@@ -23,7 +23,7 @@ function formatTime(ms){return new Date(ms).toLocaleTimeString([],{hour:'numeric
 function clock(){const left=Math.max(0,Math.ceil((validUntil-Date.now())/1000));return Math.floor(left/60)+':'+String(left%60).padStart(2,'0')}
 function createDetails(){
  if(!sessionBox)return;
- details=document.createElement('div');details.className='nx-account-details';details.setAttribute('aria-live','polite');
+ details=document.createElement('div');details.className='nx-account-details';details.setAttribute('aria-live','off');
  const title=document.createElement('div');title.className='nx-account-title';title.textContent='Verified session details';
  const stats=document.createElement('div');stats.className='nx-account-stats';
  const make=(label)=>{const wrap=document.createElement('div');const n=document.createElement('small');n.textContent=label;const v=document.createElement('strong');v.textContent='—';wrap.append(n,v);stats.append(wrap);return v};
@@ -103,6 +103,12 @@ document.addEventListener('nexus:account-status',e=>{
  else if(d.state==='checking')personal.textContent='Checking your Battle.net account connection securely…';
  else personal.textContent='No current verified session on this website. Open the secure My Azeroth portal to sign in, then choose Verify & Return.';
 });
+// The initial account state was rendered before the status listener was installed.
+// Bring the My Azeroth panel into sync without waiting for another event.
+if(personal){
+ const current=badge.classList.contains('ud-verified')?'verified':badge.classList.contains('ud-checking')?'checking':'unverified';
+ document.dispatchEvent(new CustomEvent('nexus:account-status',{detail:{state:current,region:current==='verified'?region:null,verifiedAt:current==='verified'?verifiedAt:null}}));
+}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)expire()});
 window.addEventListener('pageshow',expire);
 })();
