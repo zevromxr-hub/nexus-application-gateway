@@ -1,0 +1,71 @@
+{
+  "schema": "nexus.azeroth.loot-sources/1",
+  "edition": "Retail historical collectibles",
+  "reviewed": "2026-11-14",
+  "notes": "Curated historically documented sources; verify current patch, eligibility and difficulty at linked references. Not Blizzard API acquisition data.",
+  "items": [
+    {
+      "id": 19019,
+      "name": "Thunderfury, Blessed Blade of the Windseeker",
+      "kind": "Legendary quest reward",
+      "area": "Molten Core / Silithus",
+      "source": "Quest chain begun by Bindings of the Windseeker from Garr and Baron Geddon; collect quest materials and complete Rise, Thunderfury!",
+      "difficulty": "Legacy raid and quest chain",
+      "steps": [
+        "Acquire one Binding of the Windseeker from Garr or Baron Geddon in Molten Core",
+        "Acquire the second Binding of the Windseeker",
+        "Continue Highlord Demitrian's quest chain in Silithus",
+        "Collect required Firelord essence and Elementium materials",
+        "Complete the Thunderaan encounter and turn in Rise, Thunderfury!"
+      ],
+      "guide": "https://warcraft.wiki.gg/wiki/Thunderfury,_Blessed_Blade_of_the_Windseeker",
+      "wowhead": "https://www.wowhead.com/item=19019"
+    },
+    {
+      "id": 50818,
+      "name": "Invincible's Reins",
+      "kind": "Legacy raid mount",
+      "area": "Icecrown Citadel",
+      "source": "The Lich King, 25-player Heroic difficulty",
+      "difficulty": "25 Heroic",
+      "steps": [
+        "Enter Icecrown Citadel and select the applicable 25-player Heroic raid difficulty",
+        "Defeat the Lich King for a chance at Invincible's Reins",
+        "Track each completed attempt manually and review lockout eligibility in game"
+      ],
+      "guide": "https://www.wowhead.com/item=50818",
+      "wowhead": "https://www.wowhead.com/item=50818"
+    },
+    {
+      "id": 32458,
+      "name": "Ashes of Al'ar",
+      "kind": "Legacy raid mount",
+      "area": "The Eye, Tempest Keep",
+      "source": "Kael'thas Sunstrider",
+      "difficulty": "Legacy raid",
+      "steps": [
+        "Travel to The Eye in Tempest Keep",
+        "Defeat Kael'thas Sunstrider for a chance to obtain Ashes of Al'ar",
+        "Log your attempts manually; verify current lockout rules in game"
+      ],
+      "guide": "https://www.wowhead.com/item=32458",
+      "wowhead": "https://www.wowhead.com/item=32458"
+    },
+    {
+      "id": 49623,
+      "name": "Shadowmourne",
+      "kind": "Legendary quest reward",
+      "area": "Icecrown Citadel",
+      "source": "Ashen Verdict quest chain beginning with The Sacred and the Corrupt",
+      "difficulty": "Quest line / legacy raid",
+      "steps": [
+        "Meet the Ashen Verdict requirements and begin the Shadowmourne quest chain",
+        "Collect Light's Vengeance, Primordial Saronite and the specified boss reagents",
+        "Complete soul and infusion objectives with Shadow's Edge",
+        "Collect Shadowfrost Shards and finish the quest chain"
+      ],
+      "guide": "https://www.wowhead.com/item=49623",
+      "wowhead": "https://www.wowhead.com/item=49623"
+    }
+  ]
+}
