@@ -39,7 +39,7 @@ async function run(engine,phone){
   page.on('pageerror',e=>errors.push(String(e)));
   await page.route('https://nexus-azeroth-api.zevromxr.workers.dev/**',route=>{
    const url=route.request().url();
-   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:url.includes('/api/item/us/19019')?{success:true,data:{id:19019,name:'Synthetic Sword',level:80,quality:{name:'Legendary'},preview_item:{stats:[{type:{name:'Strength'},value:25}]}}}:null;
+   const data=url.includes('/api/talent-index/us')?INDEX:url.includes('/api/talent-tree/us/111/222')?TREE:url.includes('/api/item/us/19019')?{success:true,data:{id:19019,name:'Synthetic Sword',level:80,quality:{name:'Legendary'},preview_item:{stats:[{type:{name:'Strength'},value:25}]}}}:url.includes('/api/item/us/19020')?{success:true,data:{id:19020,name:'Synthetic Staff',level:83,quality:{name:'Epic'},preview_item:{stats:[{type:{name:'Strength'},value:20}]}}}:url.includes('/api/spell-media/us/81001')?{success:true,data:{id:81001,assets:[{key:'icon',url:'https://render.worldofwarcraft.com/fixture-icon.jpg'}]}}:null;
    return route.fulfill({status:data?200:503,contentType:'application/json',
     headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
     body:JSON.stringify(data||{success:false,message:'API disabled during website test'})});
@@ -77,6 +77,17 @@ async function run(engine,phone){
     const after=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
     assert.ok(after>before,'Desktop drag gesture must pan the talent tree');
   }
+  assert.ok(await page.locator('#tfCompareLab').isVisible(),'Source comparison studio must be available');
+  await page.locator('#tfLabTalentA').selectOption('1001');
+  await page.locator('#tfLabTalentB').selectOption('1002');
+  const talentCompare=await page.locator('#tfLabTalentResults').textContent();
+  assert.ok(talentCompare.includes('Synthetic test first rank')&&talentCompare.includes('Node #1001'),'Talent comparison must use returned source rank details');
+  await page.locator('#tfLabItemA').fill('19019');
+  await page.locator('#tfLabItemB').fill('19020');
+  await page.locator('#tfLabGearForm button').click();
+  await page.locator('#tfLabGearResults').getByText('Synthetic Staff').waitFor({timeout:7000});
+  const gearCompare=await page.locator('#tfLabGearResults').textContent();
+  assert.ok(gearCompare.includes('Numeric stat A − B: +5'),'Gear comparison must only subtract supplied matching numeric stats');
   assert.ok(await page.locator('#tfPlanner').isVisible(),'Integrated planner must appear');
   assert.ok(await page.locator('#tfSourceIntel').isVisible(),'Talent source intelligence must appear');
   await page.locator('[data-tf-inspect="1001"]').click();

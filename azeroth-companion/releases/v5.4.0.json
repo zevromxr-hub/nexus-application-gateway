@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.4.0",
+  "title": "Source Studio — Official Spell Media & Comparative Research",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Optional on-demand Blizzard spell media icons through a validated and region-scoped /api/spell-media route; missing images fall back gracefully.",
+    "Side-by-side talent rank comparison includes returned spell/talent IDs, text descriptions, and manually allocated rank counts.",
+    "Two-item lookup comparison includes returned item levels, equipment fields and numeric stat differences where both records supply values.",
+    "Original Talent Forge and all v5.3 pan/zoom/mini-map controls retained, with the same compact 4-bundle frontend footprint.",
+    "No invented spell artwork, simulated damage, automated build legality or best-in-slot ranking is asserted.",
+    "Cloudflare worker-v5.4-spell-media-reference.js is included for optional backend deployment; the release itself does not change the live Worker."
+  ]
+}

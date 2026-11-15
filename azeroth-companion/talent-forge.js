@@ -314,6 +314,27 @@ async function findItemById(id){
 }
 $('tfSourceItemForm').addEventListener('submit',e=>{e.preventDefault();findItemById(Number($('tfSourceItemId').value))});
 
+// v5.4 read-only UI bridge; never exposes OAuth credentials or modifies draft values.
+window.NexusTalentSourceBridge=Object.freeze({
+ snapshot(){
+  const pools=groups();
+  const current=active==='hero'&&heroSelection!=='all'?(tree?.hero_talent_trees?.[Number(heroSelection)]?.hero_talent_nodes||[]):pools[active];
+  return {region:loadedRegion,identity,active,ready:!!tree,nodes:current.map(n=>{
+   const planned=Number(draft[String(n.id)]||0),rankList=Array.isArray(n.ranks)?n.ranks:[];
+   const chosen=Number(choices[String(n.id)]||0);
+   return {id:Number(n.id),name:nodeName(n,Math.max(0,planned-1)),planned,max:maxRanks(n),
+    ranks:rankList.map((r,i)=>{
+     const choiceList=Array.isArray(r.choice_of_tooltips)&&r.choice_of_tooltips.length?r.choice_of_tooltips:[null];
+     return {rank:i+1,choices:choiceList.map((entry,j)=>{
+      const spell=entry?.spell_tooltip||r?.tooltip?.spell_tooltip||{};
+      return {index:j,name:entry?.talent?.name||spell?.spell?.name||r?.tooltip?.talent?.name||n.name||'Talent',
+       spellId:detailId(spell?.spell?.id),talentId:detailId(entry?.talent?.id??r?.tooltip?.talent?.id),
+       description:typeof spell.description==='string'?spell.description:''};
+     })};
+    }),choice:chosen};
+  })};
+ }
+});
 function render(){
  renderPlanner();
  renderSourceTalent();
