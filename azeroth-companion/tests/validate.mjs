@@ -66,20 +66,20 @@ const cmdCore=await read('azeroth-companion/talent-command-core-v5.7.js');new vm
 const cmdUI=await read('azeroth-companion/talent-command-v5.7.js');new vm.Script(cmdUI);
 const cmdCSS=await read('azeroth-companion/talent-command-v5.7.css');
 const sandbox={module:{exports:{}}};new vm.Script(cmdCore).runInNewContext(sandbox);
-const command=sandbox.module.exports;
+const talentCommandEngine=sandbox.module.exports;
 const fixture={identity:'us/111/222',catalog:[
  {id:1001,name:'Source Start',category:'class',max:2},
  {id:1002,name:'Source Middle',category:'class',max:1},
  {id:1003,name:'Source End',category:'class',max:1}
 ],allocations:{1003:1},linkEdges:[{from:1001,to:1002,resolved:true},{from:1002,to:1003,resolved:true},{from:9999,to:1003,resolved:false}]};
-assert.equal(command.audit(fixture).review.length,2,'Must flag empty and unresolved source references without legality claims');
-assert.equal(command.trace(fixture,1003).levels.length,2,'Must follow two levels of real upstream references');
-assert.equal(command.trace(fixture,1003).unresolved[0],9999,'Must retain unresolved source node IDs');
-const tested=command.preview(fixture,1002,1);
+assert.equal(talentCommandEngine.audit(fixture).review.length,2,'Must flag empty and unresolved source references without legality claims');
+assert.equal(talentCommandEngine.trace(fixture,1003).levels.length,2,'Must follow two levels of real upstream references');
+assert.equal(talentCommandEngine.trace(fixture,1003).unresolved[0],9999,'Must retain unresolved source node IDs');
+const tested=talentCommandEngine.preview(fixture,1002,1);
 assert.equal(tested.from,0);assert.equal(tested.to,1);
-assert.equal(command.audit(fixture).total,1,'Point previews must never mutate saved allocations');
+assert.equal(talentCommandEngine.audit(fixture).total,1,'Point previews must never mutate saved allocations');
 assert.equal(tested.after.total,2,'Preview should show changed allocated total');
-assert.equal(command.preview(fixture,1003,1),null,'Cannot exceed source-returned maximum rank');
+assert.equal(talentCommandEngine.preview(fixture,1003,1),null,'Cannot exceed source-returned maximum rank');
 for(const sym of ['tfCmdSearch','tfCmdPathFocus','tfCmdPreview','tfCmdApply','tfCmdInspect','tf-cmd-tree-hint'])assert.ok((cmdUI+cmdCSS).includes(sym),'v5.7 missing '+sym);
 assert.match(html,/talent-command-v5\.7\.js/);
 assert.match(html,/talent-command-core-v5\.7\.js/);
