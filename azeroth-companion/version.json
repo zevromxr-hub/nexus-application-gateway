@@ -1,21 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Player Field Lab — Feedback & Character Planning Intelligence",
-  "previous_version": "4.1.0",
+  "subtitle": "Character Dominion — Unified Objectives & Armory Handoff",
+  "previous_version": "4.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Player Field Lab: a 12-check acceptance-testing workflow for friends using the companion with real Retail characters, with clear Pass, Issue, Blocked and Not Tested states.",
-    "Added browser-local player feedback notes and privacy-safe copy/download reports; notes and device category are optional, and no reports are sent automatically.",
-    "Added Planning Readiness: a read-only summary of locally saved characters, open item targets, logged farming sessions, manual Atlas ownership marks and Loot Hunter objectives.",
-    "Linked Player Field Lab from the Information & Player Guide and retained the existing desktop sidebar and iPhone All Tools navigation.",
-    "Provided one-click links from Planning Readiness to character dashboards, targets, farming operations and Sovereign Data Vault.",
-    "Added controlled test-result deletion without altering existing WoW planning records, Blizzard authentication, or account sessions.",
-    "Preserved separation between Blizzard-reported game data and manually recorded player progress, with no additional OAuth scopes or backend deployment.",
-    "Expanded automated regression checks for report privacy, tool navigation, character summary inputs and mobile styling."
+    "Introduced Character Dominion: a responsive character-centered command view unifying manually saved characters, priority item targets, completed objectives and recent farming activity.",
+    "Added a next-objective recommendation based on existing manual target priorities and recorded character attempts; item ownership is never inferred from Blizzard data.",
+    "Added quick assignment of Item Atlas items to a selected character, manual complete/reopen actions, and direct item inspection while preserving Character Targets formats and limits.",
+    "Repaired the My Azeroth to Public Armory handoff: character selectors prefill Armory, appear beside an explicit Save Character to My Planners action, and are removed from the public URL after arrival.",
+    "Synchronized same-tab character imports and objective changes between Character Targets, Farming Operations, Item Atlas and the new character dashboard.",
+    "Added an opt-in public Blizzard character profile research summary in Character Dominion, visible only after a player initiates a Live Armory lookup and never treated as authenticated account ownership.",
+    "Updated the Information & Player Guide with Character Dominion and corrected Player Field Lab reports so they no longer hardcode v4.2 as the active app.",
+    "Preserved Battle.net verification, Cloudflare Worker, all existing studios, independent manual data and Discord release automation; added v4.3 integration regression checks."
   ]
 }
