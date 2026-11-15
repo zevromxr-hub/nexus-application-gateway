@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.4.0 · 2026-11-15 — Sovereign Experience Engine
+
+- **Cinematic home:** A redesigned welcome with meaningful entry points, clearer tool discovery, latest-release highlight and a recent-tools section. The old character/task/collection overview counters are preserved inside Home rather than displayed above every studio.
+- **Smarter navigation:** Desktop sidebar grouped into Home & Discovery, Character & Builds, Items & Collections, Planning & Operations, and Data & Utilities, with optional collapsed groups. Existing studio buttons and iPhone All Tools search are reused, not replaced.
+- **Appearance settings:** Site-wide shell accent choices (Assassin Gold, Dominion Violet, Astral Cyan), background intensity, compact navigation, higher contrast and reduced motion. All settings use an independent local preference key and do not change gameplay data.
+- **Update center:** A header notification presents the latest verified website release number, highlights and recent release records by reading the existing published version and index manifests. Users can mark a version read on this device; no new backend or Discord webhook is necessary.
+- **iPhone & PC experience:** Responsive home cards, keyboard-friendly modal dialogs, safe-area spacing, reduced-motion support and lightweight hover effects without new large assets.
+- **Compatibility:** All v4.3 studios, Character Dominion, My Azeroth, Battle.net verification, Cloudflare Worker and existing saved player data remain unchanged. The website shell can be reverted independently.
+- **Validation:** Added static regression checks proving no private OAuth endpoints or saved studio stores are accessed by the new shell.
+
+**Notes:** This is a website experience release, not a new game studio. Local preference data and recent-navigation shortcuts do not synchronize automatically across browsers. Complete offline functionality is not claimed; live mobile/browser acceptance testing remains necessary.
+
+
 ## v4.3.0 · 2026-11-15 — Character Dominion: Unified Objectives & Armory Handoff
 
 - **Character Dominion:** Choose any manually saved character to view high-priority objectives, completed targets and recent logged farming attempts in one responsive view. Counters and objectives remain based on local planning records.
