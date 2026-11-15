@@ -1,20 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "3.4.0",
-  "channel": "release-candidate",
-  "release_date": "2026-11-14",
-  "subtitle": "Progress Command — Unified Planning Intelligence",
-  "previous_version": "3.3.0",
+  "version": "3.9.0",
+  "channel": "stable",
+  "release_date": "2026-11-15",
+  "subtitle": "Assassin Dominion & Verified Connected Player",
+  "previous_version": "3.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Progress Command, a read-only cross-studio dashboard combining manually saved Item Atlas, Character Targets, Loot Hunter, and Farming Operations records",
-    "Summarizes local items, manual ownership, active goals, completed targets, and recorded farming-session attempts without double-counting separate tracking systems",
-    "Added character-level overview, prioritized open objectives, and one-click navigation back to the source studios",
-    "Surfaces orphaned Character Targets, manually owned items still marked as open objectives, and overlapping Item Atlas/Loot Hunter records as review suggestions only",
-    "Exports a compact privacy-conscious JSON summary of counts and character progress; no private Blizzard account tokens or account profile payloads",
-    "Preserves v3.3 secure Battle.net My Azeroth, read-only gear intelligence, item API, and all existing storage formats",
-    "No Cloudflare Worker update or additional variables required for this browser-local release"
+    "Refreshed the companion with the dark Assassin Dominion theme, custom artwork, app icons and iPhone Home Screen support.",
+    "Improved navigation on PC and iPhone with adaptive sidebar scrolling, bottom navigation, responsive layouts and accessibility.",
+    "Added a searchable Command Launcher with favorites, recent tools and Ctrl/Cmd+K shortcut.",
+    "Introduced the Unified Character Dashboard for locally tracked item targets, loot goals and farming activity.",
+    "Implemented secure Battle.net connection verification through short-lived Cloudflare receipts; no OAuth tokens are exposed to GitHub Pages.",
+    "Corrected verification for Battle.net accounts without World of Warcraft characters or account collection data.",
+    "Added a Connected Player view with verified region, last check, expiration countdown and one-click recheck; verification is revalidated after refresh.",
+    "Restored coherent release metadata so successful validated Azeroth version updates can trigger automated Discord announcements."
   ]
 }
