@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.1.0 · 2026-11-14 — Collection Intelligence (Deployment-Gated)
+
+- Added **Collection Intelligence** to the first-party Cloudflare **My Azeroth** portal.
+- Compare the authorized Blizzard account's full returned mount collection with a small curated list: **Invincible** and **Ashes of Al'ar**, through exact normalized mount-name matching.
+- Show **Reported Owned** only for a name present in the Blizzard response; show **Not Confirmed** for an absent name. If Blizzard's collection endpoint fails or omits a usable collection, report **Unavailable / Unknown**, never missing.
+- No access tokens, personal ownership records or account information are copied into GitHub Pages, localStorage or another user's browser.
+- Existing login, public Armory, Talent Forge, Loot Hunter and Farming Operations remain unchanged.
+
+**Deployment gate:** Update the single-file Cloudflare Worker source before merging the website release. The new endpoint is `/api/me/collection-intelligence` and requires an existing secure My Azeroth session. No new Cloudflare secrets or Blizzard scopes are required. Confirm actual results with World of Warcraft players; see the Player Testing Guide.
+
 ## v3.0.0 · 2026-11-14 — My Azeroth (Release Candidate)
 
 - **Personal Battle.net sign-in:** separate first-party Cloudflare Worker account portal with Blizzard OAuth authorization-code consent and `wow.profile` scope.
