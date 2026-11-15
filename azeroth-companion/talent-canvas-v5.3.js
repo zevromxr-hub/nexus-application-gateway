@@ -62,6 +62,7 @@
   scale = prior?.scale ?? (matchMedia('(max-width:760px)').matches ? .72 : .88);
   grid.style.transformOrigin = '0 0';
   grid.style.transform = 'scale(' + scale + ')';
+  zoomLabel.textContent = Math.round(scale*100)+'%';
   requestAnimationFrame(() => {
    if (!active()) return;
    const {w,h} = geometry();
