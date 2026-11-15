@@ -1,0 +1,17 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "4.9.0",
+  "title": "Website Stability & Experience Refinement",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Reduced redundant website navigation work by coalescing repeated sidebar class changes and mobile-search updates into one animation-frame refresh.",
+    "Stopped rewriting identical recent-tool shortcuts and removed a duplicate recent-visit update when navigating through the website hero or quick-access actions.",
+    "Improved My Quick Deck stability by reusing existing checkbox elements instead of destroying and recreating the editor on every favorite change, preserving keyboard focus and scroll position.",
+    "Made page-context breadcrumbs update only when the active studio actually changes, without changing any studio navigation or player data.",
+    "Added progressive offscreen painting to common long-list entries where supported, plus isolated layout containment for homepage cards; unsupported browsers retain normal rendering.",
+    "Preserved all v4.8 startup optimizations, four bundled site resources, Battle.net authentication, the Cloudflare Worker, Sovereign Data Vault, existing studios, and saved user records.",
+    "Added source and Chromium/WebKit browser regression tests for Quick Deck node identity, repeated navigation, 240-row list interactions, responsive overflow and continued v4.8 startup behavior."
+  ]
+}

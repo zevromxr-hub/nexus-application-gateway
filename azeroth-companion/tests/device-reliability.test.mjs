@@ -23,7 +23,7 @@ assert.ok(portal.includes('persist();renderDeck(id)'),'Changing a checkbox must 
 assert.ok(experience.includes("sxMobileMedia.addEventListener?.('change'"),'Switching device widths must reset mobile search');
 assert.ok(experience.includes("legacySearch.value=''")&&experience.includes("new Event('input',{bubbles:true})"),'Desktop nav must unhide old phone-filtered tools');
 assert.ok(experience.includes('drawerObserver.observe(document.body'),'Reopening phone drawer must synchronize grouped navigation');
-assert.ok(experience.includes('syncMobileSearch')&&experience.includes('requestAnimationFrame(syncMobileSearch)'),'Mobile search/group sync missing');
+assert.ok(experience.includes('syncMobileSearch')&&experience.includes('scheduleMobileSearch()')&&experience.includes('if(searchFrame)return'),'Mobile search/group sync or per-frame coalescing missing');
 assert.ok(css.includes('prefers-reduced-motion')&&css.includes('env(safe-area-inset-bottom'),'Existing accessibility and iPhone safe area styling preserved');
 for(const engine of ['chromium','webkit'])assert.ok(browser.includes(engine),'Browser audit must include '+engine);
 assert.ok(browser.includes('390,height:844')&&browser.includes('1440,height:900'),'Browser tests must exercise phone and desktop');

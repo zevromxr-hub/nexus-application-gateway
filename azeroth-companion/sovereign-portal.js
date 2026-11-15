@@ -49,19 +49,29 @@ function renderDeck(focusId=null){
   const arrow=document.createElement('span');arrow.className='sp-deck-arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='↗';
   btn.append(symbol,label,arrow);zone.append(btn);
  }
- const choicesWrap=document.getElementById('spDeckChoices');choicesWrap.replaceChildren();
- for(const [id,name]of known){
-  const label=document.createElement('label');label.className='sp-deck-choice';
-  const check=document.createElement('input');check.type='checkbox';check.dataset.spFavorite=id;check.checked=choices.includes(id);
-  check.disabled=!check.checked&&choices.length>=MAX;
-  const title=document.createElement('span');title.textContent=name;
-  label.append(check,title);choicesWrap.append(label);
+ const choicesWrap=document.getElementById('spDeckChoices');
+ // Keep checkbox elements mounted across selections: do not reset focus, scroll
+ // position or touch state just because a different shortcut was checked.
+ const knownKeys=[...known.keys()].join('|');
+ if(choicesWrap.dataset.spKeys!==knownKeys){
+  choicesWrap.replaceChildren();
+  choicesWrap.dataset.spKeys=knownKeys;
+  for(const [id,name]of known){
+   const label=document.createElement('label');label.className='sp-deck-choice';
+   const check=document.createElement('input');check.type='checkbox';check.dataset.spFavorite=id;
+   const title=document.createElement('span');title.textContent=name;
+   label.append(check,title);choicesWrap.append(label);
+  }
+ }
+ for(const check of choicesWrap.querySelectorAll('input[data-sp-favorite]')){
+  const checked=choices.includes(check.dataset.spFavorite);
+  if(check.checked!==checked)check.checked=checked;
+  check.disabled=!checked&&choices.length>=MAX;
  }
  document.getElementById('spDeckCount').textContent=choices.length+' / '+MAX+' selected';
- // Rebuilding checkbox nodes should not discard keyboard focus after each change.
- if(focusId&&document.getElementById('spDeckEditor')?.hidden===false){
+ // Preserve keyboard focus even after a future tool inventory changes.
+ if(focusId&&document.activeElement?.dataset?.spFavorite!==focusId&&document.getElementById('spDeckEditor')?.hidden===false)
   [...choicesWrap.querySelectorAll('input[data-sp-favorite]')].find(x=>x.dataset.spFavorite===focusId)?.focus({preventScroll:true});
- }
 }
 function editing(open){
  const editor=document.getElementById('spDeckEditor');editor.hidden=!open;
@@ -93,17 +103,27 @@ const context=document.createElement('nav');context.className='sp-contextbar';co
 context.innerHTML='<div class="sp-context-location"><span aria-hidden="true">⌂</span><span>NEXUS / AZEROTH</span><span aria-hidden="true">/</span><strong id="spCurrentView">Home</strong></div><div class="sp-context-actions"><button type="button" id="spContextHome">RETURN HOME</button></div>';
 top.after(context);
 document.getElementById('spContextHome').addEventListener('click',()=>jump('overview'));
+let contextFrame=0,lastContextView=null;
 function refreshContext(){
- const view=currentView(),label=names().get(view)||'Companion tool';
+ const view=currentView();
+ if(view===lastContextView)return;
+ lastContextView=view;
+ const label=names().get(view)||'Companion tool';
  const p=document.getElementById('spCurrentView');
  if(p.textContent!==label)p.textContent=label;
- context.hidden=view==='overview';
+ const hide=view==='overview';
+ if(context.hidden!==hide)context.hidden=hide;
 }
-nav.addEventListener('click',e=>{if(e.target.closest('button[data-view]'))requestAnimationFrame(refreshContext)});
+function scheduleContext(){
+ if(contextFrame)return;
+ contextFrame=requestAnimationFrame(()=>{contextFrame=0;refreshContext()});
+}
+nav.addEventListener('click',e=>{if(e.target.closest('button[data-view]'))scheduleContext()});
 const observer=new MutationObserver(rs=>{
- if(rs.some(r=>r.attributeName==='class'))requestAnimationFrame(refreshContext);
+ if(rs.some(r=>r.attributeName==='class'))scheduleContext();
 });
 observer.observe(nav,{subtree:true,attributes:true,attributeFilter:['class']});
+document.addEventListener('nexus:view-activated',scheduleContext);
 refreshContext();
 const online=document.createElement('div');online.className='sp-offline';online.id='spOffline';online.setAttribute('role','status');online.textContent='Your device appears offline. Saved planning tools may still be available, but Blizzard lookups and release checks require a connection.';
 top.after(online);
