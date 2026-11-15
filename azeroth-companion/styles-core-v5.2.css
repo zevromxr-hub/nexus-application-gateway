@@ -336,3 +336,39 @@ html{scroll-padding-top:18px}body{overflow-x:hidden}.layout{align-items:start}.m
 }
 @media(prefers-reduced-motion:reduce){.tf-canvas-stage .tf-node{transition:none}}
 
+
+/* BUNDLE SOURCE: talent-source-plus-v5.4.css */
+/* NEXUS Talent Forge v5.4 — source-verified media and comparison studio. */
+.tf-compare-lab{margin:16px 0;border-color:#d7b67869;background:radial-gradient(ellipse at 80% 0%,#7051292f,transparent 55%),linear-gradient(160deg,#15283b,#0c1828)}
+.tf-lab-heading{display:flex;gap:15px;align-items:flex-start;justify-content:space-between}
+.tf-lab-heading h3{color:#f7d8a8;margin:5px 0 7px;font-size:clamp(17px,2vw,23px)}
+.tf-lab-heading p{color:#b4c8d1;max-width:780px;font-size:12px;line-height:1.7}
+.tf-lab-tag{white-space:nowrap;border:1px solid #a9cbaa66;border-radius:20px;background:#46805e25;color:#c1ebd4;padding:8px 10px;font-size:10px;letter-spacing:.08em}
+.tf-lab-section{border:1px solid #b3916250;background:#0b192ac9;border-radius:14px;padding:15px;margin:15px 0}
+.tf-lab-section h4{margin:0 0 12px;color:#e8c997;font-size:14px}
+.tf-lab-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px;margin-bottom:14px}
+.tf-lab-controls label{display:grid;gap:7px;flex:1 1 150px;min-width:0;font-size:10px;color:#bed0dd;font-weight:700}
+.tf-lab-controls select,.tf-lab-controls input{width:100%;min-height:42px;padding:9px 10px;color:#f5ebdb;background:#101f33;border:1px solid #8c9baf72;border-radius:9px;min-width:0}
+.tf-lab-controls button{min-height:43px;border-color:#d4b27a8c}
+.tf-lab-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.tf-lab-card{border:1px solid #728a9a7c;border-radius:12px;padding:14px;min-width:0;background:linear-gradient(150deg,#243849,#111e30)}
+.tf-lab-card strong{display:block;color:#fae3be;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.tf-lab-card p{color:#d2dde2;line-height:1.65;white-space:pre-line;overflow-wrap:anywhere;font-size:12px}
+.tf-lab-metadata{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.tf-lab-metadata span{border:1px solid #7894a56a;border-radius:7px;background:#ffffff0a;padding:5px 7px;color:#b9d8dc;font-size:10px}
+.tf-lab-alloc{color:#ebc78f;font-size:11px;font-weight:700}
+.tf-lab-empty{color:#b7c9d5;font-size:12px}
+.tf-lab-delta{grid-column:1/-1;color:#d0c5b5;font-size:12px;margin:2px 0}
+.tf-lab-results{font-size:12px;color:#bfced7}
+.tf-lab-scroll{overflow:auto;max-width:100%}
+.tf-lab-scroll table{width:100%;border-collapse:collapse;min-width:420px;text-align:left}
+.tf-lab-scroll th,.tf-lab-scroll td{padding:10px;border-bottom:1px solid #647e9355;vertical-align:top;overflow-wrap:anywhere}
+.tf-lab-scroll th{color:#f4d3a3;font-weight:700}
+.tf-lab-scroll td small{display:block;margin-top:5px;color:#9bded0}
+.tf-lab-foot,.tf-media-status{font-size:11px;color:#b7c8d3;line-height:1.65}
+.tf-media-status{border-left:2px solid #c6a56e;padding-left:10px;margin-top:12px}
+.tf-canvas-stage .tf-node .tf-spell-art{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border:1px solid #c9a56f8c;border-radius:10px;background:radial-gradient(circle,#556a82,#1e2b42);box-shadow:0 0 12px #d9a75921;color:#f6d69c;font-size:22px;overflow:hidden;margin:10px 0 8px}
+.tf-spell-art img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:760px){.tf-lab-heading{flex-wrap:wrap}.tf-lab-pair{grid-template-columns:1fr}.tf-lab-controls label{flex-basis:135px}.tf-lab-section{padding:11px}.tf-lab-scroll table{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.tf-compare-lab *{transition:none!important;animation:none!important}}
+
