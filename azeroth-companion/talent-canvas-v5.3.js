@@ -12,7 +12,7 @@
  const zoomLabel = document.getElementById('tfCanvasZoom');
  const positions = new Map();
  let scale = 1, stage = null, grid = null, dragging = null, pinch = null;
- let painting = false, lastTab = 'class', lastLayout = 'grid', paintToken = 0;
+ let painting = false, paintToken = 0;
  let blockClick = false;
  const limit = (v, a, b) => Math.max(a, Math.min(b, v));
  const category = () => document.querySelector('[data-tf-tab].active')?.dataset.tfTab || 'class';
@@ -28,7 +28,7 @@
   const prev = scale;
   const oldX = (host.scrollLeft + (center?.x ?? host.clientWidth / 2)) / prev;
   const oldY = (host.scrollTop + (center?.y ?? host.clientHeight / 2)) / prev;
-  scale = limit(Math.round(value * 100)/100, .45, 1.4);
+  scale = limit(Math.round(value * 100)/100, .25, 1.4);
   const {w,h} = geometry();
   grid.style.transform = 'scale(' + scale + ')';
   stage.style.width = (w * scale) + 'px';
@@ -41,7 +41,7 @@
  function fit() {
   if (!active()) return;
   const {w,h} = geometry();
-  applyScale(limit(Math.min((host.clientWidth - 16)/w, (host.clientHeight - 12)/h), .45, 1.4), {x:0,y:0});
+  applyScale(limit(Math.min((host.clientWidth - 16)/w, (host.clientHeight - 12)/h), .25, 1.4), {x:0,y:0});
   host.scrollTo({left:0,top:0,behavior:'instant'});
   drawMap();
  }
@@ -156,7 +156,8 @@
   requestAnimationFrame(install);
  });
  observer.observe(host,{childList:true});
- document.querySelectorAll('[data-tf-tab]').forEach(b=>b.addEventListener('click',()=>{lastTab=b.dataset.tfTab;} ,true));
+ document.querySelectorAll('[data-tf-tab]').forEach(b=>b.addEventListener('click',savePosition,true));
+ document.getElementById('tfHeroTree')?.addEventListener('change',savePosition,true);
  const resize=typeof ResizeObserver==='function'?new ResizeObserver(()=>{if(active()){const {w,h}=geometry();stage.style.width=w*scale+'px';stage.style.height=h*scale+'px';drawMap();}}):null;
  if(resize)resize.observe(host);
  install();
