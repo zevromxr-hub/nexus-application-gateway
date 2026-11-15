@@ -42,6 +42,24 @@ const tools=document.createElement('section');tools.id='nxVisualIntel';tools.cla
 '<div class="nx-guide-grid"><article><strong>Talent Atlas</strong><p>Drag the tree to explore; tap + or − to edit a manual rank. INSPECT displays official spell and talent IDs with descriptions for each returned rank. Displayed images come from Blizzard spell-media records.</p></article><article><strong>Build Intelligence</strong><p>Source links show reported relationships between nodes. Amber notes mean review suggested, not that Blizzard rejected the allocation. Compare two local builds to see rank and choice changes—no DPS estimate.</p></article><article><strong>Gear & Item Atlas</strong><p>Search by official item ID, inspect Blizzard's item record, then track personal goals separately. Larger item artwork appears for visible researched results when the Blizzard item-media endpoint supplies an icon.</p></article><article><strong>Saved Builds & Safety</strong><p>Use SAVE to preserve a local draft and EXPORT JSON for a portable backup. Plans are not applied to WoW; no equipment ownership or game-valid import code is claimed.</p></article></div>';
 const target=forge?.querySelector('section[data-section="talents"]')||atlas?.querySelector('section[data-section="atlas"]');
 if(target){const intro=target.querySelector('p.muted');if(intro)intro.after(tools);else target.prepend(tools)}
+const sourcePanel=document.getElementById('tfBuildIntel');
+const coverage=document.createElement('div');coverage.id='nxSourceCoverage';coverage.className='nx-skill-coverage';coverage.setAttribute('role','status');
+coverage.innerHTML='<strong>Source completeness</strong><p>Load Blizzard specialization data to see what this API response actually includes.</p>';
+sourcePanel?.querySelector('#tfBiReview')?.after(coverage);
+function reviewCoverage(){
+ const snap=window.NexusTalentSourceBridge?.snapshot?.();
+ if(!snap?.ready||!coverage.isConnected)return;
+ const catalog=Array.isArray(snap.catalog)?snap.catalog:[];
+ const nodes=Array.isArray(snap.nodes)?snap.nodes:[];
+ const ranks=nodes.flatMap(n=>Array.isArray(n.ranks)?n.ranks:[]);
+ const spells=ranks.flatMap(r=>Array.isArray(r.choices)?r.choices:[]).filter(x=>Number.isSafeInteger(x.spellId)&&x.spellId>0);
+ const described=ranks.filter(r=>r.choices?.some(x=>typeof x.description==='string'&&x.description.trim()));
+ const links=Array.isArray(snap.linkEdges)?snap.linkEdges:[];
+ const outside=links.filter(x=>!x.resolved).length;
+ coverage.innerHTML='<strong>Blizzard data coverage · '+escape(snap.active||'tree')+'</strong>'+
+ '<div class="nx-coverage-stats"><span>'+catalog.length+' returned nodes</span><span>'+links.length+' reported references</span><span>'+spells.length+' spell-ID entries</span><span>'+described.length+' ranks with tooltip descriptions</span></div>'+
+ '<p>'+outside+' reported links fall outside the loaded tree. Counts are only for this API response and selected category, not an estimate of total WoW talents. Missing details stay unverified.</p>';
+}
 const selector=tools.querySelector('select');selector.value=String(savedSize);
 selector.addEventListener('change',()=>{const v=Number(selector.value);if([48,64,80,96].includes(v))applySize(v)});
 let io=null;
@@ -60,6 +78,7 @@ function iconSlot(host,id,region){
  }else load();
 }
 function decorate(){
+ reviewCoverage();
  // A bounded visible list prevents an expensive request per catalog entry on iPhone.
  const atlasResults=document.querySelectorAll('#atlasSearchResults .atlas-entry,#atlasIdResult .atlas-entry,#atlasBoard .atlas-entry');
  let i=0;
@@ -77,7 +96,7 @@ function decorate(){
  }
 }
 let scheduled=false;const mutation=new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;decorate()})});
-for(const id of ['atlasSearchResults','atlasIdResult','atlasBoard','cxEquipment','cxItemResult']){
+for(const id of ['atlasSearchResults','atlasIdResult','atlasBoard','cxEquipment','cxItemResult','tfTree']){
  const host=document.getElementById(id);if(host)mutation.observe(host,{childList:true});
 }
 decorate();
