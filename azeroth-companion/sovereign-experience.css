@@ -139,3 +139,22 @@ body[data-sx-motion=reduce] .sx-nav-group *,body[data-sx-motion=reduce] .sx-expe
 @media(hover:hover) and (prefers-reduced-motion:no-preference){.sx-destinations button:hover,.sx-recent button:hover{transform:translateY(-2px)}}
 @media(prefers-reduced-motion:reduce){.sx-destinations button,.sx-recent button,.sx-tool-button{transition:none!important;transform:none!important}}
 body[data-sx-motion=reduce] .sx-destinations button,body[data-sx-motion=reduce] .sx-recent button,body[data-sx-motion=reduce] .sx-tool-button{transition:none!important;transform:none!important}
+
+/* v4.9: defer paint work for offscreen list entries without hiding the
+ * existing studio data or changing the list DOM. Unsupported browsers ignore
+ * this enhancement. Cached heights replace the estimate after first paint. */
+@supports (content-visibility: auto) {
+ .section.active .list > .entry,
+ .section.active .pc-record,
+ .section.active .cd-record,
+ .section.active .loot-entry,
+ .section.active .pfl-check {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 90px;
+ }
+}
+/* Isolate the website's short home cards from nearby layout invalidations.
+ * No containment is added to dialogs, sticky navigation, or studio controls. */
+.sx-home-block,.sx-destinations > button,.sp-deck-buttons > button{
+ contain:layout style;
+}
