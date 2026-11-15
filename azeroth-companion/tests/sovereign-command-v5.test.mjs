@@ -10,7 +10,7 @@ const [html,js,css,portal,launcher,engine]=await Promise.all([
  'sovereign-portal.js','command-launcher.js','scripts/lean-launch.mjs'].map(read));
 new vm.Script(js,{filename:'sovereign-command-v5.js'});
 assert.ok(html.includes('./sovereign-command-v5.js'),'Sovereign Command should remain active after Talent Forge upgrade');
-for(const p of ['styles-core-v5.1.css','styles-experience-v5.0.css','scripts-core-v4.8.js','scripts-experience-v5.1.js'])
+for(const p of ['styles-core-v5.2.css','styles-experience-v5.0.css','scripts-core-v4.8.js','scripts-experience-v5.2.js'])
  assert.ok(html.includes('./'+p),'Versioned bundled asset missing '+p);
 for(const p of ['sovereign-command-v5.js','sovereign-command-v5.css','sovereign-portal.js','sovereign-experience.js','character-dominion.js'])
  assert.ok(html.includes('./'+p),'Sovereign source manifest missing '+p);
@@ -31,7 +31,7 @@ assert.ok(css.includes('nx-skip-link:focus')&&css.includes('nx-screen-reader-onl
 assert.ok(css.includes('[aria-pressed=true]')&&css.includes('[data-nx-text=large]'),'Controls must show active state and readable text');
 assert.ok(css.includes('@media(max-width:600px)')&&css.includes('safe-area-inset-bottom'),'Mobile safe area and responsive paths required');
 assert.ok(css.includes('prefers-reduced-motion:reduce')&&css.includes('data-sx-motion=reduce'),'Existing motion preferences must be respected');
-assert.ok(engine.includes("styles-experience-v5.0.css")&&engine.includes("scripts-experience-v5.1.js"),'Bundle integrity compiler must reference v5 filenames');
+assert.ok(engine.includes("styles-experience-v5.0.css")&&engine.includes("scripts-experience-v5.2.js"),'Bundle integrity compiler must reference v5 filenames');
 assert.ok(engine.includes("sovereign-command-v5.js")&&engine.includes("sovereign-command-v5.css"),'Compiler must include v5 website shell source files');
 assert.ok(portal.includes('nexus_azeroth_portal_v45')&&launcher.includes('nexus_azeroth_quick_launch_v36'),'Existing local website preferences must stay intact');
 assert.ok(!js.includes('fetch(')&&!js.includes('XMLHttpRequest'),'Presentation upgrade must not add network requests or telemetry');
