@@ -18,7 +18,7 @@ async function run(label,engine,phone){
   }));
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.sp-portal-ready').waitFor();
-  await page.locator('#sxReleaseVersion').getByText('Azeroth v4.8.0').waitFor({timeout:12000});
+  await page.locator('#sxHeroVersion').getByText('Azeroth v4.8.0').waitFor({timeout:12000});
   assert.equal(await page.evaluate(()=>typeof window.NexusStartup?.whenView),'function','View-aware startup scheduler must be available');
   const count=pattern=>requests.filter(url=>pattern.test(url)).length;
   assert.equal(count(/\/api\/talent-index\//),0,'Unused Talent Forge must not fetch Blizzard index on Home');
