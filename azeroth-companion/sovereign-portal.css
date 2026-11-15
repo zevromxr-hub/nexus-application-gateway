@@ -60,3 +60,5 @@ body.sp-portal-ready .sp-deck button:focus-visible,body.sp-portal-ready .sp-cont
 @media(max-width:350px){.sp-deck-buttons{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.sp-deck *, .sp-tour-overlay *{animation:none!important;transition:none!important}}
 body[data-sx-motion=reduce] .sp-deck *,body[data-sx-motion=reduce] .sp-tour-overlay *{animation:none!important;transition:none!important}
+
+.sp-tour-actions button[hidden]{display:none!important}
