@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v3.3.0 · 2026-11-14 — Character Progression (Cloudflare deployment required)
+
+- **My Azeroth Equipped Gear:** signed-in players can select their own account-listed character and request Blizzard-reported currently equipped gear using a protected, first-party Cloudflare endpoint. The Worker verifies the character belongs to the authorized Battle.net account before retrieving gear. This is **not** full inventory, banks, bags, or real-time ownership.
+- **Character Targets:** a separate browser-local planner for assigning Item Atlas records to characters imported from Farming Operations or added manually. Includes high/normal/later priorities, manual completion, notes and its own JSON export/import.
+- No transfer of Blizzard access tokens, account listings, or equipment data from the Worker portal to public GitHub Pages. Character Targets are manually managed and never claim Blizzard-confirmed ownership.
+- **Armory Command Bridge repair:** fixed old v2.8 section selector initialization so the existing Armory → Loot Hunter workflow can load.
+- Existing v3.2 Item Atlas, v3.1 Collection Intelligence, saved browser-local records, and all previous modules are preserved.
+
+**Deployment gate:** update the Cloudflare Worker first (see `backend/CHARACTER-PROGRESSION-v3.3-DEPLOY.md`), then merge the v3.3 GitHub PR. The new endpoint is `/api/me/equipment?realm=...&name=...`. No new encrypted secrets or Blizzard scopes are necessary. Real-account gear and player UI tests are deferred to the saved Player Testing Guide.
+
 ## v3.2.0 · 2026-11-14 — Universal Item Atlas (Backend-Gated)
 
 - Introduced **Universal Item Atlas** for official Blizzard item-name search, numeric item-ID lookup, and personal tracking.
