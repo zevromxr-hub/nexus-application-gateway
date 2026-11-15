@@ -18,7 +18,7 @@ async function run(label,engine,phone){
   }));
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.sp-portal-ready').waitFor();
-  await page.locator('#sxHeroVersion').getByText('Azeroth v5.5.0').waitFor({timeout:12000});
+  await page.locator('#sxHeroVersion').getByText('Azeroth v5.6.0').waitFor({timeout:12000});
   assert.equal(await page.evaluate(()=>typeof window.NexusStartup?.whenView),'function','View-aware startup scheduler must be available');
   const count=pattern=>requests.filter(url=>pattern.test(url)).length;
   assert.equal(count(/\/api\/talent-index\//),0,'Unused Talent Forge must not fetch Blizzard index on Home');
@@ -49,10 +49,10 @@ async function run(label,engine,phone){
   await page.waitForTimeout(150);
   assert.equal(count(/\/api\/talent-index\//),1,'Talents index should be requested once upon visit');
   await go('guide');
-  await page.locator('#pgAppVersion').getByText('Azeroth v5.5.0').waitFor({timeout:12000});
+  await page.locator('#pgAppVersion').getByText('Azeroth v5.6.0').waitFor({timeout:12000});
   assert.ok(count(/\/version\.json(?:\?|$)/)>=2,'Player Guide must load its version info on opening');
   await go('releases');
-  await page.locator('#wowVersion').getByText('v5.5.0').waitFor({timeout:12000});
+  await page.locator('#wowVersion').getByText('v5.6.0').waitFor({timeout:12000});
   assert.ok(count(/\/version\.json(?:\?|$)/)>=3,'Release Center must load its reference info on opening');
   assert.deepEqual(errors,[],'No browser JavaScript errors allowed');
   console.log('PASS v5.0 startup '+label+' — one initial release check, zero unused talent/loot requests, 4 deferred local rollups and all on-demand views operational');
