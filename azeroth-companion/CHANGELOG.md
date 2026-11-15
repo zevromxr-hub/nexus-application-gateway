@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v2.8.0 · 2026-11-14 — Armory Command Bridge
+
+- **Connected gear planning:** one-click TRACK GOAL action for live equipped items, official Blizzard Item Codex results, searchable item records, saved wishlist and inspection history.
+- **Shared progress:** all tracking actions write through the existing Loot Hunter goal logic, preserving manual attempts, completion and notes. Duplicate item IDs do not create duplicate farm goals.
+- **Public character shortcuts:** save and reload previously retrieved public ASCII character profiles in the same local browser; no Blizzard account authorization or credentials are stored.
+- **Armory and Loot Hunter dashboard:** view existing wishlist items, open farming goals and items not yet tracked.
+- **Mobile-conscious layout:** compact responsive controls for desktop and iPhone.
+- **Preservation:** all earlier studios including the v2.7.1 Talent Tree fix, existing data formats, and the Cloudflare Worker remain unchanged.
+
+Saved shortcuts and farm goals are browser-local, and a TRACK GOAL button does not assert that a target is actually obtainable from a particular boss or that the character owns the item.
+
 ## v2.7.1 · 2026-11-14 — Tree Layout Reliability Patch
 
 - **Fixed reported PC issue:** selecting Tree mode no longer automatically switches the entire talent view to compact cards when Blizzard returns overlapping, missing or out-of-range display coordinates.
