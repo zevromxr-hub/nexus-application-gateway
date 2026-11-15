@@ -50,7 +50,7 @@ async function run(engine,phone){
    await page.locator('[data-section="talents"].active').waitFor({timeout:6000});
   }
   async function load(){
-   await page.locator('#tfSpec option[value="0"]').waitFor({timeout:12000});
+   await page.locator('#tfSpec option[value="0"]').waitFor({state:'attached',timeout:12000});
    await page.locator('#tfSpec').selectOption('0');
    await page.locator('#tfLoad').click();
    await page.locator('#tfTree [data-tf-inc="1001"]').waitFor({timeout:12000});
