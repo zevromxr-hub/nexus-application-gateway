@@ -24,3 +24,16 @@
  .tf-positioned{min-width:850px;grid-template-columns:repeat(14,minmax(100px,1fr))}
  .tf-tree:has(.tf-positioned){max-height:68vh}
 }
+
+/* Talent Forge v2.5: source-aware display and saved-build comparison. */
+.tf-intelligence{border:1px solid #b9955d63;border-radius:13px;background:linear-gradient(135deg,#1c3045,#101e30);padding:15px;margin:12px 0}
+.tf-intel-row{display:grid;grid-template-columns:auto minmax(145px,1fr) auto minmax(145px,1fr);gap:11px;align-items:center}
+.tf-intel-row label{font-size:11px;color:#b4c9d7}
+.tf-intel-row select{width:100%;min-width:0;border:1px solid #ffffff35;background:#0b1929;color:#fff;border-radius:9px;padding:10px}
+.tf-compare-summary{font-size:12px;color:#d9c9a8;line-height:1.65;margin-top:12px}
+.tf-help{font-size:11px;color:#9db1c1;line-height:1.6;margin-top:9px}
+.tf-layout-notice{color:#e7c78c;font-size:11px;line-height:1.6;margin:8px 0}
+.tf-default-points{font-size:10px;color:#a4e9c8;font-weight:800}
+.tf-node.tf-more{outline:2px solid #6ec9a1;outline-offset:-2px}
+.tf-node.tf-less{outline:2px solid #eab77d;outline-offset:-2px}
+@media(max-width:760px){.tf-intel-row{grid-template-columns:1fr}.tf-intelligence{padding:12px}}
