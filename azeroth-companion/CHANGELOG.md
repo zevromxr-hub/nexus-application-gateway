@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v4.5.0 · 2026-11-15 — Sovereign Portal: Personalized Website Experience
+
+- **My Quick Deck:** Customize up to six direct links to existing studios on Home. Shortcuts can be added, removed or restored without affecting any studio data. Favorites are saved locally to this device.
+- **Website orientation:** Optional five-step tour introduces the redesigned home, navigation, private Battle.net connection boundaries, personal shortcuts and Sovereign Data Vault. First-time users see a small dismissible invitation rather than a blocking modal.
+- **Page context:** Non-intrusive breadcrumb and Return Home control appear when viewing studios, giving desktop and iPhone users a reliable way back to their starting point.
+- **Offline awareness:** When a device reports no connection, the site displays a clear note that public Blizzard research and release updates may not be available. No API health or continuous network monitoring is claimed.
+- **Usability and accessibility:** Responsive quick-deck cards, keyboard-friendly tour, mobile safe-area support, focus states and reduced-motion styling.
+- **Stability and privacy:** Preserves all existing studio scripts, saved character/collection/farming records, Cloudflare Worker, Battle.net connection, v4.4 appearance settings and Discord notification workflow. The new preference key stores website-only shortcut IDs and tour dismissal.
+- **Release tests:** Extended the existing v4.4 website-shell suite and introduced v4.5 checks for shortcut limits, navigation integration, privacy, motion and accessibility.
+
+**Notes:** This release updates website presentation and onboarding only. It does not implement account sync, game tracking, automatic offline support or additional studios. Real-device iPhone Safari and desktop acceptance testing remains recommended.
+
+
 ## v4.4.0 · 2026-11-15 — Sovereign Experience Engine
 
 - **Cinematic home:** A redesigned welcome with meaningful entry points, clearer tool discovery, latest-release highlight and a recent-tools section. The old character/task/collection overview counters are preserved inside Home rather than displayed above every studio.
