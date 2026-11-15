@@ -8,7 +8,7 @@ const forge=document.getElementById('talentForge'),atlas=document.getElementById
 if(!forge&&!atlas&&!document.getElementById('cxItemResult'))return;
 const API='https://nexus-azeroth-api.zevromxr.workers.dev';
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const regions=new Set(['us','eu','kr','tw']),cache=new Map(),queued=new Set(),queue=[];let concurrent=0,requestCount=0;
+const regions=new Set(['us','eu','kr','tw']),cache=new Map(),queued=new Set(),queue=[];let concurrent=0;
 const key=(region,id)=>region+':'+id;
 const validId=id=>/^[1-9][0-9]{0,9}$/.test(String(id));
 const origin=img=>{try{const url=new URL(img);return url.protocol==='https:'&&!url.username&&!url.password&&url.hostname.endsWith('.worldofwarcraft.com')?url.href:null}catch(_){return null}};
@@ -22,7 +22,7 @@ function mediaTask(region,id,done){
 }
 function drain(){
  while(concurrent<3&&queue.length){
-  const job=queue.shift();concurrent++;requestCount++;
+  const job=queue.shift();concurrent++;
   const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8500);
   fetch(API+'/api/media/'+job.region+'/'+job.id,{headers:{Accept:'application/json'},credentials:'omit',cache:'no-store',signal:controller.signal})
    .then(r=>r.ok?r.json():null).then(payload=>{
@@ -40,10 +40,11 @@ function applySize(v){savedSize=v;document.documentElement.style.setProperty('--
 applySize(savedSize);
 const tools=document.createElement('section');tools.id='nxVisualIntel';tools.className='panel nx-media-guide';tools.innerHTML='<div class="nx-guide-top"><div><span class="wow-kicker">NEXUS / VISUAL INTELLIGENCE</span><h3>Artwork & Research Controls</h3><p>Enlarge official Blizzard spell and item artwork without changing your talent allocations, item records, or saved builds. Images are visual references—not item ownership evidence.</p></div><label class="nx-size-field">Artwork size<select id="nxOfficialIconSize" aria-label="Official skill and item artwork size"><option value="48">Compact · 48 px</option><option value="64">Comfortable · 64 px</option><option value="80">Large · 80 px</option><option value="96">Extra large · 96 px</option></select></label></div>'+
 '<div class="nx-guide-grid"><article><strong>Talent Atlas</strong><p>Drag the tree to explore; tap + or − to edit a manual rank. INSPECT displays official spell and talent IDs with descriptions for each returned rank. Displayed images come from Blizzard spell-media records.</p></article><article><strong>Build Intelligence</strong><p>Source links show reported relationships between nodes. Amber notes mean review suggested, not that Blizzard rejected the allocation. Compare two local builds to see rank and choice changes—no DPS estimate.</p></article><article><strong>Gear & Item Atlas</strong><p>Search by official item ID, inspect Blizzard's item record, then track personal goals separately. Larger item artwork appears for visible researched results when the Blizzard item-media endpoint supplies an icon.</p></article><article><strong>Saved Builds & Safety</strong><p>Use SAVE to preserve a local draft and EXPORT JSON for a portable backup. Plans are not applied to WoW; no equipment ownership or game-valid import code is claimed.</p></article></div>';
-const target=forge||atlas;target?.parentNode?.insertBefore(tools,target);
+const target=forge?.querySelector('section[data-section="talents"]')||atlas?.querySelector('section[data-section="atlas"]');
+if(target){const intro=target.querySelector('p.muted');if(intro)intro.after(tools);else target.prepend(tools)}
 const selector=tools.querySelector('select');selector.value=String(savedSize);
 selector.addEventListener('change',()=>{const v=Number(selector.value);if([48,64,80,96].includes(v))applySize(v)});
-const icons=new WeakMap(),observed=new WeakSet();let io=null;
+let io=null;
 function iconSlot(host,id,region){
  if(!host||!validId(id)||!regions.has(region)||host.querySelector('.nx-item-art'))return;
  const slot=document.createElement('span');slot.className='nx-item-art';slot.setAttribute('aria-label','Official item artwork, if provided by Blizzard');slot.setAttribute('role','img');
