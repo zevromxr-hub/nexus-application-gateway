@@ -62,3 +62,21 @@ body.sp-portal-ready .sp-deck button:focus-visible,body.sp-portal-ready .sp-cont
 body[data-sx-motion=reduce] .sp-deck *,body[data-sx-motion=reduce] .sp-tour-overlay *{animation:none!important;transition:none!important}
 
 .sp-tour-actions button[hidden]{display:none!important}
+
+/* v4.9 — long collection lists: delay painting offscreen records without
+   hiding interactive controls, truncating source data or changing record order.
+   Supports modern Chromium and Safari; older browsers retain normal layout. */
+@supports (content-visibility:auto){
+ .section[data-section="characters"] .entry,
+ .section[data-section="builds"] .entry,
+ .section[data-section="plans"] .entry,
+ .section[data-section="collections"] .entry,
+ #itemAtlas .atlas-entry,
+ #progressCommand .pc-record,
+ #characterDominion .cd-record,
+ #lootHunter .loot-entry,
+ #nexusPlayerGuide .pg-tool{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 96px;
+ }
+}
