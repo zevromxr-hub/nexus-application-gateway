@@ -1,20 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Talent Forge — Live Specialization Explorer",
-  "previous_version": "2.2.0",
+  "subtitle": "Talent Forge Overdrive — Visual Builder & Draft Controls",
+  "previous_version": "2.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Talent Forge with official Blizzard Retail specialization talent-tree data",
-    "Explore class, specialization and hero talent nodes whenever supplied by Blizzard",
-    "Allocate manual node ranks and explore alternate talent choices within an interactive planning workspace",
-    "Save up to 40 named talent drafts locally with portable JSON import and export",
-    "Retain existing Item Codex, Blizzard character Armory, Loot Hunter, party planning and progression studios",
-    "Use the existing secure Cloudflare API Worker with Blizzard client credentials kept outside the browser",
-    "Clearly identify talent drafts as unvalidated planning records rather than in-game import codes"
+    "Reorganized the official Blizzard class, specialization and hero talent nodes into a coordinate-aware visual talent grid",
+    "Added a compact card view and search by talent names, descriptions and node IDs",
+    "Added multi-step Undo and Redo for manual rank and choice edits",
+    "Added a configurable personal allocation reminder, clearly separated from Blizzard's game-validation rules",
+    "Preserved v2.3 saved build storage, portable JSON drafts, and original item/character/loot workflows",
+    "Improved small-screen scrolling and reduced clutter in talent exploration"
   ]
 }
