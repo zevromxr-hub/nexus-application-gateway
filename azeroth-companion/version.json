@@ -1,20 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "channel": "stable",
   "release_date": "2026-11-14",
-  "subtitle": "Armory Command Bridge — Connected Gear & Loot Goals",
-  "previous_version": "2.7.1",
+  "subtitle": "Character Farming Operations — Assignments & Session Ledger",
+  "previous_version": "2.8.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added an Armory Command Bridge connecting live Blizzard equipment and Item Codex research to existing Loot Hunter goals",
-    "Enabled one-click TRACK GOAL actions for equipped gear, inspected items, item-name search results and saved wishlists",
-    "Kept item tracking deduplicated by Blizzard item ID using the original Loot Hunter storage and update events",
-    "Added local shortcuts for successfully loaded public character profiles with one-click refresh through the existing Armory",
-    "Added cross-studio dashboard totals for saved items, farm goals and wishlist entries not yet tracked",
-    "Preserved Talent Forge v2.7.1, all saved progress, character searches and Cloudflare API routes",
-    "Kept browser-only persistence with no user login requirement or additional Blizzard secrets"
+    "Added character-specific Farming Operations inside Loot Hunter, with assignments to multiple manually selected characters",
+    "Added an optional import of previously saved public Armory character shortcuts",
+    "Added dated manual farming session records with attempt counts and notes per character and item",
+    "Added character and goal filters with progress summaries for assigned goals and session activity",
+    "Added standalone JSON export/import for character assignments and session history, without touching legacy Loot Hunter backups",
+    "Preserved all v2.8 and Talent Forge features, the original farming goals, and existing Cloudflare Worker credentials"
   ]
 }
