@@ -484,7 +484,7 @@ body[data-sx-motion=reduce] .sp-deck *,body[data-sx-motion=reduce] .sp-tour-over
 @supports (content-visibility:auto){
  .section[data-section="characters"] .entry,
  .section[data-section="builds"] .entry,
- .section[data-section="plans"] .entry,
+ .section[data-section="progress"] .entry,
  .section[data-section="collections"] .entry,
  #itemAtlas .atlas-entry,
  #progressCommand .pc-record,
