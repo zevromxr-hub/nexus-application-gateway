@@ -1,0 +1,28 @@
+/* NEXUS | AZEROTH v3.5 — Assassin Dominion visual layer.
+   Additive, presentation-only; safely retains v3.4.1 navigation and all app data. */
+:root{color-scheme:dark;--bg:#070b10;--surface:#101820;--edge:#d7ad6942;--text:#e9edf1;--muted:#aebbc8;--gold:#d7ab6a;--aqua:#78cad2;--ac-steel:#15212a;--ac-slate:#0c151e}
+html{background:#070b10}
+body{background:#070b10;color:var(--text);position:relative;isolation:isolate}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:linear-gradient(90deg,rgba(5,9,13,.83) 0%,rgba(5,9,13,.68) 46%,rgba(5,9,13,.39) 100%),linear-gradient(0deg,rgba(5,9,13,.85),transparent 60%),url("./assets/assassin-background.webp");background-size:cover;background-position:center 38%;background-repeat:no-repeat}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.25;background-image:radial-gradient(circle at 16% 13%,#41697839,transparent 35%),radial-gradient(circle at 85% 84%,#a57d4533,transparent 32%)}
+.layout{position:relative}.main{position:relative}.sidebar{background:linear-gradient(180deg,#0a121bf7,#0a1019f5)!important;border-right:1px solid #c69d6157;box-shadow:8px 0 36px #0006}.brand{color:#f1d6ad!important;text-shadow:0 1px 24px #a77a4257;letter-spacing:2.5px}.brand small{color:#b9c3c5}
+.nav button{color:#bfc9d1;border-radius:10px}.nav button:hover{background:#263743ad;color:#f4e4cf}.nav button.active{background:linear-gradient(105deg,#76593666,#1e41454f)!important;color:#f8dcaa!important;border:1px solid #e0b67480!important;box-shadow:inset 3px 0 #d8a966}
+.main .hero{background:linear-gradient(110deg,#101a22ea 0%,#111b26d5 47%,#111b26aa 100%);border:1px solid #d2ad725f;box-shadow:0 18px 70px #0007, inset 0 1px #ffffff0e;min-height:260px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 95% 10%,#ba8a3c22,transparent 48%);z-index:0}.hero:after{opacity:.23!important;filter:grayscale(1)}.hero h1{font-weight:900;letter-spacing:-.04em;text-shadow:0 3px 18px #0008}.hero h1 em{color:#e2bd83}.overline,.wow-kicker{color:#e6c48f;letter-spacing:2.1px}
+.stat,.panel,.pu-vault-card,.wow-metrics>div{background:linear-gradient(145deg,#14202bea,#0d151fe9)!important;border:1px solid #b994635c!important;box-shadow:0 14px 36px #0005,inset 0 1px #ffffff08;backdrop-filter:blur(7px)}
+.panel h3,.section h2{color:#f0dcc1}.stat strong,.wow-metrics strong{color:#edd3a6}.muted,.hint{color:#b7c2ce}
+.entry,.wow-item,.pc-record{background:#0d1924cd;border:1px solid #b5a08039}
+button,.wow-link,.wow-file{border-radius:10px}button{background:#202e39;border-color:#bd9a6a55;color:#f4e5d2}button:hover{background:#30404c;border-color:#d9ba876e}
+button.primary,.primary{background:linear-gradient(120deg,#926d3d,#ddba82);color:#17130e;box-shadow:0 5px 18px #0004}button.primary:hover,.primary:hover{filter:brightness(1.1)}
+input,textarea,select{accent-color:#d4a86c}.field input,.field select,.field textarea{background:#0b151e;border-color:#c6ad8354}.field input:focus,.field select:focus,.field textarea:focus{border-color:#9bd0d5}
+.chip{background:#2b251e99;color:#f6d9aa;border-color:#b994615e}.footer{color:#a6a9ac}.notice{background:#4a392d55;color:#d9d5d0}
+.ac-mobile-bar{background:#0b141df5;border-color:#bd9b6669}.ac-mobile-bar button.active{background:#ad86512f;color:#f5d3a2;border-color:#ddbb8666}
+.ac-menu-backdrop{background:#03070bce}
+::selection{background:#b99a6266;color:#fff}
+@media(max-width:800px){
+  body::before{background-image:linear-gradient(180deg,#070c11c9 0%,#080d13d9 44%,#080d13ef 100%),url("./assets/assassin-background.webp");background-position:69% top;background-size:cover}
+  .sidebar{background:linear-gradient(175deg,#0a111bf9,#0c1824f9)!important}
+  .main .hero{min-height:235px;background:linear-gradient(110deg,#0a121ae9,#131d27d0)!important}
+  .panel,.stat{backdrop-filter:none}
+}
+@media(prefers-reduced-motion:reduce){.panel,.stat{backdrop-filter:none}}
