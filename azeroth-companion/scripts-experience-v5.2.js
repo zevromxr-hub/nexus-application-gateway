@@ -2350,9 +2350,9 @@ document.body.classList.add('nx-v5-ready');
     holder=document.createElement('span');holder.className='tf-spell-art';holder.setAttribute('aria-hidden','true');holder.textContent='✧';
     const title=node.querySelector('strong');if(title)title.before(holder);
    }
-   if(!spellId){holder.textContent='✧';continue}
+   if(!spellId){if(holder.textContent!=='✧'||holder.firstElementChild)holder.textContent='✧';continue}
    const image=iconCache.get(key);
-   if(!image){if(holder.querySelector('img'))holder.replaceChildren();holder.textContent='✧';continue}
+   if(!image){if(holder.textContent!=='✧'||holder.firstElementChild)holder.textContent='✧';continue}
    if(holder.querySelector('img')?.src===image)continue;
    const img=document.createElement('img');img.src=image;img.alt='';img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';
    img.addEventListener('error',()=>{iconCache.set(key,'');holder.textContent='✧';},{once:true});
