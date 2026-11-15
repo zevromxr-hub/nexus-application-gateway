@@ -9,8 +9,8 @@ const [html,experience,portal,css,adaptive,original]=await Promise.all([
 'index.html','sovereign-experience.js','sovereign-portal.js','sovereign-experience.css','adaptive-navigation.js','scripts/lean-launch.mjs'].map(read));
 new vm.Script(experience,{filename:'sovereign-experience.js'});
 new vm.Script(portal,{filename:'sovereign-portal.js'});
-assert.match(html,/v4\.9 EXPERIENCE REFINEMENT/);
-assert.ok(html.includes('./styles-experience-v4.9.css')&&html.includes('./scripts-experience-v4.9.js'),'Both v4.9 assets must be cache-busted');
+assert.ok(html.includes('./sovereign-experience.js'),'v4.9 site shell must remain included across v5 releases');
+assert.ok(html.includes('./styles-experience-v5.0.css')&&html.includes('./scripts-experience-v5.0.js'),'Both v4.9 assets must be cache-busted');
 assert.ok(html.includes('./styles-core-v4.7.css')&&html.includes('./scripts-core-v4.8.js'),'Unchanged core assets should stay intact');
 assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,2);
 assert.equal((html.match(/<script defer src=/g)||[]).length,2);
@@ -30,7 +30,7 @@ assert.ok(css.includes('@supports (content-visibility: auto)'),'Long lists shoul
 assert.ok(css.includes('contain-intrinsic-size: auto 90px'),'Offscreen list items need stable intrinsic size estimates');
 assert.ok(css.includes('.section.active .list > .entry'),'List paint optimization must be scoped to visible studio lists');
 assert.ok(!css.includes('.section{content-visibility'),'Never hide entire sections and break the router');
-assert.ok(original.includes("styles-experience-v4.9.css")&&original.includes("scripts-experience-v4.9.js"),'Compiled bundle generator must enforce v4.9 assets');
+assert.ok(original.includes("styles-experience-v5.0.css")&&original.includes("scripts-experience-v5.0.js"),'Compiled bundle generator must enforce v4.9 assets');
 assert.ok(adaptive.includes('function refreshSearch()'),'Adaptive mobile navigation source remains intact');
 for(const banned of ['BLIZZARD_CLIENT_SECRET','AZEROTH_SESSION_SECRET','__Host-nx_bnet_session','access_token']){
  assert.ok(!experience.includes(banned)&&!portal.includes(banned),'Site-only changes must not handle account secrets');
