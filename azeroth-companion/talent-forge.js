@@ -329,7 +329,7 @@ window.NexusTalentSourceBridge=Object.freeze({
    allocations:{...draft},choiceByNode:{...choices},
    savedDrafts:saved.filter(x=>x.identity===identity).map(x=>({name:x.name,savedAt:x.savedAt,rankByNode:{...x.rankByNode},choiceByNode:{...x.choiceByNode}})),
    linkEdges:edges,
-   catalog:list.map(n=>({id:Number(n.id),name:nodeName(n),max:maxRanks(n),category:groups().class.some(x=>Number(x.id)===Number(n.id))?'class':groups().spec.some(x=>Number(x.id)===Number(n.id))?'spec':'hero',display_row:Number.isSafeInteger(n.display_row)?n.display_row:null,display_col:Number.isSafeInteger(n.display_col)?n.display_col:null,default_points:Number.isSafeInteger(n.default_points)?n.default_points:null})),
+   catalog:list.map(n=>{const rank=Array.isArray(n.ranks)?n.ranks[0]:null;const choice=Array.isArray(rank?.choice_of_tooltips)?rank.choice_of_tooltips[0]:null;const tip=choice?.spell_tooltip||rank?.tooltip?.spell_tooltip||{};return{id:Number(n.id),name:nodeName(n),max:maxRanks(n),category:groups().class.some(x=>Number(x.id)===Number(n.id))?'class':groups().spec.some(x=>Number(x.id)===Number(n.id))?'spec':'hero',display_row:Number.isSafeInteger(n.display_row)?n.display_row:null,display_col:Number.isSafeInteger(n.display_col)?n.display_col:null,default_points:Number.isSafeInteger(n.default_points)?n.default_points:null,spellId:detailId(tip.spell?.id),talentId:detailId(choice?.talent?.id??rank?.tooltip?.talent?.id),summary:typeof tip.description==='string'?tip.description.slice(0,600):''}}),
    nodes:current.map(n=>{
    const planned=Number(draft[String(n.id)]||0),rankList=Array.isArray(n.ranks)?n.ranks:[];
    const chosen=Number(choices[String(n.id)]||0);
