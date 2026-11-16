@@ -21,14 +21,26 @@
 /* Keep launcher from competing with the existing floating music player's controls on narrow screens */
 @media(max-width:540px){body:has(#nxMusicDock:not([hidden])) .nx-hyper-music{z-index:1990}}
 
-/* v7.1.1 mobile-only: reserve real space in the existing sticky sidebar.
- * No fixed mobile overlay; desktop launcher styling remains exactly as before. */
+/* v7.1.2: Mobile-only music action in the top-of-website header.
+ * The PC fixed launcher above is intentionally unchanged.
+ * This is normal document flow, never a sticky or floating obstruction.
+ */
 .nx-mobile-music-slot{display:none}
 @media(max-width:800px){
- .nx-mobile-music-slot{display:flex;align-items:center;justify-content:flex-end;width:100%;min-height:42px;margin:0;flex-shrink:0}
- .nx-mobile-music-slot .nx-hyper-music{position:static;left:auto;bottom:auto;right:auto;z-index:auto;width:auto;max-width:100%;min-height:40px;padding:6px 12px;gap:8px;box-shadow:0 2px 10px #0005;flex:0 0 auto;touch-action:manipulation}
- .nx-mobile-music-slot .nx-hyper-note{font-size:18px}
- .nx-mobile-music-slot .nx-hyper-text{font-size:10px}
- .nx-mobile-music-slot .nx-hyper-text small{font-size:8px}
+ .main > .top .nx-mobile-music-slot{display:flex;flex:1 0 100%;justify-content:flex-end;align-items:center;min-width:0;margin-top:2px}
+ .nx-mobile-music-slot{display:flex;justify-content:flex-end;width:100%}
+ .nx-mobile-music-slot .nx-hyper-music{
+   position:static;left:auto;right:auto;bottom:auto;z-index:auto;
+   display:flex;min-height:42px;width:auto;max-width:100%;
+   padding:8px 13px;gap:9px;flex:0 1 auto;
+   box-shadow:0 2px 10px #0005;touch-action:manipulation;
+ }
+ .nx-mobile-music-slot .nx-hyper-note{font-size:19px}
+ .nx-mobile-music-slot .nx-hyper-text{font-size:11px;white-space:normal}
+ .nx-mobile-music-slot .nx-hyper-text small{font-size:9px}
  body:has(#nxMusicDock:not([hidden])) .nx-mobile-music-slot .nx-hyper-music{z-index:auto}
+}
+@media(max-width:440px){
+ .main > .top .nx-mobile-music-slot{justify-content:stretch}
+ .nx-mobile-music-slot .nx-hyper-music{justify-content:center;width:100%;max-width:none}
 }
