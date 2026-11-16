@@ -1,19 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.3.1",
+  "version": "6.4.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Forge Precision Controls — Drag & Rank Inspector Repair",
-  "previous_version": "6.3.0",
+  "subtitle": "Forge Reliability — Radiant Talent Atlas & Discord Delivery",
+  "previous_version": "6.3.1",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Fixed Talent Atlas dragging by starting pointer capture only after intentional movement, reducing interference with node button clicks and touch interactions.",
-    "Preserved the current tree viewport when ranking talents so node positions do not abruptly jump or reset after edits.",
-    "Improved detailed talent inspector responsiveness: rank buttons use original planner controls without unexpected inspector auto-scrolling.",
-    "Added a non-destructive rank-effect preview selector with an explicit apply-one-step action to examine Blizzard-returned rank descriptions before spending points.",
-    "Increased node button tap targets, improved focus styles, and refreshed site scripts with cache-busting for PC and mobile.",
-    "Kept saved builds, existing talent IDs, undo/redo, Media Studio, account integration and all other functionality unchanged."
+    "Discord release announcements now follow dedicated version-record publication rather than unrelated website validation workflows.",
+    "Automatic Discord delivery uses GitHub version tags to skip releases that already have a confirmed message receipt.",
+    "Replaced the older assassin wallpaper inside the actual Talent Atlas tree with Radiant Warrior art, including the compiled stylesheet used by visitors.",
+    "Added optional compact talent nodes and quick-use instructions, while keeping original rank buttons, inspector, minimap, zoom and saved tree positions.",
+    "Preserved build data, Blizzard source IDs, Music/Media Studio, connected account features and mobile/desktop compatibility."
   ]
 }
