@@ -6,6 +6,15 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const acquisition=await read('azeroth-companion/acquisition-specialization-v7.9.js');
+new vm.Script(acquisition);
+assert.match(html,/acquisition-specialization-v7\.9\.js\?v=790/,'Acquisition and specialization intelligence must load');
+assert.match(html,/acquisition-specialization-v7\.9\.css\?v=790/,'Acquisition and specialization styles must load');
+for(const name of ['loot-sources.json','nexus_azeroth_loot_hunter_v1','NexusTalentSourceBridge','nxAiFilter','nxSpecCategory','nxSpecList'])
+ assert.ok(acquisition.includes(name),'Source intelligence integration missing: '+name);
+assert.ok(!acquisition.includes('localStorage.setItem'),'Research modules must not change saved goals or talents');
+assert.ok(!acquisition.includes('nexus:loot-track'),'Research modules must not automatically change tracking');
+
 const warcraftResearch=await read('azeroth-companion/warcraft-research-v7.8.js');
 new vm.Script(warcraftResearch);
 assert.match(html,/warcraft-research-v7\.8\.js\?v=780/,'Warcraft Research must load');
@@ -132,7 +141,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.8\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -142,9 +151,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.8.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.9.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.8\.0 • Warcraft Research/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.0 • Acquisition & Specialization/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
