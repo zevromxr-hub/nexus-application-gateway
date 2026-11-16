@@ -66,13 +66,15 @@ status.addEventListener('click',()=>{
  music.setAttribute('aria-expanded','true');
  update();
 });
-for(const name of ['play','pause','ended','emptied','loadedmetadata']){
- audio.addEventListener(name,()=>{
-  if(name==='ended'&&isWelcome()){
-   // Don't allow a finished hosted introduction to trigger local playlist next().
-   update();
-  }else update();
- });
+// Intercept only the hosted introduction's natural ending before the private
+// player's local playlist auto-next listener runs. Local songs stay unchanged.
+audio.addEventListener('ended',event=>{
+ if(!isWelcome())return;
+ event.stopImmediatePropagation();
+ update();
+},true);
+for(const name of ['play','pause','emptied','loadedmetadata']){
+ audio.addEventListener(name,update);
 }
 mobile.addEventListener?.('change',placement);
 placement();
