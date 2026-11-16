@@ -44,3 +44,14 @@
  .main > .top .nx-mobile-music-slot{justify-content:stretch}
  .nx-mobile-music-slot .nx-hyper-music{justify-content:center;width:100%;max-width:none}
 }
+
+/* v7.7.2 desktop-only: move HYPER MUSIC directly above Founder bubble.
+   Mobile header placement remains exactly as in v7.7.1. */
+@media(min-width:801px){
+ body > #nxHyperMusic.nx-hyper-music{
+  left:auto;right:max(16px,env(safe-area-inset-right));
+  bottom:calc(92px + env(safe-area-inset-bottom));
+  width:195px;max-width:calc(100vw - 32px);
+  justify-content:center;
+ }
+}
