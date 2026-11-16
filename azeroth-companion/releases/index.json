@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "7.6.0",
+      "title": "Reliability Center & Player Experience",
+      "date": "2026-11-15"
+    },
+    {
       "version": "7.5.0",
       "title": "Performance Overdrive & Intelligence Refinement",
       "date": "2026-11-15"
