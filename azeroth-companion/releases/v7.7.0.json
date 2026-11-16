@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.7.0",
+  "title": "Application Integrity & Player Acceptance Readiness",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added an optional, read-only Application Integrity Center in Data & Backup to inspect duplicate interface IDs, navigation routes, archived studio visibility and essential controls.",
+    "Created a separate Player Acceptance Checklist for desktop and iPhone, with checkboxes for real-character research, Talent Forge, music and saved-data testing.",
+    "Testers can generate and copy a plain-text report locally; no report is automatically uploaded or sent.",
+    "Existing backups, original studio controls, character APIs, Talent Forge, gear intelligence, music player and saved data remain unchanged.",
+    "Static JavaScript syntax and asset/version consistency checks were completed; live PC, iPhone and Blizzard character acceptance tests are deferred until players are available."
+  ]
+}
