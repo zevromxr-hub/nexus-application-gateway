@@ -34,9 +34,19 @@ function openDB(){if(!('indexedDB'in window))return Promise.reject(Error('Indexe
  req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error||Error('Private storage unavailable'));req.onblocked=()=>rej(Error('Media storage is blocked by another open tab'));
 })}
 function dbAction(name,mode,method,value){if(!db)return Promise.reject(Error('Private storage is not available'));return new Promise((res,rej)=>{
- const tx=db.transaction(name,mode);let output;const request=tx.objectStore(name)[method](...(value===undefined?[]:[value]));request.onsuccess=()=>{output=request.result};tx.oncomplete=()=>res(output);tx.onerror=()=>rej(tx.error||Error('Browser storage error'));tx.onabort=()=>rej(tx.error||Error('Storage capacity exceeded'));
+ const tx=db.transaction(name,mode);let output;const request=tx.objectStore(name)[method](...(value===undefined?[]:[value]));request.onsuccess=()=>{output=request.result};tx.oncomplete=()=>res(output);tx.onerror=()=>rej(request.error||tx.error||Error('Browser storage error'));tx.onabort=()=>rej(request.error||tx.error||Error('Storage capacity exceeded'));
 })}
 function free(url){if(url)URL.revokeObjectURL(url)}
+function mediaBlob(record){return record?.blob instanceof Blob?record.blob:record?.buffer instanceof ArrayBuffer?new Blob([record.buffer],{type:record.mediaType||'application/octet-stream'}):null}
+async function storeMediaCompatible(bucket,record,file){
+ try{await dbAction(bucket,'readwrite','put',record);return record}
+ catch(first){
+  if(file.size>64*1048576)throw Error('This browser could not persist the file as a Blob. For this device, try a file below 64 MB. '+(first?.name||''));
+  const buffer=await file.arrayBuffer();const fallback={...record,buffer,mediaType:record.mediaType||file.type||'application/octet-stream'};delete fallback.blob;
+  try{await dbAction(bucket,'readwrite','put',fallback);return fallback}
+  catch(second){throw Error('Browser denied local media storage: '+(second?.name||second?.message||'Unknown error'))}
+ }
+}
 function updateBackground(){
  stage.hidden=!mediaPrefs.backdropOn||!canvas.firstElementChild;
  stage.style.setProperty('--nx-media-visibility',String(mediaPrefs.backdropOn?mediaPrefs.visibility/100:0));
@@ -48,13 +58,14 @@ function updateBackground(){
 }
 function renderBackground(record){
  canvas.replaceChildren();free(backgroundURL);backgroundURL='';
- if(!record?.blob){stage.hidden=true;announce('nxBackgroundStatus','No background installed. Choose a local GIF or video to customize the site.');return}
- stage.hidden=false;backgroundURL=URL.createObjectURL(record.blob);
+ const blob=mediaBlob(record);
+ if(!blob){stage.hidden=true;announce('nxBackgroundStatus','No background installed. Choose a local GIF or video to customize the site.');return}
+ stage.hidden=false;backgroundURL=URL.createObjectURL(blob);
  const element=document.createElement(record.kind==='gif'?'img':'video');
  element.src=backgroundURL;
  if(element.tagName==='VIDEO'){element.muted=true;element.loop=true;element.autoplay=true;element.playsInline=true;element.preload='metadata';element.defaultMuted=true;element.setAttribute('playsinline','');element.addEventListener('loadeddata',()=>{if(mediaPrefs.backdropOn)element.play().catch(()=>announce('nxBackgroundStatus','Background is saved, but autoplay is blocked. Use SHOW BACKGROUND to retry.'))})}
  else{element.alt='';element.decoding='async'}
- canvas.append(element);announce('nxBackgroundStatus','Saved locally: '+record.name+' · '+Math.round(record.blob.size/1048576)+' MB');
+ canvas.append(element);announce('nxBackgroundStatus','Saved locally: '+record.name+' · '+Math.round(blob.size/1048576)+' MB');
  updateBackground();
 }
 async function uploadBackground(file){
@@ -63,8 +74,9 @@ async function uploadBackground(file){
  if(!kind||!(kind==='gif'?['image/gif',''].includes(file.type):['video/mp4','video/webm',''].includes(file.type)))throw Error('Use a GIF, MP4 or WebM file');
  if(file.size<=0||file.size>500*1048576)throw Error('Background must be 500 MB or smaller. Available device storage may be less');
  if(navigator.storage?.estimate){const q=await navigator.storage.estimate();if(Number.isFinite(q.quota)&&q.quota>0&&Number.isFinite(q.usage)&&q.quota-q.usage<file.size*1.05)throw Error('Insufficient browser storage. Try a smaller video or free site data')}
- const record={id:'background',blob:file,name:String(file.name).slice(0,140),kind};
- await dbAction('media','readwrite','put',record);renderBackground(record);
+ const mediaType=file.type||(kind==='gif'?'image/gif':extension==='webm'?'video/webm':'video/mp4');
+ const record={id:'background',blob:new Blob([file],{type:mediaType}),mediaType,name:String(file.name).slice(0,140),kind};
+ const saved=await storeMediaCompatible('media',record,file);renderBackground(saved);
 }
 function clock(n){if(!Number.isFinite(n))return '0:00';return Math.floor(n/60)+':'+String(Math.floor(n%60)).padStart(2,'0')}
 function playState(){el('nxMusicPlay').textContent=audio.paused?'PLAY':'PAUSE';announce('nxMusicTime',clock(audio.currentTime)+' / '+clock(audio.duration))}
@@ -78,8 +90,8 @@ function playlist(){
 }
 async function loadTrack(id,autoplay=false){
  const item=musicTracks.find(x=>x.id===id);if(!item)return;
- const record=await dbAction('tracks','readonly','get',id);if(!record?.blob)return;
- audio.pause();audio.removeAttribute('src');audio.load();free(musicURL);musicURL=URL.createObjectURL(record.blob);audio.src=musicURL;playingId=id;audio.volume=mediaPrefs.volume/100;
+ const record=await dbAction('tracks','readonly','get',id);const blob=mediaBlob(record);if(!blob)return;
+ audio.pause();audio.removeAttribute('src');audio.load();free(musicURL);musicURL=URL.createObjectURL(blob);audio.src=musicURL;playingId=id;audio.volume=mediaPrefs.volume/100;
  announce('nxMusicNow',item.name);playlist();
  if(autoplay){try{await audio.play()}catch(_){announce('nxMusicStatus','Press PLAY to start playback; automatic audio playback may be restricted.')}}
  playState();
@@ -103,8 +115,9 @@ async function addAudio(files){
   if(!['mp3','wav','m4a','aac','ogg','oga','flac'].includes(ext)||file.size<1||file.size>100*1048576)continue;
   if(musicTracks.length+newItems.length>=60)break;
   const id='track-'+Date.now()+'-'+Math.random().toString(36).slice(2,10);
-  const row={id,name:String(file.name).slice(0,160),blob:file,added:Date.now()};
-  await dbAction('tracks','readwrite','put',row);
+  const mediaType=file.type||({mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',ogg:'audio/ogg',oga:'audio/ogg',flac:'audio/flac',aac:'audio/aac'}[ext]||'application/octet-stream');
+  const row={id,name:String(file.name).slice(0,160),blob:new Blob([file],{type:mediaType}),mediaType,added:Date.now()};
+  await storeMediaCompatible('tracks',row,file);
   newItems.push({id,name:row.name,added:row.added});
  }
  musicTracks.push(...newItems);playlist();
