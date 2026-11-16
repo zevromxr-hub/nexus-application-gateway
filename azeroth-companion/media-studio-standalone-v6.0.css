@@ -1,0 +1,24 @@
+/* NEXUS | AZEROTH v6.0 standalone Media Studio */
+.nx-standalone-section{max-width:100%;min-width:0}
+.nx-standalone-hero{position:relative;overflow:hidden;padding:clamp(20px,4vw,42px);border-radius:22px;border:1px solid #b99b6f7a;background:radial-gradient(ellipse at 82% 18%,#50407788,transparent 43%),radial-gradient(ellipse at 0% 100%,#195c6277,transparent 55%),linear-gradient(135deg,#111c32,#111624 70%);box-shadow:0 18px 45px #0005}
+.nx-standalone-hero h2{font-size:clamp(27px,5vw,48px);letter-spacing:.07em;line-height:1.15;margin:12px 0;color:#f3e2c4}
+.nx-standalone-hero h2 em{font-style:normal;color:#a9e4d4}
+.nx-standalone-hero p{max-width:750px;color:#d5dce8;line-height:1.7;font-size:clamp(12px,1.5vw,15px)}
+.nx-studio-feature-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.nx-studio-feature-tags span{font-size:10px;letter-spacing:.04em;font-weight:800;color:#f6ddbb;background:#172b40d9;border:1px solid #9c8f82a8;border-radius:25px;padding:9px 12px}
+.nx-studio-intro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:18px 0}
+.nx-studio-intro>div{min-width:0;padding:18px 20px;background:linear-gradient(140deg,#132838ef,#172234ea);border:1px solid #6f89988c;border-radius:15px}
+.nx-studio-intro strong{display:block;font-size:15px;color:#f6dab3;margin-bottom:5px}
+.nx-studio-intro p{font-size:12px;line-height:1.65;color:#cbd5df;margin:0}
+.nx-studio-quick{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;padding:16px 20px;border:1px solid #8fb19c88;border-radius:14px;background:linear-gradient(105deg,#133b42cc,#172333d9);margin:20px 0 0}
+.nx-studio-quick strong{color:#c9f4df;font-size:14px}
+.nx-studio-quick p{font-size:12px;line-height:1.5;color:#d1dce2;margin:6px 0 0}
+.nx-studio-quick button{min-height:44px;background:#31565b;border:1px solid #a0ccb2;color:#fff3d9;font-weight:800;border-radius:10px;padding:10px 17px}
+#nxStandaloneMediaStudio .nx-media-studio{margin-top:14px;background:linear-gradient(145deg,#111f31f2,#101d2bf0)}
+#nxStandaloneMediaStudio .nx-media-summary{font-size:13px;letter-spacing:.09em}
+#nxStandaloneMediaStudio .nx-media-grid{gap:16px}
+#nxStandaloneMediaStudio .nx-media-panel{padding:clamp(15px,2.5vw,24px);background:#102236f2;border-color:#9d9c9990}
+#nxStandaloneMediaStudio .nx-media-panel h4{font-size:17px}
+#nxStandaloneMediaStudio .nx-media-controls{gap:16px}
+#nxStandaloneMediaStudio .nx-upload{background:#355169}
+@media(max-width:740px){.nx-studio-intro{grid-template-columns:1fr}.nx-studio-quick{align-items:stretch}.nx-studio-quick button{width:100%}.nx-standalone-hero{border-radius:16px}}
