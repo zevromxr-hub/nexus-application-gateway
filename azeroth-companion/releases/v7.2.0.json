@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.2.0",
+  "title": "Developer Identity & Clean Release Center",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added a dedicated Developer Identity page with a square ZevRo crest, professional profile and NEXUS development principles.",
+    "Developer Identity is now accessible through the companion navigation and the getting-started area.",
+    "Created a first-party Application Updates page with accessible historical release cards and version changes.",
+    "Cleaned public update and release screens of repository-platform references, including the changelog link, while retaining all release functionality.",
+    "Preserved existing Talent Forge systems, saved builds, mobile music, player connections, and the established Discord release workflow."
+  ]
+}
