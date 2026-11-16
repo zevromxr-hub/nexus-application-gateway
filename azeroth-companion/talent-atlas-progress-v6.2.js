@@ -10,6 +10,24 @@ const parent=tree.closest('.tf-toolbar')||tree.parentElement;
 const controls=document.createElement('section');controls.id='nxTreeProgress';controls.className='nx-tree-progress';
 controls.innerHTML='<div class="nx-tree-progress-head"><div><span class="wow-kicker">NEXUS / TALENT ATLAS v6.2</span><h3>Progress Intelligence</h3><p>Color-coded <b>planned ranks</b>, not loot rarity, acquisition difficulty, or in-game unlock verification. Amber indicates reported source links to review.</p></div><div class="nx-tree-progress-actions"><label>Highlight<select id="nxTreeStatusFilter"><option value="all">All nodes</option><option value="complete">Fully planned</option><option value="partial">Partially planned</option><option value="empty">Unallocated</option><option value="review">Review source links</option></select></label><button type="button" id="nxTreeExpand" aria-pressed="false">⛶ FULL SCREEN TREE</button></div></div><div class="nx-tree-progress-stats" id="nxTreeProgressStats" aria-live="polite">Load a specialization to view planned progress.</div><div class="nx-tree-progress-legend" aria-label="Planning status legend"><span class="nx-key nx-key-complete">● Full ranks</span><span class="nx-key nx-key-partial">● Partial ranks</span><span class="nx-key nx-key-empty">● No ranks</span><span class="nx-key nx-key-review">● Source link review</span></div><p class="nx-tree-instruction">Inside the tree: mouse wheel zooms in/out • drag blank canvas to pan • use + / − / FIT / RESET or minimap. Outside the tree: regular page scrolling.</p>';
 bar.before(controls);
+/* v6.4: compact view does not hide the allocation or inspector actions. */
+const actions=controls.querySelector('.nx-tree-progress-actions');
+const compactButton=document.createElement('button');
+compactButton.type='button';compactButton.id='nxTreeCompact';compactButton.textContent='COMPACT NODES';
+compactButton.setAttribute('aria-pressed','false');
+compactButton.title='Toggle shorter talent cards. Rank controls and official descriptions in the inspector stay available.';
+actions.append(compactButton);
+const help=document.createElement('details');help.className='nx-tree-help';
+help.innerHTML='<summary>HOW TO USE THE TREE</summary><p><strong>Drag</strong> empty spaces to pan · <strong>Mouse wheel</strong> over the tree to zoom · <strong>Click a talent</strong> for detailed rank effects · <strong>+/−</strong> on the node or inspector to allocate points · <strong>FIT</strong> restores the overview. Unverified source links are for reference only.</p>';
+controls.append(help);
+compactButton.addEventListener('click',()=>{
+ const next=!tree.classList.contains('nx-tree-compact');
+ tree.classList.toggle('nx-tree-compact',next);
+ compactButton.setAttribute('aria-pressed',String(next));
+ compactButton.textContent=next?'EXPAND NODES':'COMPACT NODES';
+ window.dispatchEvent(new Event('resize'));
+});
+
 const el=id=>document.getElementById(id),filter=el('nxTreeStatusFilter'),button=el('nxTreeExpand');
 const eligible=()=>!!tree.querySelector('.tf-positioned')&&tree.classList.contains('tf-canvas-active');
 let scheduled=false,lastSignature='',fallback=false,zoomTick=0;
