@@ -12,8 +12,8 @@ new vm.Script(portal,{filename:'sovereign-portal.js'});
 assert.ok(html.includes('./sovereign-experience.js'),'v4.9 site shell must remain included across v5 releases');
 assert.ok(html.includes('./styles-experience-v5.0.css')&&html.includes('./scripts-experience-v5.2.js'),'Both v4.9 assets must be cache-busted');
 assert.ok(html.includes('./styles-core-v5.2.css')&&html.includes('./scripts-core-v4.8.js'),'Unchanged core assets should stay intact');
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,12);
-assert.equal((html.match(/<script defer src=/g)||[]).length,12);
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,13);
+assert.equal((html.match(/<script defer src=/g)||[]).length,13);
 for(const required of ['function scheduleSelectedView()','if(selectedFrame)return','function scheduleMobileSearch()','if(searchFrame)return','if(group.hidden!==hidden)group.hidden=hidden','lastSelectedView','recentSignature','scheduleSelectedView();']){
  assert.ok(experience.includes(required),'Site navigation coalescing missing '+required);
 }
