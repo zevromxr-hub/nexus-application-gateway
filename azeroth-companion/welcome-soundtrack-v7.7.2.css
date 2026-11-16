@@ -1,0 +1,11 @@
+/* v7.7.2 Welcome soundtrack control. One existing audio element owns playback. */
+.nx-welcome-track{display:block;position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(158px + env(safe-area-inset-bottom));z-index:2050;min-height:38px;width:195px;max-width:calc(100vw - 32px);padding:9px 12px;border:1px solid #9dc5c2a8;border-radius:13px;background:#172e40ed;color:#f2dfb9;font-size:10px;font-weight:850;letter-spacing:.03em;box-shadow:0 4px 14px #0008}
+.nx-welcome-track:hover,.nx-welcome-track:focus-visible{background:#284b5c;color:#fff}
+.nx-welcome-track[hidden]{display:none!important}
+.nx-welcome-mobile-slot{display:none}
+@media(max-width:800px){
+ .main>.top .nx-welcome-mobile-slot{display:flex;align-items:center;justify-content:flex-end;flex:1 0 100%;min-width:0}
+ .nx-welcome-mobile-slot{display:flex;justify-content:flex-end;width:100%}
+ .nx-welcome-mobile-slot .nx-welcome-track{position:static;left:auto;right:auto;bottom:auto;z-index:auto;min-height:44px;width:auto;max-width:100%;padding:9px 14px;box-shadow:none}
+}
+@media(max-width:440px){.main>.top .nx-welcome-mobile-slot{justify-content:stretch}.nx-welcome-mobile-slot .nx-welcome-track{width:100%}}
