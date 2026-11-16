@@ -69,7 +69,7 @@ async function run(engine,phone){
    name:'synthetic-local-background.gif',mimeType:'image/gif',
    buffer:Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==','base64')
   });
-  await page.waitForFunction(()=>document.getElementById('nxBackgroundStatus')?.textContent.includes('Saved locally'));
+  await page.waitForFunction(()=>document.getElementById('nxBackgroundStatus')?.textContent.includes('Saved locally'),null,{timeout:12000}).catch(async()=>{throw Error('GIF storage did not complete: '+await page.locator('#nxBackgroundStatus').textContent())});
   assert.ok(await page.locator('#nxMediaBackdrop').isVisible(),'Uploaded GIF should mount only after user selection');
   await page.locator('#nxMediaVisibility').evaluate(input=>{input.value='92';input.dispatchEvent(new Event('input',{bubbles:true}))});
   assert.equal(await page.locator('#nxMediaBackdrop').evaluate(e=>e.style.getPropertyValue('--nx-media-visibility')),'0.92','Background visibility must be adjustable');
