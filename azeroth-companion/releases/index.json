@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "6.3.0",
+      "title": "Sovereign Intelligence — Guided Builds & Detailed Talent Inspector",
+      "date": "2026-11-15"
+    },
+    {
       "version": "6.2.0",
       "title": "Talent Atlas Overdrive — Progress Intelligence & Immersive Tree",
       "date": "2026-11-15"
