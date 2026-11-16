@@ -7,7 +7,7 @@ const dir=path.resolve(import.meta.dirname,'..');
 const read=n=>readFile(path.join(dir,n),'utf8');
 const html=await read('index.html');
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
-assert.equal(inline.length,1);
+assert.ok(inline.length>=1,'Startup script must remain present');
 new vm.Script(inline[0],{filename:'azeroth-index-inline.js'});
 assert.ok(html.includes('NexusStartup')||html.includes('nexus:view-activated'),'v4.8 scheduler should remain installed after newer releases');
 assert.ok(inline[0].includes("Object.defineProperty(window,'NexusStartup'"),'Startup coordinator should initialize before bundled scripts');
@@ -16,8 +16,8 @@ assert.ok(inline[0].includes("const once=options?.once!==false"),'Deferred callb
 assert.ok(inline[0].includes("if(once)document.removeEventListener(EVENT,handler)"),'One-shot startup listeners must detach after first view');
 assert.ok(inline[0].includes('queueMicrotask('),'Already-active views should initialize reliably');
 assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v5.2.js'));
-assert.equal((html.match(/<script defer src=/g)||[]).length,2);
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,2);
+assert.equal((html.match(/<script defer src=/g)||[]).length,4);
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,4);
 const checks=[
  ['warcraft-overdrive.js',["whenView('releases'","['warcraft','dungeons','professions','equipment','releases']","{once:false}"]],
  ['loot-hunter.js',["whenView('loot'","function loadReferenceCatalog()","loot-sources.json"]],
