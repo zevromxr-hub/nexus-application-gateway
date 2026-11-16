@@ -1699,7 +1699,7 @@ async function loadRelease(force=false){
    $('sxHeroVersion').textContent='Azeroth v'+version.version;
    $('sxHomeRelease').textContent='v'+version.version+' · '+version.title;
    $('sxHomeReleaseNote').textContent=version.changes[0]?text(version.changes[0]):'Open Release Center to read the official changelog.';
-   $('sxReleaseStatus').textContent='Published '+(version.date||'date unavailable')+' · GitHub Pages release record';
+   $('sxReleaseStatus').textContent='Published '+(version.date||'date unavailable')+' · Published update';
    $('sxReleaseVersion').textContent='Azeroth v'+version.version;
    $('sxReleaseSubtitle').textContent=version.title;
    $('sxReleaseChanges').replaceChildren();
