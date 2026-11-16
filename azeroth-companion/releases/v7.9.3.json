@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.9.3",
+  "title": "Blizzard Character Intelligence & Gear Comparison",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced Character Intelligence, a separate browser-based research studio for public World of Warcraft Retail characters.",
+    "Compare two characters by region, realm and name with Blizzard-reported character profiles and equipped item information.",
+    "Added equipment slot comparisons, item IDs, item-level differences and JSON snapshot exports for personal research.",
+    "Preserved the full Azeroth Companion v7.9.2 Player Handbook, PC and mobile tutorials, saved progress and existing studio features.",
+    "Retained the standalone Addon Nexus v8.0 preview and unchanged private Battle.net authentication Worker.",
+    "New public character comparisons rely on Blizzard API availability and require real-player acceptance testing; item levels alone do not determine upgrade value."
+  ]
+}
