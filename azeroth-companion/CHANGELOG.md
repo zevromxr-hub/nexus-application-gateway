@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.3.1 · 2026-11-15 — Talent Forge Precision Controls
+
+- **Drag reliability:** Delay pointer capture until deliberate movement, preserving native button responses and reducing accidental dragging.
+- **Viewport preservation:** Keep the current tree position during rank changes and choice interactions instead of unexpectedly jumping after renderer updates.
+- **Inspector controls:** Stop the new inspector from scrolling the page on each rank action. Original rank allocation, undo and saved build validation remain authoritative.
+- **Rank effect preview:** Select a rank to see its Blizzard-returned description without spending points; apply one increase or decrease per click using existing planner controls.
+- **Tap response:** Larger talent rank buttons and accessible focus treatment for mobile and desktop.
+- **Cache freshness:** Versioned compiled Talent Atlas and inspector resources to load the fixed behavior on PC and iPhone.
+
 ## v6.3.0 · 2026-11-15 — Sovereign Intelligence
 
 - **Detailed node inspector:** Click a talent to see official Blizzard-returned descriptions by rank, source IDs and planned points. Existing rank controls and original inspector remain available.
