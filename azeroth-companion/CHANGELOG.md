@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.1.0 · 2026-11-15 — Hyper Access & Reversible Studio Retirement
+
+- **HYPER MUSIC:** Persistent one-click music launcher across all companion tabs, using the existing IndexedDB-backed local player and preserving current playback.
+- **Reversible retirement:** War Room, Dungeon Route Architect, Profession Profit Lab, Gear Comparison Laboratory, Player Field Lab and Weekly Vault Tracker removed from primary navigation and ordinary launcher discovery. No code or user data deleted; archived tools remain accessible through Data & Backup.
+- **Vault navigation repair:** Weekly Vault tracker now has its own `weekly-vault` route, no longer conflicting with the Sovereign Data Vault route `vault`. The local-storage key and exported files are unchanged.
+- **Source preservation:** Existing Blizzard-powered research, Talent Forge, Media Studio, Sovereign Data Vault and cross-studio data remain intact.
+- **Release hygiene:** Updated source and deployed JavaScript bundles in tandem and refreshed cache URLs for mobile/desktop clients.
+
 ## v7.0.0 · 2026-11-15 — Professional Launch Edition
 
 - **Getting started:** Responsive, optional first-visit launch center with shortcuts into Character profiles, Build Architect, Progression and Talent Forge.
