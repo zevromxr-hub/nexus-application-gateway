@@ -35,3 +35,18 @@
 .nx-inspect-actions button:disabled{opacity:.4}
 #talentForge .tf-toolbar:fullscreen #nxTalentInspector,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen #nxTalentInspector{position:absolute;right:14px;top:90px;width:min(400px,42vw);max-height:calc(100dvh - 105px);z-index:5;overflow:auto;background:#0b2233f5}
 @media(max-width:850px){.nx-guide-fields{grid-template-columns:1fr}#talentForge .tf-toolbar:fullscreen #nxTalentInspector,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen #nxTalentInspector{width:calc(100% - 28px);top:auto;bottom:10px;max-height:50dvh}}
+
+/* v6.3.1 interaction reliability: preview effects are independent of allocations. */
+.nx-rank-preview{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:9px;padding:10px;background:#193346;border:1px solid #8aa4a277;border-radius:11px}
+.nx-rank-preview label{display:grid;gap:6px;color:#f1d8b3;font-size:10px;font-weight:850}
+.nx-rank-preview label small{font-weight:500;color:#a8d8d7}
+.nx-rank-preview select{min-height:44px;width:100%;color:#f5e8d4;background:#254657;border-radius:8px;border:1px solid #c2b18b85;padding:8px}
+.nx-rank-preview button{min-height:44px;padding:8px 11px;color:#f3e9d5;background:#315568;border:1px solid #b9ba9b99;border-radius:9px;font-size:10px;font-weight:800}
+.nx-rank-preview button:disabled{opacity:.45;cursor:not-allowed}
+.nx-preview-effect{font-size:12px;color:#e2e8e9;background:#132e41;border-left:3px solid #7ad0b3;border-radius:7px;padding:12px;white-space:pre-wrap;line-height:1.65;max-height:130px;overflow:auto}
+#tfTree.tf-canvas-active .tf-node button{position:relative;z-index:3;cursor:pointer;pointer-events:auto;touch-action:manipulation;min-height:44px}
+#tfTree.tf-canvas-active .tf-node .tf-node-controls{position:relative;z-index:3}
+#tfTree.tf-canvas-active .tf-node{user-select:text}
+#tfTree.tf-canvas-active.tf-is-dragging .tf-node{user-select:none}
+#tfTree.tf-canvas-active .tf-node:focus-within{outline:2px solid #9ddfdf;outline-offset:2px}
+@media(max-width:680px){.nx-rank-preview{grid-template-columns:1fr}.nx-rank-preview button{width:100%}}
