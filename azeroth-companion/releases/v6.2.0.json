@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.2.0",
+  "title": "Talent Atlas Overdrive — Progress Intelligence & Immersive Tree",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added source-aware rank progress states, color legend, full/partial/unallocated highlighting, and reported upstream-link review markers throughout Talent Forge trees.",
+    "Introduced an optional full-screen Talent Atlas workspace on supported desktops with an accessible in-page fallback.",
+    "Mouse wheel inside an active tree now adjusts the existing Talent Atlas zoom. Drag panning, minimap, +/−, FIT, RESET and regular scrolling outside the tree remain available.",
+    "Progress indicators reflect planned points and Blizzard-returned data, not item rarity, acquisition difficulty or validated in-game prerequisites.",
+    "Preserved talent node IDs, original returned layout positions, rank/choice controls, saved builds, local media, account functions and the v6.1 visual identity."
+  ]
+}
