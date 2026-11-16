@@ -39,5 +39,5 @@ assert.equal(jsCount,38);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
 assert.equal(stylesheetCount,11,'Two compiled stylesheets plus nine additive UX styles');
-assert.equal(deferredCount,11,'Two compiled scripts plus nine additive UX modules');
+assert.equal(deferredCount,12,'Two compiled scripts plus ten additive UX modules');
 console.log('Azeroth v4.7 lean launch '+mode+' passed; '+cssCount+' CSS sources + '+jsCount+' JS sources in 4 checked bundles ('+bytes+' source bytes).');
