@@ -3274,7 +3274,7 @@ window.addEventListener('pagehide',()=>{audio.pause();free(musicURL);free(backgr
 'use strict';
 const cmd=document.getElementById('tfCommand'),tree=document.getElementById('tfTree'),bridge=window.NexusTalentSourceBridge;
 if(!cmd||!tree||!bridge||document.getElementById('nxTreeFinalControls'))return;
-const API='https://nexus-azeroth-api.zevromxr.workers.dev',cache=new Map(),waiting=[],pending=new Map();let inFlight=0,scheduled=false;
+const API='https://nexus-azeroth-api.zevromxr.workers.dev',cache=new Map(),waiting=[],pending=new Map();let inFlight=0,scheduled=false,thumbObserver=null;
 const el=id=>document.getElementById(id),validId=x=>Number.isSafeInteger(Number(x))&&Number(x)>0&&Number(x)<=9999999999;
 function safeURL(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&(u.hostname==='worldofwarcraft.com'||u.hostname.endsWith('.worldofwarcraft.com'))?u.href:''}catch(_){return ''}}
 function getMedia(region,id,done){
@@ -3300,12 +3300,18 @@ function mediaImage(host,id,region,slotClass){
  if(!host||!validId(id)||host.querySelector('.'+slotClass))return;
  const slot=document.createElement('span');slot.className=slotClass;slot.textContent='✧';slot.setAttribute('aria-hidden','true');
  host.prepend(slot);
- getMedia(region,id,url=>{
+ const load=()=>getMedia(region,id,url=>{
   if(!slot.isConnected||!url)return;
   const img=document.createElement('img');img.src=url;img.alt='';img.decoding='async';img.loading='lazy';img.referrerPolicy='no-referrer';
   img.onerror=()=>{if(slot.isConnected)slot.textContent='✧'};
   slot.replaceChildren(img);
  });
+ if(slotClass==='nx-skill-thumb'&&typeof IntersectionObserver==='function'){
+  if(!thumbObserver)thumbObserver=new IntersectionObserver(entries=>{
+   for(const e of entries)if(e.isIntersecting){thumbObserver.unobserve(e.target);e.target._nxLoad?.();delete e.target._nxLoad}
+  },{root:el('tfCmdList'),rootMargin:'120px'});
+  slot._nxLoad=load;thumbObserver.observe(slot);
+ }else load();
 }
 function refresh(){
  const s=bridge.snapshot();if(!s.ready)return;
@@ -3348,7 +3354,7 @@ el('nxTreeFocus').addEventListener('click',()=>focus(!focused));
 el('nxTreeFull').addEventListener('click',()=>focus(false));
 el('nxTreeJump').addEventListener('click',()=>tree.scrollIntoView({behavior:'smooth',block:'center'}));
 const containers=['tfCmdList','tfTree','tfLabTalentResults','tfVaDetailA','tfVaDetailB'];
-const observer=new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;refresh()})});
+const observer=new MutationObserver(mutations=>{if(mutations.some(m=>m.target?.id==='tfCmdList'))thumbObserver?.disconnect();if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;refresh()})});
 for(const id of containers){const host=el(id);if(host)observer.observe(host,{childList:true})}
 for(const id of ['tfVaNodeA','tfVaNodeB','tfLabTalentA','tfLabTalentB','tfLabRankA','tfLabRankB'])el(id)?.addEventListener('change',()=>requestAnimationFrame(refresh));
 refresh();
