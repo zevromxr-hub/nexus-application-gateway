@@ -15,7 +15,7 @@ for(const [target,icon,label] of quick){const b=document.createElement('button')
 const more=document.createElement('button');more.type='button';more.dataset.acMore='true';more.setAttribute('aria-controls',sidebar.id);more.setAttribute('aria-expanded','false');more.innerHTML='<span class="ac-icon" aria-hidden="true">☰</span><span>All tools</span>';bar.append(more);document.body.append(bar);
 const skip=document.createElement('a');skip.href='#ac-content';skip.className='ac-skip';skip.textContent='Skip to companion content';document.body.prepend(skip);main.id=main.id||'ac-content';main.setAttribute('tabindex','-1');
 let opener=null,activeView='overview';
-function navButtons(){return [...nav.querySelectorAll('button[data-view]')]}
+function navButtons(){return [...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true')}
 function refreshSearch(){const q=search.value.trim().toLocaleLowerCase();let visible=0;for(const b of navButtons()){const ok=!q||b.textContent.toLocaleLowerCase().includes(q);b.hidden=!ok;if(ok)visible++}count.textContent=visible+' tool'+(visible===1?'':'s')+' available';}
 function isOpen(){return document.body.classList.contains('ac-menu-open')}
 function openMenu(){if(!mobile.matches)return;opener=document.activeElement;search.value='';refreshSearch();document.body.classList.add('ac-menu-open');more.setAttribute('aria-expanded','true');sidebar.setAttribute('aria-modal','true');sidebar.setAttribute('role','dialog');search.focus({preventScroll:true})}
