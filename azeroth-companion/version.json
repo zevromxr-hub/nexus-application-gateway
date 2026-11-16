@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Gear & Talent Mastery",
-  "previous_version": "7.3.0",
+  "subtitle": "Performance Overdrive & Intelligence Refinement",
+  "previous_version": "7.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added source-backed equipped-item comparisons directly beneath Character Intelligence, using only previously returned Blizzard Armory records.",
-    "Compare two equipment records by official ID, name, slot and item level, including a signed level difference when both values are available and warnings when comparing different equipment slots.",
-    "Open either compared item with the original Item Codex inspector, retaining its existing API validation and error handling.",
-    "Introduced a read-only Talent Forge context summary showing separately planned Class, Specialization and Hero rank totals without misrepresenting them as active in-game talents.",
-    "No additional network requests, new sign-in permissions, manual data writes or changes to Talent Forge allocations, saved builds, music, studio archive or Discord announcements."
+    "Added optional Talent Forge Performance Overdrive selector: Auto adapts lightweight tree effects for small screens and reduced-motion settings, Full keeps the original visuals, and Lite suppresses expensive decorations without changing talent geometry or allocations.",
+    "Character Intelligence now shows returned equipment in incremental batches of sixteen with a Show Next button, reducing initial DOM construction for longer lookup results.",
+    "Updated the equipment list to build rows through a document fragment, and reset the display batch safely when the sort order or returned character changes.",
+    "Visual performance choice uses a separate harmless local preference, with no new API requests and no changes to existing saved character, equipment, talent, media or account records.",
+    "Retained v7.4 gear comparisons, developer identity, studio archive, Blizzard research, music and Discord release system. Full live-device benchmark and acceptance testing remain pending."
   ]
 }
