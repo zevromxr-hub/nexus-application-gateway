@@ -1,18 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Talent Atlas Overdrive — Progress Intelligence & Immersive Tree",
-  "previous_version": "6.1.4",
+  "subtitle": "Sovereign Intelligence — Guided Builds & Detailed Talent Inspector",
+  "previous_version": "6.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added source-aware rank progress states, color legend, full/partial/unallocated highlighting, and reported upstream-link review markers throughout Talent Forge trees.",
-    "Introduced an optional full-screen Talent Atlas workspace on supported desktops with an accessible in-page fallback.",
-    "Mouse wheel inside an active tree now adjusts the existing Talent Atlas zoom. Drag panning, minimap, +/−, FIT, RESET and regular scrolling outside the tree remain available.",
-    "Progress indicators reflect planned points and Blizzard-returned data, not item rarity, acquisition difficulty or validated in-game prerequisites.",
-    "Preserved talent node IDs, original returned layout positions, rank/choice controls, saved builds, local media, account functions and the v6.1 visual identity."
+    "Added a detailed source-backed talent inspector with official returned rank descriptions, IDs, planned progress and upstream relationship notes.",
+    "Introduced optional guided build creation that copies player-selected activity, role and style into the existing planner without auto-selecting talents.",
+    "Connected-path highlighting distinguishes upstream and downstream source links while preserving Blizzard node IDs and original layout positions.",
+    "Enhanced the full-screen Talent Atlas with an optional collapsible inspector and compact controls for navigating detailed ranks.",
+    "Added a build review that summarizes manually allocated points and flags advisory source-link relationships for further review.",
+    "Kept existing rank controls, undo/redo, build saving, Media Studio, local storage and account features unchanged. No fabricated rarity, unlock difficulty or combat simulation claims."
   ]
 }
