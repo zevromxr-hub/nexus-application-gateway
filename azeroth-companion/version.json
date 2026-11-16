@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.6.0",
+  "version": "7.7.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Reliability Center & Player Experience",
-  "previous_version": "7.5.0",
+  "subtitle": "Application Integrity & Player Acceptance Readiness",
+  "previous_version": "7.6.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a source-aware Connection & Recovery panel beneath the Live Armory character lookup with clear feedback for success, partial equipment results and failed requests.",
-    "Added a matching Item Codex recovery panel and user-controlled Retry Last Entry action that respects the existing form validation and uses the existing official item lookup.",
-    "Browser-reported connectivity status now informs retry availability without claiming that Blizzard servers are online or starting background polling.",
-    "Status messages distinguish timeouts, connectivity errors, and possible rate limiting while preserving already loaded results and local saved data.",
-    "Talent Forge, Gear Mastery, HYPER MUSIC, stored builds, user authentication, hosting and Discord announcement integration remain intact; live player/browser acceptance tests are still pending."
+    "Added read-only Application Integrity diagnostics in Data & Backup to inspect duplicate interface IDs, navigation destinations, archived studio visibility and essential studio controls.",
+    "Added a first-party Player Acceptance Checklist for PC and iPhone testers with clear testing categories and locally prepared report text; no information is automatically submitted.",
+    "The integrity diagnostics neither fetch remote APIs nor read, modify or clear user records, music, builds, account tokens, or backup files.",
+    "Preserved the existing Sovereign Data Vault restore and preview safeguards, Blizzard API integrations, Talent Forge, HYPER MUSIC, and all existing release workflows.",
+    "Prepared regression checks for the new tools while leaving real character testing and mobile acceptance verification pending until players are available."
   ]
 }
