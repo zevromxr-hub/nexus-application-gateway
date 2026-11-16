@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.9.0 · 2026-11-16 — Acquisition & Specialization Intelligence
+
+- **Acquisition Intelligence:** Added a new read-only research view in Loot Hunter combining saved manual farming goals, logged attempts and the companion's small curated historical acquisition guide library, with explicit source labels, safe reference links and documented steps when available.
+- **Source coverage:** Goals without a curated guide are explicitly labeled as undocumented instead of receiving invented drop locations or rates. Current requirements and lockouts must be rechecked in game.
+- **Specialization Intelligence:** Added a source-backed Talent Forge explorer with category, allocation and search filters, showing official node IDs, spell/talent IDs when available, source descriptions, manual planned ranks and saved-draft counts.
+- **Data preservation:** This feature reads existing saved records and the Talent Forge snapshot. It adds no new account permissions, saved-data formats, writes to talents or personal goals, and does not change the v7.7.2 music and Founder layout.
+- Full browser and player acceptance testing remains pending.
+
 ## v7.8.0 · 2026-11-15 — Warcraft Equipment Research Board
 
 - Added **Equipment Research Board** inside Live Armory, linked to the source-backed equipment records already returned by the Blizzard character API.
