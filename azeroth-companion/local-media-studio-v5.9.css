@@ -1,0 +1,47 @@
+/* NEXUS | AZEROTH v5.9 — local media background and nonvisualizing player */
+body>.layout{position:relative;z-index:auto}
+#nxMediaBackdrop{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate}
+#nxMediaBackdrop .nx-media-canvas{position:absolute;inset:0;opacity:var(--nx-media-visibility,0);filter:blur(var(--nx-media-blur,0px));transition:opacity .22s}
+#nxMediaBackdrop .nx-media-canvas img,#nxMediaBackdrop .nx-media-canvas video{width:100%;height:100%;object-fit:var(--nx-media-fit,cover);object-position:center;display:block}
+#nxMediaBackdrop .nx-media-scrim{position:absolute;inset:0;background:rgba(5,9,19,var(--nx-media-shade,.35));pointer-events:none}
+.nx-media-studio{margin:16px 0;border-color:#c79b677e;background:linear-gradient(145deg,#111f31eb,#101d2be5);padding:clamp(12px,3vw,20px)}
+.nx-media-summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.04em;color:#f6dbad;list-style-position:inside;padding:8px 5px;line-height:1.5}
+.nx-media-summary:focus-visible{outline:2px solid #97dfc7;outline-offset:3px}
+.nx-media-studio[open]>.nx-media-summary{margin-bottom:16px;border-bottom:1px solid #c4a87964}
+.nx-media-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.nx-media-head h3{margin:6px 0;color:#f9d5a2;font-size:clamp(19px,2vw,25px)}
+.nx-media-head p{font-size:12px;color:#c3d3dc;line-height:1.65;max-width:780px}
+.nx-media-head>span{white-space:nowrap;font-weight:800;font-size:10px;letter-spacing:.09em;color:#aee7be;border:1px solid #6cae8c8b;padding:9px 12px;border-radius:20px}
+.nx-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.nx-media-panel{padding:16px;background:#102236e6;border:1px solid #7a8e9a7c;border-radius:14px;min-width:0}
+.nx-media-panel h4{margin:0 0 12px;color:#edcc9b;font-size:15px}
+.nx-media-panel .hint{font-size:11px;line-height:1.7;color:#b9c8d4}
+.nx-upload{display:block;width:fit-content;max-width:100%;background:#304861;border:1px solid #d0a97186;border-radius:9px;color:#fff0d6;padding:12px 14px;cursor:pointer;position:relative;min-height:44px;font-size:11px;font-weight:800}
+.nx-upload input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.nx-upload:focus-within{outline:2px solid #93e1c6;outline-offset:2px}
+#nxBackgroundStatus,#nxMusicStatus{color:#d0e1db;font-size:11px;line-height:1.65;overflow-wrap:anywhere;margin:12px 0}
+.nx-media-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:13px 0}
+.nx-media-controls label{display:grid;gap:8px;font-size:11px;color:#e4d0ae;font-weight:700;min-width:0}
+.nx-media-controls output{float:right;color:#aeead4}
+.nx-media-controls select{background:#102f40;color:#f7ebd7;border:1px solid #9aa7b36e;border-radius:8px;padding:9px;min-height:44px;min-width:0}
+.nx-media-controls input[type=range]{width:100%;min-height:28px;accent-color:#d7b27f}
+.nx-media-buttons{display:flex;flex-wrap:wrap;gap:8px}
+.nx-media-buttons button{min-height:44px;font-size:11px;padding:10px 12px}
+.nx-music-dock{position:fixed;z-index:2000;right:12px;bottom:12px;width:min(370px,calc(100vw - 24px));max-height:min(77vh,690px);overflow:auto;background:linear-gradient(145deg,#182e42fa,#0b192bfc);box-shadow:0 15px 45px #000b;border:1px solid #d2ae7d9c;border-radius:17px;padding:14px;color:#e7e2d5;overscroll-behavior:contain}
+.nx-music-dock[hidden]{display:none!important}
+.nx-music-title{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#f4d6a3;font-size:12px}
+.nx-music-title button{border-radius:9px;font-size:19px;width:35px;height:35px}
+.nx-track-now{font-size:12px;line-height:1.6;font-weight:700;margin:13px 0;overflow-wrap:anywhere;color:#d2e2e1}
+.nx-audio-controls{display:flex;gap:5px;flex-wrap:wrap}
+.nx-audio-controls button{min-height:40px;padding:8px 10px;font-size:10px;flex:1 1 55px}
+.nx-audio-sliders{margin:12px 0;display:grid;gap:12px}
+.nx-audio-sliders label{display:grid;gap:5px;font-size:11px;color:#d5c4a4}
+.nx-audio-sliders input{width:100%;accent-color:#efc189;min-height:24px}
+.nx-music-playlist{max-height:220px;overflow:auto;display:grid;gap:6px}
+.nx-music-entry{display:flex;justify-content:space-between;gap:6px;align-items:center;border:1px solid #638b9877;background:#173149;border-radius:10px;padding:7px}
+.nx-music-entry button{font-size:10px;min-height:38px;white-space:normal}
+.nx-music-entry button:first-child{text-align:left;flex:1;overflow-wrap:anywhere;color:#f0ddba}
+.nx-music-entry button:last-child{flex-shrink:0}
+@media(max-width:780px){.nx-media-grid,.nx-media-controls{grid-template-columns:1fr}}
+@media(max-width:480px){.nx-music-dock{bottom:8px;right:8px;width:calc(100vw - 16px);max-height:72vh;padding:11px}.nx-media-panel{padding:12px}}
+@media(prefers-reduced-motion:reduce){#nxMediaBackdrop .nx-media-canvas{transition:none}}

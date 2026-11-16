@@ -58,6 +58,43 @@ async function run(engine,phone){
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
+  assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private media studio must mount in Talent Forge on desktop/iPhone');
+  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>!e.open),'Optional media studio must begin collapsed, preserving tree space');
+  await page.locator('#nxMediaStudio > summary').click();
+  assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator should mount on desktop/iPhone');
+  await page.waitForFunction(()=>document.querySelector('#nxMusicStatus')?.textContent.includes('stored track(s)'),{timeout:12000});
+  assert.ok(await page.locator('#nxMusicDock').isHidden(),'Music dock must be closed by default');
+  assert.ok(await page.locator('#nxMediaBackdrop').isHidden(),'No uploaded background should appear by default');
+  await page.locator('#nxMediaFile').setInputFiles({
+   name:'synthetic-local-background.gif',mimeType:'image/gif',
+   buffer:Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==','base64')
+  });
+  await page.waitForFunction(()=>document.getElementById('nxBackgroundStatus')?.textContent.includes('Saved locally'),null,{timeout:12000}).catch(async()=>{throw Error('GIF storage did not complete: '+await page.locator('#nxBackgroundStatus').textContent())});
+  assert.ok(await page.locator('#nxMediaBackdrop').isVisible(),'Uploaded GIF should mount only after user selection');
+  await page.locator('#nxMediaVisibility').evaluate(input=>{input.value='92';input.dispatchEvent(new Event('input',{bubbles:true}))});
+  assert.equal(await page.locator('#nxMediaBackdrop').evaluate(e=>e.style.getPropertyValue('--nx-media-visibility')),'0.92','Background visibility must be adjustable');
+  await page.locator('#nxMediaToggle').click();
+  assert.ok(await page.locator('#nxMediaBackdrop').isHidden(),'Hide background must fully restore original site visuals');
+  await page.locator('#nxMediaToggle').click();
+  assert.ok(await page.locator('#nxMediaBackdrop').isVisible(),'Background can be restored without reupload');
+  const wave=Buffer.alloc(44+800);wave.write('RIFF',0);wave.writeUInt32LE(36+800,4);wave.write('WAVEfmt ',8);wave.writeUInt32LE(16,16);wave.writeUInt16LE(1,20);wave.writeUInt16LE(1,22);wave.writeUInt32LE(8000,24);wave.writeUInt32LE(8000,28);wave.writeUInt16LE(1,32);wave.writeUInt16LE(8,34);wave.write('data',36);wave.writeUInt32LE(800,40);
+  await page.locator('#nxMusicFiles').setInputFiles({name:'synthetic-local-song.wav',mimeType:'audio/wav',buffer:wave});
+  await page.waitForFunction(()=>document.querySelector('#nxMusicStatus')?.textContent.includes('1 local track(s) stored'));
+  await page.locator('#nxMusicOpen').click();
+  assert.ok(await page.locator('#nxMusicDock').isVisible(),'Local music player should open on explicit request');
+  assert.equal(await page.locator('#nxMusicPlaylist .nx-music-entry').count(),1,'Local playlist should contain uploaded audio');
+  assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused),'Local audio must not autoplay');
+  await page.locator('#nxMusicClose').click();
+  assert.ok(await page.locator('#nxMusicDock').isHidden());
+  await page.locator('#tfCmdSearch').fill('1001');
+  await page.locator('#tfCmdList .nx-skill-thumb').first().waitFor({timeout:6000});
+  assert.ok(await page.locator('#tfCmdList [data-tf-cmd-node="1001"] .nx-skill-thumb').count(),'Talent search should have source-based media slot');
+  await page.locator('#tfCmdSearch').fill('');
+  await page.locator('#nxTreeFocus').click();
+  assert.ok(await page.locator('#tfBuildIntel').isHidden(),'Focus Tree should temporarily hide secondary research panels');
+  assert.ok(await page.locator('#tfTree').isVisible(),'Focus Tree should preserve interactive tree');
+  await page.locator('#nxTreeFocus').click();
+  assert.ok(await page.locator('#tfBuildIntel').isVisible(),'Leaving Focus Tree must restore all research panels');
   await page.locator('.tf-canvas-stage').waitFor({timeout:6000});
   assert.ok(await page.locator('#tfCanvasTools').isVisible(),'Talent Atlas controls must be available in tree layout');
   const originalZoom=await page.locator('#tfCanvasZoom').textContent();
@@ -68,6 +105,7 @@ async function run(engine,phone){
   assert.equal((await page.locator('#tfCanvasZoom').textContent()).trim(),'100%','Reset should restore canvas scale');
   assert.ok(await page.locator('#tfCanvasMap').isVisible(),'Tree overview map should be visible');
   if(!phone){
+    await page.locator('#tfTree [data-tf-node="1001"]').scrollIntoViewIfNeeded();
     const n=await page.locator('#tfTree [data-tf-node="1001"]').boundingBox();
     const before=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
     await page.mouse.move(n.x+n.width/2,n.y+22);
@@ -183,6 +221,8 @@ async function run(engine,phone){
   assert.ok(auto['us/111/222'].planner.notes.includes('Unsaved recovery note'),'Working notes must be recovered');
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
+  await page.waitForFunction(()=>document.getElementById('nxBackgroundStatus')?.textContent.includes('Saved locally: synthetic-local-background.gif'),null,{timeout:12000}).catch(async()=>{throw Error('Stored GIF did not restore after reload: '+await page.locator('#nxBackgroundStatus').textContent())});
+  await page.waitForFunction(()=>document.querySelectorAll('#nxMusicPlaylist .nx-music-entry').length===1,null,{timeout:12000});
   await navigate();await load();
   assert.ok(await page.locator('#tfPlanRecover').isVisible(),'Recoverable unsaved draft should be offered, never silently overwritten');
   await page.locator('#tfPlanRestore').click();

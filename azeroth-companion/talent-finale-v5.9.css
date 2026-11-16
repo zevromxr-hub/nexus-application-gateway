@@ -1,0 +1,40 @@
+/* NEXUS | AZEROTH v5.9 — final talent tree presentation & visible source thumbnails */
+.nx-finale-controls{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap;background:linear-gradient(120deg,#203949,#142940);border:1px solid #c6a26c90;border-radius:13px;padding:14px;margin:10px 0 15px}
+.nx-finale-controls strong{display:block;color:#f3d5a6;font-size:14px;margin:4px 0 5px}
+.nx-finale-controls p{font-size:11px;line-height:1.65;color:#c0d1d8;max-width:680px;margin:0}
+.nx-finale-actions{display:flex;gap:7px;flex-wrap:wrap}
+.nx-finale-actions button{min-height:44px;font-size:11px;padding:10px 12px}
+.nx-finale-actions #nxTreeFocus[aria-pressed="true"]{color:#102031;background:#f2c783}
+#tfCmdList .tf-cmd-result{align-items:center;gap:12px}
+#tfCmdList .tf-cmd-result>span:nth-child(2){flex:1;min-width:0}
+.nx-skill-thumb{width:52px;height:52px;flex:0 0 52px;display:grid;place-items:center;border:1px solid #dbb57c;border-radius:12px;background:radial-gradient(circle,#486174,#14283a);color:#edce97;font-size:27px;overflow:hidden}
+.nx-skill-thumb img,.nx-skill-hero img{display:block;width:100%;height:100%;object-fit:cover}
+.nx-skill-hero{display:grid;place-items:center;float:left;margin:0 13px 9px 0;width:80px;height:80px;overflow:hidden;border:1px solid #e1b97b;border-radius:14px;background:radial-gradient(circle,#496078,#15253b);box-shadow:0 4px 20px #0007;color:#eed6ac;font-size:36px}
+.tf-va-detail::after,.tf-lab-card::after{content:"";display:table;clear:both}
+#tfLabTalentResults .tf-lab-card{min-height:160px}
+#tfLabTalentResults .tf-lab-card>strong{display:block;line-height:1.5}
+#tfTree .tf-node{transition:border-color .18s,box-shadow .18s,opacity .18s!important}
+#tfTree .tf-node:hover{border-color:#f2c987!important;box-shadow:0 0 22px #edba6a50!important}
+#tfTree .tf-node:focus-within{outline:2px solid #8de1d4;outline-offset:2px}
+#tfTree .tf-spell-art{width:var(--nx-official-icon-size,64px)!important;height:var(--nx-official-icon-size,64px)!important;max-width:100%;max-height:100%;border-radius:13px!important;box-shadow:0 0 14px #d6b16b50}
+#tfTree .tf-node>strong{font-size:clamp(12px,1.2vw,15px);line-height:1.5}
+#tfTree .tf-node p{font-size:12px;line-height:1.75}
+#tfTree .tf-node-controls button{min-width:41px;min-height:41px;border-radius:10px}
+#tfTree .tf-node-controls span{font-size:12px;font-weight:800;color:#f8e1b9}
+#tfCmdList .tf-cmd-result.is-active{border-color:#ffdc9c}
+#talentForge .nx-tree-focused #tfPathIntel,
+#talentForge .nx-tree-focused #tfRelations,
+#talentForge .nx-tree-focused #tfPlanner,
+#talentForge .nx-tree-focused #tfBuildIntel,
+#talentForge .nx-tree-focused #tfCompareLab,
+#talentForge .nx-tree-focused #tfVisualArchitect,
+#talentForge .nx-tree-focused #nxMediaStudio{display:none!important}
+#talentForge .nx-tree-focused #tfTree.tf-canvas-active{max-height:min(86vh,980px)}
+#talentForge .nx-tree-focused .tf-cmd-layout{grid-template-columns:1fr 1fr}
+#atlasSearchResults .atlas-entry .nx-item-art,
+#atlasBoard .atlas-entry .nx-item-art,
+#tfLabGearResults .nx-item-art{box-shadow:0 5px 20px #0009,0 0 18px #dbb07529;border:1px solid #d4b17c;flex-shrink:0}
+#atlasSearchResults .atlas-entry>div:not(.nx-item-art){min-width:0}
+@media(max-width:900px){#talentForge .nx-tree-focused .tf-cmd-layout{grid-template-columns:1fr}}
+@media(max-width:620px){.nx-finale-actions{width:100%}.nx-finale-actions button{flex:1 1 140px}.nx-skill-thumb{width:46px;height:46px;flex-basis:46px}.nx-skill-hero{height:66px;width:66px}}
+@media(prefers-reduced-motion:reduce){#tfTree .tf-node{transition:none!important}}
