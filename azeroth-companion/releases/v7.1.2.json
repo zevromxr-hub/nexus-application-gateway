@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.1.2",
+  "title": "Top-Header Hyper Music & Performance Polish",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Moved HYPER MUSIC on mobile to the main website header, outside the sticky navigation bar and away from bottom-left buttons.",
+    "Kept the original PC floating HYPER MUSIC launcher unchanged, with one shared music player and preserved playlists.",
+    "Reduced unnecessary initial image work with native lazy loading of offscreen thumbnails and asynchronous image decoding where appropriate.",
+    "Optimized newly inserted images without repeatedly rescanning the entire companion layout.",
+    "Preserved Blizzard data integrations, Talent Forge, saved builds, studio archive and the existing successful Discord announcement workflow."
+  ]
+}
