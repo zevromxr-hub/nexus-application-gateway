@@ -6,20 +6,20 @@
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#070b10",
-  "theme_color": "#0c151e",
+  "background_color": "#0b2439",
+  "theme_color": "#14384b",
   "icons": [
     {
-      "src": "./assets/icon-192.png",
+      "src": "./assets/nexus-warrior-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "./assets/icon-512.png",
+      "src": "./assets/nexus-warrior-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
