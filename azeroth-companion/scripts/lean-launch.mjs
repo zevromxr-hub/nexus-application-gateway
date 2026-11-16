@@ -38,6 +38,6 @@ assert.equal(cssCount,34);
 assert.equal(jsCount,38);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
-assert.equal(stylesheetCount,14,'Two compiled stylesheets plus twelve additive UX styles');
-assert.equal(deferredCount,15,'Two compiled scripts plus thirteen additive UX modules');
+assert.equal(stylesheetCount,15,'Two compiled stylesheets plus thirteen additive UX styles');
+assert.equal(deferredCount,16,'Two compiled scripts plus fourteen additive UX modules');
 console.log('Azeroth v4.7 lean launch '+mode+' passed; '+cssCount+' CSS sources + '+jsCount+' JS sources in 4 checked bundles ('+bytes+' source bytes).');
