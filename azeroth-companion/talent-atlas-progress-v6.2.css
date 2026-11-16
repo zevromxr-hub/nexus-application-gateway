@@ -1,0 +1,34 @@
+/* NEXUS | AZEROTH v6.2 — progress and immersive Talent Atlas */
+.nx-tree-progress{display:grid;gap:12px;margin:16px 0 10px;padding:clamp(12px,2vw,20px);background:linear-gradient(135deg,#102538f5,#142039ed);border:1px solid #b4a27d8c;border-radius:17px}
+.nx-tree-progress-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.nx-tree-progress h3{font-size:clamp(17px,2vw,22px);color:#f2d19e;margin:5px 0}
+.nx-tree-progress p{color:#bed3df;font-size:11px;line-height:1.65;margin:0;max-width:720px}
+.nx-tree-progress-actions{display:flex;align-items:end;flex-wrap:wrap;gap:10px}
+.nx-tree-progress-actions label{display:grid;gap:5px;font-size:10px;color:#d9c7a6}
+.nx-tree-progress-actions select,.nx-tree-progress-actions button{min-height:44px;color:#f3e5cd;background:#1c3a4c;border:1px solid #c6b18b88;border-radius:9px;padding:10px}
+.nx-tree-progress-actions button{font-size:11px;font-weight:800}
+.nx-tree-progress-stats{display:flex;gap:8px;flex-wrap:wrap}
+.nx-tree-progress-stats span{padding:8px 11px;border-radius:10px;background:#1b3849c4;border:1px solid #8a9ca47c;color:#d9e5e7;font-size:11px}
+.nx-tree-progress-stats strong{color:#f3d5a3;font-size:15px}
+.nx-tree-progress-legend{display:flex;flex-wrap:wrap;gap:8px}
+.nx-key{padding:5px 9px;border-radius:99px;border:1px solid #ffffff27;font-size:10px;font-weight:750}
+.nx-key-complete{color:#8df3c6;background:#18483f}.nx-key-partial{color:#91dffc;background:#154458}.nx-key-empty{color:#d2dbe1;background:#243546}.nx-key-review{color:#ffdc91;background:#65471b}
+#tfTree .tf-node[data-nx-progress=complete]{border-color:#70d9a6!important;box-shadow:inset 0 0 0 1px #70d9a63a,0 0 18px #36ab6a35!important}
+#tfTree .tf-node[data-nx-progress=partial]{border-color:#80ccef!important;box-shadow:inset 0 0 0 1px #8adcf440,0 0 14px #58b8d535!important}
+#tfTree .tf-node[data-nx-progress=empty]{border-color:#87949e82!important}
+#tfTree .tf-node[data-nx-review=yes]{outline:2px dashed #e8b966;outline-offset:2px}
+#tfTree .tf-node.nx-tree-dimmed{opacity:.3!important}
+#tfTree .tf-node .nx-tree-rank-pill{display:inline-flex;align-items:center;max-width:100%;margin:4px 0 7px;padding:4px 8px;border-radius:6px;color:#d7e6e9;background:#183b4e;font-size:10px;font-weight:850;letter-spacing:.02em;white-space:normal;line-height:1.35}
+#tfTree .tf-node[data-nx-progress=complete] .nx-tree-rank-pill{color:#b6ffdc;background:#205541}
+#tfTree .tf-node[data-nx-progress=partial] .nx-tree-rank-pill{color:#b6ebff;background:#1e4c62}
+#tfTree .tf-node[data-nx-review=yes] .nx-tree-rank-pill{border:1px solid #dfb76d}
+#tfTree .tf-node::after{content:"";position:absolute;pointer-events:none;left:5%;right:5%;bottom:2px;height:3px;border-radius:8px;background:linear-gradient(90deg,#75dbb3 var(--nx-progress,0%),#344456 var(--nx-progress,0%))}
+#tfTree.tf-canvas-active{overscroll-behavior:contain}
+#tfTree.tf-canvas-active:focus-visible{outline:2px solid #8ae0e5}
+#talentForge .tf-toolbar:fullscreen,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen{position:fixed!important;inset:0!important;z-index:5000!important;width:100vw!important;height:100dvh!important;max-width:none!important;max-height:none!important;margin:0!important;padding:clamp(10px,1.8vw,22px)!important;overflow:auto!important;background:linear-gradient(135deg,#091628,#0e2438)!important;display:flex!important;flex-direction:column;gap:10px}
+#talentForge .tf-toolbar:fullscreen #tfTree,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen #tfTree{height:auto!important;min-height:45vh!important;max-height:none!important;flex:1 1 auto!important;overscroll-behavior:contain}
+#talentForge .tf-toolbar:fullscreen .nx-tree-progress,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen .nx-tree-progress{flex:none;margin:0}
+#talentForge .tf-toolbar:fullscreen .tf-canvas-tools,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen .tf-canvas-tools{flex:none}
+body.nx-tree-presentation{overflow:hidden!important}
+@media(max-width:760px){.nx-tree-progress-actions{width:100%}.nx-tree-progress-actions>*{flex:1 1 auto}.nx-tree-progress-stats span{flex:1 1 125px}#tfTree .tf-node::after{height:2px}}
+@media(prefers-reduced-motion:reduce){#tfTree .tf-node{transition:none!important}}
