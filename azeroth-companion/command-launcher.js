@@ -8,7 +8,7 @@ const host=document.createElement('div');host.className='az-launcher';host.hidde
 document.body.append(host);const input=host.querySelector('#azl-search'),results=host.querySelector('#azl-results'),info=host.querySelector('.azl-info');
 const trigger=document.createElement('button');trigger.type='button';trigger.className='azl-trigger';trigger.innerHTML='<span aria-hidden="true">⌕</span> Find a tool <kbd>Ctrl K</kbd>';trigger.setAttribute('aria-label','Find a companion tool');const chip=top.querySelector('.chip');if(chip)chip.before(trigger);else top.append(trigger);
 let opener=null,focusables=[];
-function items(){return[...nav.querySelectorAll('button[data-view]')].map(b=>({id:b.dataset.view,label:b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view})).filter(x=>x.id)}
+function items(){return[...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true').map(b=>({id:b.dataset.view,label:b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view})).filter(x=>x.id)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]))}
 function opened(){return !host.hidden}
 function close(){if(!opened())return;host.hidden=true;document.body.classList.remove('azl-open');if(opener&&opener.isConnected)opener.focus({preventScroll:true})}
