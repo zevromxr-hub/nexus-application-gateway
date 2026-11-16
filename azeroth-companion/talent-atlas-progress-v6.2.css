@@ -32,3 +32,17 @@
 body.nx-tree-presentation{overflow:hidden!important}
 @media(max-width:760px){.nx-tree-progress-actions{width:100%}.nx-tree-progress-actions>*{flex:1 1 auto}.nx-tree-progress-stats span{flex:1 1 125px}#tfTree .tf-node::after{height:2px}}
 @media(prefers-reduced-motion:reduce){#tfTree .tf-node{transition:none!important}}
+
+/* v6.4: optional uncluttered cards and inline control help. */
+.nx-tree-help{border-top:1px solid #9bb2b044;padding-top:8px}
+.nx-tree-help summary{cursor:pointer;font-size:10px;letter-spacing:.07em;font-weight:800;color:#f0d3a0}
+.nx-tree-help p{margin:8px 0 0!important;max-width:none;color:#b7d7d9;line-height:1.65}
+#tfTree.nx-tree-compact .tf-node>p,
+#tfTree.nx-tree-compact .tf-node>small,
+#tfTree.nx-tree-compact .tf-node .tf-cmd-tree-hint{display:none!important}
+#tfTree.nx-tree-compact .tf-node{min-height:112px!important}
+#tfTree.nx-tree-compact .tf-node .tf-node-controls,
+#tfTree.nx-tree-compact .tf-node .tf-source-actions,
+#tfTree.nx-tree-compact .tf-node .nx-tree-rank-pill{display:flex!important}
+#nxTreeCompact[aria-pressed=true]{border-color:#81d3b5;background:#255247;color:#d6fff0}
+@media(max-width:760px){#tfTree.nx-tree-compact .tf-node{min-height:96px!important}}
