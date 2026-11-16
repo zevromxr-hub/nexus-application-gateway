@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.2",
+  "version": "7.9.3",
   "channel": "stable",
   "release_date": "2026-11-16",
-  "subtitle": "Player Handbook, Device Guides & Addon Nexus Integration",
-  "previous_version": "7.9.1",
+  "subtitle": "Blizzard Character Intelligence & Gear Comparison",
+  "previous_version": "7.9.2",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a searchable, lightweight Player Handbook covering 20 major studio groups and related utilities with step-by-step guidance, limitations, and direct links.",
-    "Integrated separate PC and mobile handbook links into the main companion navigation without replacing existing studio controls.",
-    "Added device-aware tutorial instructions, keyboard and mobile usage tips, accessibility and reduced-motion accommodations.",
-    "Introduced the independent Addon Nexus v8.0 preview directory as a navigation destination; live provider API search remains a future optional integration.",
-    "Kept Battle.net authentication, Cloudflare Worker, local player records, talent planning and all existing script bundles unchanged.",
-    "Performance-focused design: the new handbook uses a standalone lightweight page, expandable sections, and filtered searches; no measured site-wide speedup is claimed."
+    "Added Character Intelligence, an independent responsive studio using existing Blizzard public profile and equipment endpoints through the Cloudflare gateway.",
+    "Compare two Retail characters by region, realm slug and name, including their equipment slots, item IDs and reported item levels.",
+    "Added optional JSON snapshot export and direct official item API research links; comparisons never infer missing items or true equipment power from item level alone.",
+    "Character Intelligence reads public API information only and does not access private Battle.net sessions or alter browser-saved progression.",
+    "Preserved v7.9.2 PC/mobile guides and existing studio JavaScript; Addon Nexus remains a separate v8.0 preview.",
+    "Live character result testing still requires players with public Blizzard records; no broad performance benchmark is claimed."
   ]
 }
