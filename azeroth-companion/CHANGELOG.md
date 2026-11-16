@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.7.2 · 2026-11-15 — Hyper Music Stack & Optional Welcome Soundtrack
+
+- **Desktop:** Moved the HYPER MUSIC floating shortcut above the Founder avatar on the right. The existing mobile top-header positions for both controls remain unchanged.
+- **Site-hosted welcome track:** Added a safe configuration pointing at `assets/nexus-intro.mp3`. The welcome track uses the existing player audio element, never a competing second audio source or private IndexedDB mutation.
+- **Autoplay and user gesture:** Desktop attempts to play the uploaded track automatically if the browser permits. If audible autoplay is blocked, a Play Welcome Theme button appears. On mobile, playback begins only after the visitor taps the dedicated one-tap header control.
+- **Owner instructions:** Added `SOUNDTRACK-SETUP.md` explaining how to upload a personally owned/licensed MP3 to the repository. Until the file exists, the website hides its welcome-music controls rather than showing a broken track.
+- **Preservation:** Existing playlists, Talent Forge, character research, local music uploads, archived tools, Founder profile and Discord releases remain unchanged. Live autoplay behavior requires browser testing and is not guaranteed.
+
 ## v7.7.1 · 2026-11-15 — Founder Identity Bubble
 
 - Replaced the Developer Identity link in the main sidebar with a **floating Founder avatar shortcut** using the existing ZevRo crest and prominent Developer / Founder microcopy.
