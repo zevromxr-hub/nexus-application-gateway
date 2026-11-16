@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.1.1",
+  "title": "Mobile Hyper Music Layout Fix",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Moved HYPER MUSIC into the normal sticky navigation flow on iPhone and small screens so bottom-left buttons remain accessible.",
+    "Preserved the original desktop HYPER MUSIC floating launcher without changing its position or controls.",
+    "Reuses the existing music player and tracks, including when switching between mobile and desktop layouts.",
+    "Refreshed JavaScript and stylesheet cache versions to deploy the mobile fix without clearing stored data.",
+    "All v7.1 Talent Forge features, retired-studio archive access and the existing Discord notification workflow remain unchanged."
+  ]
+}
