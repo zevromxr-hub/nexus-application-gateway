@@ -1,18 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.0",
+  "version": "7.9.1",
   "channel": "stable",
   "release_date": "2026-11-16",
-  "subtitle": "Acquisition & Specialization Intelligence",
-  "previous_version": "7.8.0",
+  "subtitle": "Account Persistence & Unlock Intelligence",
+  "previous_version": "7.9.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Acquisition Intelligence inside Loot Hunter using the existing, limited curated historical source file and the player's manually tracked farming goals.",
-    "Added source-coverage filters, reference guide links, documented acquisition steps, personal attempt summaries and clear indicators when no acquisition reference is available.",
-    "Added Specialization Intelligence inside Talent Forge showing Blizzard-returned node IDs, supplied descriptions, category filters, available spell/talent IDs, planned rank counts, and source-tree context.",
-    "The new intelligence views are read-only; they do not modify loot goals, talent allocations, saved builds, account information, or music.",
-    "Preserved previous Warcraft Research and the v7.7.2 music and Founder layout. Live browser and player testing remains outstanding."
+    "Prepared secure Cloudflare Worker update to keep the private authenticated session active for the remaining Blizzard OAuth token lifetime, capped at 24 hours; requires separate owner deployment and never persists refresh tokens.",
+    "Extended the public site's separate server-validated verification receipt from 2 minutes to 15 minutes and explicitly states that local player progress is independent of account verification.",
+    "Added a read-only local progress overview and direct Sovereign Data Vault access inside the companion's My Azeroth section.",
+    "Prepared private My Azeroth Unlocks & Collections exploration for Blizzard-reported mounts, pets, toys, heirlooms and authorized character achievements; the private Worker upgrade must be deployed before these account features become available.",
+    "Existing equipped gear remains visible, but complete bag/bank inventory and live currency balances are not available from the Blizzard web API endpoints currently integrated; these are not fabricated.",
+    "Preserved all existing Warcraft studios, HYPER MUSIC, Founder avatar, saved builds and data formats. Live Cloudflare/browser/account validation remains pending."
   ]
 }
