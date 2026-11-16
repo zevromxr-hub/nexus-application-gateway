@@ -672,7 +672,7 @@ for(const [target,icon,label] of quick){const b=document.createElement('button')
 const more=document.createElement('button');more.type='button';more.dataset.acMore='true';more.setAttribute('aria-controls',sidebar.id);more.setAttribute('aria-expanded','false');more.innerHTML='<span class="ac-icon" aria-hidden="true">☰</span><span>All tools</span>';bar.append(more);document.body.append(bar);
 const skip=document.createElement('a');skip.href='#ac-content';skip.className='ac-skip';skip.textContent='Skip to companion content';document.body.prepend(skip);main.id=main.id||'ac-content';main.setAttribute('tabindex','-1');
 let opener=null,activeView='overview';
-function navButtons(){return [...nav.querySelectorAll('button[data-view]')]}
+function navButtons(){return [...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true')}
 function refreshSearch(){const q=search.value.trim().toLocaleLowerCase();let visible=0;for(const b of navButtons()){const ok=!q||b.textContent.toLocaleLowerCase().includes(q);b.hidden=!ok;if(ok)visible++}count.textContent=visible+' tool'+(visible===1?'':'s')+' available';}
 function isOpen(){return document.body.classList.contains('ac-menu-open')}
 function openMenu(){if(!mobile.matches)return;opener=document.activeElement;search.value='';refreshSearch();document.body.classList.add('ac-menu-open');more.setAttribute('aria-expanded','true');sidebar.setAttribute('aria-modal','true');sidebar.setAttribute('role','dialog');search.focus({preventScroll:true})}
@@ -702,7 +702,7 @@ const host=document.createElement('div');host.className='az-launcher';host.hidde
 document.body.append(host);const input=host.querySelector('#azl-search'),results=host.querySelector('#azl-results'),info=host.querySelector('.azl-info');
 const trigger=document.createElement('button');trigger.type='button';trigger.className='azl-trigger';trigger.innerHTML='<span aria-hidden="true">⌕</span> Find a tool <kbd>Ctrl K</kbd>';trigger.setAttribute('aria-label','Find a companion tool');const chip=top.querySelector('.chip');if(chip)chip.before(trigger);else top.append(trigger);
 let opener=null,focusables=[];
-function items(){return[...nav.querySelectorAll('button[data-view]')].map(b=>({id:b.dataset.view,label:b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view})).filter(x=>x.id)}
+function items(){return[...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true').map(b=>({id:b.dataset.view,label:b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view})).filter(x=>x.id)}
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]))}
 function opened(){return !host.hidden}
 function close(){if(!opened())return;host.hidden=true;document.body.classList.remove('azl-open');if(opener&&opener.isConnected)opener.focus({preventScroll:true})}
@@ -1757,7 +1757,7 @@ function read(){
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){/* optional local preferences */}}
 read();
-const navButtons=()=>[...nav.querySelectorAll('button[data-view]')];
+const navButtons=()=>[...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true');
 const names=()=>new Map(navButtons().map(b=>[b.dataset.view,b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view]));
 function jump(view){
  if(!validId(view))return;
@@ -1993,7 +1993,7 @@ const paths={
   ]
  }
 };
-const existing=()=>new Map([...nav.querySelectorAll('button[data-view]')].map(b=>[
+const existing=()=>new Map([...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true').map(b=>[
  b.dataset.view,b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view
 ]));
 function openTool(id){
