@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.1.2",
+  "version": "7.2.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Top-Header Hyper Music & Performance Polish",
-  "previous_version": "7.1.1",
+  "subtitle": "Developer Identity & Clean Release Center",
+  "previous_version": "7.1.2",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Moved the mobile HYPER MUSIC shortcut into the main website top header, away from the sticky navigation bar and bottom-left controls.",
-    "Preserved the existing bottom-left floating HYPER MUSIC shortcut on desktop and the same music player and stored tracks on both devices.",
-    "Added native lazy loading and asynchronous image decoding for offscreen thumbnails and other noncritical images to reduce initial loading work.",
-    "Optimized only newly inserted image elements instead of rescanning the full interface after every dynamic update.",
-    "Preserved all existing Talent Forge controls, saved data, archived studio access, Blizzard connections and the proven Discord update workflow."
+    "Added a dedicated Developer Identity page with a square crest avatar, ZevRo's independent-development profile, and NEXUS design principles.",
+    "Added an accessible Developer Identity link to desktop and mobile navigation.",
+    "Created a first-party Application Updates page that displays version history and change details without redirecting players to a code repository.",
+    "Removed development-platform wording and repository-facing links from public release screens, the user guide, onboarding, and visible account and backup descriptions.",
+    "Preserved official game-data integrations, saved builds and local media, Talent Forge, website hosting, and the established Discord release announcement workflow."
   ]
 }
