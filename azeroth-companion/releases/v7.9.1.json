@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.9.1",
+  "title": "Account Persistence & Unlock Intelligence",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Prepared a new secure Cloudflare Worker release that extends the private encrypted Battle.net session up to the actual Blizzard token lifetime, strictly capped at 24 hours; owner must deploy the Worker separately.",
+    "Increased the public companion's independently encrypted and server-validated connection-status receipt to at most 15 minutes, without storing account tokens in GitHub Pages.",
+    "Added a read-only progress health panel in My Azeroth showing locally saved talent drafts and item/farming goals, with direct access to the existing Sovereign Data Vault. Authentication expiration does not erase local progress.",
+    "Prepared the private account Unlocks & Collections explorer for Blizzard-reported mounts, pets, toys, heirlooms and completed achievements of an authorized character; features become live only after the Worker deployment.",
+    "Preserved existing equipped gear research; does not claim to read complete bags, banks, or all live currency balances because those are not provided by the current Battle.net web API integration.",
+    "No data migrations, token leaks, new client secrets or changes to HYPER MUSIC or Founder identity. Full live OAuth, Cloudflare and browser acceptance tests are pending."
+  ]
+}
