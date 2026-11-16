@@ -58,19 +58,28 @@ body{background-color:#122c40}
 @media(max-width:800px){.sidebar,body.sx-ready .sidebar{background-position:center,69% center,69% center!important}.sidebar .brand{padding-right:35px!important}}
 @media(prefers-reduced-motion:reduce){.sidebar .nav button[data-view],.sidebar .nav .sx-nav-items button[data-view]{transition:none}}
 
-/* v6.1.2: replace the legacy assassin art inside the home welcome card.
-   This element uses its own background shorthand; changing body::before
-   does not affect it. Keep text contrast and positioning on both layouts. */
+/* v6.1.3: single-canvas welcome hero.
+ * The global fixed background already contains the warrior. A second cropped
+ * image inside the welcome panel caused the visible duplicate/misalignment.
+ * Use a semi-transparent glass scrim instead, allowing one continuous image
+ * to show through while safeguarding headline/button readability.
+ */
 body .sx-welcome{
- background-color:#102439!important;
- background-image:linear-gradient(100deg,rgba(5,17,30,.94) 0%,rgba(7,24,40,.88) 42%,rgba(6,22,38,.39) 100%),url("./assets/radiant-warrior-background.webp")!important;
- background-position:center,67% 35%!important;
- background-size:cover,cover!important;
+ background-color:transparent!important;
+ background-image:linear-gradient(100deg,rgba(5,14,27,.91) 0%,rgba(7,20,33,.79) 45%,rgba(5,17,30,.42) 100%)!important;
+ background-position:center!important;
+ background-size:cover!important;
  background-repeat:no-repeat!important;
+ -webkit-backdrop-filter:blur(2px);
+ backdrop-filter:blur(2px);
 }
 @media(max-width:800px){
  body .sx-welcome{
-  background-image:linear-gradient(100deg,rgba(5,17,30,.94),rgba(6,23,40,.77)),url("./assets/radiant-warrior-background.webp")!important;
-  background-position:center,69% center!important;
+  background-image:linear-gradient(100deg,rgba(5,15,28,.91),rgba(5,17,31,.76))!important;
+  -webkit-backdrop-filter:blur(1px);
+  backdrop-filter:blur(1px);
  }
+}
+@media(prefers-reduced-transparency:reduce){
+ body .sx-welcome{background-image:linear-gradient(110deg,rgba(5,15,28,.97),rgba(6,18,31,.90))!important;-webkit-backdrop-filter:none;backdrop-filter:none}
 }
