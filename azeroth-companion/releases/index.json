@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "7.9.1",
+      "title": "Account Persistence & Unlock Intelligence",
+      "date": "2026-11-16"
+    },
+    {
       "version": "7.9.0",
       "title": "Acquisition & Specialization Intelligence",
       "date": "2026-11-16"
