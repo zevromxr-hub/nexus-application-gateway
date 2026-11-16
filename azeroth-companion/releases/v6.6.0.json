@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.6.0",
+  "title": "Sovereign Intelligence — Connected Paths & Talent Navigation",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "New optional Path Navigator lets players find Blizzard talents by name or node ID and center them directly in the tree.",
+    "Connected path exploration highlights reported upstream and downstream talent relationships without implying official unlock eligibility.",
+    "Read-only talent briefing shows Blizzard-returned descriptions, official source IDs and allocated ranks.",
+    "New FIT TREE and CLEAR FOCUS actions simplify navigation, while preserving existing Ascendant View, rank controls and minimap.",
+    "All original saved builds, allocations, undo/redo, phone/PC controls, character connections, and media features remain unchanged."
+  ]
+}
