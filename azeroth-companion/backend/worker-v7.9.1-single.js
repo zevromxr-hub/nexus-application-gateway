@@ -36,6 +36,12 @@ function matchOwnedMounts(rows){
 }
 
 
+const callback=u=>u.origin+'/auth/callback';
+// v4 maintained deployment reference for the verified v3.8.1 Cloudflare session bridge.
+// The live Worker must be updated deliberately; committing this reference does NOT deploy it.
+// No Blizzard client secrets or encrypted session keys belong in this file.
+const PAGE_V4=PAGE.replace('<form method="POST" action="/auth/logout" id="disconnect">','<a class="button primary" id="verifiedReturn" href="/account/verify-companion" hidden>VERIFY &amp; RETURN</a><form method="POST" action="/auth/logout" id="disconnect">');
+const CLIENT_V4=CLIENT.replace("$('logins').hidden=true;","$('verifiedReturn').hidden=false;$('logins').hidden=true;").replace("$('logins').hidden=false;","$('verifiedReturn').hidden=true;$('logins').hidden=false;");
 // v7.9.1 additive personal collection explorer. The existing OAuth login and gear panel remain unchanged.
 const PAGE_791=PAGE_V4.replace('<footer>',"<section class=\"panel\" id=\"unlocksPanel\" hidden><div class=\"row between\"><div><h2>My Unlocks & Collections</h2><p class=\"muted\">Read-only Blizzard-reported mounts, pets, toys, heirlooms, and character achievements. Results can lag behind the game. These are not bag items or currencies.</p></div></div><div class=\"row\"><label for=\"unlockKind\">Collection</label><select id=\"unlockKind\"><option value=\"mounts\">Mounts</option><option value=\"pets\">Battle pets</option><option value=\"toys\">Toys</option><option value=\"heirlooms\">Heirlooms</option><option value=\"achievements\">Completed achievements (selected character)</option></select><button id=\"unlockLoad\" type=\"button\">LOAD MY UNLOCKS</button></div><div class=\"row\"><label for=\"unlockSearch\">Find unlock</label><input id=\"unlockSearch\" type=\"search\" maxlength=\"100\" placeholder=\"Search returned names\" style=\"min-height:42px;max-width:260px;background:#0d1b30;color:white;border:1px solid #ffffff56;border-radius:9px;padding:10px\"></div><div class=\"status\" id=\"unlocksStatus\" role=\"status\">Choose a collection and load it on demand.</div><div class=\"grid\" id=\"unlocksList\"></div><p class=\"muted\">Account collection results are read-only and may vary by region. A missing entry is not conclusive proof you have not unlocked it.</p></section><section class=\"panel\"><h2>Inventory & Currency Coverage</h2><p class=\"muted\">Your real equipped gear appears above. Complete bag contents, bank slots and character currency balances are not exposed by these Battle.net web endpoints. For those, an optional user-controlled in-game addon export would be needed; we do not invent balances or claim full inventory access.</p><p class=\"muted\">Your public companion's manual planners and backups remain saved separately even if Battle.net authentication expires. Reconnecting does not wipe them.</p></section>"+'<footer>')
  .replace('Sessions expire after an hour or sooner if Blizzard revokes access.','A session can last up to 24 hours, but only for as long as Blizzard grants a valid access token. Reconnect when authorization expires.');
@@ -43,12 +49,7 @@ const CLIENT_791=CLIENT_V4.replace('\n(async()=>{',"\n\nlet unlockData=[];\nfunc
  .replace("$('intelligencePanel').hidden=false;","$('intelligencePanel').hidden=false;$('unlocksPanel').hidden=false;")
  .replace("Connected to Blizzard · '+status.region.toUpperCase()+' · Read-only session","Connected to Blizzard · '+status.region.toUpperCase()+' · about '+Math.ceil((status.remainingSeconds||0)/60)+' minutes remaining");
 
-const callback=u=>u.origin+'/auth/callback';
-// v4 maintained deployment reference for the verified v3.8.1 Cloudflare session bridge.
-// The live Worker must be updated deliberately; committing this reference does NOT deploy it.
-// No Blizzard client secrets or encrypted session keys belong in this file.
-const PAGE_V4=PAGE.replace('<form method="POST" action="/auth/logout" id="disconnect">','<a class="button primary" id="verifiedReturn" href="/account/verify-companion" hidden>VERIFY &amp; RETURN</a><form method="POST" action="/auth/logout" id="disconnect">');
-const CLIENT_V4=CLIENT.replace("$('logins').hidden=true;","$('verifiedReturn').hidden=false;$('logins').hidden=true;").replace("$('logins').hidden=false;","$('verifiedReturn').hidden=true;$('logins').hidden=false;");
+
 // OAuth token validity must not be inferred from WoW character data; even a brand-new
 // Battle.net account can have a valid identity and zero game characters.
 async function validateBlizzardSession(session,env){
