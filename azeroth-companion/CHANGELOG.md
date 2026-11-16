@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.3.0 · 2026-11-15 — Sovereign Intelligence: Character Equipment
+
+- **Official-source overview:** New Character Intelligence panel in Live Armory, driven by the existing successful public Blizzard character and equipment lookup without sending new requests or touching authentication.
+- **Grounded comparisons:** Displays returned equipment count, available item-level count and range, reported average item level, plus sortable equipment details. Missing data is clearly labeled.
+- **Item research handoff:** Opens selected returned item IDs through the existing Item Codex, preserving its verified lookup and error handling.
+- **Preserved:** Talent Forge, local saved builds, Music Studio, archived tools, user storage, and Discord release workflow. No invented best-in-slot or DPS scores.
+
 ## v7.2.0 · 2026-11-15 — Developer Identity & Clean Update Center
 
 - Added a dedicated responsive Developer Identity page with the existing ZevRo crest inside a square identity card, professional biography, NEXUS development principles, and clear independent-fan-project disclosure.
