@@ -115,7 +115,7 @@ async function handlePersonal(request,env,url){
    const check=await validateBlizzardSession(session,env);
    if(!check.valid)return redirect(destination+'#nxverify=disconnected');
    const checkedAt=Date.now();
-   const proof=await seal(env,{purpose:'azeroth-companion-status-v1',aud:destination,region:session.region,verifiedAt:checkedAt,exp:Math.min(checkedAt+1800000,Number(session.exp))});
+   const proof=await seal(env,{purpose:'azeroth-companion-status-v1',aud:destination,region:session.region,verifiedAt:checkedAt,exp:Math.min(checkedAt+900000,Number(session.exp))});
    return redirect(destination+'#nxverify='+encodeURIComponent(proof));
   }catch(_){return redirect(destination+'#nxverify=unavailable')}
  }
@@ -130,7 +130,7 @@ async function handlePersonal(request,env,url){
   const ticket=body?.ticket;
   if(typeof ticket!=='string'||ticket.length<20||ticket.length>6000)return out({success:false,message:'Invalid verification ticket'},400);
   const claim=await unseal(env,ticket);
-  if(!claim||claim.purpose!=='azeroth-companion-status-v1'||claim.aud!=='https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/'||!Object.hasOwn(LOCALES,claim.region)||!Number.isSafeInteger(claim.verifiedAt)||claim.verifiedAt>Date.now()+10000||Date.now()-claim.verifiedAt>1800000||claim.exp>claim.verifiedAt+1800000)return out({success:false,message:'Verification expired or invalid'},401);
+  if(!claim||claim.purpose!=='azeroth-companion-status-v1'||claim.aud!=='https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/'||!Object.hasOwn(LOCALES,claim.region)||!Number.isSafeInteger(claim.verifiedAt)||claim.verifiedAt>Date.now()+10000||Date.now()-claim.verifiedAt>900000||claim.exp>claim.verifiedAt+900000)return out({success:false,message:'Verification expired or invalid'},401);
   return out({success:true,connected:true,region:claim.region,verifiedAt:claim.verifiedAt,validUntil:claim.exp});
  }
  if(!path.startsWith('/api/me/'))return response({message:'No such route'},404);
