@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.7.1",
+  "version": "7.7.2",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Founder Identity Bubble",
-  "previous_version": "7.7.0",
+  "subtitle": "Desktop Hyper Stack & Site Welcome Soundtrack",
+  "previous_version": "7.7.1",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Replaced the desktop sidebar Developer Identity link with a floating Founder avatar shortcut using the existing ZevRo crest and a concise Developer / Founder label.",
-    "On PC the Founder bubble floats at the bottom-right opposite HYPER MUSIC; on mobile it moves into a dedicated row in the main website header, avoiding overlays on bottom controls.",
-    "The bubble opens the original Developer Identity page without recreating or changing it.",
-    "No modifications to account authentication, Talent Forge, official Blizzard research, media playback, saved records or backups.",
-    "Added navigation and responsive-layout static checks; live browser acceptance is still pending."
+    "Moved the PC HYPER MUSIC floating launcher above the Founder avatar on the right, retaining both mobile top-of-website header positions unchanged.",
+    "Added a configurable first-party welcome soundtrack at assets/nexus-intro.mp3, which the site recognizes after the owner uploads their licensed MP3 through the repository.",
+    "Desktop attempts welcome-track playback on startup when browser autoplay policy permits, with a manual fallback when sound is blocked; mobile uses an explicit one-tap start in the website header.",
+    "Hosted welcome audio uses the existing music player without creating a second competing player or modifying locally saved playlists, builds, account data or backups.",
+    "Added owner-only soundtrack upload guidance and static regression checks; the actual MP3 upload and live browser autoplay verification remain outstanding."
   ]
 }
