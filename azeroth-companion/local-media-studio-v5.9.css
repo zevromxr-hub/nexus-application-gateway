@@ -1,5 +1,5 @@
 /* NEXUS | AZEROTH v5.9 — local media background and nonvisualizing player */
-body>.layout{position:relative;z-index:1}
+body>.layout{position:relative;z-index:auto}
 #nxMediaBackdrop{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;isolation:isolate}
 #nxMediaBackdrop .nx-media-canvas{position:absolute;inset:0;opacity:var(--nx-media-visibility,0);filter:blur(var(--nx-media-blur,0px));transition:opacity .22s}
 #nxMediaBackdrop .nx-media-canvas img,#nxMediaBackdrop .nx-media-canvas video{width:100%;height:100%;object-fit:var(--nx-media-fit,cover);object-position:center;display:block}
