@@ -1,0 +1,20 @@
+/* NEXUS v7.8 Warcraft Research Board */
+.nx-warcraft-research{display:grid;gap:13px;margin:17px 0;padding:17px;background:linear-gradient(145deg,#1b3148,#111d30);border:1px solid #b2a47d70;border-radius:14px}
+.nx-wr-header{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap}
+.nx-wr-header h3{font-size:19px;color:#f5d6a8;margin:5px 0}.nx-wr-header p,.nx-wr-foot{font-size:12px;line-height:1.6;color:#c4d2da;margin:0}
+.nx-wr-tag{font-size:10px;font-weight:850;color:#f6dcb3;border:1px solid #ccae818a;border-radius:30px;padding:6px 10px}
+#nxWrStatus,.nx-wr-more{font-size:11px;color:#c7d8dd}
+.nx-wr-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.nx-wr-metrics[hidden]{display:none}
+.nx-wr-stat{display:grid;gap:3px;border:1px solid #95b4b46a;border-radius:10px;background:#244254;padding:10px}.nx-wr-stat strong{font-size:21px;color:#f6dcaa}.nx-wr-stat span{font-size:10px;color:#c3d8dd}
+.nx-wr-controls{display:flex;flex-wrap:wrap;align-items:end;gap:9px}.nx-wr-controls label{display:grid;flex:1;min-width:160px;gap:5px;font-size:11px;color:#dce4e4}
+.nx-wr-controls select,.nx-wr-controls input{width:100%;min-width:0;min-height:43px;padding:9px;border-radius:9px;border:1px solid #94b2b27a;background:#223d50;color:#fff}
+.nx-wr-controls button,.nx-wr-actions button,.nx-wr-more button,.nx-wr-talent button{min-height:43px;padding:9px 12px;border:1px solid #ccae7b85;border-radius:9px;background:#315166;color:#f4dfbe;font-size:11px;font-weight:800}
+.nx-wr-list{display:grid;gap:8px}.nx-wr-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-radius:10px;background:#20394d;border:1px solid #90b3b068}
+.nx-wr-info{min-width:0;display:grid;gap:6px;flex:1}.nx-wr-info strong{font-size:13px;color:#f6debc;overflow-wrap:anywhere}.nx-wr-info small{font-size:11px;color:#bfdae0}
+.nx-wr-tags{display:flex;flex-wrap:wrap;gap:5px}.nx-wr-tags span{font-size:10px;color:#d7eadd;padding:4px 8px;border:1px solid #84a8a67c;border-radius:20px;background:#284c51}
+.nx-wr-actions{display:flex;gap:8px;flex-wrap:wrap}.nx-wr-actions button:disabled{opacity:.5}
+.nx-wr-more{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}.nx-wr-talent{display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:12px;background:#193144;border:1px solid #a0b5a668;border-radius:10px}
+.nx-wr-talent div{flex:1;min-width:210px}.nx-wr-talent h4{margin:0 0 5px;color:#f4dbb7;font-size:13px}.nx-wr-talent p{font-size:11px;color:#bfd2d9;line-height:1.6;margin:0}
+.nx-wr-foot{padding-top:10px;border-top:1px solid #98ac9a5c;font-size:11px}.nx-wr-empty{font-size:11px;color:#bcd1d9}
+@media(max-width:800px){.nx-wr-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.nx-wr-row{flex-direction:column;align-items:stretch}.nx-wr-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.nx-warcraft-research{padding:12px}.nx-wr-controls,.nx-wr-actions{display:grid;grid-template-columns:1fr}}
