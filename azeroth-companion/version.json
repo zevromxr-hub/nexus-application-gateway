@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.7.0",
+  "version": "7.0.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Guided Progression — Build Journey & Reliable Release Delivery",
-  "previous_version": "6.6.0",
+  "subtitle": "Professional Launch Edition — Onboarding, Install & Update Center",
+  "previous_version": "6.7.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added optional four-step Guided Progression to Talent Forge: goals, official talent-tree exploration, manual point allocation, and build review.",
-    "Enhanced build review with planned node and rank totals by Class, Specialization, and Hero trees, plus advisory source-link warnings.",
-    "Improved navigation from the guided experience into existing Talent Forge goals, Talent Atlas, and Path Navigator without changing official Blizzard node positions.",
-    "Saved builds still use the original Talent Forge save controls, preserving existing recovery, undo/redo, and manual allocation behavior.",
-    "Hardened Discord release delivery with a longer GitHub Pages publication check, safer webhook retry handling, and clearer logging for confirmed versus unconfirmed posts."
+    "Added a responsive optional launch center with direct shortcuts to existing character, build, progression and talent-planning tools.",
+    "Introduced device-aware web app installation guidance and a direct install action where the browser supports it, retaining the existing web-app manifest and icons.",
+    "Added an on-demand update checker that compares the public release manifest to the current website bundle and offers a reload without clearing saved data.",
+    "Published accessible Getting Started and Privacy & Data Guide pages explaining local browser storage, backups, connected Battle.net services, and unofficial Blizzard affiliation.",
+    "Kept Talent Forge, all existing saved formats, Music/Media Studio, Blizzard connections, and the confirmed-working Discord announcement workflow intact."
   ]
 }
