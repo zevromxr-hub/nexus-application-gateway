@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.5.0",
+  "title": "Performance Overdrive & Intelligence Refinement",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added an adaptive Talent Forge visual performance selector: Auto for smaller/reduced-motion environments, Full for original effects, and Lite for lower-cost tree decorations.",
+    "Reduced initial rendering work in Character Intelligence by displaying Blizzard-returned equipment records in batches of sixteen, with an option to load further results.",
+    "Equipment list rendering now builds rows with a document fragment and resets its batch safely when sorting or loading another character.",
+    "Performance preferences are isolated from saved builds and character data; Talent Forge allocation logic, item IDs, music, authentication and all Blizzard integrations remain unchanged.",
+    "Release includes static regression checks for new assets and batch rendering; real-player testing and device benchmarks will follow when testers are available."
+  ]
+}
