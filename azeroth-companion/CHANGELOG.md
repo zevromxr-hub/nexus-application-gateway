@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.7.0 · 2026-11-15 — Guided Progression
+
+- **Four-step optional build journey:** Choose goals, explore Class/Spec/Hero branches, allocate talents using existing +/− buttons, then review allocations and save using the original planner.
+- **Focused review:** Count planned rank points by tree, show selected talents and advisory source-linked relationships without claiming in-game legality.
+- **No storage migration:** All point edits, undo, recovery, saved builds and export remain exclusively under the existing Talent Forge.
+- **Discord announcement hardening:** Wait longer for GitHub Pages to publish and avoid ambiguous retry behavior that might duplicate webhook posts; report confirmed message IDs or explicit errors.
+
 ## v6.6.0 · 2026-11-15 — Sovereign Intelligence & Navigation
 
 - **Optional Path Navigator:** Find talents by name or official node ID, select and center a node, reset the tree overview, and clear highlights without changing saved builds.
