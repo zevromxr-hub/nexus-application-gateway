@@ -59,6 +59,8 @@ async function run(engine,phone){
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
   assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private media studio must mount in Talent Forge on desktop/iPhone');
+  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>!e.open),'Optional media studio must begin collapsed, preserving tree space');
+  await page.locator('#nxMediaStudio > summary').click();
   assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator should mount on desktop/iPhone');
   await page.waitForFunction(()=>document.querySelector('#nxMusicStatus')?.textContent.includes('stored track(s)'),{timeout:12000});
   assert.ok(await page.locator('#nxMusicDock').isHidden(),'Music dock must be closed by default');
@@ -103,6 +105,7 @@ async function run(engine,phone){
   assert.equal((await page.locator('#tfCanvasZoom').textContent()).trim(),'100%','Reset should restore canvas scale');
   assert.ok(await page.locator('#tfCanvasMap').isVisible(),'Tree overview map should be visible');
   if(!phone){
+    await page.locator('#tfTree [data-tf-node="1001"]').scrollIntoViewIfNeeded();
     const n=await page.locator('#tfTree [data-tf-node="1001"]').boundingBox();
     const before=await page.locator('#tfTree').evaluate(el=>el.scrollLeft);
     await page.mouse.move(n.x+n.width/2,n.y+22);
