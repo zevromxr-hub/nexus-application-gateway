@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "7.1.1",
+      "title": "Mobile Hyper Music Layout Fix",
+      "date": "2026-11-15"
+    },
+    {
       "version": "7.1.0",
       "title": "Hyper Access — Global Music & Safe Studio Retirement",
       "date": "2026-11-15"
