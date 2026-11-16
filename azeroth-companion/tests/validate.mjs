@@ -6,6 +6,19 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const founder=await read('azeroth-companion/founder-bubble-v7.7.1.js');
+const founderStyles=await read('azeroth-companion/founder-bubble-v7.7.1.css');
+new vm.Script(founder);
+assert.match(html,/founder-bubble-v7\.7\.1\.js\?v=771/,'Founder shortcut must load');
+assert.match(html,/founder-bubble-v7\.7\.1\.css\?v=771/,'Founder styles must load');
+assert.doesNotMatch(html,/<a class="nx-developer-nav-link"/,'Old sidebar developer link must be removed');
+assert.match(founder,/\.\/developer\.html/,'Founder shortcut must open existing identity page');
+assert.match(founder,/zevro-music-crest\.webp/,'Founder shortcut must use official existing crest');
+assert.match(founder,/nxFounderMobileSlot/,'Founder mobile header slot expected');
+assert.match(founderStyles,/@media\(max-width:800px\)/,'Founder bubble must fit mobile');
+assert.ok(!founder.includes('fetch('),'Founder bubble must not contact network services');
+assert.ok(!founder.includes('localStorage.'),'Founder bubble must not alter saved records');
+ 
 const integrity=await read('azeroth-companion/integrity-center-v7.7.js');
 const playerChecklist=await read('azeroth-companion/player-test-checklist.html');
 new vm.Script(integrity);
@@ -65,7 +78,7 @@ assert.ok(!intelligence.includes('fetch('),'Intelligence layer must not generate
 
 const developer=await read('azeroth-companion/developer.html');
 const publicHistory=await read('azeroth-companion/release-notes.html');
-assert.match(html,/href="\.\/developer\.html"/,'Developer Identity link must be visible in app');
+assert.match(founder,/\.\/developer\.html/,'Developer Identity redirect must remain available through Founder shortcut');
 assert.match(developer,/zevro-music-crest\.webp/,'Developer profile must use verified existing crest');
 assert.match(publicHistory,/\.\/releases\/index\.json/,'First-party update page must read release records');
 assert.doesNotMatch(html,/GitHub/i,'No repository-platform branding in public homepage');
@@ -93,7 +106,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.7\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.7\.1/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -103,9 +116,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.7.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.7.1');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.7\.0 • Application Integrity/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.7\.1 • Founder Identity/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
