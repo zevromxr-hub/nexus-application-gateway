@@ -6,6 +6,15 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const mastery=await read('azeroth-companion/sovereign-mastery-v7.4.js');
+new vm.Script(mastery);
+assert.match(html,/sovereign-mastery-v7\.4\.js\?v=740/,'v7.4 mastery module must load');
+assert.match(html,/sovereign-mastery-v7\.4\.css\?v=740/,'v7.4 mastery styles must load');
+assert.match(mastery,/nexus:armory-intelligence-ready/,'Mastery reads only sanitized Armory results');
+assert.match(mastery,/NexusTalentSourceBridge/,'Talent context reads the existing source snapshot');
+assert.ok(!mastery.includes('fetch('),'Mastery must not create extra network requests');
+assert.ok(!mastery.includes('localStorage.'),'Mastery must not change stored builds');
+
 const intelligence=await read('azeroth-companion/sovereign-intelligence-v7.3.js');
 new vm.Script(intelligence);
 assert.match(html,/sovereign-intelligence-v7\.3\.js\?v=730/,'v7.3 intelligence must load after existing Armory');
@@ -48,7 +57,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.3\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.4\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -58,9 +67,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.3.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.4.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.3\.0 • Sovereign Intelligence/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.4\.0 • Gear & Talent Mastery/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
