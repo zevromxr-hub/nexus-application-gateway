@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.5.0 · 2026-11-15 — Sovereign Tree Overhaul (Phase 1)
+
+- **Original Ascendant View:** Optional action-RPG-style fantasy presentation layered onto the existing Talent Atlas, with an on/off control and darker Radiant Warrior canvas.
+- **Meaningful node shapes:** Distinct styling for source-linked hubs, multi-rank talents, and player choice nodes. These describe returned tree structures, not official rarity, capstone status or unlock eligibility.
+- **Connected paths:** Links based on Blizzard-returned source references receive subtle visual differentiation; connections between planned talents glow gold, while partially planned routes appear cyan.
+- **Readable controls:** Existing wheel zoom, drag, minimap, compact nodes, full-screen workspace, inspector, rank preview and saved builds remain in place.
+- **Safe future foundation:** No changes to allocations, talent IDs, prerequisites, original grid positions, import/export formats, or account integration. More advanced overlays and guided paths will follow in later phases.
+
 ## v6.4.0 · 2026-11-15 — Forge Reliability & Radiant Atlas
 
 - **Discord release announcements:** The announcer is now triggered by publishing a release record, independently of unrelated UI test workflows; it checks confirmed delivery markers to avoid repeating automatic notifications.
