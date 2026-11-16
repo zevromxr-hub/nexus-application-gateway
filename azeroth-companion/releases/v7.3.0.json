@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.3.0",
+  "title": "Sovereign Intelligence — Character & Equipment Research",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added Character Intelligence inside Live Armory with source-backed summaries from already returned public Blizzard profile and equipment data.",
+    "Display returned equipment count, item-level field coverage and range, and Blizzard-reported average item level with explicit missing-data labels.",
+    "Sort equipped records by equipment slot or returned item level, with direct handoff to existing official Item Codex for inspection.",
+    "No extra Blizzard requests, no new account permissions, no automatic gear recommendations, simulated DPS or inferred item ownership.",
+    "Preserved Talent Forge, music, saved data, archived studios and the established Discord release announcement workflow."
+  ]
+}
