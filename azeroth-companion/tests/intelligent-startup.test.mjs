@@ -8,13 +8,15 @@ const read=n=>readFile(path.join(dir,n),'utf8');
 const html=await read('index.html');
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
 assert.ok(inline.length>=1,'Startup script must remain present');
-new vm.Script(inline[0],{filename:'azeroth-index-inline.js'});
+const startup=inline.find(code=>code.includes("Object.defineProperty(window,'NexusStartup'"));
+assert.ok(startup,'Startup coordinator inline script must exist');
+new vm.Script(startup,{filename:'azeroth-index-inline.js'});
 assert.ok(html.includes('NexusStartup')||html.includes('nexus:view-activated'),'v4.8 scheduler should remain installed after newer releases');
-assert.ok(inline[0].includes("Object.defineProperty(window,'NexusStartup'"),'Startup coordinator should initialize before bundled scripts');
-assert.ok(inline[0].includes("new CustomEvent('nexus:view-activated'"),'Site router should notify view-aware startup tasks');
-assert.ok(inline[0].includes("const once=options?.once!==false"),'Deferred callbacks need one-shot and revisit modes');
-assert.ok(inline[0].includes("if(once)document.removeEventListener(EVENT,handler)"),'One-shot startup listeners must detach after first view');
-assert.ok(inline[0].includes('queueMicrotask('),'Already-active views should initialize reliably');
+assert.ok(startup.includes("Object.defineProperty(window,'NexusStartup'"),'Startup coordinator should initialize before bundled scripts');
+assert.ok(startup.includes("new CustomEvent('nexus:view-activated'"),'Site router should notify view-aware startup tasks');
+assert.ok(startup.includes("const once=options?.once!==false"),'Deferred callbacks need one-shot and revisit modes');
+assert.ok(startup.includes("if(once)document.removeEventListener(EVENT,handler)"),'One-shot startup listeners must detach after first view');
+assert.ok(startup.includes('queueMicrotask('),'Already-active views should initialize reliably');
 assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v5.2.js'));
 assert.equal((html.match(/<script defer src=/g)||[]).length,4);
 assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,4);
@@ -40,6 +42,6 @@ for(const marker of ['chromium','webkit','loot-sources','version','cdMetrics','u
 const actions=await read('../.github/workflows/azeroth-device-audit.yml');
 assert.ok(actions.includes('startup-audit.browser.mjs'),'Startup browser test must be executed in GitHub Actions');
 for(const sensitive of ['BLIZZARD_CLIENT_SECRET','AZEROTH_SESSION_SECRET','__Host-nx_bnet_session']){
- assert.ok(!inline[0].includes(sensitive),'Startup coordinator must not handle account secrets');
+ assert.ok(!startup.includes(sensitive),'Startup coordinator must not handle account secrets');
 }
 console.log('Azeroth v4.8 Intelligent Startup static regressions passed.');
