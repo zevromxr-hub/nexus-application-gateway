@@ -18,8 +18,8 @@ assert.ok(startup.includes("const once=options?.once!==false"),'Deferred callbac
 assert.ok(startup.includes("if(once)document.removeEventListener(EVENT,handler)"),'One-shot startup listeners must detach after first view');
 assert.ok(startup.includes('queueMicrotask('),'Already-active views should initialize reliably');
 assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v5.2.js'));
-assert.equal((html.match(/<script defer src=/g)||[]).length,21);
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,21);
+assert.equal((html.match(/<script defer src=/g)||[]).length,22);
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,22);
 const checks=[
  ['warcraft-overdrive.js',["whenView('releases'","['warcraft','dungeons','professions','equipment','releases']","{once:false}"]],
  ['loot-hunter.js',["whenView('loot'","function loadReferenceCatalog()","loot-sources.json"]],
