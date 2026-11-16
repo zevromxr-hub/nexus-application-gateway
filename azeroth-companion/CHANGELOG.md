@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.2.0 · 2026-11-15 — Developer Identity & Clean Update Center
+
+- Added a dedicated responsive Developer Identity page with the existing ZevRo crest inside a square identity card, professional biography, NEXUS development principles, and clear independent-fan-project disclosure.
+- Added Developer Identity to the companion's main navigation and a first-party Application Updates page that reads published release records without exposing repository links.
+- Replaced public-facing repository platform mentions throughout the release center, documentation, account guidance and dashboard with plain product-facing language.
+- Kept the original code repository, static hosting, update manifest, connected API, talent systems, media storage and Discord release automation unchanged.
+
 ## v7.1.2 · 2026-11-15 — Top-Header Music & Performance Polish
 
 - On phones, HYPER MUSIC now appears in the main website top header, not in the sticky navigation. The regular page layout reserves space and keeps it away from bottom controls.
