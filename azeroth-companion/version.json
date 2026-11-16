@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.6.0",
+  "version": "6.7.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Intelligence — Connected Paths & Talent Navigation",
-  "previous_version": "6.5.0",
+  "subtitle": "Guided Progression — Build Journey & Reliable Release Delivery",
+  "previous_version": "6.6.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added optional collapsible Path Navigator to find official talents by name or node ID and center the chosen node without modifying the original tree layout.",
-    "Introduced source-aware upstream and downstream route highlighting using Blizzard-returned link references, always labeled as advisory rather than confirmed game unlock prerequisites.",
-    "Expanded convenient talent briefing with current planned ranks, source IDs, and rank description when returned by Blizzard.",
-    "Added FIT TREE and CLEAR FOCUS controls for quicker recovery and exploration, preserving existing drag-to-pan and wheel zoom.",
-    "Preserved all original point allocation, saved builds, undo/redo, character data, media libraries, existing Ascendant View and account connections."
+    "Added optional four-step Guided Progression to Talent Forge: goals, official talent-tree exploration, manual point allocation, and build review.",
+    "Enhanced build review with planned node and rank totals by Class, Specialization, and Hero trees, plus advisory source-link warnings.",
+    "Improved navigation from the guided experience into existing Talent Forge goals, Talent Atlas, and Path Navigator without changing official Blizzard node positions.",
+    "Saved builds still use the original Talent Forge save controls, preserving existing recovery, undo/redo, and manual allocation behavior.",
+    "Hardened Discord release delivery with a longer GitHub Pages publication check, safer webhook retry handling, and clearer logging for confirmed versus unconfirmed posts."
   ]
 }
