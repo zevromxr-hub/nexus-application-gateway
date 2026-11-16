@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.7.2",
+  "version": "7.8.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Desktop Hyper Stack & Site Welcome Soundtrack",
-  "previous_version": "7.7.1",
+  "subtitle": "Warcraft Research — Equipment & Talent Handoff",
+  "previous_version": "7.7.2",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Moved the PC HYPER MUSIC floating launcher above the Founder avatar on the right, retaining both mobile top-of-website header positions unchanged.",
-    "Added a configurable first-party welcome soundtrack at assets/nexus-intro.mp3, which the site recognizes after the owner uploads their licensed MP3 through the repository.",
-    "Desktop attempts welcome-track playback on startup when browser autoplay policy permits, with a manual fallback when sound is blocked; mobile uses an explicit one-tap start in the website header.",
-    "Hosted welcome audio uses the existing music player without creating a second competing player or modifying locally saved playlists, builds, account data or backups.",
-    "Added owner-only soundtrack upload guidance and static regression checks; the actual MP3 upload and live browser autoplay verification remain outstanding."
+    "Added a Warcraft Equipment Research Board inside Live Armory that cross-references source-returned equipped item IDs with personal Item Atlas, Loot Hunter and character-target records.",
+    "Added quick search and filters for equipped items already saved in Item Atlas, tracked in Loot Hunter, assigned to the looked-up character, or not personally tracked, with a responsive 16-record incremental display.",
+    "Enabled explicit player-initiated Track Goal handoff into the existing Loot Hunter system, and direct official item ID research in the existing Item Codex.",
+    "Added a clearly separated read-only Talent Forge summary of manually planned point totals, never confusing them with the loaded character's confirmed in-game talents.",
+    "No new Blizzard network requests, authentication changes, saved-data migration, music or Founder changes. Live player and device testing remains outstanding."
   ]
 }
