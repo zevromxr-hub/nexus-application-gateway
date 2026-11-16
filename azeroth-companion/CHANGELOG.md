@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.9.1 · 2026-11-16 — Account Persistence & Unlock Intelligence
+
+- **Session lifetime:** New Cloudflare Worker owner-deploy source extends the private encrypted Battle.net cookie from the previous one-hour cap to the actual OAuth access token lifetime, with a strict 24-hour maximum; no unsupported refresh tokens or permanent login credentials.
+- **Verified status:** Increased the separate public companion encrypted status receipt from two minutes to at most fifteen minutes, still server-validated, expiring automatically without deleting any local plans.
+- **Account unlocks:** Prepared a read-only private My Azeroth collector for Blizzard account mounts, pets, toys and heirlooms, plus completed achievements for an authorized character. Entries are fetched on demand and explicitly limited; missing fields cannot prove an unlock is absent.
+- **Inventory limitations:** Existing equipped gear remains available. Complete bags, bank contents and currency balances cannot be obtained from the web API integration and are not fabricated. A future optional in-game addon export may address that need.
+- **Saved progress reassurance:** Added a read-only progress status to the public My Azeroth section, counting existing browser-local trackers and giving direct access to the original Data Vault backup workflow. No save-format migration or automatic deletes.
+- **Owner activation required:** The Cloudflare source `backend/worker-v7.9.1-single.js` must be manually deployed; GitHub publishing alone does not activate longer sessions or private unlocks. See `backend/V7.9.1-OWNER-DEPLOY.md`.
+
 ## v7.9.0 · 2026-11-16 — Acquisition & Specialization Intelligence
 
 - **Acquisition Intelligence:** Added a new read-only research view in Loot Hunter combining saved manual farming goals, logged attempts and the companion's small curated historical acquisition guide library, with explicit source labels, safe reference links and documented steps when available.
