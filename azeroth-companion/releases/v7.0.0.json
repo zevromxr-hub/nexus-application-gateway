@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.0.0",
+  "title": "Professional Launch Edition — Onboarding, Install & Update Center",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "New professional first-visit welcome center, with shortcuts to Characters, Build Architect, Progression and Talent Forge.",
+    "Device-aware install guidance for iPhone, Android and supported desktop browsers, preserving the existing web-app manifest and icons.",
+    "Manual release checker compares the current published version to the loaded website and offers a safe reload when they differ.",
+    "New public Getting Started and Privacy & Data Guide pages explain backups, locally saved drafts, optional Battle.net connections and independent project status.",
+    "Existing Talent Forge, guided builds, World of Warcraft data integrations, media tools and the proven Discord release workflow are preserved."
+  ]
+}
