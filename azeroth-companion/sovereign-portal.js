@@ -19,7 +19,7 @@ function read(){
 }
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(_){/* optional local preferences */}}
 read();
-const navButtons=()=>[...nav.querySelectorAll('button[data-view]')];
+const navButtons=()=>[...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true');
 const names=()=>new Map(navButtons().map(b=>[b.dataset.view,b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view]));
 function jump(view){
  if(!validId(view))return;
