@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.4.0 · 2026-11-15 — Sovereign Gear & Talent Mastery
+
+- Added a source-backed **equipped-item comparison** beside Character Intelligence in Live Armory. Select two returned equipment records and compare their exact names, official item IDs, equipment slots and item levels, including an explicit B−A level difference when both are supplied.
+- Official item inspection uses the existing Item Codex workflow; missing IDs and levels are handled without invented values, and cross-slot comparisons are flagged as non-replacement research.
+- Added a separately labeled read-only **Talent Forge draft context** view, displaying selected talents and planned class/specialization/hero point totals without suggesting the player's active in-game talents are known.
+- Zero extra API requests or persistence changes; this release preserves all existing saved builds, Blizzard connections, local music, Studio Archive and Discord release automation.
+- Real player/browser acceptance tests remain pending until testers are available.
+
 ## v7.3.0 · 2026-11-15 — Sovereign Intelligence: Character Equipment
 
 - **Official-source overview:** New Character Intelligence panel in Live Armory, driven by the existing successful public Blizzard character and equipment lookup without sending new requests or touching authentication.
