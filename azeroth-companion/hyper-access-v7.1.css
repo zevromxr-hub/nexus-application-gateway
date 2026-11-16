@@ -20,3 +20,15 @@
 @media(max-width:760px){.nx-archive-items{grid-template-columns:1fr}.nx-hyper-music{left:calc(8px + env(safe-area-inset-left));bottom:calc(8px + env(safe-area-inset-bottom));max-width:165px;padding:9px 12px;min-height:47px}.nx-hyper-text{font-size:10px}}
 /* Keep launcher from competing with the existing floating music player's controls on narrow screens */
 @media(max-width:540px){body:has(#nxMusicDock:not([hidden])) .nx-hyper-music{z-index:1990}}
+
+/* v7.1.1 mobile-only: reserve real space in the existing sticky sidebar.
+ * No fixed mobile overlay; desktop launcher styling remains exactly as before. */
+.nx-mobile-music-slot{display:none}
+@media(max-width:800px){
+ .nx-mobile-music-slot{display:flex;align-items:center;justify-content:flex-end;width:100%;min-height:42px;margin:0;flex-shrink:0}
+ .nx-mobile-music-slot .nx-hyper-music{position:static;left:auto;bottom:auto;right:auto;z-index:auto;width:auto;max-width:100%;min-height:40px;padding:6px 12px;gap:8px;box-shadow:0 2px 10px #0005;flex:0 0 auto;touch-action:manipulation}
+ .nx-mobile-music-slot .nx-hyper-note{font-size:18px}
+ .nx-mobile-music-slot .nx-hyper-text{font-size:10px}
+ .nx-mobile-music-slot .nx-hyper-text small{font-size:8px}
+ body:has(#nxMusicDock:not([hidden])) .nx-mobile-music-slot .nx-hyper-music{z-index:auto}
+}
