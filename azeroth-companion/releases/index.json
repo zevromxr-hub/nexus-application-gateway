@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "7.2.0",
+      "title": "Developer Identity & Clean Release Center",
+      "date": "2026-11-15"
+    },
+    {
       "version": "7.1.2",
       "title": "Top-Header Hyper Music & Performance Polish",
       "date": "2026-11-15"
