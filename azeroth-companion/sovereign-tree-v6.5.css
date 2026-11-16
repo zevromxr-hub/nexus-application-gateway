@@ -1,0 +1,28 @@
+/* NEXUS | AZEROTH v6.5 — original Sovereign Tree fantasy visual shell */
+#nxSovereignTreeMode{border:1px solid #d3aa6a;color:#ffe1a3;background:linear-gradient(135deg,#533b24,#152d41);font-weight:900;letter-spacing:.04em}
+#nxSovereignTreeMode[aria-pressed=false]{background:#213544;color:#a6bdc6}
+.nx-sovereign-hud{display:flex;flex-wrap:wrap;gap:9px 17px;align-items:center;margin:12px 0 8px;padding:12px 16px;border:1px solid #b99b6288;border-radius:13px;background:linear-gradient(110deg,#172b38f2,#302b36df,#132938f2);font-size:11px;color:#d2e4e4}
+.nx-sovereign-hud[hidden],.nx-sovereign-legend[hidden]{display:none!important}
+.nx-hud-title{font-size:11px;font-weight:900;color:#f7d9a6;letter-spacing:.13em}
+.nx-hud-note{width:100%;color:#b3c3c9;font-size:10px}
+.nx-sovereign-legend{font-size:11px;margin:0 0 9px;color:#b8d7d7;border-left:2px solid #cda465;padding:5px 11px}
+.nx-sovereign-legend summary{cursor:pointer;color:#e5ca9e;font-weight:800;letter-spacing:.04em}
+.nx-sovereign-legend div{padding:9px 0;line-height:1.7}
+#tfTree.nx-sovereign-active.tf-canvas-active{background:radial-gradient(ellipse at 50% 10%,#ad82432d,transparent 60%),radial-gradient(circle,#afc9d91c 1px,transparent 1.5px) 0 0/26px 26px,linear-gradient(158deg,#101b2bdc,#0a1928ef),url('./assets/radiant-warrior-background.webp') 68% 38%/cover!important;border:2px solid #b99a60a8!important;box-shadow:inset 0 0 65px #080d18ad,0 14px 35px #0006}
+#tfTree.nx-sovereign-active .tf-node{background:linear-gradient(145deg,#22394dee,#0b1728f5)!important;border:2px solid #8c99a7!important;box-shadow:inset 0 0 13px #152938,0 7px 16px #0008;transition:box-shadow .15s,border-color .15s}
+#tfTree.nx-sovereign-active .tf-node[data-nx-shape=multi]{border-radius:15px;border-color:#4caac7!important}
+#tfTree.nx-sovereign-active .tf-node[data-nx-shape=choice]{border-radius:9px;border-color:#c897db!important;box-shadow:inset 0 0 18px #8749a430,0 6px 18px #0008}
+#tfTree.nx-sovereign-active .tf-node[data-nx-shape=hub]{border-radius:18px;border-color:#d0a65b!important;box-shadow:inset 0 0 18px #cfa44b29,0 6px 18px #0008}
+#tfTree.nx-sovereign-active .tf-node.nx-sovereign-planned{box-shadow:0 0 23px #d8af5c40,inset 0 0 17px #b38b3730!important}
+#tfTree.nx-sovereign-active .tf-node.nx-path-selected{outline:3px solid #f9d27e!important}
+#tfTree.nx-sovereign-active .tf-node.nx-node-up{outline:2px solid #73e1cb!important}
+#tfTree.nx-sovereign-active .tf-node.nx-node-down{outline:2px solid #7cb8f2!important}
+#tfTree.nx-sovereign-active .nx-node-kind{display:inline-block;font-size:9px;font-weight:900;color:#f0d1a0;border:1px solid #ac8b5988;background:#261f2da8;padding:3px 7px;border-radius:30px;margin:3px 0 7px;letter-spacing:.04em}
+#tfTree.nx-sovereign-active .tf-node[data-nx-shape=choice] .nx-node-kind{color:#e7b8f2;border-color:#b583d6}
+#tfTree.nx-sovereign-active .tf-node[data-nx-shape=multi] .nx-node-kind{color:#91ddf0;border-color:#58a9ba}
+#tfTree.nx-sovereign-active .tf-link-layer path{stroke:#6bbac6;stroke-width:2;stroke-opacity:.7;stroke-dasharray:6 4;transition:stroke .15s,stroke-opacity .15s}
+#tfTree.nx-sovereign-active .tf-link-layer path.nx-path-planned{stroke:#eaca83;stroke-width:4;stroke-opacity:.96;stroke-dasharray:none;filter:drop-shadow(0 0 3px #fac56e)}
+#tfTree.nx-sovereign-active .tf-link-layer path.nx-path-semi{stroke:#7fd6cb;stroke-width:3;stroke-opacity:.85}
+#tfTree.nx-sovereign-active.nx-tree-compact .nx-node-kind{font-size:8px;padding:2px 5px}
+@media(max-width:760px){.nx-sovereign-hud{padding:10px}.nx-hud-note{line-height:1.4}#tfTree.nx-sovereign-active .tf-node{box-shadow:0 4px 10px #0008!important}}
+@media(prefers-reduced-motion:reduce){#tfTree.nx-sovereign-active .tf-node,#tfTree.nx-sovereign-active .tf-link-layer path{transition:none!important}}
