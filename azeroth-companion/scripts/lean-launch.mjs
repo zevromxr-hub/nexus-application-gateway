@@ -38,6 +38,6 @@ assert.equal(cssCount,34);
 assert.equal(jsCount,38);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
-assert.equal(stylesheetCount,2,'Exactly two active bundled stylesheets expected');
-assert.equal(deferredCount,2,'Exactly two active defer script bundles expected');
+assert.equal(stylesheetCount,4,'Two compiled stylesheets plus dedicated Media Studio and Radiant theme');
+assert.equal(deferredCount,4,'Two compiled scripts plus standalone Media Studio and ZevRo credit');
 console.log('Azeroth v4.7 lean launch '+mode+' passed; '+cssCount+' CSS sources + '+jsCount+' JS sources in 4 checked bundles ('+bytes+' source bytes).');
