@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Forge Reliability — Radiant Talent Atlas & Discord Delivery",
-  "previous_version": "6.3.1",
+  "subtitle": "Sovereign Tree Overhaul — Ascendant Visual Foundation",
+  "previous_version": "6.4.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Discord release announcements now follow dedicated version-record publication rather than unrelated website validation workflows.",
-    "Automatic Discord delivery uses GitHub version tags to skip releases that already have a confirmed message receipt.",
-    "Replaced the older assassin wallpaper inside the actual Talent Atlas tree with Radiant Warrior art, including the compiled stylesheet used by visitors.",
-    "Added optional compact talent nodes and quick-use instructions, while keeping original rank buttons, inspector, minimap, zoom and saved tree positions.",
-    "Preserved build data, Blizzard source IDs, Music/Media Studio, connected account features and mobile/desktop compatibility."
+    "Introduced optional Ascendant View: an original premium fantasy skill-tree presentation over the established Talent Atlas.",
+    "Added visually distinctive source-structure node types for connected hubs, multi-rank talents, standard nodes and choice talents, without inventing gameplay rarity or official capstones.",
+    "Enhanced visible Blizzard-reported branch paths with glowing gold links for planned endpoints and cyan highlights for partially planned routes.",
+    "Added a small expandable node legend and a concise tree status HUD; the enhanced appearance can be switched off instantly.",
+    "Preserved the existing official talent node positions and IDs, rank allocation, undo/redo, preview inspector, wheel zoom, drag panning, fullscreen controls, media and private saves."
   ]
 }
