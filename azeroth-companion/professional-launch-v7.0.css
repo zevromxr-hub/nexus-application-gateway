@@ -1,0 +1,28 @@
+/* NEXUS v7.0 Professional Launch Edition */
+.nx-launch-center{border:1px solid #c0a26c88;border-radius:17px;background:linear-gradient(125deg,#203349f2,#121e31ed 75%);margin:14px 0 20px;padding:18px;color:#d5e4ec}
+.nx-launch-header{display:flex;justify-content:space-between;align-items:start;gap:15px}
+.nx-launch-header h3{font-size:clamp(18px,2vw,23px);color:#f7dbb0;margin:5px 0 7px}
+.nx-launch-header p{margin:0;color:#c1d2db;font-size:12px;line-height:1.6}
+.nx-launch-kicker{font-size:10px;letter-spacing:.12em;color:#a9d2cf;font-weight:850}
+#nxLaunchCollapse,.nx-launch-service button,.nx-refresh-button{border:1px solid #b6aa888c;border-radius:9px;padding:10px 12px;min-height:42px;background:#27465b;color:#f1ddbc;font-size:11px;font-weight:850}
+#nxLaunchContent{display:grid;gap:14px;margin-top:15px}
+#nxLaunchContent[hidden]{display:none!important}
+.nx-launch-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.nx-launch-shortcuts button{display:grid;justify-items:start;gap:4px;min-width:0;border:1px solid #a6b3aa73;border-radius:12px;text-align:left;padding:13px;background:#254152cf;color:#e8ebeb}
+.nx-launch-shortcuts button:hover,.nx-launch-shortcuts button:focus-visible{border-color:#e4c891;background:#305369}
+.nx-launch-shortcuts button>span{font-size:21px;color:#f2ce87}
+.nx-launch-shortcuts strong{font-size:12px;color:#f5dfb7}
+.nx-launch-shortcuts small{font-size:10px;color:#b4d0da;line-height:1.5}
+.nx-launch-service{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.nx-launch-service section{padding:14px;background:#132b3d;border:1px solid #90a7a152;border-radius:12px}
+.nx-launch-service h4{font-size:12px;color:#f2d1a0;margin:0 0 6px}
+.nx-launch-service p{color:#b9d1da;font-size:11px;line-height:1.7;margin:0 0 12px}
+.nx-refresh-button{display:inline-flex!important;margin-top:6px;white-space:normal}
+.nx-launch-details{border-top:1px solid #9db3b05b;padding-top:10px}
+.nx-launch-details summary{cursor:pointer;color:#e8cfab;font-size:11px;font-weight:800}
+.nx-launch-details p{font-size:11px;line-height:1.65;color:#bed0d9}
+.nx-launch-links{display:flex;flex-wrap:wrap;gap:9px}
+.nx-launch-links a{color:#b4e4e1;border:1px solid #a0b3af85;padding:8px 11px;border-radius:9px;font-size:11px;text-decoration:none}
+.nx-launch-links a:hover{text-decoration:underline}
+@media(max-width:860px){.nx-launch-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.nx-launch-service{grid-template-columns:1fr}}
+@media(max-width:550px){.nx-launch-center{padding:13px}.nx-launch-header{flex-wrap:wrap}.nx-launch-shortcuts{gap:8px}}
