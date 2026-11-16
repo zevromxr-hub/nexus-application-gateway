@@ -577,6 +577,9 @@ body>.layout{position:relative;z-index:auto}
 #nxMediaBackdrop .nx-media-canvas img,#nxMediaBackdrop .nx-media-canvas video{width:100%;height:100%;object-fit:var(--nx-media-fit,cover);object-position:center;display:block}
 #nxMediaBackdrop .nx-media-scrim{position:absolute;inset:0;background:rgba(5,9,19,var(--nx-media-shade,.35));pointer-events:none}
 .nx-media-studio{margin:16px 0;border-color:#c79b677e;background:linear-gradient(145deg,#111f31eb,#101d2be5);padding:clamp(12px,3vw,20px)}
+.nx-media-summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:.04em;color:#f6dbad;list-style-position:inside;padding:8px 5px;line-height:1.5}
+.nx-media-summary:focus-visible{outline:2px solid #97dfc7;outline-offset:3px}
+.nx-media-studio[open]>.nx-media-summary{margin-bottom:16px;border-bottom:1px solid #c4a87964}
 .nx-media-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
 .nx-media-head h3{margin:6px 0;color:#f9d5a2;font-size:clamp(19px,2vw,25px)}
 .nx-media-head p{font-size:12px;color:#c3d3dc;line-height:1.65;max-width:780px}
