@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.7.1",
+  "title": "Founder Identity Bubble",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Replaced the Developer Identity link in the sidebar with a visually prominent floating Founder avatar using the existing ZevRo crest.",
+    "Desktop shows the Founder bubble at bottom-right opposite HYPER MUSIC; mobile displays it in the normal top website header to avoid blocking controls.",
+    "Founder label and developer identity redirect remain accessible on PC and iPhone.",
+    "No changes to the existing music player, Talent Forge, character lookups, local data, backups, or connected services.",
+    "Version metadata and static asset checks were updated; full browser testing remains pending."
+  ]
+}
