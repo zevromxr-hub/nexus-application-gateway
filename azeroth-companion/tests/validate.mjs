@@ -28,7 +28,7 @@ assert.ok(!mastery.includes('localStorage.'),'Mastery must not change stored bui
 
 const intelligence=await read('azeroth-companion/sovereign-intelligence-v7.3.js');
 new vm.Script(intelligence);
-assert.match(html,/sovereign-intelligence-v7\.3\.js\?v=730/,'v7.3 intelligence must load after existing Armory');
+assert.match(html,/sovereign-intelligence-v7\.3\.js\?v=750/,'v7.3 intelligence must load after existing Armory');
 assert.match(html,/sovereign-intelligence-v7\.3\.css\?v=730/,'v7.3 intelligence CSS must load');
 assert.match(html,/scripts-core-v4\.8\.js\?v=730/,'Fresh Armory event source required');
 const publicArmory=await read('azeroth-companion/connected-armory.js');
