@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.2.0 · 2026-11-15 — Talent Atlas Overdrive
+
+- **Node progress:** Added source-aware planned-rank status colors and per-node progress counters, highlighting fully allocated, partial, unallocated and source-link review states.
+- **Immersive tree:** Optional full-screen workspace that preserves the existing tree, rank/choice controls, minimap, drag-to-pan and Atlas zoom actions. An in-page fallback covers browsers without the Fullscreen API.
+- **Wheel-to-zoom:** Mouse-wheel activity over the tree adjusts Atlas zoom, rather than vertically scrolling that surface. Scrolling outside the tree continues normally.
+- **Data integrity:** No rarity, acquisition difficulty, DPS or validated prerequisite claims are invented; upstream links are advisory. Source IDs, saved talent drafts, media library and account bridges remain unchanged.
+
 ## v6.1.4 · 2026-11-15 — Radiant Identity & Unified Version Control
 
 - **One release number:** The top badge permanently uses the `AZEROTH vX.X.X` format. It reads the canonical `version.json` release, and the Release Center, Player Guide, and homepage rely on that same source.
