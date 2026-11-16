@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Intelligence — Guided Builds & Detailed Talent Inspector",
-  "previous_version": "6.2.0",
+  "subtitle": "Talent Forge Precision Controls — Drag & Rank Inspector Repair",
+  "previous_version": "6.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a detailed source-backed talent inspector with official returned rank descriptions, IDs, planned progress and upstream relationship notes.",
-    "Introduced optional guided build creation that copies player-selected activity, role and style into the existing planner without auto-selecting talents.",
-    "Connected-path highlighting distinguishes upstream and downstream source links while preserving Blizzard node IDs and original layout positions.",
-    "Enhanced the full-screen Talent Atlas with an optional collapsible inspector and compact controls for navigating detailed ranks.",
-    "Added a build review that summarizes manually allocated points and flags advisory source-link relationships for further review.",
-    "Kept existing rank controls, undo/redo, build saving, Media Studio, local storage and account features unchanged. No fabricated rarity, unlock difficulty or combat simulation claims."
+    "Fixed Talent Atlas dragging by starting pointer capture only after intentional movement, reducing interference with node button clicks and touch interactions.",
+    "Preserved the current tree viewport when ranking talents so node positions do not abruptly jump or reset after edits.",
+    "Improved detailed talent inspector responsiveness: rank buttons use original planner controls without unexpected inspector auto-scrolling.",
+    "Added a non-destructive rank-effect preview selector with an explicit apply-one-step action to examine Blizzard-returned rank descriptions before spending points.",
+    "Increased node button tap targets, improved focus styles, and refreshed site scripts with cache-busting for PC and mobile.",
+    "Kept saved builds, existing talent IDs, undo/redo, Media Studio, account integration and all other functionality unchanged."
   ]
 }
