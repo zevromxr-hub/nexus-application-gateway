@@ -95,7 +95,8 @@ async function handlePersonal(request,env,url){
    if(!r.ok)return redirect('/account?error=exchange',[clear]);
    const d=await r.json();if(typeof d.access_token!=='string'||!d.access_token)return redirect('/account?error=token',[clear]);
    // Read-only hour-long session; do not persist refresh tokens or identities.
-   const age=Math.min(86400,Math.max(1,Math.floor(Number(d.expires_in)||3600))); // Browser session never outlives Blizzard's OAuth token
+   const granted=Number(d.expires_in);const age=Number.isFinite(granted)&&granted>0?Math.min(86400,Math.floor(granted)):0; // Never outlive an unverified token lifetime
+    if(!age)return redirect('/account?error=token-lifetime',[clear]);
    const session=await seal(env,{token:d.access_token,region,exp:Date.now()+age*1000});
    return redirect('/account',[clear,cookie(SESSION,session,age)]);
   }catch(_){return redirect('/account?error=upstream',[clear])}
