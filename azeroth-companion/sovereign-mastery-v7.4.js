@@ -19,7 +19,7 @@ const validId=n=>Number.isSafeInteger(Number(n))&&Number(n)>0&&Number(n)<=999999
 const numericLevel=n=>Number.isFinite(Number(n))&&n!==null&&Number(n)>0?Number(n):null;
 const make=(tag,text,cl)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=String(text);if(cl)node.className=cl;return node};
 let source=null;
-function itemAt(id){return source?.items[Number(id)]||null}
+function itemAt(id){if(id===''||id===null||id===undefined)return null;const i=Number(id);return Number.isSafeInteger(i)&&i>=0?source?.items[i]||null:null}
 function clearOptions(select,items){
  select.replaceChildren();
  if(!items.length){select.append(new Option('No equipped records',''));select.disabled=true;return}
