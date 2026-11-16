@@ -57,3 +57,20 @@ body{background-color:#122c40}
 .nx-zevro-credit small{text-transform:uppercase;font-size:9px;letter-spacing:.15em;color:#b7cfd7;font-weight:750}
 @media(max-width:800px){.sidebar,body.sx-ready .sidebar{background-position:center,69% center,69% center!important}.sidebar .brand{padding-right:35px!important}}
 @media(prefers-reduced-motion:reduce){.sidebar .nav button[data-view],.sidebar .nav .sx-nav-items button[data-view]{transition:none}}
+
+/* v6.1.2: replace the legacy assassin art inside the home welcome card.
+   This element uses its own background shorthand; changing body::before
+   does not affect it. Keep text contrast and positioning on both layouts. */
+body .sx-welcome{
+ background-color:#102439!important;
+ background-image:linear-gradient(100deg,rgba(5,17,30,.94) 0%,rgba(7,24,40,.88) 42%,rgba(6,22,38,.39) 100%),url("./assets/radiant-warrior-background.webp")!important;
+ background-position:center,67% 35%!important;
+ background-size:cover,cover!important;
+ background-repeat:no-repeat!important;
+}
+@media(max-width:800px){
+ body .sx-welcome{
+  background-image:linear-gradient(100deg,rgba(5,17,30,.94),rgba(6,23,40,.77)),url("./assets/radiant-warrior-background.webp")!important;
+  background-position:center,69% center!important;
+ }
+}
