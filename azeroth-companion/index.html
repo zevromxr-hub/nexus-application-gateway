@@ -18,7 +18,7 @@
    const response=await fetch('./version.json',{cache:'no-store',credentials:'same-origin'});
    if(!response.ok)return;
    const meta=await response.json();
-   if(typeof meta.version==='string'&&/^\\d+\\.\\d+\\.\\d+$/.test(meta.version)){
+   if(typeof meta.version==='string'&&/^\d+\.\d+\.\d+$/.test(meta.version)){
     badge.textContent='AZEROTH v'+meta.version;
    }
   }catch(_){}
