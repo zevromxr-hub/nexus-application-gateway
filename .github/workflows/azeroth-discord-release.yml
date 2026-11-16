@@ -21,7 +21,7 @@ jobs:
   announce:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,6 +44,12 @@ jobs:
           assert.deepEqual(body.allowed_mentions?.parse, []);
           console.log('Azeroth Discord release payload valid for v' + v.version);
           NODE
+      - name: Print safe release diagnostics
+        run: |
+          echo "Trigger: ${{ github.event_name }}"
+          echo "Release SHA: ${{ github.sha }}"
+          echo "Webhook configured: ${{ secrets.DISCORD_RELEASE_WEBHOOK != '' }}"
+          echo "Only successful Discord message IDs count as delivery."
       - name: Announce published Azeroth release
         env:
           DISCORD_RELEASE_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
