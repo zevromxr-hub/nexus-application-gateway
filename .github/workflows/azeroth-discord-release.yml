@@ -43,7 +43,7 @@ jobs:
           import {metadata, payload} from './azeroth-companion/scripts/announce-release.mjs';
           const {v, release} = await metadata();
           const body = payload(v, release);
-          assert.match(v.version, /^\\d+\\.\\d+\\.\\d+$/);
+          assert.match(v.version, /^\d+\.\d+\.\d+$/);
           assert.equal(body.embeds?.[0]?.title, 'NEXUS | AZEROTH COMPANION v' + v.version);
           assert.ok(Array.isArray(body.embeds?.[0]?.fields));
           assert.ok(body.embeds[0].fields.every(f => String(f.value).length <= 1024));
