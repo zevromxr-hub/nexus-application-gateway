@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.1.4",
+  "title": "Radiant Identity — Unified Release & Branding",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Single canonical v6.1.4 release for the top AZEROTH badge, player guide and release center.",
+    "Radiant Warrior default background, updated browser/Home Screen icons and fantasy navigation styling.",
+    "Seamless translucent welcome hero that avoids double-cropping the warrior art.",
+    "Independent Media Studio with private local backgrounds, player, and custom ZevRo credit.",
+    "Improved iPhone background video play/retry controls and cleaner referral URLs.",
+    "Preserved local talent drafts, music/background storage, account links and existing tools."
+  ]
+}
