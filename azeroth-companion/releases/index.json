@@ -4,6 +4,11 @@
   "updated": "2026-11-15",
   "releases": [
     {
+      "version": "7.7.1",
+      "title": "Founder Identity Bubble",
+      "date": "2026-11-15"
+    },
+    {
       "version": "7.7.0",
       "title": "Application Integrity & Player Acceptance Readiness",
       "date": "2026-11-15"
