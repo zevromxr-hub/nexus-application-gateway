@@ -60,7 +60,7 @@ const paths={
   ]
  }
 };
-const existing=()=>new Map([...nav.querySelectorAll('button[data-view]')].map(b=>[
+const existing=()=>new Map([...nav.querySelectorAll('button[data-view]')].filter(b=>b.dataset.nxRetired!=='true').map(b=>[
  b.dataset.view,b.textContent.replace(/^[^a-zA-Z0-9]+/,'').trim()||b.dataset.view
 ]));
 function openTool(id){
