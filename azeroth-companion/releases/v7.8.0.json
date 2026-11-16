@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.8.0",
+  "title": "Warcraft Research — Equipment & Talent Handoff",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "New Warcraft Equipment Research Board in Live Armory cross-references Blizzard-returned equipped item IDs against the player's manually saved Item Atlas records, Loot Hunter goals and assigned character targets.",
+    "Search, filter and incrementally review source-returned items by personal tracking status; responsive item cards show official item IDs and clearly distinguish manual labels from verified equipment.",
+    "Use INSPECT ITEM to open the existing official Item Codex, or TRACK GOAL to explicitly add an item to the existing Loot Hunter board when the player chooses.",
+    "Read-only Talent Forge handoff summarizes selected talent nodes and manually planned points without attributing those allocations to the active in-game character.",
+    "No added Blizzard API requests, authentication changes, data migrations or changes to the existing HYPER MUSIC and Founder identity layout. Real-player and iPhone testing remain pending."
+  ]
+}
