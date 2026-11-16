@@ -1,10 +1,9 @@
 name: NEXUS Azeroth Companion — Discord Release Announcer
 on:
-  workflow_run:
-    workflows:
-      - NEXUS Azeroth Companion — Release Validation
-    types: [completed]
+  push:
     branches: [main]
+    paths:
+      - 'azeroth-companion/releases/v*.json'
   workflow_dispatch:
     inputs:
       mode:
@@ -14,24 +13,19 @@ on:
         default: dry-run
         options: [dry-run, send-current]
 permissions:
-  contents: read
+  contents: write
 concurrency:
-  group: azeroth-release-announcer-${{ github.event.workflow_run.head_sha || github.ref }}
+  group: azeroth-release-announcer
   cancel-in-progress: false
 jobs:
   announce:
-    if: |
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.event == 'push' &&
-       github.event.workflow_run.head_branch == 'main' &&
-       github.event.workflow_run.conclusion == 'success')
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          ref: main
           fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
