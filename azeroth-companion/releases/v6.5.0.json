@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.5.0",
+  "title": "Sovereign Tree Overhaul — Ascendant Visual Foundation",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Optional Ascendant View turns Talent Atlas into an original dark-fantasy progression map with a single toggle.",
+    "Choice, multi-rank and highly connected talent nodes receive distinct visual styling based on source-backed structure, not fabricated rarity or unlock tiers.",
+    "Blizzard-reported connections now visually distinguish planned gold pathways and partially planned cyan routes.",
+    "Compact source-aware status HUD, small expandable node legend, and refined Radiant Warrior canvas styling improve legibility.",
+    "Existing tree positions, source IDs, allocations, rank preview, full-screen mode, zoom, minimap, saves, Media Studio and account integrations remain unchanged."
+  ]
+}
