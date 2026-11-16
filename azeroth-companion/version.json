@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.8.0",
+  "version": "7.9.0",
   "channel": "stable",
-  "release_date": "2026-11-15",
-  "subtitle": "Warcraft Research — Equipment & Talent Handoff",
-  "previous_version": "7.7.2",
+  "release_date": "2026-11-16",
+  "subtitle": "Acquisition & Specialization Intelligence",
+  "previous_version": "7.8.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a Warcraft Equipment Research Board inside Live Armory that cross-references source-returned equipped item IDs with personal Item Atlas, Loot Hunter and character-target records.",
-    "Added quick search and filters for equipped items already saved in Item Atlas, tracked in Loot Hunter, assigned to the looked-up character, or not personally tracked, with a responsive 16-record incremental display.",
-    "Enabled explicit player-initiated Track Goal handoff into the existing Loot Hunter system, and direct official item ID research in the existing Item Codex.",
-    "Added a clearly separated read-only Talent Forge summary of manually planned point totals, never confusing them with the loaded character's confirmed in-game talents.",
-    "No new Blizzard network requests, authentication changes, saved-data migration, music or Founder changes. Live player and device testing remains outstanding."
+    "Added Acquisition Intelligence inside Loot Hunter using the existing, limited curated historical source file and the player's manually tracked farming goals.",
+    "Added source-coverage filters, reference guide links, documented acquisition steps, personal attempt summaries and clear indicators when no acquisition reference is available.",
+    "Added Specialization Intelligence inside Talent Forge showing Blizzard-returned node IDs, supplied descriptions, category filters, available spell/talent IDs, planned rank counts, and source-tree context.",
+    "The new intelligence views are read-only; they do not modify loot goals, talent allocations, saved builds, account information, or music.",
+    "Preserved previous Warcraft Research and the v7.7.2 music and Founder layout. Live browser and player testing remains outstanding."
   ]
 }
