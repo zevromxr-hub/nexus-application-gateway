@@ -38,6 +38,7 @@ function dbAction(name,mode,method,value){if(!db)return Promise.reject(Error('Pr
 })}
 function free(url){if(url)URL.revokeObjectURL(url)}
 function updateBackground(){
+ stage.hidden=!mediaPrefs.backdropOn||!canvas.firstElementChild;
  stage.style.setProperty('--nx-media-visibility',String(mediaPrefs.backdropOn?mediaPrefs.visibility/100:0));
  stage.style.setProperty('--nx-media-shade',String(mediaPrefs.shade/100));
  stage.style.setProperty('--nx-media-blur',mediaPrefs.blur+'px');
