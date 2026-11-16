@@ -1,0 +1,22 @@
+/* v7.1 reversible retirement and permanent one-click Hyper Music */
+.sidebar .nav button[data-nx-retired="true"]{display:none!important}
+.nx-hyper-music{position:fixed;left:max(12px,env(safe-area-inset-left));bottom:calc(12px + env(safe-area-inset-bottom));z-index:2100;display:flex;align-items:center;gap:10px;border:1px solid #ebbd79dd;border-radius:999px;padding:10px 15px 10px 12px;background:linear-gradient(120deg,#192c40f5,#46364bea);color:#ffe3ae;box-shadow:0 6px 26px #000a,0 0 18px #c99b5b35;min-height:51px;max-width:195px;backdrop-filter:blur(13px);font-size:11px;letter-spacing:.03em}
+.nx-hyper-music:hover,.nx-hyper-music:focus-visible{background:linear-gradient(120deg,#334e63,#654666);border-color:#ffe6b0}
+.nx-hyper-note{font-size:22px;line-height:1;color:#ffd28c}
+.nx-hyper-text{display:grid;gap:1px;text-align:left;font-weight:900;white-space:nowrap}
+.nx-hyper-text small{font-size:9px;color:#b9dbe5;letter-spacing:.09em;font-weight:700}
+.nx-hyper-playing .nx-hyper-note{text-shadow:0 0 13px #8becdd}
+.nx-retired-archive{margin-top:20px;border:1px solid #a3aab17d;border-radius:13px;background:linear-gradient(145deg,#1a2d3b,#121c2d);padding:13px}
+.nx-retired-archive summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;color:#eed3a0;font-weight:850;font-size:12px}
+.nx-retired-archive summary small{font-size:10px;color:#bdd2d7;font-weight:550}
+.nx-retired-archive p{color:#b8cdd4;font-size:11px;line-height:1.65}
+.nx-archive-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.nx-archive-item{border:1px solid #97a9a16b;border-radius:10px;padding:11px;background:#203a4b;display:grid;gap:9px}
+.nx-archive-item strong{display:block;font-size:12px;color:#f5d9a9}
+.nx-archive-item small{display:block;color:#c4d5df;font-size:10px;line-height:1.6;margin-top:5px}
+.nx-archive-item button,.nx-archive-return{border:1px solid #d2b37b88;border-radius:8px;background:#2d4a5c;color:#f6dfb7;padding:9px 10px;min-height:42px;font-size:10px;font-weight:800}
+.nx-archive-return{margin:7px 0 14px}
+.nx-archive-caution{border-top:1px solid #aeb6a145;padding-top:10px}
+@media(max-width:760px){.nx-archive-items{grid-template-columns:1fr}.nx-hyper-music{left:calc(8px + env(safe-area-inset-left));bottom:calc(8px + env(safe-area-inset-bottom));max-width:165px;padding:9px 12px;min-height:47px}.nx-hyper-text{font-size:10px}}
+/* Keep launcher from competing with the existing floating music player's controls on narrow screens */
+@media(max-width:540px){body:has(#nxMusicDock:not([hidden])) .nx-hyper-music{z-index:1990}}
