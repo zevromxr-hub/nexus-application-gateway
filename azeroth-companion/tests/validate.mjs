@@ -6,6 +6,21 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const hyperAccess=await read('azeroth-companion/hyper-access-v7.1.js');
+new vm.Script(hyperAccess);
+assert.match(html,/hyper-access-v7\.1\.js\?v=710/,'Hyper Music addon must be deployed');
+assert.match(html,/scripts-core-v4\.8\.js\?v=710/,'Compiled core must be cache-refreshed');
+assert.match(html,/scripts-experience-v5\.2\.js\?v=710/,'Compiled experience must be cache-refreshed');
+for(const id of ['nxHyperMusic','nxRetiredArchive','nxMusicOpen','nxMusicDock']){
+ assert.ok(hyperAccess.includes(id),'Missing Hyper Access hook: '+id);
+}
+const oldVault=await read('azeroth-companion/player-utility.js');
+const backupVault=await read('azeroth-companion/sovereign-vault.js');
+const compiledCore=await read('azeroth-companion/scripts-core-v4.8.js');
+assert.match(oldVault,/data-section="weekly-vault"/,'The old Weekly Vault must have its unique route');
+assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bundle must share the fix');
+assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
+
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
 assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.1\.0/);
 assert.match(html,/player-utility\.js/);
