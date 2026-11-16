@@ -1,19 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.1.4",
+  "version": "6.2.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Radiant Identity — Unified Release & Branding",
-  "previous_version": "5.9.0",
+  "subtitle": "Talent Atlas Overdrive — Progress Intelligence & Immersive Tree",
+  "previous_version": "6.1.4",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Unified version metadata and Release Center to v6.1.4; the top navigation badge now reads AZEROTH followed only by the current release number.",
-    "Introduced a brighter Radiant Warrior default site background, matching browser tab and Home Screen icons, and improved fantasy styling in the navigation sidebar.",
-    "Aligned the welcome hero with the site-wide artwork using a translucent panel, avoiding duplicate image crops.",
-    "Moved private GIF/video background controls and the local music player into their own Media Studio, added an original ZevRo music-player credit, and improved iPhone video playback retry controls.",
-    "Removed inherited referral tracking parameters from page links while retaining functional authentication and navigation parameters.",
-    "Preserved existing local builds, talent research, personal music and background storage, app permissions and account connections."
+    "Added source-aware rank progress states, color legend, full/partial/unallocated highlighting, and reported upstream-link review markers throughout Talent Forge trees.",
+    "Introduced an optional full-screen Talent Atlas workspace on supported desktops with an accessible in-page fallback.",
+    "Mouse wheel inside an active tree now adjusts the existing Talent Atlas zoom. Drag panning, minimap, +/−, FIT, RESET and regular scrolling outside the tree remain available.",
+    "Progress indicators reflect planned points and Blizzard-returned data, not item rarity, acquisition difficulty or validated in-game prerequisites.",
+    "Preserved talent node IDs, original returned layout positions, rank/choice controls, saved builds, local media, account functions and the v6.1 visual identity."
   ]
 }
