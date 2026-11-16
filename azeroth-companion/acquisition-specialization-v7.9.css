@@ -1,0 +1,25 @@
+/* v7.9 curated acquisition research and source-backed talent exploration */
+.nx-acquisition,.nx-spec-research{display:grid;gap:13px;margin:18px 0;padding:16px;background:linear-gradient(145deg,#1b3146,#121e31);border:1px solid #b4ac8179;border-radius:13px}
+.nx-ai-head{display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.nx-ai-head h3{color:#f4d5a5;font-size:19px;margin:5px 0}.nx-ai-head p,.nx-ai-disclaimer{color:#c3d5dc;font-size:12px;line-height:1.65;margin:0}
+.nx-ai-label{border:1px solid #b2a97890;border-radius:30px;padding:6px 10px;color:#f4dcaf;font-size:10px;font-weight:850}
+.nx-ai-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.nx-ai-metric{display:grid;gap:4px;border:1px solid #9db3ac67;background:#234052;border-radius:10px;padding:10px}
+.nx-ai-metric strong{font-size:21px;color:#f5dbad}.nx-ai-metric small{font-size:10px;color:#c2d7d9}
+.nx-ai-controls{display:flex;align-items:end;flex-wrap:wrap;gap:9px}.nx-ai-controls label{display:grid;gap:5px;min-width:155px;flex:1;color:#d3e2df;font-size:11px}
+.nx-ai-controls select,.nx-ai-controls input{width:100%;min-width:0;min-height:43px;background:#233d51;color:#f4f3ee;border:1px solid #a1b6b074;border-radius:9px;padding:9px}
+.nx-ai-controls button,.nx-ai-item button,.nx-ai-more button,.nx-ai-item a{border:1px solid #b4aa818b;background:#305268;color:#f4e0b9;border-radius:9px;padding:9px 12px;min-height:43px;font-size:11px;font-weight:800;text-decoration:none}
+#nxAiStatus,#nxSpecStatus{font-size:12px;color:#c9d9dd;line-height:1.6}
+.nx-ai-list,.nx-spec-list{display:grid;gap:8px}
+.nx-ai-item,.nx-spec-item{display:grid;gap:8px;padding:12px;border:1px solid #9eafb06b;background:#203a4c;border-radius:11px}
+.nx-ai-item-top{display:flex;align-items:start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.nx-ai-item strong,.nx-spec-item strong{color:#f2d7aa;font-size:13px}
+.nx-ai-item span,.nx-ai-item small,.nx-spec-item small{color:#c1d4d9;font-size:11px}
+.nx-ai-item p,.nx-spec-item p{color:#d0dde0;font-size:11px;line-height:1.65;margin:0}
+.nx-ai-item details{border:1px solid #99afa86b;border-radius:8px;padding:9px}.nx-ai-item summary{cursor:pointer;font-size:11px;color:#f4d8a7;font-weight:800}
+.nx-ai-item li{font-size:11px;color:#c8dcdf;line-height:1.7;margin:5px 0}
+.nx-ai-item button,.nx-ai-item a{justify-self:start}.nx-ai-item .nx-ai-unknown{color:#f1d3ae}
+.nx-ai-more{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#c1d9db;font-size:11px}
+.nx-ai-disclaimer{border-top:1px solid #a1aa945b;padding-top:10px;font-size:11px}
+@media(max-width:850px){.nx-ai-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.nx-acquisition,.nx-spec-research{padding:12px}.nx-ai-controls{display:grid}.nx-ai-item button,.nx-ai-item a{width:100%;text-align:center}}
