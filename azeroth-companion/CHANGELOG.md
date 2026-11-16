@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.5.0 · 2026-11-15 — Performance Overdrive & Intelligence Refinement
+
+- Added an optional **Performance Overdrive** display selector near Talent Forge: Auto adapts for smaller screens and reduced-motion settings, Full retains original effects, and Lite minimizes expensive tree glow/filter/transition effects without changing tree geometry or gameplay data.
+- Character Intelligence now shows equipped-item rows in batches of 16 with a **Show Next** action, building rows through a document fragment rather than rendering every returned record at once. Changing the sort order resets the batch safely.
+- Respects individual browser preference for visual mode using a separate non-sensitive local setting; existing Talent Forge saves, rank controls, items, music, and account data are untouched.
+- Updated the equipment intelligence script's cache identifier and regression checks. Live user-device performance benchmarks remain pending.
+
 ## v7.4.0 · 2026-11-15 — Sovereign Gear & Talent Mastery
 
 - Added a source-backed **equipped-item comparison** beside Character Intelligence in Live Armory. Select two returned equipment records and compare their exact names, official item IDs, equipment slots and item levels, including an explicit B−A level difference when both are supplied.
