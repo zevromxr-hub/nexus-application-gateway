@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.6.0 · 2026-11-15 — Sovereign Intelligence & Navigation
+
+- **Optional Path Navigator:** Find talents by name or official node ID, select and center a node, reset the tree overview, and clear highlights without changing saved builds.
+- **Connected route explorer:** Toggle highlights for upstream, downstream or both directions using Blizzard-returned relationships; these are advisory, not validated prerequisites.
+- **Readable talent briefing:** Show current planned ranks, source IDs and Blizzard-returned descriptions beside the tree without adding permanent clutter.
+- **Safety and preservation:** No new automatic point allocation, numerical combat claims, source-tree position changes or save-format migrations. Existing Ascendant View, wheel zoom, drag, minimap, rank previews, media and account functions remain unchanged.
+
 ## v6.5.0 · 2026-11-15 — Sovereign Tree Overhaul (Phase 1)
 
 - **Original Ascendant View:** Optional action-RPG-style fantasy presentation layered onto the existing Talent Atlas, with an on/off control and darker Radiant Warrior canvas.
