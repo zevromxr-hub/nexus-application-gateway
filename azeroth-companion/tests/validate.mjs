@@ -6,6 +6,29 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const preservation=await read('azeroth-companion/account-persistence-v7.9.1.js');
+const updatedReceipt=await read('azeroth-companion/verified-connection.js');
+const privateWorker=await read('azeroth-companion/backend/worker-v7.9.1-single.js');
+new vm.Script(preservation);
+new vm.Script(updatedReceipt);
+assert.match(html,/account-persistence-v7\.9\.1\.js\?v=791/,'Saved progress panel must load');
+assert.match(html,/account-persistence-v7\.9\.1\.css\?v=791/,'Saved progress styles must load');
+assert.match(html,/scripts-experience-v5\.2\.js\?v=791/,'Updated verification bundle must bypass cache');
+assert.match(preservation,/nexus_azeroth_talent_forge_v1/,'Local saved Talent Forge progress must remain independent of login');
+assert.ok(!preservation.includes('localStorage.setItem'),'Account persistence view must not write or clear saved records');
+assert.match(updatedReceipt,/end-start>900000/,'Proof should be limited to 15 minutes');
+assert.match(privateWorker,/Math\.min\(86400/,'Account cookie must not exceed 24 hours');
+assert.match(privateWorker,/Number\(d\.expires_in\)/,'Account cookie must honor Blizzard token expiry');
+assert.match(privateWorker,/checkedAt\+900000/,'Server verified receipt must expire at most 15 minutes');
+assert.match(privateWorker,/\/api\/me\/unlocks\//,'Private unlock explorer must exist');
+assert.match(privateWorker,/\/api\/me\/achievements/,'Character achievements endpoint must exist');
+assert.ok(!privateWorker.includes('localStorage.setItem'),'Cloudflare Worker must not store user plans in localStorage');
+const parsedWorker=privateWorker.replace(/export default\s*\{/,'const workerDefault={');
+const privatePortal=vm.runInNewContext(parsedWorker+';({page:PAGE_791,client:CLIENT_791})');
+new vm.Script(privatePortal.client);
+assert.match(privatePortal.page,/id="unlocksPanel"/,'Private portal must expose unlock browser');
+assert.match(privatePortal.client,/showUnlocks/,'Private portal client must render unlocked entries');
+
 const acquisition=await read('azeroth-companion/acquisition-specialization-v7.9.js');
 new vm.Script(acquisition);
 assert.match(html,/acquisition-specialization-v7\.9\.js\?v=790/,'Acquisition and specialization intelligence must load');
@@ -129,7 +152,7 @@ assert.match(html,/hyper-access-v7\.1\.js\?v=712/,'Mobile patch cache refresh mu
 new vm.Script(hyperAccess);
 assert.match(html,/hyper-access-v7\.1\.js\?v=712/,'Hyper Music addon must be deployed');
 assert.match(html,/scripts-core-v4\.8\.js\?v=730/,'Compiled core must be cache-refreshed');
-assert.match(html,/scripts-experience-v5\.2\.js\?v=720/,'Compiled experience must be cache-refreshed');
+assert.match(html,/scripts-experience-v5\.2\.js\?v=791/,'Compiled experience must be cache-refreshed');
 for(const id of ['nxHyperMusic','nxRetiredArchive','nxMusicOpen','nxMusicDock']){
  assert.ok(hyperAccess.includes(id),'Missing Hyper Access hook: '+id);
 }
@@ -141,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.1/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -151,9 +174,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.9.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.9.1');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.0 • Acquisition & Specialization/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.1 • Account & Unlocks/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
