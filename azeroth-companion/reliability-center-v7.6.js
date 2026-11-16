@@ -25,7 +25,7 @@ function create(view,form,id,heading){
  actions.append(retry,open);card.append(top,info,guidance,actions);
  const region=form.closest('.grid');if(region)region.after(card);else form.after(card);
  let attempt=false,lastResult='idle';
- form.addEventListener('submit',()=>{attempt=true;lastResult='pending';update()},{capture:true});
+ form.addEventListener('submit',()=>{attempt=true;lastResult='pending';update(true)},{capture:true});
  open.addEventListener('click',()=>nav.querySelector('[data-view="'+(view==='armory'?'codex':'armory')+'"]')?.click());
  retry.addEventListener('click',()=>{
   if(!navigator.onLine||form.querySelector('button[type="submit"]')?.disabled)return;
@@ -60,8 +60,8 @@ function remedy(message){
  if(/HTTP 5\d\d|unavailable|service/i.test(message))return'The upstream service may be unavailable. Try again later.';
  return'Check the region, realm slug or item ID, then retry. Unsuccessful lookups do not erase saved information.';
 }
-function update(){
- const outcome=classify();
+function update(skipOldResult=false){
+ const outcome=skipOldResult?null:classify();
  if(outcome){latest=outcome.type;if(outcome.view)cards.find(x=>x.view===outcome.view)?.setResult(outcome.type)}
  const online=navigator.onLine;
  for(const card of cards){
@@ -89,6 +89,6 @@ window.addEventListener('online',update);
 window.addEventListener('offline',update);
 document.addEventListener('nexus:armory-intelligence-ready',()=>queueMicrotask(update));
 status.addEventListener('click',update);
-for(const card of cards)card.form.addEventListener('submit',()=>queueMicrotask(update));
+for(const card of cards)card.form.addEventListener('submit',()=>queueMicrotask(()=>update(true)));
 update();
 })();
