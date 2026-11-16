@@ -1,0 +1,22 @@
+/* NEXUS Sovereign Intelligence v6.6: compact optional path navigator */
+.nx-route-navigator{margin:8px 0 14px;background:linear-gradient(115deg,#142a3c,#19273c);border:1px solid #bea07083;border-radius:13px;color:#d5e5e9;overflow:hidden}
+.nx-route-navigator>summary{cursor:pointer;padding:13px 16px;color:#f4d5a0;font-size:12px;font-weight:850;display:flex;justify-content:space-between;gap:8px}
+.nx-route-navigator>summary small{color:#a8c9c9;font-size:10px;font-weight:600}
+.nx-route-body{display:grid;gap:10px;padding:12px 15px 16px;border-top:1px solid #a8a8994b}
+.nx-route-controls{display:flex;flex-wrap:wrap;gap:8px;align-items:end}
+.nx-route-controls label{display:grid;gap:6px;font-size:10px;flex:1 1 170px;min-width:0;color:#bcd9de}
+.nx-route-controls input,.nx-route-controls select{min-height:44px;width:100%;min-width:0;background:#203e51;border:1px solid #9caaad87;color:#f2e3c9;border-radius:8px;padding:9px}
+.nx-route-controls button,.nx-route-actions button{padding:9px 11px;background:#2c495a;border:1px solid #bbac8982;color:#f2dfc0;border-radius:8px;min-height:44px;font-size:10px;font-weight:850}
+.nx-route-actions{display:flex;flex-wrap:wrap;gap:8px}
+.nx-route-status{font-size:11px;color:#b9d6dc;line-height:1.65}
+.nx-route-description{display:grid;gap:8px;padding:12px;border-radius:9px;border-left:3px solid #e9c783;background:#152f43;max-height:160px;overflow:auto;overflow-wrap:anywhere}
+.nx-route-description[hidden]{display:none!important}
+.nx-route-description strong{font-size:12px;color:#f4d6a1}
+.nx-route-description p{margin:0;color:#dbe6eb;line-height:1.6;font-size:12px;white-space:pre-wrap}
+.nx-route-description small{color:#b4ccca;font-size:10px}
+#tfTree .tf-node.nx-route-muted:not(.nx-route-target){opacity:.27!important}
+#tfTree .tf-node.nx-route-target{outline:3px solid #f5d58c!important;outline-offset:3px}
+#tfTree .tf-node.nx-route-before:not(.nx-route-target){box-shadow:0 0 15px #5ed8bd68!important}
+#tfTree .tf-node.nx-route-after:not(.nx-route-target){box-shadow:0 0 15px #88b3f568!important}
+@media(max-width:650px){.nx-route-controls button{flex:1 1 100px}.nx-route-actions button{flex:1 1 125px}}
+@media(prefers-reduced-motion:reduce){#tfTree .tf-node{transition:none!important}}
