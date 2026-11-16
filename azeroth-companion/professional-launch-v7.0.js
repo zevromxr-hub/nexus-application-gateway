@@ -21,7 +21,12 @@ function navigate(name){nav.querySelector('[data-view="'+name+'"]')?.click()}
 launch.querySelectorAll('[data-nx-open]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.nxOpen)));
 el('nxLaunchTalent').addEventListener('click',()=>{
  const find=document.getElementById('talentForge');
- if(find){find.scrollIntoView({behavior:'smooth',block:'start'});return}
+ if(find){
+  const section=find.closest('[data-section]');
+  if(section)navigate(section.dataset.section);
+  requestAnimationFrame(()=>find.scrollIntoView({behavior:'smooth',block:'start'}));
+  return
+ }
  navigate('builds');
 });
 const KEY='nexus-azeroth-launch-guide-hidden-v7';
