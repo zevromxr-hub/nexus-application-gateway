@@ -35,8 +35,8 @@ assert.match(hyperCSS,/right:max\(16px,env\(safe-area-inset-right\)\)/,'Desktop 
 const founder=await read('azeroth-companion/founder-bubble-v7.7.1.js');
 const founderStyles=await read('azeroth-companion/founder-bubble-v7.7.1.css');
 new vm.Script(founder);
-assert.match(html,/founder-bubble-v7\.8\.0\.js\?v=771/,'Founder shortcut must load');
-assert.match(html,/founder-bubble-v7\.8\.0\.css\?v=771/,'Founder styles must load');
+assert.match(html,/founder-bubble-v7\.7\.1\.js\?v=771/,'Founder shortcut must load');
+assert.match(html,/founder-bubble-v7\.7\.1\.css\?v=771/,'Founder styles must load');
 assert.doesNotMatch(html,/<a class="nx-developer-nav-link"/,'Old sidebar developer link must be removed');
 assert.match(founder,/\.\/developer\.html/,'Founder shortcut must open existing identity page');
 assert.match(founder,/zevro-music-crest\.webp/,'Founder shortcut must use official existing crest');
