@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.1.2 · 2026-11-15 — Top-Header Music & Performance Polish
+
+- On phones, HYPER MUSIC now appears in the main website top header, not in the sticky navigation. The regular page layout reserves space and keeps it away from bottom controls.
+- Desktop retains the original floating launcher location and behavior; only one existing music player remains in use across screen sizes.
+- Added conservative native lazy loading and asynchronous decoding to offscreen images, including newly added thumbnails, without modifying audio/video URLs, API fetching, account data, or local media.
+- No studio, saved record, Talent Forge logic, Blizzard integration, or Discord delivery changes. Refreshed asset versions for mobile browsers.
+
 ## v7.1.1 · 2026-11-15 — Mobile HYPER MUSIC Position Fix
 
 - On phones, HYPER MUSIC sits inside sticky navigation's normal layout, avoiding bottom-left overlays.
