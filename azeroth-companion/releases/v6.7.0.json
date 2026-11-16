@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.7.0",
+  "title": "Guided Progression — Build Journey & Reliable Release Delivery",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "New optional four-step guided talent build journey: choose goals, explore branches, allocate points, review and save.",
+    "Clear Class, Spec and Hero rank-point summaries and a collapsible list of selected official talents.",
+    "Read-only build reviews include advisory source-link notices, without claiming in-game eligibility or combat performance.",
+    "Guided actions open the existing planner, Path Navigator and Talent Forge save workflow; existing saves and undo remain intact.",
+    "Discord release delivery now waits longer for GitHub Pages publication and avoids uncertain network retries that could post duplicates."
+  ]
+}
