@@ -221,6 +221,8 @@ async function run(engine,phone){
   assert.ok(auto['us/111/222'].planner.notes.includes('Unsaved recovery note'),'Working notes must be recovered');
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
+  await page.waitForFunction(()=>document.getElementById('nxBackgroundStatus')?.textContent.includes('Saved locally: synthetic-local-background.gif'),null,{timeout:12000}).catch(async()=>{throw Error('Stored GIF did not restore after reload: '+await page.locator('#nxBackgroundStatus').textContent())});
+  await page.waitForFunction(()=>document.querySelectorAll('#nxMusicPlaylist .nx-music-entry').length===1,null,{timeout:12000});
   await navigate();await load();
   assert.ok(await page.locator('#tfPlanRecover').isVisible(),'Recoverable unsaved draft should be offered, never silently overwritten');
   await page.locator('#tfPlanRestore').click();
