@@ -1,5 +1,11 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.1.1 · 2026-11-15 — Mobile HYPER MUSIC Position Fix
+
+- On phones, HYPER MUSIC sits inside sticky navigation's normal layout, avoiding bottom-left overlays.
+- Desktop retains the original floating launcher. Uses the same music player, playback and storage; no recreated audio instance.
+- Cache-refreshed mobile assets without changing data, retired studios or Discord delivery.
+
 ## v7.1.0 · 2026-11-15 — Hyper Access & Reversible Studio Retirement
 
 - **HYPER MUSIC:** Persistent one-click music launcher across all companion tabs, using the existing IndexedDB-backed local player and preserving current playback.
