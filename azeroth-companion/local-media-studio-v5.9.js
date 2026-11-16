@@ -16,7 +16,7 @@ try{const pref=JSON.parse(localStorage.getItem(prefKey)||'{}');if(pref&&typeof p
 const savePrefs=()=>{try{localStorage.setItem(prefKey,JSON.stringify(mediaPrefs))}catch(_){}};
 const stage=document.createElement('div');stage.id='nxMediaBackdrop';stage.setAttribute('aria-hidden','true');document.body.prepend(stage);
 stage.innerHTML='<div class="nx-media-canvas"></div><div class="nx-media-scrim"></div>';
-const canvas=stage.querySelector('.nx-media-canvas');
+const canvas=stage.querySelector('.nx-media-canvas');stage.hidden=true;
 const section=parent.querySelector('[data-section="talents"]');
 const panel=document.createElement('section');panel.id='nxMediaStudio';panel.className='panel nx-media-studio';
 panel.innerHTML='<header class="nx-media-head"><div><span class="wow-kicker">NEXUS / PRIVATE MEDIA STUDIO v5.9</span><h3>Atmosphere & Music</h3><p>Customize the companion background using your own GIF, MP4, or WebM. Adjust its visibility without altering the interface. Keep a private playlist of local audio files in this browser.</p></div><span>LOCAL DEVICE ONLY</span></header>'+
@@ -47,8 +47,8 @@ function updateBackground(){
 }
 function renderBackground(record){
  canvas.replaceChildren();free(backgroundURL);backgroundURL='';
- if(!record?.blob){announce('nxBackgroundStatus','No background installed. Choose a local GIF or video to customize the site.');return}
- backgroundURL=URL.createObjectURL(record.blob);
+ if(!record?.blob){stage.hidden=true;announce('nxBackgroundStatus','No background installed. Choose a local GIF or video to customize the site.');return}
+ stage.hidden=false;backgroundURL=URL.createObjectURL(record.blob);
  const element=document.createElement(record.kind==='gif'?'img':'video');
  element.src=backgroundURL;
  if(element.tagName==='VIDEO'){element.muted=true;element.loop=true;element.autoplay=true;element.playsInline=true;element.preload='metadata';element.defaultMuted=true;element.setAttribute('playsinline','');element.addEventListener('loadeddata',()=>{if(mediaPrefs.backdropOn)element.play().catch(()=>announce('nxBackgroundStatus','Background is saved, but autoplay is blocked. Use SHOW BACKGROUND to retry.'))})}
