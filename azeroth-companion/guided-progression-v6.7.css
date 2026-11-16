@@ -1,0 +1,24 @@
+/* NEXUS | AZEROTH v6.7 · Compact guided build journey */
+.nx-progress-journey{margin:12px 0;border:1px solid #b7a06d88;background:linear-gradient(140deg,#172c3e,#111f32);border-radius:14px;overflow:hidden}
+.nx-progress-journey>summary{display:flex;justify-content:space-between;gap:12px;cursor:pointer;padding:15px;color:#f3d6a8;font-size:13px;font-weight:850}
+.nx-progress-journey>summary small{color:#9fcfd0;font-size:10px}
+.nx-journey-inner{border-top:1px solid #a89c7b66;padding:15px;display:grid;gap:13px;color:#d2e1e9}
+.nx-journey-intro,.nx-journey-stage p{margin:0;color:#c8d9df;font-size:12px;line-height:1.65}
+.nx-journey-track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.nx-journey-track button{border:1px solid #8aabb178;background:#213c4e;color:#cfdbde;border-radius:9px;padding:11px 7px;min-height:42px;font-size:10px;font-weight:850}
+.nx-journey-track button.active{border-color:#eac27a;background:#4e4538;color:#ffe7bb}
+.nx-journey-stage{background:#152c3e;border-radius:10px;padding:13px;display:grid;gap:10px}
+.nx-journey-stage h4{color:#f2d5a3;font-size:13px;margin:0}
+.nx-journey-stage small{color:#b2d0d4;line-height:1.7}
+.nx-journey-summary,.nx-journey-branches,.nx-journey-actions{display:flex;gap:8px;flex-wrap:wrap}
+.nx-journey-summary span{padding:7px 10px;background:#264355;border:1px solid #91abac62;border-radius:9px;color:#d2e5e6;font-size:11px}
+.nx-journey-branches button,.nx-journey-actions button{border:1px solid #c5aa798a;background:#28485c;color:#ffead1;border-radius:9px;padding:9px 12px;min-height:43px;font-size:11px;font-weight:800}
+.nx-journey-branches button.active{background:#4b4235;border-color:#d9b478}
+.nx-journey-actions{justify-content:space-between}
+.nx-journey-actions button:disabled{opacity:.45}
+.nx-journey-actions button[hidden]{display:none}
+.nx-journey-node-list{border-top:1px solid #97a9b05c;padding-top:8px;font-size:11px;max-height:250px;overflow:auto}
+.nx-journey-node-list summary{cursor:pointer;color:#edce9b;font-weight:750}
+.nx-journey-node-list li{margin:7px 0;color:#cbdce1}
+.nx-journey-note{font-size:11px;color:#c1d7d9;line-height:1.5}
+@media(max-width:760px){.nx-journey-track{grid-template-columns:repeat(2,minmax(0,1fr))}.nx-progress-journey>summary{flex-wrap:wrap}}
