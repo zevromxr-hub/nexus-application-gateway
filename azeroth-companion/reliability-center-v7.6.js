@@ -23,7 +23,7 @@ function create(view,form,id,heading){
  const retry=document.createElement('button');retry.type='button';retry.textContent='RETRY LAST ENTRY';
  const open=document.createElement('button');open.type='button';open.textContent=view==='armory'?'OPEN ITEM CODEX':'OPEN LIVE ARMORY';
  actions.append(retry,open);card.append(top,info,guidance,actions);
- form.after(card);
+ const region=form.closest('.grid');if(region)region.after(card);else form.after(card);
  let attempt=false,lastResult='idle';
  form.addEventListener('submit',()=>{attempt=true;lastResult='pending';update()},{capture:true});
  open.addEventListener('click',()=>nav.querySelector('[data-view="'+(view==='armory'?'codex':'armory')+'"]')?.click());
