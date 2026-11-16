@@ -118,24 +118,37 @@
   savePosition();
  });
  const interactive = target => !!target.closest('button,select,input,textarea,a,label,[contenteditable],.tf-node-controls,.tf-source-actions,.tf-choice');
+ // Preserve the current viewport before the legacy rank buttons rebuild the tree.
+ // This is captured before their delegated bubbling handler calls render().
+ host.addEventListener('click',e=>{
+  if(active() && e.target.closest('[data-tf-inc],[data-tf-dec],[data-tf-inspect],[data-tf-relations]'))savePosition();
+ },true);
+ host.addEventListener('change',e=>{if(active()&&e.target.closest('[data-tf-choice]'))savePosition()},true);
  host.addEventListener('pointerdown',e=>{
-  if (!active() || (e.pointerType==='mouse'&&e.button!==0) || interactive(e.target)) return;
-  if (dragging) return;
-  dragging={id:e.pointerId,x:e.clientX,y:e.clientY,left:host.scrollLeft,top:host.scrollTop,moved:false};
-  host.setPointerCapture(e.pointerId);
-  host.classList.add('tf-is-dragging');
+  if(!active() || (e.pointerType==='mouse'&&e.button!==0) || interactive(e.target) || dragging)return;
+  dragging={id:e.pointerId,x:e.clientX,y:e.clientY,left:host.scrollLeft,top:host.scrollTop,moved:false,captured:false};
+  // Do not capture immediately: native buttons and inspector click actions
+  // need ordinary pointerup/click delivery until an actual pan starts.
  },{passive:true});
  host.addEventListener('pointermove',e=>{
   if(!dragging||dragging.id!==e.pointerId)return;
   const dx=e.clientX-dragging.x,dy=e.clientY-dragging.y;
-  if(Math.abs(dx)+Math.abs(dy)>6)dragging.moved=true;
+  if(!dragging.moved&&(Math.abs(dx)+Math.abs(dy)>9)){
+   dragging.moved=true;
+   try{host.setPointerCapture(e.pointerId);dragging.captured=true}catch(_){}
+   host.classList.add('tf-is-dragging');
+  }
   if(!dragging.moved)return;
   host.scrollLeft=dragging.left-dx;host.scrollTop=dragging.top-dy;
   drawMap();
  },{passive:true});
- function finish(e) {
-  if (!dragging || dragging.id!==e.pointerId)return;
-  if (dragging.moved) {blockClick=true;savePosition();setTimeout(()=>{blockClick=false},0);}
+ function finish(e){
+  if(!dragging||dragging.id!==e.pointerId)return;
+  if(dragging.moved){
+   blockClick=true;savePosition();
+   setTimeout(()=>{blockClick=false},100);
+  }
+  if(dragging.captured){try{host.releasePointerCapture(e.pointerId)}catch(_){}}
   dragging=null;host.classList.remove('tf-is-dragging');
  }
  host.addEventListener('pointerup',finish);
