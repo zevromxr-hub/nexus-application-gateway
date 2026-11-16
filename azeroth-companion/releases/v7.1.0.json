@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.1.0",
+  "title": "Hyper Access — Global Music & Safe Studio Retirement",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added permanent HYPER MUSIC access across all companion tabs, opening the existing local music player without restarting tracks or replacing its library.",
+    "Reversibly retired six low-value manual planning studios from primary navigation and ordinary quick-launch discovery: War Room, Dungeon Routes, Profession Profit, Gear Comparison, Player Field Lab and Weekly Vault.",
+    "Added Archived Tools inside Data & Backup so older studio forms and saved data remain accessible for recovery and export. No records or modules were deleted.",
+    "Resolved a conflicting Vault navigation route, preserving Sovereign Data Vault and the older Weekly Vault's original browser storage and backup formats.",
+    "Updated original sources and compiled assets together and added retirement and music regression assertions. Talent Forge and Blizzard-connected features remain intact."
+  ]
+}
