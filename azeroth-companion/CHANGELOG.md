@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.7.1 · 2026-11-15 — Founder Identity Bubble
+
+- Replaced the Developer Identity link in the main sidebar with a **floating Founder avatar shortcut** using the existing ZevRo crest and prominent Developer / Founder microcopy.
+- On PC, the identity bubble floats at the bottom-right, opposite HYPER MUSIC. On iPhone and smaller screens, it occupies its own natural row in the main website header, not the sticky sidebar or screen overlay.
+- Tapping or clicking opens the original Developer Identity page; no changes to its content or storage, music controls, Talent Forge, Blizzard APIs, account integration, or Studio Archive.
+- Updated versioned assets and navigation assertions with no dependency changes.
+
 ## v7.7.0 · 2026-11-15 — Application Integrity & Player Acceptance Readiness
 
 - **Read-only integrity checks:** Added a local diagnostic panel to Data & Backup for duplicate page element IDs, sidebar navigation targets, archived studio visibility and key Armory, Codex, Talent Forge, intelligence and music controls.
