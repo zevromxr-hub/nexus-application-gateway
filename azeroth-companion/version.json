@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.3.0",
+  "version": "7.4.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Intelligence — Character & Equipment Research",
-  "previous_version": "7.2.0",
+  "subtitle": "Sovereign Gear & Talent Mastery",
+  "previous_version": "7.3.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Character Intelligence to Live Armory, using existing sanitized Blizzard-returned character and equipment data without new network requests.",
-    "Displays returned equipped-record counts, item-level data coverage, returned item-level ranges, and the Blizzard-reported average character item level, clearly distinguishing missing fields.",
-    "Enables sorting by equipment slot or returned item level, with direct inspect-item handoff to the existing verified Item Codex.",
-    "Avoids simulated DPS, best-in-slot predictions, unverifiable account ownership, and automatic build recommendations.",
-    "Preserved all original Talent Forge planning, signed-in features, saved data, music, studio archive and working Discord release infrastructure."
+    "Added source-backed equipped-item comparisons directly beneath Character Intelligence, using only previously returned Blizzard Armory records.",
+    "Compare two equipment records by official ID, name, slot and item level, including a signed level difference when both values are available and warnings when comparing different equipment slots.",
+    "Open either compared item with the original Item Codex inspector, retaining its existing API validation and error handling.",
+    "Introduced a read-only Talent Forge context summary showing separately planned Class, Specialization and Hero rank totals without misrepresenting them as active in-game talents.",
+    "No additional network requests, new sign-in permissions, manual data writes or changes to Talent Forge allocations, saved builds, music, studio archive or Discord announcements."
   ]
 }
