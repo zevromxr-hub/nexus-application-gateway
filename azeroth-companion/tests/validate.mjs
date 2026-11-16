@@ -6,6 +6,16 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const warcraftResearch=await read('azeroth-companion/warcraft-research-v7.8.js');
+new vm.Script(warcraftResearch);
+assert.match(html,/warcraft-research-v7\.8\.js\?v=780/,'Warcraft Research must load');
+assert.match(html,/warcraft-research-v7\.8\.css\?v=780/,'Warcraft Research styles must load');
+for(const name of ['nexus:armory-intelligence-ready','nexus_azeroth_item_atlas_v1','nexus_azeroth_loot_hunter_v1','nexus_azeroth_character_targets_v1','nexus:loot-track','NexusTalentSourceBridge','cxItemForm','nxWrFilter'])
+ assert.ok(warcraftResearch.includes(name),'Warcraft Research integration missing '+name);
+assert.ok(!warcraftResearch.includes('fetch('),'Research board must not add API requests');
+assert.ok(!warcraftResearch.includes('localStorage.setItem'),'Research board must only invoke existing Loot Hunter events');
+assert.match(warcraftResearch,/shown\.slice\(0,visible\)/,'Research cards should be rendered in batches');
+
 const welcome=await read('azeroth-companion/welcome-soundtrack-v7.7.2.js');
 const welcomeStyles=await read('azeroth-companion/welcome-soundtrack-v7.7.2.css');
 const soundtrackConfig=JSON.parse(await read('azeroth-companion/site-soundtrack.json'));
@@ -25,8 +35,8 @@ assert.match(hyperCSS,/right:max\(16px,env\(safe-area-inset-right\)\)/,'Desktop 
 const founder=await read('azeroth-companion/founder-bubble-v7.7.1.js');
 const founderStyles=await read('azeroth-companion/founder-bubble-v7.7.1.css');
 new vm.Script(founder);
-assert.match(html,/founder-bubble-v7\.7\.2\.js\?v=771/,'Founder shortcut must load');
-assert.match(html,/founder-bubble-v7\.7\.2\.css\?v=771/,'Founder styles must load');
+assert.match(html,/founder-bubble-v7\.8\.0\.js\?v=771/,'Founder shortcut must load');
+assert.match(html,/founder-bubble-v7\.8\.0\.css\?v=771/,'Founder styles must load');
 assert.doesNotMatch(html,/<a class="nx-developer-nav-link"/,'Old sidebar developer link must be removed');
 assert.match(founder,/\.\/developer\.html/,'Founder shortcut must open existing identity page');
 assert.match(founder,/zevro-music-crest\.webp/,'Founder shortcut must use official existing crest');
@@ -122,7 +132,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.7\.2/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.8\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -132,9 +142,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.7.2');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.8.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.7\.2 • Welcome Soundtrack/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.8\.0 • Warcraft Research/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
