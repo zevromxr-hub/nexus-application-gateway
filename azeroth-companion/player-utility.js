@@ -17,7 +17,7 @@ const CLASS_SPECS={
  'Warrior':[['Protection','Tank'],['Arms','Damage'],['Fury','Damage']]
 };
 const BUFFS={'Druid':['Mark of the Wild'],'Mage':['Arcane Intellect'],'Priest':['Power Word: Fortitude'],'Warrior':['Battle Shout'],'Monk':['Mystic Touch'],'Demon Hunter':['Chaos Brand'],'Paladin':['Devotion Aura']};
-const SECTIONS=[['party','⚔ Party Architect'],['vault','✦ Weekly Vault'],['quick','◈ Quick Reference']];
+const SECTIONS=[['party','⚔ Party Architect'],['weekly-vault','✦ Weekly Vault'],['quick','◈ Quick Reference']];
 const STORAGE='nexus_azeroth_player_utility_v1',GENESIS='nexus_azeroth_companion_genesis_v1';
 const defaultParty=()=>[['Paladin','Protection'],['Priest','Holy'],['Mage','Frost'],['Hunter','Beast Mastery'],['Warrior','Fury']].map(([className,spec])=>({className,spec,name:''}));
 const blank=()=>({partyName:'Dungeon Team',party:defaultParty(),vaults:{},activeCharacter:'',lastUpdated:''});
@@ -44,7 +44,7 @@ function addPanels(){
  <div class="actions"><button class="primary" id="puSaveParty" type="button">SAVE PARTY</button><button id="puCopyParty" type="button">COPY TEAM SUMMARY</button><button id="puExportParty" type="button">DOWNLOAD PARTY JSON</button><label class="wow-file">IMPORT TEAM JSON<input id="puImportParty" type="file" accept=".json,application/json"></label></div>
  <p class="hint">Class utility is a planning reminder, not a guarantee of every talent, ability, buff, encounter need, or patch-specific tuning. This does not evaluate DPS rankings or read live game state.</p></div>
 </section>
-<section class="section" data-section="vault">
+<section class="section" data-section="weekly-vault">
  <div class="wow-kicker">CHARACTER PROGRESSION · REPEATABLE TRACKING</div><h2>Weekly Vault & Activity Tracker</h2>
  <p class="muted">Use this player-controlled weekly tracker for dungeon, raid, and world activity counts. Goal thresholds are fully editable and are not presented as official reward unlock requirements.</p>
  <div class="panel"><div class="field"><label for="puCharacter">Character profile</label><select id="puCharacter"></select></div><div id="puVaultCards" class="pu-vault-grid"></div><div class="actions"><button type="button" class="primary" id="puSaveVault">SAVE PROGRESS</button><button type="button" id="puResetVault" class="danger">START NEW WEEK FOR THIS CHARACTER</button><button type="button" id="puExportVault">EXPORT ALL WEEKLY RECORDS</button></div>
