@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.1",
+  "version": "7.9.2",
   "channel": "stable",
   "release_date": "2026-11-16",
-  "subtitle": "Account Persistence & Unlock Intelligence",
-  "previous_version": "7.9.0",
+  "subtitle": "Player Handbook, Device Guides & Addon Nexus Integration",
+  "previous_version": "7.9.1",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Prepared secure Cloudflare Worker update to keep the private authenticated session active for the remaining Blizzard OAuth token lifetime, capped at 24 hours; requires separate owner deployment and never persists refresh tokens.",
-    "Extended the public site's separate server-validated verification receipt from 2 minutes to 15 minutes and explicitly states that local player progress is independent of account verification.",
-    "Added a read-only local progress overview and direct Sovereign Data Vault access inside the companion's My Azeroth section.",
-    "Prepared private My Azeroth Unlocks & Collections exploration for Blizzard-reported mounts, pets, toys, heirlooms and authorized character achievements; the private Worker upgrade must be deployed before these account features become available.",
-    "Existing equipped gear remains visible, but complete bag/bank inventory and live currency balances are not available from the Blizzard web API endpoints currently integrated; these are not fabricated.",
-    "Preserved all existing Warcraft studios, HYPER MUSIC, Founder avatar, saved builds and data formats. Live Cloudflare/browser/account validation remains pending."
+    "Added a searchable, lightweight Player Handbook covering 20 major studio groups and related utilities with step-by-step guidance, limitations, and direct links.",
+    "Integrated separate PC and mobile handbook links into the main companion navigation without replacing existing studio controls.",
+    "Added device-aware tutorial instructions, keyboard and mobile usage tips, accessibility and reduced-motion accommodations.",
+    "Introduced the independent Addon Nexus v8.0 preview directory as a navigation destination; live provider API search remains a future optional integration.",
+    "Kept Battle.net authentication, Cloudflare Worker, local player records, talent planning and all existing script bundles unchanged.",
+    "Performance-focused design: the new handbook uses a standalone lightweight page, expandable sections, and filtered searches; no measured site-wide speedup is claimed."
   ]
 }
