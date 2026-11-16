@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.3.0",
+  "title": "Sovereign Intelligence — Guided Builds & Detailed Talent Inspector",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added a detailed source-backed talent inspector with official returned rank descriptions, IDs, planned progress and upstream relationship notes.",
+    "Introduced optional guided build creation that copies player-selected activity, role and style into the existing planner without auto-selecting talents.",
+    "Connected-path highlighting distinguishes upstream and downstream source links while preserving Blizzard node IDs and original layout positions.",
+    "Enhanced the full-screen Talent Atlas with an optional collapsible inspector and compact controls for navigating detailed ranks.",
+    "Added a build review that summarizes manually allocated points and flags advisory source-link relationships for further review.",
+    "Kept existing rank controls, undo/redo, build saving, Media Studio, local storage and account features unchanged. No fabricated rarity, unlock difficulty or combat simulation claims."
+  ]
+}
