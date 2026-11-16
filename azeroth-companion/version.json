@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "6.5.0",
+  "version": "6.6.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Sovereign Tree Overhaul — Ascendant Visual Foundation",
-  "previous_version": "6.4.0",
+  "subtitle": "Sovereign Intelligence — Connected Paths & Talent Navigation",
+  "previous_version": "6.5.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced optional Ascendant View: an original premium fantasy skill-tree presentation over the established Talent Atlas.",
-    "Added visually distinctive source-structure node types for connected hubs, multi-rank talents, standard nodes and choice talents, without inventing gameplay rarity or official capstones.",
-    "Enhanced visible Blizzard-reported branch paths with glowing gold links for planned endpoints and cyan highlights for partially planned routes.",
-    "Added a small expandable node legend and a concise tree status HUD; the enhanced appearance can be switched off instantly.",
-    "Preserved the existing official talent node positions and IDs, rank allocation, undo/redo, preview inspector, wheel zoom, drag panning, fullscreen controls, media and private saves."
+    "Added optional collapsible Path Navigator to find official talents by name or node ID and center the chosen node without modifying the original tree layout.",
+    "Introduced source-aware upstream and downstream route highlighting using Blizzard-returned link references, always labeled as advisory rather than confirmed game unlock prerequisites.",
+    "Expanded convenient talent briefing with current planned ranks, source IDs, and rank description when returned by Blizzard.",
+    "Added FIT TREE and CLEAR FOCUS controls for quicker recovery and exploration, preserving existing drag-to-pan and wheel zoom.",
+    "Preserved all original point allocation, saved builds, undo/redo, character data, media libraries, existing Ascendant View and account connections."
   ]
 }
