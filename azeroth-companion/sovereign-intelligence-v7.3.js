@@ -12,7 +12,7 @@ box.innerHTML='<div class="nx-intel-head"><div><span class="wow-kicker">NEXUS / 
 '<div id="nxIntelDetails" class="nx-intel-details" hidden><div class="nx-intel-tools"><label>Review order<select id="nxIntelOrder"><option value="slot">Equipment slot</option><option value="level-asc">Item level · lowest first</option><option value="level-desc">Item level · highest first</option></select></label><button type="button" id="nxIntelOpenCodex">OPEN ITEM CODEX</button></div><div id="nxIntelList" class="nx-intel-list"></div><p class="nx-intel-explain">Item levels and differences are descriptive comparisons of source-returned equipment. They are not a recommended upgrade order, a DPS simulation, a complete slot audit, or proof of item ownership. Actual game eligibility and value may depend on class, specialization, effects, and content.</p></div>';
 equipment.after(box);
 const el=id=>document.getElementById(id);
-let current=null;
+let current=null, visibleLimit=16;
 const make=(tag,text,className)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=String(text);if(className)n.className=className;return n};
 function integer(x){const n=Number(x);return Number.isSafeInteger(n)&&n>0?n:null}
 function render(){
@@ -40,7 +40,8 @@ function render(){
  if(!items.length){
   list.append(make('p',current.equipmentAvailable?'No equipped item records were returned for this character.':'Equipment could not be loaded. Character profile information is still available.','nx-intel-empty'));
  }
- for(const item of sorted){
+ const fragment=document.createDocumentFragment();
+ for(const item of sorted.slice(0,visibleLimit)){
   const row=make('div',undefined,'nx-intel-item'),data=make('div');
   data.append(make('strong',item.name),make('span',item.slot+' · '+(item.level===null?'Item level unavailable':'Item level '+item.level)));
   if(integer(item.id))data.append(make('small','Blizzard item ID: '+item.id));
@@ -54,18 +55,24 @@ function render(){
     source.hidden=true;document.body.append(source);source.click();source.remove();
    });row.append(btn);
   }
-  list.append(row);
+  fragment.append(row);
+ }
+ list.append(fragment);
+ if(sorted.length>visibleLimit){
+  const more=make('button','SHOW NEXT '+Math.min(16,sorted.length-visibleLimit)+' RECORDS','nx-intel-more');
+  more.type='button';more.addEventListener('click',()=>{visibleLimit+=16;render()});list.append(more);
  }
  el('nxIntelDetails').hidden=false;
  const label=[current.character,current.className,current.spec].filter(Boolean).join(' · ');
  const date=new Date(current.fetchedAt);
  el('nxIntelStatus').textContent=label+' · '+current.region.toUpperCase()+' · '+(Number.isFinite(date.getTime())?'Lookup: '+date.toLocaleString():'Latest public lookup')+(current.equipmentAvailable?' · Equipment available':' · Equipment unavailable');
 }
-el('nxIntelOrder').addEventListener('change',render);
+el('nxIntelOrder').addEventListener('change',()=>{visibleLimit=16;render()});
 el('nxIntelOpenCodex').addEventListener('click',()=>document.querySelector('.nav [data-view="codex"]')?.click());
 document.addEventListener('nexus:armory-intelligence-ready',event=>{
  const data=event.detail||{};
  if(!['us','eu','kr','tw'].includes(data.region)||!Array.isArray(data.items))return;
+ visibleLimit=16;
  current={
   region:data.region,character:String(data.character||''),className:String(data.className||''),spec:String(data.spec||''),
   averageItemLevel:Number.isFinite(Number(data.averageItemLevel))&&data.averageItemLevel!==null?Number(data.averageItemLevel):null,
