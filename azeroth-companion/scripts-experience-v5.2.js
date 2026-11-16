@@ -815,7 +815,7 @@ function update(kind,label,description){
 }
 function stopClock(){if(timer!==null){clearInterval(timer);timer=null}}
 function expire(){
- if(validUntil&&Date.now()>=validUntil){stopClock();validUntil=0;region='';safeSave('');update('unverified','Verification expired','Your previous verification has expired. Use Check Connection to verify your Battle.net session again.');return}
+ if(validUntil&&Date.now()>=validUntil){stopClock();validUntil=0;region='';safeSave('');update('unverified','Verification expired','This status receipt expired; your saved plans remain on this device. Select Check Connection to request a fresh verification.');return}
  if(validUntil&&details)detailFresh.textContent=clock();
 }
 function invalid(message,description){stopClock();validUntil=0;verifiedAt=0;region='';safeSave('');update('unverified',message,description)}
@@ -825,7 +825,7 @@ function validateTicket(ticket){
 async function verify(ticket){
  if(!validateTicket(ticket)){invalid('Invalid verification','The connection receipt was invalid. Select Check Connection to try again.');return}
  const current=++inflight;
- update('checking','Checking connection','Asking the secure Cloudflare service to verify the short-lived account receipt…');
+ update('checking','Checking connection','Validating the encrypted account receipt securely…');
  const controller=new AbortController();
  const timeout=setTimeout(()=>controller.abort(),12000);
  try{
@@ -833,7 +833,7 @@ async function verify(ticket){
   const data=await resp.json().catch(()=>null);
   if(!resp.ok||data?.success!==true||data?.connected!==true)throw Error('Not verified');
   const end=Number(data.validUntil),start=Number(data.verifiedAt),now=Date.now();
-  if(!['us','eu','kr','tw'].includes(data.region)||!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>now+10000||end<=now||end>now+121000||end-start>120000)throw Error('Receipt expired');
+  if(!['us','eu','kr','tw'].includes(data.region)||!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start>now+10000||end<=now||end>now+901000||end-start>900000)throw Error('Receipt expired');
   if(current!==inflight)return;
   validUntil=end;verifiedAt=start;region=data.region;
   safeSave(ticket);
