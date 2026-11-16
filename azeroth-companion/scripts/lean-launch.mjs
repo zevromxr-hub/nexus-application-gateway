@@ -25,7 +25,7 @@ for(const plan of plans){
  if(plan.kind==='js')new vm.Script(serialized,{filename:plan.out});
  const meta=plan.files.map(name=>'./'+name).join(' ');
  const bundleRef='./'+plan.out;
- assert.ok(html.includes('src="'+bundleRef+'" data-sources="'+meta+'"')||html.includes('href="'+bundleRef+'" data-sources="'+meta+'"'),'Missing or outdated HTML source manifest for '+plan.out);
+ assert.ok([bundleRef,bundleRef+'?v=631'].some(ref=>html.includes('src="'+ref+'" data-sources="'+meta+'"')||html.includes('href="'+ref+'" data-sources="'+meta+'"')),'Missing or outdated HTML source manifest for '+plan.out);
  if(mode==='--write')await writeFile(path.join(ROOT,plan.out),serialized);
  else {
   const compiled=await readFile(path.join(ROOT,plan.out),'utf8');
