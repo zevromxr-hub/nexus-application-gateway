@@ -31,8 +31,46 @@ function recordAnnouncement(version){
   console.log('Discord delivery marker saved: '+tag);
  }catch(e){throw Error('Discord accepted the announcement, but GitHub could not record its delivery marker. Do not retry automatically before checking Discord.')}
 }
-async function awaitLive(v){for(let i=0;i<16;i++){try{const u=new URL('version.json',site);u.searchParams.set('release',v);u.searchParams.set('attempt',i);const response=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(12000)});if(response.ok&&(await response.json()).version===v)return}catch(_){}if(i<15)await delay(12000)}throw Error('GitHub Pages not yet reporting release '+v+'. No announcement sent.')}
-async function send(url,body){for(let i=1;i<=3;i++){try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});if(r.ok){const d=await r.json();if(!d.id)throw Error('Discord response had no message confirmation');console.log('Azeroth Discord announcement confirmed. Message ID: '+d.id);return}if(r.status===429||r.status>=500){if(i<3){await delay(3000*i);continue}}throw Error('Discord rejected release notification: HTTP '+r.status)}catch(e){if(i===3)throw Error('Discord delivery not confirmed: '+(String(e.message).startsWith('Discord rejected')?e.message:'network or response error'));await delay(i*2500)}}}
+async function awaitLive(v){
+ // GitHub Pages can lag behind GitHub Actions on busy release days.
+ for(let i=0;i<40;i++){
+  try{
+   const u=new URL('version.json',site);
+   u.searchParams.set('release',v);
+   u.searchParams.set('attempt',i);
+   const response=await fetch(u,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+   if(response.ok&&(await response.json()).version===v){
+    console.log('Published GitHub Pages version confirmed: '+v);return;
+   }
+  }catch(_){}
+  if(i<39)await delay(12000);
+ }
+ throw Error('GitHub Pages did not publish v'+v+' within the verification window; no Discord announcement was sent.');
+}
+async function send(url,body){
+ // An unknown response after POST could mean Discord accepted the message.
+ // Do not retry ambiguous network or JSON-confirmation errors automatically.
+ for(let i=1;i<=3;i++){
+  let response;
+  try{
+   response=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:AbortSignal.timeout(20000)});
+  }catch(_){
+   throw Error('Discord POST confirmation unavailable (network/timeout). Check channel before manually retrying to avoid duplicates.');
+  }
+  if(response.ok){
+   let data;
+   try{data=await response.json()}catch(_){throw Error('Discord POST returned success but response could not be verified; check the channel before retrying.')}
+   if(!data?.id)throw Error('Discord returned success without a message ID; check channel before retrying.');
+   console.log('Azeroth Discord announcement confirmed. Message ID: '+data.id);
+   return;
+  }
+  if((response.status===429||response.status>=500)&&i<3){
+   console.log('Discord transient HTTP '+response.status+'; retry '+(i+1)+' of 3.');
+   await delay(3500*i);continue;
+  }
+  throw Error('Discord rejected the announcement: HTTP '+response.status+'. No successful message confirmation.');
+ }
+}
 export async function run(mode=process.argv[2]||'dry-run'){
  if(!['dry-run','send-current','send-on-release'].includes(mode))throw Error('Invalid release announcement mode');
  const{v,release}=await metadata();
