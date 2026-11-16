@@ -22,3 +22,9 @@
 #nxStandaloneMediaStudio .nx-media-controls{gap:16px}
 #nxStandaloneMediaStudio .nx-upload{background:#355169}
 @media(max-width:740px){.nx-studio-intro{grid-template-columns:1fr}.nx-studio-quick{align-items:stretch}.nx-studio-quick button{width:100%}.nx-standalone-hero{border-radius:16px}}
+
+/* Playback action must remain visible even when background is already enabled. */
+#nxMediaRetry{background:linear-gradient(130deg,#2c7e76,#265b70);border:1px solid #9fe2cb;color:#fff8e7;font-size:12px;font-weight:850;letter-spacing:.025em;min-height:44px}
+#nxMediaRetry[hidden],#nxMediaPlaybackHint[hidden]{display:none!important}
+.nx-media-playback-hint{font-size:11px;color:#c6dfdd;line-height:1.6;margin:11px 0 3px}
+@media(max-width:480px){#nxMediaRetry{width:100%}}
