@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.8.0 · 2026-11-15 — Warcraft Equipment Research Board
+
+- Added **Equipment Research Board** inside Live Armory, linked to the source-backed equipment records already returned by the Blizzard character API.
+- Cross-references actual equipped item IDs against each player's browser-local **Item Atlas**, **Loot Hunter** goals and **Character Targets**, with explicit distinction between Blizzard records and manually entered completion or ownership status.
+- Includes tracked/untracked filters, item and slot search, responsive equipment cards, incremental batches, a direct **Inspect Item** handoff to Item Codex, and explicit **Track Goal** actions routed through the existing Loot Hunter integration.
+- Added a separate Talent Forge read-only research summary displaying planned talent rank totals without claiming those are the active in-game talents of the loaded Armory character.
+- No additional Blizzard API calls, authentication changes, save-format migrations, media player changes, or new background polling. Real-player and mobile acceptance testing remain pending.
+
 ## v7.7.2 · 2026-11-15 — Hyper Music Stack & Optional Welcome Soundtrack
 
 - **Desktop:** Moved the HYPER MUSIC floating shortcut above the Founder avatar on the right. The existing mobile top-header positions for both controls remain unchanged.
