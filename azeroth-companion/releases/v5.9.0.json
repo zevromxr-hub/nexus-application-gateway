@@ -1,0 +1,16 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "5.9.0",
+  "title": "Talent Forge Finale — Visual Trees, Private Background & Music",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Enhanced source-backed talent search with verified spell icons on search entries, larger rank and talent comparison cards, native tree highlights and reversible Focus Tree controls.",
+    "Private GIF, MP4 or WebM background with local IndexedDB storage, visibility/contrast shade, blur and fit controls, disabled until a local file is chosen.",
+    "Local audio music player with uploads, playlist, volume, seek, Play/Pause, next/previous, shuffle and repeat, without a visualizer or external service integration.",
+    "Private media files never leave the browser; browser quotas, codecs and autoplay restrictions apply, especially on iPhone.",
+    "Existing class/spec/hero talent rank allocation, source metadata, build comparisons, undo, JSON backups, saved local drafts and battle.net Worker remain unchanged.",
+    "Four optimized frontend bundles retained with dedicated security, storage and desktop/mobile checks."
+  ]
+}
