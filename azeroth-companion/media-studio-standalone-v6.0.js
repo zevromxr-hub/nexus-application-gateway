@@ -27,3 +27,60 @@
  // Only the panel node is moved; media IDs, listeners, IndexedDB and audio remain untouched.
  document.dispatchEvent(new CustomEvent('nexus:studio-ready',{detail:{view:'media'}}));
 })();
+/* v6.0.1 iPhone playback recovery: user-gesture video start + readable status.
+   This add-on deliberately keeps the v5.9 IndexedDB record and player intact. */
+(()=>{'use strict';
+ const host=document.getElementById('nxStandaloneMediaStudio');
+ const controls=document.querySelector('#nxMediaStudio .nx-media-buttons');
+ const status=document.getElementById('nxBackgroundStatus');
+ const canvas=document.querySelector('#nxMediaBackdrop .nx-media-canvas');
+ if(!host||!controls||!status||!canvas||document.getElementById('nxMediaRetry'))return;
+ const retry=document.createElement('button');retry.type='button';retry.id='nxMediaRetry';retry.className='nx-media-retry';retry.textContent='▶ PLAY BACKGROUND VIDEO';
+ retry.setAttribute('aria-label','Start or retry local background video playback');
+ const info=document.createElement('p');info.id='nxMediaPlaybackHint';info.className='nx-media-playback-hint';info.textContent='On iPhone, press PLAY BACKGROUND VIDEO once if Safari prevents automatic playback.';
+ controls.prepend(retry);controls.after(info);
+ let playbackInProgress=false;
+ function video(){return canvas.querySelector('video')}
+ function sync(){
+   const v=video(),visible=!!v;
+   retry.hidden=!visible;info.hidden=!visible;
+   if(!visible)return;
+   retry.textContent=!v.paused&&!v.ended?'✓ VIDEO PLAYING':'▶ PLAY BACKGROUND VIDEO';
+   if(!v.paused&&!v.ended)status.textContent='Background video playing · muted and looping on this device.';
+ }
+ function errorMessage(v,err){
+   if(v.error?.code===4||v.error?.code===3){
+     return 'This video cannot be decoded on this device. Try an MP4 encoded with H.264 video and AAC audio (or a GIF). The file is still saved locally.';
+   }
+   if(err?.name==='NotSupportedError')return 'Unsupported video format or codec on this browser. Try H.264 MP4 or GIF.';
+   if(err?.name==='NotAllowedError')return 'iPhone blocked automatic playback. Tap PLAY BACKGROUND VIDEO to start it manually.';
+   return 'Video did not start. Tap PLAY BACKGROUND VIDEO to retry; if it still fails, try a compatible H.264 MP4 or GIF.';
+ }
+ function attempt(userInitiated=false){
+   const v=video();if(!v||playbackInProgress)return;
+   const stage=document.getElementById('nxMediaBackdrop');
+   const toggle=document.getElementById('nxMediaToggle');
+   if(!stage||!toggle)return;
+   if(toggle.textContent.trim()==='SHOW BACKGROUND'){
+     // Do not click asynchronously: keep video.play() inside this gesture.
+     toggle.click();
+   }
+   stage.hidden=false;v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');
+   v.playsInline=true;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');
+   v.loop=true;v.autoplay=true;
+   playbackInProgress=true;
+   let result;
+   try{result=v.play()}catch(e){playbackInProgress=false;status.textContent=errorMessage(v,e);sync();return}
+   if(result&&typeof result.then==='function'){
+     result.then(()=>{playbackInProgress=false;sync()},e=>{playbackInProgress=false;status.textContent=errorMessage(v,e);retry.textContent='▶ RETRY VIDEO PLAYBACK'});
+   }else{playbackInProgress=false;sync()}
+ }
+ retry.addEventListener('click',()=>attempt(true));
+ canvas.addEventListener('playing',sync,true);
+ canvas.addEventListener('pause',sync,true);
+ canvas.addEventListener('error',e=>{if(e.target?.tagName==='VIDEO'){status.textContent=errorMessage(e.target);sync()}},true);
+ const observer=new MutationObserver(()=>{sync();const v=video();if(v&&!v.dataset.nxPlaybackHooked){v.dataset.nxPlaybackHooked='1';v.addEventListener('loadedmetadata',sync);v.addEventListener('ended',sync)}});
+ observer.observe(canvas,{childList:true});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+ sync();
+})();
