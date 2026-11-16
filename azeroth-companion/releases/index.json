@@ -1,8 +1,18 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "releases": [
+    {
+      "version": "7.9.3",
+      "title": "Character Intelligence & Gear Comparison",
+      "date": "2026-11-16"
+    },
+    {
+      "version": "7.9.2",
+      "title": "Player Handbook & Device Tutorials",
+      "date": "2026-11-16"
+    },
     {
       "version": "7.9.1",
       "title": "Account Persistence & Unlock Intelligence",
