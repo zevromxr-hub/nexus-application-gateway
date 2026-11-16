@@ -27,6 +27,23 @@ music.innerHTML='<span class="nx-hyper-note" aria-hidden="true">♫</span><span 
 music.setAttribute('aria-label','Open NEXUS music player from any studio');
 music.title='Open the existing locally stored music library without leaving this page';
 document.body.append(music);
+// On phones the launcher belongs to the sticky navigation's normal document flow.
+// Desktop keeps the original fixed bottom-left launcher unchanged.
+const mobileMusicSlot=document.createElement('div');
+mobileMusicSlot.id='nxMobileMusicSlot';
+mobileMusicSlot.className='nx-mobile-music-slot';
+mobileMusicSlot.setAttribute('aria-label','Quick access to music');
+nav.before(mobileMusicSlot);
+const mobileMusicQuery=window.matchMedia('(max-width: 800px)');
+function placeMusic(){
+ if(mobileMusicQuery.matches){
+  if(music.parentElement!==mobileMusicSlot)mobileMusicSlot.append(music);
+ }else if(music.parentElement!==document.body){
+  document.body.append(music);
+ }
+}
+mobileMusicQuery.addEventListener?.('change',placeMusic);
+placeMusic();
 function player(){return document.getElementById('nxMusicDock')}
 function syncMusic(){
  const dock=player(),audio=document.getElementById('nxMusicAudio');
