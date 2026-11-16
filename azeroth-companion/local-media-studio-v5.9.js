@@ -62,7 +62,7 @@ async function uploadBackground(file){
  const extension=String(file.name).toLowerCase().split('.').pop();const kind=extension==='gif'?'gif':['mp4','webm'].includes(extension)?'video':null;
  if(!kind||!(kind==='gif'?['image/gif',''].includes(file.type):['video/mp4','video/webm',''].includes(file.type)))throw Error('Use a GIF, MP4 or WebM file');
  if(file.size<=0||file.size>500*1048576)throw Error('Background must be 500 MB or smaller. Available device storage may be less');
- if(navigator.storage?.estimate){const q=await navigator.storage.estimate();if(Number.isFinite(q.quota)&&Number.isFinite(q.usage)&&q.quota-q.usage<file.size*1.05)throw Error('Insufficient browser storage. Try a smaller video or free site data')}
+ if(navigator.storage?.estimate){const q=await navigator.storage.estimate();if(Number.isFinite(q.quota)&&q.quota>0&&Number.isFinite(q.usage)&&q.quota-q.usage<file.size*1.05)throw Error('Insufficient browser storage. Try a smaller video or free site data')}
  const record={id:'background',blob:file,name:String(file.name).slice(0,140),kind};
  await dbAction('media','readwrite','put',record);renderBackground(record);
 }
