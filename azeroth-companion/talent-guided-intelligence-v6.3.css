@@ -1,0 +1,37 @@
+/* v6.3 — compact guided build, inspector and source-path highlights */
+.nx-guided-forge{border:1px solid #9ebbb48a;border-radius:15px;background:linear-gradient(125deg,#123345,#101c32);margin:14px 0;overflow:hidden}
+.nx-guided-forge>summary{cursor:pointer;padding:16px;font-size:13px;color:#eed2a6;font-weight:850;display:flex;justify-content:space-between;gap:8px}
+.nx-guided-forge>summary small{font-size:10px;color:#9bdad1}
+.nx-guide-body{padding:15px;border-top:1px solid #92a3a04f;display:grid;gap:12px;color:#cedfe4;font-size:12px}
+.nx-guide-body p{line-height:1.65;margin:0}
+.nx-guide-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.nx-guide-fields label{display:grid;gap:5px;font-size:11px}
+.nx-guide-fields select{min-width:0;width:100%;min-height:43px;border:1px solid #9caaad88;border-radius:8px;padding:8px;background:#1b3a4e;color:#f2ebdf}
+.nx-guide-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.nx-guide-buttons button,.nx-inspect-actions button,#nxPathClear{min-height:42px;border-radius:9px;border:1px solid #c5b18a8a;background:#27465a;color:#f9e4c2;padding:9px 12px;font-weight:800;font-size:11px}
+.nx-guide-steps{background:#203e50;border-radius:10px;padding:12px;color:#bedfdc}
+.nx-guide-review{padding:12px;background:#142e3f;max-height:230px;overflow:auto;border-radius:9px;line-height:1.7}
+.nx-path-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nx-path-controls label{display:flex;align-items:center;gap:6px;font-size:11px;color:#c2e6de}
+.nx-path-controls small{flex:1 1 240px;font-size:10px;color:#bed1dc}
+#tfTree .tf-node.nx-node-selected{outline:3px solid #f4ce80!important;outline-offset:3px}
+#tfTree .tf-node.nx-node-up{outline:2px solid #70d7bb;outline-offset:2px}
+#tfTree .tf-node.nx-node-down{outline:2px solid #86bcf2;outline-offset:2px}
+.nx-talent-inspector{background:linear-gradient(130deg,#0c283c,#111e30);border:1px solid #d3b6798c;border-radius:15px;padding:17px;margin:15px 0;display:grid;gap:12px;box-shadow:0 16px 33px #0005}
+.nx-talent-inspector[hidden]{display:none!important}
+.nx-inspect-head{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.nx-inspect-head h3{font-size:clamp(17px,2.2vw,23px);color:#f2d3a3;margin:7px 0}
+#nxInspectClose{min-height:40px;min-width:40px;background:#2d4c5c;color:#fff;border-radius:8px;border:1px solid #a3a49c}
+.nx-inspect-content{max-height:54vh;overflow:auto;display:grid;gap:12px;font-size:12px;line-height:1.65;color:#d3dfe7}
+.nx-inspect-content p{margin:5px 0;white-space:pre-wrap}
+.nx-inspect-tags{display:flex;flex-wrap:wrap;gap:8px}
+.nx-inspect-tags span{background:#264457;color:#b1ede2;border:1px solid #96b6ba77;border-radius:8px;padding:5px 10px;font-size:10px}
+.nx-inspect-progress{height:7px;background:#304a5b;border-radius:9px;overflow:hidden}
+.nx-inspect-progress>div{height:100%;background:#81d6b8}
+.nx-inspect-content details{border-top:1px solid #91aeb14d;padding:8px 0}
+.nx-inspect-content summary{cursor:pointer;font-weight:750;color:#eecb95}
+.nx-inspect-rank{padding:10px;margin:7px 0;background:#1b384b;border-radius:8px}
+.nx-inspect-actions{display:flex;flex-wrap:wrap;gap:8px}
+.nx-inspect-actions button:disabled{opacity:.4}
+#talentForge .tf-toolbar:fullscreen #nxTalentInspector,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen #nxTalentInspector{position:absolute;right:14px;top:90px;width:min(400px,42vw);max-height:calc(100dvh - 105px);z-index:5;overflow:auto;background:#0b2233f5}
+@media(max-width:850px){.nx-guide-fields{grid-template-columns:1fr}#talentForge .tf-toolbar:fullscreen #nxTalentInspector,#talentForge .tf-toolbar.nx-tree-fallback-fullscreen #nxTalentInspector{width:calc(100% - 28px);top:auto;bottom:10px;max-height:50dvh}}
