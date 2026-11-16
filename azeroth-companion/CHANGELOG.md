@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.6.0 · 2026-11-15 — Reliability & Player Experience
+
+- **Live Armory recovery:** Added a dedicated connection and recovery panel after the existing character lookup, explaining success, partial equipment results and request failures without changing the underlying API calls.
+- **Item Codex recovery:** Added a matching item-lookup panel with guidance and a manually activated Retry Last Entry action, which uses the existing form validation and Item Codex request handling.
+- **Connectivity awareness:** Browser-reported online/offline states inform button availability. Browser connectivity does not claim Blizzard API availability, and no automatic polling or retry requests are introduced.
+- **Source preservation:** Talent Forge, Gear Mastery, audio player, manual records, API worker, account authentication, save formats, and Discord release automation remain unchanged.
+- Live acceptance tests and browser-specific QA remain pending until player testers are available.
+
 ## v7.5.0 · 2026-11-15 — Performance Overdrive & Intelligence Refinement
 
 - Added an optional **Performance Overdrive** display selector near Talent Forge: Auto adapts for smaller screens and reduced-motion settings, Full retains original effects, and Lite minimizes expensive tree glow/filter/transition effects without changing tree geometry or gameplay data.
