@@ -1,0 +1,28 @@
+/* NEXUS | AZEROTH v7.3 Source-backed equipment intelligence */
+.nx-character-intel{margin:16px 0;display:grid;gap:12px;background:linear-gradient(140deg,#142b3c,#111b30)}
+.nx-intel-head{display:flex;align-items:start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.nx-intel-head h3{color:#efd2a1;font-size:19px;margin:5px 0}
+.nx-intel-head p{margin:0;color:#b9d2dc;font-size:12px;line-height:1.6}
+.nx-intel-chip{font-size:10px;color:#f9daa4;border:1px solid #dbb37680;border-radius:999px;padding:7px 10px;white-space:nowrap}
+.nx-intel-status{font-size:12px;color:#c4d8dc;line-height:1.5}
+.nx-intel-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.nx-intel-metrics[hidden],.nx-intel-details[hidden]{display:none!important}
+.nx-intel-metric{display:grid;gap:4px;padding:11px;border:1px solid #85a8af70;border-radius:11px;background:#203e50}
+.nx-intel-metric strong{color:#f5d9a2;font-size:21px;overflow-wrap:anywhere}
+.nx-intel-metric span{font-weight:800;font-size:11px;color:#dce9e8}
+.nx-intel-metric small{color:#b5cad2;font-size:10px;line-height:1.4}
+.nx-intel-details{display:grid;gap:12px}
+.nx-intel-tools{display:flex;align-items:end;gap:9px;flex-wrap:wrap}
+.nx-intel-tools label{display:grid;gap:4px;color:#bdd4da;font-size:11px;min-width:150px;flex:1}
+.nx-intel-tools select{border:1px solid #9cb5ba88;border-radius:8px;padding:10px;background:#233e50;color:#fff;min-height:43px}
+.nx-intel-tools button,.nx-intel-item button{background:#304b5f;color:#f9dfb9;border:1px solid #c9ae7c92;min-height:42px;padding:9px 12px;font-size:11px}
+.nx-intel-list{max-height:490px;overflow:auto;display:grid;gap:7px;overscroll-behavior:contain}
+.nx-intel-item{border:1px solid #84a3a663;background:#1c3345;border-radius:9px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.nx-intel-item div{display:grid;gap:4px;min-width:0}
+.nx-intel-item strong{font-size:12px;color:#f1e4c6;overflow-wrap:anywhere}
+.nx-intel-item span,.nx-intel-item small{color:#bdd2d8;font-size:10px}
+.nx-intel-item button{white-space:nowrap}
+.nx-intel-empty,.nx-intel-explain{color:#bacbd4;font-size:11px;line-height:1.7}
+.nx-intel-explain{border-top:1px solid #9aa9a556;padding-top:9px}
+@media(max-width:900px){.nx-intel-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.nx-intel-item{align-items:stretch;flex-direction:column}.nx-intel-item button{width:100%}}
