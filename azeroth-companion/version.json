@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.5.0",
+  "version": "7.6.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Performance Overdrive & Intelligence Refinement",
-  "previous_version": "7.4.0",
+  "subtitle": "Reliability Center & Player Experience",
+  "previous_version": "7.5.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added optional Talent Forge Performance Overdrive selector: Auto adapts lightweight tree effects for small screens and reduced-motion settings, Full keeps the original visuals, and Lite suppresses expensive decorations without changing talent geometry or allocations.",
-    "Character Intelligence now shows returned equipment in incremental batches of sixteen with a Show Next button, reducing initial DOM construction for longer lookup results.",
-    "Updated the equipment list to build rows through a document fragment, and reset the display batch safely when the sort order or returned character changes.",
-    "Visual performance choice uses a separate harmless local preference, with no new API requests and no changes to existing saved character, equipment, talent, media or account records.",
-    "Retained v7.4 gear comparisons, developer identity, studio archive, Blizzard research, music and Discord release system. Full live-device benchmark and acceptance testing remain pending."
+    "Added a source-aware Connection & Recovery panel beneath the Live Armory character lookup with clear feedback for success, partial equipment results and failed requests.",
+    "Added a matching Item Codex recovery panel and user-controlled Retry Last Entry action that respects the existing form validation and uses the existing official item lookup.",
+    "Browser-reported connectivity status now informs retry availability without claiming that Blizzard servers are online or starting background polling.",
+    "Status messages distinguish timeouts, connectivity errors, and possible rate limiting while preserving already loaded results and local saved data.",
+    "Talent Forge, Gear Mastery, HYPER MUSIC, stored builds, user authentication, hosting and Discord announcement integration remain intact; live player/browser acceptance tests are still pending."
   ]
 }
