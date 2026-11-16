@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.7.0 · 2026-11-15 — Application Integrity & Player Acceptance Readiness
+
+- **Read-only integrity checks:** Added a local diagnostic panel to Data & Backup for duplicate page element IDs, sidebar navigation targets, archived studio visibility and key Armory, Codex, Talent Forge, intelligence and music controls.
+- **Player acceptance checklist:** Added a separate mobile-friendly checklist covering navigation, Blizzard lookups, item and talent research, music and browser-saved data. Testers can mark actually verified checks and generate a report locally without uploading account details or silently submitting any information.
+- **No destructive repair:** Diagnostics make no API calls, do not access account tokens, inspect local save records, or alter backup/restore flows.
+- **Preservation:** Existing studios, Sovereign Data Vault, Talent Forge, media, worker integrations and Discord announcements remain in place. Real-world acceptance checks remain pending until players are available.
+
 ## v7.6.0 · 2026-11-15 — Reliability & Player Experience
 
 - **Live Armory recovery:** Added a dedicated connection and recovery panel after the existing character lookup, explaining success, partial equipment results and request failures without changing the underlying API calls.
