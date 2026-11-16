@@ -1,5 +1,13 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.0.0 · 2026-11-15 — Professional Launch Edition
+
+- **Getting started:** Responsive, optional first-visit launch center with shortcuts into Character profiles, Build Architect, Progression and Talent Forge.
+- **Installable web app experience:** Retains existing install manifest and original icons while providing device-aware instructions for desktop, Android and iPhone; install button only appears if the browser exposes an install prompt.
+- **Manual update checker:** Fetches the public release manifest on demand, compares it with this page's bundled version and offers a refresh when different. No background caching or stored data reset.
+- **Privacy and help pages:** Added public Privacy & Data Guide and Getting Started documents, including local-storage limitations, Battle.net connections, backups and the unofficial-project disclosure.
+- **Preservation:** All v6.7 Talent Forge, save formats, media, login, navigation and Discord delivery logic remain untouched.
+
 ## v6.7.0 · 2026-11-15 — Guided Progression
 
 - **Four-step optional build journey:** Choose goals, explore Class/Spec/Hero branches, allocate talents using existing +/− buttons, then review allocations and save using the original planner.
