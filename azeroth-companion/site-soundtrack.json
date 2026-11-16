@@ -1,0 +1,10 @@
+{
+  "schema": "nexus.azeroth.site-soundtrack/1",
+  "enabled": true,
+  "file": "./assets/nexus-intro.mp3",
+  "title": "NEXUS Welcome Theme",
+  "volume": 0.55,
+  "autoplayDesktop": true,
+  "mobileRequiresTap": true,
+  "description": "Upload your own licensed MP3 to azeroth-companion/assets/nexus-intro.mp3 to enable the site's optional welcome music. The site never needs a repository token."
+}
