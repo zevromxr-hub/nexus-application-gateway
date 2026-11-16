@@ -1,5 +1,12 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.4.0 · 2026-11-15 — Forge Reliability & Radiant Atlas
+
+- **Discord release announcements:** The announcer is now triggered by publishing a release record, independently of unrelated UI test workflows; it checks confirmed delivery markers to avoid repeating automatic notifications.
+- **Radiant Talent Atlas:** Replaced the outdated assassin image in both the tree stylesheet source and compiled bundle with the existing Radiant Warrior artwork.
+- **Uncluttered Forge:** Added optional Compact Nodes, which preserves rank buttons, inspector access, zoom and drag controls, plus a small collapsible usage guide.
+- **Cache and compatibility:** Versioned only updated site assets while preserving talent IDs, local saved drafts, API integrations, music and media storage, desktop and mobile layouts.
+
 ## v6.3.1 · 2026-11-15 — Talent Forge Precision Controls
 
 - **Drag reliability:** Delay pointer capture until deliberate movement, preserving native button responses and reducing accidental dragging.
