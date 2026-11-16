@@ -6,6 +6,18 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const intelligence=await read('azeroth-companion/sovereign-intelligence-v7.3.js');
+new vm.Script(intelligence);
+assert.match(html,/sovereign-intelligence-v7\.3\.js\?v=730/,'v7.3 intelligence must load after existing Armory');
+assert.match(html,/sovereign-intelligence-v7\.3\.css\?v=730/,'v7.3 intelligence CSS must load');
+assert.match(html,/scripts-core-v4\.8\.js\?v=730/,'Fresh Armory event source required');
+const publicArmory=await read('azeroth-companion/connected-armory.js');
+const publishedCore=await read('azeroth-companion/scripts-core-v4.8.js');
+assert.match(publicArmory,/nexus:armory-intelligence-ready/,'Armory must emit normalized public response');
+assert.match(publishedCore,/nexus:armory-intelligence-ready/,'Compiled bundle must emit normalized public response');
+assert.match(intelligence,/nexus:armory-intelligence-ready/,'Intelligence must consume the normalized response');
+assert.ok(!intelligence.includes('fetch('),'Intelligence layer must not generate new remote requests');
+
 const developer=await read('azeroth-companion/developer.html');
 const publicHistory=await read('azeroth-companion/release-notes.html');
 assert.match(html,/href="\.\/developer\.html"/,'Developer Identity link must be visible in app');
@@ -36,7 +48,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.2\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.3\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -46,9 +58,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.2.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.3.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.2\.0 • Developer Identity/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.3\.0 • Sovereign Intelligence/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
