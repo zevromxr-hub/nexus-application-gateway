@@ -25,7 +25,7 @@ for(const plan of plans){
  if(plan.kind==='js')new vm.Script(serialized,{filename:plan.out});
  const meta=plan.files.map(name=>'./'+name).join(' ');
  const bundleRef='./'+plan.out;
- assert.ok([bundleRef,bundleRef+'?v=631',bundleRef+'?v=640',bundleRef+'?v=710',bundleRef+'?v=720'].some(ref=>html.includes('src="'+ref+'" data-sources="'+meta+'"')||html.includes('href="'+ref+'" data-sources="'+meta+'"')),'Missing or outdated HTML source manifest for '+plan.out);
+ assert.ok([bundleRef,bundleRef+'?v=631',bundleRef+'?v=640',bundleRef+'?v=710',bundleRef+'?v=720',bundleRef+'?v=730'].some(ref=>html.includes('src="'+ref+'" data-sources="'+meta+'"')||html.includes('href="'+ref+'" data-sources="'+meta+'"')),'Missing or outdated HTML source manifest for '+plan.out);
  if(mode==='--write')await writeFile(path.join(ROOT,plan.out),serialized);
  else {
   const compiled=await readFile(path.join(ROOT,plan.out),'utf8');
@@ -38,6 +38,6 @@ assert.equal(cssCount,34);
 assert.equal(jsCount,38);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
-assert.equal(stylesheetCount,11,'Two compiled stylesheets plus nine additive UX styles');
-assert.equal(deferredCount,12,'Two compiled scripts plus ten additive UX modules');
+assert.equal(stylesheetCount,12,'Two compiled stylesheets plus ten additive UX styles');
+assert.equal(deferredCount,13,'Two compiled scripts plus eleven additive UX modules');
 console.log('Azeroth v4.7 lean launch '+mode+' passed; '+cssCount+' CSS sources + '+jsCount+' JS sources in 4 checked bundles ('+bytes+' source bytes).');
