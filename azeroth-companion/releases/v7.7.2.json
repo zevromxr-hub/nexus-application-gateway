@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.7.2",
+  "title": "Desktop Hyper Stack & Site Welcome Soundtrack",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Moved HYPER MUSIC to the right-hand desktop column directly above the Founder avatar, preserving the existing mobile top-header positions.",
+    "Added an optional site-hosted welcome soundtrack powered by the existing music player; desktop will attempt autoplay when browser policy allows and otherwise offer a manual Play action.",
+    "Mobile offers a one-tap Play Welcome Theme control in the main website header when the audio file has been uploaded.",
+    "A configured audio asset path and owner upload instructions are ready; the soundtrack is not active until the owner adds the licensed MP3 to assets/nexus-intro.mp3.",
+    "Private playlists, audio controls, Talent Forge, saved builds, API integrations and existing release automation are preserved."
+  ]
+}
