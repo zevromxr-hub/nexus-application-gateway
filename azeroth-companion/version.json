@@ -1,18 +1,18 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Developer Identity & Clean Release Center",
-  "previous_version": "7.1.2",
+  "subtitle": "Sovereign Intelligence — Character & Equipment Research",
+  "previous_version": "7.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a dedicated Developer Identity page with a square crest avatar, ZevRo's independent-development profile, and NEXUS design principles.",
-    "Added an accessible Developer Identity link to desktop and mobile navigation.",
-    "Created a first-party Application Updates page that displays version history and change details without redirecting players to a code repository.",
-    "Removed development-platform wording and repository-facing links from public release screens, the user guide, onboarding, and visible account and backup descriptions.",
-    "Preserved official game-data integrations, saved builds and local media, Talent Forge, website hosting, and the established Discord release announcement workflow."
+    "Added Character Intelligence to Live Armory, using existing sanitized Blizzard-returned character and equipment data without new network requests.",
+    "Displays returned equipped-record counts, item-level data coverage, returned item-level ranges, and the Blizzard-reported average character item level, clearly distinguishing missing fields.",
+    "Enables sorting by equipment slot or returned item level, with direct inspect-item handoff to the existing verified Item Codex.",
+    "Avoids simulated DPS, best-in-slot predictions, unverifiable account ownership, and automatic build recommendations.",
+    "Preserved all original Talent Forge planning, signed-in features, saved data, music, studio archive and working Discord release infrastructure."
   ]
 }
