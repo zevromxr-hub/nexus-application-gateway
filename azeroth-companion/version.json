@@ -1,18 +1,17 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "channel": "stable",
   "release_date": "2026-11-15",
-  "subtitle": "Hyper Access — Global Music & Safe Studio Retirement",
-  "previous_version": "7.0.0",
+  "subtitle": "Mobile Hyper Music Layout Fix",
+  "previous_version": "7.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a persistent HYPER MUSIC button visible throughout the companion that immediately opens the existing browser-local music player without resetting its audio or stored library.",
-    "Retired six approved low-value manual studios from the primary navigation and normal quick-launch discovery: War Room, Dungeon Route Architect, Profession Profit Lab, Gear Comparison Laboratory, Player Field Lab and Weekly Vault Tracker.",
-    "Added a reversible Archived Tools section under Data & Backup to reopen those older features for retrieving or exporting existing records. No browser data or studio code was deleted.",
-    "Resolved a navigation conflict by separating archived Weekly Vault's route from the active Sovereign Data Vault while keeping all original storage keys and backup formats.",
-    "Preserved Talent Forge, Blizzard-linked research, My Azeroth, Media Studio, saved builds, Sovereign Data Vault, and the confirmed-working Discord release workflow."
+    "Moved the HYPER MUSIC button into the sticky navigation area on iPhone and other small screens, avoiding the previous bottom-left control overlap.",
+    "Kept desktop's fixed bottom-left HYPER MUSIC launcher unchanged.",
+    "The same audio player, stored tracks, playlists, and open/close controls are preserved across screen sizes.",
+    "Updated music module and stylesheet cache references without modifying Studio Archive, Talent Forge, save data, or Discord workflow."
   ]
 }
