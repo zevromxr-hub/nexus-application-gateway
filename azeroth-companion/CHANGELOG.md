@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.1.4 · 2026-11-15 — Radiant Identity & Unified Version Control
+
+- **One release number:** The top badge permanently uses the `AZEROTH vX.X.X` format. It reads the canonical `version.json` release, and the Release Center, Player Guide, and homepage rely on that same source.
+- **New visual identity:** Radiant Warrior artwork replaces the default assassin scene; the redesigned navigation sidebar, updated iPhone Home Screen icon, desktop favicon, and ZevRo music-player crest complete the theme.
+- **Seamless home hero:** Removed the duplicate warrior image inside the homepage welcome box, replacing it with a readable translucent panel over the full-screen artwork.
+- **Standalone Media Studio:** Local GIF/MP4/WebM backgrounds and music moved into their own navigation studio, with improved iPhone video playback/retry controls.
+- **Cleaner navigation:** Removed inherited advertising/referral query parameters while preserving account and internal navigation parameters.
+- **Preservation:** No changes to saved talent builds, local media storage keys, account connections, or existing game utilities. Older component-specific versions and historical release records remain unchanged.
+
 ## v5.2.0 · 2026-11-15 — Talent Intelligence: Verified IDs & Comparative Research
 
 - **Talent source inspector:** INSPECT an official returned talent node to view its node ID, related talent and spell IDs when supplied, selected rank, per-rank tooltips and choice options.
