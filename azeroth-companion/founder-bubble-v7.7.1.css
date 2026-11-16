@@ -1,0 +1,22 @@
+/* v7.7.1 Founder Identity avatar shortcut */
+.nx-founder-bubble{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(17px + env(safe-area-inset-bottom));z-index:2050;display:flex;align-items:center;gap:10px;width:max-content;max-width:205px;min-height:60px;border-radius:999px;padding:5px 16px 5px 5px;border:1px solid #e4c390b8;background:linear-gradient(130deg,#182c40f4,#4a3652f5);box-shadow:0 5px 26px #000a,0 0 23px #b79b673c;color:#fae0b7;text-decoration:none;backdrop-filter:blur(10px)}
+.nx-founder-bubble:hover,.nx-founder-bubble:focus-visible{color:#fff1d3;border-color:#ffe9c2;background:linear-gradient(130deg,#284760,#664b65);transform:translateY(-2px)}
+.nx-founder-art{display:grid;place-items:center;flex:0 0 51px;width:51px;height:51px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:1px solid #eac68cb8;background:radial-gradient(circle,#5c5170,#142238)}
+.nx-founder-art img{width:100%;height:100%;object-fit:contain;display:block}
+.nx-founder-copy{display:grid;gap:2px;min-width:0;white-space:nowrap;text-align:left}
+.nx-founder-copy strong{font-size:11px;font-weight:900;letter-spacing:.08em}
+.nx-founder-copy small{font-size:9px;color:#a9e2de;font-weight:900;letter-spacing:.14em}
+.nx-founder-mobile-slot{display:none}
+@media(max-width:800px){
+ .main>.top .nx-founder-mobile-slot{display:flex;align-items:center;justify-content:flex-end;flex:1 0 100%;min-width:0}
+ .nx-founder-mobile-slot{display:flex;justify-content:flex-end;width:100%}
+ .nx-founder-mobile-slot .nx-founder-bubble{position:static;left:auto;right:auto;bottom:auto;z-index:auto;transform:none;min-height:49px;max-width:100%;padding:4px 13px 4px 4px;box-shadow:0 3px 13px #0006;backdrop-filter:none;gap:9px}
+ .nx-founder-mobile-slot .nx-founder-art{width:41px;height:41px;flex-basis:41px}
+ .nx-founder-mobile-slot .nx-founder-copy strong{font-size:10px}
+ .nx-founder-mobile-slot .nx-founder-copy small{font-size:9px}
+}
+@media(max-width:440px){
+ .main>.top .nx-founder-mobile-slot{justify-content:stretch}
+ .nx-founder-mobile-slot .nx-founder-bubble{width:100%;justify-content:center;max-width:none}
+}
+@media(prefers-reduced-motion:reduce){.nx-founder-bubble{transition:none!important}}
