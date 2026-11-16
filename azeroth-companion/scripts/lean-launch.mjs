@@ -38,6 +38,6 @@ assert.equal(cssCount,34);
 assert.equal(jsCount,38);
 const stylesheetCount=(html.match(/<link rel="stylesheet" href=/g)||[]).length;
 const deferredCount=(html.match(/<script defer src=/g)||[]).length;
-assert.equal(stylesheetCount,5,'Two compiled stylesheets plus Media Studio, Radiant theme and Talent Atlas');
-assert.equal(deferredCount,5,'Two compiled scripts plus standalone media, ZevRo credit and Talent Atlas');
+assert.equal(stylesheetCount,6,'Two compiled stylesheets plus four additive UX styles');
+assert.equal(deferredCount,6,'Two compiled scripts plus four additive UX modules');
 console.log('Azeroth v4.7 lean launch '+mode+' passed; '+cssCount+' CSS sources + '+jsCount+' JS sources in 4 checked bundles ('+bytes+' source bytes).');
