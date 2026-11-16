@@ -6,6 +6,20 @@ import path from 'node:path';
 const root=path.resolve(import.meta.dirname,'../..');
 const read=p=>readFile(path.join(root,p),'utf8');
 const html=await read('azeroth-companion/index.html');
+const integrity=await read('azeroth-companion/integrity-center-v7.7.js');
+const playerChecklist=await read('azeroth-companion/player-test-checklist.html');
+new vm.Script(integrity);
+assert.match(html,/integrity-center-v7\.7\.js\?v=770/,'Integrity Center module must be loaded');
+assert.match(html,/integrity-center-v7\.7\.css\?v=770/,'Integrity Center styles must be loaded');
+assert.match(integrity,/nxIntegrityRun/,'Local diagnostic action required');
+assert.match(integrity,/nxIntegrityResults/,'Local diagnostic results required');
+assert.match(integrity,/player-test-checklist\.html/,'Tester checklist must be linked');
+assert.ok(!integrity.includes('fetch('),'Read-only integrity checks must never call the network');
+assert.ok(!integrity.includes('localStorage.'),'Read-only integrity checks must not touch saved records');
+assert.match(playerChecklist,/\[NOT VERIFIED\]/,'Tester checklist must retain unverified state');
+const qaScripts=[...playerChecklist.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+for(const q of qaScripts)new vm.Script(q[1]);
+
 const recovery=await read('azeroth-companion/reliability-center-v7.6.js');
 new vm.Script(recovery);
 assert.match(html,/reliability-center-v7\.6\.js\?v=760/,'v7.6 recovery module must be linked');
@@ -79,7 +93,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.6\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.7\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -89,9 +103,9 @@ for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.6.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
+assert.equal(version.version,'7.7.0');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
 assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.6\.0 • Reliability Center/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.7\.0 • Application Integrity/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
