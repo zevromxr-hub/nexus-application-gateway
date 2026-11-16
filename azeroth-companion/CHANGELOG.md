@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v6.3.0 · 2026-11-15 — Sovereign Intelligence
+
+- **Detailed node inspector:** Click a talent to see official Blizzard-returned descriptions by rank, source IDs and planned points. Existing rank controls and original inspector remain available.
+- **Path intelligence:** Optional upstream/downstream link highlighting with explicit advisory labels; links do not certify true in-game unlock prerequisites.
+- **Guided build creation:** Optional collapsible controls apply player-selected activity, role and approach to the original planner. Users assign and save their own talent points.
+- **Expanded immersive Atlas:** Details can appear alongside the existing full-screen tree; wheel zoom, minimap and panning remain installed.
+- **Build review:** Review manually allocated points and source-link relationships without fabricating damage, rarity or difficulty metrics.
+- **Preservation:** Saved-build formats, undo, music/background storage and Battle.net connections remain untouched.
+
 ## v6.2.0 · 2026-11-15 — Talent Atlas Overdrive
 
 - **Node progress:** Added source-aware planned-rank status colors and per-node progress counters, highlighting fully allocated, partial, unallocated and source-link review states.
