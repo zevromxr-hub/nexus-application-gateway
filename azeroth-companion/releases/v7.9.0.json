@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.9.0",
+  "title": "Acquisition & Specialization Intelligence",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added Acquisition Intelligence to Loot Hunter, cross-referencing manually saved farming goals with the existing limited historical acquisition references, including documented source links and steps where available.",
+    "Added filtering by curated reference coverage, manual farming completion, and personal goal searches, with logged attempt summaries and clear labels for undocumented acquisition sources.",
+    "Added Specialization Intelligence inside Talent Forge for official talent node IDs, categories, available source descriptions, spell and talent IDs, and manual planned-rank review.",
+    "Research panels are read-only: no new account privileges, no changes to gear goals or talent allocations, and no fictional drop rates, best-in-slot advice or in-game ownership verification.",
+    "Preserves the existing v7.8 Warcraft Research Board, v7.7.2 music controls, Founder avatar and saved data. Full live player testing remains pending."
+  ]
+}
