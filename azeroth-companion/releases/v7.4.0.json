@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.4.0",
+  "title": "Sovereign Gear & Talent Mastery",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added read-only source-backed side-by-side equipped-item comparisons in Live Armory, showing Blizzard-returned equipment names, slots, IDs and item levels.",
+    "Compare recorded B-minus-A item-level differences when available, with clear warnings that cross-slot differences and higher item levels do not establish upgrades or combat effectiveness.",
+    "Inspect either item directly using the existing official Item Codex without typing its ID again.",
+    "Review a separately labeled Talent Forge draft summary of manually allocated Class, Specialization and Hero points, without asserting that it is a character's in-game build.",
+    "No new API requests, data migrations, extra account permissions or saved-build changes; further live testing will follow when players are available."
+  ]
+}
