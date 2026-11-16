@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "6.4.0",
+  "title": "Forge Reliability — Radiant Talent Atlas & Discord Delivery",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Repaired automated Discord release dispatch: direct release-record trigger and duplicate protection using confirmed delivery markers.",
+    "Updated the Talent Atlas canvas from the legacy assassin background to Radiant Warrior artwork.",
+    "Added an optional compact talent node view that retains point-allocation buttons and detailed inspector access.",
+    "Introduced a short expandable Tree Controls guide without adding a permanent dashboard panel.",
+    "Preserved draggable Talent Atlas, wheel zoom, node descriptions, saved builds and existing account/media tools."
+  ]
+}
