@@ -1,0 +1,15 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "7.6.0",
+  "title": "Reliability Center & Player Experience",
+  "release_date": "2026-11-15",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Added character lookup connection and recovery guidance to Live Armory, including clear success, partial equipment and failure states.",
+    "Added a matching Item Codex recovery panel with manually initiated Retry Last Entry using original form validation and lookup handling.",
+    "Browser-reported online/offline status now helps players understand connectivity and disables retry when the browser is offline, without claiming game-service uptime.",
+    "Distinguishes timed-out requests, connection problems, possible rate limits and upstream failures without automatic retry traffic or new API permissions.",
+    "Preserves Talent Forge, saved character and item information, Gear Mastery, HYPER MUSIC and the existing release delivery system. Live testing remains pending until players are available."
+  ]
+}
