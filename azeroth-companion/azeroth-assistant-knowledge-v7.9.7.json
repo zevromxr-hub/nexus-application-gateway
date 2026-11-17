@@ -1,6 +1,6 @@
 {
   "schema": "nexus.azeroth.assistant-knowledge/1",
-  "edition": "7.9.7",
+  "edition": "7.9.8",
   "disclaimer": "Curated companion answers, not generative AI or real-time gameplay verification. Review game-specific details in World of Warcraft.",
   "articles": [
     {
@@ -354,6 +354,81 @@
         "patch",
         "current",
         "general"
+      ]
+    },
+    {
+      "id": "report-fail",
+      "category": "Character Progress Report",
+      "question": "Why does my combined progression report show a partial result?",
+      "answer": "The combined report checks three public Blizzard categories sequentially. A category can be unavailable because of a missing profile, upstream error, timeout, or rate limit. Other successful categories remain visible. Unavailable does not mean zero Mythic+ runs, no raid encounters or no reputations. Verify the character region/realm and retry later.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "partial report",
+        "failed report",
+        "unavailable",
+        "no result",
+        "mythic",
+        "raids",
+        "reputation"
+      ]
+    },
+    {
+      "id": "report-export",
+      "category": "Character Progress Report",
+      "question": "How do I share my combined progression report?",
+      "answer": "Use Build Character Progress Report, then choose Copy Summary for a concise text overview or Export Combined JSON for the returned public character research snapshot. Review the file before sharing; character name and realm are included. Reports are not automatically uploaded to Discord or linked to your Battle.net session.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "report export",
+        "share report",
+        "copy summary",
+        "combined",
+        "json"
+      ]
+    },
+    {
+      "id": "assistant-popup",
+      "category": "Assistant help",
+      "question": "How do I open and close the floating assistant?",
+      "answer": "On desktop, select the ZevRo | Azeroth Assistant avatar in the upper-right corner; on mobile, use the assistant shortcut in the page header. Close the mini panel with its × button or Escape, or choose Full Page to view the larger assistant. The Founder and Hyper Music controls remain separate.",
+      "link": "./azeroth-assistant.html",
+      "keywords": [
+        "bubble",
+        "floating",
+        "avatar",
+        "close",
+        "popup",
+        "mini panel",
+        "assistant"
+      ]
+    },
+    {
+      "id": "assistant-context",
+      "category": "Assistant help",
+      "question": "Does the assistant know which studio I am viewing?",
+      "answer": "When opened from the main companion, the mini assistant can prioritize documented questions for the currently visible section. It does not read private character records, local talent points, account cookies or Blizzard tokens, and it does not fetch new character data.",
+      "link": "./azeroth-assistant.html",
+      "keywords": [
+        "context",
+        "which studio",
+        "current tab",
+        "questions",
+        "suggestions",
+        "privacy"
+      ]
+    },
+    {
+      "id": "test-community",
+      "category": "Developer requests",
+      "question": "Where do I send testing feedback for new features?",
+      "answer": "Use Developer Test Requests to mark only what you personally verified, note errors and the device/browser, and Generate Report. Copy and share the report manually through your existing community channel. No automatic submission or Discord webhook is included, and you should never share account cookies or access tokens.",
+      "link": "./player-test-checklist.html#developerRequests",
+      "keywords": [
+        "testing",
+        "send report",
+        "discord",
+        "feedback",
+        "bugs"
       ]
     }
   ]
