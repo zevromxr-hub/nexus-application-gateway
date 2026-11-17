@@ -54,7 +54,7 @@ function validateDraft(record){
 }
 function packageFrom({character,drafts=[],notes=[],goals=[],targets=[]}={}){
  const x=object(character)?character:{};
- const c={name:clean(x.name,75)||'Unnamed character',className:clean(x.className,65),spec:clean(x.spec,65),realm:clean(x.realm,80),version:clean(x.version,40)};
+ const c={name:clean(x.name,75)||'Unnamed character',className:clean(x.className,65),spec:clean(x.spec,65),realm:clean(x.realm,80),region:['us','eu','kr','tw'].includes(x.region)?x.region:'',version:clean(x.version,40)};
  const entries=Array.isArray(drafts)?drafts.map(validateDraft).filter(Boolean).slice(0,12):[];
  const annotations=Array.isArray(notes)?notes.slice(0,12).filter(object).map(n=>({identity:clean(n.identity,130),name:clean(n.name,75),favorite:n.favorite===true,purpose:clean(n.purpose,35),notes:clean(n.notes,900)})):[];
  const objectives=Array.isArray(goals)?goals.slice(0,30).filter(object).map(g=>({title:clean(g.title,100),kind:clean(g.kind,45),done:g.done===true})).filter(g=>g.title):[];
