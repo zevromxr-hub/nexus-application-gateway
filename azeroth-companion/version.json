@@ -9,6 +9,7 @@
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
+    "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
     "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
     "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes.",
     "Enhanced the original Talent Forge with visual node selection, glowing allocated paths and a read-only selected-node inspector fed from existing Blizzard-reported talent text and rank controls.",
