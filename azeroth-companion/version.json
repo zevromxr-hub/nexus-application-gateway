@@ -1,14 +1,22 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "13.0.0",
+  "version": "13.1.0",
   "channel": "staging",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN TALENT FORGE: REFORGED — Live Visual Workshop & Build Intelligence",
-  "previous_version": "12.0.0",
+  "subtitle": "SOVEREIGN TALENT FORGE — MOBILE PRECISION & VISUAL COMPARISON",
+  "previous_version": "13.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
+    "Refined the Reforged talent canvas with larger source-backed skill icons, clearer node labels, high-contrast allocated rank states and bigger original-engine +/− targets.",
+    "Introduced a responsive iPhone/tablet selection tray: tapping a real talent node exposes its name, reported node ID, current manual ranks, original-engine rank buttons and a jump to official descriptions.",
+    "Added Compact Map, Focus Selected and Reset View tools without changing the underlying Blizzard API responses, talent tree data, draft storage or rank controls.",
+    "Added source-aware rank comparison totals for original saved drafts and independent v13 checkpoints, with a deliberate toggle to dim unchanged nodes rather than claim a power or meta score.",
+    "Separated Reforged's text search from the hidden native Forge search to avoid unnecessary duplicate tree redraws while keeping the classic Forge engine available.",
+    "Enhanced scroll containment, iPhone touch targets, accessible contrast, safe-area spacing and reduced-motion handling without adding any animations or network requests.",
+    "Preserved the Classic Forge toggle, native saves, undo/redo and native data import/export. v13.1 extension performs no localStorage writes and no network calls.",
+    "Created backup/azeroth-v13-before-reforged-mobile-polish-v13-1-2026-11-17 before implementation. Staging pending live iPhone and player validation.",
     "Added Reforged v13 as the default cinematic Talent Forge interface within the original Azeroth Companion, with an immediate Classic Forge View fallback preserving every existing control.",
     "Built a source-driven talent canvas with source-reported class, specialization and hero categories, rendered nodes, rank buttons and reported link connections. No simulated talents are displayed.",
     "Integrated Reforged rank adjustments, save, load, undo, redo, build name, activity and JSON export with original Talent Forge controls and Blizzard data source snapshot. The original storage key and allocation engine remain untouched.",
@@ -80,9 +88,6 @@
     "Enhanced the original Talent Forge with visual node selection, glowing allocated paths and a read-only selected-node inspector fed from existing Blizzard-reported talent text and rank controls.",
     "Introduced a Living Armory presentation with selectable equipment slots and detail cards sourced strictly from existing Blizzard public equipment responses.",
     "Added an Adventure Journal navigation and chapter styling around the existing Mythic+, raid and reputations research without inventing achievement or inventory records.",
-    "Transformed ZevRo | Azeroth Assistant into an illustrated Oracle persona with guided-response states while retaining the existing curated knowledge and Mission Architect.",
-    "Added cinematic styling and a five-chamber navigator to Sovereign Ascension, improved desktop/mobile responsiveness, opt-in performance settings and reduced-motion respect.",
-    "Preserved the v8.0 rollback branch, legacy saved-data formats, Battle.net Cloudflare Worker, existing original studios, Founder bubble and HYPER MUSIC without changing their logic.",
-    "Synchronized Player Handbook, Getting Started, developer test requests, QA device acceptance, Gateway and release notes; guarded Discord release draft remains staging until acceptance."
+    "Transformed ZevRo | Azeroth Assistant into an illustrated Oracle persona with guided-response states while retaining the existing curated knowledge and Mission Architect."
   ]
 }
