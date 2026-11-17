@@ -1,0 +1,146 @@
+/* NEXUS | AZEROTH v9.4 — Sovereign Cinematic Refinement
+   Additive presentation layer. No API, authentication, save, or music changes.
+   Reuses existing HD Citadel panorama and five original chamber images
+   already mapped by studio-art-direction-v9.2.css.
+*/
+:root{--nx94-rim:rgba(231,191,136,.60);--nx94-halo:rgba(174,139,239,.18)}
+body[data-nx-art-page="sovereign"]{--nx94-rim:rgba(239,203,141,.8);--nx94-halo:rgba(247,176,93,.2)}
+body[data-nx-art-page="character"]{--nx94-rim:rgba(151,218,242,.76);--nx94-halo:rgba(111,211,255,.18)}
+body[data-nx-art-page="progression"]{--nx94-rim:rgba(184,220,236,.76);--nx94-halo:rgba(161,203,237,.16)}
+body[data-nx-art-page="oracle"]{--nx94-rim:rgba(164,232,208,.78);--nx94-halo:rgba(94,226,184,.16)}
+body[data-nx-art-page="addon"]{--nx94-rim:rgba(205,166,255,.78);--nx94-halo:rgba(174,128,247,.19)}
+/* Existing illustrations remain the sole art sources; illuminate their frames. */
+body[data-nx-art-page] :is(.nx-art-banner,.intro,.hero):not(.lv9-hero){
+  border-color:var(--nx94-rim);
+  box-shadow:0 23px 68px rgba(0,5,15,.54),inset 0 1px 0 rgba(255,255,255,.15),0 0 34px var(--nx94-halo);
+}
+body[data-nx-art-page] :is(.nx-art-banner,.intro,.hero):not(.lv9-hero) :is(h1,h2){
+  text-shadow:0 4px 22px rgba(0,3,12,.85),0 0 28px var(--nx94-halo);
+}
+body[data-nx-art-page] :is(.nx-art-banner,.intro,.hero):not(.lv9-hero)::after{
+  border-color:var(--nx94-rim);
+  box-shadow:0 15px 37px rgba(0,5,16,.65),0 0 0 4px rgba(7,12,28,.58),0 0 22px var(--nx94-halo);
+}
+/* A signature top glint on each existing studio panel; don't replace its background. */
+body[data-nx-art-page] :is(.panel,.tile){
+  border-color:color-mix(in srgb,var(--nx94-rim),transparent 42%);
+  box-shadow:0 10px 34px rgba(1,7,20,.34),inset 0 1px 0 rgba(255,255,255,.08);
+}
+body[data-nx-art-page] .panel{
+  background-clip:padding-box;
+}
+@media(hover:hover) and (pointer:fine){
+ body[data-nx-art-page] :is(.tile,.panel):not(:has(input,select,textarea)):hover{
+  border-color:var(--nx94-rim);
+  box-shadow:0 18px 39px rgba(0,5,17,.47),0 0 21px var(--nx94-halo),inset 0 1px 0 rgba(255,255,255,.11);
+ }
+}
+/* Existing five portrait gallery thumbnails: purposeful, not interchangeable. */
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal{
+  border-color:rgba(230,193,154,.74)!important;
+  box-shadow:0 20px 45px rgba(0,4,15,.57),inset 0 0 0 1px rgba(255,245,214,.14)!important;
+  filter:saturate(1.04) contrast(1.035);
+}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:nth-child(2){border-color:rgba(187,155,247,.83)!important}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:nth-child(3){border-color:rgba(155,223,235,.83)!important}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:nth-child(4){border-color:rgba(234,173,141,.82)!important}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:nth-child(5){border-color:rgba(158,222,198,.82)!important}
+body[data-nx-art-page="living"] .lv9-portal strong{
+ text-shadow:0 3px 14px #030611,0 0 18px rgba(235,209,183,.19)!important;
+}
+body[data-nx-art-page="living"] .lv9-portal small{
+ color:#dae5f0!important;text-shadow:0 2px 10px #030611!important;
+}
+@media(hover:hover) and (pointer:fine){
+ body[data-nx-art-page="living"].lv9-visual a.lv9-portal:hover,
+ body[data-nx-art-page="living"].lv9-visual a.lv9-portal:focus-visible{
+   transform:translateY(-5px)!important;
+   filter:saturate(1.09) contrast(1.04) brightness(1.06);
+   box-shadow:0 28px 52px rgba(0,4,15,.67),0 0 25px rgba(194,164,240,.23),inset 0 0 0 1px #ffffff3c!important;
+ }
+}
+/* Opening gate chamber portraits: respect its existing background images. */
+body:has(#nxCitadel) .citadel-portals .portal-wrap{
+  outline:1px solid rgba(255,230,198,.10);
+  outline-offset:-4px;
+  transition:box-shadow .22s ease,border-color .22s ease,transform .22s ease;
+}
+body:has(#nxCitadel) .portal-link :is(strong,small){
+  text-shadow:0 3px 13px rgba(0,5,16,.97);
+}
+@media(hover:hover) and (pointer:fine){
+ body:has(#nxCitadel) .citadel-portals .portal-wrap:hover,
+ body:has(#nxCitadel) .citadel-portals .portal-wrap:focus-within{
+   transform:translateY(-3px);
+   box-shadow:0 20px 47px rgba(0,3,15,.65),0 0 27px rgba(229,191,131,.22)!important;
+ }
+}
+/* Main companion: preserve all work panels and dynamic section artwork. */
+body.nx-art-studios .main .section.active>h2:first-child{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 14px 31px rgba(0,5,17,.33),0 0 24px rgba(215,176,120,.08);
+}
+body.nx-art-studios .main .section.active :is(.stat,.panel){
+  border-color:rgba(206,176,139,.50);
+}
+body.nx-art-studios .main :is(.hero,.sx-hero,.sx-command-hero){
+  box-shadow:0 24px 62px rgba(0,4,14,.5),inset 0 1px 0 rgba(255,255,255,.13);
+}
+/* Independent intelligence panels gain semantic accents rather than random art. */
+body[data-nx-art-page="sovereign"] .panel h2{color:#f1d8a6}
+body[data-nx-art-page="character"] .panel h2{color:#b5e9f8}
+body[data-nx-art-page="progression"] .panel h2{color:#d4eafa}
+body[data-nx-art-page="oracle"] .panel h2{color:#c1f4df}
+body[data-nx-art-page="addon"] .panel h2{color:#e0c7ff}
+/* Small, confined particles on external studio hero only. */
+.nx94-atmosphere{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;border-radius:inherit;contain:paint}
+.nx94-atmosphere i{
+  position:absolute;left:var(--nx94-x);top:-6px;width:var(--nx94-size);height:var(--nx94-size);
+  border-radius:50%;opacity:var(--nx94-opacity);background:#e0f8ff;
+  box-shadow:0 0 8px rgba(198,234,255,.6);
+  animation:nx94-fall var(--nx94-duration) linear var(--nx94-delay) infinite;
+}
+body[data-nx-art-page="sovereign"] .nx94-atmosphere i{
+  top:auto;bottom:-6px;background:#ffe0a2;box-shadow:0 0 10px rgba(255,176,85,.8);
+  animation-name:nx94-rise;
+}
+body[data-nx-art-page="oracle"] .nx94-atmosphere i,
+body[data-nx-art-page="addon"] .nx94-atmosphere i{
+  top:auto;bottom:-6px;background:#bcffe7;box-shadow:0 0 13px rgba(126,232,207,.78);
+  animation-name:nx94-rise;
+}
+body[data-nx-art-page="addon"] .nx94-atmosphere i{
+ background:#ddc6ff;box-shadow:0 0 12px rgba(202,163,255,.8);
+}
+body[data-nx-art-page="character"] .nx94-atmosphere i{
+ background:#e1f5ff;box-shadow:0 0 9px rgba(155,216,245,.65);
+}
+@keyframes nx94-fall{from{transform:translate3d(0,-12px,0)}to{transform:translate3d(var(--nx94-drift),420px,0)}}
+@keyframes nx94-rise{from{transform:translate3d(0,8px,0)}to{transform:translate3d(var(--nx94-drift),-420px,0)}}
+body.nx94-paused .nx94-atmosphere i{animation-play-state:paused}
+body.nx94-performance .nx94-atmosphere,body.lv9-mode-performance .nx94-atmosphere{display:none!important}
+/* Mobile keeps premium artwork while avoiding expensive glass blur/hover. */
+@media(max-width:760px){
+ body[data-nx-art-page] :is(.panel,.tile){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+ body[data-nx-art-page] .nx94-atmosphere i:nth-child(n+9){display:none}
+ body[data-nx-art-page] :is(.nx-art-banner,.intro,.hero):not(.lv9-hero){
+  box-shadow:0 15px 35px rgba(0,5,15,.44),inset 0 1px rgba(255,255,255,.09);
+ }
+ body[data-nx-art-page] .nx-art-banner::after,
+ body[data-nx-art-page="sovereign"] .intro::after{
+   box-shadow:0 8px 25px rgba(0,5,15,.45);
+ }
+ body[data-nx-art-page="living"].lv9-visual a.lv9-portal{filter:none}
+ body:has(#nxCitadel) .citadel-portals .portal-wrap{transition:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .nx94-atmosphere{display:none!important}
+ body[data-nx-art-page="living"].lv9-visual a.lv9-portal,
+ body:has(#nxCitadel) .citadel-portals .portal-wrap{transition:none!important}
+}
+@media(prefers-reduced-transparency:reduce){
+ body[data-nx-art-page] :is(.panel,.tile){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}
+@media print{
+ .nx94-atmosphere{display:none!important}
+ body[data-nx-art-page] :is(.panel,.tile,.nx-art-banner,.intro){box-shadow:none!important}
+}
