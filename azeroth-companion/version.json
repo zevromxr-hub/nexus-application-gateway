@@ -1,14 +1,24 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "16.5.0",
+  "version": "17.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "ADVENTURE INTELLIGENCE — EXPEDITION CONSOLE, WORLD ATLAS OVERDRIVE & LIVING WAR ROOM PULSE",
-  "previous_version": "16.0.0",
+  "subtitle": "SOVEREIGN ADVENTURE OPERATIONS — MULTI-MISSION SESSION COMMAND, CONNECTED RESEARCH & PERSONAL BRIEFINGS",
+  "previous_version": "16.5.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Introduced Sovereign Adventure Operations v17: a separate cinematic multi-mission session workspace that references existing v16 World Atlas missions without editing their records.",
+    "Players can order up to 18 manual Atlas goals into a private session, reorder tasks, set optional personal time estimates, title/day/focus character and attach personal objective/field notes.",
+    "Added read-only source-aware status for existing v16.5 checklist progress, locally saved characters, native Talent Forge draft references and Item Atlas identifiers; missing links are shown as unavailable, never invented.",
+    "Created whitelisted portable JSON session exports with manual source labels, optional plain-text copy, import previews and explicit confirmation. Imports overwrite only the independent v17 session key.",
+    "Added cross-tab write conflict protection to prevent silent stale-session overwrites, bounded notes/date/estimate validation, and clear-session confirmation preserving all old missions and builds.",
+    "Linked the new operations room from Command Center, World Atlas, Expedition Console, Character Nexus and main Companion navigation, plus browser-local Command Search.",
+    "Preserved approved violet/gold/cyan panoramic art with a responsive cinematic illustrated desktop/iPhone layout, keyboard-visible focus, reduced-motion support and standalone iPhone app metadata.",
+    "Included nexus_adventure_operations_v17 in read-only Save Protection export; original Blizzard OAuth, Cloudflare Worker, local mission records, character saves, spell icons and Forge ranks are untouched.",
+    "Added unit and simulated desktop Chromium/iPhone-style WebKit acceptance suites, v17 owner/tester guide and rollback branch backup/azeroth-v16-5-before-sovereign-adventure-v17-2026-11-17.",
+    "Owner approval authorizes publication while real iPhone, Battle.net account, in-game player and Discord-delivery acceptance stay pending until independently checked.",
     "Launched Expedition Console v16.5, a cinematic preparation studio that opens existing manual World Atlas missions, presents the selected destination and links back to original research and character workspaces.",
     "Added seven practical activity-specific mission-preparation templates, user-customizable manual checklists (20-step cap), progress percentages representing only checked personal actions, reset confirmation and persistent private strategy notes.",
     "Introduced owner-local priority, pinned missions, character/status filters and goal search without inventing game-ready ratings, combat performance, loot outcomes, confirmed quest completion or official encounter guides.",
@@ -128,6 +138,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Project owner authorized v16.5 Expedition Intelligence and public release/Discord. Automated synthetic desktop/mobile tests are separate from real-device and in-game acceptance."
+    "note": "Owner requested the v17 major development and publication. Automated source and synthetic desktop/iPhone tests are advisory, not verification on a real device, Blizzard account or in-game character; those remain pending."
   }
 }
