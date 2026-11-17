@@ -1,0 +1,18 @@
+/* NEXUS | AZEROTH v16.5 War Room Mission Pulse. */
+.nx16-war-actions .nx165-war-launch{background:linear-gradient(115deg,#714e82e6,#314f65ed);border:1px solid #d9bfa3;color:#ffdfac}
+.nx165-war-pulse{margin-top:13px;padding:13px;border:1px solid #d0b5997e;border-radius:10px;background:linear-gradient(140deg,#41355391,#16344eae);color:#f5dfc2;display:grid;gap:5px;min-width:0}
+.nx165-pulse-head{display:flex;justify-content:space-between;gap:7px;flex-wrap:wrap;align-items:center}
+.nx165-pulse-head span{color:#c5b0e3;font-weight:950;font-size:9px;letter-spacing:.075em}
+.nx165-pulse-head a{color:#f5d7ac;font-size:9px;font-weight:900;text-decoration:none}
+.nx165-war-pulse>strong{font-size:13px;line-height:1.4;color:#fae1b5;overflow-wrap:anywhere}
+.nx165-war-pulse>p{color:#bcd2df;font-size:10px;line-height:1.5;margin:0}
+.nx165-pulse-progress{display:grid;gap:4px}
+.nx165-pulse-progress>span{color:#aecfda;font-size:9px;font-weight:900;letter-spacing:.05em}
+.nx165-pulse-progress>b{color:#f7deac;font-size:12px}
+.nx165-pulse-progress>i{display:block;background:#091d32;height:7px;border-radius:8px;overflow:hidden}
+.nx165-pulse-progress>i>i{display:block;height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#9866b7,#f5d19b,#b4e1da);transition:width .3s ease}
+.nx165-war-favorites{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:11px}
+.nx165-war-favorites>span{flex:1 1 100%;color:#cab8e2;font-size:9px;font-weight:900;letter-spacing:.1em}
+.nx165-war-favorites a{padding:7px 9px;border:1px solid #b4c3c183;border-radius:7px;background:#263953;color:#f4dcaf;font-weight:850;font-size:9px;text-decoration:none}
+@media(max-width:650px){.nx16-war-actions .nx165-war-launch{flex:1 1 100%}}
+@media(prefers-reduced-motion:reduce){.nx165-war-pulse *{transition:none!important;animation:none!important}}
