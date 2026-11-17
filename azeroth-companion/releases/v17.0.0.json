@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "17.0.0",
+  "title": "SOVEREIGN ADVENTURE OPERATIONS — Multi-Mission Session Command",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Project owner approved proceeding with the v17 major upgrade. Synthetic desktop/iPhone code tests are advisory; real iPhone, live Blizzard account and player verification remain pending.",
+  "features": [
+    "Sovereign Adventure Operations: a premium cinematic adventure studio assembling up to 18 existing World Atlas missions into a single ordered session.",
+    "Personal session controls: reorder objectives, save a session name, optional day and character, notes and personal time estimates.",
+    "Connected intelligence: read-only references to current manual character records, Talent Forge drafts, Item Atlas IDs and Expedition Console preparation checks.",
+    "Safe, portable session JSON exports, plain-text brief copy and reviewed import with explicit confirmation; no original Atlas or Forge saves are overwritten.",
+    "Browser-local privacy safeguards, cross-tab overwrite protection, honest missing-link warnings and Save Protection inclusion.",
+    "New War Room, World Atlas, Expedition Console and Character Nexus launch paths, with a responsive illustrated iPhone/PC experience.",
+    "Blizzard login, Cloudflare routing, account verification, existing spell icons, saved builds and music preserved. Owner-approved; physical-device/in-game tester acceptance pending."
+  ]
+}

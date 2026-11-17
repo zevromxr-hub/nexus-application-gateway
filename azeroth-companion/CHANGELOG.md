@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v17.0.0 · 2026-11-17 — SOVEREIGN ADVENTURE OPERATIONS (Owner approved; player acceptance pending)
+
+- Added an optional cinematic v17 Adventure Operations studio for ordered multi-mission personal sessions sourced from the existing World Atlas.
+- Added an 18-goal bounded queue, reordering, local session title/day/character/notes, personal time estimates and source-aware preparation progress without gameplay-state claims.
+- Connected read-only existing character profiles, native Talent Forge drafts, Item Atlas identifiers, v16 World Atlas and v16.5 preparation plans. Missing references remain visible with honest warnings.
+- Added safe JSON session export/import preview/confirmation, plaintext copy, cross-tab overwrite protection and Save Protection inclusion using only a NEW isolated v17 key.
+- Preserved original art, iPhone/desktop responsive layouts, login/Cloudflare settings, account verification, saved builds and Discord approval rules; real-device and in-game player acceptance is pending.
+- Backed up the previous baseline at `backup/azeroth-v16-5-before-sovereign-adventure-v17-2026-11-17`. See the v17 owner release/tester guide.
+
+
 ## v9.0.0 · 2026-11-16 — LIVING AZEROTH (Staging)
 
 - **Cinematic canonical homepage:** The established Azeroth URL now opens an immersive full-screen Living Azeroth entrance with five illustrated studio links. Enter Azeroth Companion reveals the *same preserved* fully functional application in place; no router migration or saved-data schema changes.

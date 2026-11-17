@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" data-nx-version="17.0.0">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1225">
+<meta name="description" content="NEXUS Sovereign Adventure Operations v17 — build a personal World of Warcraft expedition session from locally saved Atlas missions, talent drafts and character research.">
+<title>Sovereign Adventure Operations | NEXUS Azeroth v17</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/adventure-operations.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS | Sovereign Adventure Operations v17">
+<meta property="og:description" content="Command your next adventure. Assemble saved Atlas missions into a cinematic, private session briefing with linked manual character and build context.">
+<meta property="og:url" content="https://zevarchives.com/azeroth-companion/adventure-operations.html">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AZEROTH">
+<link rel="stylesheet" href="./expedition-console-v16.5.css?v=1650">
+<link rel="stylesheet" href="./adventure-operations-v17.css?v=1700">
+<script defer src="./living-world-engine-core-v16.js?v=1650"></script>
+<script defer src="./adventure-intelligence-core-v16.5.js?v=1650"></script>
+<script defer src="./adventure-operations-v17-core.js?v=1700"></script>
+<script defer src="./adventure-operations-v17.js?v=1700"></script>
+</head>
+<body class="nx165-body nx17-body">
+<div class="nx165-shell nx17-shell" id="nx17Root">
+<header class="nx165-header">
+ <a class="nx165-brand" href="./command-center.html" aria-label="NEXUS Command Center"><span aria-hidden="true">N</span><strong>NEXUS</strong><small>ADVENTURE OPERATIONS</small></a>
+ <nav aria-label="Navigation"><a href="./command-center.html">WAR ROOM</a><a href="./world-atlas.html">WORLD ATLAS</a><a href="./expedition-console.html">EXPEDITION CONSOLE</a><a href="./player-experience.html">CHARACTER NEXUS</a><a href="./save-protection.html">SAVE PROTECTION</a></nav>
+</header>
+<main>
+<section class="nx17-hero" aria-labelledby="nx17HeroTitle">
+ <div class="nx17-hero-content">
+  <span class="nx165-overline">NEXUS / SOVEREIGN OPERATIONS · v17.0</span>
+  <h1 id="nx17HeroTitle">EVERY JOURNEY.<br><em>ONE COMMAND.</em></h1>
+  <p>Assemble your existing World Atlas objectives into an ordered personal adventure session. Review linked character, Forge, and item research, then carry a precise manual briefing into your next session.</p>
+  <div class="nx17-hero-actions"><a class="nx17-primary" href="#nx17Workspace">BUILD YOUR SESSION ↘</a><a href="./world-atlas.html#nx16Missions">DISCOVER MISSIONS ↗</a></div>
+  <small>PERSONAL PLANNING ONLY · ALL RECORDS REMAIN IN YOUR BROWSER · NOT LIVE GAME DATA</small>
+ </div>
+ <div class="nx17-hero-art" role="img" aria-label="NEXUS cinematic fantasy adventure illustration"></div>
+</section>
+<div class="nx17-metrics" aria-label="Manual session metrics">
+ <div><span>SESSION OBJECTIVES</span><strong id="nx17Count">0</strong><small>Selected local missions</small></div>
+ <div><span>PREPARATION ACTIONS</span><strong id="nx17Checks">0 / 0</strong><small>Manually checked steps</small></div>
+ <div><span>PERSONAL TIME BUDGET</span><strong id="nx17Budget">0m</strong><small>Your own estimates only</small></div>
+ <div><span>LINKED RECORDS</span><strong id="nx17Links">0</strong><small>Available local references</small></div>
+</div>
+<section id="nx17Workspace" class="nx17-workspace" aria-labelledby="nx17WorkspaceTitle">
+ <div class="nx17-titlebar"><div><span class="nx165-overline">01 / STRATEGIC SESSION ASSEMBLER</span><h2 id="nx17WorkspaceTitle">OPERATIONS DECK</h2><p>Choose missions from the original Atlas. Your session is a separate private plan: it never edits Atlas mission status, talent allocation, saved characters or equipment records.</p></div><span class="nx17-mode">LOCAL · PRIVATE · OWNER CONTROLLED</span></div>
+ <div class="nx17-grid">
+  <aside class="nx17-library" aria-labelledby="nx17LibraryTitle">
+   <div class="nx17-panelhead"><div><span class="nx17-kicker">MISSION LIBRARY</span><h3 id="nx17LibraryTitle">EXPLORE YOUR GOALS</h3></div><span id="nx17AvailableCount">0 available</span></div>
+   <label class="nx17-control">SEARCH MISSIONS<input type="search" id="nx17Search" placeholder="Name, destination, activity..." autocomplete="off"></label>
+   <div class="nx17-filterrow">
+     <label class="nx17-control">ATLAS STATUS<select id="nx17Status"><option value="">All statuses</option><option value="active">In progress</option><option value="planned">Planned</option><option value="completed">Manually completed</option></select></label>
+     <label class="nx17-control">LOCAL CHARACTER<select id="nx17CharacterFilter"><option value="">All characters</option></select></label>
+   </div>
+   <div class="nx17-library-list" id="nx17Library" aria-live="polite"></div>
+   <a class="nx17-library-link" href="./world-atlas.html#nx16Missions">+ CREATE A NEW ATLAS MISSION ↗</a>
+  </aside>
+  <div class="nx17-session">
+   <div class="nx17-sessiontop"><div><span class="nx17-kicker">PRIVATE FIELD COMMAND</span><h3>YOUR ADVENTURE SESSION</h3></div><span id="nx17SavedState">UNSAVED CHANGES: NONE</span></div>
+   <form id="nx17SessionForm" class="nx17-sessionform">
+    <label class="nx17-control nx17-name">SESSION NAME<input id="nx17Name" maxlength="90" placeholder="My Adventure Session" required></label>
+    <label class="nx17-control">PLANNED DAY (OPTIONAL)<input id="nx17Date" type="date"></label>
+    <label class="nx17-control">FOCUS CHARACTER (LOCAL ONLY)<select id="nx17Character"><option value="">No character selected</option></select></label>
+    <label class="nx17-control nx17-wide">PERSONAL FIELD NOTES<textarea id="nx17Notes" maxlength="900" rows="2" placeholder="My goals, things to verify in-game, route research to revisit..."></textarea></label>
+    <div class="nx17-formactions"><button type="submit" class="nx17-gold">SAVE SESSION DETAILS</button><span>Changes stay in this browser; no Blizzard sync.</span></div>
+   </form>
+   <div class="nx17-sectionhead"><div><span class="nx17-kicker">02 / SESSION ORDER</span><h3>YOUR MISSION SEQUENCE</h3></div><span id="nx17OrderCount">0 / 18</span></div>
+   <p class="nx17-guidance">Use the controls to change order or set a personal time estimate. Estimates are not travel times, timers, or confirmed in-game completion.</p>
+   <div id="nx17Agenda" class="nx17-agenda" aria-live="polite"></div>
+   <div class="nx17-export">
+    <div class="nx17-sectionhead"><div><span class="nx17-kicker">03 / TACTICAL DEBRIEF</span><h3>TAKE YOUR PLAN WITH YOU</h3></div></div>
+    <div class="nx17-exportactions"><button type="button" id="nx17Export" class="nx17-gold">EXPORT JSON BRIEF ↗</button><button type="button" id="nx17Copy">COPY PLAIN-TEXT BRIEF</button><button type="button" id="nx17Clear">RESET SESSION ONLY</button></div>
+    <details class="nx17-import"><summary>IMPORT A PREVIOUS v17 SESSION</summary><p>Import affects only the v17 session record in this browser. The original Atlas, checklists, Forge builds, and character saves are not replaced. Review the preview before confirming.</p><label class="nx17-control">SELECT v17 SESSION JSON<input type="file" id="nx17ImportFile" accept=".json,application/json"></label><p id="nx17ImportPreview" role="status">No session selected.</p><button id="nx17Import" type="button" disabled>REVIEWED — REPLACE SESSION</button></details>
+   </div>
+  </div>
+ </div>
+</section>
+<section class="nx17-connections" aria-label="Connected adventure studios">
+ <span class="nx165-overline">04 / THE CONNECTED EMPIRE</span><h2>YOUR WORLD REMAINS CONNECTED.</h2>
+ <div class="nx17-cards">
+  <a class="nx17-card atlas" href="./world-atlas.html"><span>MAP THE JOURNEY</span><strong>WORLD ATLAS</strong><small>Create and manage original missions ↗</small></a>
+  <a class="nx17-card forge" href="./?enter=1&amp;view=talents"><span>REVIEW YOUR MANUAL BUILD</span><strong>TALENT FORGE</strong><small>Original saved talents stay untouched ↗</small></a>
+  <a class="nx17-card character" href="./player-experience.html"><span>CHOOSE YOUR HERO</span><strong>CHARACTER NEXUS</strong><small>Inspect optional local character links ↗</small></a>
+  <a class="nx17-card expedition" href="./expedition-console.html"><span>PREPARE EACH MISSION</span><strong>EXPEDITION CONSOLE</strong><small>Edit existing personal checklists ↗</small></a>
+ </div>
+</section>
+<p class="nx17-disclaimer">Independent, unofficial World of Warcraft fan companion. Not affiliated with Blizzard Entertainment. All mission statuses, session estimates and checklist percentages are user-entered planning data, never verified gameplay or actual character readiness.</p>
+<div id="nx17Toast" class="nx17-toast" role="status" aria-live="polite"></div>
+</main>
+<footer class="nx165-footer"><span>NEXUS | AZEROTH COMPANION · v17.0.0</span><span>PRIVACY-FIRST ADVENTURE PLANNING</span><span>POWERED BY ZEVRO | NEXUS</span></footer>
+</div>
+</body></html>

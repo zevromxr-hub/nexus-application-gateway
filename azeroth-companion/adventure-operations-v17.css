@@ -1,0 +1,120 @@
+/* NEXUS | AZEROTH v17 — SOVEREIGN ADVENTURE OPERATIONS
+ * Original NEXUS fantasy artwork, premium dimensional violet/gold/cyan UI.
+ * Mobile-first controls, reduced motion and no remote fonts or imagery.
+ */
+.nx17-body{color:#f5eff7;background:#060b19}
+.nx17-shell{max-width:1540px}
+.nx17-shell :is(button,input,select,textarea){font:inherit}
+.nx17-shell :is(button,a,summary){-webkit-tap-highlight-color:transparent}
+.nx17-shell :is(button,a,input,select,textarea,summary):focus-visible{outline:3px solid #a9e5fc;outline-offset:3px}
+.nx17-shell button{cursor:pointer}
+.nx17-shell button:disabled{opacity:.43;cursor:not-allowed}
+.nx17-hero{position:relative;isolation:isolate;overflow:hidden;min-height:500px;display:flex;align-items:center;border:1px solid #c29b6e91;border-radius:21px;background:linear-gradient(90deg,#091224f9 1%,#10142cde 49%,#10173540 82%),url('./assets/zevro-wide-banner-v9.2.webp') center/cover;box-shadow:0 20px 55px #000a,0 0 48px #814a9138}
+.nx17-hero:after{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(ellipse at 79% 33%,#9c6fd230,transparent 42%),linear-gradient(0deg,#0a1225ba,transparent 55%)}
+.nx17-hero-content{position:relative;z-index:1;max-width:min(770px,75%);padding:clamp(24px,5vw,65px)}
+.nx17-hero h1{font-size:clamp(42px,5.6vw,83px);line-height:.98;letter-spacing:-.058em;font-weight:950;margin:18px 0 24px;text-shadow:0 4px 35px #040617}
+.nx17-hero h1 em{font-style:normal;color:#ecc995;text-shadow:0 0 35px #ba8d6061}
+.nx17-hero p{max-width:615px;color:#d0d5e5;font-size:clamp(13px,1.15vw,17px);line-height:1.75}
+.nx17-hero-content>small{display:block;margin-top:22px;color:#b7c7d7;font-size:10px;letter-spacing:.09em;font-weight:750}
+.nx17-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.nx17-hero-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:47px;padding:12px 19px;border:1px solid #a6aed092;border-radius:9px;color:#f5e9ee;text-decoration:none;font-size:11px;font-weight:900;letter-spacing:.06em;background:#1c2745d9;transition:transform .18s ease,box-shadow .18s ease}
+.nx17-hero-actions .nx17-primary,.nx17-gold{background:linear-gradient(125deg,#b98756,#edcb93)!important;color:#1d1820!important;border:1px solid #f5d6a8!important;box-shadow:0 6px 24px #a778492f;font-weight:950}
+.nx17-hero-actions a:hover,.nx17-card:hover{transform:translateY(-3px);box-shadow:0 0 28px #ad8ac95a}
+.nx17-hero-art{position:absolute;z-index:0;inset:12% 1% 4% auto;width:38%;border-radius:20px;border:1px solid #e0a97255;background:url('./assets/adventure-journal-v9.1.webp') center 38%/cover;mask-image:linear-gradient(90deg,transparent,#000 16%,#000 95%,transparent);opacity:.76;pointer-events:none;box-shadow:inset 0 0 50px #0a1028}
+.nx17-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 40px}
+.nx17-metrics>div{position:relative;padding:21px;border:1px solid #c0a2bc76;border-radius:13px;background:linear-gradient(135deg,#22213fe8,#111f39e8);box-shadow:inset 0 1px #ffffff13,0 10px 24px #0005}
+.nx17-metrics>div:before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:3px;background:linear-gradient(#c7a1e7,#eccc98);border-radius:3px}
+.nx17-metrics span{display:block;color:#c1b4d9;font-size:10px;letter-spacing:.13em;font-weight:900}
+.nx17-metrics strong{display:block;margin:6px 0;color:#f3d6ac;font-size:clamp(24px,2.5vw,37px);line-height:1.2;letter-spacing:-.02em}
+.nx17-metrics small{color:#b4c4d8;font-size:11px}
+.nx17-titlebar,.nx17-panelhead,.nx17-sessiontop,.nx17-sectionhead{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.nx17-titlebar{margin-bottom:22px;align-items:end}
+.nx17-titlebar h2,.nx17-connections h2{margin:6px 0 9px;font-size:clamp(26px,3.5vw,43px);letter-spacing:-.045em;color:#f2d9b3}
+.nx17-titlebar p{max-width:860px;line-height:1.7;color:#c0c9da;font-size:13px;margin:0}
+.nx17-mode{flex-shrink:0;border:1px solid #e2c49080;border-radius:30px;background:#b99c6e1a;padding:9px 14px;color:#d9c9df;font-size:10px;font-weight:850;letter-spacing:.09em}
+.nx17-grid{display:grid;grid-template-columns:minmax(280px,.84fr) minmax(0,1.6fr);gap:18px;align-items:start}
+.nx17-library,.nx17-session{min-width:0;border:1px solid #bd9ab477;border-radius:17px;background:linear-gradient(154deg,#1d203be8,#0c172aee 58%);padding:clamp(16px,2vw,26px);box-shadow:0 16px 44px #0008,inset 0 1px #ffffff10}
+.nx17-library{position:sticky;top:15px}
+.nx17-panelhead,.nx17-sessiontop{padding-bottom:16px;margin-bottom:18px;border-bottom:1px solid #ac9ab04a}
+.nx17-panelhead h3,.nx17-sessiontop h3,.nx17-sectionhead h3{margin:4px 0 0;font-size:clamp(16px,1.5vw,22px);color:#f4ddba;line-height:1.2}
+.nx17-kicker{display:block;color:#b2a1da;font-size:10px;font-weight:900;letter-spacing:.14em}
+.nx17-panelhead>span,.nx17-sectionhead>span,.nx17-sessiontop>span{color:#b8d6e1;font-size:10px;font-weight:800;text-align:right}
+.nx17-control{display:grid;gap:6px;min-width:0;color:#c8c4dd;font-size:10px;font-weight:900;letter-spacing:.07em}
+.nx17-control :is(input,select,textarea){width:100%;min-height:44px;background:#101e34;color:#f9edf5;border:1px solid #b6aec376;border-radius:9px;padding:10px 12px;outline:none;letter-spacing:normal;font-weight:500;font-size:13px}
+.nx17-control :is(input,select,textarea)::placeholder{color:#9faec3}
+.nx17-control :is(input,select,textarea):focus{border-color:#e3c58b;box-shadow:0 0 0 3px #c8a46c2a}
+.nx17-control textarea{resize:vertical;min-height:65px;max-height:220px}
+.nx17-filterrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 16px}
+.nx17-library-list{display:grid;gap:10px;max-height:680px;overflow:auto;overscroll-behavior:contain;padding:1px 4px 1px 0}
+.nx17-library-card{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 12px;border:1px solid #91a3bf62;border-radius:11px;background:linear-gradient(110deg,#172743,#18213b);box-shadow:inset 0 1px #ffffff12}
+.nx17-library-card.nx17-requested{border-color:#d4b778;box-shadow:0 0 22px #b99b6933}
+.nx17-library-copy{min-width:0;display:grid;gap:4px}
+.nx17-card-kicker{color:#ae9dda;font-size:9px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+.nx17-library-copy strong{color:#f0e8f1;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.nx17-library-copy small{color:#b8c9d7;font-size:11px}
+.nx17-add{flex-shrink:0;min-height:43px;min-width:79px;padding:9px;border:1px solid #d4bd9b;border-radius:8px;background:#b99c6b24;color:#f6d8a5;font-size:10px;font-weight:900}
+.nx17-library-link{display:block;margin-top:16px;text-align:center;color:#e7cba0;font-size:11px;font-weight:900}
+.nx17-empty{padding:20px 12px;color:#c4ccdc;line-height:1.65;font-size:12px;text-align:center}
+.nx17-sessionform{display:grid;grid-template-columns:1.3fr .7fr;gap:14px;background:#0c1a2e99;border:1px solid #8f9faf55;border-radius:12px;padding:17px;margin-bottom:32px}
+.nx17-name,.nx17-wide,.nx17-formactions{grid-column:1/-1}
+.nx17-formactions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.nx17-formactions span{color:#aebfd3;font-size:11px}
+.nx17-gold,.nx17-exportactions button{min-height:45px;padding:11px 17px;border-radius:9px;font-size:11px;letter-spacing:.045em;font-weight:900;cursor:pointer}
+.nx17-sectionhead{padding-bottom:12px;margin-bottom:9px;border-bottom:1px solid #c0ad8947}
+.nx17-guidance{color:#bac7d9;font-size:12px;line-height:1.65;margin:0 0 14px}
+.nx17-agenda{display:grid;gap:13px}
+.nx17-empty-agenda{display:flex;min-height:210px;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:11px;padding:25px;border:1px dashed #cdb99779;border-radius:13px;background:linear-gradient(135deg,#25203e8c,#11213a88),url('./assets/adventure-journal-v9.1.webp') center/cover}
+.nx17-empty-agenda strong{font-size:17px;color:#f2dbb6;text-shadow:0 2px 10px #000}
+.nx17-empty-agenda p{max-width:400px;color:#e0d8e5;font-size:12px;text-shadow:0 2px 10px #000}
+.nx17-empty-agenda a{color:#ffe3b1;font-size:11px;font-weight:900}
+.nx17-agenda-card{position:relative;overflow:hidden;padding:17px;border:1px solid #b0a1bb74;border-radius:13px;background:linear-gradient(118deg,#1d2745,#111b32 72%);box-shadow:0 9px 20px #0005}
+.nx17-agenda-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#a88fdb,#e2bb83)}
+.nx17-agenda-card.nx17-missing{border-color:#d89c7a}
+.nx17-agenda-head{display:flex;align-items:center;gap:14px;min-width:0}
+.nx17-num{font:900 33px/1 system-ui;color:#e3ba856c;flex-shrink:0}
+.nx17-agenda-title{flex:1;min-width:0}
+.nx17-agenda-title h4{font-size:clamp(13px,1.25vw,18px);overflow-wrap:anywhere;color:#f2e4ee;margin:5px 0}
+.nx17-agenda-title small{font-size:11px;color:#b4cbdc}
+.nx17-order-actions{display:flex;flex-wrap:wrap;gap:5px;justify-content:end}
+.nx17-action{min-height:40px;min-width:39px;padding:8px 11px;background:#263651;border:1px solid #b7a5b88b;border-radius:8px;color:#f4e4db;font-size:11px;font-weight:850}
+.nx17-action[data-action="remove"]{color:#ffccb7}
+.nx17-agenda-data{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,.5fr);gap:14px;align-items:end;margin:17px 0 12px}
+.nx17-gauge strong{display:block;font-size:12px;color:#e9dbbc}
+.nx17-gauge span{display:block;color:#b9c3d6;font-size:9px;letter-spacing:.04em;margin-top:4px}
+.nx17-rail{height:7px;margin-top:9px;background:#31415a;border-radius:10px;overflow:hidden}
+.nx17-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,#8364d9,#e7c083);max-width:100%}
+.nx17-links{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.nx17-connection{font-size:9px;border:1px solid #9d9ab371;border-radius:20px;padding:5px 8px;background:#19283e;color:#b5c5d9;max-width:100%;overflow-wrap:anywhere}
+.nx17-connection.nx17-present{color:#c8edda;border-color:#679e91}
+.nx17-entry-note{margin-top:6px}
+.nx17-warning{border-left:3px solid #d3ae75;padding:7px 10px;color:#e6cdb1;background:#a7783b18;font-size:11px;line-height:1.6}
+.nx17-deep-links{display:flex;flex-wrap:wrap;gap:14px;margin-top:13px;border-top:1px solid #b1a1ba52;padding-top:12px}
+.nx17-deep-links a{font-size:10px;color:#d8bff5;text-decoration:none;font-weight:850}
+.nx17-deep-links a:hover{text-decoration:underline}
+.nx17-export{margin-top:26px;border-top:1px solid #c5aa8a63;padding-top:20px}
+.nx17-exportactions{display:flex;flex-wrap:wrap;gap:8px}
+.nx17-exportactions button,.nx17-import button{background:#233650;color:#e9e7eb;border:1px solid #aeb9c0a3}
+.nx17-import{margin-top:16px;background:#102038a9;border:1px solid #9f9db177;border-radius:10px;padding:12px 16px}
+.nx17-import summary{font-size:11px;color:#e6c68f;font-weight:900;cursor:pointer;padding:7px}
+.nx17-import p{font-size:11px;color:#c9cede;line-height:1.6}
+.nx17-import .nx17-control{margin:13px 0}
+.nx17-import button{min-height:44px;padding:11px;border-radius:8px;font-weight:900;font-size:11px}
+.nx17-connections{margin:38px 0 24px;padding:clamp(17px,3vw,30px);background:linear-gradient(145deg,#1d1f3b,#0c1b32);border:1px solid #bf9fb880;border-radius:17px}
+.nx17-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
+.nx17-card{position:relative;display:flex;flex-direction:column;justify-content:end;gap:5px;min-height:222px;padding:17px;border:1px solid #b5a8ad8e;border-radius:13px;background-color:#19223e;background-size:cover;background-position:center;text-decoration:none;box-shadow:inset 0 -110px 72px #080f23e9;transition:transform .18s ease,box-shadow .18s ease}
+.nx17-card.atlas{background-image:url('./assets/adventure-journal-v9.1.webp')}
+.nx17-card.forge{background-image:url('./assets/talent-forge-v9.1.webp')}
+.nx17-card.character{background-image:url('./assets/sovereign-throne-v9.1.webp')}
+.nx17-card.expedition{background-image:url('./assets/zevro-wide-banner-v9.2.webp')}
+.nx17-card span{color:#c9b4ec;font-size:9px;font-weight:900;letter-spacing:.12em;text-shadow:0 2px 9px #000}
+.nx17-card strong{color:#f1d6a6;font-size:clamp(13px,1.2vw,20px);text-shadow:0 2px 9px #000}
+.nx17-card small{color:#d8dfec;font-size:10px;text-shadow:0 2px 9px #000}
+.nx17-disclaimer{margin:20px auto 14px;max-width:900px;text-align:center;color:#b9c9d8;font-size:11px;line-height:1.7}
+.nx17-toast{position:sticky;z-index:12;bottom:12px;margin:12px auto;max-width:880px;text-align:center;border:1px solid #b9ab9ab6;border-radius:10px;background:#172b42f3;color:#f0ddbd;padding:11px 16px;box-shadow:0 11px 35px #000a;font-size:12px}
+.nx17-toast:empty{display:none}
+@media(max-width:1220px){.nx17-grid{grid-template-columns:minmax(245px,.75fr) minmax(0,1.3fr)}.nx17-filterrow{grid-template-columns:1fr}.nx17-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:980px){.nx17-hero{min-height:400px}.nx17-hero-content{max-width:85%}.nx17-grid{grid-template-columns:1fr}.nx17-library{position:static}.nx17-library-list{max-height:370px;grid-template-columns:repeat(2,minmax(0,1fr))}.nx17-filterrow{grid-template-columns:1fr 1fr}.nx17-titlebar{align-items:start;flex-wrap:wrap}}
+@media(max-width:660px){.nx17-hero{min-height:435px;background-image:linear-gradient(90deg,#0a1227f5,#10162de8),url('./assets/zevro-wide-banner-v9.2.webp')}.nx17-hero-content{max-width:100%;padding:25px 20px}.nx17-hero h1{font-size:clamp(36px,9vw,54px)}.nx17-hero p{font-size:12px}.nx17-hero-art{width:39%;opacity:.12;border:0}.nx17-hero-actions a{flex:1 1 100%;min-height:45px}.nx17-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:27px}.nx17-metrics>div{padding:13px}.nx17-metrics strong{font-size:25px}.nx17-grid{gap:12px}.nx17-library-list{grid-template-columns:1fr;max-height:310px}.nx17-sessionform{grid-template-columns:1fr}.nx17-sessionform>*{grid-column:1/-1}.nx17-agenda-head{flex-wrap:wrap;gap:10px}.nx17-order-actions{width:100%;justify-content:start;padding-left:45px}.nx17-agenda-data{grid-template-columns:1fr}.nx17-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.nx17-card{min-height:172px;padding:11px}.nx17-card strong{font-size:13px}.nx17-exportactions button{flex:1 1 100%}.nx17-titlebar h2{font-size:29px}.nx17-mode{white-space:normal}}
+@media(max-width:400px){.nx17-filterrow{grid-template-columns:1fr}.nx17-library-card{flex-wrap:wrap}.nx17-add{width:100%}.nx17-cards{grid-template-columns:1fr}.nx17-card{min-height:155px}.nx17-agenda-card{padding:12px}.nx17-agenda-title h4{font-size:13px}.nx17-order-actions{padding-left:0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nx17-body *{animation:none!important;transition:none!important}.nx17-hero-actions a:hover,.nx17-card:hover{transform:none}}
+@media print{.nx17-header,.nx165-header,.nx17-hero-actions,.nx17-library,.nx17-export,.nx17-toast,.nx17-order-actions{display:none!important}.nx17-grid{display:block}.nx17-agenda-card{break-inside:avoid}.nx17-hero{min-height:150px;background:#141e31!important}.nx17-hero-content{padding:15px}.nx17-cards{display:none}}
