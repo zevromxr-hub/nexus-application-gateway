@@ -1,0 +1,39 @@
+/* NEXUS LIVING AZEROTH • v9 CINEMATIC ENTRANCE
+   A true visual opening on the original app URL; full original site remains underneath.
+   Does not move, duplicate or rewrite existing app/Blizzard controls. */
+.lv9-entry-gate[hidden]{display:none!important}
+.lv9-entry-gate{position:fixed;inset:0;z-index:12000;background:#070e20;color:#f2e8db;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+body.lv9-entry-open{overflow:hidden!important}
+.lv9-entry-gate,.lv9-entry-gate button,.lv9-entry-gate a,.lv9-entry-gate select{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.lv9-entry-gate *{box-sizing:border-box}
+.lv9-entry-gate .lv9-entry-wrap{width:min(1430px,100%);margin:auto;padding:22px clamp(12px,3vw,44px) 85px}
+.lv9-entry-gate .lv9-entry-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.lv9-entry-gate .lv9-entry-brand{color:#f8d69b;font-weight:950;font-size:clamp(12px,1vw,15px);letter-spacing:.16em;text-transform:uppercase}
+.lv9-entry-gate .lv9-entry-menu{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lv9-entry-gate a.lv9-entry-toplink,.lv9-entry-gate button.lv9-entry-toplink{padding:9px 12px;background:#122137d9;border:1px solid #d3b47b66;border-radius:10px;color:#d4e4eb;text-decoration:none;font-weight:750;font-size:11px;cursor:pointer}
+.lv9-entry-gate button.lv9-entry-toplink:hover,.lv9-entry-gate a.lv9-entry-toplink:hover{background:#263b57}
+.lv9-entry-gate .lv9-hero{min-height:clamp(420px,44vw,610px)!important}
+.lv9-entry-gate .lv9-hero-content{max-width:655px}
+.lv9-entry-gate .lv9-entry-eyebrow{display:inline-flex;gap:10px;align-items:center;border-radius:999px;border:1px solid #e3be895e;background:#0d1a30b8;padding:7px 12px;color:#f7d7a0;font-size:10px;font-weight:950;letter-spacing:.13em}
+.lv9-entry-gate .lv9-entry-eyebrow:before{content:"";height:7px;width:7px;border-radius:50%;background:#8cddde;box-shadow:0 0 12px #8cdde0}
+.lv9-entry-gate .lv9-entry-hero-sub{color:#e5ecf3;font-size:clamp(14px,1.35vw,18px);line-height:1.8;max-width:520px}
+.lv9-entry-gate .lv9-entry-hero-actions{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin-top:25px}
+.lv9-entry-gate .lv9-entry-hero-actions button,.lv9-entry-gate .lv9-entry-hero-actions a{cursor:pointer;font-size:12px;letter-spacing:.03em;min-width:150px}
+.lv9-entry-gate .lv9-entry-help{font-size:11px;color:#bed4dc;margin-top:16px;line-height:1.6}
+.lv9-entry-gate .lv9-entry-divider{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 15px}
+.lv9-entry-gate .lv9-entry-divider h2{margin:0;font-size:clamp(22px,2.8vw,32px);color:#f9d9a5}
+.lv9-entry-gate .lv9-entry-divider p{margin:3px 0 0;font-size:12px;color:#aec7d6}
+.lv9-entry-gate .lv9-entry-quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.lv9-entry-gate .lv9-entry-quick a{display:inline-flex;align-items:center;min-height:37px;padding:8px 13px;text-decoration:none;font-size:11px;font-weight:800;color:#d1e8e6;background:#14253be8;border:1px solid #90d5d15b;border-radius:10px}
+.lv9-entry-gate .lv9-entry-quick a:hover{color:#fff;background:#23445b}
+.lv9-entry-gate .lv9-entry-footnote{margin:30px 0 0;border-top:1px solid #c7aa793d;padding:18px 0;font-size:11px;color:#a7beca;text-align:center;line-height:1.8}
+.lv9-entry-gate a:focus-visible,.lv9-entry-gate button:focus-visible,.lv9-entry-gate select:focus-visible{outline:3px solid #9cebe7!important;outline-offset:3px!important}
+.lv9-entry-gate .lv9-entry-mode{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px;color:#e0ebef;background:#121e34c7;border:1px solid #baa0745c;border-radius:12px;padding:9px 12px}
+.lv9-entry-gate .lv9-entry-mode select{border:1px solid #a3bcce80;border-radius:8px;color:#eaf4f7;background:#1b2c43;padding:7px 9px}
+.lv9-entry-gate .lv9-entry-footcard{margin-top:22px;border:1px solid #d1ac7680;border-radius:16px;background:linear-gradient(100deg,#182941,#100d24);padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.lv9-entry-gate .lv9-entry-footcard strong{font-size:17px;color:#f3d6a2}
+.lv9-entry-gate .lv9-entry-footcard small{display:block;color:#adc6d3;font-size:11px;margin-top:5px}
+.lv9-entry-gate .lv9-entry-footcard button{cursor:pointer}
+@media(max-width:800px){.lv9-entry-gate .lv9-entry-top{align-items:flex-start}.lv9-entry-gate .lv9-hero{padding:28px!important;min-height:470px!important}.lv9-entry-gate .lv9-entry-hero-actions{align-items:stretch}.lv9-entry-gate .lv9-entry-divider{align-items:flex-start;flex-direction:column}.lv9-entry-gate .lv9-entry-footcard{align-items:stretch}}
+@media(max-width:520px){.lv9-entry-gate .lv9-entry-menu{width:100%}.lv9-entry-gate .lv9-entry-menu>*{flex:1;text-align:center}.lv9-entry-gate .lv9-hero{min-height:450px!important;padding:22px!important}.lv9-entry-gate .lv9-entry-hero-actions>*{flex:1}.lv9-entry-gate .lv9-entry-wrap{padding:12px 12px 60px}.lv9-entry-gate .lv9-entry-hero-sub{font-size:14px}.lv9-entry-gate .lv9-entry-footcard button{width:100%}}
+@media(prefers-reduced-motion:reduce){.lv9-entry-gate *{animation:none!important;transition:none!important}}
