@@ -237,7 +237,17 @@ async function run(engine,phone){
   await page.locator('#tfImport').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(bad))});
   await page.locator('#tfStatus').filter({hasText:'Import failed'}).waitFor({state:'visible',timeout:7000});
   assert.ok((await page.locator('#tfStatus').textContent()).includes('Import failed'),'Unsafe imports must be rejected');
-  const finish=await page.evaluate(()=>({w:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+  const finish=await page.evaluate(()=>{
+    const w=document.documentElement.scrollWidth,client=document.documentElement.clientWidth;
+    const offenders=w<=client+2?[]:[...document.querySelectorAll('body *')].filter(el=>{
+      const s=getComputedStyle(el),rect=el.getBoundingClientRect();
+      return s.display!=='none'&&s.visibility!=='hidden'&&rect.width>0&&rect.right>client+2;
+    }).sort((a,b)=>b.getBoundingClientRect().right-a.getBoundingClientRect().right).slice(0,18).map(el=>{
+      const rect=el.getBoundingClientRect(),parent=el.parentElement;
+      return{tag:el.tagName,id:el.id,cls:String(el.className||'').slice(0,100),right:Math.round(rect.right),width:Math.round(rect.width),parentId:parent?.id||'',parentClass:String(parent?.className||'').slice(0,90),parentOverflow:parent?getComputedStyle(parent).overflowX:''};
+    });
+    return{w,client,offenders};
+  });
   assert.ok(finish.w<=finish.client+2,'Planner should not create horizontal overflow '+JSON.stringify(finish));
   assert.deepEqual(errors,[],'No browser JS exceptions');
   console.log('PASS Talent Forge v5.1 '+(phone?'WebKit phone':'Chromium desktop')+' — editing, metadata, saved clones, local recovery and invalid import rejection');
