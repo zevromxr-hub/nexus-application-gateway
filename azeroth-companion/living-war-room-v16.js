@@ -15,7 +15,7 @@ const KEYS={profiles:'nexus_azeroth_companion_genesis_v1',focus:'nexus_player_fo
  quest:'nexus_player_quests_v11'};
 const read=(key,limit=3300000)=>{try{const raw=localStorage.getItem(key);return raw&&raw.length<=limit?JSON.parse(raw):null}catch(_){return null}};
 const list=value=>Array.isArray(value)?value.filter(x=>x&&typeof x==='object'&&!Array.isArray(x)):[];
-const chars=()=>list(read(KEY.profiles)?.characters).map(core.characterize).filter(Boolean).slice(0,250);
+const chars=()=>list(read(KEYS.profiles)?.characters).map(core.characterize).filter(Boolean).slice(0,250);
 function selectedCharacter(){
  const selected=$('nx16WarCharacter').value,items=chars();return items.find(x=>x.id===selected)||null;
 }
