@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-nx-player-version="11.0.0">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1122">
+<meta name="description" content="NEXUS Sovereign Player Experience: a personal character workspace with read-only saved builds, talent draft comparisons and independent character objectives.">
+<title>Sovereign Player Experience | NEXUS Azeroth v11</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/player-experience.html">
+<meta property="og:title" content="NEXUS | Sovereign Player Experience">
+<meta property="og:description" content="Your character. Your builds. Your adventures. One unified command workspace.">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png"><link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<link rel="preload" as="image" href="./assets/citadel-hero-hd-v9.1.1.webp" fetchpriority="high">
+<link rel="stylesheet" href="./player-experience-v11.css?v=1100">
+<script defer src="./player-experience-v11.js?v=1100"></script>
+</head>
+<body>
+<div class="px11-atmosphere" id="px11Atmosphere" aria-hidden="true"></div>
+<header class="px11-nav"><div class="px11-nav-inner"><a class="px11-brand" href="./command-center.html"><strong>NEXUS</strong><small>AZEROTH COMPANION</small></a><nav aria-label="Workspace navigation"><a href="./command-center.html">Command Center</a><a class="px11-current" href="./player-experience.html">My Character</a><a href="./?enter=1&studio=talents" data-px-app>Talent Forge</a><a href="./save-protection.html">Save Protection</a></nav><a class="px11-nav-cta" href="./?enter=1" data-px-app>FULL COMPANION ↗</a></div></header>
+<main class="px11-main">
+<section class="px11-hero">
+ <div class="px11-hero-copy"><div class="px11-kicker">NEXUS / SOVEREIGN PLAYER EXPERIENCE · v11.0</div><h1>YOUR CHARACTER.<br><em>YOUR LEGACY.</em></h1><p>A personal command station linking your manual character records, saved builds, independent research tools and next objectives—without inventing account data.</p>
+ <div class="px11-hero-select"><label for="px11CharacterSelect">ACTIVE MANUAL CHARACTER</label><select id="px11CharacterSelect" aria-label="Choose locally saved character"><option value="">No saved character selected</option></select><p id="px11HeroStatus" class="px11-hero-status">Select an existing manual profile, or create one in the full companion.</p></div>
+ <div class="px11-hero-actions"><a class="px11-primary" href="./?enter=1&view=characters" data-px-app>MANAGE MY CHARACTERS ↗</a><a class="px11-secondary" href="./character-intelligence.html">RESEARCH PUBLIC GEAR ↗</a></div>
+ </div>
+ <div class="px11-hero-portrait"><div class="px11-portrait-art" aria-hidden="true"></div><div class="px11-portrait-copy"><span>PLAYER DOSSIER / LOCAL</span><strong id="px11PortraitName">UNWRITTEN LEGEND</strong><small id="px11PortraitMeta">A new chapter begins here.</small></div></div>
+</section>
+<div class="px11-provenance" role="note">✦ Data shown here is from browser-local planning records. This is <strong>not a live inventory, account sync, achievement scanner, or verified game-build validator.</strong></div>
+<section class="px11-metrics" aria-label="Personal workspace summary">
+ <div><span>♟</span><strong id="px11MetricCharacters">0</strong><small>Saved manual profiles</small></div>
+ <div><span>✧</span><strong id="px11MetricBuilds">0</strong><small>Builds in your archive</small></div>
+ <div><span>✥</span><strong id="px11MetricObjectives">0</strong><small>Open personal objectives</small></div>
+ <div><span>◈</span><strong id="px11MetricHistory">0</strong><small>Historical build checkpoints</small></div>
+</section>
+<section class="px11-station" id="px11Station">
+<div class="px11-head"><div><span class="px11-kicker">THE PERSONAL COMMAND STATION</span><h2>Your journey, one place.</h2><p>Select a workspace below. All original studio functions stay available.</p></div><a href="./save-protection.html" class="px11-safety">⛨ PROTECT MY SAVED WORK ↗</a></div>
+<div class="px11-tabs" role="tablist" aria-label="Player Experience workspaces">
+ <button type="button" role="tab" id="px11TabOverview" data-px11-tab="overview" aria-controls="px11ViewOverview" aria-selected="true">♟ Character Overview</button>
+ <button type="button" role="tab" id="px11TabBuilds" data-px11-tab="builds" aria-controls="px11ViewBuilds" aria-selected="false">✧ Build Intelligence</button>
+ <button type="button" role="tab" id="px11TabJourney" data-px11-tab="journey" aria-controls="px11ViewJourney" aria-selected="false">✥ Adventure Log</button>
+</div>
+<section class="px11-view" id="px11ViewOverview" role="tabpanel" aria-labelledby="px11TabOverview">
+ <div class="px11-columns">
+  <div class="px11-card"><div class="px11-card-head"><span class="px11-kicker">CHARACTER DOSSIER</span><a href="./?enter=1&view=characters" data-px-app>Edit in Companion ↗</a></div><h3 id="px11DossierName">Choose your legend</h3><p id="px11DossierText">Existing manual character data will appear here. No login required to use local planning.</p><div id="px11DossierDetails" class="px11-detail-grid"></div><div class="px11-link-row"><a href="./character-intelligence.html">GEAR RESEARCH ↗</a><a href="./progression-intelligence.html">PROGRESSION RESEARCH ↗</a></div></div>
+  <div class="px11-card px11-card-art"><div class="px11-card-head"><span class="px11-kicker">ASSOCIATED BUILD LIBRARY</span><button type="button" id="px11OpenBuildTab">View Build Intelligence ↗</button></div><div id="px11AssociatedBuilds" class="px11-rows"></div><p class="px11-note">Build Architect entries are associated by their stored character ID. Talent drafts are associated only after you explicitly link them here.</p></div>
+ </div>
+ <div class="px11-quick-grid"><a href="./?enter=1&studio=talents" data-px-app><span>✧</span><strong>TALENT FORGE</strong><small>Open the real build planner</small></a><a href="./character-intelligence.html"><span>⚔</span><strong>ARMORY INTELLIGENCE</strong><small>Inspect public equipment research</small></a><a href="./progression-intelligence.html"><span>✥</span><strong>PROGRESSION INTELLIGENCE</strong><small>Explore public Mythic+ and raids</small></a><a href="./azeroth-assistant.html"><span>☼</span><strong>AZEROTH ORACLE</strong><small>Guided research and missions</small></a></div>
+</section>
+<section class="px11-view" id="px11ViewBuilds" role="tabpanel" aria-labelledby="px11TabBuilds" hidden>
+ <div class="px11-columns">
+  <div class="px11-card"><div class="px11-card-head"><span class="px11-kicker">TALENT BUILD INTELLIGENCE 2.0</span><a href="./?enter=1&studio=talents" data-px-app>Open original Talent Forge ↗</a></div>
+   <h3>Compare saved drafts</h3><p>Choose two local Talent Forge drafts or one historical checkpoint. The comparison uses recorded node IDs and allocated ranks only.</p>
+   <div class="px11-compare-controls"><label>Draft A<select id="px11BuildA"><option value="">Choose a draft</option></select></label><label>Draft B / history<select id="px11BuildB"><option value="">Choose a comparison</option></select></label></div>
+   <div class="px11-toolbar"><button type="button" class="px11-button" id="px11Compare">COMPARE ALLOCATIONS</button><button type="button" class="px11-button px11-button-soft" id="px11Checkpoint">SAVE CHECKPOINT OF A</button><button type="button" class="px11-button px11-button-soft" id="px11ExportDraft">EXPORT DRAFT A</button></div>
+   <div class="px11-compare-output" id="px11CompareOutput" aria-live="polite"><p>Select two saved drafts to review differences.</p></div>
+   <p class="px11-note">Point totals and differences are manual planning records, not optimization scores, in-game validity checks, or official recommended builds.</p>
+  </div>
+  <div class="px11-card"><div class="px11-card-head"><span class="px11-kicker">CHARACTER-TO-DRAFT LINKS</span></div><h3>Organize your build library</h3><p>Associate a saved Talent Forge draft with your selected manual character. This only records a local workspace relationship.</p><div class="px11-link-form"><label>Saved talent draft<select id="px11LinkDraft"><option value="">Select a draft</option></select></label><button type="button" class="px11-button" id="px11AttachDraft">LINK TO ACTIVE CHARACTER</button><button type="button" class="px11-button px11-button-soft" id="px11UnlinkDraft">REMOVE ASSOCIATION</button></div><div class="px11-rows" id="px11LinkedDrafts"></div>
+    <h3>Version history</h3><div id="px11CheckpointList" class="px11-rows"></div><p class="px11-note">Checkpoints are separate copies. They will not overwrite your original Talent Forge drafts.</p>
+  </div>
+ </div>
+</section>
+<section class="px11-view" id="px11ViewJourney" role="tabpanel" aria-labelledby="px11TabJourney" hidden>
+ <div class="px11-columns">
+   <div class="px11-card"><div class="px11-card-head"><span class="px11-kicker">PERSONAL QUEST LOG</span><a href="./?enter=1&view=progress" data-px-app>Original Progression Planner ↗</a></div><h3>Plan your next chapter</h3><p>Optional objectives for the selected local character. This is not in-game quest status.</p>
+    <form id="px11QuestForm" class="px11-quest-form"><label>New character objective<input id="px11QuestTitle" maxlength="100" required placeholder="e.g. Plan an upgrade for my ring"></label><label>Type<select id="px11QuestKind"><option>Equipment</option><option>Builds</option><option>Raiding</option><option>Mythic+</option><option>Collections</option><option>Custom</option></select></label><button type="submit" class="px11-button">ADD OBJECTIVE</button></form>
+    <div class="px11-rows" id="px11QuestList" aria-live="polite"></div>
+   </div>
+   <div class="px11-card px11-card-art"><div class="px11-card-head"><span class="px11-kicker">YOUR EXISTING COMPANION</span></div><h3>Mission briefing</h3><p>Original manually entered tasks and collection targets are shown below without editing them.</p><div class="px11-rows" id="px11ExistingGoals"></div><div class="px11-link-row"><a href="./?enter=1&view=progress" data-px-app>PROGRESSION ↗</a><a href="./?enter=1&view=collections" data-px-app>COLLECTIONS ↗</a></div></div>
+ </div>
+</section>
+</section>
+<section class="px11-cta"><div><div class="px11-kicker">CONTINUE YOUR ADVENTURE</div><h2>Build thoughtfully. Explore confidently.</h2><p>Research data remains source-aware; manually saved plans remain yours.</p></div><div class="px11-cta-actions"><a class="px11-primary" href="./?enter=1" data-px-app>ENTER COMPLETE COMPANION ↗</a><a class="px11-secondary" href="./save-protection.html">BACKUP MY WORK ↗</a></div></section>
+<footer>POWERED BY ZEVRO | NEXUS · v11.0.0 STAGING <span>Unofficial World of Warcraft fan companion. Not affiliated with Blizzard Entertainment. No automated Battle.net account sync.</span></footer>
+</main>
+<div class="px11-toast" id="px11Toast" role="status" aria-live="polite" hidden></div>
+</body></html>
