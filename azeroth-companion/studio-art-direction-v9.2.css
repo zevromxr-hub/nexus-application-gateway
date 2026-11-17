@@ -281,3 +281,111 @@ html.nx-mini body[data-nx-art-page="oracle"] .nx-art-banner{display:none!importa
  body[data-nx-art-page]::before,
  body[data-nx-art-page] .nx-art-banner::after{display:none!important}
 }
+
+
+/* NEXUS | AZEROTH v9.2.1 — FULL-BLEED ZEVRO PANORAMA
+ * All banner images are CSS backgrounds: cover fills the whole box without
+ * stretching, while a gradient keeps interface text readable.
+ * The original site artwork remains hosted and unmodified.
+ */
+:root{
+ --nx-art-box-wide:url("./assets/zevro-wide-banner-v9.2.webp");
+}
+
+/* The full-width laboratory banner shown on Talent Forge AND Live Armory.
+   Uses a true 3:1 environment, not a tiny tall portrait at auto 570px. */
+body.nx-art-studios.lv9-visual .lv9-talent-header,
+body.nx-art-studios .lv9-talent-header,
+body.nx-art-studios .lv9-journal-card,
+body.nx-art-studios .lv9-journal-card:nth-child(2),
+body.nx-art-studios .lv9-journal-card:nth-child(3),
+body.nx-art-studios .lv9-guide-visual,
+body.nx-art-studios .lv9-adventure-portrait,
+body.nx-art-studios .section.active > h2:first-child{
+ background-image:
+   linear-gradient(90deg,#050d1ff2 0%,#071329dc 38%,#08152c85 78%,#08152c39 100%),
+   var(--nx-art-box-wide),
+   var(--nx-art-hd)!important;
+ background-size:cover,cover,cover!important;
+ background-position:center,center 30%,center!important;
+ background-repeat:no-repeat,no-repeat,no-repeat!important;
+}
+body.nx-art-studios .lv9-talent-header{
+ min-height:178px;
+ border:1px solid #d5ad7370!important;
+ background-color:#0a1631!important;
+ box-shadow:0 12px 35px #0007;
+}
+body.nx-art-studios .lv9-journal-card,
+body.nx-art-studios .lv9-journal-card:nth-child(2),
+body.nx-art-studios .lv9-journal-card:nth-child(3){
+ border-color:#d5ad736c!important;
+ background-color:#0a1628!important;
+}
+body.nx-art-studios .lv9-guide-visual,
+body.nx-art-studios .lv9-adventure-portrait{
+ background-color:#09152b!important;
+}
+body.nx-art-studios .section.active > h2:first-child{
+ border-left:3px solid var(--nx-scene-accent);
+}
+
+/* Original independent research studios: full-width image replaces the
+   narrow inset image that made the hero appear unfinished. */
+body[data-nx-art-page] .nx-art-banner,
+body[data-nx-art-page="sovereign"] .intro,
+body[data-nx-art-page="addon"] .hero{
+ min-height:210px;
+ border:1px solid #d5ad7370!important;
+ background-color:#0a162b!important;
+ background-image:
+   linear-gradient(90deg,#050d1ff4 0%,#071329ea 37%,#08172f99 75%,#08172f44 100%),
+   var(--nx-art-box-wide),
+   var(--nx-art-hd)!important;
+ background-size:cover,cover,cover!important;
+ background-position:center,center 30%,center!important;
+ background-repeat:no-repeat,no-repeat,no-repeat!important;
+ box-shadow:0 16px 40px #0007;
+}
+body[data-nx-art-page] .nx-art-banner::after,
+body[data-nx-art-page="sovereign"] .intro::after,
+body[data-nx-art-page="addon"] .hero::after{
+ display:none!important;
+}
+body[data-nx-art-page] .nx-art-banner > *,
+body[data-nx-art-page="sovereign"] .intro > div,
+body[data-nx-art-page="addon"] .hero > *{
+ max-width:75%;
+}
+body[data-nx-art-page="sovereign"] .intro > .pill{max-width:100%}
+
+/* The alternate Living Azeroth page retains its five unique illustrated
+   portal cards; only its broad header should use the shared panorama. */
+body[data-nx-art-page="living"] .lv9-hero{
+ background-image:
+   linear-gradient(90deg,#050d1ff3,#071329dc 48%,#07162d67),
+   var(--nx-art-box-wide),
+   var(--nx-art-hd)!important;
+ background-size:cover,cover,cover!important;
+ background-position:center,center 30%,center!important;
+}
+@media(max-width:660px){
+ body.nx-art-studios .lv9-talent-header,
+ body.nx-art-studios .lv9-journal-card,
+ body.nx-art-studios .lv9-guide-visual,
+ body.nx-art-studios .lv9-adventure-portrait,
+ body.nx-art-studios .section.active > h2:first-child,
+ body[data-nx-art-page] .nx-art-banner,
+ body[data-nx-art-page="sovereign"] .intro,
+ body[data-nx-art-page="addon"] .hero{
+   background-image:
+     linear-gradient(90deg,#050d1ff7 0%,#071329eb 55%,#08152ca9 100%),
+     var(--nx-art-box-wide),
+     var(--nx-art-hd)!important;
+   background-size:cover,cover,cover!important;
+   background-position:center,57% 30%,center!important;
+ }
+ body[data-nx-art-page] .nx-art-banner > *,
+ body[data-nx-art-page="sovereign"] .intro > div,
+ body[data-nx-art-page="addon"] .hero > *{max-width:100%}
+}
