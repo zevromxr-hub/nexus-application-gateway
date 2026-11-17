@@ -1,7 +1,17 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v7.9.6 Character Progress Report (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v7.9.7 ZevRo Azeroth Assistant (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v7.9.6 acceptance
+## New required v7.9.7 acceptance
+1. On PC and iPhone-sized browsers, open ZevRo | Azeroth Assistant and confirm its input, send button and topic chips are visible and usable.
+2. Ask about talent builds, account verification, Mythic+, raid encounters, reputation and inventory limits; verify accurate documented answers with relevant studio links.
+3. Select New Questions and a topic filter; confirm suggestions are derived from the local curated answer library.
+4. Ask an unsupported or patch-specific gameplay question. The assistant must clearly admit no reliable curated answer instead of guessing.
+5. Verify submitting a question does not send data to a generative AI server, Blizzard, Discord or any new backend endpoint. Only the static documented answer library should be fetched.
+6. Select Clear Conversation, then confirm Talent Forge drafts, saved goals and Battle.net verification remain untouched.
+7. Test keyboard use, screen-reader status text, long questions and mobile viewport overflow.
+8. Check current version, Gateway, Player Handbook, Getting Started, Developer Test Requests and release center against v7.9.7 staging.
+
+## Previous required v7.9.6 acceptance
 1. With a public Retail character, run Build Character Progress Report and confirm Mythic+, raids and reputations are requested sequentially, not in a burst.
 2. Check that a single API error does not destroy successful categories and that missing fields are not presented as confirmed zero progress.
 3. Verify Copy Summary provides only public character research, and Export Combined JSON produces a readable snapshot.
