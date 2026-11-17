@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.3",
-  "channel": "stable",
+  "version": "7.9.4",
+  "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "Blizzard Character Intelligence & Gear Comparison",
-  "previous_version": "7.9.2",
+  "subtitle": "Mythic+, Raid & Reputation Intelligence — API Deployment Pending",
+  "previous_version": "7.9.3",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added Character Intelligence, an independent responsive studio using existing Blizzard public profile and equipment endpoints through the Cloudflare gateway.",
-    "Compare two Retail characters by region, realm slug and name, including their equipment slots, item IDs and reported item levels.",
-    "Added optional JSON snapshot export and direct official item API research links; comparisons never infer missing items or true equipment power from item level alone.",
-    "Character Intelligence reads public API information only and does not access private Battle.net sessions or alter browser-saved progression.",
-    "Preserved v7.9.2 PC/mobile guides and existing studio JavaScript; Addon Nexus remains a separate v8.0 preview.",
-    "Live character result testing still requires players with public Blizzard records; no broad performance benchmark is claimed."
+    "Added a dedicated Blizzard Progression Intelligence studio with Mythic+ profile/season research, raid encounter summaries and reputation standings.",
+    "Added manual JSON snapshot exports, optional season-ID input, safer missing-data messaging and responsive mobile/PC layouts.",
+    "Prepared complete additive Cloudflare Worker v7.9.4 source to enable three new public progression routes without removing existing authentication or spell-media endpoints.",
+    "Updated navigation, Character Intelligence cross-link and detailed Player Handbook to cover the new research studio.",
+    "Public site is staged: live progression results require a separate Cloudflare Worker deployment and real-player acceptance tests before a stable Discord announcement.",
+    "Preserved existing Talent Forge, v7.9.3 Character Intelligence, Addon Nexus preview, saved player progress and all main application bundles."
   ]
 }
