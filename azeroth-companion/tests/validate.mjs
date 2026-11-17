@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.9/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v8\.0\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'7.9.9');
+assert.equal(version.version,'8.0.0');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -232,6 +232,40 @@ assert.ok(!assistantBubble798.includes('document.body.append(avatar)'),'Launcher
 assert.match(assistantBubbleStyles798,/nx-assistant-dialog/,'Embedded assistant dialog must be styled');
 assert.ok(!assistantBubble798.includes('localStorage'),'Launcher must not access saved records');
 assert.ok(!assistantBubble798.includes('fetch('),'Launcher must not add new API requests');
+const sovereign8=await read('azeroth-companion/sovereign-data-v8.js');
+const sovereignUI8=await read('azeroth-companion/sovereign-ascension-v8.js');
+const sovereignPage8=await read('azeroth-companion/sovereign-ascension.html');
+const sovereignCSS8=await read('azeroth-companion/sovereign-ascension-v8.css');
+new vm.Script(sovereign8);new vm.Script(sovereignUI8);
+assert.match(html,/href="\.\/sovereign-ascension\.html"/,'Main app must link new Sovereign workspace');
+assert.match(sovereignPage8,/sovereign-data-v8\.js\?v=800/,'Data foundation must load');
+assert.match(sovereignPage8,/sovereign-ascension-v8\.js\?v=800/,'Sovereign UI module must load');
+assert.match(sovereignCSS8,/@media\(max-width:680px\)/,'Sovereign mobile layout required');
+assert.ok(!sovereignUI8.includes('localStorage.setItem'),'Sovereign UI must not overwrite legacy saves');
+assert.ok(!sovereignUI8.includes('access_token'),'Sovereign UI must not access OAuth credentials');
+const sovereignCtx={module:{exports:{}}};new vm.Script(sovereign8).runInNewContext(sovereignCtx);
+const sovereign=sovereignCtx.module.exports;
+assert.equal(sovereign.SCHEMA,'nexus.azeroth.sovereign-snapshot/1');
+const fixtureStore=new Map([
+ [sovereign.keys.core,JSON.stringify({characters:[{name:'Example',realm:'area-52'}]})],
+ [sovereign.keys.talents,JSON.stringify([{name:'A',identity:'us/1/2',rankByNode:{100:2,200:1}},{name:'B',identity:'us/1/2',rankByNode:{100:1,300:1}}])],
+ [sovereign.keys.targets,JSON.stringify([{name:'Target',itemId:123,done:false}])]
+]);
+const sovereignSample=sovereign.readLocal({getItem:k=>fixtureStore.get(k)||null});
+assert.equal(sovereignSample.local.characters.length,1);
+assert.equal(sovereignSample.local.builds.length,2);
+assert.equal(sovereignSample.local.targets.length,1);
+const sovereignDiff=sovereign.compare(sovereignSample.local.builds[0],sovereignSample.local.builds[1]);
+assert.equal(sovereignDiff.aPoints,3);assert.equal(sovereignDiff.bPoints,2);
+assert.equal(sovereignDiff.changes.length,3);
+assert.equal(sovereignDiff.sameSpecialization,true);
+assert.throws(()=>sovereign.identity('us','!!!','example'));
+const sovereignPublic=sovereign.withPublic(sovereignSample,{region:'us',realm:'area-52',name:'example'}, {name:'Example',level:80}, {equipped_items:[{item:{id:123},slot:{type:'HEAD'},level:{value:620}}]});
+assert.equal(sovereignPublic.public.gear[0].itemId,123);
+assert.equal(sovereignPublic.public.source,'blizzard-public-api');
+assert.equal(sovereignPublic.local.builds.length,2,'Public lookup must preserve manual plans');
+for(const doc of ['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'])
+ assert.match(await read('azeroth-companion/'+doc),/8\.0\.0|v8\.0/,'v8 documentation out of sync: '+doc);
 const missionPlanner799=await read('azeroth-companion/assistant-journey-v7.9.9.js');
 new vm.Script(missionPlanner799);
 for(const marker of ['nxJourneyPlanner','Mission Architect','nxJourneyGenerate','nxJourneyCopy','nxJourneyExport','talent','progression-intelligence.html','JSON.stringify']){
@@ -270,7 +304,7 @@ new vm.Script(progressWorker.replace('export default {','const workerDefault={')
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
  assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
 assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.9 • Mission Architect Preview/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v8\.0\.0 • Sovereign Ascension Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {payload}=await import('../scripts/announce-release.mjs');
 const body=payload({version:'7.9.3'},previousRelease);
