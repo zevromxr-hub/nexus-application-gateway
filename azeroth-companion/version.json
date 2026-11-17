@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.5",
+  "version": "7.9.6",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "Connected Character Research Handoff & Test Readiness",
-  "previous_version": "7.9.4",
+  "subtitle": "Character Progress Report & Partial-Result Intelligence",
+  "previous_version": "7.9.5",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added fast character research handoff between equipment comparisons and Mythic+, raids, and reputations using public-character URL parameters.",
-    "Added three progression shortcuts from Character Intelligence, a compare-character shortcut from Progression Intelligence, and a shareable read-only research-link copy control.",
-    "Prefills region, realm slug and public character name from shared links with validation and explicit Load action; does not auto-fetch or transfer Blizzard tokens.",
-    "Preserved all v7.9.4 API routes, Cloudflare Worker code, account connections, player saved plans and other studios unchanged.",
-    "Updated getting-started guidance, Player Handbook, Developer Test Requests, Gateway label, release notes, and staged acceptance tests.",
-    "Stage only: real WoW data, Discord delivery, and browser acceptance checks remain pending before an official stable release."
+    "Added a combined Character Progress Report in Progression Intelligence that sequentially requests public Mythic+, raid and reputation results using the deployed v7.9.4 Cloudflare API routes.",
+    "Independent status cards keep successful category results visible when another category is unavailable, incomplete or cancelled.",
+    "Added explicit user-controlled report cancellation, copyable text summaries and downloadable JSON snapshots without automatic browser storage writes.",
+    "Preserved the existing individual research tabs, Character Intelligence comparisons, v7.9.5 character handoff and public/private Battle.net flows.",
+    "Updated app guides, developer acceptance checklist, device QA, public preview release notes, Gateway version and Discord announcement draft.",
+    "Still staged: genuine player data, physical device usability and account session regression require volunteers; no official Discord announcement is authorized until verified."
   ]
 }
