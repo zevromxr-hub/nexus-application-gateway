@@ -69,7 +69,8 @@ async function run(label,browserType,phone){
   const backTop=page.locator('#nxToTop');
   assert.ok(await backTop.isVisible(),'Long pages should expose return-to-top');
   await backTop.click();
-  await page.waitForTimeout(350);
+  // Smooth scrolling is asynchronous and can take longer than 350ms on large pages.
+  await page.waitForFunction(()=>window.scrollY<300,null,{timeout:6000});
   assert.ok(await page.evaluate(()=>window.scrollY)<300,'Return-to-top should scroll toward the beginning');
   const dimensions=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
   assert.ok(dimensions.page<=dimensions.viewport+2,'Website should not horizontally overflow '+JSON.stringify(dimensions));
