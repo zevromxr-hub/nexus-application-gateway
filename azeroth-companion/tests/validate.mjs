@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.3/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.4/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,12 +173,27 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-const release=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
-assert.equal(version.version,'7.9.3');assert.equal(index.releases[0].version,version.version);assert.equal(release.version,version.version);
-assert.ok(release.features.length>=5);
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.3 • Character Intelligence/);
+assert.equal(version.version,'7.9.4');
+assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
+assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
+const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
+assert.equal(previousRelease.version,'7.9.3');
+assert.ok(previousRelease.features.length>=5);
+const progression=await read('azeroth-companion/progression-intelligence.html');
+assert.match(html,/progression-intelligence\.html/,'Progression navigation must exist');
+assert.match(progression,/\/api\/progression\//,'Progression page must use restricted public proxy');
+for(const section of ['mythic','raids','reputations'])assert.ok(progression.includes(section),'Missing progression section '+section);
+for(const code of progression.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(code[1]);
+const progressWorker=await read('azeroth-companion/backend/worker-v7.9.4-single.js');
+new vm.Script(progressWorker.replace('export default {','const workerDefault={'));
+for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
+ assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
+assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.4 • Progression Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
-const {metadata,payload}=await import('../scripts/announce-release.mjs');const record=await metadata();const body=payload(record.v,record.release);assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
+const {payload}=await import('../scripts/announce-release.mjs');
+const body=payload({version:'7.9.3'},previousRelease);
+assert.match(body.embeds[0].title,/AZEROTH COMPANION/);
 assert.equal(body.allowed_mentions.parse.length,0);assert.ok(!JSON.stringify(body).includes('DISCORD_RELEASE_WEBHOOK'));
 const utility=await read('azeroth-companion/player-utility.js');new vm.Script(utility);
 for(const name of ['Party Architect','Weekly Vault','Devourer','puImportParty','puCopyParty','puExportVault','puCharacter','puPartyFeedback'])assert.ok(utility.includes(name),'Missing player utility '+name);
