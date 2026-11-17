@@ -263,6 +263,17 @@ $('nx15GuestShelf').addEventListener('click',event=>{
  try{localStorage.setItem(KEY.guests,JSON.stringify(next));guests=next;renderGuests()}
  catch(_){$('nx15ImportPreview').textContent='Could not update the guest shelf. Nothing was removed.'}
 });
+for(const oldId of ['px11AttachDraft','px11UnlinkDraft','px11Checkpoint']){
+ $(oldId)?.addEventListener('click',()=>setTimeout(updateLocal,0));
+}
+$('px11QuestForm')?.addEventListener('submit',()=>setTimeout(updateLocal,0));
+$('px11QuestList')?.addEventListener('click',()=>setTimeout(updateLocal,0));
+window.addEventListener('storage',event=>{
+ if([KEY.profiles,KEY.drafts,KEY.links,KEY.quests,KEY.atlas,KEY.guests,KEY.notes].includes(event.key)){
+  if(event.key===KEY.guests){guests=loadGuests();renderGuests()}
+  updateLocal();
+ }
+});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){updateLocal();renderGuests()}});
 populateResearch();updateLocal();renderGuests();
 })();
