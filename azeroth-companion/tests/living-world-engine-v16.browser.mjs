@@ -25,6 +25,7 @@ async function check(label,engine,mobile){
  try{
   await page.goto(base+'command-center.html',{waitUntil:'domcontentloaded'});
   await page.locator('#nx16WarRoom').waitFor();
+  await page.waitForFunction(()=>/Arcanist/i.test(document.getElementById('nx16WarName')?.textContent||''),null,{timeout:7000});
   assert.match(await page.locator('#nx16WarName').textContent(),/Arcanist/i);
   assert.equal((await page.locator('#nx16WarGoals').textContent()).trim(),'1');
   await page.locator('#nx16LaunchSearch').click();
