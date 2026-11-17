@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.6",
+  "version": "7.9.7",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "Character Progress Report & Partial-Result Intelligence",
-  "previous_version": "7.9.5",
+  "subtitle": "ZevRo | Azeroth Assistant & Guided Player Answers",
+  "previous_version": "7.9.6",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a combined Character Progress Report in Progression Intelligence that sequentially requests public Mythic+, raid and reputation results using the deployed v7.9.4 Cloudflare API routes.",
-    "Independent status cards keep successful category results visible when another category is unavailable, incomplete or cancelled.",
-    "Added explicit user-controlled report cancellation, copyable text summaries and downloadable JSON snapshots without automatic browser storage writes.",
-    "Preserved the existing individual research tabs, Character Intelligence comparisons, v7.9.5 character handoff and public/private Battle.net flows.",
-    "Updated app guides, developer acceptance checklist, device QA, public preview release notes, Gateway version and Discord announcement draft.",
-    "Still staged: genuine player data, physical device usability and account session regression require volunteers; no official Discord announcement is authorized until verified."
+    "Added ZevRo | Azeroth Assistant, a responsive guided-answer studio with a conversational question interface and rotating suggested questions.",
+    "Published a curated, versioned knowledge base of 22 documented answers covering companion navigation, Blizzard account connections, talents, gear, progression, addon research, backup, mobile use and privacy.",
+    "Assistant offers category filters, clear evidence limitations and direct links to relevant studios; unsupported questions get a transparent fallback, not fabricated information.",
+    "Questions are processed locally against published guidance; no generative AI vendor, new Blizzard API calls, local-plan reads, cloud question logging, or account token exposure.",
+    "Preserved v7.9.6 combined progression reports, v7.9.5 character handoff, existing Cloudflare Worker, OAuth sessions and saved player data.",
+    "Updated player guidance, developer test requests, versioned release history, Gateway label, regression checks and draft Discord announcement; real-player acceptance remains pending."
   ]
 }
