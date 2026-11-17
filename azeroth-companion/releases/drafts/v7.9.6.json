@@ -1,0 +1,26 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "version": "7.9.6",
+  "title": "Character Progress Report & Partial-Result Intelligence",
+  "product": "NEXUS | AZEROTH COMPANION",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Build a consolidated Blizzard-reported Mythic+, Raids and Reputations character report with a single opt-in action.",
+    "Individual category statuses preserve successful results even if another research API is unavailable.",
+    "Copy a readable summary or export a combined JSON snapshot; cancel outstanding requests at any time.",
+    "Existing Character Intelligence, research tabs, account verification, talent planning and saved records remain untouched.",
+    "Updated the Player Handbook, Getting Started guide, developer test requests, device QA and Gateway release information."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v7.9.6 — Character Progress Report\n\nNEW: Generate one combined Blizzard-reported Mythic+, Raid and Reputation research report for a public character. Each section shows its own response status; copy the summary or export the report as JSON, with optional cancellation.\n\nAlso updated: PC/mobile Player Handbook, Getting Started, developer test checklist, Gateway details and release history.\n\nRelease is in preview pending real-player and device testing.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Public character report shows valid Blizzard data across available categories",
+    "One unavailable API preserves successful categories",
+    "Partial request cancellation and another run function",
+    "Combined JSON export and summary copy contain no secrets",
+    "Battle.net login/account verification regression",
+    "PC/mobile navigation and saved progression remain intact"
+  ],
+  "publish_rule": "Keep official releases index and release file untouched while staging. Once tests pass, promote version.json to stable, add v7.9.6 to releases/index.json and create releases/v7.9.6.json as the unique Discord trigger. No automatic publication of this draft."
+}
