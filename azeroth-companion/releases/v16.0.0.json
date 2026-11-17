@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "16.0.0",
+  "title": "LIVING WORLD ENGINE — The War Room & World Atlas",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "The owner approved v16 development and Discord release. Physical iPhone, live Blizzard gameplay and historical visual baseline acceptance remain pending; new browser-smoke tests passed with synthetic local data.",
+  "features": [
+    "Living War Room: a character-aware cinematic command station featuring your local roster, talent drafts, gear targets and next personal adventure.",
+    "Living World Atlas: a stylized interactive map with eight curated Azeroth regions, searchable cities/zones and links to existing research studios.",
+    "Command Search 2.0: fast browser-local lookup across studios, curated locations, saved characters, manual talent drafts, Item Atlas and personal missions.",
+    "Adventure Operations: create and manage zone goals linked to an optional character, native Forge draft and tracked item, with manual status and JSON export.",
+    "Connected Character Nexus: new World Atlas mission bridge, illustrated studio portals, and direct links throughout the original Companion.",
+    "Cinematic gold/violet visuals retain approved art, original Blizzard login, official spell icons, Talent Forge engine, music, saved builds and private backup tools.",
+    "Desktop and iPhone-style v16 browser scenarios passed; owner-approved Discord release continues with real-player and historical visual acceptance still pending."
+  ]
+}
