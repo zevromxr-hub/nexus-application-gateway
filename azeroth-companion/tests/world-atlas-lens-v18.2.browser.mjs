@@ -49,7 +49,7 @@ async function audit(label,engine,mobile){
   const focus=await page.locator('#nx182Density').getAttribute('aria-pressed');
   assert.equal(focus,mobile?'false':'true');
   await page.locator('#nx18Filter').selectOption('goals');
-  assert.match(await page.locator('#nx182Status').textContent(),/1 manual goals/);
+  assert.match(await page.locator('#nx182Status').textContent(),/1 manual goal/);
   const after=await page.evaluate(()=>Object.fromEntries(
     ['nexus_world_atlas_goals_v16','nexus_adventure_intelligence_v165','nexus_adventure_operations_v17','nexus_atlas_routes_v181','nexus_azeroth_talent_forge_v1'].map(k=>[k,localStorage.getItem(k)])));
   assert.deepEqual(after,before,'v18.2 must be read-only relative to all existing player records');
