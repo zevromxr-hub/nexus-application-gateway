@@ -9,12 +9,54 @@ main{padding:32px 0 65px}h1{font-size:clamp(30px,5vw,48px);line-height:1.1;margi
 .identity{font-size:13px;color:#c8d3df}.identity strong{color:#f7d39c}.accent{color:#f6d29e}.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.tags span{border:1px solid #aabbc275;background:#243a4f;padding:6px 10px;border-radius:999px;font-size:11px;color:#dbe7ec}.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.info-grid .panel{border-color:#8caaab55}.info-grid p,.panel p{color:#bfcfd9;font-size:13px;margin:0}.principles{display:grid;gap:10px;margin:16px 0 0;padding-left:18px;color:#c6d6df;font-size:13px}
 .notice{font-size:12px;color:#adc1ca;margin-top:20px;border-top:1px solid var(--line);padding-top:15px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.actions a{display:inline-block;background:#29495b;border:1px solid #b4b59e88;border-radius:10px;padding:11px 16px;color:#f2dec0;text-decoration:none;font-weight:800;font-size:12px}footer{margin:28px 0 0;text-align:center;color:#b0becd;font-size:11px;letter-spacing:.07em}
 @media(max-width:670px){.profile{grid-template-columns:1fr}.avatar{width:min(255px,100%);margin:auto}.info-grid{grid-template-columns:1fr}}
+
+/* NEXUS Developer Identity — Assassin Cinematic Edition, additive visual layer */
+:root{--nx-frost:#9be9ff;--nx-violet:#b69dff}
+html{background:#070b17}
+body{position:relative;isolation:isolate;background:#070b17;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(90deg,#070b17eF 0%,#070b17d9 44%,#070b17a3 100%),linear-gradient(0deg,#070b17 0%,transparent 60%),url("./assets/assassin-background.webp") center 30%/cover no-repeat}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 72% 18%,#8c62d32f,transparent 47%),radial-gradient(ellipse at 8% 55%,#48b1c51a,transparent 44%);animation:nxAmbient 12s ease-in-out infinite alternate}
+.bar{position:relative;z-index:5;background:#070f22cc;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:#bca3f64d}
+.brand{color:#ead9ff;text-shadow:0 0 19px #9a65f76d}
+.back{border:1px solid #bdabf759;padding:8px 13px;border-radius:999px;background:#151b32b5;color:#d9e4ff;transition:background .2s,border-color .2s}
+.back:hover{background:#293255;border-color:#d7c6ff}
+main.wrap{position:relative;z-index:2;padding-top:clamp(30px,5vw,64px)}
+main>.kicker{color:#a5dcf9;text-shadow:0 0 20px #63c7e84a}
+h1{font-size:clamp(34px,5.7vw,68px);font-weight:950;letter-spacing:-.045em;text-shadow:0 5px 28px #000c}
+.accent{color:#c9a3ff;text-shadow:0 0 25px #9c55e050}
+.lead{font-size:clamp(14px,1.4vw,16px);max-width:660px}
+.panel{position:relative;overflow:hidden;border-color:#a78bd27a;background:linear-gradient(135deg,#131a31ef,#151b30db 60%,#111b30e8);box-shadow:0 20px 60px #0007,inset 0 1px #ffffff15;backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)}
+.panel::before{content:"";position:absolute;inset:0 0 auto;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,#9fd7ff6b,#c6a6ff83,transparent)}
+.profile{min-height:335px;grid-template-columns:minmax(190px,285px) minmax(0,1fr);gap:clamp(20px,3.8vw,42px);background:linear-gradient(100deg,#0c1426f4 0%,#101728ee 53%,#111b30d9 100%);isolation:isolate}
+.profile::after{content:"";position:absolute;inset:0 0 0 38%;z-index:-1;pointer-events:none;opacity:.56;background:linear-gradient(90deg,#11192be9 0%,#10152a66 70%),url("./assets/assassin-background.webp") center 37%/cover no-repeat;mask-image:linear-gradient(90deg,transparent,black 36%);-webkit-mask-image:linear-gradient(90deg,transparent,black 36%)}
+.profile>div{position:relative;z-index:1}
+.avatar{position:relative;aspect-ratio:1;isolation:isolate;overflow:hidden;border-radius:25px;padding:12px;border-color:#c5a9ffbc;background:radial-gradient(circle at 50% 35%,#584878,#111c36 72%);box-shadow:0 0 0 5px #806ba21b,0 18px 45px #0008,inset 0 0 34px #a885ff2e;animation:nxCrestGlow 6s ease-in-out infinite}
+.avatar::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(140deg,#b6f2ff1d,transparent 40%,#bb8aff17)}
+.avatar img{position:relative;z-index:1;filter:drop-shadow(0 8px 18px #040710da) drop-shadow(0 0 18px #9a7cf02f)}
+.profile h2{font-size:clamp(26px,3.3vw,39px);letter-spacing:.02em;color:#f6e6ff;text-shadow:0 0 19px #a682ff65}
+.profile .kicker{color:#9ce4f1}
+.identity strong{color:#f0d7ff}
+.tags span{border-color:#aa9bf77d;background:#51407746;color:#efe6ff;box-shadow:inset 0 1px #ffffff0d}
+.info-grid .panel{border-color:#a598df52;transition:transform .22s,border-color .22s,box-shadow .22s}
+.info-grid .panel:hover{transform:translateY(-3px);border-color:#c0a7fcaa;box-shadow:0 22px 58px #0008,0 0 28px #7a59b51a}
+h3{color:#f0dcff}h2{color:#e5c8ff}
+.actions a{background:linear-gradient(110deg,#35255b,#1c3f59);border:1px solid #b7a8ff91;color:#f8eeff;box-shadow:0 8px 24px #0005;transition:transform .2s,filter .2s}
+.actions a:hover{transform:translateY(-2px);filter:brightness(1.16)}
+.nx-cinema-snow{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;contain:strict}
+.nx-cinema-snow i{position:absolute;top:-8vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;background:#dff7ff;opacity:var(--o);box-shadow:0 0 9px #b3dfff8a;animation:nxSnowFall var(--d) linear var(--delay) infinite;will-change:transform}
+.nx-cinema-vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,#05091580,transparent 26%),radial-gradient(ellipse at center,transparent 40%,#05071265 100%)}
+@keyframes nxSnowFall{to{transform:translate3d(var(--drift),115vh,0)}}
+@keyframes nxAmbient{to{opacity:.68;filter:hue-rotate(8deg)}}
+@keyframes nxCrestGlow{50%{box-shadow:0 0 0 5px #806ba21b,0 18px 45px #0008,0 0 30px #a67dff40,inset 0 0 36px #a885ff55}}
+@media(max-width:670px){body::before{background:linear-gradient(180deg,#070b17d9 0%,#070b17ed 58%,#070b17f5 100%),url("./assets/assassin-background.webp") 62% top/auto 100vh no-repeat}.profile{grid-template-columns:1fr;min-height:0}.profile::after{inset:0;opacity:.28;mask-image:none;-webkit-mask-image:none}.avatar{width:min(255px,100%)}.panel{backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.nx-cinema-snow i:nth-child(n+17){display:none}}
+@media(prefers-reduced-motion:reduce){body::after,.avatar,.nx-cinema-snow i{animation:none!important}.nx-cinema-snow{display:none}.info-grid .panel,.actions a{transition:none!important}}
+
 </style><link rel="manifest" href="./site.webmanifest?v=700">
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/nexus-warrior-apple-touch-icon.png?v=611">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AZEROTH">
-</head><body>
+</head><body><div class="nx-cinema-snow" id="nxCinemaSnow" aria-hidden="true"></div><div class="nx-cinema-vignette" aria-hidden="true"></div>
 <header class="bar"><div class="wrap"><a class="brand" href="./">NEXUS</a><a class="back" href="./">← Back to Azeroth Companion</a></div></header>
 <main class="wrap"><div class="kicker">NEXUS / DEVELOPER PROFILE</div><h1>Developer <span class="accent">Identity</span></h1><p class="lead">The vision and development philosophy behind NEXUS and Azeroth Companion.</p>
 <section class="panel profile" aria-label="Developer profile">
@@ -26,4 +68,19 @@ main{padding:32px 0 65px}h1{font-size:clamp(30px,5vw,48px);line-height:1.1;margi
 <section class="panel" style="margin-top:18px"><h3>Development principles</h3><ul class="principles"><li>Distinguish verified game information from personal planning and research.</li><li>Make powerful features approachable through clear and consistent interfaces.</li><li>Respect users' time, creative freedom, privacy, and saved work.</li><li>Build long-term value through stable, incremental improvements.</li></ul>
 <div class="notice">Azeroth Companion is an independent, unofficial World of Warcraft fan companion. It is not affiliated with, sponsored by, or endorsed by Blizzard Entertainment. Third-party names and game materials remain the property of their respective owners.</div></section>
 <div class="actions"><a href="./">OPEN AZEROTH COMPANION</a><a href="./release-notes.html">VIEW APPLICATION UPDATES</a><a href="./privacy.html">PRIVACY & DATA GUIDE</a></div>
-<footer>POWERED BY ZEVRO | NEXUS</footer></main></body></html>
+<footer>POWERED BY ZEVRO | NEXUS</footer></main>
+<script>/* NEXUS cinematic snow: decorative only, deterministic layout, zero network calls. */
+(()=>{'use strict';if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+const snow=document.getElementById('nxCinemaSnow');if(!snow)return;
+const count=window.matchMedia('(max-width: 670px)').matches?16:33;
+for(let i=0;i<count;i++){const flake=document.createElement('i');flake.setAttribute('aria-hidden','true');
+const hash=n=>{const x=Math.sin((i+1)*n)*10000;return x-Math.floor(x)};
+flake.style.setProperty('--x',(hash(13.41)*100).toFixed(2)+'%');
+flake.style.setProperty('--s',(1.5+hash(9.79)*3.2).toFixed(1)+'px');
+flake.style.setProperty('--o',(0.18+hash(6.3)*0.44).toFixed(2));
+flake.style.setProperty('--d',(12+hash(3.17)*15).toFixed(1)+'s');
+flake.style.setProperty('--delay',(-hash(4.71)*27).toFixed(1)+'s');
+flake.style.setProperty('--drift',((hash(7.62)-.5)*105).toFixed(1)+'px');
+snow.appendChild(flake)}
+})();
+</script></body></html>
