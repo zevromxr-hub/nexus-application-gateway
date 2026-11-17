@@ -33,6 +33,7 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/azeroth-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
+          node azeroth-companion/tests/world-atlas-cartography-v18.browser.mjs
           node azeroth-companion/tests/adventure-operations-v17.browser.mjs
           node azeroth-companion/tests/adventure-intelligence-v16.5.browser.mjs
           node azeroth-companion/tests/living-world-engine-v16.browser.mjs
