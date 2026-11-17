@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v8\.0\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.0\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'8.0.0');
+assert.equal(version.version,'9.0.0');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -197,7 +197,7 @@ const handbook795=await read('azeroth-companion/player-handbook.html');
 const checklist795=await read('azeroth-companion/player-test-checklist.html');
 const getting795=await read('azeroth-companion/getting-started.html');
 const changelog795=await read('azeroth-companion/CHANGELOG.md');
-for(const page of [handbook795,checklist795,getting795])assert.match(page,/8\.0\.0|v8\.0/,'Current guide and tester copy must match the active major version');
+for(const page of [handbook795,checklist795,getting795])assert.match(page,/9\.0\.0|v9\.0/,'Current guide and tester copy must match the active major version');
 assert.match(checklist795,/v7\.9\.5 reverse handoff/,'Tester report must include reverse handoff');
 assert.match(changelog795,/v7\.9\.5/,'Historical v7.9.5 notes must be retained');
 const report796=await read('azeroth-companion/progress-report-v7.9.6.js');
@@ -213,7 +213,7 @@ const getting796=await read('azeroth-companion/getting-started.html');
 const checklist796=await read('azeroth-companion/player-test-checklist.html');
 const deviceQA796=await read('azeroth-companion/QA-DEVICE-ACCEPTANCE.md');
 const releasePage796=await read('azeroth-companion/release-notes.html');
-for(const doc of [changelog796,handbook796,getting796,checklist796,deviceQA796,releasePage796])assert.match(doc,/8\.0\.0|v8\.0/,'Current release documentation out of sync');
+for(const doc of [changelog796,handbook796,getting796,checklist796,deviceQA796,releasePage796])assert.match(doc,/9\.0\.0|v9\.0/,'Current release documentation out of sync');
 assert.match(checklist796,/v7\.9\.6 partial failure/,'Developer checklist requires partial failure check');
 assert.match(changelog796,/Character Progress Report/,'Changelog must document report');
 const assistantBubble798=await read('azeroth-companion/assistant-bubble-v7.9.8.js');
@@ -232,6 +232,32 @@ assert.ok(!assistantBubble798.includes('document.body.append(avatar)'),'Launcher
 assert.match(assistantBubbleStyles798,/nx-assistant-dialog/,'Embedded assistant dialog must be styled');
 assert.ok(!assistantBubble798.includes('localStorage'),'Launcher must not access saved records');
 assert.ok(!assistantBubble798.includes('fetch('),'Launcher must not add new API requests');
+const living9=await read('azeroth-companion/living-azeroth-v9.js');
+const livingCSS9=await read('azeroth-companion/living-azeroth-v9.css');
+const livingHome9=await read('azeroth-companion/living-azeroth.html');
+const livingScene9=await read('azeroth-companion/assets/living-citadel-v9.svg');
+const livingOracle9=await read('azeroth-companion/assets/living-oracle-v9.svg');
+new vm.Script(living9);
+assert.match(html,/living-azeroth-v9\.css\?v=900/,'New main visual engine stylesheet must be loaded');
+assert.match(html,/living-azeroth-v9\.js\?v=900/,'New main visual engine module must be loaded');
+assert.match(html,/href="\.\/living-azeroth\.html"/,'Living Azeroth homepage entrance must exist');
+assert.match(livingHome9,/The Five Great Chambers/,'Illustrated homepage must contain five selectable destinations');
+assert.equal((livingHome9.match(/class="lv9-portal"/g)||[]).length,5,'Living Azeroth requires exactly five destination portals');
+assert.match(livingHome9,/Cinematic/);assert.match(livingHome9,/Balanced/);assert.match(livingHome9,/Performance/);
+for(const marker of ['function main()','function sovereign()','function character()','function progress()','function assistant()','function talent()','lv9-talent-inspector','data-tf-node','itemsA','nxSovereignSummary','messages','cards']){
+ assert.ok(living9.includes(marker),'Missing Living Azeroth presentation function: '+marker);
+}
+for(const file of ['character-intelligence.html','progression-intelligence.html','azeroth-assistant.html','sovereign-ascension.html']){
+ const page=await read('azeroth-companion/'+file);
+ assert.match(page,/living-azeroth-v9\.js\?v=900/,'Visual engine missing in '+file);
+ assert.match(page,/living-azeroth-v9\.css\?v=900/,'Visual stylesheet missing in '+file);
+}
+assert.match(livingCSS9,/@media\(prefers-reduced-motion:reduce\)/,'Reduced motion must disable ambient effects');
+assert.match(livingCSS9,/lv9-mode-performance/,'Performance mode must be supported');
+assert.ok(!living9.includes('access_token')&&!living9.includes('BLIZZARD_CLIENT_SECRET'),'Visual layer cannot access Blizzard credentials');
+assert.ok(!living9.includes('/api/me/')&&!living9.includes('fetch('),'Visual layer may not create new account or game API fetches');
+assert.ok(!living9.includes('localStorage.setItem(')||living9.includes('localStorage.setItem(modeKey,v)'),'Visual layer must only persist its isolated visual mode');
+assert.match(livingScene9,/<svg/);assert.match(livingOracle9,/<svg/);
 const sovereign8=await read('azeroth-companion/sovereign-data-v8.js');
 const sovereignUI8=await read('azeroth-companion/sovereign-ascension-v8.js');
 const sovereignPage8=await read('azeroth-companion/sovereign-ascension.html');
@@ -273,7 +299,7 @@ assert.ok(sovereignUI8.includes('function buildAdvice'),'Sovereign assistant evi
 assert.ok(sovereignUI8.includes('IMPORTED CLAIM, not live verified')&&sovereignUI8.includes('not verified live'),'UI must explicitly label imported public data as unverified');
 
 for(const doc of ['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'])
- assert.match(await read('azeroth-companion/'+doc),/8\.0\.0|v8\.0/,'v8 documentation out of sync: '+doc);
+ assert.match(await read('azeroth-companion/'+doc),/9\.0\.0|v9\.0/,'v8 documentation out of sync: '+doc);
 const missionPlanner799=await read('azeroth-companion/assistant-journey-v7.9.9.js');
 new vm.Script(missionPlanner799);
 for(const marker of ['nxJourneyPlanner','Mission Architect','nxJourneyGenerate','nxJourneyCopy','nxJourneyExport','talent','progression-intelligence.html','JSON.stringify']){
@@ -288,7 +314,7 @@ const checklist799=await read('azeroth-companion/player-test-checklist.html');
 const startup799=await read('azeroth-companion/getting-started.html');
 const history799=await read('azeroth-companion/CHANGELOG.md');
 const qa799=await read('azeroth-companion/QA-DEVICE-ACCEPTANCE.md');
-for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.match(doc,/8\.0\.0|v8\.0/,'Current documentation not updated for v8.0');
+for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.match(doc,/9\.0\.0|v9\.0/,'Current documentation not updated for v8.0');
 assert.match(checklist799,/Connected-button overlap/,'Overlap regression must be in tester checklist');
 const assistantPage797=await read('azeroth-companion/azeroth-assistant.html');
 const assistantKnowledge797=JSON.parse(await read('azeroth-companion/azeroth-assistant-knowledge-v7.9.7.json'));
@@ -306,13 +332,13 @@ assert.match(assistantPage797,/guided-answer|guided answers|guided companion|gui
 assert.ok(!assistantPage797.includes('localStorage'),'Assistant must not modify browser-saved plans');
 assert.ok(!assistantPage797.includes('access_token'),'Assistant must not expose OAuth tokens');
 const assistantDocs797=['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'];
-for(const name of assistantDocs797)assert.match(await read('azeroth-companion/'+name),/8\.0\.0|v8\.0/,'Assistant guide not synchronized with v8: '+name);
+for(const name of assistantDocs797)assert.match(await read('azeroth-companion/'+name),/9\.0\.0|v9\.0/,'Assistant guide not synchronized with v8: '+name);
 const progressWorker=await read('azeroth-companion/backend/worker-v7.9.4-single.js');
 new vm.Script(progressWorker.replace('export default {','const workerDefault={'));
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
  assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
 assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v8\.0\.0 • Sovereign Ascension Preview/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v9\.0\.0 • Living Azeroth Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {payload}=await import('../scripts/announce-release.mjs');
 const body=payload({version:'7.9.3'},previousRelease);
