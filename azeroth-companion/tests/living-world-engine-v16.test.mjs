@@ -51,6 +51,8 @@ assert.match(player,/living-world-character-v16\.js\?v=1600/);
 assert.match(original,/world-atlas\.html/);
 assert.ok(!source.includes('fetch('),'Curated source cannot call Blizzard or track location');
 const war=await read('living-war-room-v16.js'),atlasJs=await read('world-atlas-v16.js');
+assert.match(war,/read\(KEYS\.profiles\)/,'War Room roster must read the correct local profile key');
+assert.ok(!/\bread\(KEY\./.test(war),'Undefined KEY alias must not block War Room initialization');
 assert.ok(!war.includes('fetch('),'War Room search must be entirely browser-local');
 assert.ok(!atlasJs.includes('fetch('),'World Atlas mission planner must not require a new server');
 assert.ok(!atlasJs.includes('localStorage.clear(')&&!war.includes('localStorage.clear('));
