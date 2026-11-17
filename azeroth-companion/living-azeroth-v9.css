@@ -1,0 +1,76 @@
+/* NEXUS | AZEROTH v9.0 — Living Azeroth Visual Engine.
+   Pure presentation: no changes to Blizzard auth, existing controls or save formats. */
+:root{--lv9-ink:#071020;--lv9-obsidian:#0c1529;--lv9-gold:#efcb92;--lv9-cyan:#84e0e0;--lv9-violet:#ad89f1;--lv9-stroke:#dfbd8460;--lv9-card:#101c32e8;--lv9-glass:#0c1930bd}
+.lv9-visual{isolation:isolate}.lv9-visual *{box-sizing:border-box}
+.lv9-visual .lv9-hero{position:relative;overflow:hidden;min-height:clamp(340px,49vw,620px);display:flex;align-items:center;padding:clamp(23px,5vw,68px);border-radius:26px;border:1px solid #d9b97e80;box-shadow:0 35px 110px #0104119c,0 0 38px #8d77c342;background:#081325 url('./assets/living-citadel-v9.svg') center/cover no-repeat}
+.lv9-visual .lv9-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(95deg,#060e20f5 0%,#081429e8 34%,#0917326a 69%,#09102912 100%);pointer-events:none}
+.lv9-visual .lv9-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#060e1fe0,transparent 35%);pointer-events:none}
+.lv9-visual .lv9-hero-content{position:relative;z-index:1;max-width:700px}
+.lv9-kicker{letter-spacing:.23em;font-size:11px;font-weight:900;color:#f6d59a;text-transform:uppercase}
+.lv9-hero h1{font-size:clamp(33px,5.5vw,76px)!important;line-height:1.04;letter-spacing:.035em;margin:16px 0!important;color:#fff3db;text-shadow:0 6px 25px #020714}
+.lv9-hero h1 em{font-style:normal;color:var(--lv9-gold)}
+.lv9-hero p{max-width:500px!important;font-size:clamp(14px,1.4vw,18px)!important;line-height:1.75;color:#e1e6ee!important}
+.lv9-hero .lv9-actions{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 0}
+.lv9-visual a.lv9-button,.lv9-visual button.lv9-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;padding:12px 18px;border-radius:12px;font-size:12px;font-weight:900;letter-spacing:.07em;min-height:44px;color:#0d1520;background:linear-gradient(140deg,#fbdfad,#bd8c4f);border:1px solid #fff4c7;box-shadow:0 8px 25px #0006}
+.lv9-visual a.lv9-button.secondary,.lv9-visual button.lv9-button.secondary{color:#e3f7f5;background:#142a42d9;border:1px solid #a0e4dd75}
+.lv9-visual a.lv9-button:hover,.lv9-visual button.lv9-button:hover{filter:brightness(1.13);transform:translateY(-2px)}
+.lv9-section-title{margin:32px 0 15px;font-size:clamp(20px,2.7vw,28px);font-weight:900;letter-spacing:.06em;color:#f3daae}
+.lv9-destinations{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:16px 0 34px}
+.lv9-visual .lv9-portal{position:relative;min-height:205px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;border-radius:17px;border:1px solid #efcc9a65;text-decoration:none;padding:15px;background:linear-gradient(170deg,#1b3553,#0d1b2f);box-shadow:0 9px 25px #02061375;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.lv9-visual .lv9-portal:before{content:"";position:absolute;inset:-30% -20% 5%;background:radial-gradient(circle at 55% 36%,var(--lv9-halo,#9773dd) 0%,transparent 36%),radial-gradient(circle at 50% 20%,#ffffff30 0%,transparent 50%);opacity:.85;pointer-events:none}
+.lv9-visual .lv9-portal:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#0a1020 0%,#0b1b34b0 48%,transparent 100%);pointer-events:none}
+.lv9-visual .lv9-portal:hover,.lv9-visual .lv9-portal:focus-visible{transform:translateY(-5px);border-color:#f3d49d;box-shadow:0 18px 45px #030615aa,0 0 25px #b68ae644}
+.lv9-portal-symbol{position:absolute;z-index:1;top:19px;left:0;right:0;text-align:center;color:#f6dfb2;font-size:clamp(45px,6vw,76px);filter:drop-shadow(0 0 16px var(--lv9-halo,#9e8deb));line-height:1.4}
+.lv9-portal strong,.lv9-portal small{position:relative;z-index:1;display:block;line-height:1.3}.lv9-portal strong{color:#fff0d3;font-size:14px;letter-spacing:.05em}.lv9-portal small{color:#bbd0e6;font-size:11px;margin-top:7px}
+.lv9-portal[data-color="amber"]{--lv9-halo:#d8a25c}.lv9-portal[data-color="cyan"]{--lv9-halo:#48b3c5}.lv9-portal[data-color="violet"]{--lv9-halo:#8e65d5}.lv9-portal[data-color="red"]{--lv9-halo:#b94c81}.lv9-portal[data-color="green"]{--lv9-halo:#4bb6ab}
+.lv9-cinematic-sky{pointer-events:none;position:absolute;inset:0;z-index:1;overflow:hidden}
+.lv9-cinematic-sky i{display:block;position:absolute;bottom:-10%;width:3px;height:3px;border-radius:50%;background:#f6d6a4;opacity:.8;box-shadow:0 0 12px 3px #d2a3e7;animation:lv9-drift var(--dur,10s) ease-in-out infinite;left:var(--x,50%);animation-delay:var(--delay,0s)}
+@keyframes lv9-drift{0%{transform:translate(0,0);opacity:0}20%{opacity:.9}80%{opacity:.65}100%{transform:translate(var(--dx,40px),-530px);opacity:0}}
+.lv9-modebar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;padding:11px 13px;margin:13px 0;border:1px solid #d8b9844d;border-radius:12px;background:#102037e6;color:#d9e7ed;font-size:12px}.lv9-modebar strong{color:#e8cf9f}.lv9-modebar select{max-width:205px;min-height:36px;padding:7px 10px;border-radius:9px;background:#162941;color:#eff4ff;border:1px solid #9dafca63}
+.lv9-visual .lv9-adventure{display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;align-items:center;margin:26px 0;padding:22px;border-radius:23px;border:1px solid #caa67883;background:linear-gradient(100deg,#152a40,#151831df)}
+.lv9-adventure-portrait{min-height:300px;border-radius:17px;background:radial-gradient(circle at 50% 25%,#8666b680,transparent 62%),url('./assets/living-oracle-v9.svg') center/contain no-repeat #101a33}
+.lv9-adventure strong{font-size:20px;color:#f2d8a9}.lv9-adventure p{line-height:1.75}
+.lv9-visual .lv9-chapter{border-radius:16px;border:1px solid #c7aa8069;background:linear-gradient(120deg,#101c32d9,#18233dd9);padding:15px;box-shadow:inset 0 1px #ffffff18;overflow-wrap:anywhere}
+.lv9-visual .lv9-chapter small{color:#bed6df}.lv9-chapter h3{color:#f5d9aa;margin:6px 0;font-size:17px}
+.lv9-visual .lv9-runestones{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.lv9-visual .lv9-rune{border-radius:999px;padding:7px 11px;border:1px solid #d5b88471;background:#172a46;color:#e6e7f2;font-size:11px}
+.lv9-visual .lv9-rune[aria-pressed="true"]{color:#101a28;background:#e6be81}
+.lv9-visual .lv9-chronicle{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.lv9-visual .lv9-journal-card{min-height:135px;border:1px solid #c9a97882;border-radius:15px;padding:15px;background:radial-gradient(circle at 96% 10%,#655b9357,transparent 45%),linear-gradient(120deg,#26344b,#121b2d);text-align:left;position:relative;overflow:hidden;color:#f7eedb}
+.lv9-journal-card .lv9-mark{font-size:32px;display:block;color:#dfc18d;line-height:1}.lv9-journal-card strong{display:block;margin:14px 0 3px;font-size:15px;color:#f7dcad}.lv9-journal-card small{display:block;font-size:11px;color:#c3d4e5}.lv9-journal-card[aria-pressed=true]{outline:2px solid #d9c09b;box-shadow:0 0 32px #b985ef3f}
+.lv9-visual .lv9-inspector{border:1px solid #a3dfd38b;border-radius:15px;background:#0f293d;padding:17px;margin:12px 0;color:#e8f0f8}.lv9-inspector strong{color:#eacf9e}.lv9-inspector p{color:#c9d9e3}
+.lv9-visual .lv9-figure{display:grid;grid-template-columns:minmax(80px,1fr) minmax(140px,220px) minmax(80px,1fr);gap:10px;align-items:center;min-height:350px}
+.lv9-figure-center{height:320px;position:relative;background:radial-gradient(ellipse at 50% 35%,#8a68c87a,transparent 55%);display:grid;place-items:center}
+.lv9-figure-center:before{content:"";width:140px;height:265px;background:linear-gradient(150deg,#6b6f9b,#152b49 53%,#0b1b2e);clip-path:polygon(46% 3%,60% 3%,78% 16%,78% 32%,91% 52%,100% 97%,0 97%,9% 52%,22% 32%,22% 16%);box-shadow:0 0 15px #81dfe5;opacity:.9}
+.lv9-figure-center:after{content:"✧";position:absolute;font-size:60px;color:#e8cb91;text-shadow:0 0 25px #7ccada;top:125px}
+.lv9-slot-col{display:grid;gap:9px}
+.lv9-slot{display:flex;gap:8px;align-items:center;min-height:48px;min-width:0;padding:8px;border:1px solid #c2a97863;border-radius:11px;background:#15283e;color:#eaf4f6;text-align:left;cursor:pointer}
+.lv9-slot:focus-visible,.lv9-slot[aria-pressed=true]{outline:2px solid #f0d19d;background:#31415e}
+.lv9-slot-glyph{width:32px;height:32px;display:grid;place-items:center;border:1px solid #dab9867f;border-radius:8px;background:#2c3552;color:#f0dbad;flex-shrink:0;font-size:18px}
+.lv9-slot span:last-child{display:block;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}
+.lv9-slot[disabled]{opacity:.55;cursor:not-allowed}.lv9-equip-detail{padding:16px;margin-top:10px;border-radius:13px;border:1px solid #83e1d099;background:#102d42;min-height:70px;color:#d6edf2}
+.lv9-talent-header{padding:23px 20px;border-radius:20px;background:radial-gradient(circle at 80% 25%,#7057a558,transparent 42%),url('./assets/living-citadel-v9.svg') center 55%/cover no-repeat #101c32;border:1px solid #b79b797d;margin:15px 0}
+.lv9-talent-header strong{font-size:clamp(19px,2.7vw,30px);color:#ffdfad}.lv9-talent-header p{color:#edf0fa!important;max-width:620px}
+#talentForge .tf-node,#talentForge [data-tf-node]{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;border-color:#b6a07e69!important}
+#talentForge [data-tf-node]:hover,#talentForge [data-tf-node].lv9-selected{transform:translateY(-3px);border-color:#f4d29e!important;box-shadow:0 0 25px #b391ee79,0 9px 20px #030411aa!important}
+#talentForge [data-tf-node].lv9-allocated{box-shadow:inset 0 0 20px #b38ddc47,0 0 12px #bda17338}
+.lv9-talent-inspector{margin:15px 0;padding:14px;border-radius:14px;border:1px solid #e8c18591;background:#14263c}
+.lv9-talent-inspector strong{display:block;color:#f6dbac}.lv9-talent-inspector p{font-size:12px;white-space:pre-wrap}
+.lv9-visual .lv9-gear-preview{margin-top:18px}
+.lv9-visual .lv9-gear-preview .lv9-slot{width:100%}
+.lv9-status{display:inline-flex;align-items:center;gap:6px;color:#b7e3dd;font-size:11px}
+body.lv9-visual{background-color:#091222!important}
+body.lv9-visual .panel,body.lv9-visual .tile{border-color:#d4b27f4d;box-shadow:inset 0 1px #ffffff11}
+body.lv9-visual .hero{background:radial-gradient(circle at 72% 40%,#79529a4a,transparent 43%),url('./assets/living-citadel-v9.svg') center/cover no-repeat #091425!important;border-color:#c6aa7b90!important}
+body.lv9-visual .hero:before{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg,#0b1224f3,#0b1735a8,transparent)}
+body.lv9-visual .hero>*{position:relative;z-index:1}
+body.lv9-visual .hero h1{text-shadow:0 4px 22px #050811}
+body.lv9-visual .sidebar{background:linear-gradient(170deg,#0a1224,#18172ddf)!important;border-color:#bf9b6555}
+body.lv9-visual :is(button,.launch):not(.lv9-portal){transition:box-shadow .2s ease,transform .2s ease}
+body.lv9-visual button:hover:not(:disabled){box-shadow:0 0 15px #b18bcc4a}
+.lv9-mode-performance .lv9-cinematic-sky,.lv9-mode-performance .lv9-oracle-glow{display:none!important}
+.lv9-mode-performance .lv9-portal,.lv9-mode-performance button,.lv9-mode-performance .tf-node{transition:none!important;animation:none!important}
+.lv9-mode-balanced .lv9-cinematic-sky i:nth-child(n+9){display:none}
+@media(max-width:1150px){.lv9-destinations{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.lv9-visual .lv9-hero{min-height:360px;padding:26px;background-position:60%}.lv9-destinations{grid-template-columns:repeat(2,minmax(0,1fr))}.lv9-visual .lv9-portal{min-height:165px}.lv9-portal-symbol{font-size:47px}.lv9-visual .lv9-adventure{grid-template-columns:1fr}.lv9-adventure-portrait{min-height:225px;background-position:center 36%}.lv9-visual .lv9-figure{grid-template-columns:minmax(65px,1fr) minmax(88px,125px) minmax(65px,1fr);gap:5px;min-height:280px}.lv9-figure-center{height:260px}.lv9-figure-center:before{width:100px;height:224px}.lv9-slot{padding:5px;min-height:45px}.lv9-slot span:last-child{font-size:10px}.lv9-slot-glyph{width:27px;height:27px;font-size:15px}}
+@media(max-width:420px){.lv9-destinations{grid-template-columns:1fr 1fr;gap:8px}.lv9-visual .lv9-portal{min-height:155px;padding:10px}.lv9-portal strong{font-size:12px}.lv9-portal small{font-size:10px}.lv9-hero h1{font-size:32px!important}}
+@media(prefers-reduced-motion:reduce){.lv9-cinematic-sky i{animation:none!important;display:none}.lv9-visual *,body.lv9-visual *{transition:none!important;animation:none!important}}
