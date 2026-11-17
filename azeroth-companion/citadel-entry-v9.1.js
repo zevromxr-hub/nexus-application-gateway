@@ -67,6 +67,6 @@ $('#nxChangeLog').addEventListener('toggle',async e=>{
  }catch(_){changes.textContent='Release notes are temporarily unavailable. Open the Player Handbook for current capabilities.'}
 });
 preview(selected);
-let artRequested=false;const updateArt=()=>{if(artRequested||document.body.classList.contains('lv9-mode-performance')||navigator.connection?.saveData)return;artRequested=true;const img=new Image();img.onload=()=>root.classList.add('nx-artpack-ready');img.src='./assets/sovereign-throne-v9.1.webp'};
+let artRequested=false;const updateArt=()=>{if(artRequested)return;artRequested=true;const img=new Image();img.onload=()=>root.classList.add('nx-artpack-ready');img.src='./assets/sovereign-throne-v9.1.webp'};
 select.addEventListener('change',updateArt);if('requestIdleCallback'in window)requestIdleCallback(updateArt,{timeout:1800});else setTimeout(updateArt,1200);
 })();
