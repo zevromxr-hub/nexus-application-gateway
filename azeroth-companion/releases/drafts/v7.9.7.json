@@ -1,0 +1,26 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "product": "NEXUS | AZEROTH COMPANION",
+  "version": "7.9.7",
+  "title": "ZevRo | Azeroth Assistant",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Introduced ZevRo | Azeroth Assistant for quick contextual answers and guided player navigation.",
+    "Added 22 curated question-and-answer topics covering character research, talents, gear, progression, account sessions, backups and more.",
+    "Provided suggested-question generation, topic filters, direct studio links and safe fallback messages when information is not documented.",
+    "Assistant operates locally from the static answer library without a generative AI connection, new Blizzard calls or account data access.",
+    "Updated Gateway, PC and mobile guides, Developer Test Requests, device QA and release history while preserving existing Warcraft features."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v7.9.7 — ZevRo | Azeroth Assistant\n\nNEW: A dedicated guided assistant for quick answers about Talent Forge, gear, Battle.net accounts, Blizzard API research, Mythic+, raids, reputations, addons and backups.\n\nIncludes rotating suggested questions, topic filters, reliable documented answers and direct studio shortcuts. This is a curated assistant, not a live generative AI model; it doesn't send questions or account tokens to a third-party AI service.\n\nUpdated PC/mobile guides, Developer Test Requests, compatibility checks and release information.\n\nPreview pending full player acceptance testing.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Real browser tests for assistant question suggestions and matching answers",
+    "Verify unsupported question fallback",
+    "Check all 22 answer links and supported knowledge boundaries",
+    "Validate no account tokens, local saved data or typed questions transmitted",
+    "PC/iPhone layout and usability checks",
+    "Carry forward Mythic+, raid, reputation and OAuth regression testing"
+  ],
+  "publish_rule": "Do not announce while staging. After verification promote to stable, update releases/index.json, and create official releases/v7.9.7.json in the watched trigger directory."
+}
