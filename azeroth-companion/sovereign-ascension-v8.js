@@ -69,6 +69,6 @@ recommendations.push('Next: use Progression Intelligence for source-labeled Myth
 recommendations.push('Privacy: this explanation is assembled only from the snapshot visible in this page. Nothing is uploaded or added to existing saves.');
 return recommendations}
 $('nxAdvisor').addEventListener('click',()=>{advisory=buildAdvice();const host=$('nxAdvice');host.replaceChildren();for(const line of advisory)host.append(el('div',line,'tile source-manual'));$('nxAdvisorCopy').disabled=false});
-$('nxAdvisorCopy').addEventListener('click',async()=>{if(!advisory)return;try{await navigator.clipboard.writeText(['NEXUS | AZEROTH SOVEREIGN EVIDENCE REVIEW',...advisory].join('\\n'));$('nxAdvisorCopy').textContent='COPIED'}catch(_){$('nxAdvisorCopy').textContent='COPY UNAVAILABLE'}});
+$('nxAdvisorCopy').addEventListener('click',async()=>{if(!advisory)return;try{await navigator.clipboard.writeText(['NEXUS | AZEROTH SOVEREIGN EVIDENCE REVIEW',...advisory].join('\n'));$('nxAdvisorCopy').textContent='COPIED'}catch(_){$('nxAdvisorCopy').textContent='COPY UNAVAILABLE'}});
 const par=new URLSearchParams(location.search);if(par.has('region')&&par.has('realm')&&par.has('character')){for(const key of ['region','realm','character']){const field=$('nxPublicForm').elements.namedItem(key);if(field)field.value=(par.get(key)||'').slice(0,80)}}
 })();
