@@ -22,7 +22,7 @@ const write=(key,val)=>{try{localStorage.setItem(key,val)}catch(_){}};
 let pins=[];try{const p=JSON.parse(read(pinKey)||'[]');if(Array.isArray(p))pins=[...new Set(p.filter(k=>byKey.has(k)))].slice(0,3)}catch(_){}
 let selected='sovereign';
 const hero=$('#nxHero'),heroTitle=$('#nxHeroTitle'),heroDesc=$('#nxHeroDesc'),heroHref=$('#nxHeroDestination');
-function preview(key){const d=byKey.get(key);if(!d)return;selected=key;hero.dataset.scene=key;heroTitle.textContent=d.hero;heroDesc.textContent=d.desc;heroHref.href=d.href;heroHref.textContent='ENTER '+d.title.toUpperCase();root.querySelectorAll('[data-preview]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preview===key)))}
+function preview(key){const d=byKey.get(key);if(!d)return;selected=key;hero.dataset.scene=key;heroTitle.textContent=d.hero;heroDesc.textContent=d.desc;heroHref.href=d.href;heroHref.dataset.destination=key;heroHref.textContent='ENTER '+d.title.toUpperCase();root.querySelectorAll('[data-preview]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preview===key)))}
 root.querySelectorAll('[data-preview]').forEach(b=>b.addEventListener('click',()=>preview(b.dataset.preview)));
 root.querySelectorAll('.portal-link').forEach(a=>{a.addEventListener('mouseenter',()=>preview(a.dataset.destination));a.addEventListener('focus',()=>preview(a.dataset.destination))});
 function record(key){if(byKey.has(key))write(lastKey,key);try{sessionStorage.setItem(seen,'entered')}catch(_){}}
@@ -44,6 +44,12 @@ renderPins();
 const last=read(lastKey),continueLink=$('#nxContinue');
 if(byKey.has(last)){const d=byKey.get(last);continueLink.href=d.href;continueLink.textContent='CONTINUE: '+d.title.toUpperCase();continueLink.dataset.destination=last;continueLink.addEventListener('click',()=>record(last))}
 else{continueLink.href='./?enter=1';continueLink.addEventListener('click',()=>{try{sessionStorage.setItem(seen,'entered')}catch(_){}})}
+
+const recentKey='nexus_citadel_recent_view_v91';
+try{const recent=JSON.parse(read(recentKey)||'null');if(recent&&typeof recent.view==='string'&&/^[a-z0-9-]{2,30}$/.test(recent.view)){
+ const nav=$('#nxContinue');nav.href='./?enter=1&view='+encodeURIComponent(recent.view);nav.textContent='CONTINUE: '+String(recent.label||recent.view).toUpperCase().slice(0,85);
+ nav.removeAttribute('data-destination');nav.addEventListener('click',()=>{try{sessionStorage.setItem(seen,'entered')}catch(_){}});
+}}catch(_){}
 const search=$('#nxStudioSearch'),noResults=$('#nxNoResults'),cards=[...root.querySelectorAll('.portal-wrap')];
 search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();let visible=0;for(const card of cards){const d=byKey.get(card.dataset.key);const hit=!q||(d.title+' '+d.sub+' '+d.desc).toLowerCase().includes(q);card.dataset.filtered=String(!hit);visible+=Number(hit)}noResults.hidden=visible>0});
 search.addEventListener('keydown',e=>{if(e.key==='Escape'){search.value='';search.dispatchEvent(new Event('input'));search.blur()}});

@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.0\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.1\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'9.0.0');
+assert.equal(version.version,'9.1.0');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -643,4 +643,22 @@ await import('./intelligent-startup.test.mjs');
 await import('./experience-stability.test.mjs');
 await import('./sovereign-command-v5.test.mjs');
 await import('./talent-planner-v51.test.mjs');
+
+/* v9.1 Citadel: static checks on completely separate startup assets. */
+const citadelHTML=await read('azeroth-companion/citadel-entry.html');
+const citadelCSS=await read('azeroth-companion/citadel-entry-v9.1.css');
+const citadelJS=await read('azeroth-companion/citadel-entry-v9.1.js');
+const citadelReturn=await read('azeroth-companion/citadel-return-v9.1.js');
+new vm.Script(citadelJS);new vm.Script(citadelReturn);
+assert.match(html,/location\\.replace\\('\\.\\/citadel-entry\\.html'\\)/,'Fresh welcome must load before app bundles');
+assert.match(html,/citadel-return-v9\\.1\\.js\\?v=910/);
+assert.match(citadelHTML,/id="nxCitadel"/);
+assert.match(citadelHTML,/citadel-entry-v9\\.1\\.css\\?v=910/);
+assert.match(citadelHTML,/citadel-entry-v9\\.1\\.js\\?v=910/);
+for(const marker of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+marker+'"'),'Missing chamber '+marker);
+assert.doesNotMatch(citadelHTML,/scripts-(?:core|experience)|\\/api\\/me\\//i,'The welcome must stay standalone');
+assert.match(citadelCSS,/@media\\(max-width:660px\\)/);
+assert.match(citadelJS,/nexus_citadel_pins_v9_1/);
+assert.match(citadelReturn,/nexus_citadel_recent_view_v91/);
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
