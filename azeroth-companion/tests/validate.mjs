@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.4/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.5/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'7.9.4');
+assert.equal(version.version,'7.9.5');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -184,12 +184,28 @@ assert.match(html,/progression-intelligence\.html/,'Progression navigation must 
 assert.match(progression,/\/api\/progression\//,'Progression page must use restricted public proxy');
 for(const section of ['mythic','raids','reputations'])assert.ok(progression.includes(section),'Missing progression section '+section);
 for(const code of progression.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(code[1]);
+const bridge=await read('azeroth-companion/character-handoff-v7.9.5.js');
+new vm.Script(bridge);
+assert.match(await read('azeroth-companion/character-intelligence.html'),/character-handoff-v7\.9\.5\.js/,'Gear comparison must include research handoff');
+assert.match(progression,/character-handoff-v7\.9\.5\.js/,'Progression must include research handoff');
+for(const item of ['progression-intelligence.html','character-intelligence.html','URLSearchParams','region','realm','character','clipboard.writeText'])
+ assert.ok(bridge.includes(item),'Missing handoff behavior: '+item);
+assert.ok(!bridge.includes('fetch('),'Research handoff must not make new requests');
+assert.ok(!bridge.includes('localStorage'),'Research handoff must never alter stored plans');
+assert.ok(!bridge.includes('access_token'),'Research link must not include account tokens');
+const handbook795=await read('azeroth-companion/player-handbook.html');
+const checklist795=await read('azeroth-companion/player-test-checklist.html');
+const getting795=await read('azeroth-companion/getting-started.html');
+const changelog795=await read('azeroth-companion/CHANGELOG.md');
+for(const page of [handbook795,checklist795,getting795])assert.match(page,/7\.9\.5/,'Guide and tester copy must match version');
+assert.match(checklist795,/v7\.9\.5 reverse handoff/,'Tester report must include reverse handoff');
+assert.match(changelog795,/v7\.9\.5/,'History must document v7.9.5');
 const progressWorker=await read('azeroth-companion/backend/worker-v7.9.4-single.js');
 new vm.Script(progressWorker.replace('export default {','const workerDefault={'));
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
  assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
 assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.4 • Progression Preview/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.5 • Research Handoff Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {payload}=await import('../scripts/announce-release.mjs');
 const body=payload({version:'7.9.3'},previousRelease);
