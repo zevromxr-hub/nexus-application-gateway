@@ -270,7 +270,7 @@ assert.equal(sovereignImported.public.source,'imported-public-claim','Imported f
 assert.equal(sovereignImported.public.verified,'NOT LIVE VERIFIED — import provided by user');
 assert.throws(()=>sovereign.validateImport({format:sovereign.SCHEMA,local:{builds:[],characters:[]}}),'Missing target data must not crash imported previews');
 assert.ok(sovereignUI8.includes('function buildAdvice'),'Sovereign assistant evidence review required');
-assert.ok(sovereignUI8.includes('imported-public-claim'),'UI must label imported public data as unverified');
+assert.ok(sovereignUI8.includes('IMPORTED CLAIM, not live verified')&&sovereignUI8.includes('not verified live'),'UI must explicitly label imported public data as unverified');
 
 for(const doc of ['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'])
  assert.match(await read('azeroth-companion/'+doc),/8\.0\.0|v8\.0/,'v8 documentation out of sync: '+doc);
