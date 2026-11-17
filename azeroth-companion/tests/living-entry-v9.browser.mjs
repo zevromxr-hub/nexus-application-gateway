@@ -15,7 +15,7 @@ async function check(label,engine,mobile){
   assert.equal(await page.locator('.portal-wrap').count(),5,'Five cinematic chambers');
   assert.equal(await page.locator('main.main').count(),0,'Do not load full app behind gateway');
   const art=await page.locator('#nxHero').evaluate(el=>getComputedStyle(el,'::before').backgroundImage);
-  assert.match(art,/(?:radiant-warrior-background|sovereign-throne-v9\.1)\.webp/,'Hero must show either existing premium fallback art or the new Citadel art pack');
+  assert.match(art,mobile?/(?:radiant-warrior-background|sovereign-throne-v9\.1)\.webp/:/(?:radiant-warrior-background|sovereign-throne-v9\.1|citadel-hero-hd-v9\.1\.1)\.webp/,'Hero must show the device-appropriate original portrait or HD landscape art');
   await page.locator('#nxEnterApp').click();
   await page.waitForURL(/\?enter=1/);
   assert.ok(await page.locator('main.main').isVisible());
