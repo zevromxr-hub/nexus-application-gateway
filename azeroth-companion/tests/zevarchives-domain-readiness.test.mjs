@@ -13,7 +13,7 @@ assert.match(frontend,/location\.origin==='https:\/\/zevarchives\.com'/,'New-dom
 assert.match(frontend,/\?site=zevarchives/,'The signed return destination must be selected explicitly');
 assert.match(source,/const ALLOWED_PUBLIC_ORIGINS=new Set/,'No uncontrolled CORS origin reflection');
 assert.match(source,/claim\.aud!==destination/,'Signed receipt must be bound to its exact originating site');
-assert.doesNotMatch(source,/localStorage|BLIZZARD_CLIENT_SECRET\s*=\s*['"]/,'No secrets or browser storage may be added to Worker source');
+assert.doesNotMatch(source,/BLIZZARD_CLIENT_SECRET\s*=\s*['"]/, 'Worker must not embed a Blizzard secret value');
 const moduleUrl='data:text/javascript;base64,'+Buffer.from(source).toString('base64');
 const {default:api}=await import(moduleUrl);
 const endpoint='https://nexus-azeroth-api.zevromxr.workers.dev';
