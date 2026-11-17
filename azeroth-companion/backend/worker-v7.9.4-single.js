@@ -112,7 +112,7 @@ async function handlePersonal(request,env,url){
  // First-party Worker session → short-lived private status receipt; never share access tokens.
  if(path==='/account/verify-companion'){
   if(request.method!=='GET')return response({message:'Method not allowed'},405);
-  const destination='https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/';
+  const destination=url.searchParams.get('site')==='zevarchives'?'https://zevarchives.com/azeroth-companion/':'https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/';
   const session=await unseal(env,value(request,SESSION));
   if(!session||typeof session.token!=='string'||!Object.hasOwn(LOCALES,session.region))return redirect(destination+'#nxverify=disconnected');
   try{
@@ -125,16 +125,21 @@ async function handlePersonal(request,env,url){
  }
  if(path==='/api/companion/verify'){
   const origin=request.headers.get('origin');
-  const headers={...jheaders,'access-control-allow-origin':'https://zevromxr-hub.github.io','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'Content-Type, Accept','vary':'Origin'};
+  const destination=origin==='https://zevarchives.com'
+    ?'https://zevarchives.com/azeroth-companion/'
+    :origin==='https://zevromxr-hub.github.io'
+      ?'https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/'
+      :null;
+  const headers={...jheaders,...(destination?{'access-control-allow-origin':origin}:{}),'access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'Content-Type, Accept','vary':'Origin'};
   const out=(obj,code=200)=>new Response(JSON.stringify(obj),{status:code,headers});
-  if(origin!=='https://zevromxr-hub.github.io')return response({success:false,message:'Origin not allowed'},403);
+  if(!destination)return out({success:false,message:'Origin not allowed'},403);
   if(request.method==='OPTIONS')return new Response(null,{status:204,headers});
   if(request.method!=='POST')return out({success:false,message:'Method not allowed'},405);
   let body;try{if(Number(request.headers.get('content-length')||0)>10000)throw Error('Large request');body=await request.json()}catch(_){return out({success:false,message:'Invalid request'},400)}
   const ticket=body?.ticket;
   if(typeof ticket!=='string'||ticket.length<20||ticket.length>6000)return out({success:false,message:'Invalid verification ticket'},400);
   const claim=await unseal(env,ticket);
-  if(!claim||claim.purpose!=='azeroth-companion-status-v1'||claim.aud!=='https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/'||!Object.hasOwn(LOCALES,claim.region)||!Number.isSafeInteger(claim.verifiedAt)||claim.verifiedAt>Date.now()+10000||Date.now()-claim.verifiedAt>900000||claim.exp>claim.verifiedAt+900000)return out({success:false,message:'Verification expired or invalid'},401);
+  if(!claim||claim.purpose!=='azeroth-companion-status-v1'||claim.aud!==destination||!Object.hasOwn(LOCALES,claim.region)||!Number.isSafeInteger(claim.verifiedAt)||claim.verifiedAt>Date.now()+10000||Date.now()-claim.verifiedAt>900000||claim.exp>claim.verifiedAt+900000)return out({success:false,message:'Verification expired or invalid'},401);
   return out({success:true,connected:true,region:claim.region,verifiedAt:claim.verifiedAt,validUntil:claim.exp});
  }
  if(!path.startsWith('/api/me/'))return response({message:'No such route'},404);
