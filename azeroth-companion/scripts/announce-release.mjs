@@ -6,12 +6,43 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {validateWebhook} from '../../alchemist/scripts/release-announcer.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
-const site='https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/';
+const site='https://zevarchives.com/azeroth-companion/';
 const read=async p=>JSON.parse(await readFile(path.join(root,p),'utf8'));
 const safe=s=>String(s??'').replace(/[\u0000-\u001f\u007f]/g,' ').replace(/@/g,'@\u200b').slice(0,220);
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
-export async function metadata(){const v=await read('azeroth-companion/version.json'),index=await read('azeroth-companion/releases/index.json'),release=await read('azeroth-companion/releases/v'+v.version+'.json');if(!/^\d+\.\d+\.\d+$/.test(v.version)||index.releases?.[0]?.version!==v.version||release.version!==v.version||release.source_repository!=='zevromxr-hub/nexus-application-gateway'||!Array.isArray(release.features))throw Error('Azeroth release metadata is inconsistent.');return{v,index,release}}
-export function payload(v,release){return{username:'NEXUS | RELEASE SYSTEM',allowed_mentions:{parse:[]},embeds:[{title:'NEXUS | AZEROTH COMPANION v'+v.version,url:site,description:'**'+safe(release.title)+'**\n\nWorld of Warcraft Companion update published and validated.',color:0xd6a661,fields:[{name:'WHAT’S NEW',value:release.features.slice(0,7).map(s=>'• '+safe(s)).join('\n').slice(0,1024)||'Release improvements.'},{name:'RELEASE',value:'v'+v.version+' · Stable',inline:true},{name:'COMPATIBILITY',value:'iPhone · PC',inline:true},{name:'OPEN COMPANION',value:'[Launch Azeroth Companion]('+site+')'},{name:'RELEASE NOTES',value:'[View release history](https://github.com/zevromxr-hub/nexus-application-gateway/blob/main/azeroth-companion/CHANGELOG.md)'}],timestamp:new Date().toISOString(),footer:{text:'POWERED BY ZEVRO | NEXUS'}}]}}
+export async function metadata(){
+ const v=await read('azeroth-companion/version.json');
+ const index=await read('azeroth-companion/releases/index.json');
+ if(!/^\d+\.\d+\.\d+$/.test(v.version))throw Error('Invalid current version.');
+ const release=await read('azeroth-companion/releases/v'+v.version+'.json');
+ if(index.releases?.[0]?.version!==v.version||release.version!==v.version||
+    release.source_repository!=='zevromxr-hub/nexus-application-gateway'||!Array.isArray(release.features)){
+  throw Error('Azeroth release metadata is inconsistent.');
+ }
+ if(release.owner_approved!==true){
+  throw Error('The owner has not approved this release manifest. No Discord message will be sent.');
+ }
+ if(!['pending','partial','complete'].includes(release.tester_status)){
+  throw Error('Release must disclose actual tester status (pending, partial or complete).');
+ }
+ return {v,index,release};
+}
+export function payload(v,release){
+ const pending=release.tester_status!=='complete';
+ const status=pending?'Tester acceptance pending':'Tester acceptance completed';
+ const summary='**'+safe(release.title)+'**\n\nOwner-approved update. '+status+'.';
+ return {username:'NEXUS | RELEASE SYSTEM',allowed_mentions:{parse:[]},embeds:[{
+  title:'NEXUS | AZEROTH COMPANION v'+v.version,url:site,description:summary,color:0xd6a661,
+  fields:[
+   {name:'WHAT’S NEW',value:release.features.slice(0,7).map(x=>'• '+safe(x)).join('\n').slice(0,1024)||'Release improvements.'},
+   {name:'RELEASE',value:'v'+v.version+' · Owner approved',inline:true},
+   {name:'TESTER STATUS',value:status,inline:true},
+   {name:'OPEN COMPANION',value:'[Launch Azeroth Companion]('+site+')'},
+   {name:'RELEASE NOTES',value:'[View release history]('+site+'release-notes.html)'}
+  ],
+  timestamp:new Date().toISOString(),footer:{text:'POWERED BY ZEVRO | NEXUS'}
+ }]};
+}
 // A verified remote tag records which releases actually reached Discord.
 const marker=version=>'azeroth-announced-v'+version;
 function alreadyAnnounced(version){
@@ -72,17 +103,19 @@ async function send(url,body){
  }
 }
 export async function run(mode=process.argv[2]||'dry-run'){
- if(!['dry-run','send-current','send-on-release'].includes(mode))throw Error('Invalid release announcement mode');
+ if(!['dry-run','send-current','send-on-release','send-owner-approved'].includes(mode))throw Error('Invalid release announcement mode');
  const{v,release}=await metadata();
  const body=payload(v,release);
  if(mode==='dry-run'){console.log(JSON.stringify(body,null,2));return}
- if(mode==='send-on-release'&&alreadyAnnounced(v.version)){
+ if(alreadyAnnounced(v.version)){
   console.log('Azeroth v'+v.version+' was already confirmed in Discord; no duplicate posted.');return;
  }
  const secret=process.env.DISCORD_RELEASE_WEBHOOK;
  if(!secret)throw Error('DISCORD_RELEASE_WEBHOOK is missing. Configure the GitHub Actions secret; no Discord announcement was sent.');
  const uri=validateWebhook(secret);
- await awaitLive(v.version);
+ if(mode==='send-owner-approved'){
+  console.log('Explicit owner override: announcement proceeds without requiring the Pages timing probe. This does NOT claim tester verification.');
+ }else await awaitLive(v.version);
  await send(uri,body);
  if(!alreadyAnnounced(v.version))recordAnnouncement(v.version);
 }
