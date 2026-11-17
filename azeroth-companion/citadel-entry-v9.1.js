@@ -9,7 +9,7 @@ const pinKey='nexus_citadel_pins_v9_1',lastKey='nexus_citadel_last_v9_1';
 const modes=['cinematic','balanced','performance'];
 const destinations=[
  {key:'sovereign',title:'Sovereign Ascension',sub:'Your character command hall',hero:'YOUR LEGEND. YOUR COMMAND.',desc:'Open character intelligence, compare saved plans and investigate your next objective.',href:'./sovereign-ascension.html'},
- {key:'forge',title:'Talent Forge',sub:'Shape the next build',hero:'FORGE YOUR NEXT BUILD.',desc:'Explore talent paths, allocated ranks and your existing build planner.',href:'./?enter=1&studio=talents'},
+ {key:'forge',title:'Talent Forge',sub:'Shape the next build',hero:'FORGE YOUR NEXT BUILD.',desc:'Explore talent paths, allocated ranks and your existing build planner.',href:'./?enter=1&view=talents'},
  {key:'armory',title:'The Living Armory',sub:'Equipment and item research',hero:'EQUIP YOUR LEGEND.',desc:'Inspect public Blizzard-reported equipment and item research where available.',href:'./character-intelligence.html'},
  {key:'adventure',title:'Adventure Journal',sub:'Dungeons, raids and reputations',hero:'CHOOSE YOUR NEXT CHAPTER.',desc:'Explore Mythic+, raid and reputation records without claiming unsupported progress.',href:'./progression-intelligence.html'},
  {key:'oracle',title:'The Azeroth Oracle',sub:'Guided missions and help',hero:'SEEK KNOWLEDGE.',desc:'Find curated companion guidance, mission planning and explanations.',href:'./azeroth-assistant.html'}
