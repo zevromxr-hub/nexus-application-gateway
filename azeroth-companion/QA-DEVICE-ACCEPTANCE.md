@@ -1,5 +1,19 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v4.6 Device Reliability** (website shell, no studio changes)
+Release focus: **v7.9.5 Character Research Handoff (staging; v7.9.4 Blizzard data pending real-player tests)**
+
+## New required v7.9.5 acceptance
+1. From Character Intelligence, enter a valid public character and choose Mythic+, Raids, or Reputations. Confirm all three carry the correct region, realm slug, and character name and select the requested progression tab without triggering an automatic API fetch.
+2. From Progression Intelligence, use Compare This Character; confirm Character A is prefilled and Character B remains optional, with no automatic Blizzard lookup.
+3. Use Copy Research Link and inspect it: only public region, realm, character, and optional selected tab may appear. No cookies, passwords, Blizzard access token, or session proof.
+4. Try malformed/empty character inputs and confirm the shortcuts show an error rather than navigating to an invalid URL.
+5. Verify on both desktop and phone viewport sizes. No controls should clip or cover form submission buttons.
+6. Reload the companion and confirm prior local Talent Forge drafts, item goals and backups are unaffected. Do not delete browser storage.
+7. Verify v7.9.4 Mythic+, raid, and reputation API responses against a real player's visible character data when available; these results are **not yet confirmed**.
+8. Open Player Handbook, Getting Started, Developer Test Requests, public Release Center and Gateway; confirm consistent v7.9.5 staging language. Official Discord announcement must remain gated until tests are complete.
+
+**Testing limitations:** Syntax and source consistency are not equivalent to real WoW account tests. Desktop/mobile simulations cannot certify physical Safari compatibility or live Blizzard data. All checks remain voluntary and should use the in-site Developer Test Requests report without sharing sensitive account information.
+
+Earlier baseline: **v4.6 Device Reliability** (website shell)
 
 ## Automated coverage
 The GitHub Actions workflow `azeroth-device-audit.yml` loads a locally served
