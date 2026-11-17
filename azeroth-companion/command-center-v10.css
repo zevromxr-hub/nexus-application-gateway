@@ -229,3 +229,54 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
  .nx10-player-feature p{font-size:12px}
 }
 @media(max-width:450px){.nx10-player-feature-actions .nx10-btn{width:100%}}
+
+
+/* v12 SOVEREIGN WORLD ATLAS — purpose-specific archive navigation
+   Original portrait illustrations at reasonable rendered sizes; no JS.
+*/
+.nx12-archive-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.45vw,20px)}
+.nx12-archive-card{--nx12-archive-image:url('./assets/azeroth-oracle-v9.1.webp');--nx12-archive-accent:#9ee3cd;
+ isolation:isolate;position:relative;min-width:0;display:flex;justify-content:space-between;flex-direction:column;
+ min-height:clamp(280px,28vw,365px);border:1px solid var(--nx12-archive-accent);border-radius:17px;overflow:hidden;
+ background-color:#0e182a;
+ background-image:linear-gradient(0deg,#050b19fc 0%,#050c1bd2 25%,#0711252f 61%,#0711219c 100%),var(--nx12-archive-image);
+ background-position:center,center 30%;background-size:cover,cover;background-repeat:no-repeat;
+ box-shadow:0 17px 40px #0009,inset 0 1px #ffffe218;
+ transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;
+}
+.nx12-archive-card::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background:radial-gradient(ellipse at 75% 17%,color-mix(in srgb,var(--nx12-archive-accent),transparent 80%),transparent 50%);opacity:.68}
+.nx12-archive-card::after{content:"";position:absolute;inset:0;border:4px solid #0003;pointer-events:none;border-radius:inherit}
+.nx12-archive-guide{--nx12-archive-image:url('./assets/azeroth-oracle-v9.1.webp');--nx12-archive-accent:#9ce4d0}
+.nx12-archive-start{--nx12-archive-image:url('./assets/adventure-journal-v9.1.webp');--nx12-archive-accent:#eeb49a}
+.nx12-archive-vault{--nx12-archive-image:url('./assets/radiant-warrior-background.webp');--nx12-archive-accent:#b0e8f1}
+.nx12-archive-founder{--nx12-archive-image:url('./assets/assassin-background.webp');--nx12-archive-accent:#c5a6ff}
+.nx12-archive-top,.nx12-archive-bottom{position:relative;z-index:1}
+.nx12-archive-top{display:flex;justify-content:space-between;gap:10px;align-items:start;
+ color:#e3def2;padding:clamp(12px,1.4vw,18px);font-size:9px;line-height:1.6;letter-spacing:.1em;font-weight:900;
+ text-shadow:0 2px 8px #000}
+.nx12-archive-top>span{font-size:18px;line-height:1}
+.nx12-archive-bottom{padding:clamp(15px,1.8vw,23px);display:grid;gap:6px}
+.nx12-archive-glyph{font-size:31px;color:var(--nx12-archive-accent);text-shadow:0 0 19px var(--nx12-archive-accent);line-height:1}
+.nx12-archive-bottom strong{font-size:clamp(16px,1.55vw,24px);line-height:1.12;letter-spacing:.038em;font-weight:950;
+ color:#fff2df;text-shadow:0 3px 12px #000,0 0 17px #000}
+.nx12-archive-bottom small{font-size:11px;line-height:1.4;color:#d2e0ed;text-shadow:0 2px 9px #000}
+.nx12-archive-card:hover,.nx12-archive-card:focus-visible{transform:translateY(-5px);filter:brightness(1.08) saturate(1.06);
+ box-shadow:0 24px 49px #000c,0 0 20px color-mix(in srgb,var(--nx12-archive-accent),transparent 78%)}
+.nx12-archive-notes{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+ padding:15px 5px;color:#a6b7c8;font-size:9px;letter-spacing:.11em;font-weight:800}
+.nx12-archive-notes>div{display:flex;gap:14px;flex-wrap:wrap}
+.nx12-archive-notes a{color:#cfe4ee;font-size:11px;letter-spacing:0}
+.nx12-archive-notes a:hover{color:#ffe1b8}
+@media(max-width:940px){.nx12-archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .nx12-archive-card{min-height:330px}
+ .nx12-archive-bottom strong{font-size:clamp(18px,3.2vw,25px)}
+}
+@media(max-width:650px){.nx12-archive-grid{gap:9px}.nx12-archive-card{min-height:255px;border-radius:13px}
+ .nx12-archive-top{padding:10px;font-size:7px}.nx12-archive-bottom{padding:12px;gap:4px}
+ .nx12-archive-glyph{font-size:23px}.nx12-archive-bottom strong{font-size:clamp(13px,4vw,19px)}
+ .nx12-archive-bottom small{font-size:9px}
+ .nx12-archive-notes{font-size:8px}
+}
+@media(hover:none){.nx12-archive-card:hover{transform:none;filter:none}}
+@media(prefers-reduced-motion:reduce){.nx12-archive-card{transition:none}}
