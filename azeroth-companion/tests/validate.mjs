@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.2\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.2\.1/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'9.2.0');
+assert.equal(version.version,'9.2.1');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -691,7 +691,7 @@ assert.ok(citadelHTML.includes('citadel-hero-hd-v9.1.1.webp'),'HD desktop preloa
 
 /* v9.2 Studio Art Direction: static scope, local assets and preservation. */
 const studioArt=await read('azeroth-companion/studio-art-direction-v9.2.css');
-assert.ok(html.includes('studio-art-direction-v9.2.css?v=920'));
+assert.ok(html.includes('studio-art-direction-v9.2.css?v=921'));
 assert.ok(html.includes('class="nx-art-studios"'));
 for(const [file,scope] of [
  ['character-intelligence.html','character'],
@@ -702,7 +702,7 @@ for(const [file,scope] of [
  ['living-azeroth.html','living']
 ]){
  const external=await read('azeroth-companion/'+file);
- assert.ok(external.includes('studio-art-direction-v9.2.css?v=920'),file+' missing studio art styles');
+ assert.ok(external.includes('studio-art-direction-v9.2.css?v=921'),file+' missing studio art styles');
  assert.ok(external.includes('data-nx-art-page="'+scope+'"'),file+' missing scope');
 }
 for(const name of ['citadel-hero-hd-v9.1.1.webp','sovereign-throne-v9.1.webp','talent-forge-v9.1.webp','living-armory-v9.1.webp','adventure-journal-v9.1.webp','azeroth-oracle-v9.1.webp']){
@@ -713,5 +713,24 @@ for(const name of ['citadel-hero-hd-v9.1.1.webp','sovereign-throne-v9.1.webp','t
 }
 assert.ok(!studioArt.includes('assassin-background.webp'),'New studio styles cannot use retired assassin source');
 assert.ok(!studioArt.includes('localStorage'),'Art must never change local saves');
+
+
+/* v9.2.1 full-bleed banner: image upload is a release gate, not a placeholder.
+ * This intentionally fails before the owner uploads the actual HD WebP. */
+const bannerName='zevro-wide-banner-v9.2.webp';
+assert.ok(studioArt.includes(bannerName),'Full-bleed banner stylesheet must reference the exact uploaded art filename');
+assert.ok(studioArt.includes('FULL-BLEED ZEVRO PANORAMA'),'Panoramic override section is missing');
+assert.ok(studioArt.includes('background-size:cover,cover,cover'),'Panoramic headers must cover the entire box');
+assert.ok(studioArt.includes('nx-art-banner::after'),'Standalone research headers must remove inset portraits');
+assert.ok(!studioArt.includes('fetch(')&&!studioArt.includes('@import'),'Art style cannot introduce remote runtime requests or stylesheet imports');
+const bannerBytes=await readFile(path.join(root,'azeroth-companion/assets',bannerName));
+assert.ok(bannerBytes.length>100000&&bannerBytes.length<1200000,'Panorama should be optimized WebP under 1.2 MB');
+assert.equal(bannerBytes.toString('ascii',0,4),'RIFF','Panorama must have a WebP RIFF container');
+assert.equal(bannerBytes.toString('ascii',8,12),'WEBP','Panorama must be WebP data, not a renamed image');
+const bannerSignature=bannerBytes.indexOf(Buffer.from([0x9d,0x01,0x2a]),20);
+assert.ok(bannerSignature>=0,'Panorama must use a supported VP8 WebP image encoding');
+const bannerWidth=bannerBytes.readUInt16LE(bannerSignature+3)&0x3fff;
+const bannerHeight=bannerBytes.readUInt16LE(bannerSignature+5)&0x3fff;
+assert.ok(bannerWidth>=2100&&bannerHeight>=700,'Panorama must retain the real 2172 × 724 detail');
 
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
