@@ -1,6 +1,14 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
 Release focus: **v9.0.0 Living Azeroth Cinematic Experience (staging; v7.9.4 Blizzard data pending real-player tests)**
 
+## Canonical cinematic welcome acceptance (v9.0 entrance improvement)
+1. On a fresh browser session opening the canonical companion URL, verify the cinematic entrance is visible first and shows the premium local character artwork and five destination shortcuts.
+2. Click Enter Azeroth Companion and verify the original application becomes usable without page reload, local-record mutation or account/session reset.
+3. Reload within the same browser tab: the welcome should stay dismissed. Force reopen with `?gateway=1`; bypass it with `?enter=1`.
+4. Test direct studio destinations, especially Talent Forge, as well as the standalone Living Azeroth page's Original Studios action.
+5. Check keyboard Tab/Escape, reduced motion, Performance mode, and physical iPhone viewport scrolling; no new overlap with Connected, Founder or HYPER MUSIC.
+6. Preserve all v9 visual regressions and earlier Blizzard data acceptance requirements below.
+
 ## New required v9.0 acceptance
 1. Load the original companion homepage and new Living Azeroth five-chamber entrance on desktop Chromium, mobile WebKit and physical iPhone Safari where available. Verify the premium local WebP art loads (no geometric castle fallback), the five portals present full illustrations rather than symbol-only tiles, readable contrast, functional destination links, and no horizontal scrolling.
 2. Choose Cinematic, Balanced and Performance modes; confirm only the new visual preference key is written, and OS Reduced Motion disables drifting particles.
