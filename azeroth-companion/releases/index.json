@@ -4,6 +4,13 @@
   "updated": "2026-11-17",
   "releases": [
     {
+      "version": "16.0.0",
+      "title": "Living World Engine — The War Room & World Atlas",
+      "date": "2026-11-17",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "15.0.0",
       "title": "Sovereign Character Nexus — Living Player Experience",
       "date": "2026-11-17",
