@@ -1,0 +1,96 @@
+/* NEXUS | AZEROTH v13.2 — SOVEREIGN ICON ASCENSION
+ * Official source-matched Blizzard spell artwork inside existing premium cards.
+ * Cosmetic only: the original panel geometry, rank controls and background stay.
+ */
+#talentForge .nx132-icon-status{
+ display:inline-flex;align-items:center;gap:7px;max-width:100%;
+ padding:7px 11px;border:1px solid #cfaf9666;border-radius:999px;
+ color:#dfd5f2;background:#182943cc;font-size:9px;letter-spacing:.06em;
+ font-weight:900;line-height:1.4;overflow-wrap:anywhere;
+}
+#talentForge .nx132-icon-status::before{
+ content:"";display:inline-block;flex:0 0 6px;width:6px;height:6px;border-radius:50%;
+ background:#abddda;box-shadow:0 0 8px #82d5d69b;
+}
+#talentForge .nx13-node-icon{
+ position:relative;isolation:isolate;width:54px;height:54px;flex-shrink:0;
+ border:1.5px solid #d9b48fb5;border-radius:12px;
+ background:radial-gradient(circle at 42% 29%,#7055b5,#1a3251 78%);
+ box-shadow:0 0 18px #a781e46e,0 5px 11px #0009,inset 0 1px #ffffff59;
+ overflow:hidden;display:grid;place-items:center;
+}
+#talentForge .nx13-node-icon.nx132-has-icon{
+ background:#101b31;
+ box-shadow:0 0 16px #a480e16b,0 5px 12px #0009,inset 0 0 0 1px #e9cfb52c;
+}
+#talentForge .nx13-node-icon.nx132-has-icon::after{
+ content:"";position:absolute;z-index:2;inset:0;pointer-events:none;
+ border:2px solid #d7bbaf3d;border-radius:inherit;
+ box-shadow:inset 0 -7px 9px #0609174f,inset 0 5px 9px #ffffff18;
+}
+#talentForge .nx13-node-icon .nx132-official-icon{
+ position:absolute;inset:0;width:100%;height:100%;max-width:100%;
+ object-fit:cover;object-position:center;display:block;
+ border:0;border-radius:inherit;image-rendering:auto;
+}
+#talentForge .nx13-node.nx13-allocated .nx13-node-icon.nx132-has-icon{
+ border-color:#f7d18c;box-shadow:0 0 0 2px #dfad667a,0 0 24px #f0cb8a69,0 6px 16px #000a;
+}
+#talentForge .nx13-node.nx13-focused .nx13-node-icon.nx132-has-icon{
+ border-color:#d8c5ff;box-shadow:0 0 0 2px #c5a5ffc1,0 0 25px #bb94e877,0 5px 15px #000b;
+}
+#talentForge .nx13-node-select{gap:8px}
+#talentForge .nx13-node-select strong{letter-spacing:.007em}
+#talentForge .nx13-inspector-art.nx132-has-icon{
+ position:relative;isolation:isolate;border:1.5px solid #f1c68fb8;
+ background:#13243a;
+ box-shadow:0 0 0 3px #b399bd38,0 0 26px #a989e867,0 10px 22px #0009;
+ overflow:hidden;
+}
+#talentForge .nx13-inspector-art .nx132-official-icon{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+ border-radius:inherit;image-rendering:auto;
+}
+#talentForge .nx13-inspector-art.nx132-has-icon::after{
+ content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+ box-shadow:inset 0 0 0 2px #f2d4a345,inset 0 -15px 13px #0b0c2553;
+}
+#talentForge .nx131-tray-copy{display:grid;grid-template-columns:50px minmax(0,1fr);gap:11px;align-items:center;min-width:0}
+#talentForge .nx132-tray-text{min-width:0;display:grid;gap:3px}
+#talentForge .nx132-tray-icon{
+ display:grid;place-items:center;width:50px;height:50px;overflow:hidden;
+ border:1.5px solid #dac09cbd;border-radius:11px;
+ color:#f4daae;font-size:29px;
+ background:radial-gradient(circle at 41% 31%,#7659bc,#1f3758 75%);
+ box-shadow:0 0 17px #ad86ea58,0 3px 9px #000a;
+}
+#talentForge .nx132-tray-icon.nx132-has-icon{
+ box-shadow:0 0 0 1px #ebcfa866,0 0 19px #ae90db65,0 5px 12px #000b;
+}
+#talentForge .nx132-tray-icon img.nx132-official-icon{
+ display:block;width:100%;height:100%;object-fit:cover;object-position:center;
+ border-radius:inherit;image-rendering:auto;
+}
+#talentForge .nx131-tray-copy .nx132-tray-text :is(small,strong,span){
+ display:block;min-width:0;overflow-wrap:anywhere;
+}
+#talentForge .nx13-root.nx131-compact .nx13-node-icon{
+ width:43px;height:43px;border-radius:9px;
+}
+@media(max-width:900px){
+ #talentForge .nx132-icon-status{font-size:8px;max-width:100%}
+ #talentForge .nx131-tray-copy{grid-template-columns:48px minmax(0,1fr);gap:9px}
+ #talentForge .nx132-tray-icon{width:48px;height:48px}
+}
+@media(max-width:420px){
+ #talentForge .nx13-node-icon{width:52px;height:52px}
+ #talentForge .nx131-tray-copy{grid-template-columns:44px minmax(0,1fr);gap:8px}
+ #talentForge .nx132-tray-icon{width:44px;height:44px}
+ #talentForge .nx131-tray-copy .nx132-tray-text strong{font-size:13px;line-height:1.25}
+ #talentForge .nx131-tray-copy .nx132-tray-text small{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ #talentForge .nx13-node-icon,#talentForge .nx13-inspector-art,#talentForge .nx132-tray-icon{
+  transition:none!important;animation:none!important;
+ }
+}
