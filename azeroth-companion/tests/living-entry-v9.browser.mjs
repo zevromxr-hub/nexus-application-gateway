@@ -9,9 +9,11 @@ async function check(label,engine,mobile){
  const ctx=await browser.newContext({viewport:mobile?{width:390,height:844}:{width:1365,height:900},isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'});
  const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
  try{
-  // The current v16+ homepage is the Living Command Center; explicitly request
-  // the preserved v9 Citadel gateway when testing the legacy welcome path.
-  await page.goto(BASE+'?gateway=1',{waitUntil:'commit',timeout:30000}).catch(()=>{});
+  // Current first-visit default is the Living Command Center. The old Citadel
+  // remains available directly, so test both routes instead of inventing a redirect.
+  await page.goto(BASE,{waitUntil:'commit',timeout:30000}).catch(()=>{});
+  await page.waitForURL(/command-center\.html/,{timeout:14000});
+  await page.goto(BASE+'citadel-entry.html',{waitUntil:'commit',timeout:30000});
   await page.waitForURL(/citadel-entry\.html/,{timeout:14000});
   await page.locator('#nxCitadel').waitFor();
   assert.equal(await page.locator('.portal-wrap').count(),5,'Five cinematic chambers');
@@ -24,7 +26,7 @@ async function check(label,engine,mobile){
   assert.equal(await page.evaluate(()=>sessionStorage.getItem('nexus_living_entry_seen_v9')),'entered');
   await page.reload({waitUntil:'domcontentloaded'});
   assert.equal(await page.locator('#nxCitadel').count(),0,'Returning tab should bypass welcome');
-  await page.goto(BASE+'?gateway=1',{waitUntil:'commit'}).catch(()=>{});
+  await page.goto(BASE+'citadel-entry.html',{waitUntil:'commit'}).catch(()=>{});
   await page.waitForURL(/citadel-entry\.html/,{timeout:14000});
   await page.locator('#nxCitadel .portal-wrap').first().waitFor();
   const dim=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
