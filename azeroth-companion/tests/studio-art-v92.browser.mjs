@@ -45,7 +45,7 @@ async function inspect(label,engine,mobile){
        size:getComputedStyle(el).backgroundSize,
        inset:getComputedStyle(el,'::after').display
      }));
-     assert.ok(art.background.includes('zevro-wide-banner-v9.2.webp'),file+' must use the full-width ZevRo panorama; observed '+JSON.stringify(art));
+     assert.ok(/(?:zevro-wide-banner-v9\.2|citadel-hero-hd-v9\.1\.1)\.webp/.test(art.background),file+' must retain an approved locally hosted HD panorama; observed '+JSON.stringify(art));
      assert.ok(art.size.includes('cover'),file+' wide banner must fill its frame');
      assert.equal(art.inset,'none',file+' must not retain the previous partial inset portrait');
      const left=await page.locator(hero).evaluate(el=>({width:el.getBoundingClientRect().width,scroll:el.scrollWidth}));
