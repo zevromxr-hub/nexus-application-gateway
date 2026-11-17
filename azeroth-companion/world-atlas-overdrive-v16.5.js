@@ -88,15 +88,16 @@ function update(){
 $('nx16Destinations')?.addEventListener('click',event=>{
  const button=event.target.closest('button[data-nx165-bookmark]');if(!button)return;
  const id=button.dataset.nx165Bookmark;if(!world.zoneById(id))return;
- const set=new Set(state.bookmarks);if(set.has(id))set.delete(id);
+ const latest=engine.normalizeState(read(KEY)),set=new Set(latest.bookmarks);if(set.has(id))set.delete(id);
  else if(set.size<45)set.add(id);
  else{$('nx165NextGoalText').textContent='Bookmark limit reached (45); remove an older favorite first.';return}
- saveState({...state,bookmarks:[...set]});
+ saveState({...latest,bookmarks:[...set]});
 });
 $('nx165FavoritePlaces').addEventListener('click',event=>{
  const button=event.target.closest('button[data-remove-bookmark]');if(!button)return;
  const id=button.dataset.removeBookmark;if(!world.zoneById(id))return;
- saveState({...state,bookmarks:state.bookmarks.filter(x=>x!==id)});
+ const latest=engine.normalizeState(read(KEY));
+ saveState({...latest,bookmarks:latest.bookmarks.filter(x=>x!==id)});
 });
 $('nx165RegionActivity').addEventListener('click',event=>{
  const button=event.target.closest('button[data-region]');if(!button)return;
