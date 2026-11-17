@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "16.5.0",
+  "title": "ADVENTURE INTELLIGENCE — Expedition Console & World Atlas Overdrive",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner authorized the v16.5 development and publication. Synthetic Chromium/WebKit acceptance is separate from physical iPhone and real in-game player verification.",
+  "features": [
+    "Expedition Console: cinematic mission briefing studio with activity-based preparation checklists, private notes and manual progress.",
+    "Mission intelligence: pin and prioritize your own goals, search by mission/character/status, customize steps and export safe JSON briefs.",
+    "World Atlas Overdrive: bookmark destinations, visualize your own regional mission counts and open one-click Prepare Mission links.",
+    "Living War Room: next-expedition pulse, manual checklist percentage and saved destination shortcuts inside the existing cinematic homepage.",
+    "Connected characters, Talent Forge drafts and Item Atlas IDs are labeled as local records with warnings when a link is no longer present.",
+    "Original Blizzard login, spell icons, Forge engine, Character Nexus, music, saved records and Discord automation are preserved.",
+    "v16.5 synthetic desktop/iPhone browser flows passed. Owner-approved release with live-player and physical-device acceptance pending."
+  ]
+}
