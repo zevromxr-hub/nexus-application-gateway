@@ -651,7 +651,7 @@ const citadelJS=await read('azeroth-companion/citadel-entry-v9.1.js');
 const citadelReturn=await read('azeroth-companion/citadel-return-v9.1.js');
 new vm.Script(citadelJS);new vm.Script(citadelReturn);
 assert.ok(html.includes("location.replace('./citadel-entry.html')"),'Fresh route must precede app bundle loading');
-assert.ok(html.includes('citadel-return-v9.1.js?v=910'),'Resume bridge missing');
+assert.ok(html.includes('nexus_citadel_recent_view_v91'),'Inline resume bridge missing');
 assert.ok(citadelHTML.includes('id="nxCitadel"'));
 assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=910'));
 assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=910'));
