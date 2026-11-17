@@ -1,0 +1,25 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "product": "NEXUS | AZEROTH COMPANION",
+  "version": "7.9.5",
+  "title": "Connected Character Research Handoff",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Quick character handoff between equipment comparisons and Mythic+, Raid, and Reputation research.",
+    "Public character region, realm and name prefilled on destination pages, without automatic API requests or token sharing.",
+    "Copy research URL for voluntary player collaboration.",
+    "PC and mobile documentation, Developer Test Requests, release history, release center and Gateway labels updated.",
+    "Preserved all v7.9.4 Blizzard API endpoints and existing private account authentication."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v7.9.5 — Connected Character Research\n\nMove between Character Intelligence and Mythic+, Raid or Reputation research using one public character selector. Share read-only character research links and manually load official Blizzard data.\n\nExpanded PC/mobile tutorials, player testing checklist and release documentation.\n\nOfficial launch pending real-player acceptance tests.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Test live public character comparison",
+    "Test Mythic+, raid and reputation real results",
+    "Regress private Battle.net session verification",
+    "Check mobile and desktop research links",
+    "Check saved plans persist after refresh"
+  ],
+  "publish_rule": "Promote version.json to stable and update releases/index.json only after acceptance, then create releases/v7.9.5.json to trigger the official Discord workflow."
+}
