@@ -292,7 +292,7 @@ for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.m
 assert.match(checklist799,/Connected-button overlap/,'Overlap regression must be in tester checklist');
 const assistantPage797=await read('azeroth-companion/azeroth-assistant.html');
 const assistantKnowledge797=JSON.parse(await read('azeroth-companion/azeroth-assistant-knowledge-v7.9.7.json'));
-assert.match(html,/azeroth-assistant\.html/,'Assistant main-nav link required');
+assert.match(html,/assistant-bubble-v7\.9\.8\.js/,'Assistant floating launcher must remain available after sidebar retirement');
 assert.match(assistantPage797,/ZevRo<\/span> \| Azeroth Assistant/,'Requested assistant identity must appear');
 assert.equal(assistantKnowledge797.schema,'nexus.azeroth.assistant-knowledge/1');
 assert.ok(assistantKnowledge797.articles.length>=27,'Assistant requires documented questions');
