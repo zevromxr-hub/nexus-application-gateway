@@ -19,7 +19,7 @@ assert.ok(startup.includes("if(once)document.removeEventListener(EVENT,handler)"
 assert.ok(startup.includes('queueMicrotask('),'Already-active views should initialize reliably');
 assert.ok(html.includes('./scripts-core-v4.8.js')&&html.includes('./scripts-experience-v5.2.js'));
 assert.equal((html.match(/<script defer src=/g)||[]).length,24);
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,23);
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,24);
 const checks=[
  ['warcraft-overdrive.js',["whenView('releases'","['warcraft','dungeons','professions','equipment','releases']","{once:false}"]],
  ['loot-hunter.js',["whenView('loot'","function loadReferenceCatalog()","loot-sources.json"]],
