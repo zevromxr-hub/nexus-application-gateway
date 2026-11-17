@@ -44,10 +44,10 @@ async function run(engine,phone){
     headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
     body:JSON.stringify(data||{success:false,message:'API disabled during website test'})});
   });
-  async function navigate(){
+  async function navigate(view='talents'){
    if(phone)await page.locator('.ac-mobile-bar [data-ac-more]').click();
-   await page.locator('.sidebar button[data-view="talents"]').click();
-   await page.locator('[data-section="talents"].active').waitFor({timeout:6000});
+   await page.locator('.sidebar button[data-view="'+view+'"]').click();
+   await page.locator('[data-section="'+view+'"].active').waitFor({timeout:6000});
   }
   async function load(){
    await page.locator('#tfSpec option[value="0"]').waitFor({state:'attached',timeout:12000});
@@ -58,10 +58,11 @@ async function run(engine,phone){
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
-  assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private media studio must mount in Talent Forge on desktop/iPhone');
-  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>!e.open),'Optional media studio must begin collapsed, preserving tree space');
-  await page.locator('#nxMediaStudio > summary').click();
-  assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator should mount on desktop/iPhone');
+  assert.equal(await page.locator('#nxStandaloneMediaStudio #nxMediaStudio').count(),1,'v6 standalone Media Studio must retain the v5.9 controls without duplication');
+  assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator must remain in Talent Forge');
+  await navigate('media');
+  assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private Media Studio must open from standalone navigation');
+  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>e.open),'Standalone Media Studio controls should start expanded');
   await page.waitForFunction(()=>document.querySelector('#nxMusicStatus')?.textContent.includes('stored track(s)'),{timeout:12000});
   assert.ok(await page.locator('#nxMusicDock').isHidden(),'Music dock must be closed by default');
   assert.ok(await page.locator('#nxMediaBackdrop').isHidden(),'No uploaded background should appear by default');
@@ -83,9 +84,11 @@ async function run(engine,phone){
   await page.locator('#nxMusicOpen').click();
   assert.ok(await page.locator('#nxMusicDock').isVisible(),'Local music player should open on explicit request');
   assert.equal(await page.locator('#nxMusicPlaylist .nx-music-entry').count(),1,'Local playlist should contain uploaded audio');
-  assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused),'Local audio must not autoplay');
+  assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused||!a.currentSrc.startsWith('blob:')),'Uploaded local tracks must not autoplay; the separately configured first-party welcome theme may play on desktop');
   await page.locator('#nxMusicClose').click();
   assert.ok(await page.locator('#nxMusicDock').isHidden());
+  await navigate('talents');
+  assert.ok(await page.locator('#tfTree').isVisible(),'Returning from Media Studio must preserve the loaded talent tree');
   await page.locator('#tfCmdSearch').fill('1001');
   await page.locator('#tfCmdList .nx-skill-thumb').first().waitFor({timeout:6000});
   assert.ok(await page.locator('#tfCmdList [data-tf-cmd-node="1001"] .nx-skill-thumb').count(),'Talent search should have source-based media slot');
@@ -234,7 +237,20 @@ async function run(engine,phone){
   await page.locator('#tfImport').setInputFiles({name:'bad.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(bad))});
   await page.locator('#tfStatus').filter({hasText:'Import failed'}).waitFor({state:'visible',timeout:7000});
   assert.ok((await page.locator('#tfStatus').textContent()).includes('Import failed'),'Unsafe imports must be rejected');
-  const finish=await page.evaluate(()=>({w:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
+  const finish=await page.evaluate(()=>{
+    const w=document.documentElement.scrollWidth,client=document.documentElement.clientWidth;
+    const offenders=w<=client+2?[]:[...document.querySelectorAll('body *')].filter(el=>{
+      const s=getComputedStyle(el),rect=el.getBoundingClientRect();
+      return s.display!=='none'&&s.visibility!=='hidden'&&rect.width>0&&rect.right>client+2;
+    }).sort((a,b)=>b.getBoundingClientRect().right-a.getBoundingClientRect().right).slice(0,18).map(el=>{
+      const rect=el.getBoundingClientRect(),parent=el.parentElement;
+      return{tag:el.tagName,id:el.id,cls:String(el.className||'').slice(0,100),right:Math.round(rect.right),width:Math.round(rect.width),parentId:parent?.id||'',parentClass:String(parent?.className||'').slice(0,90),parentOverflow:parent?getComputedStyle(parent).overflowX:''};
+    });
+    const path=[];let current=document.querySelector('#tfTree .tf-canvas-stage .tf-positioned');
+    for(let k=0;current&&k<16;k++,current=current.parentElement){const b=current.getBoundingClientRect(),cs=getComputedStyle(current);path.push({tag:current.tagName,id:current.id,cls:String(current.className||'').slice(0,70),width:Math.round(b.width),right:Math.round(b.right),scrollWidth:current.scrollWidth,clientWidth:current.clientWidth,overflowX:cs.overflowX,minWidth:cs.minWidth,display:cs.display})}
+    const boundary=[...document.querySelectorAll('body *')].filter(el=>{const box=el.getBoundingClientRect(),cs=getComputedStyle(el);return cs.display!=='none'&&cs.visibility!=='hidden'&&box.width>0&&box.right>client+2&&box.right<client+200}).slice(0,25).map(el=>({id:el.id,cls:String(el.className||'').slice(0,65),right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)}));
+    return{w,client,path,boundary,offenders};
+  });
   assert.ok(finish.w<=finish.client+2,'Planner should not create horizontal overflow '+JSON.stringify(finish));
   assert.deepEqual(errors,[],'No browser JS exceptions');
   console.log('PASS Talent Forge v5.1 '+(phone?'WebKit phone':'Chromium desktop')+' — editing, metadata, saved clones, local recovery and invalid import rejection');

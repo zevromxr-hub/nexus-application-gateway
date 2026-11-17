@@ -33,7 +33,14 @@ async function run(label,browserType,phone){
   await page.locator('[data-nx-journey="group"]').click();
   assert.equal(await page.locator('[data-nx-journey="group"]').getAttribute('aria-pressed'),'true');
   assert.ok((await page.locator('#nxJourneyTitle').textContent()).includes('adventure'));
-  assert.ok(await page.locator('[data-nx-go="warcraft"]').count()>0,'Group path must open existing War Room');
+  // The former War Room may be retired from primary navigation. Never revive an inaccessible button.
+  const warroom=page.locator('.sidebar [data-view="warcraft"]');
+  if(await warroom.count()>0&&await warroom.getAttribute('data-nx-retired')==='true'){
+   assert.equal(await page.locator('#nxJourneySteps [data-nx-go="warcraft"]').count(),0,'Retired War Room must not be promoted as a guided shortcut');
+   assert.ok(await page.locator('#nxJourneySteps button').count()>0,'Group journey must still offer active tools');
+  }else{
+   assert.ok(await page.locator('#nxJourneySteps [data-nx-go="warcraft"]').count()>0,'Active War Room must be offered to group journey');
+  }
   await page.locator('#nxFindTools').click();
   assert.ok(await page.locator('.az-launcher').isVisible(),'New website finder must reuse existing command launcher');
   await page.keyboard.press('Escape');
@@ -62,7 +69,8 @@ async function run(label,browserType,phone){
   const backTop=page.locator('#nxToTop');
   assert.ok(await backTop.isVisible(),'Long pages should expose return-to-top');
   await backTop.click();
-  await page.waitForTimeout(350);
+  // Smooth scrolling is asynchronous and can take longer than 350ms on large pages.
+  await page.waitForFunction(()=>window.scrollY<300,null,{timeout:6000});
   assert.ok(await page.evaluate(()=>window.scrollY)<300,'Return-to-top should scroll toward the beginning');
   const dimensions=await page.evaluate(()=>({page:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth}));
   assert.ok(dimensions.page<=dimensions.viewport+2,'Website should not horizontally overflow '+JSON.stringify(dimensions));

@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.0\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.1\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'9.0.0');
+assert.equal(version.version,'9.1.0');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -643,4 +643,35 @@ await import('./intelligent-startup.test.mjs');
 await import('./experience-stability.test.mjs');
 await import('./sovereign-command-v5.test.mjs');
 await import('./talent-planner-v51.test.mjs');
+
+/* v9.1 standalone launcher static verification. */
+const citadelHTML=await read('azeroth-companion/citadel-entry.html');
+const citadelCSS=await read('azeroth-companion/citadel-entry-v9.1.css');
+const citadelJS=await read('azeroth-companion/citadel-entry-v9.1.js');
+const citadelReturn=await read('azeroth-companion/citadel-return-v9.1.js');
+new vm.Script(citadelJS);new vm.Script(citadelReturn);
+assert.ok(html.includes("location.replace('./citadel-entry.html')"),'Fresh route must precede app bundle loading');
+assert.ok(html.includes('nexus_citadel_recent_view_v91'),'Inline resume bridge missing');
+assert.ok(citadelHTML.includes('id="nxCitadel"'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=910'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=910'));
+for(const key of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+key+'"'),'Missing chamber '+key);
+assert.ok(!citadelHTML.includes('scripts-core-')&&!citadelHTML.includes('scripts-experience-'),'Standalone entrance should not load app bundles');
+assert.ok(citadelCSS.includes('@media(max-width:660px)'));
+assert.ok(citadelJS.includes('nexus_citadel_pins_v9_1'));
+assert.ok(citadelReturn.includes('nexus_citadel_recent_view_v91'));
+
+/* v9.1 art-pack integrity: five locally hosted optimized WebPs or fallback set. */
+const artNames=['sovereign-throne-v9.1.webp','talent-forge-v9.1.webp','living-armory-v9.1.webp','adventure-journal-v9.1.webp','azeroth-oracle-v9.1.webp'];
+const artBytes=await Promise.all(artNames.map(name=>readFile(path.join(root,'azeroth-companion/assets',name)).catch(err=>{
+ if(err.code==='ENOENT')return null;throw err;
+})));
+const artCount=artBytes.filter(Boolean).length;
+assert.ok(artCount===0||artCount===artNames.length,'Upload all five v9.1 WebP illustrations together; a partial art pack would cause missing-card imagery');
+for(const data of artBytes.filter(Boolean)){
+ assert.ok(data.byteLength>1000&&data.byteLength<400000,'v9.1 artwork is unexpectedly large or empty');
+ assert.equal(data.toString('ascii',0,4),'RIFF','Artwork must be a valid WebP RIFF container');
+ assert.equal(data.toString('ascii',8,12),'WEBP','Artwork must be WebP, not a renamed PNG/JPEG');
+}
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');

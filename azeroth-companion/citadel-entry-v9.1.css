@@ -1,0 +1,93 @@
+
+:root{color-scheme:dark;--bg:#070b17;--ink:#f9ead0;--muted:#b7c6d5;--gold:#ebc58c;--edge:#e6c28b50}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 65% -10%,#2938588a,transparent 45%),#070b17;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a,button,input,select{font:inherit}
+a{color:inherit}button{cursor:pointer;color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #8af1e6;outline-offset:4px}
+[hidden]{display:none!important}
+.citadel-shell{max-width:1530px;margin:auto;padding:18px clamp(12px,3.5vw,48px) 52px}
+.citadel-header{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:3px 0 19px}
+.citadel-brand{text-decoration:none;letter-spacing:.13em;font-weight:950;color:#f6daae;font-size:clamp(11px,1.1vw,15px)}
+.citadel-head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.citadel-head-actions a{border:1px solid #e4be8261;background:#101b31d9;padding:9px 13px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:750}
+.citadel-head-actions a:hover{background:#25354b}
+.citadel-hero{--scene-art:url('./assets/radiant-warrior-background.webp');--scene-tone:#e3b465;position:relative;isolation:isolate;overflow:hidden;min-height:clamp(490px,45vw,665px);border:1px solid #d7ac6b8f;border-radius:26px;background:#10192b;box-shadow:0 25px 85px #0009,inset 0 0 0 1px #fff2}
+.citadel-hero::before{content:"";position:absolute;inset:0;z-index:0;background-image:linear-gradient(90deg,#060a16 0%,#070a17e8 32%,#0b0e1b70 68%,#05081350 100%),var(--scene-art);background-position:center,center 38%;background-size:cover}
+.citadel-hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(circle at 82% 45%,transparent 10%,#080b1b55 80%),linear-gradient(0deg,#070914d9,transparent 46%)}
+.citadel-hero[data-scene="forge"]{--scene-art:url('./assets/assassin-background.webp');--scene-tone:#ca91ff}
+.citadel-hero[data-scene="armory"]{--scene-art:url('./assets/radiant-warrior-background.webp');--scene-tone:#86deff}
+.citadel-hero[data-scene="adventure"]{--scene-art:url('./assets/assassin-background.webp');--scene-tone:#f99b8f}
+.citadel-hero[data-scene="oracle"]{--scene-art:url('./assets/assassin-background.webp');--scene-tone:#94e9cb}
+.nx-artpack-ready .citadel-hero[data-scene="sovereign"]{--scene-art:url('./assets/sovereign-throne-v9.1.webp')}
+.nx-artpack-ready .citadel-hero[data-scene="forge"]{--scene-art:url('./assets/talent-forge-v9.1.webp')}
+.nx-artpack-ready .citadel-hero[data-scene="armory"]{--scene-art:url('./assets/living-armory-v9.1.webp')}
+.nx-artpack-ready .citadel-hero[data-scene="adventure"]{--scene-art:url('./assets/adventure-journal-v9.1.webp')}
+.nx-artpack-ready .citadel-hero[data-scene="oracle"]{--scene-art:url('./assets/azeroth-oracle-v9.1.webp')}
+.citadel-hero-content{padding:clamp(25px,5.5vw,75px);position:relative;z-index:3;max-width:780px}
+.citadel-eyebrow{display:inline-flex;gap:8px;align-items:center;color:#f5d5a7;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.citadel-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#8cdbc9;box-shadow:0 0 12px #78e8e2}
+.citadel-hero h1{font-size:clamp(36px,6vw,78px);line-height:1.02;letter-spacing:-.045em;margin:20px 0 18px;text-shadow:0 5px 30px #010207}
+.citadel-hero h1 em{display:block;font-style:normal;color:var(--scene-tone);text-shadow:0 0 36px #05080e}
+.citadel-hero p{max-width:575px;font-size:clamp(14px,1.6vw,18px);line-height:1.75;color:#e2e9f0;text-shadow:0 2px 14px #02040b}
+.citadel-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:27px}
+.citadel-cta{display:inline-flex;justify-content:center;align-items:center;min-height:45px;padding:13px 20px;text-decoration:none;border-radius:10px;border:1px solid #e8cb9675;background:linear-gradient(125deg,#dfae6e,#9c6b3d);color:#141019;font-size:12px;font-weight:950;letter-spacing:.04em;box-shadow:0 10px 24px #0007}
+.citadel-cta:hover{filter:brightness(1.12)}
+.citadel-cta.secondary{background:#101d35cf;color:#f7e7cd}
+.citadel-scene-controls{position:relative;z-index:3;display:flex;flex-wrap:wrap;gap:8px;padding:0 clamp(22px,5vw,72px) 32px}
+.citadel-scene-controls button{background:#0d172add;border:1px solid #e6c48b66;border-radius:999px;padding:8px 13px;color:#d9e3e9;font-size:11px;font-weight:750}
+.citadel-scene-controls button[aria-pressed=true]{color:#fff0d8;border-color:#ffd293;background:#674d3dad}
+.citadel-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,310px);gap:22px;margin:26px 0}
+.citadel-main{min-width:0}.citadel-side{display:grid;align-content:start;gap:14px}
+.citadel-panel{background:#111b2edc;border:1px solid #e6c18d50;border-radius:16px;padding:17px}
+.citadel-panel h2,.citadel-panel h3{margin:0 0 6px;color:#f4d09a;font-size:16px}
+.citadel-panel p{font-size:12px;line-height:1.65;color:#b9cbd9;margin:5px 0 13px}
+.citadel-panel a{font-size:12px;font-weight:750;color:#aedce9}
+.citadel-section-top{display:flex;align-items:end;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:14px}
+.citadel-section-top h2{font-size:clamp(24px,3vw,34px);margin:0;color:#f8d9ac;letter-spacing:-.02em}
+.citadel-section-top p{font-size:12px;color:#b8c9d7;margin:5px 0 0}
+.citadel-search{display:flex;align-items:center;gap:10px;border:1px solid #c8b28a85;background:#101a30;border-radius:11px;padding:0 12px}
+.citadel-search:focus-within{border-color:#8cf0ea}
+.citadel-search input{min-width:170px;width:100%;background:transparent;color:#fff;border:0;outline:none;padding:13px 4px;font-size:13px}
+.citadel-portals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.portal-wrap{--tint:#d7bb83;--fallback:url('./assets/radiant-warrior-background.webp');position:relative;min-width:0;min-height:265px;isolation:isolate;border-radius:17px;overflow:hidden;border:1px solid #e4c18c66;box-shadow:0 15px 35px #0005;background:#081020}
+.portal-wrap[data-key="forge"]{--tint:#bd90fa;--fallback:url('./assets/assassin-background.webp')}
+.portal-wrap[data-key="armory"]{--tint:#8bddfb;--fallback:url('./assets/radiant-warrior-background.webp')}
+.portal-wrap[data-key="adventure"]{--tint:#ffa18e;--fallback:url('./assets/assassin-background.webp')}
+.portal-wrap[data-key="oracle"]{--tint:#91e4c3;--fallback:url('./assets/assassin-background.webp')}
+.portal-wrap:first-child{grid-column:span 2;min-height:300px}
+.portal-wrap::before{content:"";position:absolute;inset:0;z-index:0;background-image:linear-gradient(0deg,#060917fa 0%,#060917aa 36%,#06091704 100%),var(--fallback);background-size:cover;background-position:center,center 35%;transition:transform .4s ease}
+.nx-artpack-ready .portal-wrap[data-key="sovereign"]{--fallback:url('./assets/sovereign-throne-v9.1.webp')}
+.nx-artpack-ready .portal-wrap[data-key="forge"]{--fallback:url('./assets/talent-forge-v9.1.webp')}
+.nx-artpack-ready .portal-wrap[data-key="armory"]{--fallback:url('./assets/living-armory-v9.1.webp')}
+.nx-artpack-ready .portal-wrap[data-key="adventure"]{--fallback:url('./assets/adventure-journal-v9.1.webp')}
+.nx-artpack-ready .portal-wrap[data-key="oracle"]{--fallback:url('./assets/azeroth-oracle-v9.1.webp')}
+.portal-wrap:hover::before,.portal-wrap:focus-within::before{transform:scale(1.035)}
+.portal-link{display:flex;flex-direction:column;justify-content:flex-end;position:absolute;inset:0;z-index:1;padding:24px;text-decoration:none}
+.portal-link:focus-visible{outline-offset:-5px;border-radius:17px}
+.portal-mark{font-size:25px;color:var(--tint);text-shadow:0 0 24px currentColor;position:absolute;top:14px;left:20px}
+.portal-link strong{font-size:clamp(16px,2vw,23px);font-weight:950;letter-spacing:.025em;text-shadow:0 3px 16px #000}
+.portal-link small{font-size:12px;color:#dae5e9;line-height:1.5;margin-top:7px;text-shadow:0 2px 10px #000}
+.pin-button{position:absolute;top:12px;right:12px;z-index:3;border:1px solid #edc58c8a;background:#0b152dcc;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:850;color:#ebd5b7}
+.pin-button[aria-pressed=true]{background:#a67d4b;color:#100d14}
+.portal-wrap[data-filtered=true]{display:none}
+.citadel-empty{padding:26px;background:#111e32;border:1px dashed #b9a07f7d;border-radius:12px;color:#d0dce7}
+.citadel-pins{display:flex;gap:8px;flex-wrap:wrap}
+.citadel-pins a{display:inline-flex;padding:9px 11px;border:1px solid #b5dbdb7a;border-radius:10px;background:#12313d;text-decoration:none;font-size:12px;font-weight:800}
+.citadel-select{width:100%;padding:11px;border:1px solid #c9a8747f;border-radius:9px;color:#edf6f7;background:#0c1b30}
+.citadel-continue{display:flex;min-height:45px;align-items:center;justify-content:center;padding:11px;border-radius:11px;text-decoration:none;background:#bc9255;color:#160f0d;font-weight:900;font-size:12px}
+.citadel-update-trigger{cursor:pointer;list-style:none;font-weight:850;color:#ead5b1;font-size:13px}
+.citadel-update-trigger::-webkit-details-marker{display:none}
+#nxUpdates{font-size:12px;color:#bed0db;line-height:1.7}
+#nxUpdates ul{margin:8px 0 0;padding-left:19px}
+.citadel-note{margin:22px 0 0;color:#a5b8ca;font-size:11px;line-height:1.8}
+.citadel-footer{border-top:1px solid #bb9d7559;margin-top:25px;padding-top:17px;text-align:center;font-size:11px;color:#aabbcb;letter-spacing:.03em}
+.citadel-ambient{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.citadel-ambient i{position:absolute;left:var(--x);bottom:-15px;width:2px;height:2px;border-radius:50%;background:#d9f3ed;box-shadow:0 0 16px 3px #b9d0e3a6;animation:citadelRise var(--dur) linear infinite;animation-delay:var(--delay)}
+@keyframes citadelRise{0%{transform:translate3d(0,0,0);opacity:0}14%{opacity:.5}85%{opacity:.35}100%{transform:translate3d(16px,-620px,0);opacity:0}}
+.lv9-mode-balanced .citadel-ambient i:nth-child(even){display:none}
+.lv9-mode-performance .citadel-ambient{display:none}
+.lv9-mode-performance .portal-wrap::before{transition:none}
+@media(max-width:1000px){.citadel-layout{grid-template-columns:1fr}.citadel-side{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:660px){.citadel-shell{padding:11px 12px 48px}.citadel-hero{min-height:560px}.citadel-hero::before{background-image:linear-gradient(90deg,#060914e8,#070b18a2),var(--scene-art);background-position:center,61% center}.citadel-hero-content{padding:28px 20px 14px}.citadel-hero h1{font-size:clamp(39px,11vw,62px)}.citadel-scene-controls{padding:0 15px 20px}.citadel-actions .citadel-cta{flex:1}.citadel-portals{grid-template-columns:1fr}.portal-wrap,.portal-wrap:first-child{grid-column:span 1;min-height:248px}.citadel-side{grid-template-columns:1fr}.citadel-section-top{align-items:stretch}.citadel-search{width:100%}.citadel-head-actions{width:100%;justify-content:space-between}.citadel-head-actions a{flex:1;text-align:center}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.citadel-ambient{display:none}.portal-wrap::before{transition:none}.citadel-ambient i{animation:none}}
