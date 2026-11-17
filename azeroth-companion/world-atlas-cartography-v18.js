@@ -18,8 +18,8 @@ let goals=world.cleanGoals(read(keys.goals)),bookmarks=[],sessionIds=[],filter='
  objectURL=null,requested=world.zoneById(new URL(location.href).searchParams.get('zone'));
 function pull(){
  goals=world.cleanGoals(read(keys.goals));
- const raw=read(keys.plans,350000);bookmarks=list(raw?.bookmarks).map(String);
- if(Array.isArray(raw?.bookmarks))bookmarks=raw.bookmarks.filter(id=>!!world.zoneById(id)).slice(0,45);
+ const raw=read(keys.plans,350000);
+ bookmarks=Array.isArray(raw?.bookmarks)?raw.bookmarks.filter(id=>!!world.zoneById(id)).slice(0,45):[];
  const session=read(keys.session,80000);sessionIds=list(session?.entries).map(x=>x.id).filter(x=>typeof x==='string').slice(0,18);
 }
 function icon(name){
@@ -146,6 +146,23 @@ function renderCard(){
  buttons.append(plan,bookmark,actionLink('OPEN ZONE RESEARCH ↗','./world-atlas.html?zone='+encodeURIComponent(zone.id)));
  host.append(buttons);
  if(snap.goals.length){
+  const chars=list(read(keys.profile)?.characters),drafts=list(read(keys.drafts)),items=list(read(keys.items));
+  const linked=el('div','nx18-local-links');
+  for(const goal of snap.goals.slice(0,4)){
+   if(goal.charId){
+    const character=chars.find(x=>x.id===goal.charId);
+    linked.append(el('small','',character?'LOCAL CHARACTER · '+brain.text(character.name,70):'LINKED CHARACTER UNAVAILABLE IN THIS BROWSER'));
+   }
+   if(goal.buildKey){
+    const draft=drafts.find(x=>[brain.text(x.identity,130),brain.text(x.savedAt,40),brain.text(x.name,75)].join('::')===goal.buildKey);
+    linked.append(el('small','',draft?'MANUAL FORGE DRAFT · '+brain.text(draft.name,70):'LINKED FORGE DRAFT UNAVAILABLE IN THIS BROWSER'));
+   }
+   if(goal.itemId){
+    const target=items.find(x=>Number(x.id)===Number(goal.itemId));
+    linked.append(el('small','',target?'LOCAL ITEM ATLAS · '+brain.text(target.name,75):'ITEM #'+goal.itemId+' NOT FOUND IN LOCAL ATLAS'));
+   }
+  }
+  if(linked.children.length)host.append(linked);
   const title=el('strong','nx18-related-label','YOUR LOCAL MISSIONS');
   const listHost=el('div','nx18-goals');host.append(title,listHost);
   for(const goal of snap.goals.slice(0,6)){
@@ -232,6 +249,7 @@ let queued=false;
 const schedule=()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;refresh()})};
 $('nx16RegionStrip')?.addEventListener('click',()=>queueMicrotask(()=>{currentRegion=activeRegion().id;refreshWorld();refreshRegion()}));
 $('nx16RegionPins')?.addEventListener('click',()=>queueMicrotask(()=>{currentRegion=activeRegion().id;refreshWorld();refreshRegion()}));
+$('nx16ZoneFilter')?.addEventListener('input',()=>queueMicrotask(()=>{currentRegion=activeRegion().id;refreshWorld();refreshRegion()}));
 $('nx165RegionActivity')?.addEventListener('click',()=>queueMicrotask(()=>{currentRegion=activeRegion().id;refreshWorld();refreshRegion()}));
 const target=$('nx16GoalRows');
 if(target)new MutationObserver(schedule).observe(target,{childList:true});
