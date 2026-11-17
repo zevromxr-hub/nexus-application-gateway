@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.8",
+  "version": "7.9.9",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "ZevRo Azeroth Assistant Floating Avatar & Contextual Help",
-  "previous_version": "7.9.7",
+  "subtitle": "Mission Architect & Assistant Positioning Refinement — Pre-8.0",
+  "previous_version": "7.9.8",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Replaced the old left-sidebar ZevRo | Azeroth Assistant link with a desktop upper-right avatar button and lightweight in-page mini assistant dialog.",
-    "On mobile, the assistant launcher is placed in the website header and the compact assistant opens as a closable bottom-aligned panel.",
-    "Preserved the separate Founder avatar, existing Hyper Music positioning, and full-page Azeroth Assistant for users who prefer a larger workspace.",
-    "Added studio-aware suggested question prioritization based only on the currently visible navigation section; no local plans or private account data are read.",
-    "Expanded curated assistant answers from 22 to 27 topics, including partial progression reports, report sharing, feedback, and assistant usage.",
-    "Updated documentation, device acceptance, tester checklist, release center, Gateway and Discord draft; live browser/real-character acceptance still pending."
+    "Moved the desktop assistant avatar lower to avoid obstructing the Connected button; adjusted the accompanying panel alignment while preserving mobile header placement.",
+    "Created Mission Architect inside both the compact and full-page assistant with six guided goals and 24 structured actions.",
+    "Every generated action plan provides practical explanations and studio links for talents, equipment, progression, accounts, farming and developer testing.",
+    "Added manual Copy Plan and Export Plan controls without modifying existing character plans, Battle.net sessions or local progress.",
+    "Retained the v7.9.8 contextual assistant, 27 supported answer topics, Founder bubble, Hyper Music, and all v7.9.6 progression reports.",
+    "Updated PC/mobile guides, device and player-testing checklists, public release center, Gateway metadata, regression tests and gated Discord draft."
   ]
 }
