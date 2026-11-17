@@ -34,4 +34,4 @@ catch(err){if(myEpoch!==epoch)return;status(err?.name==='AbortError'?'Request ti
 finally{clearTimeout(timeout);if(myEpoch===epoch){controller=null;$('load').disabled=false}}});
 $('export').addEventListener('click',()=>{if(!last)return;const blob=new Blob([JSON.stringify({format:'nexus-azeroth-progression-v1',...last},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nexus-azeroth-progression-'+last.kind+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 const q=new URLSearchParams(location.search);for(const key of ['region','realm','character']){const v=q.get(key);if(v&&$('form').elements.namedItem(key))$('form').elements.namedItem(key).value=v.slice(0,80)}setTab('mythic');
-})();</script></body></html>
+})();</script><script defer src="./character-handoff-v7.9.5.js?v=795"></script></body></html>
