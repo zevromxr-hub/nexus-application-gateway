@@ -1,4 +1,4 @@
-name: NEXUS Azeroth Companion — Device Browser Audit
+name: NEXUS Azeroth Companion — Advisory Device Audit
 on:
   pull_request:
     paths:
@@ -27,6 +27,8 @@ jobs:
           npm install --no-save --no-package-lock playwright
           npx playwright install --with-deps chromium webkit
       - name: Test local Azeroth website on desktop and phone browsers
+        id: browser
+        continue-on-error: true
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/azeroth-server.log 2>&1 &
           SERVER_PID=$!
@@ -43,9 +45,24 @@ jobs:
           node azeroth-companion/tests/sovereign-v8.browser.mjs
           node azeroth-companion/tests/living-azeroth-v9.browser.mjs
       - name: Upload screenshots if a browser check failed
-        if: failure()
+        if: always() && steps.browser.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: azeroth-device-audit-screenshots
           path: test-results/azeroth-device-audit/
           if-no-files-found: ignore
+
+      - name: Record pending device acceptance
+        if: always()
+        env:
+          BROWSER: ${{ steps.browser.outcome }}
+        run: |
+          {
+            echo "## NEXUS | Azeroth — advisory desktop/iPhone audit"
+            echo "Browser test outcome: **$BROWSER**."
+            echo "Release approval belongs to the project owner, not this test."
+            echo "Failed browser checks are genuine pending findings; inspect logs/screenshots before marking them verified."
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$BROWSER" != "success" ]; then
+            echo "::warning title=Device test pending::Browser audit returned $BROWSER; release is not automatically blocked."
+          fi
