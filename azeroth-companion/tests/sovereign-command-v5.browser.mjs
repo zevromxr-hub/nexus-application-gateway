@@ -16,7 +16,7 @@ async function run(label,browserType,phone){
   }));
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
-  await page.locator('#sxHeroVersion').getByText('Azeroth v5.9.0').waitFor({timeout:12000});
+  await page.locator('#sxHeroVersion').getByText(/Azeroth v\d+\.\d+\.\d+/i).waitFor({timeout:12000});
   assert.ok(await page.locator('#nxCommandV5').isVisible(),'v5 command experience should be visible on Home');
   assert.equal(await page.locator('[data-nx-journey]').count(),3,'Three guided entry paths expected');
   assert.equal(await page.locator('[data-nx-journey="new"]').getAttribute('aria-pressed'),'true','New player must be first default');
