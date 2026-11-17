@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "18.2.0",
+  "title": "WORLD ATLAS CARTOGRAPHER’S LENS — Premium Regions, Intel & Performance",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner approved Atlas presentation, usefulness, detail and performance improvements; physical iPhone and live-game testing remain pending.",
+  "features": [
+    "World Atlas now features eight new original compact region panoramas, a cinematic region selector and a more immersive research-first visual interface.",
+    "New detailed field guide for all 25 curated destinations, including non-fabricated research prompts and read-only counters from saved manual missions, bookmarks, v17 sessions and v18.1 routes.",
+    "Instant destination finder can jump to the right region and focus a selected map pin; dedicated handoff returns you to the safe original mission form.",
+    "Focus Pins toggle reduces icon crowding and preserves accessibility, automatically using compact mode for iPhone-sized displays.",
+    "Improved render responsiveness through batched frame updates, reusing local data indexes, deferring regional illustration and offscreen route panel rendering.",
+    "Verified external real-game map research links to Warcraft Wiki Maps and Wowhead Maps. Original NEXUS illustrations remain separate from official WoW coordinates.",
+    "Everything from v18.1 stays available, including maps, saved routes, goals, music, Forge, Battle.net connection and protected user data; no new stored key or account changes."
+  ]
+}
