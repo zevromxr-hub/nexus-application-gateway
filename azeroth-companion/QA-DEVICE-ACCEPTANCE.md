@@ -1,7 +1,17 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v7.9.7 ZevRo Azeroth Assistant (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v7.9.8 Floating Assistant Avatar (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v7.9.7 acceptance
+## New required v7.9.8 acceptance
+1. On desktop, verify the assistant avatar is in the upper-right corner with its own distinctive image and label, away from lower-right Founder and Hyper Music.
+2. Click the avatar, ask a question in the mini panel, select an answer link, then close via × or Escape; keyboard focus should return to the launcher.
+3. Switch among Overview, Build Architect and other supported sections, then reopen the avatar; suggested questions should reflect the current section when documented.
+4. On iPhone Safari and mobile viewport simulations, verify the launcher sits in normal site header flow and does not cover the music player, Founder shortcut or other inputs.
+5. Open and close the mobile bottom panel, use its Full Page link, check scrolling and orientation changes, and confirm it fits the device safe area.
+6. Confirm the standalone assistant still works, the old sidebar link is removed, and no local plans, account sessions or auth tokens are changed.
+7. Verify all 27 documented assistant topics, unsupported answer fallback, and direct navigation links.
+8. Repeat prior required Mythic+, raids, reputations, combined reports and Battle.net regression tests before stable Discord announcement.
+
+## Previous required v7.9.7 acceptance
 1. On PC and iPhone-sized browsers, open ZevRo | Azeroth Assistant and confirm its input, send button and topic chips are visible and usable.
 2. Ask about talent builds, account verification, Mythic+, raid encounters, reputation and inventory limits; verify accurate documented answers with relevant studio links.
 3. Select New Questions and a topic filter; confirm suggestions are derived from the local curated answer library.
