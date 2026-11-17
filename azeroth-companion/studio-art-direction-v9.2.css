@@ -1,0 +1,283 @@
+/* NEXUS | AZEROTH — v9.2 Studio Art Direction
+   Pure presentation layer. Reuses hosted assets only, no image generation,
+   no session, account, talent, cache, or player data changes.
+   A single sharp HD landscape supplies the broad scene; slim 380px source
+   portraits are shown at native-ish widths instead of enlarged full-screen. */
+
+:root {
+ --nx-art-hd:url("./assets/citadel-hero-hd-v9.1.1.webp");
+ --nx-art-throne:url("./assets/sovereign-throne-v9.1.webp");
+ --nx-art-talent:url("./assets/talent-forge-v9.1.webp");
+ --nx-art-armory:url("./assets/living-armory-v9.1.webp");
+ --nx-art-adventure:url("./assets/adventure-journal-v9.1.webp");
+ --nx-art-oracle:url("./assets/azeroth-oracle-v9.1.webp");
+}
+
+/* MAIN COMPANION. Dynamic artwork selection follows the ACTIVE app section
+   (the existing navigation mechanism); no JS view tracker is needed. */
+body.nx-art-studios {
+ --nx-scene-art:var(--nx-art-throne);
+ --nx-scene-position:center 34%;
+ --nx-scene-accent:#eec384;
+}
+body.nx-art-studios:has(.section.active[data-section="talents"]),
+body.nx-art-studios:has(.section.active[data-section="builds"]) {
+ --nx-scene-art:var(--nx-art-talent);
+ --nx-scene-position:center 30%;
+ --nx-scene-accent:#bb9bf7;
+}
+body.nx-art-studios:has(.section.active[data-section="armory"]),
+body.nx-art-studios:has(.section.active[data-section="atlas"]),
+body.nx-art-studios:has(.section.active[data-section="characters"]),
+body.nx-art-studios:has(.section.active[data-section="dominion"]),
+body.nx-art-studios:has(.section.active[data-section="dashboard"]) {
+ --nx-scene-art:var(--nx-art-armory);
+ --nx-scene-position:center 30%;
+ --nx-scene-accent:#9bdfeb;
+}
+body.nx-art-studios:has(.section.active[data-section="progress"]),
+body.nx-art-studios:has(.section.active[data-section="personal"]),
+body.nx-art-studios:has(.section.active[data-section="collections"]) {
+ --nx-scene-art:var(--nx-art-adventure);
+ --nx-scene-position:center 40%;
+ --nx-scene-accent:#efa887;
+}
+body.nx-art-studios:has(.section.active[data-section="guide"]),
+body.nx-art-studios:has(.section.active[data-section="fieldlab"]) {
+ --nx-scene-art:var(--nx-art-oracle);
+ --nx-scene-position:center 35%;
+ --nx-scene-accent:#9bdec3;
+}
+
+/* Full-screen backgrounds now use the actual widescreen HD image.
+   A small contextual illustration is allowed on the far right at its native
+   source scale: not a full-screen, blurry stretched 380px image. */
+body.nx-art-studios::before {
+ background-image:
+   linear-gradient(90deg,#050a18ef 0%,#070e1cbb 43%,#07132496 100%),
+   var(--nx-art-hd) !important;
+ background-position:center,center !important;
+ background-size:cover,cover !important;
+ background-repeat:no-repeat !important;
+}
+body.nx-art-studios::after {
+ content:"";
+ position:fixed;inset:0;pointer-events:none;z-index:-1;
+ background-image:linear-gradient(90deg,#07101b00 53%,#07101ba3 100%),var(--nx-scene-art) !important;
+ background-position:center,right 3vw center !important;
+ background-repeat:no-repeat !important;
+ background-size:cover,auto min(88vh,950px) !important;
+ opacity:.32 !important;
+}
+body.nx-art-studios .sidebar {
+ background-image:
+ linear-gradient(180deg,#081422f5 0%,#091729f4 54%,#071222f2 100%),var(--nx-art-hd) !important;
+ background-position:center,center !important;
+ background-size:cover,cover !important;
+ background-repeat:no-repeat !important;
+}
+body.nx-art-studios.lv9-visual .hero {
+ background-image:
+ linear-gradient(95deg,#071020f8 0%,#0a1530e8 45%,#0c1938ad 100%),
+ var(--nx-art-hd) !important;
+ background-size:cover,cover !important;
+ background-position:center,center !important;
+}
+body.nx-art-studios .sx-hero,
+body.nx-art-studios .sx-command-hero {
+ background-image:
+ linear-gradient(100deg,#081220f5 0%,#112136c7 58%,#12172b88),
+ var(--nx-art-hd) !important;
+ background-size:cover,cover !important;
+ background-position:center,center !important;
+}
+body.nx-art-studios .sx-welcome {
+ background-image:linear-gradient(110deg,#071120e9,#101b2dc5,#0b193090),var(--nx-art-hd) !important;
+ background-position:center,center !important;
+ background-size:cover,cover !important;
+}
+body.nx-art-studios.lv9-visual .lv9-talent-header,
+body.nx-art-studios .lv9-talent-header {
+ background-color:#0d1630!important;
+ background-image:linear-gradient(90deg,#081226f6 0%,#0d1730e5 60%,#0a132dbb 100%),var(--nx-art-talent)!important;
+ background-repeat:no-repeat!important;
+ background-position:center,right 22% center!important;
+ background-size:cover,auto 570px!important;
+ border-color:#b99de59a!important;
+ min-height:178px;
+}
+body.nx-art-studios .lv9-adventure-portrait {
+ background-image:linear-gradient(0deg,#08121f51,#08121f12 55%),var(--nx-art-adventure)!important;
+ background-position:center,center 32%!important;
+ background-size:cover,auto 100%!important;
+}
+body.nx-art-studios .lv9-guide-visual {
+ background-image:linear-gradient(0deg,#08121f70,#08121f05 55%),var(--nx-art-oracle)!important;
+ background-position:center,center 30%!important;
+ background-size:cover,auto 100%!important;
+}
+body.nx-art-studios .lv9-journal-card,
+body.nx-art-studios .lv9-journal-card:nth-child(3) {
+ background-image:linear-gradient(95deg,#071222e8 0%,#0b1a2ab5 65%,#0a16258a),var(--nx-art-adventure)!important;
+ background-size:cover,auto 400px!important;
+ background-position:center,right 20% center!important;
+ background-repeat:no-repeat!important;
+}
+body.nx-art-studios .lv9-journal-card:nth-child(2) {
+ background-image:linear-gradient(95deg,#071222e8,#0b1a2ab5),var(--nx-art-armory)!important;
+}
+body.nx-art-studios .section.active > h2:first-child {
+ padding:17px 19px;
+ background:linear-gradient(95deg,#0b1b31f2,#0a1b2fe5 76%,#0a183599),var(--nx-scene-art) right 35% center/auto 420px no-repeat;
+ border:1px solid #d0ac756e;
+ border-left:3px solid var(--nx-scene-accent);
+ border-radius:12px;
+ color:#f5e5cb;
+ text-shadow:0 2px 10px #030814;
+}
+
+/* Separate original Living Azeroth destination page. */
+body[data-nx-art-page="living"] .lv9-hero {
+ background-image:linear-gradient(90deg,#061025ee,#071126bf,#0a18385e),var(--nx-art-hd)!important;
+ background-size:cover,cover!important;
+ background-position:center,center!important;
+}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal {
+ --nx-portal-art:var(--nx-art-throne);
+ max-width:380px;min-height:0!important;aspect-ratio:3/5;
+ justify-self:center;width:100%;
+ background-image:linear-gradient(0deg,#061025ed,#0711236b 45%,#07112300 70%),var(--nx-portal-art)!important;
+ background-position:center,center 33%!important;
+ background-size:cover,cover!important;
+}
+body[data-nx-art-page="living"] .lv9-portal:nth-child(2){--nx-portal-art:var(--nx-art-talent)!important}
+body[data-nx-art-page="living"] .lv9-portal:nth-child(3){--nx-portal-art:var(--nx-art-armory)!important}
+body[data-nx-art-page="living"] .lv9-portal:nth-child(4){--nx-portal-art:var(--nx-art-adventure)!important}
+body[data-nx-art-page="living"] .lv9-portal:nth-child(5){--nx-portal-art:var(--nx-art-oracle)!important}
+body[data-nx-art-page="living"].lv9-visual .lv9-destinations {
+ grid-template-columns:repeat(5,minmax(0,1fr))!important;
+ gap:12px!important;
+}
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal,
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:nth-child(-n+2),
+body[data-nx-art-page="living"].lv9-visual a.lv9-portal:first-child {
+ grid-column:auto!important;min-height:0!important;
+}
+body[data-nx-art-page="living"] .lv9-guide-visual {
+ background-image:linear-gradient(0deg,#06102159,transparent),var(--nx-art-oracle)!important;
+ background-size:cover,auto 100%!important;
+ background-position:center,center 35%!important;
+}
+
+/* External studies. The hero uses true 1600px landscape artwork, with an
+   up-to-310px-wide portrait inset selected for the current research tool. */
+body[data-nx-art-page] {
+ --nx-page-scene:var(--nx-art-throne);
+ --nx-page-accent:#d9b681;
+ --nx-page-tone:#0b1428;
+ position:relative;isolation:isolate;
+}
+body[data-nx-art-page="character"]{--nx-page-scene:var(--nx-art-armory);--nx-page-accent:#8fdce8}
+body[data-nx-art-page="progression"]{--nx-page-scene:var(--nx-art-adventure);--nx-page-accent:#edb28d}
+body[data-nx-art-page="sovereign"]{--nx-page-scene:var(--nx-art-throne);--nx-page-accent:#e6cb90}
+body[data-nx-art-page="oracle"]{--nx-page-scene:var(--nx-art-oracle);--nx-page-accent:#9edec6}
+body[data-nx-art-page="addon"]{--nx-page-scene:var(--nx-art-talent);--nx-page-accent:#c8a7ff}
+body[data-nx-art-page]::before {
+ content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.42;
+ background-image:linear-gradient(90deg,#071221ec,#0a172ad1 65%,#0c2036ad),var(--nx-art-hd);
+ background-position:center,center;
+ background-size:cover,cover;background-repeat:no-repeat;
+}
+body[data-nx-art-page] :is(.nx-art-banner,.intro,.hero):not(.lv9-hero) {
+ min-width:0;
+}
+body[data-nx-art-page] .nx-art-banner,
+body[data-nx-art-page="sovereign"] .intro,
+body[data-nx-art-page="addon"] .hero {
+ isolation:isolate;position:relative;overflow:hidden;
+ border:1px solid color-mix(in srgb,var(--nx-page-accent),transparent 35%);
+ border-radius:19px;
+ padding:clamp(22px,3.4vw,42px);
+ margin:12px 0 19px;
+ min-height:278px;
+ background-image:linear-gradient(90deg,#060e20fa 0%,#07142ff0 45%,#0c1d3dbb 75%,#0b1a3890),var(--nx-art-hd);
+ background-position:center,center;
+ background-size:cover,cover;
+ background-repeat:no-repeat;
+ box-shadow:0 17px 45px #0005;
+}
+body[data-nx-art-page] .nx-art-banner::after,
+body[data-nx-art-page="sovereign"] .intro::after,
+body[data-nx-art-page="addon"] .hero::after {
+ content:"";position:absolute;z-index:0;pointer-events:none;
+ right:clamp(14px,3vw,37px);top:16px;bottom:16px;width:min(29%,310px);
+ border:1px solid color-mix(in srgb,var(--nx-page-accent),transparent 28%);
+ border-radius:15px;
+ background-image:linear-gradient(0deg,#081022b8,#08102221 65%),var(--nx-page-scene);
+ background-position:center,center 31%;
+ background-size:cover,cover;
+ box-shadow:0 10px 35px #0009,0 0 0 4px #08172a7a;
+}
+body[data-nx-art-page] .nx-art-banner>*,
+body[data-nx-art-page="sovereign"] .intro>*,
+body[data-nx-art-page="addon"] .hero>* {position:relative;z-index:1}
+body[data-nx-art-page] .nx-art-banner > *,
+body[data-nx-art-page="sovereign"] .intro > div {
+ max-width:66%;
+}
+body[data-nx-art-page] .nx-art-banner h1,
+body[data-nx-art-page="sovereign"] .intro h1,
+body[data-nx-art-page="addon"] .hero h1 {
+ color:#ffe4b9;text-shadow:0 3px 20px #030715;
+}
+body[data-nx-art-page] .nx-art-banner p,
+body[data-nx-art-page="sovereign"] .intro p,
+body[data-nx-art-page="addon"] .hero p {color:#d8e4ee}
+body[data-nx-art-page] .nx-art-banner .eyebrow,
+body[data-nx-art-page] .nx-art-banner .kicker {color:var(--nx-page-accent)}
+body[data-nx-art-page="sovereign"] .intro>.pill {align-self:flex-end;max-width:60%;font-size:10px}
+body[data-nx-art-page="addon"] .hero .disclaimer {max-width:66%}
+
+/* Mini assistant embeds are deliberately compact; do not paint decorative
+   marketing visuals inside the in-app chat iframe. */
+html.nx-mini body[data-nx-art-page="oracle"]::before{display:none}
+html.nx-mini body[data-nx-art-page="oracle"] .nx-art-banner{display:none!important}
+
+@media(max-width:1160px){
+ body[data-nx-art-page="living"].lv9-visual .lv9-destinations{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:820px){
+ body[data-nx-art-page="living"].lv9-visual .lv9-destinations{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.nx-art-studios::after{opacity:.22!important}
+}
+@media(max-width:660px){
+ body.nx-art-studios::after{display:none!important}
+ body.nx-art-studios .lv9-talent-header {
+   background-position:center,right 30% center!important;
+   background-size:cover,auto 430px!important;
+ }
+ body.nx-art-studios .section.active>h2:first-child {background-size:cover,auto 260px}
+ body[data-nx-art-page] .nx-art-banner,
+ body[data-nx-art-page="sovereign"] .intro,
+ body[data-nx-art-page="addon"] .hero{
+   min-height:0;padding:19px 16px;
+   background-image:linear-gradient(90deg,#081020f6,#0b1730e3),var(--nx-art-hd);
+ }
+ body[data-nx-art-page] .nx-art-banner::after,
+ body[data-nx-art-page="sovereign"] .intro::after,
+ body[data-nx-art-page="addon"] .hero::after {display:none}
+ body[data-nx-art-page] .nx-art-banner>*,
+ body[data-nx-art-page="sovereign"] .intro>div,
+ body[data-nx-art-page="addon"] .hero>* {max-width:none}
+ body[data-nx-art-page="sovereign"] .intro>.pill{max-width:100%}
+ body[data-nx-art-page="living"].lv9-visual .lv9-destinations{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(prefers-reduced-transparency:reduce){
+ body[data-nx-art-page] .nx-art-banner,
+ body.nx-art-studios .lv9-talent-header {background-color:#091427!important}
+}
+@media print{
+ body.nx-art-studios::before,body.nx-art-studios::after,
+ body[data-nx-art-page]::before,
+ body[data-nx-art-page] .nx-art-banner::after{display:none!important}
+}

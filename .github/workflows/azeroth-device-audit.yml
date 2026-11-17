@@ -32,6 +32,7 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           node azeroth-companion/tests/citadel-entry-v91.browser.mjs
+          node azeroth-companion/tests/studio-art-v92.browser.mjs
           node azeroth-companion/tests/living-entry-v9.browser.mjs
           node azeroth-companion/tests/device-audit.browser.mjs
           node azeroth-companion/tests/startup-audit.browser.mjs
