@@ -1,0 +1,235 @@
+/* NEXUS | AZEROTH v12.0 — SOVEREIGN WORLD ATLAS
+ * Non-invasive visual unification for the existing 17 Azeroth pages.
+ * Only existing, locally hosted artwork; no new particle system.
+ * Never style injected player research data indiscriminately.
+ */
+:root{
+ --nx12-hd:url("./assets/citadel-hero-hd-v9.1.1.webp");
+ --nx12-wide:url("./assets/zevro-wide-banner-v9.2.webp");
+ --nx12-throne:url("./assets/sovereign-throne-v9.1.webp");
+ --nx12-forge:url("./assets/talent-forge-v9.1.webp");
+ --nx12-armory:url("./assets/living-armory-v9.1.webp");
+ --nx12-adventure:url("./assets/adventure-journal-v9.1.webp");
+ --nx12-oracle:url("./assets/azeroth-oracle-v9.1.webp");
+ --nx12-assassin:url("./assets/assassin-background.webp");
+ --nx12-guardian:url("./assets/radiant-warrior-background.webp");
+}
+body[data-nx12-page]{--nx12-art:var(--nx12-throne);--nx12-edge:#e7bc88;--nx12-halo:#e6bb865e;--nx12-soft:#e4d0b4}
+body[data-nx12-page="index"]{--nx12-art:var(--nx12-throne)}
+body[data-nx12-page="command-center"]{--nx12-art:var(--nx12-throne)}
+body[data-nx12-page="citadel-entry"]{--nx12-art:var(--nx12-throne)}
+body[data-nx12-page="living-azeroth"]{--nx12-art:var(--nx12-throne)}
+body[data-nx12-page="player-experience"]{--nx12-art:var(--nx12-armory);--nx12-edge:#b6d9e8;--nx12-halo:#94dce855;--nx12-soft:#d6eaf5}
+body[data-nx12-page="sovereign-ascension"]{--nx12-art:var(--nx12-throne);--nx12-edge:#eac389;--nx12-halo:#f3c97e55}
+body[data-nx12-page="character-intelligence"]{--nx12-art:var(--nx12-armory);--nx12-edge:#9be3ef;--nx12-halo:#7bdaed52;--nx12-soft:#c7f1f6}
+body[data-nx12-page="progression-intelligence"]{--nx12-art:var(--nx12-adventure);--nx12-edge:#e7ad96;--nx12-halo:#dcaa9350;--nx12-soft:#ffded3}
+body[data-nx12-page="azeroth-assistant"]{--nx12-art:var(--nx12-oracle);--nx12-edge:#b5e8d4;--nx12-halo:#8feac74b;--nx12-soft:#e0fbf0}
+body[data-nx12-page="addon-nexus"]{--nx12-art:var(--nx12-forge);--nx12-edge:#c8a8f9;--nx12-halo:#bda0f35e;--nx12-soft:#eddefe}
+body[data-nx12-page="developer"]{--nx12-art:var(--nx12-assassin);--nx12-edge:#bc9cf3;--nx12-halo:#ad90e858;--nx12-soft:#e8dafa}
+body[data-nx12-page="save-protection"]{--nx12-art:var(--nx12-guardian);--nx12-edge:#b7dbe1;--nx12-halo:#abdce64d;--nx12-soft:#dcebf5}
+body[data-nx12-page="getting-started"]{--nx12-art:var(--nx12-throne);--nx12-edge:#edd19a;--nx12-halo:#e3c48f4b}
+body[data-nx12-page="player-handbook"]{--nx12-art:var(--nx12-oracle);--nx12-edge:#ade7d1;--nx12-halo:#9de6d44f;--nx12-soft:#d8fff0}
+body[data-nx12-page="player-test-checklist"]{--nx12-art:var(--nx12-adventure);--nx12-edge:#e8ac97;--nx12-halo:#e3a79147;--nx12-soft:#fbe0d6}
+body[data-nx12-page="privacy"]{--nx12-art:var(--nx12-guardian);--nx12-edge:#c3e4ea;--nx12-halo:#95d5e147;--nx12-soft:#e7f9fc}
+body[data-nx12-page="release-notes"]{--nx12-art:var(--nx12-throne);--nx12-edge:#eccb9a;--nx12-halo:#edbf8c47;--nx12-soft:#fff0d2}
+
+/* Five informational pages: visible cinematic cover, original text and headings untouched. */
+body[data-nx12-page] .nx12-guide-hero{
+ position:relative;isolation:isolate;display:flex;align-items:center;min-height:300px;overflow:hidden;
+ width:100%;margin:0 0 clamp(22px,3.2vw,40px);border:1px solid var(--nx12-edge);border-radius:21px;
+ background-color:#111b30;background-image:
+ linear-gradient(90deg,#050c1ef9 0%,#081329ee 42%,#0b1730c7 76%,#0e1b2ea4),
+ var(--nx12-hd);background-size:cover,cover;background-position:center,center 43%;
+ box-shadow:0 25px 60px #0008,0 0 24px var(--nx12-halo),inset 0 1px #ffffff2c;
+}
+body[data-nx12-page="release-notes"] .nx12-guide-hero{
+ background-image:linear-gradient(90deg,#050c1efb,#071328e3 62%,#0b1730bd),var(--nx12-wide);
+ background-position:center,center 40%;
+}
+body[data-nx12-page] .nx12-guide-hero::before{
+ content:"";position:absolute;z-index:0;inset:0;pointer-events:none;
+ background:radial-gradient(ellipse at 78% 39%,var(--nx12-halo),transparent 47%),linear-gradient(0deg,#050b19b1,transparent 45%);
+}
+body[data-nx12-page] .nx12-guide-hero::after{
+ content:"";pointer-events:none;position:absolute;z-index:1;inset:auto auto 0 24px;
+ width:clamp(120px,18vw,240px);height:2px;
+ background:linear-gradient(90deg,var(--nx12-edge),transparent);box-shadow:0 0 17px var(--nx12-halo);
+}
+body[data-nx12-page] .nx12-guide-hero-copy{position:relative;z-index:3;padding:clamp(22px,4vw,47px);width:70%;min-width:0}
+body[data-nx12-page] .nx12-guide-hero .nx12-art-edition{
+ display:block;letter-spacing:.18em;color:var(--nx12-edge);font-size:10px;font-weight:850;
+ margin:0 0 11px;text-shadow:0 0 11px #000;
+}
+body[data-nx12-page] .nx12-guide-hero h1{
+ font-size:clamp(29px,4.2vw,57px);font-weight:950;letter-spacing:-.045em;line-height:1.08;
+ color:#fff0d5;text-shadow:0 5px 25px #000b,0 0 20px var(--nx12-halo);
+ max-width:100%;margin-top:9px;margin-bottom:16px;
+}
+body[data-nx12-page] .nx12-guide-hero p{
+ max-width:740px;line-height:1.75;color:#d8e6ed;font-size:clamp(12px,1.35vw,15px);
+ text-shadow:0 2px 10px #0008;
+}
+body[data-nx12-page] .nx12-guide-hero .nx12-guide-hero-art{
+ position:absolute;z-index:2;right:clamp(16px,3.1vw,42px);top:50%;transform:translateY(-50%);
+ width:min(28%,285px);max-width:285px;aspect-ratio:3/4.25;max-height:275px;
+ border:1px solid var(--nx12-edge);border-radius:15px;
+ background-color:#111b30;background-image:linear-gradient(0deg,#080e20e1,transparent 47%),var(--nx12-art);
+ background-size:cover,cover;background-position:center,center 34%;
+ box-shadow:0 15px 39px #000a,0 0 0 4px #12172b83,0 0 26px var(--nx12-halo);
+}
+body[data-nx12-page="privacy"] .nx12-guide-hero,
+body[data-nx12-page="player-test-checklist"] .nx12-guide-hero{min-height:265px}
+/* Continued info panels share one subtle illuminated chapter rim, without inserting extra buttons. */
+body[data-nx12-page="player-handbook"] :is(.device,.quick,.studio,.card),
+body[data-nx12-page="player-test-checklist"] :is(.group,.fields,.tips),
+body[data-nx12-page="release-notes"] :is(.latest,.release){
+ border-color:color-mix(in srgb,var(--nx12-edge),transparent 50%);
+ box-shadow:inset 0 1px #ffffff15,0 9px 28px #0004;
+}
+body[data-nx12-page="getting-started"] main>h2,
+body[data-nx12-page="privacy"] main>h2,
+body[data-nx12-page="player-handbook"] main>h2{
+ border-left:3px solid var(--nx12-edge);padding-left:13px;
+ color:var(--nx12-soft);
+}
+
+/* Research studios: clear, large art and studio-specific emissive identity.
+   Wide background from our true HD artwork; framed original portrait remains <=310px.
+*/
+body[data-nx12-page="character-intelligence"] .nx-art-banner,
+body[data-nx12-page="progression-intelligence"] .nx-art-banner,
+body[data-nx12-page="azeroth-assistant"] .nx-art-banner,
+body[data-nx12-page="sovereign-ascension"] .intro,
+body[data-nx12-page="addon-nexus"] .hero{
+ background-image:linear-gradient(90deg,#071021f8 0%,#081426ee 47%,#091a33d6 76%,#0d1732c0),var(--nx12-hd)!important;
+ background-size:cover,cover!important;background-position:center,center 35%!important;
+ border-color:var(--nx12-edge)!important;
+ box-shadow:0 25px 60px #0008,0 0 26px var(--nx12-halo),inset 0 1px #ffffff2a!important;
+ min-height:310px;
+}
+body[data-nx12-page="character-intelligence"] .nx-art-banner::after,
+body[data-nx12-page="progression-intelligence"] .nx-art-banner::after,
+body[data-nx12-page="azeroth-assistant"] .nx-art-banner::after,
+body[data-nx12-page="sovereign-ascension"] .intro::after,
+body[data-nx12-page="addon-nexus"] .hero::after{
+ display:block;content:"";right:clamp(16px,3vw,41px);top:18px;bottom:18px;
+ width:min(29%,305px);max-width:305px;border-radius:16px;border:1px solid var(--nx12-edge);
+ opacity:1;pointer-events:none;
+ background-image:linear-gradient(0deg,#061022e8,#07132517 58%),var(--nx12-art)!important;
+ background-size:cover,cover!important;background-position:center,center 32%!important;
+ box-shadow:0 15px 42px #000a,0 0 0 4px #0a10268c,0 0 26px var(--nx12-halo)!important;
+}
+body[data-nx12-page="character-intelligence"] .nx-art-banner h1,
+body[data-nx12-page="progression-intelligence"] .nx-art-banner h1,
+body[data-nx12-page="azeroth-assistant"] .nx-art-banner h1,
+body[data-nx12-page="sovereign-ascension"] .intro h1,
+body[data-nx12-page="addon-nexus"] .hero h1{
+ color:#fff0dc!important;text-shadow:0 4px 24px #030612,0 0 30px var(--nx12-halo)!important;
+}
+body[data-nx12-page="character-intelligence"] :is(.panel,.card),
+body[data-nx12-page="progression-intelligence"] :is(.panel,.card),
+body[data-nx12-page="azeroth-assistant"] :is(.panel,.card),
+body[data-nx12-page="sovereign-ascension"] :is(.panel,.tile),
+body[data-nx12-page="addon-nexus"] :is(.panel,.card){
+ border-color:color-mix(in srgb,var(--nx12-edge),transparent 53%)!important;
+}
+body[data-nx12-page="character-intelligence"] :is(h2,h3),
+body[data-nx12-page="progression-intelligence"] :is(h2,h3),
+body[data-nx12-page="azeroth-assistant"] :is(h2,h3),
+body[data-nx12-page="sovereign-ascension"] :is(h2,h3),
+body[data-nx12-page="addon-nexus"] :is(h2,h3){text-shadow:0 1px 12px var(--nx12-halo)}
+
+/* Original app: differentiated art-rich headers for each existing workspace,
+   without changing dynamic data panels, hidden sections, or embedded tools.
+*/
+body[data-nx12-page="index"] .main>.section[data-section]{
+ --nx12-section-portrait:var(--nx12-throne);--nx12-section-edge:#e4c08b;--nx12-section-halo:#e3b98643;
+}
+body[data-nx12-page="index"] .main>.section[data-section="characters"]{--nx12-section-portrait:var(--nx12-armory);--nx12-section-edge:#a7e6f0;--nx12-section-halo:#8acfe047}
+body[data-nx12-page="index"] .main>.section[data-section="builds"]{--nx12-section-portrait:var(--nx12-forge);--nx12-section-edge:#c9adf7;--nx12-section-halo:#bb91f34b}
+body[data-nx12-page="index"] .main>.section[data-section="progress"]{--nx12-section-portrait:var(--nx12-adventure);--nx12-section-edge:#f0ad8c;--nx12-section-halo:#d9ad8b47}
+body[data-nx12-page="index"] .main>.section[data-section="collections"]{--nx12-section-portrait:var(--nx12-throne);--nx12-section-edge:#f1cb91;--nx12-section-halo:#ddb7854b}
+body[data-nx12-page="index"] .main>.section[data-section="data"]{--nx12-section-portrait:var(--nx12-guardian);--nx12-section-edge:#b7e5ea;--nx12-section-halo:#94d0db47}
+body[data-nx12-page="index"] .main>.section[data-section].active>h2:first-child{
+ position:relative;isolation:isolate;display:flex;align-items:center;width:100%;
+ min-height:165px;padding:clamp(18px,3vw,35px);margin-bottom:14px;overflow:hidden;
+ border:1px solid var(--nx12-section-edge);border-radius:17px;
+ background-color:#0b172c;
+ background-image:linear-gradient(90deg,#061021fc 0%,#0b1730f0 53%,#111a32c7 77%,#0a1531bb 100%),var(--nx12-section-portrait),var(--nx12-wide)!important;
+ background-position:center,right 15px center,center 40%!important;
+ background-size:cover,auto 155%,cover!important;background-repeat:no-repeat!important;
+ box-shadow:0 16px 36px #0008,0 0 18px var(--nx12-section-halo),inset 0 1px #ffffff25;
+ color:#f9eacf;text-shadow:0 4px 21px #000c;
+ font-size:clamp(24px,2.6vw,35px);letter-spacing:-.025em;
+}
+body[data-nx12-page="index"] .main>.hero{
+ border-color:#e1ba86a0!important;box-shadow:0 22px 55px #0008,0 0 27px #e6b28234!important;
+}
+/* New command center, player workspace, and existing cinematic gateways already
+   have art-first layouts: consistent light trims only, avoid art-over-art. */
+body[data-nx12-page="command-center"] :is(.nx10-hero,.nx10-player-feature,.nx10-chamber){
+ border-color:color-mix(in srgb,var(--nx12-edge),transparent 22%);
+}
+body[data-nx12-page="player-experience"] :is(.px11-hero,.px11-hero-portrait){
+ border-color:color-mix(in srgb,var(--nx12-edge),transparent 18%);
+}
+body[data-nx12-page="citadel-entry"] :is(.citadel-hero,.portal-wrap),
+body[data-nx12-page="living-azeroth"] :is(.lv9-hero,.lv9-portal){
+ box-shadow:0 15px 35px #0006,inset 0 1px #ffffff20;
+}
+/* Save Protection is an actual utility. Use art as a framed guardian inset
+   and keep the export button, status and text in front. */
+body[data-nx12-page="save-protection"] main>.hero{
+ min-height:290px;position:relative;isolation:isolate;overflow:hidden;
+ border-color:var(--nx12-edge);
+ background-image:linear-gradient(90deg,#071021f9 0%,#0d1a31f0 54%,#07152db9),var(--nx12-hd)!important;
+ box-shadow:0 21px 55px #0008,0 0 27px var(--nx12-halo);
+ padding-right:min(33%,340px);
+}
+body[data-nx12-page="save-protection"] main>.hero::after{
+ content:"";pointer-events:none;position:absolute;z-index:0;right:clamp(12px,3vw,35px);top:17px;bottom:17px;width:min(26%,260px);
+ border:1px solid var(--nx12-edge);border-radius:15px;
+ background:linear-gradient(0deg,#061221c9,transparent 54%),var(--nx12-art) center 33%/cover no-repeat;
+ box-shadow:0 12px 35px #0009,0 0 0 4px #07152b9b;
+}
+body[data-nx12-page="save-protection"] main>.hero>*{position:relative;z-index:1}
+body[data-nx12-page="developer"] .panel.profile{border-color:var(--nx12-edge)}
+/* Performance / accessibility — do not add runtime snow or blur to static pages. */
+@media(max-width:760px){
+ body[data-nx12-page] .nx12-guide-hero{min-height:235px;border-radius:15px}
+ body[data-nx12-page] .nx12-guide-hero-copy{width:100%;padding:23px 17px;position:relative;z-index:3}
+ body[data-nx12-page] .nx12-guide-hero::before{background:linear-gradient(90deg,#071021cc,#061023e2),radial-gradient(ellipse at 76% 30%,var(--nx12-halo),transparent)}
+ body[data-nx12-page] .nx12-guide-hero .nx12-guide-hero-art{width:34%;max-width:180px;max-height:180px;right:4px;opacity:.28;border:none;box-shadow:none;filter:saturate(.8)}
+ body[data-nx12-page] .nx12-guide-hero h1{font-size:clamp(28px,6vw,42px)}
+ body[data-nx12-page] .nx12-guide-hero p{font-size:12px}
+ body[data-nx12-page="save-protection"] main>.hero{min-height:0;padding-right:20px;background-image:linear-gradient(90deg,#071021f5,#0b1930e5),var(--nx12-hd)!important}
+ body[data-nx12-page="save-protection"] main>.hero::after{opacity:.14;width:34%;right:0;border:none;box-shadow:none}
+ body[data-nx12-page="character-intelligence"] .nx-art-banner,
+ body[data-nx12-page="progression-intelligence"] .nx-art-banner,
+ body[data-nx12-page="azeroth-assistant"] .nx-art-banner,
+ body[data-nx12-page="sovereign-ascension"] .intro,
+ body[data-nx12-page="addon-nexus"] .hero{min-height:0}
+}
+@media(max-width:660px){
+ body[data-nx12-page="character-intelligence"] .nx-art-banner::after,
+ body[data-nx12-page="progression-intelligence"] .nx-art-banner::after,
+ body[data-nx12-page="azeroth-assistant"] .nx-art-banner::after,
+ body[data-nx12-page="sovereign-ascension"] .intro::after,
+ body[data-nx12-page="addon-nexus"] .hero::after{display:none!important}
+ body[data-nx12-page="character-intelligence"] .nx-art-banner,
+ body[data-nx12-page="progression-intelligence"] .nx-art-banner,
+ body[data-nx12-page="azeroth-assistant"] .nx-art-banner,
+ body[data-nx12-page="sovereign-ascension"] .intro,
+ body[data-nx12-page="addon-nexus"] .hero{
+ background-image:linear-gradient(90deg,#06101ff7,#091a32ed),var(--nx12-wide)!important;
+ background-position:center,center!important;background-size:cover,cover!important;
+ }
+ body[data-nx12-page="index"] .main>.section[data-section].active>h2:first-child{
+  min-height:136px;
+  background-image:linear-gradient(90deg,#071121fa,#0c1c35e5 75%,#0c1734c7),var(--nx12-wide)!important;
+  background-position:center,center!important;background-size:cover,cover!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){body[data-nx12-page] .nx12-guide-hero *{transition:none!important}}
+@media(prefers-reduced-transparency:reduce){body[data-nx12-page] .nx12-guide-hero{background-color:#0a162c}}
+@media print{body[data-nx12-page] .nx12-guide-hero{background:#fff!important;color:#111!important;border:1px solid #777;box-shadow:none}body[data-nx12-page] .nx12-guide-hero-art{display:none!important}}
