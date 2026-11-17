@@ -84,7 +84,7 @@ async function run(engine,phone){
   await page.locator('#nxMusicOpen').click();
   assert.ok(await page.locator('#nxMusicDock').isVisible(),'Local music player should open on explicit request');
   assert.equal(await page.locator('#nxMusicPlaylist .nx-music-entry').count(),1,'Local playlist should contain uploaded audio');
-  assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused),'Local audio must not autoplay');
+  assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused||!a.currentSrc.startsWith('blob:')),'Uploaded local tracks must not autoplay; the separately configured first-party welcome theme may play on desktop');
   await page.locator('#nxMusicClose').click();
   assert.ok(await page.locator('#nxMusicDock').isHidden());
   await navigate('talents');
