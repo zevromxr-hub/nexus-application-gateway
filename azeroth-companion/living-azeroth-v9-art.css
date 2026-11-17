@@ -1,0 +1,118 @@
+/* LIVING AZEROTH v9 — PREMIUM ART PASS
+   Corrects the placeholder geometric SVGs. Uses existing locally hosted, illustrated
+   warrior and assassin WEBP artwork already in this repo; no external hotlinks.
+   No changes to controls, source data, or authentication. */
+:root{--lv9-portrait:url("./assets/radiant-warrior-background.webp");--lv9-shadow:url("./assets/assassin-background.webp")}
+.lv9-visual .lv9-hero,
+.lv9-visual .lv9-main-hero,
+body.lv9-visual .hero{
+  background-color:#0a1020!important;
+  background-image:linear-gradient(90deg,rgba(5,8,22,.97) 0%,rgba(6,10,27,.92) 32%,rgba(6,10,27,.47) 65%,rgba(7,10,27,.06) 100%),var(--lv9-portrait)!important;
+  background-size:cover,cover!important;
+  background-position:center,center 35%!important;
+  border:1px solid rgba(240,196,126,.59)!important;
+  box-shadow:0 26px 72px #000a,0 0 0 1px #e6b65c22 inset;
+}
+.lv9-visual .lv9-hero:before{background:linear-gradient(90deg,#050b1fd9,transparent 76%)!important}
+.lv9-visual .lv9-hero:after{background:linear-gradient(0deg,#050717c7,transparent 40%)!important}
+.lv9-visual .lv9-hero h1{font-weight:950;text-shadow:0 5px 28px #03030a,0 1px 1px #f3ddb143!important}
+.lv9-visual .lv9-hero-content{max-width:690px!important}
+body.lv9-visual .hero:before{background:linear-gradient(90deg,#071022d9,transparent 82%)!important}
+body.lv9-visual .hero:after{font-size:0!important;content:""!important}
+.lv9-visual .lv9-destinations{
+ display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr))!important;
+ grid-auto-flow:row;gap:14px!important;overflow:visible!important;
+}
+.lv9-visual a.lv9-portal{
+  position:relative!important;grid-column:span 4;min-height:265px!important;
+  display:flex!important;flex-direction:column;justify-content:flex-end!important;
+  text-decoration:none!important;color:#f6e6c4!important;
+  padding:clamp(17px,2vw,25px)!important;overflow:hidden;
+  isolation:isolate;border:1px solid #d7b0748c!important;
+  border-radius:15px!important;
+  background-color:#0e1429!important;
+  background-image:linear-gradient(180deg,transparent 26%,#05091460 57%,#050a18ed 89%),var(--lv9-card-image,var(--lv9-portrait))!important;
+  background-position:center,var(--lv9-card-pos,center 40%)!important;
+  background-size:cover,cover!important;
+  box-shadow:0 15px 35px #030712a6,0 0 0 1px #dfb46a12 inset!important;
+  transition:transform .22s ease,box-shadow .22s ease,filter .22s ease!important;
+}
+.lv9-visual a.lv9-portal:nth-child(-n+2){grid-column:span 6;min-height:345px!important}
+.lv9-visual a.lv9-portal:nth-child(1){--lv9-card-image:var(--lv9-portrait);--lv9-card-pos:62% 42%}
+.lv9-visual a.lv9-portal:nth-child(2){--lv9-card-image:var(--lv9-shadow);--lv9-card-pos:48% 33%}
+.lv9-visual a.lv9-portal:nth-child(3){--lv9-card-image:var(--lv9-portrait);--lv9-card-pos:68% 65%}
+.lv9-visual a.lv9-portal:nth-child(4){--lv9-card-image:var(--lv9-shadow);--lv9-card-pos:72% 70%}
+.lv9-visual a.lv9-portal:nth-child(5){--lv9-card-image:var(--lv9-shadow);--lv9-card-pos:34% 31%}
+.lv9-visual a.lv9-portal:before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(90deg,#090e1e54,transparent 74%),
+  radial-gradient(circle at 80% 18%,var(--lv9-halo,#9e83e3) 0%,transparent 43%);
+  opacity:.26;
+}
+.lv9-visual a.lv9-portal:after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(0deg,#060b1afb,transparent 75%);
+}
+.lv9-visual .lv9-portal-symbol{
+  position:absolute!important;top:16px!important;left:16px!important;right:auto!important;
+  z-index:2!important;display:grid!important;place-items:center!important;
+  width:38px;height:38px;line-height:1!important;
+  border:1px solid #e1bb7e9c;border-radius:50%;background:#0b122ab9;
+  font-size:23px!important;filter:none!important;color:#ffdc9c!important;
+  box-shadow:0 0 26px #0c091caa!important;
+}
+.lv9-visual .lv9-portal strong,.lv9-visual .lv9-portal small{z-index:2!important;position:relative!important}
+.lv9-visual .lv9-portal strong{
+  font-size:clamp(16px,1.75vw,23px)!important;font-weight:900!important;
+  text-transform:uppercase!important;letter-spacing:.09em!important;
+  color:#ffeac8!important;text-shadow:0 3px 10px #000!important;
+}
+.lv9-visual .lv9-portal small{
+  margin-top:8px!important;font-size:12px!important;
+  color:#c9d7e3!important;letter-spacing:.015em!important;
+  text-shadow:0 2px 9px #000!important;
+}
+.lv9-visual a.lv9-portal:hover,.lv9-visual a.lv9-portal:focus-visible{
+ transform:translateY(-5px) scale(1.008)!important;
+ border-color:#ffe0a0!important;
+ box-shadow:0 23px 53px #03040fba,0 0 33px #a774e75e!important;
+}
+.lv9-visual a.lv9-portal:focus-visible{outline:3px solid #90eddf!important;outline-offset:4px!important}
+.lv9-visual .lv9-guide-visual,.lv9-visual .lv9-adventure-portrait{
+ background-color:#0d152c!important;
+ background-image:linear-gradient(0deg,#0609153f,transparent 48%),var(--lv9-shadow)!important;
+ background-size:cover,cover!important;
+ background-position:center,center 40%!important;
+ border:1px solid #d9ba8c85!important;
+ box-shadow:inset 0 0 24px #040611b5,0 15px 40px #03061378;
+}
+.lv9-visual .lv9-chapter,.lv9-visual .lv9-journal-card{
+ border-color:#ccae7c80!important;
+ background:linear-gradient(120deg,#172438e5,#10182ae8)!important;
+}
+.lv9-visual .lv9-journal-card{
+ background-image:linear-gradient(90deg,#081027d7,#08102785),var(--lv9-shadow)!important;
+ background-position:center!important;background-size:cover!important;
+}
+.lv9-visual .lv9-journal-card:nth-child(2){background-image:linear-gradient(90deg,#091024e0,#10102486),var(--lv9-portrait)!important}
+.lv9-visual .lv9-journal-card:nth-child(3){background-image:linear-gradient(90deg,#091a1fdf,#06172487),var(--lv9-shadow)!important}
+.lv9-visual .lv9-talent-header{
+ background-image:linear-gradient(100deg,#071122e3,#0810268d),var(--lv9-shadow)!important;
+ background-position:center!important;background-size:cover!important;
+}
+.lv9-mode-performance .lv9-portal:before{display:none!important}
+@media(max-width:980px){
+.lv9-visual .lv9-destinations{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.lv9-visual a.lv9-portal,.lv9-visual a.lv9-portal:nth-child(-n+2){grid-column:span 1!important;min-height:270px!important}
+.lv9-visual a.lv9-portal:first-child{grid-column:span 2!important;min-height:310px!important}
+}
+@media(max-width:590px){
+.lv9-visual .lv9-hero{background-position:center,62% 35%!important}
+.lv9-visual .lv9-destinations{grid-template-columns:1fr!important}
+.lv9-visual a.lv9-portal,.lv9-visual a.lv9-portal:nth-child(-n+2),.lv9-visual a.lv9-portal:first-child{grid-column:1/-1!important;min-height:230px!important}
+.lv9-visual a.lv9-portal:first-child{min-height:280px!important}
+.lv9-visual .lv9-portal strong{font-size:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+.lv9-visual a.lv9-portal{transition:none!important}
+}
