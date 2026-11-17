@@ -71,7 +71,7 @@ assert.match(html,/founder-bubble-v7\.7\.1\.js\?v=771/,'Founder shortcut must lo
 assert.match(html,/founder-bubble-v7\.7\.1\.css\?v=771/,'Founder styles must load');
 assert.doesNotMatch(html,/<a class="nx-developer-nav-link"/,'Old sidebar developer link must be removed');
 assert.match(founder,/\.\/developer\.html/,'Founder shortcut must open existing identity page');
-assert.match(founder,/zevro-music-crest\.webp/,'Founder shortcut must use official existing crest');
+assert.match(founder,/assassin-background\.webp/,'Founder shortcut must reuse the current approved Assassin Dominion artwork');
 assert.match(founder,/nxFounderMobileSlot/,'Founder mobile header slot expected');
 assert.match(founderStyles,/@media\(max-width:800px\)/,'Founder bubble must fit mobile');
 assert.ok(!founder.includes('fetch('),'Founder bubble must not contact network services');
