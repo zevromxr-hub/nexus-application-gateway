@@ -111,3 +111,17 @@
 }
 @media(prefers-reduced-motion:reduce){.nx15-nexus *{transition:none!important;animation:none!important}}
 @media print{.nx15-hero{background:#141f3d!important}.nx15-exchange,.nx15-panel{break-inside:avoid}}
+
+
+/* v15 character → native Talent Forge handoff. No auto-allocation. */
+#talentForge .nx15-forge-handoff{margin:15px 0 22px;padding:15px 20px;border:1px solid #e3bd8c8f;border-radius:13px;
+ background:linear-gradient(115deg,#172c46ed,#302342f0);box-shadow:0 8px 28px #0007;
+ display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;color:#e9e5f0}
+#talentForge .nx15-forge-handoff>div{min-width:0;flex:1}
+#talentForge .nx15-forge-handoff span{display:block;font-size:9px;letter-spacing:.12em;font-weight:900;color:#d7c19b}
+#talentForge .nx15-forge-handoff strong{display:block;font-size:18px;color:#ffe0b1;overflow-wrap:anywhere;margin:5px 0}
+#talentForge .nx15-forge-handoff p{font-size:11px;color:#c5d7e1;line-height:1.7;margin:4px 0}
+#talentForge .nx15-forge-handoff a{font-size:10px;font-weight:900;color:#f2d8ac;text-decoration:none;border:1px solid #dcc29c8a;
+ border-radius:9px;background:#29384d;padding:11px 13px;min-height:43px;display:inline-flex;align-items:center}
+#talentForge .nx15-forge-handoff a:focus-visible{outline:3px solid #aee9f6;outline-offset:3px}
+@media(max-width:690px){#talentForge .nx15-forge-handoff{padding:13px}}
