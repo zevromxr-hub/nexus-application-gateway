@@ -13,8 +13,8 @@ for(const file of ['styles-core-v5.2.css','styles-experience-v5.0.css','scripts-
 }
 for(const attr of ['data-sources="./warcraft-overdrive.css','data-sources="./assassin-dominion.css','data-sources="./warcraft-overdrive.js','data-sources="./talent-paths.js'])
  assert.ok(html.includes(attr),'Preserved source manifest absent: '+attr);
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,22,'Compiled styles plus preserved additive styles and assistant CSS');
-assert.equal((html.match(/<script defer src=/g)||[]).length,23,'Compiled scripts plus preserved additive studio modules');
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,23,'Compiled styles plus preserved additive styles and assistant CSS');
+assert.equal((html.match(/<script defer src=/g)||[]).length,24,'Compiled scripts plus preserved additive studio modules');
 assert.ok(html.indexOf('scripts-core-v4.8.js')<html.indexOf('scripts-experience-v5.2.js'),'Script order must preserve original dependency order');
 assert.ok(html.indexOf('styles-core-v5.2.css')<html.indexOf('styles-experience-v5.0.css'),'CSS order must preserve original cascade order');
 const check=await import('../scripts/lean-launch.mjs');
