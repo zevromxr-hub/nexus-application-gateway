@@ -1,14 +1,24 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN CHARACTER NEXUS — CONNECTED CHARACTER DOSSIER, PUBLIC BLIZZARD GEAR, FORGE HANDOFF AND PORTABLE BUILDS",
-  "previous_version": "14.0.0",
+  "subtitle": "LIVING WORLD ENGINE — THE WAR ROOM, INTERACTIVE WORLD ATLAS, ADVENTURE MISSIONS & COMMAND SEARCH 2.0",
+  "previous_version": "15.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Introduced Living World Engine v16 with a new illustrated personal War Room inside the original Command Center. Read-only local profile, Talent Forge drafts, manual item targets and next local mission appear together without disrupting previous v10–v15 work.",
+    "Added browser-local Command Search 2.0 for curated regions, known studio routes, saved characters, manual talent drafts, Item Atlas entries and personal Atlas missions. Original Command Center search remains operational; no search text goes to Blizzard or another service.",
+    "Launched a separate World Atlas with a conceptual not-to-scale in-game research map, eight curated region groups and more than twenty real, recognizable city/hub/zone destinations, plus destination filtering and targeted research links.",
+    "Implemented a separate personal exploration mission planner with region and destination choices, optional links to locally saved characters, native Forge drafts and Item Atlas IDs, manual Planned/In progress/Manually completed statuses, deletion confirmation and JSON export.",
+    "Connected Character Nexus and the original Companion sidebar to World Atlas research, with a read-only character-filtered view of local Atlas goals and cross-studio links.",
+    "Retained cinematic original NEXUS panoramic art, framed region portraits, gold/violet/blue styling and responsive desktop/iPhone layouts, with reduced-motion accommodations and no heavy animation engines or new third-party imagery.",
+    "Protected the new isolated nexus_world_atlas_goals_v16 mission storage key in the existing read-only Save Protection export. The War Room only updates the pre-existing local character focus preference after explicit selection.",
+    "Left original Blizzard account verification, Cloudflare Workers, Forge rank engine, official spell icons, character records, local quests, HYPER MUSIC and v15 guest-build portability unchanged.",
+    "Added source-regression and synthetic desktop/iPhone browser acceptance tests plus ten deferred v16 test scenarios. No live gameplay, real character position, official map geometry or automatic cross-device sync is claimed.",
+    "Preserved backup/azeroth-v15-before-living-world-engine-v16-2026-11-17 and documented deferred tests in AZEROTH-v16-LIVING-WORLD-ENGINE-RELEASE-AND-TESTER-GUIDE.md. The owner-approved release policy remains separate from optional tester completion.",
     "Launched Sovereign Character Nexus v15 as a cinematic character-centered workspace within the existing My Character page, retaining all v11 tabs, manual profiles, goals, build links and original saved data.",
     "Added explicit public Blizzard character and equipped-gear lookups using the already supported Cloudflare character/equipment endpoints; source facts, equipped item IDs and item levels remain distinct from manual records, in-memory only, and never imply verified account ownership.",
     "Connected official public equipped equipment IDs to independently labeled Item Atlas manual goals and research statuses. Gear gaps are not treated as DPS, ownership or upgrade recommendations.",
@@ -103,16 +113,11 @@
     "Changed the five chamber destinations into a responsive portrait gallery, capped at the original 380px illustration width rather than stretching the portraits into landscape cards.",
     "Improved first-view artwork loading and retained all studio links, user preferences, saved data, performance modes and account flows.",
     "Added a self-contained Citadel Awakening gateway at the canonical site URL for fresh visits, with the app's heavy resources loading only after selecting the full companion.",
-    "Added five previewable chambers, searchable navigation, three locally pinned shortcuts and a recent-chamber launcher; all links open existing working studios.",
-    "Added optional distinct illustrated artwork for each chamber, falling back safely to existing hosted v9 artwork until installed.",
-    "Retained Cinematic, Balanced and Performance modes with reduced-motion respect, preserved all existing local save formats and Blizzard account controls.",
-    "Provided staged browser acceptance for the new gateway and protected the published Discord release index until verification.",
-    "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
-    "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation."
+    "Added five previewable chambers, searchable navigation, three locally pinned shortcuts and a recent-chamber launcher; all links open existing working studios."
   ],
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "The project owner approved development/public release and Discord; live player/browser and Blizzard API acceptance remains pending."
+    "note": "User approved continued v16 development and release. Automated source/device checks are advisory; Blizzard gameplay and physical-device acceptance remain pending."
   }
 }
