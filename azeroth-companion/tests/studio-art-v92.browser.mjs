@@ -27,8 +27,14 @@ async function inspect(label,engine,mobile){
      const actual=await page.locator('body').getAttribute('data-nx-art-page');
      assert.equal(actual,scope,'Incorrect art assignment for '+file);
      await page.locator(hero).waitFor();
-     const image=await page.locator(hero).evaluate(el=>getComputedStyle(el,'::after').backgroundImage);
-     if(!mobile)assert.ok(image.includes(asset),file+' must render the matching original chamber illustration; observed '+image);
+     const art=await page.locator(hero).evaluate(el=>({
+       background:getComputedStyle(el).backgroundImage,
+       size:getComputedStyle(el).backgroundSize,
+       inset:getComputedStyle(el,'::after').display
+     }));
+     assert.ok(art.background.includes('zevro-wide-banner-v9.2.webp'),file+' must use the full-width ZevRo panorama; observed '+JSON.stringify(art));
+     assert.ok(art.size.includes('cover'),file+' wide banner must fill its frame');
+     assert.equal(art.inset,'none',file+' must not retain the previous partial inset portrait');
      const left=await page.locator(hero).evaluate(el=>({width:el.getBoundingClientRect().width,scroll:el.scrollWidth}));
      assert.ok(left.scroll<=left.width+3,file+' has a banner overflow '+JSON.stringify(left));
      const viewport=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
@@ -36,6 +42,8 @@ async function inspect(label,engine,mobile){
    }
    await page.goto(base+'living-azeroth.html',{waitUntil:'domcontentloaded'});
    assert.equal(await page.locator('body').getAttribute('data-nx-art-page'),'living');
+   const livingHero=await page.locator('.lv9-hero').evaluate(el=>getComputedStyle(el).backgroundImage);
+   assert.ok(livingHero.includes('zevro-wide-banner-v9.2.webp'),'Alternate landing hero must use the panorama');
    const gallery=await page.locator('a.lv9-portal').evaluateAll(els=>els.slice(0,5).map(el=>{
      const cs=getComputedStyle(el),r=el.getBoundingClientRect();return{width:r.width,background:cs.backgroundImage};
    }));
@@ -57,11 +65,13 @@ async function inspect(label,engine,mobile){
    const talentHeader=page.locator('.lv9-talent-header').first();
    await talentHeader.waitFor({timeout:12000});
    const talentBg=await talentHeader.evaluate(el=>getComputedStyle(el).backgroundImage);
-   assert.ok(talentBg.includes('talent-forge-v9.1.webp'),'Talent Forge should use the correct existing illustration');
+   assert.ok(talentBg.includes('zevro-wide-banner-v9.2.webp'),'Talent Forge must use the full-width ZevRo banner');
+   const talentSize=await talentHeader.evaluate(el=>getComputedStyle(el).backgroundSize);
+   assert.ok(talentSize.includes('cover'),'Talent Forge art must fill its banner without partial portrait gaps');
    const dim=await page.evaluate(()=>({width:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
    assert.ok(dim.scroll<=dim.width+3,'Full app art must not expand width '+JSON.stringify(dim));
    assert.deepEqual(errors,[],'Unexpected page errors');
-   console.log('PASS v9.2 studio artwork '+label+' — active Talent Forge, six external tools, native-size cards, mini guide and responsive layout');
+   console.log('PASS v9.2.1 panoramic studio artwork '+label+' — active Talent Forge, six external tools, native-size cards, mini guide and responsive layout');
  }catch(e){
    await page.screenshot({path:'test-results/azeroth-device-audit/studio-art-v92-'+label+'.png',fullPage:true}).catch(()=>{});
    throw e;
