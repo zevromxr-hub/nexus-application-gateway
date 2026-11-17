@@ -1,21 +1,22 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "Sovereign Ascension — Unified Character Intelligence",
-  "previous_version": "7.9.9",
+  "subtitle": "LIVING AZEROTH — Cinematic World & Interactive Studio Experience",
+  "previous_version": "8.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Introduced Sovereign Ascension as a dedicated v8.0 workspace, preserving the full v7.9.9 experience as a GitHub rollback branch.",
-    "Unified manual local character plans, saved talent drafts, collection objectives and explicit Blizzard public-profile equipment reports using separate provenance labels and timestamps.",
-    "Added read-only Talent Forge Ascension comparisons by stored node ID, allocated ranks and specialization identity, without inventing talent value or game-valid build certification.",
-    "Added character mission and progression workflows with linked steps, local JSON export and source-aware status guidance.",
-    "Expanded ZevRo | Azeroth Assistant 2.0 with an opt-in evidence review explaining manual, official and unavailable information without generative AI or account-token access.",
-    "Added mobile-first Sovereign Dashboard presentation, source-labeled metrics, safe JSON preview/import, optional public fetch and explicit cancellation.",
-    "All existing Cloudflare authentication, music, Founder, local save keys and 7.x research studios remain untouched; real-game acceptance remains pending.",
-    "Updated Gateway, Getting Started, Player Handbook, developer test checklist, device QA, changelog, regression checks and non-triggering Discord draft."
+    "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
+    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes.",
+    "Enhanced the original Talent Forge with visual node selection, glowing allocated paths and a read-only selected-node inspector fed from existing Blizzard-reported talent text and rank controls.",
+    "Introduced a Living Armory presentation with selectable equipment slots and detail cards sourced strictly from existing Blizzard public equipment responses.",
+    "Added an Adventure Journal navigation and chapter styling around the existing Mythic+, raid and reputations research without inventing achievement or inventory records.",
+    "Transformed ZevRo | Azeroth Assistant into an illustrated Oracle persona with guided-response states while retaining the existing curated knowledge and Mission Architect.",
+    "Added cinematic styling and a five-chamber navigator to Sovereign Ascension, improved desktop/mobile responsiveness, opt-in performance settings and reduced-motion respect.",
+    "Preserved the v8.0 rollback branch, legacy saved-data formats, Battle.net Cloudflare Worker, existing original studios, Founder bubble and HYPER MUSIC without changing their logic.",
+    "Synchronized Player Handbook, Getting Started, developer test requests, QA device acceptance, Gateway and release notes; guarded Discord release draft remains staging until acceptance."
   ]
 }
