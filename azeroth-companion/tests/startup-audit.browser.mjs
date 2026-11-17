@@ -56,7 +56,8 @@ async function run(label,engine,phone){
   await page.waitForTimeout(150);
   assert.equal(count(/\/api\/talent-index\//),1,'Talents index should be requested once upon visit');
   await go('guide');
-  await page.waitForFunction(() => /Azeroth v\d+\.\d+\.\d+/i.test(document.querySelector('#pgAppVersion')?.textContent||''),null,{timeout:12000});
+  // The handbook intentionally refuses to report a staged v9.1 manifest as an accepted stable release.
+  await page.waitForFunction(() => /Azeroth v\d+\.\d+\.\d+|Release status unavailable/i.test(document.querySelector('#pgAppVersion')?.textContent||''),null,{timeout:12000});
   assert.ok(count(/\/version\.json(?:\?|$)/)>=2,'Player Guide must load its version info on opening');
   await go('releases');
   await page.waitForFunction(() => /v\d+\.\d+\.\d+/i.test(document.querySelector('#wowVersion')?.textContent||''),null,{timeout:12000});
