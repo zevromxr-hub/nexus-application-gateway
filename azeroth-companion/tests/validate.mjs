@@ -184,15 +184,15 @@ assert.match(html,/progression-intelligence\.html/,'Progression navigation must 
 assert.match(progression,/\/api\/progression\//,'Progression page must use restricted public proxy');
 for(const section of ['mythic','raids','reputations'])assert.ok(progression.includes(section),'Missing progression section '+section);
 for(const code of progression.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(code[1]);
-const bridge=await read('azeroth-companion/character-handoff-v7.9.5.js');
-new vm.Script(bridge);
+const handoffBridge795=await read('azeroth-companion/character-handoff-v7.9.5.js');
+new vm.Script(handoffBridge795);
 assert.match(await read('azeroth-companion/character-intelligence.html'),/character-handoff-v7\.9\.5\.js/,'Gear comparison must include research handoff');
 assert.match(progression,/character-handoff-v7\.9\.5\.js/,'Progression must include research handoff');
 for(const item of ['progression-intelligence.html','character-intelligence.html','URLSearchParams','region','realm','character','clipboard.writeText'])
- assert.ok(bridge.includes(item),'Missing handoff behavior: '+item);
-assert.ok(!bridge.includes('fetch('),'Research handoff must not make new requests');
-assert.ok(!bridge.includes('localStorage'),'Research handoff must never alter stored plans');
-assert.ok(!bridge.includes('access_token'),'Research link must not include account tokens');
+ assert.ok(handoffBridge795.includes(item),'Missing handoff behavior: '+item);
+assert.ok(!handoffBridge795.includes('fetch('),'Research handoff must not make new requests');
+assert.ok(!handoffBridge795.includes('localStorage'),'Research handoff must never alter stored plans');
+assert.ok(!handoffBridge795.includes('access_token'),'Research link must not include account tokens');
 const handbook795=await read('azeroth-companion/player-handbook.html');
 const checklist795=await read('azeroth-companion/player-test-checklist.html');
 const getting795=await read('azeroth-companion/getting-started.html');
