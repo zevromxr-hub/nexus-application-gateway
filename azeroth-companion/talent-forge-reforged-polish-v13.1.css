@@ -19,16 +19,16 @@
 #talentForge .nx131-diff-check:has(input:disabled){opacity:.52}
 #talentForge #nx131Diff{margin:0;font-size:11px;line-height:1.6;color:#bdd0e1}
 #talentForge .nx13-scroll{overscroll-behavior:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;scroll-padding-inline:22px}
-#talentForge .nx13-grid{grid-template-columns:repeat(var(--nx13-cols),minmax(142px,1fr));
+#talentForge .nx13-grid{grid-template-columns:repeat(var(--nx13-cols),minmax(152px,1fr));
  grid-auto-rows:minmax(162px,auto);column-gap:10px;row-gap:17px;padding:13px 6px 16px}
-#talentForge .nx13-node{min-height:154px;padding:9px;border-width:1.5px;background:linear-gradient(158deg,#1b2e4af8,#0b172cf8)}
+#talentForge .nx13-node{min-height:161px;padding:9px;border-width:1.5px;background:linear-gradient(158deg,#1b2e4af8,#0b172cf8)}
 #talentForge .nx13-node.nx13-allocated{background:linear-gradient(155deg,#443a5cfa,#121e36f9);border-color:#e6c18e}
 #talentForge .nx13-node-icon{width:50px;height:50px;border-radius:11px;box-shadow:0 0 19px #ae89e477,0 4px 10px #0009}
 #talentForge .nx13-node-select{gap:6px}
 #talentForge .nx13-node-select strong{font-size:11px;line-height:1.25;letter-spacing:.01em}
 #talentForge .nx13-node-select small{font-size:10px;color:#a3c8db}
 #talentForge .nx13-node-ranks{padding-top:8px;margin-top:10px}
-#talentForge .nx13-node-ranks button{width:40px;height:40px;min-width:40px;min-height:40px;font-size:22px;border-radius:9px;
+#talentForge .nx13-node-ranks button{width:44px;height:44px;min-width:44px;min-height:44px;font-size:22px;border-radius:9px;
  border-color:#bba2caa8;background:#2b4260}
 #talentForge .nx13-node-ranks span{font-size:11px;color:#ffdfab}
 #talentForge .nx13-inspector-art{width:87px;height:87px;border-radius:16px}
@@ -75,7 +75,7 @@
  #talentForge .nx131-tray-copy strong{font-size:15px;line-height:1.26;color:#ffe0b0;overflow-wrap:anywhere}
  #talentForge .nx131-tray-copy span{font-size:11px;color:#cbd9e4}
  #talentForge .nx131-tray-controls{display:flex;align-items:center;gap:7px}
- #talentForge .nx131-tray-controls button{min-width:42px;min-height:42px;border:1px solid #d0b39cb5;border-radius:9px;
+ #talentForge .nx131-tray-controls button{min-width:44px;min-height:44px;border:1px solid #d0b39cb5;border-radius:9px;
   background:#35415c;color:#ffe3b6;font-size:23px;font-weight:900;cursor:pointer}
  #talentForge .nx131-tray-controls button:disabled{opacity:.4}
  #talentForge #nx131Details{min-width:72px;font-size:9px;letter-spacing:.04em;color:#1b1b20;background:linear-gradient(125deg,#c5a16c,#f8ddae)}
@@ -87,9 +87,9 @@
  #talentForge .nx131-tool-buttons button{min-height:43px;padding:9px 6px;font-size:9px;line-height:1.3}
  #talentForge .nx131-diff-control{grid-template-columns:1fr;gap:5px;padding-top:9px}
  #talentForge #nx131Diff{font-size:10px}
- #talentForge .nx13-grid{grid-template-columns:repeat(var(--nx13-cols),minmax(142px,1fr));grid-auto-rows:minmax(161px,auto)}
+ #talentForge .nx13-grid{grid-template-columns:repeat(var(--nx13-cols),minmax(152px,1fr));grid-auto-rows:minmax(169px,auto)}
  #talentForge .nx13-scroll{max-height:620px;min-height:300px}
- #talentForge .nx13-node-ranks button{width:40px;height:40px}
+ #talentForge .nx13-node-ranks button{width:44px;height:44px}
  #talentForge.nx13-workshop-open .nx131-tray:not([hidden]){grid-template-columns:1fr;gap:8px;padding:12px 36px 12px 13px}
  #talentForge .nx131-tray-controls{justify-content:space-between}
  #talentForge #nx131Details{flex:1;max-width:180px}
