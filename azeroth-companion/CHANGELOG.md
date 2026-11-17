@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.9.8 · 2026-11-16 — Floating Assistant Avatar & Contextual Help (Staging)
+
+- **Desktop:** Removed assistant from left sidebar and added a top-right clickable avatar opening an in-page compact assistant panel, separate from existing lower-right Founder and music controls.
+- **Mobile:** Placed the assistant shortcut in the natural site header; the compact panel opens near the bottom with a visible Close control and Full Page option.
+- **Context-aware help:** Related question suggestions can use the visible current studio, not account data, personal plans, or Blizzard tokens.
+- **Enhanced answers:** Expanded curated assistant knowledge from 22 to 27 documented topics without any paid AI service or Cloudflare Worker changes.
+- **Release support:** Updated device guides, tests, player checklist, Gateway, public release preview and prepared Discord draft; real-device/browser and Blizzard API acceptance still pending.
+
+
 ## v7.9.7 · 2026-11-16 — ZevRo | Azeroth Assistant (Staging)
 
 - **Guided assistant:** Added a new mobile/desktop assistant with searchable curated answers, a conversational interface and category-based generated question suggestions.
