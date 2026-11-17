@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "15.0.0",
+  "title": "SOVEREIGN CHARACTER NEXUS — The Living Player Experience",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner explicitly authorized v15 implementation and release. Live Blizzard account data and physical device acceptance remain pending.",
+  "features": [
+    "Sovereign Character Nexus v15 connects a selected local character with its manual builds, adventure plans and research studios.",
+    "Official public Blizzard character profiles and equipped item IDs/levels can now be loaded on demand, with source labels.",
+    "Character-linked Talent Forge launch safely preselects only a uniquely matching official specialization; original rank controls remain intact.",
+    "Living Equipment Intelligence places public equipped items beside personal Item Atlas tracking without inventing upgrades or ownership.",
+    "Personal Adventure Command unifies existing character objectives and links back to the original functional quest planner.",
+    "Portable build packages export linked manual drafts, optional goals and notes; validated guest imports never overwrite original builds.",
+    "Owner-approved Discord releases continue with tester acceptance explicitly pending; cinematic design, music and account security remain preserved."
+  ]
+}
