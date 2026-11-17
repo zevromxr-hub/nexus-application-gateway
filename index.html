@@ -4,14 +4,32 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#090b18">
-  <meta name="description" content="PROXIMUS Application Gateway — open an installed Sonic Reactor II from an authorized launch link.">
+  <meta name="description" content="Enter the Citadel of NEXUS. Explore cinematic World of Warcraft companion studios, plan talent builds, research characters and equipment, and organize your adventures. Free on PC and iPhone.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'; connect-src 'none'">
-  <title>PROXIMUS | Sonic Reactor II Launcher</title>
+  <title>NEXUS | AZEROTH COMPANION — ZevArchives</title>
+<link rel="canonical" href="https://zevarchives.com/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:description" content="Enter the Citadel of NEXUS. Explore cinematic World of Warcraft companion studios, plan talent builds, research characters and equipment, and organize your adventures. Free on PC and iPhone.">
+<meta property="og:url" content="https://zevarchives.com/">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta property="og:image:secure_url" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta property="og:image:type" content="image/webp">
+<meta property="og:image:width" content="2172">
+<meta property="og:image:height" content="724">
+<meta property="og:image:alt" content="ZevRo fantasy throne-room panorama with golden lions, violet banners and a glowing celestial portal.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NEXUS | AZEROTH COMPANION">
+<meta name="twitter:description" content="Enter the Citadel of NEXUS. Explore cinematic World of Warcraft companion studios, plan talent builds, research characters and equipment, and organize your adventures. Free on PC and iPhone.">
+<meta name="twitter:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
   <!-- ZEVARCHIVES_DOMAIN_ENTRY: branded home opens the companion, but
        ?launch=1 preserves existing Discord desktop launcher links after domain migration. -->
   <script>
     const nexusBrandedHost = location.hostname === 'zevarchives.com' || location.hostname === 'www.zevarchives.com';
     const nexusDesktopLaunch = new URLSearchParams(location.search).get('launch') === '1';
+    if (!nexusBrandedHost || nexusDesktopLaunch) document.title = 'PROXIMUS | Sonic Reactor II Launcher';
     if (nexusBrandedHost && !nexusDesktopLaunch) {
       location.replace('/azeroth-companion/' + location.search + location.hash);
     }
