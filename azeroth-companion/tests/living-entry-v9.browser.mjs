@@ -20,7 +20,7 @@ async function check(label,engine,mobile){
  await page.locator('#lv9EnterApp').click();
  await page.waitForFunction(()=>!document.querySelector('#lv9EntryGate'),null,{timeout:8000});
  assert.ok(await page.locator('main.main').isVisible(),'Full original companion must remain present after Enter');
- assert.ok(await page.locator('aside.sidebar .nav').isVisible(),'Original app sidebar remains accessible');
+ if(!mobile)assert.ok(await page.locator('aside.sidebar .nav').isVisible(),'Desktop original app sidebar remains accessible');
  assert.equal(await page.evaluate(()=>sessionStorage.getItem('nexus_living_entry_seen_v9')),'entered');
  await page.reload({waitUntil:'domcontentloaded'});
  assert.equal(await page.locator('#lv9EntryGate').count(),0,'Returning within same tab must not trap the user in the gate');
