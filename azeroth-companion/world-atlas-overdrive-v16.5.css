@@ -1,0 +1,61 @@
+/* NEXUS | AZEROTH v16.5 — WORLD ATLAS ASCENSION
+ * Additive overlay and responsive personal-research affordances.
+ */
+.nx165-atlas-ascension{position:relative;isolation:isolate;margin:26px 0 35px;color:#f4e7d5}
+.nx165-atlas-ascension *{box-sizing:border-box}
+.nx165-atlas-ascension :is(a,button):focus-visible,.nx165-bookmark:focus-visible,.nx165-open-expedition:focus-visible{outline:3px solid #b8e4f1;outline-offset:3px}
+.nx165-atlas-hero{min-height:226px;padding:clamp(20px,3vw,36px);border:1px solid #dbbc94af;border-radius:17px;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:22px;position:relative;
+ background:linear-gradient(95deg,#0c152afa,#1a2548ea 64%,#342f597d),url('./assets/adventure-journal-v9.1.webp') center/cover no-repeat;box-shadow:0 16px 43px #0009}
+.nx165-atlas-hero:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,#f1d6a2,#ad9ce2,transparent)}
+.nx165-atlas-hero>div{position:relative;z-index:1;max-width:740px}
+.nx165-atlas-hero span{color:#dec29c;font-size:9px;font-weight:950;letter-spacing:.14em}
+.nx165-atlas-hero h2{font-size:clamp(26px,3.8vw,47px);color:#fbe5bd;font-weight:950;line-height:1.08;letter-spacing:-.06em;margin:8px 0}
+.nx165-atlas-hero h2 em{font-style:normal;color:transparent;background:linear-gradient(105deg,#f0c58d,#e4c6fd);-webkit-background-clip:text;background-clip:text}
+.nx165-atlas-hero p{max-width:730px;color:#d6e0eb;font-size:12px;line-height:1.7;text-shadow:0 2px 12px #000}
+.nx165-atlas-hero>a{display:inline-flex;justify-content:center;align-items:center;position:relative;z-index:1;flex:0 0 auto;padding:12px 16px;min-height:44px;border:1px solid #f3d5a1;border-radius:9px;background:linear-gradient(120deg,#b38861,#efd2a5);color:#251f1d;font-size:10px;font-weight:950;text-decoration:none}
+.nx165-atlas-pulse{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.nx165-atlas-pulse>div{padding:15px;border-radius:10px;border:1px solid #a6b5be77;background:linear-gradient(130deg,#263551e8,#12233bf1)}
+.nx165-atlas-pulse small{display:block;color:#b4cddf;font-size:9px;font-weight:900;letter-spacing:.08em}
+.nx165-atlas-pulse strong{display:block;font-size:28px;color:#f7d5a9;line-height:1.45}
+.nx165-atlas-lanes{display:grid;grid-template-columns:1.15fr .93fr .87fr;gap:11px}
+.nx165-atlas-lane{min-width:0;padding:clamp(16px,2vw,24px);border-radius:13px;border:1px solid #afacc37b;background:linear-gradient(125deg,#1d2b45ef,#0d192df7);box-shadow:0 13px 29px #0008}
+.nx165-atlas-lane h3{font-size:16px;color:#efd3a7;font-weight:950;line-height:1.3;margin:0 0 7px;letter-spacing:.015em}
+.nx165-atlas-lane p{font-size:11px;color:#b7cfe0;line-height:1.7;margin:0 0 13px}
+.nx165-region-activity{display:grid;gap:6px;max-height:260px;overflow:auto;scrollbar-width:thin}
+.nx165-region-bar{width:100%;padding:7px 9px;border:1px solid #929db96b;border-radius:8px;background:#20304bba;color:#efe7e3;text-align:left}
+.nx165-region-bar>span:first-child{display:flex;justify-content:space-between;gap:10px;font-size:10px}
+.nx165-region-bar strong{color:#f4d9b0;font-weight:900}
+.nx165-region-bar b{font-weight:800;color:#bdd7dd;font-size:9px}
+.nx165-bar-track{position:relative;display:block;margin-top:6px;height:5px;background:#101e31;border-radius:6px;overflow:hidden}
+.nx165-bar-fill{display:block;background:linear-gradient(90deg,#7e6bab,#f1cf9c);height:100%;border-radius:6px;min-width:0}
+.nx165-region-bar:hover{border-color:#ebce9c;background:#324562}
+.nx165-favorites{display:grid;gap:6px;max-height:260px;overflow:auto}
+.nx165-place{display:flex;align-items:center;gap:9px;justify-content:space-between;border:1px solid #a8b8bd6e;border-radius:8px;padding:9px;background:#263653ae}
+.nx165-place a{color:#f0d8b2;font-size:11px;font-weight:900;overflow-wrap:anywhere;text-decoration:none}
+.nx165-place button{min-width:30px;min-height:30px;border-radius:7px;border:1px solid #d3a9ae8c;background:#492f43;color:#ffd9d8}
+.nx165-empty{font-size:11px;color:#bcd1e3;padding:11px;border:1px dashed #afafc77e;border-radius:7px;line-height:1.6}
+.nx165-next{position:relative;overflow:hidden;background:linear-gradient(115deg,#162840eb,#1c1f42dc),url('./assets/azeroth-oracle-v9.1.webp') center/cover}
+.nx165-next:after{content:"✦";position:absolute;right:7px;bottom:3px;color:#bba8e6;font-size:65px;opacity:.16;pointer-events:none}
+.nx165-next p{font-size:13px;line-height:1.75;color:#f0dfc6;margin:12px 0 20px;position:relative;z-index:1}
+.nx165-next a{position:relative;z-index:1;display:inline-flex;align-items:center;min-height:42px;padding:9px 12px;border:1px solid #e3c195a6;border-radius:8px;background:#4b3c58d6;color:#f5dbad;font-size:10px;font-weight:950;text-decoration:none}
+.nx16-destination .nx165-bookmark{font-size:23px;line-height:1;min-width:36px;min-height:36px;padding:4px;border:1px solid #d4bd9f8a;background:#343253;color:#dfd0ed;flex:none;border-radius:7px}
+.nx16-destination .nx165-bookmark[aria-pressed="true"]{color:#f8d191;background:#564260;border-color:#f2d09d}
+.nx16-mission-links .nx165-open-expedition{color:#f9dca7;font-weight:950;text-decoration:none;padding:5px 9px;background:#3b3358bb;border-radius:7px;border:1px solid #d4b7ac85}
+.nx16-map-pin .nx165-pin-count{position:absolute;top:-12px;right:-7px;min-width:19px;height:19px;border-radius:50%;display:grid;place-items:center;padding:0 4px;font-weight:950;font-size:9px;color:#1e202a;background:#f4cf9a;border:1px solid #fff1d8;box-shadow:0 4px 9px #000b}
+@media(max-width:1150px){.nx165-atlas-lanes{grid-template-columns:repeat(2,minmax(0,1fr))}.nx165-next{grid-column:1/-1}}
+@media(max-width:730px){
+ .nx165-atlas-hero{display:grid;gap:13px;padding:20px;background-image:linear-gradient(90deg,#0e152afa,#24304fe7),url('./assets/adventure-journal-v9.1.webp')}
+ .nx165-atlas-hero>a{width:max-content;max-width:100%}
+ .nx165-atlas-lanes{grid-template-columns:1fr}.nx165-next{grid-column:auto}
+ .nx165-atlas-lane{padding:17px}
+ .nx165-region-activity{max-height:300px}
+}
+@media(max-width:430px){
+ .nx165-atlas-hero h2{font-size:30px}
+ .nx165-atlas-hero>a{width:100%}
+ .nx165-atlas-pulse{gap:6px}
+ .nx165-atlas-pulse>div{padding:8px}
+ .nx165-atlas-pulse small{font-size:8px}
+ .nx165-atlas-pulse strong{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){.nx165-atlas-ascension *{animation:none!important;transition:none!important}}
