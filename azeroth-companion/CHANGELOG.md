@@ -1,8 +1,8 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
-## v7.9.9 · 2026-11-16 — Mission Architect & Floating Assistant Position Fix (Staging)
+## v7.9.9 · 2026-11-16 — Mission Architect & Connected-Header Layout Fix (Staging)
 
-- **Connected button fix:** Lowered the assistant launcher on desktop and adjusted the mini-panel position to avoid obstructing the Connected button; the mobile-header launcher remains unchanged.
+- **Connected button fix:** Replaced the fixed-position launcher with a separate right-aligned row in the page layout below the Connected header on PC and mobile, rather than relying on a pixel offset.
 - **Major assistant upgrade:** Added Mission Architect with six guided player goals and 24 actionable, linked instructions covering character builds, public progression, gear, Battle.net setup, collection farming and testing.
 - **Player-controlled exports:** Copy plans as text or export JSON locally; no automatic game/API actions or mutation of browser-saved player data.
 - **Existing features preserved:** Kept the 27 curated question topics, full assistant, Founder identity, HYPER MUSIC, Blizzard progression intelligence and private account integrations.
