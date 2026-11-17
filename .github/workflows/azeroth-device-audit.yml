@@ -38,6 +38,7 @@ jobs:
           node azeroth-companion/tests/talent-planner-v51.browser.mjs
           node azeroth-companion/tests/sovereign-v8.browser.mjs
           node azeroth-companion/tests/living-azeroth-v9.browser.mjs
+          node azeroth-companion/tests/living-entry-v9.browser.mjs
       - name: Upload screenshots if a browser check failed
         if: failure()
         uses: actions/upload-artifact@v4
