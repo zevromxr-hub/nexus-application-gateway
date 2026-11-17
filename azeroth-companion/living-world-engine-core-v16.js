@@ -111,7 +111,7 @@ function search({query='',characters=[],drafts=[],goals=[],atlas=[]}={}){
  const staticRoutes=[
   ['Expedition Intelligence','Adventure preparation','./expedition-console.html','Manual mission preparation, checklist progress and character-linked research'],
   ['Sovereign Character Nexus','Studio','./player-experience.html','Public Armory research, personal character and builds'],
-  ['World Atlas Overdrive v18','World Atlas','./world-atlas.html','Illustrated continent chart, icon destinations, manual goals and bookmarks'],
+  ['World Atlas Route Architect v18.1','World Atlas','./world-atlas.html','Illustrated continent map, destination icons, manual missions, bookmarks and saved expedition routes'],
   ['Talent Forge Reforged','Studio','./?enter=1&view=talents','Source-backed talent planning'],
   ['Living Armory','Studio','./character-intelligence.html','Equipment and public gear research'],
   ['Adventure Journal','Studio','./progression-intelligence.html','Adventure and progression research'],

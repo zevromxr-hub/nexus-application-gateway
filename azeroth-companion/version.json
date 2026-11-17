@@ -1,14 +1,23 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "18.0.0",
+  "version": "18.1.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "WORLD ATLAS OVERDRIVE — ORIGINAL CARTOGRAPHY, ICON PINS, MANUAL MISSION OVERLAYS & FAST IPHONE MODE",
-  "previous_version": "17.0.0",
+  "subtitle": "SOVEREIGN ROUTE ARCHITECT — SAVED MAP ITINERARIES, ORDERED PINS & MOBILE FIELD PLANNING",
+  "previous_version": "18.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Added Sovereign Route Architect v18.1 inside the World Atlas: private library of up to six named itineraries, each supporting up to twelve unique real curated destination IDs, research notes and manually visited flags.",
+    "Numbers each selected region's map pins by itinerary order and draws decorative dashed connections only when consecutive stops appear in the same displayed region, with explicit warnings that these are not travel directions or distance estimates.",
+    "Supports adding a selected visual destination pin or selecting any of the 25 curated capital/hub/zone names, moving stops up/down, editing notes and checking visits without changing game progress.",
+    "Introduces curated research-only route starters for capital cities, Dragon Isles and Khaz Algar, plus optional continent grouping (not claimed as real-world/in-game travel optimization).",
+    "Shows how many selected stops have existing user-saved Atlas missions, with quick links to the original zone research, Expedition Intelligence and v17 Adventure Operations studios.",
+    "Adds explicit export/import with validation, preview, confirmation and isolated v18.1 key nexus_atlas_routes_v181; complete Save Protection backup includes the new routes alongside existing characters, builds and missions.",
+    "Protects against another tab overwriting saved routes; bounds all names/notes/IDs and does not alter any original v16/v16.5/v17 mission, bookmark, session, Forge or authentication records.",
+    "Introduces cinematic violet/gold route board visuals, smaller layouts for iPhone, reduced motion, full keyboard controls, source-unit and desktop Chromium/simulated iPhone WebKit acceptance tests.",
+    "Rollback safety branch backup/azeroth-v18-before-route-command-v181-2026-11-17. Owner-approved website upgrade; real-device, live game player acceptance remains pending.",
     "World Atlas Overdrive v18 replaces the flat illustrative map background with a detailed, original standalone SVG continental chart, including richer coastline relief, mountains, forests, labels and a separate Outland portal inset.",
     "Built a dual-level interactive map experience: existing eight world-region pins and a new selected-region icon chart for all 25 curated real WoW-named destinations, with capital, hub and zone iconography.",
     "Overlaid the original manual mission statuses (in progress, planned, manually completed), bookmark stars, local mission counts and v17 session markers—without implying real gameplay position, achievement or ownership.",
@@ -149,6 +158,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner requested v18 World Atlas Overdrive and approved proceeding with publication. Browser/UI automated tests are advisory; real player, actual physical iPhone, connected Blizzard account and in-game map/quest acceptance are pending."
+    "note": "Continuing owner-approved Azeroth feature development with an additive route studio. Real physical iPhone and live WoW player testing remain pending."
   }
 }

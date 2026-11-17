@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v18.1.0 · 2026-11-17 — SOVEREIGN ROUTE ARCHITECT (Owner approved; physical device/game acceptance pending)
+
+- Built a new immersive personal route studio inside the existing World Atlas with six local named itineraries, up to twelve unique curated destinations per route, research notes and manually visited markers.
+- Added source-linked location selector, selected-map-pin quick add, ordered map pin badges and dashed within-region sequence segments. These overlays are **illustrative itinerary order**—not actual routes, distance calculations, live position tracking or game travel optimization.
+- Added manual reordering, on-demand region grouping, three curated research templates, individual stop notes and an Atlas mission-count bridge to Expedition Intelligence and Sovereign Adventure Operations.
+- Added JSON export/import with validation/preview/confirmation, cross-tab overwrite safeguards and a single isolated new storage key `nexus_atlas_routes_v181`. Save Protection now includes the routes alongside v16/v16.5/v17 native data.
+- Added mobile-responsive cinematic route boards and dedicated source-unit and synthetic Chromium/iPhone WebKit acceptance. Backed up the v18 baseline as `backup/azeroth-v18-before-route-command-v181-2026-11-17`.
+- Existing World Atlas missions, bookmarks, v17 session, characters, Talent Forge, items, Blizzard OAuth and Cloudflare Worker remain unchanged. Real physical device and in-game player acceptance awaits testers.
+
+
 ## v18.0.0 · 2026-11-17 — WORLD ATLAS OVERDRIVE (Owner approved; actual player/device acceptance pending)
 
 - Replaced the flat native Atlas artwork with original continent relief vector cartography, original map markers and a recognizable inset for off-world Outland. Map placements are illustrative—not official game coordinates or Blizzard art.

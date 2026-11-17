@@ -1,0 +1,92 @@
+/* NEXUS | AZEROTH v18.1 — SOVEREIGN ROUTE ARCHITECT
+ * Additive premium map-research studio; accessibility, reduced motion, iPhone-first.
+ */
+.nx181-route-studio{margin:26px 0 35px;min-width:0;color:#f1e6d6;isolation:isolate}
+.nx181-route-studio *{box-sizing:border-box}
+.nx181-route-studio :is(input,select,textarea,button,a):focus-visible{outline:3px solid #b6eef8;outline-offset:2px}
+.nx181-route-studio button{cursor:pointer;font:inherit;touch-action:manipulation}
+.nx181-route-studio button:disabled{opacity:.47;cursor:not-allowed}
+.nx181-hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:17px;min-height:235px;padding:clamp(22px,3.3vw,43px);border:1px solid #e7c994b8;border-radius:17px 17px 0 0;background:linear-gradient(105deg,#101a30fd,#21263fe9 55%,#212c46c2 100%),url('./assets/nexus-atlas-cartography-v18.svg') center/cover no-repeat;box-shadow:0 12px 36px #0009}
+.nx181-hero:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#e3bd80,#dabaf5,#90c8cf)}
+.nx181-hero>div{position:relative;z-index:1;max-width:660px}
+.nx181-kicker{color:#cfb2dd;font-size:10px;letter-spacing:.12em;font-weight:950}
+.nx181-hero h2{font-size:clamp(28px,4.3vw,54px);letter-spacing:-.065em;line-height:1.1;margin:9px 0;color:#f5deb6;font-weight:1000}
+.nx181-hero h2 em{font-style:normal;background:linear-gradient(95deg,#ecd0a0,#c7a5d8);background-clip:text;-webkit-background-clip:text;color:transparent}
+.nx181-hero p{font-size:12px;line-height:1.7;color:#d5e1ed;max-width:680px;margin:11px 0 0}
+.nx181-hero p strong{color:#f6ddb5}
+.nx181-hero>a{z-index:1;flex:none;display:grid;place-items:center;min-height:44px;padding:11px 15px;border-radius:9px;border:1px solid #ffdfaa;background:linear-gradient(105deg,#b68c60,#f1d3a0);color:#201f2d;font-size:10px;font-weight:950;text-decoration:none}
+.nx181-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:0 0 14px;background:#5c5770;border:1px solid #a89ab0;border-top:0;border-radius:0 0 13px 13px;overflow:hidden}
+.nx181-stats>div{padding:14px 18px;background:linear-gradient(140deg,#27324b,#0f2136)}
+.nx181-stats small{font-size:9px;color:#b8cddd;font-weight:950;letter-spacing:.09em;display:block}
+.nx181-stats strong{font-size:26px;font-weight:950;color:#f7d6a8;line-height:1.5}
+.nx181-grid{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.2fr);gap:15px}
+.nx181-workspace,.nx181-board{min-width:0;border:1px solid #a5a5b681;border-radius:15px;overflow:hidden;background:linear-gradient(145deg,#1c2a44f5,#101e32fc);box-shadow:0 12px 31px #0006}
+.nx181-workspace{padding:0 0 16px}
+.nx181-panel-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid #b4a8b657;padding:17px 18px;background:#202d45a8}
+.nx181-panel-head span{font-size:12px;color:#f4d7a5;font-weight:950;letter-spacing:.09em}
+.nx181-panel-head small{font-size:9px;color:#b7cddd}
+.nx181-control{display:grid;gap:10px;padding:15px 16px 10px}
+.nx181-control label,.nx181-editor-fields label{display:grid;gap:6px;font-size:9px;color:#b7cce2;font-weight:950;letter-spacing:.075em}
+.nx181-route-studio :is(input,select,textarea){width:100%;min-width:0;border:1px solid #a2adc388;border-radius:9px;background:#0a192f;color:#f5e6d9;padding:10px 11px;font:inherit;font-size:12px;min-height:43px}
+.nx181-route-studio textarea{min-height:68px;resize:vertical;line-height:1.5}
+.nx181-create{display:flex;gap:8px}
+.nx181-create button,.nx181-editor-fields button,.nx181-add-stop button,.nx181-portability button{min-height:42px;border-radius:9px;border:1px solid #d7b890;padding:10px;background:linear-gradient(115deg,#b18b65,#efd1a0);font-size:10px;font-weight:950;color:#251e29;white-space:normal}
+.nx181-create input{flex:1;min-width:0}
+.nx181-templates{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:2px 16px 14px;border-bottom:1px solid #b1a4bd42}
+.nx181-templates span{width:100%;font-size:9px;color:#b7afc9;font-weight:950;letter-spacing:.08em}
+.nx181-templates button,.nx181-foot-actions button{padding:8px 10px;min-height:38px;border-radius:8px;border:1px solid #b9a2be87;background:#323350;color:#f6dec0;font-size:10px;font-weight:900}
+.nx181-templates button:hover,.nx181-foot-actions button:hover{background:#494064}
+.nx181-editor{padding:14px 16px 9px}
+.nx181-editor-fields{display:grid;gap:9px}
+.nx181-editor-fields>button{justify-self:start}
+.nx181-add-stop{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px;padding-top:14px;border-top:1px solid #ab9db94d}
+.nx181-add-stop select{flex:1 1 100%}
+.nx181-add-stop button{flex:1 1 43%}
+.nx181-add-stop button:nth-of-type(2){border-color:#ad9ad4;background:#43365b;color:#f0d7ff}
+.nx181-hint{font-size:10px;color:#afc8df;line-height:1.65}
+.nx181-foot-actions{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px}
+.nx181-foot-actions button{flex:1 1 40%}
+.nx181-foot-actions button:last-child{color:#ffcccc;border-color:#c99191a8;background:#432b3b}
+.nx181-board{display:flex;flex-direction:column}
+.nx181-board-content{padding:16px;flex:1;min-height:160px}
+.nx181-board-list{display:grid;gap:0;align-content:start}
+.nx181-empty{padding:20px;background:linear-gradient(120deg,#223550,#272845);border:1px dashed #c9b5907a;border-radius:11px;color:#d7dfec;line-height:1.65;font-size:12px}
+.nx181-stop{position:relative;margin-bottom:13px;min-width:0;padding:14px;border-radius:11px;border:1px solid #baa79d7e;background:linear-gradient(125deg,#2d3b52eb,#191e38f2)}
+.nx181-stop-continues:after{content:"";position:absolute;width:2px;height:14px;bottom:-15px;left:28px;background:repeating-linear-gradient(0deg,#efc68f 0 4px,transparent 4px 7px);pointer-events:none}
+.nx181-stop-done{border-color:#729f8c9e;background:linear-gradient(130deg,#24453eea,#1c2a3beb)}
+.nx181-stop-top{display:flex;align-items:center;gap:11px;min-width:0}
+.nx181-stop-number{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;color:#1e2738;background:linear-gradient(115deg,#f3d49f,#a69add);font-size:12px;font-weight:950}
+.nx181-stop-copy{min-width:0;flex:1;display:grid;gap:4px}
+.nx181-stop-copy strong{color:#f8dab0;font-size:14px;overflow-wrap:anywhere;line-height:1.35}
+.nx181-stop-copy span{font-size:10px;color:#b4cddb}
+.nx181-mission-badge{flex:none;align-self:flex-start;border:1px solid #abacc38e;padding:6px 7px;border-radius:8px;font-size:9px;color:#e3e1ef;background:#282c4b;max-width:100px;text-align:center}
+.nx181-stop-buttons{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 8px}
+.nx181-stop-buttons button{padding:7px 9px;min-height:35px;background:#2a3955;color:#e6dbd1;border:1px solid #a9a6b36d;border-radius:7px;font-size:9px;font-weight:900}
+.nx181-stop-buttons button:nth-child(3){color:#e8d0a0;background:#403954}
+.nx181-stop-buttons button:last-child{color:#ffbeb6;background:#482d39;border-color:#b78b8d}
+.nx181-stop-foot{display:flex;gap:6px;flex-wrap:wrap}
+.nx181-stop-foot input{flex:1 1 55%;font-size:11px;min-height:38px}
+.nx181-stop-foot button,.nx181-stop-foot a{display:grid;place-items:center;flex:1 1 auto;padding:7px 10px;background:#323a59;border:1px solid #b9b4a17d;color:#f0d8b8;text-decoration:none;border-radius:8px;font-size:9px;font-weight:900;min-height:38px}
+.nx181-handoff{border-top:1px solid #ae9abb67;padding:14px 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.nx181-handoff p{flex:1 1 100%;font-size:10px;line-height:1.65;color:#becbda;margin:0}
+.nx181-handoff a{color:#ead1ab;font-size:10px;font-weight:950}
+.nx181-portability{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:16px;margin-top:14px;border:1px solid #b3a6ba82;border-radius:12px;background:linear-gradient(115deg,#1c2b44,#242744)}
+.nx181-portability>div{flex:1 1 230px;display:grid;gap:5px}
+.nx181-portability strong{font-size:11px;letter-spacing:.08em;color:#f4d5a6}
+.nx181-portability small{font-size:10px;line-height:1.6;color:#b9cadc}
+.nx181-portability button{min-height:40px}
+.nx181-file-btn{display:grid;place-items:center;position:relative;cursor:pointer;min-height:40px;border:1px solid #b0a2c8;padding:9px 12px;border-radius:8px;background:#383354;color:#ebddf5;font-size:10px;font-weight:950}
+.nx181-file-btn input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none;min-height:0}
+.nx181-file-btn:focus-within{outline:3px solid #b6eef8;outline-offset:2px}
+.nx181-status{min-height:45px;padding:12px 15px;border:1px solid #afacc378;border-radius:10px;background:#202d43;color:#e9ceaa;font-size:11px;line-height:1.6}
+.nx181-disclaimer{font-size:10px;color:#aec8d9;line-height:1.65}
+.nx181-route-lines{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+.nx181-route-lines path{fill:none;stroke:#ffde9e;stroke-width:.55;stroke-linecap:round;stroke-opacity:.85;filter:drop-shadow(0 0 2px #c8ad79)}
+.nx18-zone-pin.nx181-in-route{border-color:#fbe8ad!important;box-shadow:0 0 0 2px #f9d28d78,0 0 18px #e7c78c9c!important}
+.nx181-route-marker{position:absolute;right:-13px;bottom:-12px;display:grid;place-items:center;min-width:23px;height:23px;padding:1px 5px;border-radius:12px;background:#ebd39e;color:#182640;border:2px solid #192f42;font-size:11px;font-weight:950;box-shadow:0 1px 6px #000a}
+.nx18-chart .nx18-chart-pins{z-index:2}
+@media(max-width:1120px){.nx181-grid{grid-template-columns:1fr}.nx181-board-content{max-height:730px;overflow:auto}}
+@media(max-width:730px){.nx181-hero{display:block;min-height:0;padding:23px}.nx181-hero>a{display:inline-flex;margin-top:14px}.nx181-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.nx181-stats>div{padding:10px 13px}.nx181-stats strong{font-size:23px}.nx181-panel-head{padding:12px}.nx181-control,.nx181-editor{padding:12px}.nx181-board-content{padding:11px}.nx181-mission-badge{font-size:8px}.nx181-portability{padding:13px}.nx181-portability>button,.nx181-file-btn{flex:1 1 38%}}
+@media(max-width:400px){.nx181-create{flex-direction:column}.nx181-add-stop button{flex:1 1 100%}.nx181-stop-top{flex-wrap:wrap}.nx181-mission-badge{margin-left:42px}.nx181-stop-foot button,.nx181-stop-foot a{flex:1 1 44%}}
+@media(prefers-reduced-motion:reduce){.nx181-route-studio *, .nx181-route-lines{animation:none!important;transition:none!important;filter:none!important}}
+@media print{.nx181-portability,.nx181-stop-buttons,.nx181-editor,.nx181-foot-actions{display:none!important}.nx181-board-content{max-height:none;overflow:visible}}

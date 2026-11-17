@@ -34,6 +34,7 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           node azeroth-companion/tests/world-atlas-cartography-v18.browser.mjs
+          node azeroth-companion/tests/world-atlas-routes-v18.1.browser.mjs
           node azeroth-companion/tests/adventure-operations-v17.browser.mjs
           node azeroth-companion/tests/adventure-intelligence-v16.5.browser.mjs
           node azeroth-companion/tests/living-world-engine-v16.browser.mjs
