@@ -164,7 +164,7 @@ function render(){
  const region=regionFromDom(),zone=zoneFromDom(region);
  updateRail(region);updateScene(region);updateDossier(zone);
  const counts=core.performanceCounts(world.zones,state.index);
- $('nx182Status').textContent=counts.curated+' curated locations · '+counts.manualMissions+' manual goals · '+counts.bookmarks+' bookmarks · '+counts.routeDestinations+' route locations · original offline-first cartography';
+ $('nx182Status').textContent=counts.curated+' curated locations · '+counts.manualMissions+' manual goal'+(counts.manualMissions===1?'':'s')+' · '+counts.bookmarks+' bookmarks · '+counts.routeDestinations+' route locations · original offline-first cartography';
 }
 function schedule(){
  if(state.animationFrame)return;
@@ -174,7 +174,7 @@ rail.addEventListener('click',event=>{
  const b=event.target.closest('button[data-region]');if(!b)return;
  const origin=document.querySelector('#nx16RegionStrip button[data-region="'+b.dataset.region+'"]');
  if(origin)origin.click();
- chart.scrollIntoView({behavior:root.classList.contains('nx18-lite')?'instant':'smooth',block:'nearest'});
+ chart.scrollIntoView({behavior:root.classList.contains('nx18-lite')?'auto':'smooth',block:'nearest'});
  schedule();
 });
 const search=$('nx182Search'),results=$('nx182Results');
@@ -215,7 +215,7 @@ $('nx182Plan').addEventListener('click',()=>{
  else jump(zone.id);
 });
 $('nx182Route').addEventListener('click',()=>{
- $('nx181RouteStudio')?.scrollIntoView({behavior:root.classList.contains('nx18-lite')?'instant':'smooth',block:'start'});
+ $('nx181RouteStudio')?.scrollIntoView({behavior:root.classList.contains('nx18-lite')?'auto':'smooth',block:'start'});
 });
 const native=$('nx18ChartPins');
 if(native)new MutationObserver(schedule).observe(native,{childList:true,subtree:false});
