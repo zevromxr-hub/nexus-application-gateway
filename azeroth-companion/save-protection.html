@@ -1,0 +1,74 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10172b"><title>Save Protection Center | NEXUS Azeroth</title>
+<meta name="description" content="Inspect and export a read-only local backup of supported Azeroth Companion planning records.">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
+<link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
+<style>
+:root{color-scheme:dark;--gold:#e7cb92;--muted:#bfcede}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#080d1b;color:#f2eafa;font:14px/1.6 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+body:before{content:"";z-index:-1;pointer-events:none;position:fixed;inset:0;background:linear-gradient(90deg,#080d1af7,#080c1be8),url("./assets/citadel-hero-hd-v9.1.1.webp") center/cover}
+a{color:#c8eaff}a:focus-visible,button:focus-visible{outline:2px solid #a7e9f9;outline-offset:4px}
+header{padding:16px clamp(16px,3vw,40px);background:#0b1224e8;border-bottom:1px solid #b89e6966;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+header strong{letter-spacing:.18em;color:#eed7a8}header a{font-size:12px;text-decoration:none}
+main{max-width:1120px;padding:clamp(20px,4vw,60px) 18px 65px;margin:auto}
+.eyebrow{font-size:11px;color:#a6dfe9;letter-spacing:.2em;font-weight:850}h1{font-size:clamp(30px,5vw,58px);line-height:1.05;margin:12px 0}h1 span{color:var(--gold)}p{color:var(--muted)}
+.hero{border:1px solid #dcbb896b;border-radius:22px;overflow:hidden;background:linear-gradient(100deg,#101b30f2,#10192cda),url("./assets/sovereign-throne-v9.1.webp") right center/auto 100% no-repeat;padding:clamp(20px,4vw,42px);box-shadow:0 22px 55px #0008}
+.hero p{max-width:690px}.panel{margin-top:16px;border:1px solid #a3b5cc55;border-radius:16px;background:#101a2aeb;padding:clamp(16px,2.5vw,25px)}
+.panel h2{color:#e9d4b2;font-size:19px;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.metric{border:1px solid #c5b39948;border-radius:13px;padding:15px;background:#19263b}.metric strong{display:block;font-size:26px;color:#f4dab1}.metric small{color:#adbed2;font-size:11px}
+.records{display:grid;gap:9px}.record{display:flex;align-items:center;justify-content:space-between;gap:16px;background:#0e192d;border:1px solid #adbfcb42;border-radius:10px;padding:12px 14px}
+.record strong{font-size:12px}.record span{font-size:11px;color:#bdd0d5}.notice{border-left:3px solid #e2b873;padding:12px 14px;background:#d7a66214;color:#d3d7d9;font-size:12px;margin-top:15px}
+button{border:1px solid #f0d6a5;color:#1e1a19;border-radius:12px;min-height:48px;padding:12px 20px;font-weight:900;font-size:12px;background:linear-gradient(120deg,#be9062,#f5d8a6);cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;align-items:center}.actions a{font-size:12px}
+footer{color:#97b3c7;text-align:center;font-size:11px;margin-top:40px}#nxSafetyStatus{color:#c3d7d9;font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{background:linear-gradient(100deg,#101b30f4,#10192ced),url("./assets/sovereign-throne-v9.1.webp") right center/auto 100% no-repeat}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body>
+<header><strong>NEXUS | AZEROTH COMPANION</strong><nav><a href="./command-center.html">← Command Center</a> · <a href="./player-experience.html">My Character</a> · <a href="./?enter=1">Full Companion</a></nav></header>
+<main><section class="hero"><div class="eyebrow">NEXUS / SAFETY FOUNDATION · v11</div><h1>Save <span>Protection Center</span></h1><p>Protect your existing local planning work with a read-only export. This tool inspects an explicit list of supported, non-authentication browser records and never changes or clears them.</p><div class="actions"><button id="nxExportSafety" type="button">EXPORT MY LOCAL PLANNING BACKUP</button><a href="./?enter=1&amp;view=data">Open original Data &amp; Backup ↗</a></div><p id="nxSafetyStatus" role="status" aria-live="polite">Inspecting supported local records…</p></section>
+<section class="panel" aria-labelledby="nxSafetySummary"><h2 id="nxSafetySummary">Your browser's planning data</h2><div class="grid"><div class="metric"><strong id="nxSafeKeys">0</strong><small>Supported saved groups found</small></div><div class="metric"><strong id="nxSafeSize">0 KB</strong><small>Approximate exported JSON size</small></div><div class="metric"><strong id="nxSafeStatus">Local only</strong><small>No server synchronization</small></div></div><div class="notice">Keep your backup private: it may contain character names, notes, planned builds and collection goals. This is not a Battle.net account export, cannot back up authentication sessions, and does not guarantee restoration of every separate app preference.</div></section>
+<section class="panel"><h2>What this backup can protect</h2><div id="nxSafeRecords" class="records"></div><p>Existing studio-specific import tools should be used for recovery. This page intentionally has no bulk-restore button: importing all browser records automatically could overwrite active work.</p></section>
+<section class="panel"><h2>Important storage guidance</h2><p>Browser-local work is normally isolated by website origin and browser profile. If you switch from a GitHub Pages URL to your custom domain, or between Safari and another browser, the old browser's local data does not automatically transfer. Export from the original location before clearing Safari data or changing devices.</p><p>For the full companion, Talent Forge and the separate Command Board, use their original export functions where offered. This safety bundle contains only supported whitelisted local planning data.</p></section>
+<footer>POWERED BY ZEVRO | NEXUS · Independent, unofficial World of Warcraft fan companion.</footer></main>
+<script>
+(()=>{'use strict';
+const KEYS=[
+ ['nexus_azeroth_companion_genesis_v1','Main Companion profiles, builds, tasks and collections'],
+ ['nexus_azeroth_talent_forge_v1','Saved Talent Forge drafts'],
+ ['nexus_azeroth_character_targets_v1','Character equipment and research targets'],
+ ['nexus_azeroth_item_atlas_v1','Item Atlas local records'],
+ ['nexus_azeroth_loot_hunter_v1','Loot Hunter local goals'],
+ ['nexus_azeroth_farm_operations_v1','Farming Operations plans'],
+ ['nexus_command_center_goals_v10','Living Command Center adventure board'],
+ ['nexus_player_focus_v11','Selected player workspace character'],
+ ['nexus_player_build_links_v11','Local draft-to-character associations'],
+ ['nexus_player_quests_v11','Character-specific personal goals'],
+ ['nexus_player_history_v11','Talent snapshot history']
+];
+const $=id=>document.getElementById(id);
+const data={};let bytes=0,found=0,unreadable=0;
+const size=s=>new TextEncoder().encode(s).length;
+for(const [key,label] of KEYS){
+ let state='No record in this browser',raw=null;
+ try{raw=localStorage.getItem(key);if(raw!==null){state='Present';data[key]=JSON.parse(raw);bytes+=size(raw);found++}}
+ catch(_){state='Could not read or parse';unreadable++}
+ const line=document.createElement('div');line.className='record';
+ const name=document.createElement('strong');name.textContent=label;
+ const detail=document.createElement('span');detail.textContent=state;
+ line.append(name,detail);$('nxSafeRecords').append(line);
+}
+$('nxSafeKeys').textContent=String(found);$('nxSafeSize').textContent=(bytes/1024).toFixed(1)+' KB';
+$('nxSafeStatus').textContent=unreadable?'Check records':'Local only';
+$('nxSafetyStatus').textContent=found?found+' supported planning groups are ready for export.':"No supported planning records are saved at this origin yet.";
+$('nxExportSafety').disabled=found===0;
+$('nxExportSafety').addEventListener('click',()=>{
+ try{
+ const payload={format:'nexus.azeroth.planning-safety/1',exportedAt:new Date().toISOString(),origin:location.origin,records:data,note:'Local planning records only. No credentials or login sessions. Use individual studio import controls for recovery.'};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='nexus-azeroth-planning-safety-'+new Date().toISOString().slice(0,10)+'.json';
+ document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);
+ $('nxSafetyStatus').textContent='Planning backup prepared. Keep it in a private location.';
+ }catch(_){$('nxSafetyStatus').textContent='Export failed. Use the existing studio-specific export buttons instead.'}
+});
+})();
+</script></body></html>
