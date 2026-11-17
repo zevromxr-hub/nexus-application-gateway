@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v18.0.0 · 2026-11-17 — WORLD ATLAS OVERDRIVE (Owner approved; actual player/device acceptance pending)
+
+- Replaced the flat native Atlas artwork with original continent relief vector cartography, original map markers and a recognizable inset for off-world Outland. Map placements are illustrative—not official game coordinates or Blizzard art.
+- Added eight linked continent selectors and a 25-destination regional chart with separate icon types for capitals, hubs and zones, mission-state visual outlines, bookmarks and v17 session tags.
+- Introduced overlay filters by player-local mission activity, manual statuses, bookmarks, v17 session, capital/hub/zone type and interactive destination intelligence with local source references.
+- Provided links to original mission creation, Expedition Console and Adventure Operations without duplicating records or writing new storage; optional owner image preview stays in the tab.
+- Added responsive cinematic and lite rendering, reduced-motion support, no remote map tiles, source integrity/unit tests and synthetic Chromium/WebKit checks. Existing login, Worker, Forge, builds and map mission keys remain untouched.
+- Preserved `backup/azeroth-v17-before-world-atlas-v18-2026-11-17` for rollback; see the v18 owner release and tester guide.
+
+
 ## v17.0.0 · 2026-11-17 — SOVEREIGN ADVENTURE OPERATIONS (Owner approved; player acceptance pending)
 
 - Added an optional cinematic v17 Adventure Operations studio for ordered multi-mission personal sessions sourced from the existing World Atlas.
