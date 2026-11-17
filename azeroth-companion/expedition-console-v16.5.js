@@ -163,11 +163,13 @@ for(const id of ['nx165StatusFilter','nx165Query'])$(id).addEventListener(id==='
 });
 $('nx165PrioritySelect').addEventListener('change',event=>{
  const goal=chooseGoal(selectedId),plan=planFor(goal);if(!goal||!plan)return;
+ if(noteDirty){event.target.value=plan.priority;notice('Save your field notes before changing mission priority.');return}
  if(!engine.priorities.includes(event.target.value))return;
  if(savePlan(goal,{...plan,priority:event.target.value},'Personal mission priority saved.'))redraw();
 });
 $('nx165Pin').addEventListener('click',()=>{
  const goal=chooseGoal(selectedId),plan=planFor(goal);if(!goal||!plan)return;
+ if(noteDirty){notice('Save your field notes before pinning another mission state.');return}
  if(savePlan(goal,{...plan,pinned:!plan.pinned},'Personal mission pin updated.'))redraw();
 });
 $('nx165StepsList').addEventListener('change',event=>{
