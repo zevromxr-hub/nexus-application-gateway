@@ -1,14 +1,22 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "13.2.0",
-  "channel": "staging",
+  "version": "14.0.0",
+  "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN TALENT FORGE — ICON ASCENSION / SOURCE-MATCHED BLIZZARD SPELL ART",
-  "previous_version": "13.1.0",
+  "subtitle": "SOVEREIGN BUILD ARCHITECT — FOCUS GRAPH, BUILD COMPARISON 3.0, PERSONAL LIBRARY AND OWNER RELEASE CONTROL",
+  "previous_version": "13.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
-  "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
+  "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Sovereign Build Architect v14 adds source-reported talent graph focus mode over the established Reforged canvas, highlighting inbound/outbound relationships without asserting complete legal prerequisites.",
+    "Build Comparison 3.0 compares manual rank allocations and selected choice-node indices across existing saved drafts, live planning and v13 checkpoints, rejecting incompatible source tree identities.",
+    "A personal build archive adds optional favorites, activity tags and notes in a separate local key. Native Talent Forge saves, undo/redo, JSON draft formats, character progress and verification remain unchanged.",
+    "Build Integrity Review flags missing node IDs, ranks exceeding returned maximums, source identity mismatches and unresolved reported relationships without silently changing or validating in-game builds.",
+    "Cinematic dark-violet, blue and gold Forge artwork and corresponding official Blizzard spell-icon presentation remain consistent with the approved v13.2 design.",
+    "Owner approval is now separate from automated tester acceptance: CI and browser checks remain diagnostic, while approved release manifests can restore honest Discord updates without waiting for player/device verification.",
+    "Discord release messages use ZevArchives.com and clearly label Owner approved / Tester acceptance pending; encrypted Battle.net session verification and Discord delivery confirmation are not bypassed.",
+    "Created rollback branch backup/azeroth-v13.2-before-build-architect-v14-2026-11-17 and retained the future tester backlog in AZEROTH-v14-OWNER-RELEASE-AND-TESTER-BACKLOG.md.",
     "Icon Ascension v13.2 integrates source-matched official Blizzard spell artwork into the existing cinematic Reforged talent nodes, selected-node inspector and iPhone selection tray.",
     "Resolves icons using the current official TalentSourceBridge Blizzard spell ID and selected rank/choice—not guessed icons, node IDs or talent-name searches. Reuses already-loaded native source images where available.",
     "Loads only visible or selected spell-media icons through the existing Cloudflare spell-media route, limits simultaneous requests to three, caches results in memory, validates Blizzard-hosted HTTPS images and displays original emblems if any source icon is absent.",
@@ -91,5 +99,10 @@
     "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
     "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
     "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes."
-  ]
+  ],
+  "acceptance": {
+    "owner_approved": true,
+    "tester_status": "pending",
+    "note": "Owner approves development release; device and gameplay tests remain advisory and pending."
+  }
 }
