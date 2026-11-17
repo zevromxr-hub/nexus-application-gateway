@@ -35,7 +35,7 @@ async function run(label,engine,mobile){
   assert.equal((await page.locator('#nx15BuildCount').textContent()).trim(),'1');
   assert.equal((await page.locator('#nx15GoalCount').textContent()).trim(),'1');
   assert.match(await page.locator('#nx15GearTargets').textContent(),/Sample Helm/);
-  assert.match(await page.locator('#nx15Equipped').textContent(),/Load public character equipment/);
+  assert.match(await page.locator('#nx15Equipped').textContent(),/No public equipment loaded/);
   await page.locator('#nx15Fetch').click();
   await page.waitForFunction(()=>document.getElementById('nx15FetchStatus')?.textContent?.includes('BLIZZARD PUBLIC RESEARCH'),null,{timeout:10000});
   assert.match(await page.locator('#nx15PublicFacts').textContent(),/MAGE|Mage/);
