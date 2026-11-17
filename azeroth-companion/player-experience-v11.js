@@ -270,10 +270,11 @@ renderBuildSelections();refresh();chooseTab('overview');
 /* Lightweight decorative ambient layer, automatically disabled on low-power or reduced-motion. */
 const media=window.matchMedia('(prefers-reduced-motion: reduce)');
 const saver=!!navigator.connection?.saveData;
-if(!media.matches&&!saver&&!(navigator.deviceMemory&&navigator.deviceMemory<=2)){
+let preferredMode='balanced';try{const p=localStorage.getItem('nexus_visual_mode_v9');if(['cinematic','balanced','performance'].includes(p))preferredMode=p}catch(_){}
+if(!media.matches&&!saver&&preferredMode!=='performance'&&!(navigator.deviceMemory&&navigator.deviceMemory<=2)){
  const host=$('px11Atmosphere'),mobile=window.matchMedia('(max-width:680px)').matches;
  if(host){
-  const count=mobile?11:23,fragment=document.createDocumentFragment();
+  const count=mobile?(preferredMode==='balanced'?7:11):(preferredMode==='balanced'?13:23),fragment=document.createDocumentFragment();
   const hash=n=>{const x=Math.sin(n*81.19)*43758.9;return x-Math.floor(x)};
   for(let i=0;i<count;i++){
    const flake=e('i');flake.style.setProperty('--x',(hash(i+3)*100).toFixed(2)+'%');
