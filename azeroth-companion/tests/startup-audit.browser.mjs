@@ -29,10 +29,17 @@ async function run(label,engine,phone){
    assert.equal(await page.locator(id).evaluate(el=>el.childElementCount),0,'Hidden rollup should not render until visited: '+id);
   }
   async function go(id){
-   if(phone){
-    await page.locator('.ac-mobile-bar [data-ac-more]').click();
-    await page.locator('.sidebar [data-view="'+id+'"]').click();
-   }else await page.locator('.sidebar [data-view="'+id+'"]').click();
+   if(phone)await page.locator('.ac-mobile-bar [data-ac-more]').click();
+   const nav=page.locator('.sidebar [data-view="'+id+'"]');
+   if(await nav.isVisible()){await nav.click();return}
+   if(await nav.getAttribute('data-nx-retired')==='true'){
+    // A previously retired module must stay hidden in primary navigation.
+    // Exercise its internal view-aware loading without resurrecting that UI.
+    if(phone)await page.locator('.ac-mobile-close').click();
+    await page.evaluate(view=>document.dispatchEvent(new CustomEvent('nexus:view-activated',{detail:{view}})),id);
+    return;
+   }
+   throw new Error('Expected navigable or explicitly retired studio: '+id);
   }
   await go('dominion');
   assert.ok(await page.locator('#cdMetrics > div').count()>0,'Dominion must render local goals on selection');
