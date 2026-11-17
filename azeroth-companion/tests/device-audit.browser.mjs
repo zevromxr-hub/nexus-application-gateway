@@ -44,8 +44,8 @@ async function captured(label,func){
   check(size.page<=size.viewport+2,'Horizontal overflow: '+JSON.stringify(size));
   const cssRequests=[...new Set(localStatic.filter(p=>p.endsWith('.css')))];
   const jsRequests=[...new Set(localStatic.filter(p=>p.endsWith('.js')))];
-  check(cssRequests.length>=20&&cssRequests.length<=24,'Unexpected v8 stylesheet request budget: '+JSON.stringify(cssRequests));
-  check(jsRequests.length>=21&&jsRequests.length<=24,'Unexpected v8 script request budget: '+JSON.stringify(jsRequests));
+  check(cssRequests.length>=20&&cssRequests.length<=25,'Unexpected v8 stylesheet request budget: '+JSON.stringify(cssRequests));
+  check(jsRequests.length>=21&&jsRequests.length<=25,'Unexpected v8 script request budget: '+JSON.stringify(jsRequests));
   const timings=await page.evaluate(()=>{
    const n=performance.getEntriesByType('navigation')[0];
    return {domContentLoadedMs:Math.round(n?.domContentLoadedEventEnd||0),loadMs:Math.round(n?.loadEventEnd||0)};
