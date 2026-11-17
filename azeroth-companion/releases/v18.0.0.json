@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "18.0.0",
+  "title": "WORLD ATLAS OVERDRIVE — Cartographic Map & Destination Intelligence",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Project owner requested v18 Atlas realism, icon pins, performance and useful map intelligence. Automated browser/source checks are advisory. Physical iPhone and live WoW account acceptance pending.",
+  "features": [
+    "World Atlas Overdrive: a new detailed original fantasy cartographic continent map, compact and locally bundled, preserving eight familiar research regions and an Outland portal inset.",
+    "Interactive zone icon charts: all 25 curated World of Warcraft destinations display crown, compass or terrain icons with readable selected-place information.",
+    "Local mission overlays and filters: see your own planned, in-progress and manually completed missions, bookmark stars and v17 session markers directly on the Atlas.",
+    "Connected zone intelligence: inspect existing personal mission counts and local character, Talent Forge draft and Item Atlas references, with one-tap Expedition and Operations handoffs.",
+    "A private map-art preview accepts your own PNG/JPEG/WebP under 8 MB; no upload or automatic pin alignment. Restore the original map instantly.",
+    "Cinematic and iPhone performance modes, reduced-motion support, mobile tap controls, accessible icons and source-linked external Warcraft Wiki map references.",
+    "All v16/v16.5 mission data, v17 Adventure Operations, Blizzard OAuth, Cloudflare routing, saved builds, music and studios preserved; owner-approved release with physical-device/gameplay acceptance pending."
+  ]
+}

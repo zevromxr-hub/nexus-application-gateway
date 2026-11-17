@@ -1,14 +1,25 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN ADVENTURE OPERATIONS — MULTI-MISSION SESSION COMMAND, CONNECTED RESEARCH & PERSONAL BRIEFINGS",
-  "previous_version": "16.5.0",
+  "subtitle": "WORLD ATLAS OVERDRIVE — ORIGINAL CARTOGRAPHY, ICON PINS, MANUAL MISSION OVERLAYS & FAST IPHONE MODE",
+  "previous_version": "17.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "World Atlas Overdrive v18 replaces the flat illustrative map background with a detailed, original standalone SVG continental chart, including richer coastline relief, mountains, forests, labels and a separate Outland portal inset.",
+    "Built a dual-level interactive map experience: existing eight world-region pins and a new selected-region icon chart for all 25 curated real WoW-named destinations, with capital, hub and zone iconography.",
+    "Overlaid the original manual mission statuses (in progress, planned, manually completed), bookmark stars, local mission counts and v17 session markers—without implying real gameplay position, achievement or ownership.",
+    "Introduced map filters for all destinations, local mission zones, individual manual statuses, bookmarks, v17 session destinations, capitals, hubs and zones.",
+    "Added source-labeled location intelligence cards showing existing local missions and character, Forge draft and Item Atlas links, with direct Expedition Console and Adventure Operations handoffs, native mission creation and bookmark controls.",
+    "Added optional user-selected local PNG/JPEG/WebP map previews (8 MB limit) with object URL revocation and instant reset. Images never upload, persist, or claim automatic alignment with map markers.",
+    "Added a cinematic/performance toggle that reduces rendering effects for iPhone and reduced-motion users; all map icons are original compact inline SVG and the map image is bundled locally without third-party scripts or map-tile calls.",
+    "Provided an external Warcraft Wiki map-reference link for players who want to inspect actual in-game map artwork rather than pretend the NEXUS coordinate chart is official.",
+    "Retained the existing v16 Atlas and v16.5 bookmark/planner storage, v17 Operations, original saved items, Forge ranks, Blizzard account verification, Cloudflare Workers, music and other studios; no new local storage key is introduced.",
+    "Included new pure source regressions, synthetic desktop Chromium/iPhone-style WebKit map tests, original map art documentation and rollback branch backup/azeroth-v17-before-world-atlas-v18-2026-11-17.",
+    "Owner approval covers publication. Real physical iPhone/device, connected account, live game and external game-map reference acceptance remain pending and are not falsely marked verified.",
     "Introduced Sovereign Adventure Operations v17: a separate cinematic multi-mission session workspace that references existing v16 World Atlas missions without editing their records.",
     "Players can order up to 18 manual Atlas goals into a private session, reorder tasks, set optional personal time estimates, title/day/focus character and attach personal objective/field notes.",
     "Added read-only source-aware status for existing v16.5 checklist progress, locally saved characters, native Talent Forge draft references and Item Atlas identifiers; missing links are shown as unavailable, never invented.",
@@ -138,6 +149,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner requested the v17 major development and publication. Automated source and synthetic desktop/iPhone tests are advisory, not verification on a real device, Blizzard account or in-game character; those remain pending."
+    "note": "Owner requested v18 World Atlas Overdrive and approved proceeding with publication. Browser/UI automated tests are advisory; real player, actual physical iPhone, connected Blizzard account and in-game map/quest acceptance are pending."
   }
 }
