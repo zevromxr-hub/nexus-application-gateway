@@ -661,4 +661,17 @@ assert.ok(citadelCSS.includes('@media(max-width:660px)'));
 assert.ok(citadelJS.includes('nexus_citadel_pins_v9_1'));
 assert.ok(citadelReturn.includes('nexus_citadel_recent_view_v91'));
 
+/* v9.1 art-pack integrity: five locally hosted optimized WebPs or fallback set. */
+const artNames=['sovereign-throne-v9.1.webp','talent-forge-v9.1.webp','living-armory-v9.1.webp','adventure-journal-v9.1.webp','azeroth-oracle-v9.1.webp'];
+const artBytes=await Promise.all(artNames.map(name=>readFile(path.join(root,'azeroth-companion/assets',name)).catch(err=>{
+ if(err.code==='ENOENT')return null;throw err;
+})));
+const artCount=artBytes.filter(Boolean).length;
+assert.ok(artCount===0||artCount===artNames.length,'Upload all five v9.1 WebP illustrations together; a partial art pack would cause missing-card imagery');
+for(const data of artBytes.filter(Boolean)){
+ assert.ok(data.byteLength>1000&&data.byteLength<400000,'v9.1 artwork is unexpectedly large or empty');
+ assert.equal(data.toString('ascii',0,4),'RIFF','Artwork must be a valid WebP RIFF container');
+ assert.equal(data.toString('ascii',8,12),'WEBP','Artwork must be WebP, not a renamed PNG/JPEG');
+}
+
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
