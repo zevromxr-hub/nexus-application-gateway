@@ -1,0 +1,25 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "version": "7.9.9",
+  "title": "Mission Architect & Assistant Position Fix — Pre-8.0",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Moved the desktop assistant launcher lower to avoid covering the Connected control; mobile header behavior remains unchanged.",
+    "Introduced Mission Architect, with six focused player journeys and 24 documented action steps across talents, equipment, progression, Battle.net setup, farming and community testing.",
+    "Action plans link to relevant studios and can be copied or exported as JSON without modifying gameplay, OAuth sessions or existing browser-saved plans.",
+    "Updated Gateway, PC/mobile Player Handbook, Getting Started, volunteer checklist, device acceptance and release history.",
+    "Retained all earlier v7.9.8 assistant knowledge, 7.9.6 progression reports, Founder Identity and HYPER MUSIC features."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v7.9.9 — MISSION ARCHITECT\n\nOur final major development preview before v8.0 introduces Mission Architect inside ZevRo | Azeroth Assistant: six guided player goals and 24 actionable steps for talent builds, gear, Blizzard progression, account setup, farming and community testing.\n\nThe desktop assistant avatar was also lowered to avoid blocking the Connected control. Existing mobile placement, Founder bubble and HYPER MUSIC remain preserved.\n\nAdded copyable/exportable action plans, with synchronized guides, developer test requests, Gateway information and version history.\n\nDevelopment preview — live browser and real-player verification remain pending.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Desktop Connected control no longer overlapped at common browser widths",
+    "Six Mission Architect plans generate all steps",
+    "Copy/export links and JSON validated on desktop and mobile",
+    "Assistant popup navigability, Full Page mode and close buttons verified",
+    "Saved plans, verification, Hyper Music and Founder identity regressions",
+    "Live Blizzard Mythic+, raid and reputation testing where player data available"
+  ],
+  "publish_rule": "Draft is outside the official announcement trigger path. Do not create releases/v7.9.9.json or change releases/index.json before verified approval."
+}
