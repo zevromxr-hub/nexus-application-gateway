@@ -7,11 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: Preview or send the current Azeroth release
+        description: Owner-controlled preview, release or explicit Pages timing override
         type: choice
         required: true
         default: dry-run
-        options: [dry-run, send-current]
+        options: [dry-run, send-current, send-owner-approved]
 permissions:
   contents: write
 concurrency:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate current Azeroth release metadata and Discord payload
+      - name: Confirm owner approval, disclosure and Discord payload integrity
         run: |
           node --input-type=module <<'NODE'
           import assert from 'node:assert/strict';
@@ -38,6 +38,8 @@ jobs:
           const {v, release} = await metadata();
           const body = payload(v, release);
           assert.match(v.version, /^\d+\.\d+\.\d+$/);
+          assert.equal(release.owner_approved, true, 'Only owner-approved release manifests may announce');
+          assert.ok(['pending','partial','complete'].includes(release.tester_status));
           assert.equal(body.embeds?.[0]?.title, 'NEXUS | AZEROTH COMPANION v' + v.version);
           assert.ok(Array.isArray(body.embeds?.[0]?.fields));
           assert.ok(body.embeds[0].fields.every(f => String(f.value).length <= 1024));
@@ -49,7 +51,8 @@ jobs:
           echo "Trigger: ${{ github.event_name }}"
           echo "Release SHA: ${{ github.sha }}"
           echo "Webhook configured: ${{ secrets.DISCORD_RELEASE_WEBHOOK != '' }}"
-          echo "Only successful Discord message IDs count as delivery."
+          echo "Owner approval is distinct from tester verification; only confirmed Discord IDs count as delivery."
+          echo "To bypass Pages deployment timing intentionally, choose send-owner-approved from workflow_dispatch."
       - name: Announce published Azeroth release
         env:
           DISCORD_RELEASE_WEBHOOK: ${{ secrets.DISCORD_RELEASE_WEBHOOK }}
