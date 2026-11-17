@@ -1,14 +1,23 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "18.1.0",
+  "version": "18.2.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN ROUTE ARCHITECT — SAVED MAP ITINERARIES, ORDERED PINS & MOBILE FIELD PLANNING",
-  "previous_version": "18.0.0",
+  "subtitle": "CARTOGRAPHER’S LENS — REGIONAL PANORAMAS, SOURCE-LINKED FIELD GUIDES & FAST IPHONE MAP CONTROLS",
+  "previous_version": "18.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "World Atlas v18.2 Cartographer’s Lens adds eight new original lightweight vector regional panoramas with distinct landscape treatments, retaining all existing v18 cartography and v18.1 route planning features.",
+    "Introduces a responsive eight-region navigation rail with visual region identities, destination counts and source-labeled personal mission counters.",
+    "Adds a region-specific field guide, contextual research prompts for all 25 existing curated destinations, and a source-indexed dossier summarizing local manual goals, saved bookmarks, v17 session presence and v18.1 route stops.",
+    "Adds a fast destination finder supporting region and zone-name lookup, direct map-pin selection and one-tap handoff to the original safe manual mission planner.",
+    "Provides Focus Pins mode to reduce label collisions on small screens; auto-enables compact labels for iPhone or reduced-motion preferences while retaining keyboard-accessible destination names and all original map controls.",
+    "Optimizes the new experience with requestAnimationFrame-coalesced redraws, cached reads indexed only when the underlying browser-local source keys change, on-demand region image requests, and offscreen route-section rendering where supported.",
+    "Adds verified external links to Warcraft Wiki Maps and Wowhead Maps for real game-map reference; the NEXUS visuals remain independently illustrated and do not claim accurate in-game coordinates, player movement or live quest tracking.",
+    "All old v16 missions, v16.5 bookmarks, v17 Operations, v18 map styles and v18.1 saved routes remain intact; the v18.2 Lens adds no localStorage writes, login changes, geolocation or third-party map-tile runtime.",
+    "New source/unit and synthetic desktop Chromium/iPhone WebKit browser acceptance checks, release documentation, and rollback branch backup/azeroth-v18-1-before-cartographer-v18-2-2026-11-17; real-player and physical-iPhone testing remain pending.",
     "Added Sovereign Route Architect v18.1 inside the World Atlas: private library of up to six named itineraries, each supporting up to twelve unique real curated destination IDs, research notes and manually visited flags.",
     "Numbers each selected region's map pins by itinerary order and draws decorative dashed connections only when consecutive stops appear in the same displayed region, with explicit warnings that these are not travel directions or distance estimates.",
     "Supports adding a selected visual destination pin or selecting any of the 25 curated capital/hub/zone names, moving stops up/down, editing notes and checking visits without changing game progress.",
@@ -158,6 +167,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Continuing owner-approved Azeroth feature development with an additive route studio. Real physical iPhone and live WoW player testing remain pending."
+    "note": "Project owner approved further Atlas visual and performance upgrades. Automated source and synthetic browser checks are advisory; real user devices/accounts and in-game data acceptance remain pending."
   }
 }
