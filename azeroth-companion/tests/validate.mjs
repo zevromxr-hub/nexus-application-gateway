@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.6/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.7/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'7.9.6');
+assert.equal(version.version,'7.9.7');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -216,12 +216,29 @@ const releasePage796=await read('azeroth-companion/release-notes.html');
 for(const doc of [changelog796,handbook796,getting796,checklist796,deviceQA796,releasePage796])assert.match(doc,/7\.9\.6/,'Release documentation out of sync');
 assert.match(checklist796,/v7\.9\.6 partial failure/,'Developer checklist requires partial failure check');
 assert.match(changelog796,/Character Progress Report/,'Changelog must document report');
+const assistantPage797=await read('azeroth-companion/azeroth-assistant.html');
+const assistantKnowledge797=JSON.parse(await read('azeroth-companion/azeroth-assistant-knowledge-v7.9.7.json'));
+assert.match(html,/azeroth-assistant\.html/,'Assistant main-nav link required');
+assert.match(assistantPage797,/ZevRo<\/span> \| Azeroth Assistant/,'Requested assistant identity must appear');
+assert.equal(assistantKnowledge797.schema,'nexus.azeroth.assistant-knowledge/1');
+assert.ok(assistantKnowledge797.articles.length>=20,'Assistant requires documented questions');
+for(const item of assistantKnowledge797.articles){
+ assert.ok(item.question&&item.answer&&item.link&&Array.isArray(item.keywords),'Invalid assistant knowledge article');
+ assert.ok(item.link.startsWith('./')||item.link==='https://nexus-azeroth-api.zevromxr.workers.dev/account','Assistant must link only to approved studios');
+}
+for(const code of assistantPage797.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(code[1]);
+assert.match(assistantPage797,/I don.t have a reliably documented answer|I don’t have a reliably documented answer/,'Assistant must disclose uncertainty');
+assert.match(assistantPage797,/guided-answer|guided answers|guided companion|guided-answer interface/i,'Assistant must not claim live generative AI');
+assert.ok(!assistantPage797.includes('localStorage'),'Assistant must not modify browser-saved plans');
+assert.ok(!assistantPage797.includes('access_token'),'Assistant must not expose OAuth tokens');
+const assistantDocs797=['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'];
+for(const name of assistantDocs797)assert.match(await read('azeroth-companion/'+name),/7\.9\.7/,'Assistant release guide out of sync: '+name);
 const progressWorker=await read('azeroth-companion/backend/worker-v7.9.4-single.js');
 new vm.Script(progressWorker.replace('export default {','const workerDefault={'));
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
  assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
 assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.6 • Progress Report Preview/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.7 • Azeroth Assistant Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {payload}=await import('../scripts/announce-release.mjs');
 const body=payload({version:'7.9.3'},previousRelease);
