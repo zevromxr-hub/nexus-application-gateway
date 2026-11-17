@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v18.2.0 · 2026-11-17 — CARTOGRAPHER’S LENS (Owner approved; physical-device/game acceptance pending)
+
+- Created eight original lightweight regional fantasy panoramic scenes and a premium scrollable continent navigator, retaining the familiar v18 world-map artwork, v18.1 routes and all previous studios.
+- Added source-labeled field briefings and a 25-destination personal dossier: next manual objective, bookmark status, v17 session links, v18.1 saved route stops and editorial research prompts distinct from live game claims.
+- Introduced fast local destination search, native map-pin jump, one-tap mission form handoff and verified outgoing links to Warcraft Wiki Maps and Wowhead Maps (reference-only, not embedded/hotlinked).
+- Added accessible pin-focus mode on small-screen/reduced-motion layouts and more polished responsive chart components, with requestAnimationFrame-coalesced refreshes and cached read-only source indexing to avoid unnecessary renders.
+- Deferred selected-region SVG decoding and offscreen route editor rendering where supported. No new API, authenticated requests, background maps, personal data mutations or new storage keys.
+- Dedicated v18.2 source/unit and synthetic desktop Chromium/iPhone WebKit browser checks, with rollback branch `backup/azeroth-v18-1-before-cartographer-v18-2-2026-11-17`. Real device and player acceptance remains pending.
+
+
 ## v18.1.0 · 2026-11-17 — SOVEREIGN ROUTE ARCHITECT (Owner approved; physical device/game acceptance pending)
 
 - Built a new immersive personal route studio inside the existing World Atlas with six local named itineraries, up to twelve unique curated destinations per route, research notes and manually visited markers.
