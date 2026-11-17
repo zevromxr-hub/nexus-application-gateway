@@ -23,3 +23,5 @@ jobs:
           node-version: '22'
       - name: Validate Azeroth Companion and versioned release metadata
         run: node azeroth-companion/tests/validate.mjs
+      - name: Validate verified-domain origin compatibility (no live Worker calls)
+        run: node azeroth-companion/tests/zevarchives-domain-readiness.test.mjs
