@@ -124,7 +124,7 @@ function pump(){
    cache.set(item.key,null);
    failCount++;
    // A missing Worker endpoint should never produce a wall of failed calls.
-   if(error?.status===404||error?.status===401||error?.status===403||failCount>=3){
+   if(error?.status===401||error?.status===403||error?.status===429||failCount>=7){
     enabled=false;queue.length=0;queued.clear();
    }
   }).finally(()=>{
