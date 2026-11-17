@@ -30,7 +30,7 @@ async function run(name,engine,mobile){
  try{
   await page.goto(base+'?enter=1',{waitUntil:'domcontentloaded'});
   await page.locator('main.main').waitFor();
-  await page.locator('.sidebar button[data-view="loot"]').waitFor({timeout:16000});
+  await page.locator('.sidebar button[data-view="loot"]').waitFor({state:'attached',timeout:16000}); // Mobile sidebar hides controls until menu opens
   await page.locator('.sidebar button[data-view="loot"]').evaluate(el=>el.click());
   await page.locator('#lootHunter .section.active').waitFor({timeout:12000});
   const panel=await sample(page.locator('#lootHunter .panel').first());
