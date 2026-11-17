@@ -3,3 +3,11 @@
 @media(max-width:800px){.main>.top .nx-assistant-mobile-slot{display:flex;flex:1 0 100%;justify-content:flex-end;min-width:0}.nx-assistant-mobile-slot{display:flex;justify-content:flex-end;width:100%}.nx-assistant-mobile-slot .nx-assistant-launcher{position:static;max-width:100%;min-height:48px;z-index:auto;padding:4px 12px 4px 4px;box-shadow:0 3px 13px #0006}.nx-assistant-mobile-slot .nx-assistant-avatar{width:39px;height:39px;flex-basis:39px;font-size:23px}.nx-assistant-overlay{align-items:flex-end;justify-content:center;padding:12px max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:#000a}.nx-assistant-dialog{width:min(520px,100%);height:min(77dvh,720px);border-radius:16px}.nx-assistant-dialog-bar{min-height:46px}}
 @media(max-width:440px){.main>.top .nx-assistant-mobile-slot{justify-content:stretch}.nx-assistant-mobile-slot .nx-assistant-launcher{width:100%;justify-content:center;max-width:none}.nx-assistant-dialog{height:min(82dvh,750px)}}
 @media(prefers-reduced-motion:reduce){.nx-assistant-launcher{transition:none!important}}
+
+/* v7.9.9.1 critical layout fix: the Connected status is inserted into .main > .top.
+   Keep assistant in its own real document row BELOW that header on all devices.
+   Never place the closed launcher over main content using fixed/absolute positioning. */
+.main > .nx-assistant-mobile-slot{display:flex!important;position:relative!important;right:auto!important;top:auto!important;bottom:auto!important;left:auto!important;z-index:1;justify-content:flex-end;align-items:center;min-width:0;width:100%;margin:12px 0 8px;clear:both}
+.main > .nx-assistant-mobile-slot > #nxAssistantLauncher{position:static!important;right:auto!important;top:auto!important;bottom:auto!important;left:auto!important;transform:none!important;max-width:min(100%,220px);min-height:51px;z-index:auto!important}
+@media(max-width:800px){.main > .nx-assistant-mobile-slot{justify-content:flex-end;margin:9px 0 7px}.main > .nx-assistant-mobile-slot > #nxAssistantLauncher{min-height:48px}}
+@media(max-width:440px){.main > .nx-assistant-mobile-slot{justify-content:stretch}.main > .nx-assistant-mobile-slot > #nxAssistantLauncher{width:100%;max-width:none;justify-content:center}}
