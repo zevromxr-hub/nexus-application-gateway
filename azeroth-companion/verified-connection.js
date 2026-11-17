@@ -5,7 +5,7 @@
  */
 (()=>{'use strict';
 const WORKER='https://nexus-azeroth-api.zevromxr.workers.dev';
-const CHECK=WORKER+'/account/verify-companion';
+const CHECK=WORKER+'/account/verify-companion'+(location.origin==='https://zevarchives.com'?'?site=zevarchives':'');
 const API=WORKER+'/api/companion/verify';
 const STORAGE='nexus_azeroth_verified_receipt_v39';
 const badge=document.querySelector('.ud-account-badge');
@@ -32,7 +32,7 @@ function createDetails(){
  const note=document.createElement('p');note.textContent='A verified Battle.net session does not guarantee World of Warcraft characters. Game data appears when Blizzard provides it.';details.append(note);
  const actions=document.createElement('div');actions.className='nx-account-actions';
  const recheck=document.createElement('a');recheck.className='nx-recheck';recheck.href=CHECK;recheck.textContent='↻ Verify again';recheck.setAttribute('aria-label','Recheck Battle.net connection securely');
- const account=document.createElement('a');account.href=WORKER+'/account';account.className='nx-open-account';account.textContent='Open My Azeroth';account.rel='noopener noreferrer';account.target='_blank';
+ const account=document.createElement('a');account.href=WORKER+'/account'+(location.origin==='https://zevarchives.com'?'?site=zevarchives':'');account.className='nx-open-account';account.textContent='Open My Azeroth';account.rel='noopener noreferrer';account.target='_blank';
  actions.append(recheck,account);details.append(actions);
  const copy=sessionBox.querySelector('.ud-session-copy');(copy||sessionBox).append(details);
  const existing=sessionBox.querySelector('#udAvatar');if(existing){existing.setAttribute('title','Locally selected character initials — not a Blizzard account portrait')}
