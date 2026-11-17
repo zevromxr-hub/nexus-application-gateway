@@ -1,14 +1,20 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "13.1.0",
+  "version": "13.2.0",
   "channel": "staging",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN TALENT FORGE — MOBILE PRECISION & VISUAL COMPARISON",
-  "previous_version": "13.0.0",
+  "subtitle": "SOVEREIGN TALENT FORGE — ICON ASCENSION / SOURCE-MATCHED BLIZZARD SPELL ART",
+  "previous_version": "13.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
+    "Icon Ascension v13.2 integrates source-matched official Blizzard spell artwork into the existing cinematic Reforged talent nodes, selected-node inspector and iPhone selection tray.",
+    "Resolves icons using the current official TalentSourceBridge Blizzard spell ID and selected rank/choice—not guessed icons, node IDs or talent-name searches. Reuses already-loaded native source images where available.",
+    "Loads only visible or selected spell-media icons through the existing Cloudflare spell-media route, limits simultaneous requests to three, caches results in memory, validates Blizzard-hosted HTTPS images and displays original emblems if any source icon is absent.",
+    "Improves premium gold/violet/blue icon borders, consistent crop, allocated-talent glow, choice readability and compact mobile framing while keeping the screenshot-approved dark cinematic Forge appearance unchanged.",
+    "No changes to allocation engine, saved builds, input mappings, undo/redo, checkpoint writes, OAuth, Blizzard authentication, account data or Cloudflare configuration. The Icon Ascension module performs no localStorage writes.",
+    "Created rollback branch backup/azeroth-v13.1-before-icon-ascension-v13.2-2026-11-17. JavaScript syntax and source-ID mapping simulations passed; the live Cloudflare spell-media route and real mobile browser visuals remain unverified, so v13.2 stays staging.",
     "Refined the Reforged talent canvas with larger source-backed skill icons, clearer node labels, high-contrast allocated rank states and bigger original-engine +/− targets.",
     "Introduced a responsive iPhone/tablet selection tray: tapping a real talent node exposes its name, reported node ID, current manual ranks, original-engine rank buttons and a jump to official descriptions.",
     "Added Compact Map, Focus Selected and Reset View tools without changing the underlying Blizzard API responses, talent tree data, draft storage or rank controls.",
@@ -84,10 +90,6 @@
     "Provided staged browser acceptance for the new gateway and protected the published Discord release index until verification.",
     "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
     "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
-    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes.",
-    "Enhanced the original Talent Forge with visual node selection, glowing allocated paths and a read-only selected-node inspector fed from existing Blizzard-reported talent text and rank controls.",
-    "Introduced a Living Armory presentation with selectable equipment slots and detail cards sourced strictly from existing Blizzard public equipment responses.",
-    "Added an Adventure Journal navigation and chapter styling around the existing Mythic+, raid and reputations research without inventing achievement or inventory records.",
-    "Transformed ZevRo | Azeroth Assistant into an illustrated Oracle persona with guided-response states while retaining the existing curated knowledge and Mission Architect."
+    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes."
   ]
 }
