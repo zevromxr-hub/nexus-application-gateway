@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "14.0.0",
+  "title": "SOVEREIGN BUILD ARCHITECT — Reforged Talent Intelligence",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Project owner explicitly approved public release and Discord announcement; real-device and game acceptance remain pending.",
+  "features": [
+    "Sovereign Build Architect v14: explore official source-reported talent graph connections in cinematic Forge Focus Mode.",
+    "Build Comparison 3.0 reveals recorded rank and talent choice changes between two compatible saved or working builds.",
+    "New personal Build Archive adds local favorites, activity tags and private notes without rewriting existing talent drafts.",
+    "Patch Readiness flags missing source node IDs, rank-limit mismatches and unresolved returned relationships for review.",
+    "Preserves real Blizzard spell icons, gold/violet cinematic node cards and the original Classic Forge fallback.",
+    "Keeps source-backed talent planning, saved builds, undo/redo, Blizzard login, music and backup tools intact.",
+    "Owner-approved release system resumes Discord updates; device and player acceptance remain openly marked as pending."
+  ]
+}
