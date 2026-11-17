@@ -1,0 +1,26 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "product": "NEXUS | AZEROTH COMPANION",
+  "version": "7.9.8",
+  "title": "Floating ZevRo Azeroth Assistant & Contextual Help",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "features": [
+    "Replaced the assistant left-sidebar link with a clickable upper-right PC avatar, a responsive mobile-header shortcut, and a compact closable assistant panel.",
+    "Added a convenient full-page option while preserving Founder Identity and HYPER MUSIC's existing separate buttons.",
+    "Expanded curated guided-answer library to 27 documented topics, with current-studio suggestion priorities and transparent unsupported-question responses.",
+    "Assistant remains local to first-party documentation and never scans Battle.net tokens, local plans or player account data.",
+    "Updated player handbook, Getting Started, tester checklist, device QA, Gateway and release center for v7.9.8."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v7.9.8 — Floating Assistant\n\nNEW: ZevRo | Azeroth Assistant is now a clickable upper-right desktop avatar and a dedicated mobile-header shortcut. It opens a compact help panel with guided questions, topic suggestions, studio links and a Full Page option.\n\nExpanded to 27 documented answer topics, with contextual suggestions based on the studio you're using—without reading private account or saved-plan data. Existing Founder and HYPER MUSIC controls remain separate.\n\nGuides, Developer Test Requests, mobile acceptance checklist and Gateway information updated.\n\nPreview: real-device and Blizzard API acceptance tests are still pending.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Desktop avatar doesn't overlap existing music and Founder controls",
+    "Mobile header launcher and bottom panel work on iPhone Safari",
+    "Question answering, studio links and 27 knowledge topics operate",
+    "Full Page link and Escape/Close work",
+    "No account, saved-data or OAuth regression",
+    "Outstanding real Blizzard progression tests confirmed"
+  ],
+  "publish_rule": "Do not create releases/v7.9.8.json or update releases/index.json until acceptance; this draft is not the announcement trigger."
+}
