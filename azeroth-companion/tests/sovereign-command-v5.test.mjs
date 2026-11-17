@@ -16,7 +16,7 @@ for(const p of ['sovereign-command-v5.js','sovereign-command-v5.css','sovereign-
  assert.ok(html.includes('./'+p),'Sovereign source manifest missing '+p);
 assert.ok(html.indexOf('sovereign-portal.js')<html.indexOf('sovereign-command-v5.js'),'The website shell must mount only after prior navigation and preferences');
 assert.equal((html.match(/<script defer src=/g)||[]).length,25);
-assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,25);
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,26,'Additive v9.2 contextual-art stylesheet; JavaScript budget remains 25');
 for(const marker of ['nexus_azeroth_sovereign_v5','nxCommandV5','data-nx-journey','new','returning','group','renderJourney()',
  'nxJourneySteps','function openTool(id)','btn.click()','azl-trigger','Skip to main content','nxPageAnnouncer',
  'aria-current','nexus:view-activated','data-nx-setting','sxResetSettings','nxToTop','scrollY>640']){
