@@ -1,0 +1,211 @@
+/* NEXUS | AZEROTH v10.0 — LIVING COMMAND CENTER
+   First-party, self-hosted images only. Lightweight CSS; reduced motion honored. */
+:root{color-scheme:dark;--nx10-bg:#060b18;--nx10-ink:#f5f2e9;--nx10-dim:#b0bdd1;--nx10-gold:#e7c28a;--nx10-aqua:#a3d9f4;--nx10-violet:#c1a7fc;--nx10-stroke:rgba(220,196,161,.25);--nx10-panel:#0b1425;--nx10-max:1510px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:106px}
+body{margin:0;background:radial-gradient(ellipse at 46% -3%,#3b285647,transparent 52%),radial-gradient(ellipse at 100% 39%,#16314c54,transparent 38%),var(--nx10-bg);color:var(--nx10-ink);font:14px/1.65 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{cursor:pointer}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #a8e3ff;outline-offset:4px}
+[hidden]{display:none!important}::selection{background:#ae82ef75;color:#fff}
+.nx10-root{position:relative;isolation:isolate;z-index:1}.nx10-root::before{content:"";pointer-events:none;position:absolute;inset:450px 0 auto;height:730px;background:radial-gradient(ellipse at 50% 50%,#45296326,transparent 70%);z-index:-1}
+.nx10-header{position:sticky;top:0;z-index:70;border-bottom:1px solid rgba(225,194,155,.23);background:rgba(6,11,23,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.nx10-header-inner{width:min(var(--nx10-max),calc(100% - 44px));margin:auto;display:flex;justify-content:space-between;align-items:center;gap:21px;min-height:79px}
+.nx10-brand{display:flex;align-items:center;gap:12px;min-width:max-content}
+.nx10-logo{width:46px;height:46px;display:grid;place-items:center;clip-path:polygon(50% 0%,95% 23%,95% 77%,50% 100%,5% 77%,5% 23%);color:#ffecce;background:linear-gradient(135deg,#67459c,#182f50);font-size:27px;font-weight:950;text-shadow:0 0 16px #9b81ff}
+.nx10-brand strong{display:block;font-size:20px;line-height:1.2;letter-spacing:.20em;font-weight:950;color:#fce5ba}
+.nx10-brand small{display:block;font-size:8px;letter-spacing:.22em;color:#a4c1d3;font-weight:800;margin-top:4px}
+.nx10-nav{display:flex;align-items:center;gap:clamp(10px,1.8vw,27px);font-size:12px;color:#b7c4d7;white-space:nowrap}
+.nx10-nav a{padding:11px 2px;transition:color .18s}.nx10-nav a:hover,.nx10-nav a.nx10-active{color:#f4d59f}.nx10-nav a.nx10-active{border-bottom:2px solid #d7b27d}
+.nx10-header-actions{display:flex;align-items:center;gap:12px}
+.nx10-search-launch{border:1px solid #b5a5cf61;color:#e1e4f1;padding:10px 13px;border-radius:10px;background:#22213c9a;white-space:nowrap;display:flex;align-items:center;gap:8px;font-size:12px}
+.nx10-search-launch span:first-child{font-size:21px;line-height:1}
+.nx10-search-launch kbd{border:1px solid #ffffff28;border-radius:5px;font-size:10px;padding:2px 5px;color:#aeb5c9;margin-left:12px}
+.nx10-enter{display:inline-flex;gap:13px;align-items:center;justify-content:center;min-height:43px;border:1px solid #f5d59c88;border-radius:10px;background:linear-gradient(113deg,#d2a36b,#f5d3a0);color:#1f1a19;font-size:11px;font-weight:900;padding:11px 15px;letter-spacing:.06em;white-space:nowrap}
+.nx10-enter:hover,.nx10-btn-gold:hover{filter:brightness(1.12)}
+.nx10-shell{width:min(var(--nx10-max),calc(100% - 44px));margin:0 auto}
+.nx10-overline,.nx10-label{font-size:10px;letter-spacing:.21em;font-weight:900;color:#e9c995}
+.nx10-hero{position:relative;isolation:isolate;overflow:hidden;margin-top:22px;min-height:clamp(550px,44vw,690px);border-radius:27px;border:1px solid #e9c58f94;background-color:#111c35;background-image:linear-gradient(90deg,rgba(5,9,20,.96) 0%,rgba(8,13,29,.86) 36%,rgba(8,12,28,.37) 75%,rgba(8,11,25,.4)),linear-gradient(0deg,rgba(5,9,21,.89),transparent 54%),url('./assets/citadel-hero-hd-v9.1.1.webp');background-position:center,center,center 41%;background-size:cover;box-shadow:0 32px 96px #000b,inset 0 0 0 1px #f3d5a725}
+.nx10-hero::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;z-index:1;background:radial-gradient(ellipse at 77% 38%,#bda4fa24,transparent 42%),radial-gradient(ellipse at 5% 0%,#c89e4e17,transparent 45%)}
+.nx10-hero::after{content:"";pointer-events:none;position:absolute;z-index:3;inset:auto 0 0;height:6px;background:linear-gradient(90deg,transparent,#d7a86f8c 32%,#be9be07a 75%,transparent);opacity:.56}
+.nx10-hero-atmosphere{pointer-events:none;position:absolute;z-index:1;inset:0;background:linear-gradient(115deg,#080d21b3 0%,transparent 67%)}
+.nx10-hero-content{position:relative;z-index:4;padding:clamp(35px,6.3vw,91px) clamp(24px,6vw,86px);max-width:min(70%,880px)}
+.nx10-light-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#a7e6d9;box-shadow:0 0 14px #8ce1d7;margin-right:10px}
+.nx10-divider-dot{color:#b99bdd;margin:0 12px}.nx10-hero .nx10-overline{color:#d8c6b4;display:block}
+.nx10-hero h1{font-weight:950;font-size:clamp(44px,5.75vw,91px);line-height:.99;letter-spacing:-.055em;margin:27px 0 22px;text-shadow:0 8px 29px #05070fe6,0 0 30px #a98d8a1a}
+.nx10-hero h1 em{font-style:normal;background:linear-gradient(92deg,#eac68e,#fff2c8 55%,#d5b7fc);color:transparent;background-clip:text;-webkit-background-clip:text}
+.nx10-hero-desc{font-size:clamp(13px,1.3vw,17px);line-height:1.85;color:#dae2eb;max-width:550px;margin:0 0 26px;text-shadow:0 2px 7px #030612}
+.nx10-hero-buttons{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.nx10-btn{display:inline-flex;justify-content:center;align-items:center;gap:12px;border-radius:11px;min-height:52px;padding:14px 21px;font-size:11px;letter-spacing:.095em;font-weight:900;line-height:1.5;white-space:normal;text-align:center}
+.nx10-btn-gold{color:#191b20;background:linear-gradient(120deg,#bb8d54,#ffdda0 70%,#e8c192);border:1px solid #ffdda6;box-shadow:0 10px 30px #0006,0 0 23px #e6b36e30}
+.nx10-btn-glass,.nx10-btn-outline{border:1px solid #d5c2cf73;background:#132039d2;color:#f3ddeb}
+.nx10-btn-glass:hover,.nx10-btn-outline:hover{background:#283351;color:#fff}
+.nx10-hero-trust{display:flex;flex-wrap:wrap;gap:18px;margin-top:30px;color:#c4cdd9;font-weight:800;font-size:9px;letter-spacing:.09em}
+.nx10-hero-character{position:absolute;z-index:3;right:clamp(16px,5vw,65px);top:50%;transform:translateY(-50%);width:clamp(220px,23vw,329px);aspect-ratio:3/4.9;max-height:565px;border:1px solid #d6bd9eb3;border-radius:19px;background:#0b1026;overflow:hidden;box-shadow:0 24px 55px #000d,0 0 0 5px #1d213d7d,0 0 50px #b184ff24}
+.nx10-hero-character::before{content:"";position:absolute;inset:0;z-index:1;border-radius:inherit;background:linear-gradient(0deg,#090b18 0%,#090e20c9 26%,transparent 60%)}
+.nx10-hero-character-art{position:absolute;inset:0;background-image:url('./assets/sovereign-throne-v9.1.webp');background-position:center 29%;background-size:cover}
+.nx10-character-title{position:absolute;z-index:3;left:18px;right:18px;bottom:20px;display:grid;gap:5px}
+.nx10-character-title strong{font-size:19px;line-height:1.15;color:#fff3da;letter-spacing:.05em;overflow-wrap:anywhere;text-shadow:0 2px 9px #000}
+.nx10-character-title #nx10FeaturedMeta{font-size:11px;color:#d7dcea;line-height:1.5}
+.nx10-source{display:block;margin-top:5px;font-size:8px;font-weight:850;color:#bcdde4;letter-spacing:.08em;line-height:1.4}
+.nx10-hero-corner{position:absolute;left:49%;bottom:6%;font-size:70px;color:#f7dbbd24;pointer-events:none}
+.nx10-status-strip{display:grid;grid-template-columns:minmax(200px,1.35fr) repeat(4,minmax(115px,1fr));gap:1px;margin:19px 0 0;border:1px solid var(--nx10-stroke);border-radius:17px;overflow:hidden;background:#e2c3932c}
+.nx10-status-strip>*{background:#101b2ef4;padding:18px clamp(12px,1.8vw,22px);min-width:0}
+.nx10-status-intro strong{display:block;font-size:18px;margin-top:4px;color:#f6e9d5}.nx10-status-intro small{display:block;font-size:11px;color:#a8b9ce;line-height:1.5;margin-top:4px}
+.nx10-metric{display:flex;align-items:center;gap:11px}.nx10-metric-glyph{display:grid;place-items:center;flex:0 0 38px;height:38px;border-radius:12px;border:1px solid #e0b8835f;background:linear-gradient(130deg,#45304f,#132840);color:#efca99;font-size:23px}
+.nx10-metric strong{display:block;font-size:26px;line-height:1.25;font-weight:900;color:#f1dbb9}.nx10-metric small{font-size:10px;color:#aebed2;display:block;line-height:1.3}
+.nx10-metric-link:hover{background:#1c2a41}
+.nx10-section{margin-top:clamp(40px,5vw,77px)}
+.nx10-section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:22px}
+.nx10-section-head h2,.nx10-utility h2{font-size:clamp(26px,3vw,43px);line-height:1.15;margin:9px 0;font-weight:900;letter-spacing:-.04em;color:#f6e9d7}
+.nx10-section-head p,.nx10-utility p{margin:0;color:#adbed1;line-height:1.8;font-size:13px}
+.nx10-text-link{font-size:12px;font-weight:800;color:#e8caa5;border-bottom:1px solid #d6bd9880;padding:6px 0;white-space:nowrap}
+.nx10-text-link:hover{color:white}
+.nx10-chambers{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(8px,1.25vw,17px)}
+.nx10-chamber{--nx10-art:url('./assets/sovereign-throne-v9.1.webp');--nx10-chamber-rim:#e8c591;display:flex;flex-direction:column;justify-content:space-between;position:relative;isolation:isolate;min-width:0;min-height:0;aspect-ratio:3/4.9;border-radius:16px;overflow:hidden;border:1px solid color-mix(in srgb,var(--nx10-chamber-rim),transparent 23%);background:#121b30;background-image:linear-gradient(0deg,#050a18fa 0%,#050a18a3 27%,transparent 64%),linear-gradient(180deg,#080d2080,transparent 35%),var(--nx10-art);background-position:center,center,center 32%;background-size:cover;box-shadow:0 17px 32px #0008,inset 0 0 0 1px #f8e9c817;transition:transform .24s ease,box-shadow .24s ease,filter .24s ease}
+.nx10-chamber::before{content:"";z-index:0;position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 18%,color-mix(in srgb,var(--nx10-chamber-rim),transparent 74%),transparent 44%);opacity:.53}
+.nx10-chamber::after{content:"";position:absolute;inset:0;pointer-events:none;border:4px solid #040b170d;border-radius:inherit}
+.nx10-chamber-sovereign{--nx10-art:url('./assets/sovereign-throne-v9.1.webp');--nx10-chamber-rim:#e6bf7e}
+.nx10-chamber-talent{--nx10-art:url('./assets/talent-forge-v9.1.webp');--nx10-chamber-rim:#bd9cf5}
+.nx10-chamber-armory{--nx10-art:url('./assets/living-armory-v9.1.webp');--nx10-chamber-rim:#99dbee}
+.nx10-chamber-adventure{--nx10-art:url('./assets/adventure-journal-v9.1.webp');--nx10-chamber-rim:#ebad97}
+.nx10-chamber-oracle{--nx10-art:url('./assets/azeroth-oracle-v9.1.webp');--nx10-chamber-rim:#b0e7ca}
+.nx10-chamber-top,.nx10-chamber-bottom{position:relative;z-index:2}
+.nx10-chamber-top{display:flex;justify-content:space-between;padding:15px;gap:7px;align-items:center;color:#f2debf;font-size:9px;font-weight:900;letter-spacing:.13em;text-shadow:0 2px 8px #000}
+.nx10-chamber-top>span:last-child{font-size:19px}
+.nx10-chamber-bottom{padding:clamp(13px,1.6vw,22px);display:grid;gap:7px}
+.nx10-chamber-glyph{color:var(--nx10-chamber-rim);font-size:29px;line-height:1;text-shadow:0 0 22px var(--nx10-chamber-rim)}
+.nx10-chamber strong{font-size:clamp(16px,1.55vw,23px);line-height:1.13;font-weight:950;letter-spacing:.055em;color:#fff2d8;text-shadow:0 3px 14px #000,0 1px 4px #000}
+.nx10-chamber small{color:#cedceb;font-size:11px;line-height:1.45;text-shadow:0 2px 8px #000}
+.nx10-chamber:hover{transform:translateY(-6px);filter:brightness(1.08) saturate(1.07);box-shadow:0 28px 52px #0009,0 0 24px color-mix(in srgb,var(--nx10-chamber-rim),transparent 75%)}
+.nx10-workbench-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(270px,.75fr);gap:20px;align-items:stretch}
+.nx10-chronicle-panel,.nx10-side-panel{border:1px solid #c2adad50;border-radius:20px;background:linear-gradient(140deg,#111b2df2,#0d1728f0);box-shadow:0 19px 42px #0005;min-width:0;overflow:hidden}
+.nx10-tabs{display:flex;gap:5px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid #c7b0c045;padding:13px 15px;background:#17223880}
+.nx10-tabs button{font-size:12px;font-weight:850;padding:11px clamp(12px,2vw,21px);color:#b7cadb;background:transparent;border:1px solid transparent;border-radius:11px;white-space:nowrap}
+.nx10-tabs button[aria-selected="true"]{background:linear-gradient(110deg,#55405f,#253c55);border-color:#c5acde8b;color:#fff2d9;box-shadow:inset 0 2px #fff3}
+.nx10-tab-content{padding:clamp(18px,2.8vw,28px);min-height:320px}
+.nx10-panel-intro{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:15px}
+.nx10-panel-intro>strong{font-size:12px;letter-spacing:.15em;color:#f0d2a2}
+.nx10-panel-intro :is(a,button){font-size:12px;color:#bce8f2;font-weight:800}
+.nx10-link-button{background:none;border:0;padding:0}
+.nx10-records{display:grid;gap:10px}
+.nx10-record{display:flex;align-items:center;gap:13px;border:1px solid #aab9c545;border-radius:12px;background:#111d30cf;padding:13px 15px;min-width:0;overflow-wrap:anywhere}
+.nx10-record-art{display:grid;place-items:center;width:43px;height:43px;flex:0 0 43px;border-radius:12px;border:1px solid #e5b9875c;color:#e5cbad;background:linear-gradient(125deg,#514060,#173b54);font-size:22px}
+.nx10-record-copy{min-width:0;flex:1}.nx10-record-copy strong{display:block;font-size:14px;line-height:1.4;color:#f2e7d9}.nx10-record-copy small{display:block;font-size:11px;color:#aabdd1;margin-top:2px;overflow-wrap:anywhere}
+.nx10-record>a{border:1px solid #c6a78e69;padding:7px 10px;border-radius:9px;font-size:11px;font-weight:800;color:#f1d3a5;white-space:nowrap}
+.nx10-record>a:hover{background:#243b57}
+.nx10-empty{border:1px dashed #a7bfd160;border-radius:12px;padding:24px;display:grid;gap:7px;background:#12213965}
+.nx10-empty strong{color:#f0d5a9}.nx10-empty small{color:#aebed0;font-size:12px}.nx10-empty a{color:#bdeaf2;font-weight:800;font-size:12px;margin-top:4px}
+.nx10-goal-form{display:grid;grid-template-columns:minmax(0,1fr) 145px auto;gap:9px;align-items:end;margin:15px 0 18px}
+.nx10-goal-form label{display:grid;gap:5px;color:#a9bdcf;font-size:11px;font-weight:800;min-width:0}
+.nx10-goal-form :is(input,select){width:100%;height:46px;padding:10px;background:#0b1628;border:1px solid #99afc568;border-radius:10px;color:#f3e9dc;min-width:0}
+.nx10-add-goal{height:46px;padding:0 14px;font-size:11px;font-weight:900;letter-spacing:.06em;border:1px solid #d9b883;border-radius:10px;background:linear-gradient(110deg,#bb936a,#f0c994);color:#201913}
+.nx10-goal-check{width:19px;height:19px;accent-color:#b99af2;flex:0 0 19px}
+.nx10-record-done .nx10-record-copy strong{text-decoration:line-through;color:#95aaae}
+.nx10-delete-goal{border:1px solid #ac839254;border-radius:9px;background:#39233150;color:#f1bfd4;padding:8px 10px;font-size:11px;font-weight:850}
+.nx10-existing-tasks{margin-top:18px;border-top:1px solid #a5b7c532;padding-top:15px}
+.nx10-existing-tasks h4{font-size:12px;color:#decaed;letter-spacing:.1em;margin:0 0 12px}
+.nx10-board-note{font-size:11px;color:#8faec1;line-height:1.8;margin-top:16px}
+.nx10-side-panel{display:flex;flex-direction:column;background:#0b1528}
+.nx10-side-top{padding:26px 24px 17px}.nx10-side-top h3{font-size:clamp(23px,2.5vw,32px);line-height:1.18;letter-spacing:-.03em;margin:13px 0;color:#f6e1c4}
+.nx10-side-top p{color:#abbfd3;font-size:12px;line-height:1.8}
+.nx10-btn-outline{font-size:10px;min-height:43px;margin:9px 0 4px}
+.nx10-side-art{min-height:180px;flex:1;background:linear-gradient(0deg,#091327 0%,#09132722 70%),url('./assets/adventure-journal-v9.1.webp') center 40%/auto 100% no-repeat}
+.nx10-side-bottom{padding:15px 24px 22px;display:grid;gap:5px;background:#0b1528}.nx10-side-bottom strong{font-size:13px;color:#f0d6b6}.nx10-side-bottom small{font-size:11px;color:#9db2c8}
+.nx10-utility{display:grid;grid-template-columns:minmax(190px,1.1fr) minmax(240px,1.5fr) auto;align-items:center;gap:22px;padding:24px;border:1px solid #baaacc54;border-radius:19px;background:linear-gradient(120deg,#1c1d35db,#0d2232d9)}
+.nx10-utility h2{font-size:23px}.nx10-utility-links{display:flex;flex-wrap:wrap;gap:8px}
+.nx10-utility-links a{font-size:11px;font-weight:850;padding:10px 12px;border:1px solid #b7b0c967;border-radius:9px;background:#1a2944b8;color:#d9e7f1}
+.nx10-utility-links a:hover{background:#30415d}
+.nx10-mode-label{display:grid;gap:7px;font-size:11px;font-weight:800;color:#d4bfdd}
+.nx10-mode-label select{color:#f4eee4;background:#182942;border:1px solid #9aafc063;padding:10px;border-radius:9px;width:155px}
+.nx10-footer{padding:38px 0 45px;margin-top:50px;border-top:1px solid #d4b68f3d;display:flex;justify-content:space-between;gap:13px;flex-wrap:wrap;color:#b6b7cd;font-size:10px;letter-spacing:.13em}
+.nx10-footer p{width:100%;font-size:11px;letter-spacing:0;color:#93a8b8;line-height:1.7;margin:0}
+.nx10-global-snow{position:fixed;inset:0;z-index:16;pointer-events:none;overflow:hidden;contain:strict}
+.nx10-global-snow i{position:absolute;top:-9vh;left:var(--x);width:var(--s);height:var(--s);border-radius:50%;opacity:var(--o);background:#deefff;box-shadow:0 0 9px #bcd6ff9a;animation:nx10Snow var(--d) linear var(--delay) infinite}
+@keyframes nx10Snow{to{transform:translate3d(var(--drift),113vh,0)}}
+.nx10-mode-balanced .nx10-global-snow i:nth-child(n+15){display:none}
+.nx10-mode-performance .nx10-global-snow{display:none}
+.nx10-mode-performance .nx10-chamber,.nx10-mode-performance .nx10-nav a{transition:none}
+.nx10-paused .nx10-global-snow i{animation-play-state:paused}
+.nx10-search-dialog{width:min(750px,calc(100% - 26px));max-height:min(82dvh,800px);overflow-y:auto;border:1px solid #d9b987b2;border-radius:19px;color:#f8eddb;background:linear-gradient(135deg,#14243b,#090f20);padding:25px;box-shadow:0 30px 100px #000c}
+.nx10-search-dialog::backdrop{background:#030711d9;backdrop-filter:blur(5px)}
+.nx10-dialog-header{display:flex;justify-content:space-between;align-items:start;gap:16px}
+.nx10-dialog-header h2{font-size:25px;line-height:1.2;margin:8px 0 17px}
+.nx10-dialog-header button{background:#29364c;color:#fff;border:1px solid #a0a7c266;border-radius:9px;width:38px;height:38px}
+.nx10-palette-field{height:57px;display:flex;gap:14px;align-items:center;border:1px solid #c8a98a8c;background:#091629;border-radius:11px;padding:0 16px}
+.nx10-palette-field span{font-size:27px;color:#c5dcf0}.nx10-palette-field input{flex:1;min-width:0;width:100%;background:transparent;border:0;outline:0;color:#fff;font-size:15px}
+.nx10-search-results{display:grid;gap:8px;margin-top:16px}
+.nx10-search-result{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 15px;border:1px solid #adbbca49;border-radius:10px;background:#16233a;color:#f2dfc4}
+.nx10-search-result strong{display:block;font-size:13px}.nx10-search-result small{display:block;font-size:11px;color:#aebecf;margin-top:3px}
+.nx10-search-result:hover,.nx10-search-result:focus-visible{background:#29374e;border-color:#e6c4949e}
+.nx10-search-dialog>p{color:#99b5c6;font-size:11px}
+.nx10-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:110;padding:12px 18px;border-radius:12px;background:#192d42;border:1px solid #d7b887ba;box-shadow:0 15px 40px #0009;color:#fff;font-size:12px;max-width:min(480px,calc(100% - 30px));text-align:center}
+@media(max-width:1200px){
+ .nx10-header-inner{gap:10px}.nx10-nav{gap:13px}
+ .nx10-search-launch kbd{display:none}.nx10-hero-content{max-width:68%}
+ .nx10-chamber strong{font-size:clamp(15px,1.7vw,21px)}
+ .nx10-status-strip{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .nx10-status-intro{grid-column:1/-1}
+ .nx10-utility{grid-template-columns:1fr 1fr}.nx10-mode-label{grid-column:1/-1;display:flex;align-items:center}
+}
+@media(max-width:960px){
+ .nx10-header-inner{flex-wrap:wrap;padding:11px 0;min-height:0}
+ .nx10-nav{order:3;width:100%;overflow-x:auto;justify-content:space-between;border-top:1px solid #fff1;padding-top:5px}
+ .nx10-hero{min-height:580px}.nx10-hero-content{max-width:74%;padding:55px 35px}
+ .nx10-hero-character{opacity:.65;right:-40px;top:54%;width:265px}
+ .nx10-hero::before{background:linear-gradient(90deg,#070c1be6 4%,transparent 86%)}
+ .nx10-chambers{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .nx10-workbench-layout{grid-template-columns:1fr}
+ .nx10-side-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,.8fr)}
+ .nx10-side-top{grid-column:1}.nx10-side-art{grid-column:2;grid-row:1/3}
+ .nx10-side-bottom{grid-column:1}
+}
+@media(max-width:650px){
+ html{scroll-padding-top:146px}
+ body{font-size:13px}
+ .nx10-shell,.nx10-header-inner{width:calc(100% - 22px)}
+ .nx10-header{backdrop-filter:none;-webkit-backdrop-filter:none;background:#090f21f7}
+ .nx10-logo{width:36px;height:36px;font-size:20px}
+ .nx10-brand strong{font-size:16px}.nx10-brand small{font-size:7px}
+ .nx10-search-launch{width:38px;height:38px;padding:0;justify-content:center}
+ .nx10-search-launch span:not(:first-child){display:none}
+ .nx10-search-launch span:first-child{font-size:24px}
+ .nx10-enter{min-height:39px;padding:8px 9px;font-size:9px;gap:4px}
+ .nx10-nav{gap:18px;justify-content:flex-start;scrollbar-width:none}
+ .nx10-nav a{font-size:11px;padding:8px 0}
+ .nx10-hero{margin-top:11px;min-height:660px;border-radius:18px;background-image:linear-gradient(180deg,#071020ad 0%,#071020d9 60%,#070b1af5 100%),url('./assets/citadel-hero-hd-v9.1.1.webp');background-position:center,62% top;background-size:cover}
+ .nx10-hero-content{max-width:100%;padding:31px 19px 20px}
+ .nx10-hero h1{font-size:clamp(38px,10vw,59px);margin:17px 0 13px}
+ .nx10-hero-desc{font-size:12px;max-width:360px;line-height:1.75}
+ .nx10-hero-buttons{gap:9px}.nx10-btn{min-height:45px;padding:10px 13px;font-size:9px}
+ .nx10-hero-trust{margin-top:15px;font-size:8px;gap:8px 12px}
+ .nx10-hero-character{opacity:1;top:auto;bottom:13px;left:50%;right:auto;transform:translateX(-50%);width:178px;aspect-ratio:3/3.5;max-height:220px;border-radius:12px}
+ .nx10-character-title{left:10px;right:10px;bottom:8px;gap:2px}.nx10-character-title strong{font-size:12px}.nx10-character-title #nx10FeaturedMeta{font-size:9px}.nx10-source{font-size:6px;margin-top:1px}.nx10-character-title .nx10-label{font-size:7px}
+ .nx10-hero-corner{display:none}
+ .nx10-status-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:10px}
+ .nx10-status-intro{padding:15px}.nx10-status-intro strong{font-size:15px}
+ .nx10-metric{padding:14px 12px}.nx10-metric-glyph{width:34px;height:34px;flex-basis:34px}.nx10-metric strong{font-size:20px}.nx10-metric small{font-size:9px}
+ .nx10-section{margin-top:42px}.nx10-section-head{gap:10px}.nx10-section-head h2{font-size:29px}.nx10-section-head p{font-size:12px}
+ .nx10-chambers{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .nx10-chamber{border-radius:13px;min-height:0;aspect-ratio:3/5.5}
+ .nx10-chamber-top{padding:10px;font-size:8px}.nx10-chamber-bottom{padding:12px;gap:3px}
+ .nx10-chamber strong{font-size:clamp(14px,4.2vw,20px)}.nx10-chamber small{font-size:10px}
+ .nx10-chamber-oracle{grid-column:1/-1;aspect-ratio:unset;min-height:215px;background-position:center,center,center 27%}
+ .nx10-chronicle-panel{border-radius:15px}.nx10-tabs{padding:8px;gap:3px}.nx10-tabs button{font-size:10px;padding:9px 10px}
+ .nx10-tab-content{padding:14px}.nx10-record{padding:11px;gap:9px}.nx10-record-art{width:35px;height:35px;flex-basis:35px}
+ .nx10-record-copy strong{font-size:12px}.nx10-record-copy small{font-size:10px}
+ .nx10-goal-form{grid-template-columns:1fr 1fr}.nx10-goal-form label:first-child{grid-column:1/-1}.nx10-add-goal{grid-column:2;grid-row:2}
+ .nx10-side-panel{display:flex}.nx10-side-art{height:170px;min-height:170px;background-size:auto 100%}.nx10-side-top{padding:20px}
+ .nx10-utility{grid-template-columns:1fr;gap:15px;padding:17px}
+ .nx10-mode-label{grid-column:auto}
+ .nx10-footer{margin-top:34px;font-size:9px}
+ .nx10-global-snow i:nth-child(n+10){display:none}
+ .nx10-search-dialog{padding:14px;border-radius:13px}
+ .nx10-dialog-header h2{font-size:21px}
+}
+@media(hover:none){.nx10-chamber:hover{transform:none;filter:none}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .nx10-global-snow{display:none!important}
+ .nx10-chamber,.nx10-nav a{transition:none!important}
+}
+@media(prefers-reduced-transparency:reduce){.nx10-header{-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media print{.nx10-global-snow,.nx10-header-actions,.nx10-hero-buttons,.nx10-goal-form,.nx10-search-dialog{display:none!important}body{background:#fff;color:#111}.nx10-hero{background:#eee!important;color:#111}}
