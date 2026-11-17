@@ -64,6 +64,10 @@ jobs:
         id: cartography
         continue-on-error: true
         run: node azeroth-companion/tests/world-atlas-cartography-v18.test.mjs
+      - name: Test v18.1 Atlas Route Architect and source isolation
+        id: routes
+        continue-on-error: true
+        run: node azeroth-companion/tests/world-atlas-routes-v18.1.test.mjs
       - name: Guard preserved Sovereign Command shell against newer releases
         id: legacy_shell
         continue-on-error: true
@@ -87,6 +91,7 @@ jobs:
           LEGACY_FORGE: ${{ steps.legacy_forge.outcome }}
           OPERATIONS: ${{ steps.operations.outcome }}
           CARTOGRAPHY: ${{ steps.cartography.outcome }}
+          ROUTES: ${{ steps.routes.outcome }}
         run: |
           {
             echo "## NEXUS | Azeroth — advisory source checks"
@@ -104,12 +109,13 @@ jobs:
             echo "| v16.5 Expedition Intelligence and prep storage safety | $EXPEDITION |"
             echo "| v17 Sovereign Adventure Operations and session safety | $OPERATIONS |"
             echo "| v18 Atlas original cartography and preserved mission records | $CARTOGRAPHY |"
+            echo "| v18.1 Atlas visual routes and isolated saved itinerary safety | $ROUTES |"
             echo "| Preserved v5 Sovereign Command shell | $LEGACY_SHELL |"
             echo "| Preserved native v5.1 Talent Forge and current version badge | $LEGACY_FORGE |"
             echo ""
             echo "Any failure remains a real, unresolved finding for later testers, not an automatic pass."
           } >> "$GITHUB_STEP_SUMMARY"
-          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER" "$WORLD" "$EXPEDITION" "$OPERATIONS" "$CARTOGRAPHY" "$LEGACY_SHELL" "$LEGACY_FORGE"; do
+          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER" "$WORLD" "$EXPEDITION" "$OPERATIONS" "$CARTOGRAPHY" "$ROUTES" "$LEGACY_SHELL" "$LEGACY_FORGE"; do
             if [ "$state" != "success" ]; then
               echo "::warning title=Azeroth advisory test::Outcome $state — review later; owner release is not blocked."
             fi
