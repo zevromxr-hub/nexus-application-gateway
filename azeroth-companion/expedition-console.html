@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-nx-version="16.5.0">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1225">
+<meta name="description" content="NEXUS Expedition Console v16.5 — character-aware manual mission preparation, connected builds, personal checklists, source labels and safe exports.">
+<title>Expedition Console | NEXUS Azeroth v16.5</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/expedition-console.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS | Expedition Intelligence v16.5">
+<meta property="og:description" content="A cinematic adventure preparation command station with linked builds, mission checklists and curated Azeroth research.">
+<meta property="og:url" content="https://zevarchives.com/azeroth-companion/expedition-console.html">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png"><link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<link rel="stylesheet" href="./expedition-console-v16.5.css?v=1650">
+<script defer src="./living-world-engine-core-v16.js?v=1600"></script>
+<script defer src="./adventure-intelligence-core-v16.5.js?v=1650"></script>
+<script defer src="./expedition-console-v16.5.js?v=1650"></script>
+</head>
+<body class="nx165-body">
+<div class="nx165-shell" id="nx165Console">
+<header class="nx165-header">
+ <a class="nx165-brand" href="./command-center.html"><span aria-hidden="true">N</span><strong>NEXUS</strong><small>EXPEDITION CONSOLE</small></a>
+ <nav aria-label="Navigation"><a href="./command-center.html">WAR ROOM</a><a href="./world-atlas.html">WORLD ATLAS</a><a href="./player-experience.html">MY CHARACTER</a><a href="./save-protection.html">SAVE PROTECTION</a></nav>
+</header>
+<main>
+<section class="nx165-hero" aria-labelledby="nx165HeroTitle">
+ <div class="nx165-hero-copy"><div class="nx165-overline">THE LIVING WORLD ENGINE · V16.5 / ADVENTURE INTELLIGENCE</div>
+ <h1 id="nx165HeroTitle">PLAN THE<br><em>UNFORGETTABLE.</em></h1>
+ <p>Turn your World Atlas goals into purposeful expeditions. Inspect linked manual builds and gear research, organize preparation steps, and carry an actionable briefing into your next adventure.</p>
+ <div class="nx165-hero-actions"><a class="nx165-hero-primary" href="./world-atlas.html#nx16Missions">CREATE AN ATLAS MISSION ↗</a><a href="#nx165Ops">OPEN EXPEDITION OPERATIONS ↘</a></div>
+ <small>MANUAL PLANNING ONLY · NO GAMEPLAY OR ITEM OWNERSHIP VERIFICATION · WORKS ON IPHONE AND PC</small></div>
+ <div class="nx165-hero-art" role="img" aria-label="Existing NEXUS fantasy Adventure Journal illustration"></div>
+</section>
+<section class="nx165-signals" aria-label="Local mission statistics">
+ <div><span>YOUR EXPEDITIONS</span><strong id="nx165Total">0</strong></div>
+ <div><span>PREP CHECKLIST ITEMS</span><strong id="nx165Steps">0</strong></div>
+ <div><span>MANUALLY COMPLETED STEPS</span><strong id="nx165Completed">0</strong></div>
+ <div><span>PRIORITY MISSIONS</span><strong id="nx165Priority">0</strong></div>
+</section>
+<section class="nx165-ops" id="nx165Ops" aria-labelledby="nx165OpsTitle">
+ <div class="nx165-heading"><div><span class="nx165-overline">01 / THE MISSION DIRECTOR</span><h2 id="nx165OpsTitle">EXPEDITION OPERATIONS</h2><p>Select an existing World Atlas mission to build its preparation plan. The mission itself remains stored separately in the original v16 Atlas.</p></div>
+ <a class="nx165-tertiary" href="./world-atlas.html">EXPLORE WORLD DESTINATIONS ↗</a></div>
+ <div class="nx165-operations-grid">
+ <aside class="nx165-queue" aria-label="Your mission queue">
+  <div class="nx165-queue-top"><strong>YOUR MISSION QUEUE</strong><span id="nx165QueueCount">0 missions</span></div>
+  <label>CHARACTER FILTER<select id="nx165CharFilter"><option value="">All local characters</option></select></label>
+  <div class="nx165-queue-filters"><label>STATUS<select id="nx165StatusFilter"><option value="">All</option><option value="planned">Planned</option><option value="active">In progress</option><option value="completed">Manually completed</option></select></label><label>SEARCH<input id="nx165Query" type="search" placeholder="Mission or destination" autocomplete="off"></label></div>
+  <div id="nx165MissionQueue" class="nx165-queue-list" aria-live="polite"></div>
+  <div class="nx165-queue-bottom"><a href="./world-atlas.html#nx16Missions">+ CREATE NEW MISSION IN ATLAS ↗</a><small>Priority and pinned status are your own planning settings.</small></div>
+ </aside>
+ <div class="nx165-detail" id="nx165Detail" aria-label="Selected expedition briefing">
+   <div class="nx165-selected-hero" id="nx165SelectedHero">
+    <div class="nx165-selected-copy"><span id="nx165SelectedCategory">MISSION INTELLIGENCE</span><h3 id="nx165SelectedName">SELECT AN EXPEDITION.</h3><p id="nx165SelectedZone">Your saved missions appear in the queue.</p>
+    <div class="nx165-selected-actions"><a id="nx165OpenZone" href="./world-atlas.html">OPEN DESTINATION ↗</a><button type="button" id="nx165Pin" disabled>☆ PIN MISSION</button></div></div>
+   </div>
+   <div id="nx165Empty" class="nx165-empty-state">Open the Living World Atlas and create an exploration goal first. It will appear here ready for preparation, even if you are not signed in to Battle.net.</div>
+   <div id="nx165Active" hidden>
+     <div class="nx165-plan-controls">
+       <label>PRIORITY<select id="nx165PrioritySelect"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></label>
+       <div class="nx165-planning-progress"><span>YOUR CHECKLIST PROGRESS <b id="nx165ProgressNumber">0%</b></span><div class="nx165-progress-rail"><div id="nx165ProgressFill" class="nx165-progress-fill"></div></div><small id="nx165ProgressCaption">0 of 0 preparation steps completed manually</small></div>
+     </div>
+     <section class="nx165-preparation" aria-labelledby="nx165ChecklistTitle">
+       <div class="nx165-subheader"><div><span>02 / MISSION PREPARATION</span><h4 id="nx165ChecklistTitle">YOUR READINESS CHECKLIST</h4></div><button type="button" id="nx165Reset">RESET TO CATEGORY TEMPLATE</button></div>
+       <p>This percentage reflects only checked personal preparation tasks. It is not a game-ready score, a DPS estimate, or confirmed raid eligibility.</p>
+       <div id="nx165StepsList" class="nx165-steps-list"></div>
+       <form id="nx165AddStep" class="nx165-add-step"><label for="nx165StepText">ADD YOUR OWN PREPARATION STEP</label><div><input id="nx165StepText" type="text" maxlength="135" placeholder="e.g. Check the latest encounter reference" required><button type="submit">ADD STEP +</button></div></form>
+     </section>
+     <section class="nx165-linked" aria-labelledby="nx165LinkedTitle">
+       <div class="nx165-subheader"><div><span>03 / STUDIO CONNECTIONS</span><h4 id="nx165LinkedTitle">CONNECTED INTELLIGENCE</h4></div><small>MANUAL & SOURCE LABELS</small></div>
+       <div id="nx165LinkedRecords" class="nx165-linked-records"></div>
+       <div id="nx165LinkWarnings" class="nx165-link-warnings" aria-live="polite"></div>
+       <div class="nx165-direct-links"><a href="./player-experience.html">CHARACTER NEXUS ↗</a><a href="./?enter=1&amp;view=talents">TALENT FORGE ↗</a><a href="./character-intelligence.html">LIVING ARMORY ↗</a><a href="./progression-intelligence.html">ADVENTURE JOURNAL ↗</a></div>
+     </section>
+     <section class="nx165-notes" aria-labelledby="nx165NotesTitle"><div class="nx165-subheader"><div><span>04 / PRIVATE STRATEGY</span><h4 id="nx165NotesTitle">MISSION FIELD NOTES</h4></div></div>
+       <label for="nx165Notes">PERSONAL PREPARATION NOTES · STORED IN THIS BROWSER ONLY</label>
+       <textarea id="nx165Notes" rows="4" maxlength="1100" placeholder="Encounter research, practice notes, recommended actions to verify in-game…"></textarea><button type="button" id="nx165SaveNotes">SAVE FIELD NOTES</button>
+     </section>
+     <div class="nx165-export"><button type="button" id="nx165Export" class="nx165-export-primary">EXPORT EXPEDITION BRIEF ↗</button><button type="button" id="nx165Copy">COPY PREPARATION CHECKLIST</button><a href="./save-protection.html">PROTECT ALL SAVED WORK ↗</a></div>
+   </div>
+ </div>
+ </div>
+</section>
+<section class="nx165-crossroad" aria-labelledby="nx165CrossroadTitle">
+ <span class="nx165-overline">05 / THE CONNECTED WORLD</span><h2 id="nx165CrossroadTitle">EVERY STUDIO. ONE ADVENTURE.</h2>
+ <div class="nx165-crossroads"><a class="nx165-crossroad-world" href="./world-atlas.html"><span>EXPLORE</span><strong>WORLD ATLAS</strong></a><a class="nx165-crossroad-forge" href="./?enter=1&amp;view=talents"><span>PREPARE</span><strong>TALENT FORGE</strong></a><a class="nx165-crossroad-hero" href="./player-experience.html"><span>PERSONALIZE</span><strong>CHARACTER NEXUS</strong></a></div>
+</section>
+<div id="nx165Toast" class="nx165-toast" role="status" aria-live="polite"></div>
+</main>
+<footer class="nx165-footer"><span>NEXUS | AZEROTH COMPANION · v16.5.0</span><span>PERSONAL PLANNING IS NOT GAMEPLAY VERIFICATION</span><span>POWERED BY ZEVRO | NEXUS</span></footer>
+</div>
+</body></html>
