@@ -179,3 +179,12 @@
 
 /* Prominent direct navigation from the original companion. */
 body.nx-art-studios .sidebar .nav .nx13-nav-entry{border:1px solid #e2c18baf!important;border-radius:11px!important;background:linear-gradient(115deg,#563d7199,#8463417d)!important;color:#ffe8bf!important;box-shadow:inset 0 1px #ffedce2b,0 7px 21px #0003!important;font-weight:900!important;letter-spacing:.03em}
+
+
+/* Reforged starts as the primary workshop; classic controls remain mounted,
+   untouched and immediately return when Classic Forge View is selected. */
+#talentForge.nx13-workshop-open [data-section="talents"]>.wow-kicker,
+#talentForge.nx13-workshop-open [data-section="talents"]>h2,
+#talentForge.nx13-workshop-open [data-section="talents"]>p.muted,
+#talentForge.nx13-workshop-open .nx13-legacy-setup,
+#talentForge.nx13-workshop-open .nx13-legacy-stats{display:none!important}
