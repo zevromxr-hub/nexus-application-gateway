@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-nx-version="16.0.0">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1326">
+<meta name="description" content="NEXUS Living World Atlas v16 — explore curated Azeroth regions and connect personal, browser-local exploration goals to characters and saved builds.">
+<title>Living World Atlas | NEXUS Azeroth v16</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/world-atlas.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS | The Living World Atlas">
+<meta property="og:description" content="Explore Azeroth through a cinematic research atlas and connected personal mission planner.">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta property="og:url" content="https://zevarchives.com/azeroth-companion/world-atlas.html">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png"><link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<link rel="stylesheet" href="./world-atlas-v16.css?v=1600">
+<script defer src="./living-world-engine-core-v16.js?v=1600"></script>
+<script defer src="./world-atlas-v16.js?v=1600"></script>
+</head>
+<body class="nx16-atlas-body">
+<div class="nx16-atlas-shell" id="nx16Atlas">
+<header class="nx16-atlas-header">
+ <a href="./command-center.html" class="nx16-atlas-brand" aria-label="Return to NEXUS Command Center"><span>N</span><strong>NEXUS</strong><small>WORLD ATLAS</small></a>
+ <nav aria-label="World Atlas navigation"><a href="./command-center.html">WAR ROOM</a><a href="./player-experience.html">MY CHARACTER</a><a href="./?enter=1&amp;view=talents">TALENT FORGE</a><a href="./save-protection.html">SAVE PROTECTION</a></nav>
+</header>
+<main>
+<section class="nx16-atlas-hero">
+ <div class="nx16-atlas-title"><span class="nx16-kicker">NEXUS / LIVING WORLD ENGINE · VERSION 16.0</span><h1>EXPLORE THE<br><em>KNOWN WORLD.</em></h1>
+ <p>A cinematic gateway to curated World of Warcraft research destinations. Discover regions, connect your own objectives and carry the adventure back to your character's other studios.</p>
+ <div class="nx16-atlas-hero-buttons"><a href="#nx16Map">OPEN WORLD MAP ↘</a><a href="#nx16Missions">PLAN AN ADVENTURE ↘</a></div>
+ <div class="nx16-atlas-trust">CURATED RESEARCH · NO LIVE LOCATION · NOT OFFICIAL CARTOGRAPHY</div></div>
+ <div class="nx16-atlas-art" role="img" aria-label="Original NEXUS Adventure Journal fantasy illustration"></div>
+</section>
+<section class="nx16-atlas-overview" aria-label="Atlas statistics">
+ <div><small>CURATED REGIONS</small><strong id="nx16CountRegions">8</strong></div><div><small>RESEARCH DESTINATIONS</small><strong id="nx16CountZones">—</strong></div>
+ <div><small>PERSONAL MISSIONS</small><strong id="nx16CountMissions">0</strong></div><div><small>OPEN MISSION GOALS</small><strong id="nx16CountOpen">0</strong></div>
+</section>
+<section class="nx16-atlas-section" id="nx16Map" aria-labelledby="nx16MapTitle">
+ <div class="nx16-atlas-section-header"><div><span class="nx16-kicker">01 / THE EXPLORATION CHART</span><h2 id="nx16MapTitle">The World Before You.</h2><p>Choose a region to explore its curated destinations. Map placement is artistic and illustrative, not a game-world coordinate system.</p></div>
+ <label class="nx16-atlas-search">⌕ <input type="search" id="nx16ZoneFilter" aria-label="Filter regions and destinations" placeholder="Search regions, cities, zones…"></label></div>
+ <div class="nx16-atlas-layout">
+  <div class="nx16-atlas-map-wrap">
+   <div class="nx16-atlas-map" id="nx16MapSurface" role="group" aria-label="Illustrative world region selector; no geographic precision">
+    <svg class="nx16-world-shapes" viewBox="0 0 900 490" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="nx16Land" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#4c665f"/><stop offset=".57" stop-color="#2d4b5c"/><stop offset="1" stop-color="#473c57"/></linearGradient><linearGradient id="nx16Sea" x1="0" x2="1"><stop stop-color="#254865"/><stop offset=".5" stop-color="#182946"/><stop offset="1" stop-color="#2f3158"/></linearGradient></defs>
+      <rect x="0" y="0" width="900" height="490" fill="url(#nx16Sea)" opacity=".36"/>
+      <path d="M142 92 199 72 252 102 270 156 248 204 272 248 259 299 217 327 218 376 169 410 126 373 111 322 85 275 109 218 91 158Z" fill="url(#nx16Land)" stroke="#cba87d" stroke-opacity=".4" stroke-width="2"/>
+      <path d="M485 107 521 71 573 80 607 116 625 180 610 219 625 285 592 320 577 379 539 392 516 345 496 308 473 266 483 213 466 166Z" fill="url(#nx16Land)" stroke="#cba87d" stroke-opacity=".36" stroke-width="2"/>
+      <path d="M354 21 420 10 480 38 465 89 416 112 368 93Z" fill="#456778" stroke="#a7c9d0" stroke-opacity=".45" stroke-width="2"/>
+      <path d="M361 326 426 318 477 349 470 385 421 413 374 399 350 363Z" fill="#4a685e" stroke="#d3ad7c" stroke-opacity=".38" stroke-width="2"/>
+      <path d="M661 270 728 259 785 290 795 346 760 390 699 388 669 350Z" fill="#526c68" stroke="#bde3d2" stroke-opacity=".36" stroke-width="2"/>
+      <path d="M729 100 789 97 833 130 826 177 782 205 740 170Z" fill="#45596f" stroke="#d0b88a" stroke-opacity=".4" stroke-width="2"/>
+      <g fill="none" stroke="#c4cbe4" stroke-opacity=".12" stroke-width="2"><circle cx="438" cy="240" r="96"/><circle cx="438" cy="240" r="164"/><path d="M438 10V479M10 240H890"/></g>
+      <g fill="#f1d7a3" opacity=".45"><circle cx="340" cy="175" r="2"/><circle cx="682" cy="115" r="2"/><circle cx="321" cy="306" r="3"/><circle cx="680" cy="421" r="2"/></g>
+    </svg>
+    <div class="nx16-map-heading">THE KNOWN WORLD <small>SCHEMATIC / NOT TO SCALE</small></div>
+    <div id="nx16RegionPins" class="nx16-pin-layer"></div>
+    <div class="nx16-map-compass" aria-hidden="true">✦ <span>N</span></div>
+   </div>
+   <div class="nx16-map-legend"><span>✦ Select region pins to explore</span><span>◎ Illustration only</span><span>◈ Personal goals are browser-local</span></div>
+  </div>
+  <aside class="nx16-region-info" aria-label="Selected atlas region">
+   <div class="nx16-region-art" id="nx16RegionArt" aria-hidden="true"></div>
+   <span class="nx16-kicker">REGION INTELLIGENCE</span><h3 id="nx16RegionName">Select a region</h3>
+   <p id="nx16RegionSummary">Choose a map region to explore its cities, zones and connected research destinations.</p>
+   <div class="nx16-region-meta" id="nx16RegionMeta"></div>
+   <div id="nx16Destinations" class="nx16-destinations" role="list" aria-live="polite"></div>
+   <div class="nx16-region-actions"><a href="./progression-intelligence.html">ADVENTURE RESEARCH ↗</a><a href="./character-intelligence.html">GEAR RESEARCH ↗</a></div>
+  </aside>
+ </div>
+ <div class="nx16-region-strip" id="nx16RegionStrip" role="group" aria-label="All curated region filters"></div>
+</section>
+<section class="nx16-atlas-section nx16-mission-section" id="nx16Missions" aria-labelledby="nx16MissionTitle">
+ <div class="nx16-atlas-section-header"><div><span class="nx16-kicker">02 / PERSONAL ADVENTURE OPERATIONS</span><h2 id="nx16MissionTitle">Write Your Next Mission.</h2><p>Attach a destination to your local character, optionally associate a saved talent draft or Item Atlas target, and track your own preparation. None of this is presented as completed in-game content.</p></div><a href="./player-experience.html" class="nx16-atlas-button">OPEN CHARACTER NEXUS ↗</a></div>
+ <div class="nx16-missions-layout">
+  <form id="nx16GoalForm" class="nx16-goal-form">
+   <h3>NEW EXPLORATION OBJECTIVE</h3>
+   <div class="nx16-form-grid">
+    <label>DESTINATION<select id="nx16GoalZone" required><option value="">Choose region first</option></select></label>
+    <label>MISSION TYPE<select id="nx16GoalCategory"><option>Explore</option><option>Build prep</option><option>Equipment research</option><option>Collection</option><option>Dungeon prep</option><option>Raid prep</option><option>Other</option></select></label>
+    <label>CHARACTER<select id="nx16GoalCharacter"><option value="">Shared / all local profiles</option></select></label>
+    <label>OPTIONAL BUILD DRAFT<select id="nx16GoalDraft"><option value="">No build linked</option></select></label>
+    <label>OPTIONAL ITEM TARGET<select id="nx16GoalItem"><option value="">No item linked</option></select></label>
+    <label>MISSION TITLE<input type="text" id="nx16GoalTitle" maxlength="110" required placeholder="Prepare for my next adventure"></label>
+   </div>
+   <label>PRIVATE PLANNING NOTES<textarea id="nx16GoalNotes" rows="3" maxlength="500" placeholder="A route idea, equipment research, or question for later testing…"></textarea></label>
+   <div class="nx16-form-actions"><button class="nx16-atlas-primary" type="submit">SAVE PERSONAL OBJECTIVE</button><button id="nx16ExportGoals" type="button">EXPORT MISSION LOG</button></div>
+   <p id="nx16GoalStatus" class="nx16-mission-feedback" aria-live="polite">Nothing is written until you save a mission. Only this atlas's separate local planning key is used.</p>
+  </form>
+  <section class="nx16-mission-list" aria-labelledby="nx16GoalListTitle">
+   <div class="nx16-panel-heading"><h3 id="nx16GoalListTitle">YOUR MISSION LOG</h3><label>VIEW<select id="nx16GoalFilter"><option value="">All statuses</option><option value="active">In progress</option><option value="planned">Planned</option><option value="completed">Manually completed</option></select></label></div>
+   <div id="nx16GoalRows" class="nx16-goal-rows" aria-live="polite"></div>
+   <small>Changing a mission status updates only your own browser-local record. It is never a verified game achievement.</small>
+  </section>
+ </div>
+</section>
+<section class="nx16-atlas-section nx16-atlas-crossroads">
+ <span class="nx16-kicker">03 / CONNECTED STUDIOS</span><h2>Every Journey Has a Destination.</h2>
+ <div class="nx16-crossroad-grid">
+  <a href="./player-experience.html" class="nx16-crossroad nx16-crossroad-character"><span>YOUR HERO</span><strong>CHARACTER NEXUS</strong><small>Profile · Linked plans · Public research</small></a>
+  <a href="./?enter=1&amp;view=talents" class="nx16-crossroad nx16-crossroad-forge"><span>YOUR BUILD</span><strong>TALENT FORGE</strong><small>Reforged · Build Architect</small></a>
+  <a href="./?enter=1&amp;view=collections" class="nx16-crossroad nx16-crossroad-collections"><span>YOUR GOALS</span><strong>COLLECTION VAULT</strong><small>Manual item and collection research</small></a>
+  <a href="./azeroth-assistant.html" class="nx16-crossroad nx16-crossroad-oracle"><span>YOUR KNOWLEDGE</span><strong>AZEROTH ORACLE</strong><small>Guided research studio</small></a>
+ </div>
+</section>
+</main>
+<footer class="nx16-atlas-footer"><p>NEXUS | AZEROTH COMPANION · v16.0.0 · OWNER APPROVED</p><p>CURATED FAN RESEARCH · NOT AN OFFICIAL BLIZZARD MAP · POWERED BY ZEVRO | NEXUS</p><a href="./player-test-checklist.html">Future Tester Checklist ↗</a></footer>
+</div>
+</body></html>
