@@ -1,14 +1,25 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN BUILD ARCHITECT — FOCUS GRAPH, BUILD COMPARISON 3.0, PERSONAL LIBRARY AND OWNER RELEASE CONTROL",
-  "previous_version": "13.2.0",
+  "subtitle": "SOVEREIGN CHARACTER NEXUS — CONNECTED CHARACTER DOSSIER, PUBLIC BLIZZARD GEAR, FORGE HANDOFF AND PORTABLE BUILDS",
+  "previous_version": "14.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Launched Sovereign Character Nexus v15 as a cinematic character-centered workspace within the existing My Character page, retaining all v11 tabs, manual profiles, goals, build links and original saved data.",
+    "Added explicit public Blizzard character and equipped-gear lookups using the already supported Cloudflare character/equipment endpoints; source facts, equipped item IDs and item levels remain distinct from manual records, in-memory only, and never imply verified account ownership.",
+    "Connected official public equipped equipment IDs to independently labeled Item Atlas manual goals and research statuses. Gear gaps are not treated as DPS, ownership or upgrade recommendations.",
+    "Added a character-to-Reforged Forge launch with short-lived same-origin session context and automatic specialization preselection only when the official Blizzard talent index has a unique exact name match; official tree loading and all rank edits remain user-controlled.",
+    "Unified existing character-linked manual Talent Forge drafts and local Adventure Log goals with direct working studio navigation; no new duplicate quest or draft storage was introduced.",
+    "Introduced portable Character Nexus JSON build packages with explicit export consent, validated import preview and a separate guest-build shelf. Guest drafts can be downloaded in the native Forge JSON format without overwriting original characters or saved builds.",
+    "Extended read-only Save Protection exports with v13 checkpoint, v14 notes, and two new v15 planning keys, excluding OAuth tokens, cookies and connected account secrets.",
+    "Kept the screenshot-approved dark-blue, violet and gold cinematic artwork, original Reforged node icon presentation, Battle.net verification, music and existing studios without Cloudflare configuration changes.",
+    "Introduced optional v15 public-source, iPhone/PC, share/import and account-safety test scenarios; GitHub source/unit checks remain advisory and true live-device acceptance is still pending.",
+    "Created rollback branch backup/azeroth-v14-before-character-nexus-v15-2026-11-17 and retained AZEROTH-v15-CHARACTER-NEXUS-RELEASE-AND-TESTER-GUIDE.md for tester acceptance and limitations.",
+    "Cross-device portability is currently manual file export/import; automatic cloud synchronization is NOT included without a separately authorized, securely designed backend.",
     "Sovereign Build Architect v14 adds source-reported talent graph focus mode over the established Reforged canvas, highlighting inbound/outbound relationships without asserting complete legal prerequisites.",
     "Build Comparison 3.0 compares manual rank allocations and selected choice-node indices across existing saved drafts, live planning and v13 checkpoints, rejecting incompatible source tree identities.",
     "A personal build archive adds optional favorites, activity tags and notes in a separate local key. Native Talent Forge saves, undo/redo, JSON draft formats, character progress and verification remain unchanged.",
@@ -97,12 +108,11 @@
     "Retained Cinematic, Balanced and Performance modes with reduced-motion respect, preserved all existing local save formats and Blizzard account controls.",
     "Provided staged browser acceptance for the new gateway and protected the published Discord release index until verification.",
     "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
-    "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
-    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes."
+    "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation."
   ],
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner approves development release; device and gameplay tests remain advisory and pending."
+    "note": "The project owner approved development/public release and Discord; live player/browser and Blizzard API acceptance remains pending."
   }
 }
