@@ -3,7 +3,7 @@
  */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
-const URL='http://127.0.0.1:4173/azeroth-companion/';
+const URL='http://127.0.0.1:4173/azeroth-companion/?enter=1';
 async function audit(engine,label,mobile){
  const browser=await engine.launch({headless:true});let context;
  try{
