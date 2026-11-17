@@ -9,7 +9,9 @@ async function check(label,engine,mobile){
  const ctx=await browser.newContext({viewport:mobile?{width:390,height:844}:{width:1365,height:900},isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'});
  const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
  try{
-  await page.goto(BASE,{waitUntil:'commit',timeout:30000}).catch(()=>{});
+  // The current v16+ homepage is the Living Command Center; explicitly request
+  // the preserved v9 Citadel gateway when testing the legacy welcome path.
+  await page.goto(BASE+'?gateway=1',{waitUntil:'commit',timeout:30000}).catch(()=>{});
   await page.waitForURL(/citadel-entry\.html/,{timeout:14000});
   await page.locator('#nxCitadel').waitFor();
   assert.equal(await page.locator('.portal-wrap').count(),5,'Five cinematic chambers');
