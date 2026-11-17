@@ -29,7 +29,7 @@ footer{color:#97b3c7;text-align:center;font-size:11px;margin-top:40px}#nxSafetyS
 <main><section class="hero"><div class="eyebrow">NEXUS / SAFETY FOUNDATION · v11</div><h1>Save <span>Protection Center</span></h1><p>Protect your existing local planning work with a read-only export. This tool inspects an explicit list of supported, non-authentication browser records and never changes or clears them.</p><div class="actions"><button id="nxExportSafety" type="button">EXPORT MY LOCAL PLANNING BACKUP</button><a href="./?enter=1&amp;view=data">Open original Data &amp; Backup ↗</a></div><p id="nxSafetyStatus" role="status" aria-live="polite">Inspecting supported local records…</p></section>
 <section class="panel" aria-labelledby="nxSafetySummary"><h2 id="nxSafetySummary">Your browser's planning data</h2><div class="grid"><div class="metric"><strong id="nxSafeKeys">0</strong><small>Supported saved groups found</small></div><div class="metric"><strong id="nxSafeSize">0 KB</strong><small>Approximate exported JSON size</small></div><div class="metric"><strong id="nxSafeStatus">Local only</strong><small>No server synchronization</small></div></div><div class="notice">Keep your backup private: it may contain character names, notes, planned builds and collection goals. This is not a Battle.net account export, cannot back up authentication sessions, and does not guarantee restoration of every separate app preference.</div></section>
 <section class="panel"><h2>What this backup can protect</h2><div id="nxSafeRecords" class="records"></div><p>Existing studio-specific import tools should be used for recovery. This page intentionally has no bulk-restore button: importing all browser records automatically could overwrite active work.</p></section>
-<section class="panel"><h2>Important storage guidance</h2><p>Browser-local work is normally isolated by website origin and browser profile. If you switch from a GitHub Pages URL to your custom domain, or between Safari and another browser, the old browser's local data does not automatically transfer. Export from the original location before clearing Safari data or changing devices.</p><p>For the full companion, Talent Forge and the separate Command Board, use their original export functions where offered. This safety bundle contains only supported whitelisted local planning data.</p></section>
+<section class="panel"><h2>Important storage guidance</h2><p>Browser-local work is normally isolated by website origin and browser profile. If you switch from a GitHub Pages URL to your custom domain, or between Safari and another browser, the old browser's local data does not automatically transfer. Export from the original location before clearing Safari data or changing devices.</p><p>For the full companion, Talent Forge and the separate Command Board, use their original export functions where offered. This safety bundle contains only supported whitelisted local planning data, including separate v13–v15 build records.</p></section>
 <footer>POWERED BY ZEVRO | NEXUS · Independent, unofficial World of Warcraft fan companion.</footer></main>
 <script>
 (()=>{'use strict';
@@ -44,7 +44,11 @@ const KEYS=[
  ['nexus_player_focus_v11','Selected player workspace character'],
  ['nexus_player_build_links_v11','Local draft-to-character associations'],
  ['nexus_player_quests_v11','Character-specific personal goals'],
- ['nexus_player_history_v11','Talent snapshot history']
+ ['nexus_player_history_v11','Talent snapshot history'],
+ ['nexus_forge_reforged_checkpoints_v13','Reforged independent manual build checkpoints'],
+ ['nexus_build_architect_library_v14','Build Architect local favorites and notes'],
+ ['nexus_character_research_links_v15','Optional Character Nexus public research identifiers'],
+ ['nexus_character_nexus_imports_v15','Isolated imported guest build packages']
 ];
 const $=id=>document.getElementById(id);
 const data={};let bytes=0,found=0,unreadable=0;
