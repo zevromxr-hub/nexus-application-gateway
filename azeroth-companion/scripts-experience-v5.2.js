@@ -1682,7 +1682,7 @@ overlay.addEventListener('change',e=>{
 });
 function updateNotice(){
  $('sxUnread').hidden=!version||data.lastSeenVersion===version.version;
- $('sxUpdatesButton').setAttribute('aria-label',version&&data.lastSeenVersion!==version.version?'New Azeroth release '+version.version+'. Open updates':'Open Azeroth release updates');
+ $('sxUpdatesButton').setAttribute('aria-label',version&&data.lastSeenVersion!==version.version?(version.preview?'Azeroth development preview '+version.version+'. Open updates':'New Azeroth release '+version.version+'. Open updates'):'Open Azeroth release updates');
 }
 async function loadRelease(force=false){
  if(loadPromise&&!force)return loadPromise;
@@ -1693,14 +1693,16 @@ async function loadRelease(force=false){
    const [vResponse,iResponse]=await Promise.all([fetch('./version.json',{cache:'no-store',signal:controller.signal}),fetch('./releases/index.json',{cache:'no-store',signal:controller.signal})]);
    if(!vResponse.ok||!iResponse.ok)throw Error('Release server unavailable');
    const [v,i]=await Promise.all([vResponse.json(),iResponse.json()]);
-   if(!/^\d+\.\d+\.\d+$/.test(v.version)||!Array.isArray(i.releases)||i.releases[0]?.version!==v.version)throw Error('Release records do not agree');
-   version={version:v.version,title:text(v.subtitle),date:text(v.release_date),changes:Array.isArray(v.changes)?v.changes.filter(s=>typeof s==='string').slice(0,8):[]};
+   if(!/^\d+\.\d+\.\d+$/.test(v.version)||!Array.isArray(i.releases))throw Error('Invalid release records');
+   const isPreview=v.channel==='staging'&&i.releases[0]?.version!==v.version;
+   if(!isPreview&&i.releases[0]?.version!==v.version)throw Error('Release records do not agree');
+   version={version:v.version,title:text(v.subtitle),date:text(v.release_date),preview:isPreview,changes:Array.isArray(v.changes)?v.changes.filter(s=>typeof s==='string').slice(0,8):[]};
    releases=i.releases.filter(x=>x&&/^\d+\.\d+\.\d+$/.test(x.version)).slice(0,8);
-   $('sxHeroVersion').textContent='Azeroth v'+version.version;
-   $('sxHomeRelease').textContent='v'+version.version+' · '+version.title;
+   $('sxHeroVersion').textContent='Azeroth v'+version.version+(isPreview?' · Preview':'');
+   $('sxHomeRelease').textContent='v'+version.version+' · '+version.title+(isPreview?' · PREVIEW':'');
    $('sxHomeReleaseNote').textContent=version.changes[0]?text(version.changes[0]):'Open Release Center to read the official changelog.';
-   $('sxReleaseStatus').textContent='Published '+(version.date||'date unavailable')+' · Published update';
-   $('sxReleaseVersion').textContent='Azeroth v'+version.version;
+   $('sxReleaseStatus').textContent=isPreview?'Development preview · Official stable release remains v'+(i.releases[0]?.version||'unavailable'):'Published '+(version.date||'date unavailable')+' · Published update';
+   $('sxReleaseVersion').textContent='Azeroth v'+version.version+(isPreview?' · Preview':'');
    $('sxReleaseSubtitle').textContent=version.title;
    $('sxReleaseChanges').replaceChildren();
    for(const change of version.changes){const p=document.createElement('p');p.textContent='✓ '+text(change);$('sxReleaseChanges').append(p)}
