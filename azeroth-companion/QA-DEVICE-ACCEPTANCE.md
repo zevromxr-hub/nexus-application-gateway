@@ -1,7 +1,17 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v8.0.0 Sovereign Ascension (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v9.0.0 Living Azeroth Cinematic Experience (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v8.0 acceptance
+## New required v9.0 acceptance
+1. Load the original companion homepage and new Living Azeroth five-chamber entrance on desktop Chromium, mobile WebKit and physical iPhone Safari where available. Validate art, readable contrast, functional destination links and no horizontal scrolling.
+2. Choose Cinematic, Balanced and Performance modes; confirm only the new visual preference key is written, and OS Reduced Motion disables drifting particles.
+3. Open original Talent Forge and allocate/undo ranks. Selected node glow and read-only inspector must reflect the existing node ID and rank, never modify the rank directly.
+4. Load Character Intelligence with an actual public Retail character. The visual equipment ring must show only returned equipped slots and link to real item research. Simulate an unavailable response and verify no fabricated entries appear.
+5. Use Adventure Journal illustrated Mythic+, raids and reputations chapters; confirm original tabs, errors, export and missing-data disclaimers remain intact.
+6. Use Oracle full page and mini panel from original companion, ask documented and unsupported questions, and test assistive technology and keyboard navigation.
+7. Verify original Connected header remains clickable, Founder and HYPER MUSIC bubbles are clear of overlays, and original local data survives refresh.
+8. Check pages, Gateway, handbook, developer checklist, release history and Discord draft all say v9.0 staging. Do not send stable announcement without accepted browser and real-character tests.
+
+## Previous required v8.0 acceptance
 1. Open Sovereign Ascension on desktop at 1024, 1280 and 1920px and on physical iPhone Safari if available; inspect overflow, safe areas, controls and readable text.
 2. Verify Read My Local Plans is opt-in and does not mutate legacy storage; load known manual characters, talents, collections and goals and compare displayed counts.
 3. Compare two saved Talent Forge builds with known allocated node IDs; verify point totals, specialization mismatches and export behavior.
