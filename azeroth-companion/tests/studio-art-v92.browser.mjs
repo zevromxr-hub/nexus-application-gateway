@@ -19,6 +19,19 @@ async function inspect(label,engine,mobile){
    viewport:mobile?{width:390,height:844}:{width:1380,height:900},
    isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'
  });
+ // This is a visual-only localhost audit. Production intentionally disallows
+ // localhost origins; supply a deterministic offline API response instead of
+ // making real cross-origin Blizzard requests or relaxing Worker security.
+ await context.route(/^https:\/\/nexus-azeroth-api\.zevromxr\.workers\.dev\//,async route=>{
+   const preflight=route.request().method()==='OPTIONS';
+   await route.fulfill({status:preflight?204:503,headers:{
+     'access-control-allow-origin':'*',
+     'access-control-allow-methods':'GET, POST, OPTIONS',
+     'access-control-allow-headers':'Content-Type, Accept',
+     'content-type':'application/json; charset=utf-8',
+     'cache-control':'no-store'
+   },body:preflight?'':JSON.stringify({success:false,message:'Local visual acceptance: API intentionally offline'})});
+ });
  const page=await context.newPage();
  const errors=[];page.on('pageerror',e=>errors.push(String(e)));
  try{
