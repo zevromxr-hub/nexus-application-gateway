@@ -1,7 +1,17 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v7.9.8 Floating Assistant Avatar (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v7.9.9 Mission Architect & Assistant Placement (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v7.9.8 acceptance
+## New required v7.9.9 acceptance
+1. Check the Connected button/status on desktop at 1024, 1280 and 1920px widths; the relocated assistant avatar must not overlap or prevent clicking it.
+2. Confirm assistant avatar is still distinct from lower-right Founder and HYPER MUSIC controls and fits common viewport heights without obscuring essential controls.
+3. In the full assistant, generate each of the six Mission Architect action plans; verify 24 total instructions and first-party links are accurate and actionable.
+4. In the mini assistant, verify Mission Architect scrolls, generates plans and opens studio links separately without trapping the user or unexpectedly navigating the main companion.
+5. Copy plan text and export JSON; confirm no OAuth credentials, account cookies, stored player builds or personal identifiers are embedded by default.
+6. Check mobile Safari (real device if available) and responsive browser simulations for header assistant positioning, popup sizing, scrolling and available touch controls.
+7. Close and reopen assistant, refresh site, verify no change to Battle.net verification, local Talent Forge drafts, the Founder bubble, music and active progression reports.
+8. Check Getting Started, Handbook, developer checklist, Release Center, Gateway and Discord preview for version 7.9.9. Official stable announcement remains gated on real-player regression tests.
+
+## Previous required v7.9.8 acceptance
 1. On desktop, verify the assistant avatar is in the upper-right corner with its own distinctive image and label, away from lower-right Founder and Hyper Music.
 2. Click the avatar, ask a question in the mini panel, select an answer link, then close via × or Escape; keyboard focus should return to the launcher.
 3. Switch among Overview, Build Architect and other supported sections, then reopen the avatar; suggested questions should reflect the current section when documented.
