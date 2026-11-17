@@ -25,3 +25,5 @@ jobs:
         run: node azeroth-companion/tests/validate.mjs
       - name: Verify ZevArchives frontend compatibility only
         run: node azeroth-companion/tests/zevarchives-frontend-handoff.test.mjs
+      - name: Validate iOS Home Screen app shell across Companion pages
+        run: node azeroth-companion/tests/ios-standalone-shell.test.mjs
