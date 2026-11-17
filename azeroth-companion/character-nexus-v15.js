@@ -140,7 +140,7 @@ function goForge(linkedKey){
  const {char,id}=data();
  if(!char){setStatus('Select a locally saved character before launching its Forge context.');return}
  const context={charId:String(id).slice(0,145),name:clean(char.name,70),className:clean(char.className,65),
-  spec:clean(char.spec,65),region:currentSelector()?.region||null,
+  spec:clean(char.spec,65),region:currentSelector()?.region||(['us','eu','kr','tw'].includes(char.region)?char.region:null),
   draftKey:linkedKey||null,issuedAt:Date.now()};
  try{sessionStorage.setItem('nexus_character_nexus_forge_launch_v15',JSON.stringify(context))}catch(_){}
  try{sessionStorage.setItem('nexus_living_entry_seen_v9','entered')}catch(_){}
@@ -175,7 +175,7 @@ function currentPackage(){
  const goals=include?core.goalsFor(objects(read(KEY.quests,260000)),objects(base.tasks),id).quests:[];
  const atlas=include?objects(read(KEY.atlas)):[],selector=currentSelector();
  const targets=atlas.filter(t=>t.region===(selector?.region||'us')&&['wishlist','farming'].includes(t.status));
- return core.packageFrom({character:char,drafts:linked,notes:include?annotated:[],goals,
+ return core.packageFrom({character:{...char,region:selector?.region||char.region||''},drafts:linked,notes:include?annotated:[],goals,
   targets:include?targets:[]});
 }
 function exportPackage(){
