@@ -1,0 +1,178 @@
+/* NEXUS | AZEROTH v13.0 — SOVEREIGN TALENT FORGE REFORGED
+ * Entirely scoped to #talentForge. Artwork is already shipped in /assets.
+ * Read-only visual mirror of native talent buttons; native engine remains loaded.
+ */
+#talentForge{--nx13-gold:#e9c791;--nx13-cyan:#b4e4f2;--nx13-purple:#cbb0ff;--nx13-ink:#fff0dc;--nx13-muted:#b7cad9;--nx13-edge:#e4c18c65}
+#talentForge .nx13-root{color:var(--nx13-ink);margin:0 0 28px;position:relative;min-width:0}
+#talentForge .nx13-root *{box-sizing:border-box}
+#talentForge .nx13-root button,#talentForge .nx13-root input,#talentForge .nx13-root select{font:inherit}
+#talentForge .nx13-root :is(button,select,input,a):focus-visible{outline:3px solid #b4e9f9;outline-offset:3px}
+#talentForge .nx13-hero{position:relative;isolation:isolate;overflow:hidden;min-height:355px;border:1px solid #e8c08fbb;border-radius:24px;display:flex;align-items:center;
+ background-color:#0b1125;background-image:linear-gradient(90deg,#070d1efc 0%,#0d1730f5 48%,#0a182ed5 77%,#071226a0),url('./assets/zevro-wide-banner-v9.2.webp');
+ background-size:cover,cover;background-position:center,center 45%;box-shadow:0 28px 72px #000a,0 0 32px #eec1862b,inset 0 1px #ffe7bc3d;margin:0 0 23px}
+#talentForge .nx13-hero:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 80% 32%,#af7ef53a,transparent 52%),linear-gradient(0deg,#0914266c,transparent 62%)}
+#talentForge .nx13-hero:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,transparent,#e0bd89 35%,#ad8cce 68%,transparent)}
+#talentForge .nx13-hero-content{position:relative;z-index:2;padding:clamp(23px,4.3vw,53px);max-width:72%}
+#talentForge .nx13-kicker{font-size:10px;font-weight:950;letter-spacing:.15em;color:#edcb96;text-shadow:0 2px 10px #000}
+#talentForge .nx13-hero h2{font-size:clamp(38px,5.1vw,74px);line-height:1.02;letter-spacing:-.06em;font-weight:950;color:#f9e9cb;text-shadow:0 5px 22px #000;margin:17px 0}
+#talentForge .nx13-hero h2 em{font-style:normal;background:linear-gradient(90deg,#eec793,#fff1d8,#bea4f5);-webkit-background-clip:text;background-clip:text;color:transparent}
+#talentForge .nx13-hero p{font-size:13px;line-height:1.85;color:#d2e0eb;max-width:670px;text-shadow:0 1px 8px #000}
+#talentForge .nx13-hero-portrait{position:absolute;right:clamp(19px,4vw,55px);top:50%;transform:translateY(-50%);width:min(26%,258px);aspect-ratio:3/4;max-height:315px;border:1px solid #d9b38ab7;border-radius:16px;background:linear-gradient(0deg,#090f20d8,transparent 60%),url('./assets/talent-forge-v9.1.webp') center 30%/cover;box-shadow:0 19px 45px #000b,0 0 0 5px #1518317d,0 0 30px #af84e441}
+#talentForge .nx13-hero-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+#talentForge .nx13-hero-actions :is(button,a){display:inline-flex;justify-content:center;align-items:center;padding:10px 14px;border:1px solid #c9b8bd80;background:#17243eeb;color:#eee7f1;border-radius:10px;min-height:44px;font-size:10px;font-weight:950;letter-spacing:.06em;text-decoration:none;cursor:pointer}
+#talentForge .nx13-hero-actions button{background:linear-gradient(120deg,#ba9569,#f2d49e);color:#221b17;border-color:#ffe0aa}
+#talentForge .nx13-hero-actions :is(button,a):hover{filter:brightness(1.13)}
+#talentForge .nx13-hero-foot{display:flex;flex-wrap:wrap;gap:11px 17px;font-weight:800;font-size:9px;letter-spacing:.06em;color:#c6d4df;margin-top:21px}
+#talentForge .nx13-intro{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:15px;margin:15px 0}
+#talentForge .nx13-intro h3{font-size:clamp(24px,2.7vw,34px);letter-spacing:-.035em;color:#ffe3b4;line-height:1.18;margin:7px 0}
+#talentForge .nx13-intro p{font-size:12px;color:var(--nx13-muted);margin:0}
+#talentForge .nx13-actions{display:flex;flex-wrap:wrap;gap:7px}
+#talentForge .nx13-actions button,#talentForge .nx13-controls button,#talentForge .nx13-history-button{min-height:43px;padding:11px 13px;border:1px solid #acabc986;background:#23334ecf;color:#e6e4f2;border-radius:10px;font-size:10px;font-weight:900;letter-spacing:.05em;cursor:pointer}
+#talentForge .nx13-root button.nx13-gold{background:linear-gradient(115deg,#b48d60,#f1d09a);color:#1c1a1b;border-color:#f3d8a4}
+#talentForge .nx13-root button:disabled{opacity:.43;cursor:not-allowed}
+#talentForge .nx13-score{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 19px}
+#talentForge .nx13-score>div{min-width:0;border-radius:13px;padding:15px 18px;border:1px solid #bdac9874;background:linear-gradient(120deg,#18233cf5,#101d32f6);box-shadow:inset 0 1px #ffffff19,0 8px 24px #0005}
+#talentForge .nx13-score span{display:block;font-size:9px;letter-spacing:.12em;color:#b7ccdb;font-weight:900}
+#talentForge .nx13-score strong{display:block;font-size:28px;line-height:1.4;color:#f1d39f;font-weight:950;overflow-wrap:anywhere}
+#talentForge .nx13-score>div:last-child strong{font-size:12px;line-height:3.2;letter-spacing:.04em;color:#c5e5ec}
+#talentForge .nx13-layout{display:grid;grid-template-columns:minmax(180px,.78fr) minmax(0,2.2fr) minmax(210px,1fr);gap:12px;align-items:start}
+#talentForge :is(.nx13-left,.nx13-right,.nx13-center){min-width:0;border-radius:15px;overflow:hidden;background:linear-gradient(150deg,#101b31f2,#0a152af6);border:1px solid #baa98e64;box-shadow:0 16px 41px #0007,inset 0 1px #ffffff16}
+#talentForge :is(.nx13-left,.nx13-right){padding:clamp(13px,1.7vw,21px)}
+#talentForge .nx13-boxhead{display:grid;gap:3px;margin-bottom:16px}
+#talentForge .nx13-boxhead small,#talentForge .nx13-centerhead small{font-size:9px;font-weight:900;letter-spacing:.12em;color:#cfb9d8}
+#talentForge .nx13-boxhead strong{font-size:17px;color:#f4dbb9}
+#talentForge .nx13-savedhead{border-top:1px solid #bd9da957;padding-top:19px;margin-top:22px}
+#talentForge .nx13-controls{display:grid;gap:11px}
+#talentForge .nx13-controls label{display:grid;gap:6px;font-size:11px;color:#c1d3e0;font-weight:850}
+#talentForge .nx13-controls :is(select,input){min-width:0;width:100%;min-height:43px;padding:9px 10px;border:1px solid #9fa9bc88;border-radius:9px;background:#0c1a30;color:#f2ebdf;font-size:11px;outline-offset:3px}
+#talentForge .nx13-controls button{width:100%}
+#talentForge .nx13-library{display:grid;gap:8px;max-height:430px;overflow:auto;scrollbar-width:thin}
+#talentForge .nx13-library-entry{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:9px;border:1px solid #a4b4cd4e;border-radius:10px;background:#17243ac5}
+#talentForge .nx13-library-copy{min-width:0;flex:1}
+#talentForge .nx13-library-entry strong{display:block;font-size:11px;color:#f3dfbd;overflow-wrap:anywhere}
+#talentForge .nx13-library-entry small{display:block;font-size:10px;color:#a4bacd;line-height:1.4;overflow-wrap:anywhere}
+#talentForge .nx13-library-entry .nx13-character-link{color:#c7e5d3}
+#talentForge .nx13-library-entry button{font-size:10px;padding:7px 9px;border:1px solid #d5ba8c;color:#f8dfb1;background:#293752;border-radius:8px;flex:none}
+#talentForge .nx13-link{display:block;color:#c3e2ec;font-size:10px;font-weight:850;margin-top:17px;text-decoration:none}
+#talentForge .nx13-center{border-color:#d2b3819d}
+#talentForge .nx13-centerhead{display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:15px 17px;border-bottom:1px solid #a59cbb4e;background:linear-gradient(120deg,#28213e,#17243b)}
+#talentForge .nx13-centerhead div{display:grid;gap:3px}
+#talentForge .nx13-centerhead strong{font-size:17px;color:#ffe4bd}
+#talentForge #nx13Ready{font-size:9px;font-weight:900;color:#c2e6d4;letter-spacing:.12em}
+#talentForge .nx13-tabs{display:flex;gap:6px;padding:11px;border-bottom:1px solid #adbad54d;overflow-x:auto}
+#talentForge .nx13-tabs button{padding:10px 12px;flex:1;min-width:max-content;font-size:10px;font-weight:900;letter-spacing:.05em;color:#b5c7d6;border:1px solid #9fa5bb54;background:#101d31;border-radius:9px}
+#talentForge .nx13-tabs button[aria-selected="true"]{background:linear-gradient(105deg,#554264,#35456c);color:#ffebcc;border-color:#ddbb8b}
+#talentForge .nx13-filters{padding:12px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:space-between}
+#talentForge .nx13-search{display:flex;align-items:center;gap:7px;min-width:min(100%,190px);flex:1;color:#d8c1ed;background:#0b182e;border:1px solid #95afc072;border-radius:9px;padding:0 11px;font-size:19px}
+#talentForge .nx13-search input{border:0;min-width:0;width:100%;min-height:41px;background:transparent;color:#fff0dd;font-size:11px;outline:0}
+#talentForge .nx13-checkbox{white-space:nowrap;font-size:10px;color:#b9cfda;font-weight:800;display:inline-flex;gap:6px;align-items:center}
+#talentForge .nx13-checkbox input{accent-color:#c1a0f3}
+#talentForge .nx13-baseline{display:grid;gap:5px;color:#cfbfd6;font-size:9px;font-weight:900;letter-spacing:.04em;flex:1;max-width:245px}
+#talentForge .nx13-baseline select{min-height:36px;padding:6px 8px;border:1px solid #9baabf63;background:#162540;border-radius:8px;color:#fff1d8;min-width:0;font-size:11px}
+#talentForge .nx13-status{padding:8px 14px 11px;color:#bacbda;font-size:11px;min-height:30px}
+#talentForge .nx13-scroll{overflow-x:auto;overflow-y:auto;max-height:730px;min-height:360px;padding:14px 15px 26px;background:
+ radial-gradient(circle at 50% 32%,#ae82de25,transparent 46%),linear-gradient(180deg,#08152cdd,#080f22f7),url('./assets/talent-forge-v9.1.webp') center/cover no-repeat;
+ scrollbar-width:thin;scrollbar-color:#a394bd62 transparent}
+#talentForge .nx13-tree{width:max-content;min-width:100%;margin:0 auto}
+#talentForge .nx13-grid{--nx13-cols:6;display:grid;grid-template-columns:repeat(var(--nx13-cols),minmax(100px,1fr));grid-auto-rows:minmax(133px,auto);column-gap:10px;row-gap:15px;position:relative;isolation:isolate;min-height:300px;padding:9px 0 11px}
+#talentForge .nx13-links{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}
+#talentForge .nx13-node{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:128px;background:linear-gradient(158deg,#17243df2,#0c1429f6);border:1px solid #607b9fb5;border-radius:10px;box-shadow:0 9px 21px #0009,inset 0 1px #ffffff10;padding:8px;transition:border-color .18s,box-shadow .18s}
+#talentForge .nx13-node.nx13-allocated{border-color:#e4b978;box-shadow:0 0 0 1px #e2c48657,0 12px 26px #0009,0 0 21px #e1ae5937}
+#talentForge .nx13-node.nx13-more{border-color:#93dbab;box-shadow:0 0 21px #8fe4a74f,0 12px 24px #000a}
+#talentForge .nx13-node.nx13-less{border-color:#ed9b98;box-shadow:0 0 19px #e5878a50,0 11px 24px #000a}
+#talentForge .nx13-node.nx13-focused{outline:2px solid #e9d4f3;outline-offset:3px}
+#talentForge .nx13-node-select{display:grid;justify-items:center;gap:5px;border:0;background:transparent!important;color:inherit!important;width:100%;padding:0;cursor:pointer}
+#talentForge .nx13-node-icon{width:39px;height:39px;border:1px solid #d3ba966b;display:grid;place-items:center;border-radius:9px;background:radial-gradient(circle at 50% 32%,#7e61bd,#1c2843);font-size:25px;color:#efdfbd;overflow:hidden;box-shadow:0 0 15px #b18be642}
+#talentForge .nx13-node-icon img{display:block;width:100%;height:100%;object-fit:cover}
+#talentForge .nx13-node-select strong{font-size:10px;line-height:1.24;font-weight:850;text-align:center;color:#fff1d6;overflow-wrap:anywhere;max-width:100%;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#talentForge .nx13-node-select small{color:#a4bbd0;font-size:9px}
+#talentForge .nx13-node-ranks{display:flex;align-items:center;justify-content:space-between;gap:2px;margin-top:8px;border-top:1px solid #b5a5bb50;padding-top:6px}
+#talentForge .nx13-node-ranks button{font-size:16px;font-weight:900;line-height:1;color:#e5d6ed;background:#283b55;border:1px solid #b8b4c17a;border-radius:5px;width:26px;height:26px;flex:none}
+#talentForge .nx13-node-ranks button:disabled{opacity:.25}
+#talentForge .nx13-node-ranks span{font-weight:850;color:#f2d3a7;font-size:10px}
+#talentForge .nx13-legend{display:flex;flex-wrap:wrap;gap:7px 13px;padding:13px;color:#c0cddd;font-size:10px}
+#talentForge .nx13-inspector{display:grid;gap:10px}
+#talentForge .nx13-inspector-main{display:grid;gap:10px}
+#talentForge .nx13-inspector-art{width:74px;height:74px;border-radius:14px;border:1px solid #e1bb87a8;background:linear-gradient(130deg,#5c478a,#203c53);box-shadow:0 0 24px #b08bec5d;display:grid;place-items:center;font-size:34px;overflow:hidden}
+#talentForge .nx13-inspector-art img{display:block;width:100%;height:100%;object-fit:cover}
+#talentForge .nx13-inspector-tag{color:#aeccd9;font-size:9px;font-weight:900;letter-spacing:.1em}
+#talentForge .nx13-inspector-main h4{margin:0;color:#f5d9a9;font-size:19px;line-height:1.2;overflow-wrap:anywhere}
+#talentForge .nx13-inspector-main p{font-size:11px;line-height:1.7;color:#c5d5e4;margin:0}
+#talentForge .nx13-inspector-meta{display:grid;gap:6px}
+#talentForge .nx13-inspector-meta span{font-size:10px;color:#e6d7b5;padding:9px;border-radius:8px;background:#24324c8f;border:1px solid #a5a5c55f}
+#talentForge .nx13-inspector-actions{display:flex;align-items:center;gap:11px;justify-content:center}
+#talentForge .nx13-inspector-actions button{width:37px;height:37px;color:#efd6a8;background:#2c3d57;border:1px solid #c9b8ab8d;border-radius:8px;font-size:22px;line-height:1}
+#talentForge .nx13-inspector-actions strong{font-size:20px;color:#ffe4ba}
+#talentForge .nx13-inspector-main .nx13-compare-note{color:#bcf3dc}
+#talentForge .nx13-source-ids{display:grid;gap:5px}
+#talentForge .nx13-source-ids small{font-size:10px;color:#b7ced9}
+#talentForge .nx13-ranks{display:grid;gap:9px;margin-top:12px;border-top:1px solid #bbaac25f;padding-top:13px}
+#talentForge .nx13-ranks>strong{font-size:9px;letter-spacing:.1em;color:#e3c696}
+#talentForge .nx13-rank{padding:10px;border:1px solid #a9b3c24d;background:#16253cbd;border-radius:9px}
+#talentForge .nx13-rank.is-planned{border-color:#e0b577aa;background:#4e40538c}
+#talentForge .nx13-rank>strong{display:block;color:#f3d5a1;font-size:10px;margin-bottom:4px}
+#talentForge .nx13-rank p{margin-top:5px;color:#e7e5f1}
+#talentForge .nx13-rank small{color:#bfd1dc;font-size:10px;line-height:1.55}
+#talentForge .nx13-original-inspect{padding:11px;border-radius:9px;border:1px solid #9cbed58b;background:#203b54;color:#e7deed;font-size:10px;font-weight:900}
+#talentForge .nx13-note{color:#a5bfd0;font-size:11px;line-height:1.7}
+#talentForge .nx13-history-button{width:100%;border-color:#d6b585!important;color:#f5d8a7!important}
+#talentForge .nx13-history{display:grid;gap:9px;margin-top:13px;max-height:340px;overflow-y:auto;scrollbar-width:thin}
+#talentForge .nx13-history-entry{display:grid;gap:7px;padding:11px;background:#1a2840bd;border:1px solid #b6b6cc4e;border-radius:9px}
+#talentForge .nx13-history-entry strong{display:block;font-size:11px;color:#f0d7ac;overflow-wrap:anywhere}
+#talentForge .nx13-history-entry small{display:block;color:#b0c2d2;font-size:10px}
+#talentForge .nx13-history-actions{display:flex;flex-wrap:wrap;gap:5px}
+#talentForge .nx13-history-actions button{color:#d4e5ed;background:#263953;border:1px solid #9fadc580;padding:7px 9px;font-size:9px;font-weight:900;border-radius:7px}
+#talentForge .nx13-empty{padding:18px 12px;border-radius:11px;background:#1c2941a3;border:1px dashed #a4b7c570;color:#bdd0df;font-size:11px;line-height:1.6}
+#talentForge .nx13-disclaimer{margin:16px 0 0;padding:16px 19px;border:1px solid #b5acc364;border-radius:12px;background:#111d34e8;color:#b8cad8;font-size:11px;line-height:1.8}
+#talentForge .nx13-disclaimer strong{color:#f1d4a2}
+#talentForge .nx13-feedback{position:fixed;z-index:100;left:50%;bottom:20px;transform:translateX(-50%);background:#233349;border:1px solid #d9bb8a;color:#f3eadd;padding:12px 19px;border-radius:11px;font-size:12px;max-width:min(480px,calc(100% - 28px));box-shadow:0 18px 44px #000b;text-align:center}
+#talentForge.nx13-workshop-open .tf-toolbar{display:none!important}
+@media(max-width:1580px){#talentForge .nx13-layout{grid-template-columns:minmax(155px,.70fr) minmax(0,2.1fr) minmax(190px,1fr)}}
+@media(max-width:1300px){#talentForge .nx13-layout{grid-template-columns:minmax(185px,.68fr) minmax(0,1.5fr)}
+ #talentForge .nx13-right{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(195px,.7fr);gap:13px}
+ #talentForge .nx13-right>.nx13-boxhead:first-child{grid-column:1;grid-row:1}
+ #talentForge .nx13-right>.nx13-inspector{grid-column:1;grid-row:2/6}
+ #talentForge .nx13-right>.nx13-savedhead{grid-column:2;grid-row:1;margin:0;padding-top:0;border:0}
+ #talentForge .nx13-right>.nx13-note{grid-column:2;grid-row:2;margin:0}
+ #talentForge .nx13-right>.nx13-history-button{grid-column:2;grid-row:3}
+ #talentForge .nx13-right>.nx13-history{grid-column:2;grid-row:4}
+}
+@media(max-width:900px){#talentForge .nx13-hero-content{max-width:78%}#talentForge .nx13-hero-portrait{opacity:.66}
+ #talentForge .nx13-layout{grid-template-columns:1fr}
+ #talentForge .nx13-left{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}
+ #talentForge .nx13-left>.nx13-boxhead:first-child{grid-column:1;grid-row:1}
+ #talentForge .nx13-left>.nx13-controls{grid-column:1;grid-row:2/5}
+ #talentForge .nx13-left>.nx13-savedhead{grid-column:2;grid-row:1;margin:0;border:0;padding:0}
+ #talentForge .nx13-left>.nx13-library{grid-column:2;grid-row:2/4}
+ #talentForge .nx13-left>.nx13-link{grid-column:2;grid-row:4;margin:0}
+ #talentForge .nx13-right{grid-template-columns:1fr}
+ #talentForge .nx13-right>*{grid-column:auto!important;grid-row:auto!important}
+ #talentForge .nx13-score{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ #talentForge .nx13-hero{min-height:450px;border-radius:17px;background-image:linear-gradient(180deg,#080e20e9,#111b37e5),url('./assets/zevro-wide-banner-v9.2.webp');background-position:center,center}
+ #talentForge .nx13-hero-content{max-width:100%;padding:24px 18px;align-self:flex-start}
+ #talentForge .nx13-hero h2{font-size:clamp(35px,10.2vw,50px)}
+ #talentForge .nx13-hero p{font-size:11px;max-width:100%}
+ #talentForge .nx13-hero-portrait{opacity:.18;right:0;bottom:0;top:auto;transform:none;width:45%;max-height:290px;border:none;box-shadow:none}
+ #talentForge .nx13-hero-actions{gap:6px}
+ #talentForge .nx13-hero-actions :is(button,a){min-height:39px;font-size:9px;padding:8px 11px}
+ #talentForge .nx13-hero-foot{font-size:8px;margin-top:14px;gap:7px}
+ #talentForge .nx13-score>div{padding:12px}
+ #talentForge .nx13-intro h3{font-size:27px}
+ #talentForge .nx13-actions{width:100%}
+ #talentForge .nx13-actions button{flex:1 1 40%;font-size:9px}
+ #talentForge .nx13-left{display:block}
+ #talentForge .nx13-left>.nx13-savedhead{margin-top:23px;padding-top:15px;border-top:1px solid #bb9ca851}
+ #talentForge .nx13-controls{display:grid}
+ #talentForge .nx13-library{max-height:300px}
+ #talentForge .nx13-centerhead{padding:12px}.nx13-tabs{padding:7px}
+ #talentForge .nx13-filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ #talentForge .nx13-search{grid-column:1/-1}
+ #talentForge .nx13-baseline{max-width:none}
+ #talentForge .nx13-scroll{padding:12px 10px;max-height:570px;min-height:260px}
+ #talentForge .nx13-node{min-height:119px}
+}
+@media(prefers-reduced-motion:reduce){#talentForge .nx13-node,#talentForge .nx13-hero-actions :is(button,a){transition:none}}
+@media(prefers-reduced-transparency:reduce){#talentForge .nx13-hero{background-color:#081629}#talentForge .nx13-scroll{background-color:#08152a}}
+@media print{#talentForge .nx13-hero{background:#101b30}#talentForge .nx13-node{break-inside:avoid}#talentForge .nx13-feedback{display:none}}
