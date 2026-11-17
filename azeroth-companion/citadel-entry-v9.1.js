@@ -68,5 +68,6 @@ $('#nxChangeLog').addEventListener('toggle',async e=>{
 });
 preview(selected);
 let artRequested=false;const updateArt=()=>{if(artRequested)return;artRequested=true;const img=new Image();img.onload=()=>root.classList.add('nx-artpack-ready');img.src='./assets/sovereign-throne-v9.1.webp'};
-select.addEventListener('change',updateArt);if('requestIdleCallback'in window)requestIdleCallback(updateArt,{timeout:1800});else setTimeout(updateArt,1200);
+// Activate preloaded portraits promptly to avoid the old fallback-to-art swap.
+updateArt();
 })();
