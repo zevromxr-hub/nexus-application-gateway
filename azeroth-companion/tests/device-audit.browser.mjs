@@ -5,7 +5,7 @@
 import assert from 'node:assert/strict';
 import {mkdir} from 'node:fs/promises';
 import {chromium,webkit} from 'playwright';
-const BASE='http://127.0.0.1:4173/azeroth-companion/';
+const BASE='http://127.0.0.1:4173/azeroth-companion/?enter=1';
 await mkdir('test-results/azeroth-device-audit',{recursive:true});
 function check(condition,message){assert.ok(condition,message)}
 async function captured(label,func){
