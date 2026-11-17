@@ -55,9 +55,9 @@ search.addEventListener('input',()=>{const q=search.value.trim().toLowerCase();l
 search.addEventListener('keydown',e=>{if(e.key==='Escape'){search.value='';search.dispatchEvent(new Event('input'));search.blur()}});
 const select=$('#nxMode'),saved=read(modeKey);
 let current=modes.includes(saved)?saved:((matchMedia('(prefers-reduced-motion: reduce)').matches||navigator.connection?.saveData)?'performance':'balanced');
-function setMode(m){if(!modes.includes(m))return;current=m;for(const mode of modes)document.body.classList.toggle('lv9-mode-'+mode,mode===m);select.value=m;write(modeKey,m)}
+function ensureParticles(){const sky=$('.citadel-ambient');if(!sky||sky.childElementCount||current==='performance'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<13;i++){const p=document.createElement('i');p.style.setProperty('--x',((i*37+11)%97)+'%');p.style.setProperty('--dur',(9+i%4*2)+'s');p.style.setProperty('--delay',(-i*.85)+'s');sky.append(p)}}
+function setMode(m){if(!modes.includes(m))return;current=m;for(const mode of modes)document.body.classList.toggle('lv9-mode-'+mode,mode===m);select.value=m;write(modeKey,m);ensureParticles()}
 setMode(current);select.addEventListener('change',()=>setMode(select.value));
-const sky=$('.citadel-ambient');if(sky&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&current!=='performance'){for(let i=0;i<13;i++){const p=document.createElement('i');p.style.setProperty('--x',((i*37+11)%97)+'%');p.style.setProperty('--dur',(9+i%4*2)+'s');p.style.setProperty('--delay',(-i*.85)+'s');sky.append(p)}}
 const changes=$('#nxChanges');
 $('#nxChangeLog').addEventListener('toggle',async e=>{
  if(!e.target.open||e.target.dataset.loaded)return;e.target.dataset.loaded='1';
@@ -67,6 +67,6 @@ $('#nxChangeLog').addEventListener('toggle',async e=>{
  }catch(_){changes.textContent='Release notes are temporarily unavailable. Open the Player Handbook for current capabilities.'}
 });
 preview(selected);
-const updateArt=()=>{if(document.body.classList.contains('lv9-mode-performance')||navigator.connection?.saveData)return;const img=new Image();img.onload=()=>root.classList.add('nx-artpack-ready');img.src='./assets/sovereign-throne-v9.1.webp'};
-if('requestIdleCallback'in window)requestIdleCallback(updateArt,{timeout:1800});else setTimeout(updateArt,1200);
+let artRequested=false;const updateArt=()=>{if(artRequested||document.body.classList.contains('lv9-mode-performance')||navigator.connection?.saveData)return;artRequested=true;const img=new Image();img.onload=()=>root.classList.add('nx-artpack-ready');img.src='./assets/sovereign-throne-v9.1.webp'};
+select.addEventListener('change',updateArt);if('requestIdleCallback'in window)requestIdleCallback(updateArt,{timeout:1800});else setTimeout(updateArt,1200);
 })();
