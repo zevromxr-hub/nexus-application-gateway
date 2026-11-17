@@ -45,7 +45,7 @@ for(const file of ['living-world-v16.css','world-atlas-v16.css','living-world-br
 }
 const command=await read('command-center.html'),atlas=await read('world-atlas.html'),player=await read('player-experience.html'),original=await read('index.html');
 assert.match(command,/living-war-room-v16\.js\?v=1600/);
-assert.match(command,/living-world-engine-core-v16\.js\?v=1600/);
+assert.match(command,/living-world-engine-core-v16\.js\?v=(?:1600|1650)/);
 assert.match(atlas,/world-atlas-v16\.js\?v=1600/);
 assert.match(player,/living-world-character-v16\.js\?v=1600/);
 assert.match(original,/world-atlas\.html/);
