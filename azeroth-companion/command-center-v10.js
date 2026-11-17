@@ -13,6 +13,7 @@ const KEY_GOALS='nexus_command_center_goals_v10';
 const KEY_VISUAL='nexus_visual_mode_v9';
 const KEY_ENTRY='nexus_living_entry_seen_v9';
 const SCENES=[
+ {title:'Expedition Intelligence v16.5',group:'Adventure preparation',desc:'Character-aware personal mission checklists, source links and exportable briefs',url:'./expedition-console.html',tokens:'expedition missions adventure planner checklist priority pinned goals readiness research world atlas'},
  {title:'Living World Atlas v16',group:'World research',desc:'Curated Azeroth regions, interactive map and linked personal missions',url:'./world-atlas.html',tokens:'world atlas map region continent locations cities khaz algar stormwind orgimmar missions adventure'},
  {title:'Sovereign Character Nexus v15',group:'Player workspace',desc:'Blizzard public gear, character-linked talent builds, personal objectives and portable build packages',url:'./player-experience.html',tokens:'my character player experience dossier build intelligence history quest journal'},
  {title:'Save Protection Center',group:'Safety',desc:'Export a private backup of supported local planning records',url:'./save-protection.html',tokens:'save protection safety backup export recovery browser local storage'},
