@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v8.0.0 · 2026-11-16 — Sovereign Ascension (Staging)
+
+- **Unified character foundation:** Separate manual local plans from public Blizzard character/equipment records using a source-labeled, timestamped schema; explicit read and lookup actions; read-only import preview and local JSON export.
+- **Sovereign Dashboard:** New responsive integrated workspace for characters, talent drafts, targets, public equipment and source-aware statistics.
+- **Talent Forge Ascension:** Compare two existing saved builds using stored specialization identities and node ranks, with truthful cross-specialization warnings and JSON diff exports. Existing Forge remains untouched.
+- **Assistant Intelligence 2.0:** Opt-in explanation of visible source evidence, unknown fields and limitations with no generative AI service or private account access.
+- **Mission & Progression Operations:** Generate linked guidance for builds, gear, progress, collections and account verification; export mission data manually.
+- **Visual and release safety:** Responsive design, reduced-motion support, data provenance labels, revised guides/checklists, staged Discord draft, and dedicated v7.9.9 GitHub rollback branch.
+- **Release gate:** Source checks and simulated tests are distinct from real Blizzard player data, physical mobile testing and Battle.net regression acceptance. No stable Discord announcement yet.
+
+
 ## v7.9.9 · 2026-11-16 — Mission Architect & Connected-Header Layout Fix (Staging)
 
 - **Connected button fix:** Replaced the fixed-position launcher with a separate right-aligned row in the page layout below the Connected header on PC and mobile, rather than relying on a pixel offset.
