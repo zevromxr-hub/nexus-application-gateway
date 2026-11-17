@@ -22,7 +22,7 @@ await page.locator('#nxBuildResults').getByText('Node 100:',{exact:false}).waitF
 await page.locator('#nxMission').click();
 await page.locator('#nxMissionResults').getByText('Refine my build').waitFor();
 await page.locator('#nxAdvisor').click();
-await page.locator('#nxAdvice').getByText('manually saved builds',{exact:false}).waitFor();
+await page.locator('#nxAdvice').getByText('manual Talent Forge drafts',{exact:false}).waitFor();
 await page.selectOption('#nxGoal','gear');await page.locator('#nxMission').click();
 await page.locator('#nxMissionResults').getByText('Research equipment').waitFor();
 await page.locator('[name="realm"]').fill('area-52');await page.locator('[name="character"]').fill('synthetic');
