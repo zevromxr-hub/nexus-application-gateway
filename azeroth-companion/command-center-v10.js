@@ -13,6 +13,8 @@ const KEY_GOALS='nexus_command_center_goals_v10';
 const KEY_VISUAL='nexus_visual_mode_v9';
 const KEY_ENTRY='nexus_living_entry_seen_v9';
 const SCENES=[
+ {title:'Sovereign Player Experience',group:'Player workspace',desc:'Character dossier, linked builds, checkpoint history and personal quests',url:'./player-experience.html',tokens:'my character player experience dossier build intelligence history quest journal'},
+ {title:'Save Protection Center',group:'Safety',desc:'Export a private backup of supported local planning records',url:'./save-protection.html',tokens:'save protection safety backup export recovery browser local storage'},
  {title:'Sovereign Ascension',group:'Studio',desc:'Unified character command and public research',url:'./sovereign-ascension.html',tokens:'sovereign ascension character command research profile'},
  {title:'Talent Forge',group:'Studio',desc:'Skill and build planning with allocated ranks',url:'./?enter=1&studio=talents',tokens:'talent forge skill builds planner trees specialization'},
  {title:'The Living Armory',group:'Studio',desc:'Public equipment comparison and item research',url:'./character-intelligence.html',tokens:'living armory equipment gear characters items'},
