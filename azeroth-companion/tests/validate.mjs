@@ -239,7 +239,7 @@ new vm.Script(cinematicEntry9);
 assert.match(html,/living-entry-v9\.css\?v=902/,'Canonical Azeroth home must load welcome styling');
 assert.match(html,/living-entry-v9\.js\?v=902/,'Canonical Azeroth home must load welcome behavior');
 assert.match(cinematicEntry9,/lv9EntryGate/,'Welcome must provide distinct cinematic layer');
-assert.match(cinematicEntry9,/data\.enterApp/,'Welcome must provide working enter controls');
+assert.match(cinematicEntry9,/dataset\.enterApp/,'Welcome must provide working enter controls');
 assert.match(cinematicEntry9,/sessionStorage\.setItem/,'Welcome dismissal must be scoped to this tab');
 assert.match(cinematicEntry9,/layout\.removeAttribute\('inert'\)/,'Welcome close must restore original application interactivity');
 assert.match(cinematicEntry9,/layout\.setAttribute\('inert'/,'Welcome open must keep underlying application inaccessible to keyboard focus');
