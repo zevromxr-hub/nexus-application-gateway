@@ -6,7 +6,7 @@
 const KEY='nexus_living_entry_seen_v9';
 const params=new URLSearchParams(location.search);
 let seen=false;try{seen=sessionStorage.getItem(KEY)==='entered'}catch(_){}
-if(params.get('enter')==='1'||params.get('app')==='1')seen=true;
+if(params.get('enter')==='1'||params.get('app')==='1'){seen=true;try{sessionStorage.setItem(KEY,'entered')}catch(_){}}
 const forced=params.get('gateway')==='1'||params.get('welcome')==='1';
 const sourceLink=document.querySelector('.sidebar a[href="./living-azeroth.html"]');
 if(sourceLink){sourceLink.href='./?gateway=1';sourceLink.title='Return to the cinematic entrance';}
@@ -54,7 +54,7 @@ document.body.append(modal);
 const layout=document.querySelector('body>.layout');
 const previous=document.activeElement;
 function saveEntered(){try{sessionStorage.setItem(KEY,'entered')}catch(_){}}
-function close(){saveEntered();modal.hidden=true;modal.remove();document.body.classList.remove('lv9-entry-open');if(layout)layout.removeAttribute('inert');const main=document.querySelector('main.main');if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}else if(previous?.isConnected)previous.focus();}
+function close(){saveEntered();modal.hidden=true;modal.remove();document.body.classList.remove('lv9-entry-open');if(layout)layout.removeAttribute('inert');const main=document.querySelector('main.main');if(main){main.setAttribute('tabindex','-1');main.focus({preventScroll:true});window.scrollTo(0,0);}else if(previous?.isConnected)previous.focus();}
 modal.querySelectorAll('[data-enter-app]').forEach(b=>b.addEventListener('click',close));
 modal.querySelectorAll('a.lv9-portal,a[href^="./player"],a[href="../hub/"]').forEach(a=>a.addEventListener('click',saveEntered));
 modal.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close();return}if(e.key!=='Tab')return;const visible=[...modal.querySelectorAll('a[href],button:not([disabled]),select:not([disabled])')].filter(n=>n.getClientRects().length);const first=visible[0],last=visible[visible.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
