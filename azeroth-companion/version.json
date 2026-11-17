@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.4",
+  "version": "7.9.5",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "Mythic+, Raid & Reputation Intelligence — API Deployment Pending",
-  "previous_version": "7.9.3",
+  "subtitle": "Connected Character Research Handoff & Test Readiness",
+  "previous_version": "7.9.4",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added a dedicated Blizzard Progression Intelligence studio with Mythic+ profile/season research, raid encounter summaries and reputation standings.",
-    "Added manual JSON snapshot exports, optional season-ID input, safer missing-data messaging and responsive mobile/PC layouts.",
-    "Prepared complete additive Cloudflare Worker v7.9.4 source to enable three new public progression routes without removing existing authentication or spell-media endpoints.",
-    "Updated navigation, Character Intelligence cross-link and detailed Player Handbook to cover the new research studio.",
-    "Public site is staged: live progression results require a separate Cloudflare Worker deployment and real-player acceptance tests before a stable Discord announcement.",
-    "Preserved existing Talent Forge, v7.9.3 Character Intelligence, Addon Nexus preview, saved player progress and all main application bundles."
+    "Added fast character research handoff between equipment comparisons and Mythic+, raids, and reputations using public-character URL parameters.",
+    "Added three progression shortcuts from Character Intelligence, a compare-character shortcut from Progression Intelligence, and a shareable read-only research-link copy control.",
+    "Prefills region, realm slug and public character name from shared links with validation and explicit Load action; does not auto-fetch or transfer Blizzard tokens.",
+    "Preserved all v7.9.4 API routes, Cloudflare Worker code, account connections, player saved plans and other studios unchanged.",
+    "Updated getting-started guidance, Player Handbook, Developer Test Requests, Gateway label, release notes, and staged acceptance tests.",
+    "Stage only: real WoW data, Discord delivery, and browser acceptance checks remain pending before an official stable release."
   ]
 }
