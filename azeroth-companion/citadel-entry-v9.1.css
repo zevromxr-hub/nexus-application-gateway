@@ -91,3 +91,58 @@ a{color:inherit}button{cursor:pointer;color:inherit}button:focus-visible,a:focus
 @media(max-width:1000px){.citadel-layout{grid-template-columns:1fr}.citadel-side{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:660px){.citadel-shell{padding:11px 12px 48px}.citadel-hero{min-height:560px}.citadel-hero::before{background-image:linear-gradient(90deg,#060914e8,#070b18a2),var(--scene-art);background-position:center,61% center}.citadel-hero-content{padding:28px 20px 14px}.citadel-hero h1{font-size:clamp(39px,11vw,62px)}.citadel-scene-controls{padding:0 15px 20px}.citadel-actions .citadel-cta{flex:1}.citadel-portals{grid-template-columns:1fr}.portal-wrap,.portal-wrap:first-child{grid-column:span 1;min-height:248px}.citadel-side{grid-template-columns:1fr}.citadel-section-top{align-items:stretch}.citadel-search{width:100%}.citadel-head-actions{width:100%;justify-content:space-between}.citadel-head-actions a{flex:1;text-align:center}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.citadel-ambient{display:none}.portal-wrap::before{transition:none}.citadel-ambient i{animation:none}}
+
+
+/* CITADEL SHARP ART v9.1.1: native-size fantasy portraits, HD landscape entrance. */
+.citadel-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.citadel-main{width:100%;min-width:0}
+.citadel-portals{grid-template-columns:repeat(5,minmax(0,1fr));gap:13px}
+.portal-wrap,.portal-wrap:first-child{grid-column:auto;min-height:0;aspect-ratio:3 / 5}
+.portal-wrap::before{
+ background-image:linear-gradient(0deg,#050914ea 0%,#060b1988 33%,#060b1904 66%),var(--fallback);
+ background-position:center,center 43%;background-size:cover,cover;
+ transition:filter .18s ease
+}
+.portal-wrap:hover::before,.portal-wrap:focus-within::before{transform:none;filter:brightness(1.09)}
+.portal-wrap:hover,.portal-wrap:focus-within{border-color:#f6d6a6;box-shadow:0 14px 38px #0008,0 0 0 1px #c6a16d80}
+.portal-link{padding:clamp(13px,1.5vw,22px)}
+.portal-link strong{font-size:clamp(15px,1.65vw,21px);overflow-wrap:anywhere}
+.portal-link small{font-size:12px;line-height:1.55}
+.citadel-side{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.citadel-side>.citadel-panel{min-width:0}
+@media(min-width:661px){
+ .citadel-hero::before{
+  background-image:linear-gradient(90deg,#060916f5 0%,#080c1bec 30%,#0c1225a8 57%,#0a0d1e66 100%),url('./assets/citadel-hero-hd-v9.1.1.webp');
+  background-position:center,center;background-size:cover,cover
+ }
+ /* Dedicated 1600px hero backdrop + framed preview never wider than original 380px source. */
+ .citadel-hero::after{
+  content:"";inset:28px clamp(18px,3.3vw,58px) 28px auto;width:min(29%,360px);
+  border:1px solid #e6c08891;border-radius:17px;
+  background-image:linear-gradient(0deg,#080c18bf 0%,#0609181b 55%),var(--scene-art);
+  background-size:cover,cover;background-position:center,center 43%;
+  box-shadow:0 0 0 5px #0a12205c,0 22px 46px #000b,0 0 30px #e4b77b30
+ }
+ .citadel-hero-content{max-width:min(66%,780px)}
+}
+@media(max-width:1180px){
+ .citadel-portals{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .citadel-side{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:820px){
+ .citadel-portals{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .citadel-side{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:660px){
+ .citadel-portals{grid-template-columns:minmax(0,1fr)}
+ .portal-wrap,.portal-wrap:first-child{grid-column:auto;min-height:0;aspect-ratio:3 / 5}
+ .citadel-hero::before{
+  background-image:linear-gradient(180deg,#07101dbb 0%,#070d1acc 50%,#060816f5 100%),var(--scene-art);
+  background-position:center,center 43%;background-size:cover,cover
+ }
+ .citadel-hero-content{max-width:none}
+ .citadel-side{grid-template-columns:minmax(0,1fr)}
+ .portal-link{padding:22px}
+ .portal-link strong{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){.portal-wrap::before{transition:none}}
