@@ -47,6 +47,14 @@ function update(){
  $('nx165BookmarkCount').textContent=String(state.bookmarks.length);
  $('nx165ActiveMissions').textContent=String(goals.filter(g=>g.status!=='completed').length);
  $('nx165PreparedMissions').textContent=String(goals.filter(g=>state.records[g.id]?.steps?.length).length);
+ document.querySelectorAll('#nx16RegionPins .nx16-map-pin[data-region]').forEach(pin=>{
+  const count=goals.filter(g=>world.zoneById(g.zoneId)?.regionId===pin.dataset.region).length;
+  let badge=pin.querySelector('.nx165-pin-count');
+  if(!count){badge?.remove();return}
+  if(!badge){badge=e('span','nx165-pin-count');pin.append(badge)}
+  badge.textContent=String(count);
+  badge.setAttribute('aria-label',count+' personal mission'+(count===1?'':'s')+' in this region');
+ });
  const activities=$('nx165RegionActivity');activities.replaceChildren();
  const countFor=r=>goals.filter(g=>world.zoneById(g.zoneId)?.regionId===r.id).length;
  const highest=Math.max(1,...world.regions.map(countFor));
