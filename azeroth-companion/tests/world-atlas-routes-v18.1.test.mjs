@@ -29,7 +29,7 @@ assert.equal(state.routes[0].stops[1].inject,undefined);
 state=c.move(state,id,'valdrakken',-1);
 assert.deepEqual(Array.from(state.routes[0].stops,x=>x.zoneId),['stormwind-city','valdrakken','orgrimmar']);
 state=c.groupByRegion(state,id);
-assert.deepEqual(Array.from(state.routes[0].stops,x=>x.zoneId),['orgrimmar','stormwind-city','valdrakken']);
+assert.deepEqual(Array.from(state.routes[0].stops,x=>x.zoneId),['stormwind-city','orgrimmar','valdrakken']);
 const linked=c.summary(state.routes[0],[{zoneId:'stormwind-city'},{zoneId:'orgrimmar'}]);
 assert.equal(linked.linked,2);
 const backup=c.exportPayload(state);
