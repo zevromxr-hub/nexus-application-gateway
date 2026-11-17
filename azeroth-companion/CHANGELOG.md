@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v9.0.0 · 2026-11-16 — LIVING AZEROTH (Staging)
+
+- **Cinematic entry:** Original illustrated citadel and five destination chambers in the new Living Azeroth world gateway, with matching visuals integrated into the original homepage and Sovereign Ascension.
+- **Talent Forge laboratory:** Source-backed talent-node inspection, selected/allocated visual states, and preserved native rank, undo, save and export controls.
+- **Living character armory:** Selectable equipment slot layout reflects only Blizzard public character equipment records returned by the original Character Intelligence studio.
+- **Adventure Journal:** Illustrated interactive Mythic+, Raid and Reputation chapters use original data tabs and keep partial-response warnings intact.
+- **ZevRo | Azeroth Oracle:** Original fantasy assistant artwork, guided-response visual states, preserved documented answers and Mission Architect in mobile/full-page modes.
+- **Visual foundation:** Shared Living Azeroth UI engine, Cinematic/Balanced/Performance modes, original dependency-free SVG artwork, responsive layouts and reduced-motion support.
+- **Preservation:** v8.0 GitHub rollback branch; existing Battle.net integration, local saves, existing studios, Founder identity and HYPER MUSIC unmodified by the visual layer.
+- **Acceptance:** Source regression tests and human mobile/game checks are required before stable v9.0 and automatic Discord announcement. Official release trigger intentionally withheld.
+
+
 ## v8.0.0 · 2026-11-16 — Sovereign Ascension (Staging)
 
 - **Unified character foundation:** Separate manual local plans from public Blizzard character/equipment records using a source-labeled, timestamped schema; explicit read and lookup actions; read-only import preview and local JSON export.
