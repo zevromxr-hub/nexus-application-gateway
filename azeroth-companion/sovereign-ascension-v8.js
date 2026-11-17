@@ -58,5 +58,17 @@ verify:{title:'Review account connection',intro:'Account verification is separat
 $('nxMission').addEventListener('click',()=>{mission=GOALS[$('nxGoal').value];const host=$('nxMissionResults');host.replaceChildren();if(!mission)return;
 host.append(el('h3',mission.title),el('p',mission.intro));const ol=el('ol');for(const [title,body,url] of mission.steps){const li=el('li');li.append(el('strong',title),el('p',body));const a=el('a','OPEN RELEVANT STUDIO','launch');a.href=url;a.style.marginBottom='10px';li.append(a);ol.append(li)}host.append(ol);$('nxMissionExport').disabled=false});
 $('nxMissionExport').addEventListener('click',()=>{if(mission)download('nexus-sovereign-mission-v8.json',{format:'nexus.azeroth.mission-v8/1',goal:$('nxGoal').value,...mission,source:'curated-guidance',createdAt:new Date().toISOString(),warning:'Planning instructions are not verified in-game achievements.'})});
+let advisory=null;
+function buildAdvice(){const recommendations=[];const local=snapshot?.local,publicInfo=snapshot?.public;
+if(!snapshot){recommendations.push('No character snapshot has been reviewed yet. Start with Review My Local Plans or an explicit Blizzard public lookup.');return recommendations}
+if(local?.builds?.length){recommendations.push('Your browser has '+local.builds.length+' manual Talent Forge drafts. Compare them by saved rank IDs; no build is automatically judged optimal.')}else recommendations.push('No local Talent Forge drafts are included in this snapshot. A different browser or private session may hold other saves.');
+if(local?.targets?.length)recommendations.push(local.targets.length+' manual character goals appear. These are planned objectives, not evidence of acquired rewards.');
+if(publicInfo){recommendations.push('A public Blizzard profile was retrieved at '+publicInfo.fetchedAt+' for '+publicInfo.identity.name+' on '+publicInfo.identity.realm+'. It reports '+publicInfo.gear.length+' equipped item entries.');recommendations.push('Equipped gear is not a full bag/bank inventory or currency report; no ownership or raid completion beyond the returned response is asserted.')}
+else recommendations.push('Blizzard public profile not loaded: level, equipped items and current game status are unknown, not zero.');
+recommendations.push('Next: use Progression Intelligence for source-labeled Mythic+, raids and reputations; missing endpoints are inconclusive.');
+recommendations.push('Privacy: this explanation is assembled only from the snapshot visible in this page. Nothing is uploaded or added to existing saves.');
+return recommendations}
+$('nxAdvisor').addEventListener('click',()=>{advisory=buildAdvice();const host=$('nxAdvice');host.replaceChildren();for(const line of advisory)host.append(el('div',line,'tile source-manual'));$('nxAdvisorCopy').disabled=false});
+$('nxAdvisorCopy').addEventListener('click',async()=>{if(!advisory)return;try{await navigator.clipboard.writeText(['NEXUS | AZEROTH SOVEREIGN EVIDENCE REVIEW',...advisory].join('\\n'));$('nxAdvisorCopy').textContent='COPIED'}catch(_){$('nxAdvisorCopy').textContent='COPY UNAVAILABLE'}});
 const par=new URLSearchParams(location.search);if(par.has('region')&&par.has('realm')&&par.has('character')){for(const key of ['region','realm','character']){const field=$('nxPublicForm').elements.namedItem(key);if(field)field.value=(par.get(key)||'').slice(0,80)}}
 })();
