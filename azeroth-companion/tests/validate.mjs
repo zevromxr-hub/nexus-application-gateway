@@ -234,6 +234,16 @@ assert.ok(!assistantBubble798.includes('localStorage'),'Launcher must not access
 assert.ok(!assistantBubble798.includes('fetch('),'Launcher must not add new API requests');
 const living9=await read('azeroth-companion/living-azeroth-v9.js');
 const livingCSS9=await read('azeroth-companion/living-azeroth-v9.css');
+const cinematicArt9=await read('azeroth-companion/living-azeroth-v9-art.css');
+assert.match(cinematicArt9,/radiant-warrior-background\.webp/,'Cinematic hero must use locally hosted detailed character art');
+assert.match(cinematicArt9,/assassin-background\.webp/,'Illustrated studio portals must reuse real hosted art rather than placeholder geometry');
+assert.match(cinematicArt9,/grid-column:span 6/,'Large cinematic destination gallery must have featured cards');
+assert.match(cinematicArt9,/@media\(max-width:590px\)/,'Artwork gallery requires narrow phone layout');
+for(const f of ['index.html','living-azeroth.html','sovereign-ascension.html','character-intelligence.html','progression-intelligence.html','azeroth-assistant.html']){
+ const markup=await read('azeroth-companion/'+f);
+ assert.match(markup,/living-azeroth-v9-art\.css\?v=901/,'Premium art replacement missing: '+f);
+}
+
 const livingHome9=await read('azeroth-companion/living-azeroth.html');
 const livingScene9=await read('azeroth-companion/assets/living-citadel-v9.svg');
 const livingOracle9=await read('azeroth-companion/assets/living-oracle-v9.svg');
