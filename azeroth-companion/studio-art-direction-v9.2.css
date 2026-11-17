@@ -389,3 +389,253 @@ body[data-nx-art-page="living"] .lv9-hero{
  body[data-nx-art-page="sovereign"] .intro > div,
  body[data-nx-art-page="addon"] .hero > *{max-width:100%}
 }
+
+
+/* ────────────────────────────────────────────────────────────────────────────
+   NEXUS | AZEROTH v9.3 — LUMINOUS GLASS
+   Premium high-contrast panels with a mostly opaque glass surface.
+   This is a style-only, additive layer: no application, save or auth behavior.
+   Reuses the existing stylesheet to add ZERO extra CSS/JS requests.
+   ──────────────────────────────────────────────────────────────────────────── */
+body.nx-art-studios,
+body[data-nx-art-page],
+body:has(#nxCitadel){
+  --nx-glass-face:linear-gradient(145deg,
+    rgba(39,69,94,.96) 0%,rgba(26,49,73,.96) 46%,
+    rgba(16,33,56,.97) 100%);
+  --nx-glass-metric:linear-gradient(145deg,
+    rgba(48,82,110,.98),rgba(29,56,79,.97) 55%,rgba(20,42,66,.98));
+  --nx-glass-inset:linear-gradient(140deg,
+    rgba(37,62,83,.94),rgba(21,40,62,.96) 75%);
+  --nx-glass-field:linear-gradient(180deg,#172f47,#112338);
+  --nx-glass-edge:rgba(163,205,230,.37);
+  --nx-glass-edge-strong:rgba(242,200,139,.68);
+  --nx-glass-copy:#e6f1fc;
+  --nx-glass-secondary:#bdcede;
+  --nx-glass-gold:#f6d59f;
+}
+
+/* Major working surfaces. Keep the background 94–97% opaque: glass and
+   depth are perceptible, but busy fantasy art cannot drown out controls. */
+body.nx-art-studios .main :is(
+  .panel,.stat,.pu-vault-card,.nx-warcraft-research,.id-search-panel,
+  .tf-intel-columns > section,.pg-section,.ud-session,.nx-command-v5
+),
+body.nx-art-studios .main #nexusPlayerGuide .pg-section,
+body[data-nx-art-page] :is(.panel,.tile),
+body[data-nx-art-page="addon"] .section,
+body:has(#nxCitadel) .citadel-panel{
+  background:radial-gradient(circle at 0% 0%,rgba(155,207,239,.105),transparent 38%),
+    var(--nx-glass-face)!important;
+  border:1px solid var(--nx-glass-edge)!important;
+  border-radius:17px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 0 0 1px rgba(255,255,255,.025),
+    0 16px 36px rgba(0,6,19,.39),
+    0 0 26px rgba(84,160,216,.055)!important;
+  color:var(--nx-glass-copy);
+}
+
+/* Gently illuminate the active panel (keyboard/touch included).
+   No transforms or scale changes: forms, talent trees and icons stay fixed. */
+body.nx-art-studios .main :is(.panel,.nx-warcraft-research,.pg-section,.tf-intel-columns > section):focus-within,
+body[data-nx-art-page] .panel:focus-within,
+body:has(#nxCitadel) .citadel-panel:focus-within{
+  border-color:rgba(246,210,153,.65)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.17),
+    0 14px 34px rgba(0,6,19,.42),
+    0 0 0 1px rgba(249,203,125,.13)!important;
+}
+
+/* Loot Hunter / Armory / Talent Forge / progress / dashboard numbers.
+   Distinct higher-value metric tiles rather than indistinguishable dark boxes. */
+body.nx-art-studios .main :is(
+  .loot-metrics > div,.wow-metrics > div,.ab-metrics > div,
+  .tf-stats > div,.atlas-stats > div,.ct-stats > div,
+  .pc-metrics > div,.fo-stats > div,.ud-metrics > div,
+  .pg-metrics > div,.nx-wr-stat,.nx-wr-metrics > div
+){
+  background:radial-gradient(circle at 100% 0%,rgba(143,202,230,.13),transparent 52%),
+    var(--nx-glass-metric)!important;
+  border:1px solid rgba(179,214,235,.39)!important;
+  border-top-color:rgba(250,220,164,.49)!important;
+  border-radius:13px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),
+    0 7px 18px rgba(0,8,21,.24)!important;
+  min-width:0;
+}
+body.nx-art-studios .main :is(
+ .loot-metrics,.wow-metrics,.ab-metrics,.tf-stats,.atlas-stats,.ct-stats,
+ .pc-metrics,.fo-stats,.ud-metrics,.pg-metrics
+) :is(strong,b){color:var(--nx-glass-gold);text-shadow:0 0 17px rgba(244,195,128,.13)}
+body.nx-art-studios .main :is(
+ .loot-metrics,.wow-metrics,.ab-metrics,.tf-stats,.atlas-stats,.ct-stats,
+ .pc-metrics,.fo-stats,.ud-metrics,.pg-metrics
+) :is(span,small){color:#c6d9e8}
+
+/* Working records: reference entries, equipment, saved goals, guides,
+   character profiles and local planner results. */
+body.nx-art-studios .main :is(
+  .loot-entry,.loot-goal,.wow-item,.entry,.pc-record,.discover-card,
+  .ud-record,.tf-save-entry,.atlas-entry,.ab-character,.azl-item,
+  .pg-step,.pg-tool,.nx-wr-list > *, .tf-intel-columns > section > article
+),
+body[data-nx-art-page] :is(.item,.profile,.compare > *, .results > *){
+  background:var(--nx-glass-inset)!important;
+  border:1px solid rgba(160,194,221,.28)!important;
+  border-radius:12px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.065),
+    0 6px 17px rgba(0,6,16,.17);
+  color:var(--nx-glass-copy);
+  min-width:0;
+}
+body.nx-art-studios .main :is(
+  .loot-entry,.loot-goal,.wow-item,.entry,.pc-record,.discover-card,
+  .ud-record,.tf-save-entry,.atlas-entry,.ab-character,.azl-item
+):hover,
+body[data-nx-art-page] :is(.item,.tile):hover{
+  border-color:rgba(237,192,129,.6)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),
+    0 8px 24px rgba(0,8,24,.36),
+    0 0 18px rgba(106,176,225,.11)!important;
+}
+
+/* Better visual hierarchy across EVERY existing main-app section. */
+body.nx-art-studios .main .section.active :is(h2,h3,h4),
+body[data-nx-art-page] :is(.panel,.tile) :is(h2,h3,h4){
+  color:#f9dfb4;
+  text-shadow:0 2px 10px rgba(3,10,24,.48);
+  letter-spacing:-.012em;
+}
+body.nx-art-studios .main :is(.panel,.loot-entry,.loot-goal,.wow-item,.tf-intel-columns > section) :is(p,small),
+body[data-nx-art-page] :is(.panel,.tile) p{
+  color:var(--nx-glass-secondary);
+}
+body.nx-art-studios .main :is(.loot-entry,.loot-goal,.wow-item,.tf-intel-columns > section) strong{
+  color:#ffe0ac;
+}
+
+/* Controls: brighter but still explicitly dark, with unambiguous focus.
+   Exclude checkboxes, radios, range sliders, file inputs and color controls. */
+body.nx-art-studios .main :is(
+ input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+ select,textarea
+),
+body[data-nx-art-page] :is(
+ input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+ select,textarea
+),
+body:has(#nxCitadel) :is(.citadel-search,.citadel-select){
+  background:var(--nx-glass-field)!important;
+  border:1px solid rgba(171,202,226,.43)!important;
+  color:#f2f8ff!important;
+  box-shadow:inset 0 2px 8px rgba(0,5,15,.28),
+    inset 0 1px 0 rgba(255,255,255,.035);
+}
+body.nx-art-studios .main :is(input,textarea)::placeholder,
+body[data-nx-art-page] :is(input,textarea)::placeholder{
+  color:#a1b8cb;
+  opacity:1;
+}
+body.nx-art-studios .main :is(input,select,textarea):focus-visible,
+body[data-nx-art-page] :is(input,select,textarea):focus-visible,
+body:has(#nxCitadel) :is(.citadel-search,.citadel-select):focus-within{
+  outline:2px solid #f6d08d!important;
+  outline-offset:2px;
+  border-color:#f6d08d!important;
+  box-shadow:0 0 0 4px rgba(241,195,117,.10)!important;
+}
+
+/* Buttons are polished without overriding meaningful primary, selected,
+   verified, dangerous, warning or disabled colors. */
+body.nx-art-studios .main .section.active :is(button,.button,.wow-link,.wow-file),
+body[data-nx-art-page] :is(button,.btn,.launch),
+body:has(#nxCitadel) :is(.citadel-pins a,.citadel-scene-controls button,.citadel-continue){
+  border-radius:10px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),
+    0 4px 13px rgba(0,9,24,.19);
+  transition:border-color .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+body.nx-art-studios .main .section.active :is(button,.button,.wow-link,.wow-file):not(:disabled):hover,
+body[data-nx-art-page] :is(button,.btn,.launch):not(:disabled):hover,
+body:has(#nxCitadel) :is(.citadel-pins a,.citadel-scene-controls button,.citadel-continue):hover{
+  filter:brightness(1.12);
+  border-color:rgba(246,210,151,.73)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),
+    0 5px 19px rgba(0,9,24,.28),
+    0 0 15px rgba(241,201,137,.09);
+}
+body.nx-art-studios .main .section.active :is(button,.button,.wow-link,.wow-file):focus-visible,
+body[data-nx-art-page] :is(button,.btn,.launch):focus-visible{
+  outline:2px solid #f7d59c!important;
+  outline-offset:3px;
+}
+
+/* The shell/sidebar retains opaque readability but now carries the same
+   illuminated rim and differentiated active/navigation controls. */
+body.nx-art-studios .sidebar{
+  border-right:1px solid rgba(219,184,135,.57)!important;
+  box-shadow:inset -1px 0 0 rgba(255,255,255,.07),
+    6px 0 28px rgba(0,5,16,.43)!important;
+}
+body.nx-art-studios .sidebar :is(.nav button,.ac-nav-item):hover{
+  filter:brightness(1.12);
+}
+body.nx-art-studios .sidebar .nav button.active{
+  border:1px solid rgba(250,210,150,.76)!important;
+  box-shadow:inset 3px 0 0 #efc58c,
+    inset 0 1px 0 rgba(255,255,255,.12),
+    0 5px 13px rgba(0,5,15,.35)!important;
+}
+
+/* Citadel quick-access cards retain their original image-rich portals. */
+body:has(#nxCitadel) .citadel-panel h2,
+body:has(#nxCitadel) .citadel-panel h3{color:#ffe1aa}
+body:has(#nxCitadel) .citadel-panel p{color:#c5d6e7}
+body:has(#nxCitadel) .citadel-portals .portal-wrap{
+  border-color:rgba(230,190,134,.66);
+  box-shadow:0 12px 35px rgba(0,6,19,.49),
+    inset 0 1px 0 rgba(255,255,255,.14);
+}
+body:has(#nxCitadel) .citadel-portals .portal-wrap:hover,
+body:has(#nxCitadel) .citadel-portals .portal-wrap:focus-within{
+  border-color:#ffe0a5;
+  box-shadow:0 16px 36px rgba(0,6,19,.54),0 0 18px rgba(237,191,131,.22);
+}
+
+/* Never force translucency for accessibility or on reduced-effects devices. */
+@media(max-width:760px){
+  body.nx-art-studios .main :is(.panel,.stat,.nx-warcraft-research),
+  body[data-nx-art-page] :is(.panel,.tile),
+  body:has(#nxCitadel) .citadel-panel{
+    border-radius:14px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.13),
+      0 9px 23px rgba(0,5,16,.27)!important;
+  }
+}
+@media(min-width:900px){
+  @supports ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    body.nx-art-studios:not(.lv9-mode-performance) .main :is(.panel,.stat,.nx-warcraft-research),
+    body[data-nx-art-page] :is(.panel,.tile),
+    body:has(#nxCitadel):not(.lv9-mode-performance) .citadel-panel{
+      -webkit-backdrop-filter:blur(8px) saturate(122%);
+      backdrop-filter:blur(8px) saturate(122%);
+    }
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body.nx-art-studios .main .section.active :is(button,.button,.wow-link,.wow-file),
+  body[data-nx-art-page] :is(button,.btn,.launch),
+  body:has(#nxCitadel) :is(.citadel-pins a,.citadel-scene-controls button,.citadel-continue){
+    transition:none!important;
+  }
+}
+@media print{
+  body.nx-art-studios .main :is(.panel,.stat,.loot-entry,.loot-goal),
+  body[data-nx-art-page] :is(.panel,.tile){
+    background:#fff!important;color:#111!important;
+    box-shadow:none!important;
+    border:1px solid #999!important;
+  }
+}
