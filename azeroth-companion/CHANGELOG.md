@@ -1,4 +1,36 @@
-# NEXUS | AZEROTH COMPANION — RELEASE HISTORY\n\n## v7.9.5 · 2026-11-16 — Connected Character Research Handoff (Staging)\n\n- **Connected research shortcuts:** Carry a public character selector from Character Intelligence into Mythic+, Raids or Reputations, and back again for gear comparisons.\n- **Read-only handoff:** Uses validated public region/realm/character URL parameters, manual loading, and optional link copying. Never transfers account cookies, tokens or saved plans.\n- **Player guidance:** Updated PC/mobile handbook, Getting Started and Developer Test Requests with required cross-device checks.\n- **Release coordination:** Updated the main companion and Gateway labels; official v7.9.5 Discord announcement remains withheld until live user tests. Previous stable release manifest unchanged.\n\n## v7.9.4 · 2026-11-16 — Blizzard Progression Intelligence (Testing Pending)\n\n- **Blizzard research:** Introduced a three-tab studio for public Mythic+ profiles, raid encounters and reputations, with read-only JSON export.\n- **Worker:** The owner deployed a merged v7.9.4 Worker and reported the correct health version; live-character results and Battle.net regression tests still await community verification.\n- **Testing:** Added a voluntary Developer Test Requests checklist with locally generated reports; no automatic submissions.\n- **Discord:** v7.9.4 remains staged and was not announced as fully tested.\n\n## v7.9.3 · 2026-11-16 — Character Intelligence (Acceptance Pending)\n\n- Added public character equipment comparison, official item references, and JSON export with explicit source limits.\n\n## v7.9.2 · 2026-11-16 — Player Handbook & Device Guides\n\n- Added searchable PC and mobile guides explaining major studios, data sources and limitations.\n
+# NEXUS | AZEROTH COMPANION — RELEASE HISTORY
+
+## v7.9.6 · 2026-11-16 — Character Progress Report (Staging)
+
+- **Combined progression:** One opt-in request sequence for Blizzard-reported Mythic+, raid and reputation data on a selected public Retail character.
+- **Partial results:** Separate category statuses preserve available data when another category is unavailable, incomplete or cancelled. Missing data is not treated as absence of gameplay.
+- **Player control:** Manual cancel, copied plain-text summary and downloadable combined JSON snapshot; no automatic saved-progress or OAuth modifications.
+- **Documentation:** Updated both device guides, Developer Test Requests, Gateway, release history, regression tests and prepared Discord draft.
+- **Release gate:** v7.9.6 remains staging until real-character and browser acceptance tests. The official v7.9.3 release index and Discord trigger are intentionally untouched.
+
+
+## v7.9.5 · 2026-11-16 — Connected Character Research Handoff (Staging)
+
+- **Connected research shortcuts:** Carry a public character selector from Character Intelligence into Mythic+, Raids or Reputations, and back again for gear comparisons.
+- **Read-only handoff:** Uses validated public region/realm/character URL parameters, manual loading, and optional link copying. Never transfers account cookies, tokens or saved plans.
+- **Player guidance:** Updated PC/mobile handbook, Getting Started and Developer Test Requests with required cross-device checks.
+- **Release coordination:** Updated the main companion and Gateway labels; official v7.9.5 Discord announcement remains withheld until live user tests. Previous stable release manifest unchanged.
+
+## v7.9.4 · 2026-11-16 — Blizzard Progression Intelligence (Testing Pending)
+
+- **Blizzard research:** Introduced a three-tab studio for public Mythic+ profiles, raid encounters and reputations, with read-only JSON export.
+- **Worker:** The owner deployed a merged v7.9.4 Worker and reported the correct health version; live-character results and Battle.net regression tests still await community verification.
+- **Testing:** Added a voluntary Developer Test Requests checklist with locally generated reports; no automatic submissions.
+- **Discord:** v7.9.4 remains staged and was not announced as fully tested.
+
+## v7.9.3 · 2026-11-16 — Character Intelligence (Acceptance Pending)
+
+- Added public character equipment comparison, official item references, and JSON export with explicit source limits.
+
+## v7.9.2 · 2026-11-16 — Player Handbook & Device Guides
+
+- Added searchable PC and mobile guides explaining major studios, data sources and limitations.
+
 
 ## v7.9.1 · 2026-11-16 — Account Persistence & Unlock Intelligence
 
