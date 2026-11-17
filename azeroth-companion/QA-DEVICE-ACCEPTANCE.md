@@ -2,7 +2,7 @@
 Release focus: **v9.0.0 Living Azeroth Cinematic Experience (staging; v7.9.4 Blizzard data pending real-player tests)**
 
 ## New required v9.0 acceptance
-1. Load the original companion homepage and new Living Azeroth five-chamber entrance on desktop Chromium, mobile WebKit and physical iPhone Safari where available. Validate art, readable contrast, functional destination links and no horizontal scrolling.
+1. Load the original companion homepage and new Living Azeroth five-chamber entrance on desktop Chromium, mobile WebKit and physical iPhone Safari where available. Verify the premium local WebP art loads (no geometric castle fallback), the five portals present full illustrations rather than symbol-only tiles, readable contrast, functional destination links, and no horizontal scrolling.
 2. Choose Cinematic, Balanced and Performance modes; confirm only the new visual preference key is written, and OS Reduced Motion disables drifting particles.
 3. Open original Talent Forge and allocate/undo ranks. Selected node glow and read-only inspector must reflect the existing node ID and rank, never modify the rank directly.
 4. Load Character Intelligence with an actual public Retail character. The visual equipment ring must show only returned equipped slots and link to real item research. Simulate an unavailable response and verify no fabricated entries appear.
