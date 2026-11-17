@@ -44,10 +44,10 @@ async function run(engine,phone){
     headers:{'Access-Control-Allow-Origin':'*','Cache-Control':'no-store'},
     body:JSON.stringify(data||{success:false,message:'API disabled during website test'})});
   });
-  async function navigate(){
+  async function navigate(view='talents'){
    if(phone)await page.locator('.ac-mobile-bar [data-ac-more]').click();
-   await page.locator('.sidebar button[data-view="talents"]').click();
-   await page.locator('[data-section="talents"].active').waitFor({timeout:6000});
+   await page.locator('.sidebar button[data-view="'+view+'"]').click();
+   await page.locator('[data-section="'+view+'"].active').waitFor({timeout:6000});
   }
   async function load(){
    await page.locator('#tfSpec option[value="0"]').waitFor({state:'attached',timeout:12000});
@@ -58,10 +58,11 @@ async function run(engine,phone){
   await page.goto(URL,{waitUntil:'domcontentloaded',timeout:30000});
   await page.locator('body.nx-v5-ready').waitFor({timeout:25000});
   await navigate();await load();
-  assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private media studio must mount in Talent Forge on desktop/iPhone');
-  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>!e.open),'Optional media studio must begin collapsed, preserving tree space');
-  await page.locator('#nxMediaStudio > summary').click();
-  assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator should mount on desktop/iPhone');
+  assert.equal(await page.locator('#nxStandaloneMediaStudio #nxMediaStudio').count(),1,'v6 standalone Media Studio must retain the v5.9 controls without duplication');
+  assert.ok(await page.locator('#nxTreeFinalControls').isVisible(),'Final focused tree navigator must remain in Talent Forge');
+  await navigate('media');
+  assert.ok(await page.locator('#nxMediaStudio').isVisible(),'Private Media Studio must open from standalone navigation');
+  assert.ok(await page.locator('#nxMediaStudio').evaluate(e=>e.open),'Standalone Media Studio controls should start expanded');
   await page.waitForFunction(()=>document.querySelector('#nxMusicStatus')?.textContent.includes('stored track(s)'),{timeout:12000});
   assert.ok(await page.locator('#nxMusicDock').isHidden(),'Music dock must be closed by default');
   assert.ok(await page.locator('#nxMediaBackdrop').isHidden(),'No uploaded background should appear by default');
@@ -86,6 +87,8 @@ async function run(engine,phone){
   assert.ok(await page.locator('#nxMusicAudio').evaluate(a=>a.paused),'Local audio must not autoplay');
   await page.locator('#nxMusicClose').click();
   assert.ok(await page.locator('#nxMusicDock').isHidden());
+  await navigate('talents');
+  assert.ok(await page.locator('#tfTree').isVisible(),'Returning from Media Studio must preserve the loaded talent tree');
   await page.locator('#tfCmdSearch').fill('1001');
   await page.locator('#tfCmdList .nx-skill-thumb').first().waitFor({timeout:6000});
   assert.ok(await page.locator('#tfCmdList [data-tf-cmd-node="1001"] .nx-skill-thumb').count(),'Talent search should have source-based media slot');
