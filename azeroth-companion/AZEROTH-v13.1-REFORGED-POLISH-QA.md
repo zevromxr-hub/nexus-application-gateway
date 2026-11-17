@@ -35,3 +35,30 @@
 
 **If anything fails**
 Use **Classic Forge View** first. The v13.1 changes are limited to `talent-forge-reforged-v13.js`, new `talent-forge-reforged-polish-v13.1.js/.css`, and HTML asset references/version notes. Full pre-change repository state is captured in the v13 rollback branch above. Do not delete browser data to troubleshoot.
+
+
+---
+
+## v13.2 Addendum — SOVEREIGN TALENT FORGE: ICON ASCENSION
+
+**Rollback branch:** \`backup/azeroth-v13.1-before-icon-ascension-v13.2-2026-11-17\`
+
+Icon Ascension layers two new files atop the existing Reforged workshop:
+- \`talent-forge-icon-ascension-v13.2.js\`
+- \`talent-forge-icon-ascension-v13.2.css\`
+
+The JS reads the same official \`NexusTalentSourceBridge.snapshot()\` as the original Forge, using the reported spell ID from the current node's rank/choice data (not a guessed name-to-art map). It first reuses any matching icon already loaded by the native Forge, then requests official media for visible/selected nodes using the existing Cloudflare \`/api/spell-media/{region}/{spellId}\` route. Returned image URLs must use HTTPS and recognized Blizzard domains. Up to three requests run concurrently. Missing or blocked media leaves the original violet-gold emblem intact. It does not request credentials, modify original talents or write browser storage.
+
+The premium dark/violet/gold Reforged visual style, native rank controls, undo/redo, source inspectors and mobile toolbar have been preserved. Only the art inside the icon frame changes.
+
+**Source-level checks:** exact source spell ID -> image URL mapping passed using simulated Blizzard media responses for two representative IDs (one from the player's Unyielding Will screenshot). The same icon was rendered in the Reforged node, inspector and iPhone selection tray. No alternate or invented icons were inserted. New JS parsing and CSS structural checks passed.
+
+**Live acceptance still required:**
+1. Open \`https://zevarchives.com/azeroth-companion/?enter=1&view=talents\` on iPhone or PC. Load a live specialization and allow visible official node icons to resolve.
+2. Confirm each icon matches the spell identity selected in the source tooltip; try alternate choice nodes and changed ranks.
+3. Tap a talent on iPhone: verify matching artwork in the node, live inspector and selected-node toolbar without touching rank behavior.
+4. Move between Class, Specialization and Hero trees, then reload a saved build; ensure icons update rather than staying attached to older node IDs.
+5. Disconnect from the network or simulate unavailable spell media. The emblem should appear with no broken-image placeholder and the official-data planner should remain usable.
+6. Verify Classic Forge View, undo/redo, saved builds, account verification, and Save Protection still work.
+
+**Known dependency:** Live icon population requires the existing Cloudflare spell-media route to return a valid Blizzard image URL or the original Forge to have loaded the icon already. The route's current deployed availability has not been independently verified. If the status line says the endpoint is unavailable, no GitHub-side frontend change can by itself restore a missing Worker endpoint.
