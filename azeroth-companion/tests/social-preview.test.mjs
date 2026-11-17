@@ -25,7 +25,7 @@ assert.equal(bytes.readUInt16LE(28)&0x3fff,724,'Update og:image:height when the 
 
 for(const [filename,url] of cases){
  const html=readFileSync(join(repoRoot,filename),'utf8');
- const head=html.split(/<\\/head>/i)[0];
+ const head=html.split('</head>')[0];
  assert.ok(html.includes('</head>'),filename+' needs an HTML head');
  for(const [key,value] of [
    ['og:title','NEXUS | AZEROTH COMPANION'],
