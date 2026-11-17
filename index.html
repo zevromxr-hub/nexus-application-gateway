@@ -7,10 +7,12 @@
   <meta name="description" content="PROXIMUS Application Gateway — open an installed Sonic Reactor II from an authorized launch link.">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'; connect-src 'none'">
   <title>PROXIMUS | Sonic Reactor II Launcher</title>
-  <!-- ZEVARCHIVES_DOMAIN_ENTRY: route ONLY the new branded origin to the existing companion.
-       Original github.io Sonic Reactor II desktop launcher is unchanged. -->
+  <!-- ZEVARCHIVES_DOMAIN_ENTRY: branded home opens the companion, but
+       ?launch=1 preserves existing Discord desktop launcher links after domain migration. -->
   <script>
-    if (location.hostname === 'zevarchives.com' || location.hostname === 'www.zevarchives.com') {
+    const nexusBrandedHost = location.hostname === 'zevarchives.com' || location.hostname === 'www.zevarchives.com';
+    const nexusDesktopLaunch = new URLSearchParams(location.search).get('launch') === '1';
+    if (nexusBrandedHost && !nexusDesktopLaunch) {
       location.replace('/azeroth-companion/' + location.search + location.hash);
     }
   </script>
