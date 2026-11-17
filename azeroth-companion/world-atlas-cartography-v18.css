@@ -71,6 +71,7 @@
 .nx18-zone-actions{display:flex;gap:7px;flex-wrap:wrap}
 .nx18-zone-actions>*{flex:1 1 45%;display:grid;place-items:center;min-height:39px;font-size:9px;font-weight:900;border:1px solid #c7ad9f9c;border-radius:8px;background:#354363;color:#f4dfc1;text-decoration:none;cursor:pointer;padding:8px}
 .nx18-zone-actions>*:first-child{background:linear-gradient(115deg,#b98d62,#f0d6a6);color:#262035;border-color:#f4dcb5}
+.nx18-local-links{display:flex;flex-wrap:wrap;gap:6px}.nx18-local-links small{color:#d9d1c8;font-size:9px;padding:5px 7px;border-radius:6px;background:#1d3550;border:1px solid #9aaec68a;overflow-wrap:anywhere}
 .nx18-related-label{font-size:10px;color:#f2d1a0;letter-spacing:.08em}
 .nx18-goals{display:grid;gap:6px;max-height:235px;overflow:auto;scrollbar-width:thin}
 .nx18-related-goal{display:grid;gap:6px;padding:9px;border:1px solid #aba6be5a;background:#1b2a42;border-radius:8px}
