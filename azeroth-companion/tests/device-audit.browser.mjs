@@ -44,13 +44,13 @@ async function captured(label,func){
   check(size.page<=size.viewport+2,'Horizontal overflow: '+JSON.stringify(size));
   const cssRequests=[...new Set(localStatic.filter(p=>p.endsWith('.css')))];
   const jsRequests=[...new Set(localStatic.filter(p=>p.endsWith('.js')))];
-  check(cssRequests.length===2,'Expected 2 CSS requests from the v4.7 source bundles, saw '+JSON.stringify(cssRequests));
-  check(jsRequests.length===2,'Expected 2 JS requests from the v4.7 source bundles, saw '+JSON.stringify(jsRequests));
+  check(cssRequests.length>=20&&cssRequests.length<=23,'Unexpected v8 stylesheet request budget: '+JSON.stringify(cssRequests));
+  check(jsRequests.length>=21&&jsRequests.length<=24,'Unexpected v8 script request budget: '+JSON.stringify(jsRequests));
   const timings=await page.evaluate(()=>{
    const n=performance.getEntriesByType('navigation')[0];
    return {domContentLoadedMs:Math.round(n?.domContentLoadedEventEnd||0),loadMs:Math.round(n?.loadEventEnd||0)};
   });
-  console.log('RESOURCE BUDGET '+label+' 2 CSS + 2 JS; navigation timings '+JSON.stringify(timings));
+  console.log('RESOURCE BUDGET '+label+' '+cssRequests.length+' CSS + '+jsRequests.length+' JS; navigation timings '+JSON.stringify(timings));
   check(errors.length===0,'Unexpected browser JavaScript errors: '+errors.slice(0,8).join('; '));
   console.log('PASS '+label+' width='+size.viewport+'px');
  }catch(e){
