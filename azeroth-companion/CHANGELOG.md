@@ -1,5 +1,14 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v7.9.7 · 2026-11-16 — ZevRo | Azeroth Assistant (Staging)
+
+- **Guided assistant:** Added a new mobile/desktop assistant with searchable curated answers, a conversational interface and category-based generated question suggestions.
+- **Source-grounded guidance:** Published 22 documented answer topics covering Blizzard account verification, manual planning, equipment and progression research, addons, backups, compatibility and privacy.
+- **Clear boundaries:** Assistant does not access private Battle.net sessions, live game APIs, new AI providers or browser-saved player progress; unrecognized questions receive a transparent limitation message.
+- **Player education:** Updated the Player Handbook, Getting Started, community test requests, release center, Gateway and regression checks.
+- **Release gate:** v7.9.7 remains staging pending real-user browser and Blizzard API acceptance; an official Discord announcement has not been sent.
+
+
 ## v7.9.6 · 2026-11-16 — Character Progress Report (Staging)
 
 - **Combined progression:** One opt-in request sequence for Blizzard-reported Mythic+, raid and reputation data on a selected public Retail character.
