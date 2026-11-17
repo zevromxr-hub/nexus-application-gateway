@@ -109,6 +109,7 @@ function search({query='',characters=[],drafts=[],goals=[],atlas=[]}={}){
   results.push({label:safeText(label,105),type,href,subtitle:safeText(subtitle,110)});
  };
  const staticRoutes=[
+  ['Expedition Intelligence','Adventure preparation','./expedition-console.html','Manual mission preparation, checklist progress and character-linked research'],
   ['Sovereign Character Nexus','Studio','./player-experience.html','Public Armory research, personal character and builds'],
   ['Living World Atlas','World Atlas','./world-atlas.html','Regions, points of interest and research goals'],
   ['Talent Forge Reforged','Studio','./?enter=1&view=talents','Source-backed talent planning'],
