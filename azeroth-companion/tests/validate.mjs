@@ -680,7 +680,7 @@ assert.ok(citadelHTML.includes('href="./')||citadelHTML.includes('id="nxCitadel"
 assert.ok(html.includes('nexus_citadel_recent_view_v91'),'Inline resume bridge missing');
 assert.ok(citadelHTML.includes('id="nxCitadel"'));
 assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=911'));
-assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=911'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=913'),'Preserved Citadel must load its approved current v9.1 script revision');
 for(const key of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+key+'"'),'Missing chamber '+key);
 assert.ok(!citadelHTML.includes('scripts-core-')&&!citadelHTML.includes('scripts-experience-'),'Standalone entrance should not load app bundles');
 assert.ok(citadelCSS.includes('@media(max-width:660px)'));
