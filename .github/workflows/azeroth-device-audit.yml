@@ -33,6 +33,7 @@ jobs:
           python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/azeroth-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
+          node azeroth-companion/tests/character-nexus-v15.browser.mjs
           node azeroth-companion/tests/citadel-entry-v91.browser.mjs
           node azeroth-companion/tests/studio-art-v92.browser.mjs
           node azeroth-companion/tests/luminous-glass-v93.browser.mjs
