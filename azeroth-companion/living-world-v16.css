@@ -1,0 +1,105 @@
+/* NEXUS | AZEROTH v16.0 — THE LIVING WAR ROOM
+ * Additive cinematic treatment. Reuses existing original NEXUS media.
+ * No new fonts, libraries, remote imagery or animation engine.
+ */
+.nx16-war-room{--nx16-gold:#f2d5a3;--nx16-cyan:#bbe3ed;--nx16-violet:#d8bcfb;--nx16-ink:#f6e9d4;--nx16-muted:#b7c7da;position:relative;isolation:isolate;margin:25px 0 34px;min-width:0;color:var(--nx16-ink)}
+.nx16-war-room *,.nx16-command-dialog *{box-sizing:border-box}
+.nx16-war-room :is(a,button,select):focus-visible,.nx16-command-dialog :is(a,button,input):focus-visible{outline:3px solid #b9e8f9;outline-offset:3px}
+.nx16-war-banner{position:relative;isolation:isolate;overflow:hidden;min-height:340px;padding:clamp(28px,4vw,57px);display:flex;align-items:center;border-radius:20px;border:1px solid #e5c592b5;background:linear-gradient(94deg,#0a1022fa 6%,#161c3af5 48%,#13162a9a 90%),url('./assets/citadel-hero-hd-v9.1.1.webp') center/cover no-repeat;box-shadow:0 23px 60px #000c,0 0 25px #ca9dcb2c}
+.nx16-war-banner:after{content:"";position:absolute;z-index:3;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#f8ddaa 40%,#9d84df 70%,transparent)}
+.nx16-war-copy{position:relative;z-index:2;max-width:71%;min-width:0}
+.nx16-war-copy .nx16-kicker{color:#edcda0;font-size:11px;font-weight:900;letter-spacing:.16em;text-shadow:0 2px 12px #000}
+.nx16-war-copy h2{font-size:clamp(39px,5vw,67px);font-weight:950;letter-spacing:-.07em;line-height:1.04;margin:11px 0 14px;color:#fbe8c9;text-shadow:0 4px 16px #000b}
+.nx16-war-copy h2 em{font-style:normal;color:transparent;background:linear-gradient(125deg,#e4b67c,#ffedc6,#b6a2ef);-webkit-background-clip:text;background-clip:text}
+.nx16-war-copy p{font-size:14px;line-height:1.8;color:#d5e2eb;max-width:695px;text-shadow:0 2px 9px #000c}
+.nx16-war-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:21px}
+.nx16-war-actions :is(button,a){display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:11px 16px;border:1px solid #c7bba398;border-radius:9px;background:#29314ee8;color:#f7ecdd;font-size:11px;font-weight:900;letter-spacing:.065em;text-decoration:none;cursor:pointer}
+.nx16-war-actions .nx16-war-primary{background:linear-gradient(110deg,#b18a5b,#f6dbaa);color:#201c19;border-color:#f3d6a3}
+.nx16-war-actions :is(a,button):hover{box-shadow:0 0 18px #cfaae154}
+.nx16-war-proof{margin-top:17px;color:#bbcfe0;font-size:9px;font-weight:800;letter-spacing:.13em;line-height:1.7}
+.nx16-war-portrait{position:absolute;z-index:1;top:17px;right:clamp(17px,2.8vw,46px);bottom:17px;width:min(26%,245px);border:1px solid #d9b58ea8;border-radius:14px;background:linear-gradient(180deg,transparent 44%,#0e1129cf),url('./assets/sovereign-throne-v9.1.webp') center 21%/cover no-repeat;box-shadow:0 0 0 5px #3b294354,0 12px 32px #000b}
+.nx16-war-grid{display:grid;grid-template-columns:.9fr 1fr 1.12fr;gap:13px;margin-top:15px;align-items:stretch}
+.nx16-war-panel{min-width:0;padding:clamp(16px,2vw,24px);border-radius:15px;border:1px solid #aca9c679;background:linear-gradient(145deg,#1d2b45ee,#0c162cfa);box-shadow:0 12px 31px #0009,inset 0 1px #fff1}
+.nx16-panel-top>span{display:block;font-size:9px;font-weight:900;letter-spacing:.14em;color:#d8b9ec}
+.nx16-panel-top h3{font-size:clamp(21px,2vw,27px);color:#f1d6a9;font-weight:950;letter-spacing:-.04em;line-height:1.2;margin:6px 0 18px}
+.nx16-war-panel label{font-size:10px;font-weight:900;letter-spacing:.095em;color:#bed3dd;display:block}
+.nx16-war-panel select{margin-top:8px;width:100%;min-height:46px;padding:11px;border:1px solid #b3acc67d;background:#101f37;color:#f6e5d5;border-radius:9px;font:inherit;font-size:12px}
+.nx16-character-dossier{display:grid;gap:5px;padding:16px;margin:16px 0 11px;min-height:129px;border-radius:10px;background:linear-gradient(125deg,#38315299,#172f4c9c);border:1px solid #bdc5d26a}
+.nx16-character-dossier strong{font-size:20px;line-height:1.3;color:#ffe4b6;overflow-wrap:anywhere}
+.nx16-character-dossier span{font-size:12px;color:#d3e1eb;line-height:1.5}
+.nx16-character-dossier small{font-size:9px;font-weight:850;color:#aebbd6;letter-spacing:.035em}
+.nx16-war-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.nx16-war-links a{font-size:10px;color:#eed8ad;text-decoration:none;line-height:1.45;font-weight:900;letter-spacing:.025em}
+.nx16-war-links a:hover{text-decoration:underline}
+.nx16-war-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.nx16-war-metrics>div{background:#1d304bbc;border-radius:8px;padding:11px 6px;text-align:center;border:1px solid #aab9cb4e}
+.nx16-war-metrics strong{display:block;font-size:24px;line-height:1.2;color:#f1d8aa}
+.nx16-war-metrics small{display:block;font-size:9px;line-height:1.5;color:#b2cbd9}
+.nx16-next-mission{margin-top:15px;padding:12px 14px;min-height:123px;border-left:3px solid #dabb81;background:#1b2a43a8;display:grid;gap:5px;align-content:center}
+.nx16-next-mission small{color:#bbd6e0;font-size:9px;font-weight:900;letter-spacing:.09em}
+.nx16-next-mission strong{font-size:14px;line-height:1.3;color:#f6deae}
+.nx16-next-mission p{font-size:11px;line-height:1.5;margin:0;color:#cad7e2}
+.nx16-next-mission a{font-size:10px;color:#dfd5fc;font-weight:900;letter-spacing:.035em}
+.nx16-mini-portals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;min-height:265px}
+.nx16-mini-portal{display:flex;flex-direction:column;justify-content:flex-end;min-width:0;overflow:hidden;position:relative;padding:12px 9px;border:1px solid #c1aec083;border-radius:11px;background-position:center;background-size:cover;color:#f7d8ae;text-decoration:none;box-shadow:inset 0 -70px 50px #0a1127e8}
+.nx16-mini-portal:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#11182a12 15%,#11142bc2 85%);pointer-events:none}
+.nx16-mini-portal>*{position:relative;z-index:1;text-shadow:0 2px 8px #000d}
+.nx16-mini-portal span{font-size:8px;color:#c5c9ed;font-weight:900;letter-spacing:.08em}
+.nx16-mini-portal strong{font-size:12px;line-height:1.15;margin:6px 0;overflow-wrap:anywhere}
+.nx16-mini-portal small{font-size:9px;line-height:1.3;color:#d1e0ec}
+.nx16-mini-portal:hover{transform:translateY(-3px);border-color:#f1d7a5;box-shadow:0 0 20px #b8a0d354}
+.nx16-mini-atlas{background-image:url('./assets/adventure-journal-v9.1.webp')}
+.nx16-mini-forge{background-image:url('./assets/talent-forge-v9.1.webp')}
+.nx16-mini-character{background-image:url('./assets/sovereign-throne-v9.1.webp')}
+.nx16-war-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:15px 5px;color:#adbad0;font-size:9px;letter-spacing:.085em;font-weight:850}
+.nx16-war-footer a{color:#e4c99f;text-decoration:none}
+/* Extended client-only search overlay, independent from the existing v10 palette. */
+.nx16-command-dialog{position:fixed;margin:auto;inset:0;max-width:min(790px,calc(100vw - 20px));width:100%;max-height:min(82vh,820px);padding:22px;border-radius:16px;border:1px solid #ddc295;background:linear-gradient(145deg,#15243ded,#171c32f9);color:#fae7d0;box-shadow:0 30px 110px #000d;overflow:auto}
+.nx16-command-dialog::backdrop{background:#020611d9;backdrop-filter:blur(7px)}
+.nx16-command-top{display:flex;align-items:start;justify-content:space-between;gap:14px}
+.nx16-command-top .nx16-kicker{font-size:9px;letter-spacing:.13em;font-weight:900;color:#cfb1e7}
+.nx16-command-top h2{font-size:clamp(22px,3vw,34px);margin:3px 0 14px;letter-spacing:-.045em;color:#f9deb5}
+.nx16-command-top button{border:1px solid #b6b5cc88;background:#2c3756;color:#ecdfd2;border-radius:8px;min-width:39px;min-height:39px}
+.nx16-search-field{display:flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid #d7be997d;border-radius:11px;background:#091b34;color:#b6d0e2}
+.nx16-search-field>span{font-size:27px;color:#e2c391}
+.nx16-search-field input{min-width:0;min-height:41px;flex:1;border:0;background:transparent;color:#fae9d4;outline:0;font-size:14px}
+.nx16-search-status{padding:11px 0;font-size:11px;color:#aacddd}
+.nx16-search-results{display:grid;gap:6px;max-height:50vh;overflow:auto}
+.nx16-result{display:flex;align-items:center;gap:13px;padding:12px;border:1px solid #a9b0c16b;border-radius:10px;background:#233350a9;color:#eee5df;text-decoration:none;min-width:0}
+.nx16-result:hover{border-color:#ebc894;background:#314364}
+.nx16-result b{flex:0 0 108px;font-size:9px;color:#e4c29f;letter-spacing:.05em}
+.nx16-result>span:nth-child(2){flex:1;min-width:0}
+.nx16-result strong{display:block;font-size:13px;color:#f6dcbd;overflow-wrap:anywhere}
+.nx16-result small{display:block;font-size:10px;color:#bbcfde;line-height:1.55}
+.nx16-result-arrow{font-size:20px;color:#d6c6e8}
+.nx16-command-dialog>p,.nx16-no-results{font-size:11px;color:#9cbacc;line-height:1.7;margin:12px 0 0}
+@media(max-width:1150px){.nx16-war-grid{grid-template-columns:1fr 1fr}.nx16-portals{grid-column:1/-1}.nx16-mini-portals{min-height:200px}.nx16-war-copy{max-width:78%}}
+@media(max-width:720px){
+ .nx16-war-room{margin:17px 0 24px}
+ .nx16-war-banner{min-height:360px;padding:25px 20px;background-image:linear-gradient(90deg,#0b1123f9,#171b36e6),url('./assets/citadel-hero-hd-v9.1.1.webp')}
+ .nx16-war-copy{max-width:100%}
+ .nx16-war-portrait{width:46%;opacity:.17;border:0;box-shadow:none;right:0;top:0;bottom:0}
+ .nx16-war-copy h2{font-size:clamp(35px,8vw,49px)}
+ .nx16-war-copy p{font-size:12px}
+ .nx16-war-actions :is(a,button){flex:1 1 48%;font-size:10px;padding:9px}
+ .nx16-war-grid{grid-template-columns:1fr;gap:10px}
+ .nx16-portals{grid-column:auto}
+ .nx16-war-panel{padding:17px}
+ .nx16-mini-portals{min-height:250px}
+ .nx16-command-dialog{padding:14px;max-height:90vh}
+ .nx16-result b{flex-basis:82px;font-size:8px}
+}
+@media(max-width:420px){
+ .nx16-war-actions :is(a,button){flex:1 1 100%}
+ .nx16-mini-portals{min-height:225px}
+ .nx16-mini-portal{padding:10px 6px}
+ .nx16-mini-portal strong{font-size:10px}
+ .nx16-mini-portal small{font-size:8px}
+ .nx16-result{gap:7px;padding:9px}
+ .nx16-result b{flex-basis:70px;font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ .nx16-war-room *, .nx16-command-dialog *{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+ .nx16-mini-portal:hover{transform:none}
+}
+@media print{.nx16-war-actions,.nx16-command-dialog{display:none!important}.nx16-war-banner{background:#14243b!important}}
