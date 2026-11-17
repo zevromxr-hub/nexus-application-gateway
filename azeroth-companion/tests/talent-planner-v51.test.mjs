@@ -50,7 +50,9 @@ assert.throws(()=>plan.sanitizeImported({...legacy,rankByNode:{bad:1}}));
 assert.throws(()=>plan.sanitizeImported({...legacy,rankByNode:Array(100).fill(1)}));
 const tested=plan.sanitizeImported({...legacy,planner:{activity:'pvp',notes:'x'.repeat(2100)}});
 assert.equal(tested.planner.activity,'pvp');assert.equal(tested.planner.notes.length,1800);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.3\.0/);
+const currentVersion=JSON.parse(await read('version.json')).version;
+assert.ok(html.includes('id="nxCanonicalVersion" aria-label="Azeroth application version">AZEROTH v'+currentVersion),
+ 'The native Forge page must accurately display the current approved release version');
 assert.ok(html.includes('./styles-core-v5.2.css')&&html.includes('./scripts-experience-v5.2.js'));
 assert.ok(html.indexOf('talent-planner-core.js')<html.indexOf('talent-forge.js'),'Planner helper loads before Talent Forge');
 for(const marker of ['tfPlanActivity','tfPlanRole','tfPlanStyle','tfPlanNotes','tfPlanGoalClass','tfPlanGoalSpec','tfPlanGoalHero','tfPlanReview','tfPlanRecover','tfPlanRestore','tfPlanDiscard','tfPlanDuplicate','tfPlanCopy','nexus_azeroth_talent_planner_autorecover_v51','tfSave','tfImport','tfExport','tfUndo','tfRedo','tfCompare','tfHeroTree']){
