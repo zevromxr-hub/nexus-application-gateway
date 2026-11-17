@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.8/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v7\.9\.9/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'7.9.8');
+assert.equal(version.version,'7.9.9');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -219,17 +219,33 @@ assert.match(changelog796,/Character Progress Report/,'Changelog must document r
 const assistantBubble798=await read('azeroth-companion/assistant-bubble-v7.9.8.js');
 const assistantBubbleStyles798=await read('azeroth-companion/assistant-bubble-v7.9.8.css');
 new vm.Script(assistantBubble798);
-assert.match(html,/assistant-bubble-v7\.9\.8\.js\?v=798/,'Assistant avatar module must load');
-assert.match(html,/assistant-bubble-v7\.9\.8\.css\?v=798/,'Assistant avatar stylesheet must load');
+assert.match(html,/assistant-bubble-v7\.9\.8\.js\?v=799/,'Assistant avatar module must load');
+assert.match(html,/assistant-bubble-v7\.9\.8\.css\?v=799/,'Assistant avatar stylesheet must load');
 assert.doesNotMatch(html,/<a href="\.\/azeroth-assistant\.html" style="display:block/,'Old assistant sidebar shortcut must be removed');
 for(const marker of ['nxAssistantLauncher','nxAssistantDialog','nxAssistantMobileSlot','aria-expanded','character','mini','allow-popups']){
  assert.ok(assistantBubble798.includes(marker)||marker==='character','Missing assistant launcher behavior: '+marker);
 }
 assert.match(assistantBubbleStyles798,/@media\(max-width:800px\)/,'Mobile assistant must use header flow');
-assert.match(assistantBubbleStyles798,/top:17px/,'Desktop assistant must appear at top-right');
+assert.match(assistantBubbleStyles798,/top:112px/,'Desktop assistant must appear at top-right');
 assert.match(assistantBubbleStyles798,/nx-assistant-dialog/,'Embedded assistant dialog must be styled');
 assert.ok(!assistantBubble798.includes('localStorage'),'Launcher must not access saved records');
 assert.ok(!assistantBubble798.includes('fetch('),'Launcher must not add new API requests');
+const missionPlanner799=await read('azeroth-companion/assistant-journey-v7.9.9.js');
+new vm.Script(missionPlanner799);
+for(const marker of ['nxJourneyPlanner','Mission Architect','nxJourneyGenerate','nxJourneyCopy','nxJourneyExport','talent','progression-intelligence.html','JSON.stringify']){
+ assert.ok(missionPlanner799.includes(marker),'Missing v7.9.9 planner capability '+marker);
+}
+assert.match(await read('azeroth-companion/azeroth-assistant.html'),/assistant-journey-v7\.9\.9\.js\?v=799/,'Assistant page must load Mission Architect');
+assert.ok(!missionPlanner799.includes('localStorage'),'Mission Architect must not access saved plans');
+assert.ok(!missionPlanner799.includes('fetch('),'Mission Architect must not make new network requests');
+assert.ok(!missionPlanner799.includes('access_token'),'Mission Architect must not access OAuth tokens');
+const handbook799=await read('azeroth-companion/player-handbook.html');
+const checklist799=await read('azeroth-companion/player-test-checklist.html');
+const startup799=await read('azeroth-companion/getting-started.html');
+const history799=await read('azeroth-companion/CHANGELOG.md');
+const qa799=await read('azeroth-companion/QA-DEVICE-ACCEPTANCE.md');
+for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.match(doc,/7\.9\.9/,'Documentation not updated for v7.9.9');
+assert.match(checklist799,/Connected-button overlap/,'Overlap regression must be in tester checklist');
 const assistantPage797=await read('azeroth-companion/azeroth-assistant.html');
 const assistantKnowledge797=JSON.parse(await read('azeroth-companion/azeroth-assistant-knowledge-v7.9.7.json'));
 assert.match(html,/azeroth-assistant\.html/,'Assistant main-nav link required');
@@ -252,7 +268,7 @@ new vm.Script(progressWorker.replace('export default {','const workerDefault={')
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
  assert.ok(progressWorker.includes(route),'Progression Worker must preserve '+route);
 assert.ok(!progression.includes('BLIZZARD_CLIENT_SECRET'),'No Blizzard credentials in public research page');
-const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.8 • Floating Assistant Preview/);
+const hub=await read('hub/index.html');assert.match(hub,/id:'azeroth'/);assert.match(hub,/v7\.9\.9 • Mission Architect Preview/);
 for(const keep of ["id:'reactor'","id:'foundry'","id:'alchemist'"])assert.ok(hub.includes(keep));
 const {payload}=await import('../scripts/announce-release.mjs');
 const body=payload({version:'7.9.3'},previousRelease);
