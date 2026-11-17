@@ -1,0 +1,31 @@
+{
+  "schema": "nexus.azeroth.release-draft/1",
+  "status": "staging-not-for-announcement",
+  "product": "NEXUS | AZEROTH COMPANION",
+  "version": "8.0.0",
+  "title": "SOVEREIGN ASCENSION — Unified Character Intelligence",
+  "release_date": "2026-11-16",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "rollback_branch": "rollback/azeroth-v7.9.9-before-v8",
+  "features": [
+    "Unified source-aware Sovereign Dashboard combines manual local characters, saved talent drafts and objectives with separately requested Blizzard public character/equipment data.",
+    "Talent Forge Ascension compares two existing locally stored builds by specialization identity and original node IDs/ranks; all previous saves remain unchanged.",
+    "Mission & Progression Operations creates five focused player pathways with direct studio links and JSON exports.",
+    "ZevRo | Azeroth Assistant 2.0 adds explicit evidence review explaining what is locally planned, officially reported, or unavailable.",
+    "Added read-only JSON snapshot preview/import, export, explicit public data lookup and cancellation, mobile-responsive UI and safe provenance labels.",
+    "Preserved v7.9.9 rollback branch, legacy music/Founder/Connected layout, Blizzard Worker, saved-data formats and prior studios.",
+    "Updated Gateway metadata, PC/mobile Player Handbook, Getting Started guide, Developer Test Requests, Device QA, changelog, regression tests and staged Release Center."
+  ],
+  "discord_message": "NEXUS | AZEROTH COMPANION v8.0.0 — SOVEREIGN ASCENSION\n\nMajor upgrade: one Sovereign Dashboard connecting manual character plans, saved Talent Forge builds, source-labeled public Blizzard equipment research and mission objectives.\n\nNEW: Talent Forge Ascension saved-build comparison; integrated Mission & Progression Operations; ZevRo | Azeroth Assistant 2.0 evidence review; read-only snapshot import/export; premium PC/mobile workspace.\n\nExisting player saves, Founder bubble, HYPER MUSIC, Connected account controls and prior tools are preserved.\n\nDevelopment preview pending real-player and device acceptance tests. The official release has NOT been announced.\n\nhttps://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/\nPowered by ZevRo Development | NEXUS",
+  "acceptance_gates": [
+    "Check physical desktop/iPhone layout and keyboard navigation",
+    "Verify live Blizzard public profile and equipped item data using a known character",
+    "Validate old v7.x Talent Forge and saved data retention across refresh, import and comparisons",
+    "Confirm secure Battle.net sign-in, verification and private account functionality unchanged",
+    "Verify mission and evidence assistant accuracy including unavailable/partial data",
+    "Check combined progression reports, Mythic+, raids, reputations, music and Founder controls",
+    "Confirm GitHub rollback branch and GitHub Actions validation tests are passing",
+    "Promote version metadata from staging to stable only after acceptance"
+  ],
+  "publish_rule": "Keep index.json on last official v7.9.3 until accepted. Never create releases/v8.0.0.json before tests pass; that exact path triggers guarded Discord announcement."
+}
