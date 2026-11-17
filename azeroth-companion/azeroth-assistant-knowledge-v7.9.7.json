@@ -1,0 +1,360 @@
+{
+  "schema": "nexus.azeroth.assistant-knowledge/1",
+  "edition": "7.9.7",
+  "disclaimer": "Curated companion answers, not generative AI or real-time gameplay verification. Review game-specific details in World of Warcraft.",
+  "articles": [
+    {
+      "id": "start",
+      "category": "Getting started",
+      "question": "How do I start using Azeroth Companion?",
+      "answer": "Open Overview on the main companion, then choose a studio for your goal. You can research public characters and plan talents without connecting Battle.net. For a complete walkthrough, open the Player Handbook. Manual browser-local plans should be backed up periodically.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "getting started",
+        "begin",
+        "new player",
+        "overview",
+        "start",
+        "how use"
+      ]
+    },
+    {
+      "id": "login",
+      "category": "Battle.net connection",
+      "question": "How do I connect my Battle.net account?",
+      "answer": "Open My Azeroth in the Cloudflare-hosted account portal, select your Battle.net region, then authorize the read-only wow.profile permission directly with Blizzard. Use Verify & Return when offered. The public website does not receive your Blizzard access token.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "login",
+        "sign in",
+        "connect",
+        "battle.net",
+        "account",
+        "authorize",
+        "verified"
+      ]
+    },
+    {
+      "id": "expiry",
+      "category": "Battle.net connection",
+      "question": "Why did my verified session expire?",
+      "answer": "Battle.net authorization and the companion's verified badge have separate lifetimes. The Cloudflare session cannot outlive Blizzard's issued access token, capped at 24 hours; the public companion verification receipt lasts at most 15 minutes. Refresh verification or reconnect when necessary. Session expiry does not delete your browser-local talent drafts or goals.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "expired",
+        "timeout",
+        "verified",
+        "session",
+        "reconnect",
+        "login"
+      ]
+    },
+    {
+      "id": "storage",
+      "category": "Data & backups",
+      "question": "Will I lose my saved builds when I sign out?",
+      "answer": "Signing out of Battle.net should not erase browser-local planning records. However, local storage is device- and browser-specific and can be lost if you clear site data, use private browsing, or change devices. Export a trusted backup from the Sovereign Data Vault before major changes.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "data",
+        "backup",
+        "save",
+        "lost",
+        "wiped",
+        "browser",
+        "storage",
+        "sync",
+        "sign out"
+      ]
+    },
+    {
+      "id": "talents",
+      "category": "Talent Forge",
+      "question": "How do I plan talents?",
+      "answer": "Open Talent Forge, choose a supported class and specialization, inspect Blizzard-reported talent nodes, and adjust available ranks in a local draft. Use the guided views to understand your choices, then save or export. Talent prerequisites, import strings and in-game validity should always be verified in World of Warcraft.",
+      "link": "./",
+      "keywords": [
+        "talent",
+        "skill",
+        "spec",
+        "build",
+        "points",
+        "passive",
+        "hero",
+        "ranks",
+        "planner"
+      ]
+    },
+    {
+      "id": "gear",
+      "category": "Character Intelligence",
+      "question": "How can I compare equipment?",
+      "answer": "Open Character Intelligence, enter a public Retail character's region, realm slug and name, then optionally enter another character. Load Blizzard-reported equipped items and compare corresponding slots and item levels. Item level alone does not prove a better upgrade for a specialization.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "gear",
+        "item level",
+        "compare",
+        "equipment",
+        "ilvl",
+        "slots",
+        "items"
+      ]
+    },
+    {
+      "id": "item",
+      "category": "Item Codex",
+      "question": "Where do I search for item IDs?",
+      "answer": "Use Item Codex and Discovery to research official World of Warcraft Retail items using a name or numeric ID. Returned index data may be incomplete; verify an item's identity and suitability before adding it to manually tracked goals.",
+      "link": "./",
+      "keywords": [
+        "codex",
+        "item id",
+        "item search",
+        "item database",
+        "item lookup",
+        "discover"
+      ]
+    },
+    {
+      "id": "armory",
+      "category": "Public Armory",
+      "question": "Why does a character not appear in Armory?",
+      "answer": "Check that the region, exact realm slug, and character name are correct. Blizzard public profiles may lag behind the game or be unavailable. A missing response is not proof that the character or its equipment does not exist. Try again later rather than clearing saved plans.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "character not found",
+        "armory",
+        "realm",
+        "region",
+        "missing",
+        "404",
+        "not loading"
+      ]
+    },
+    {
+      "id": "mythic",
+      "category": "Progression Intelligence",
+      "question": "How do I view Mythic+ scores and runs?",
+      "answer": "Open Progression Intelligence, enter a public Retail character and choose Mythic+. You can load the profile index or specify a known season ID. Blizzard may return rating and a selection of best runs; it is not a complete run history.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "mythic",
+        "keystone",
+        "dungeon",
+        "rating",
+        "score",
+        "season",
+        "m+"
+      ]
+    },
+    {
+      "id": "raids",
+      "category": "Progression Intelligence",
+      "question": "Can I see raid completion progress?",
+      "answer": "Use the Raids tab in Progression Intelligence. Where Blizzard provides data, the studio displays expansion, raid, difficulty and encounter completion information. It does not show current weekly raid lockouts and may lack records for certain characters.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "raid",
+        "boss",
+        "encounters",
+        "difficulty",
+        "completion",
+        "lockout"
+      ]
+    },
+    {
+      "id": "reputation",
+      "category": "Progression Intelligence",
+      "question": "Where can I inspect reputation and Renown?",
+      "answer": "Open the Reputations tab in Progression Intelligence and load a public character. You may see Blizzard-reported faction standing, points and Renown fields where supported. The endpoint may not cover every faction or warband-related value.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "reputation",
+        "renown",
+        "faction",
+        "standing",
+        "points"
+      ]
+    },
+    {
+      "id": "combined",
+      "category": "Character Progress Report",
+      "question": "How can I get one report for my whole character?",
+      "answer": "In Progression Intelligence, select a public character and press Build Character Progress Report. The studio requests Mythic+, raids and reputations sequentially, preserving successful categories when another returns an error. Copy a text summary or export a JSON file. It never saves automatically.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "character report",
+        "all progression",
+        "combined",
+        "snapshot",
+        "summary",
+        "json",
+        "export",
+        "generate report"
+      ]
+    },
+    {
+      "id": "handoff",
+      "category": "Connected Character Research",
+      "question": "Can I reuse the same character between studios?",
+      "answer": "Yes. Use Mythic+, Raids or Reputations shortcuts in Character Intelligence, or Compare This Character inside Progression Intelligence. The destination receives only public region, realm and character-name parameters; loading Blizzard results requires a separate button click.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "reuse",
+        "character",
+        "switch",
+        "handoff",
+        "shortcut",
+        "share link"
+      ]
+    },
+    {
+      "id": "inventory",
+      "category": "Blizzard API limitations",
+      "question": "Can the website read my entire inventory and currencies?",
+      "answer": "No. The current Blizzard web endpoints integrated here can show supported equipped items and some account collections, but do not provide complete bag/bank inventory and live character currency balances. This companion must not invent those values. A separately authorized in-game addon export would be needed for more complete local inventory data.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "inventory",
+        "bag",
+        "bank",
+        "currencies",
+        "currency",
+        "gold",
+        "wallet",
+        "all items"
+      ]
+    },
+    {
+      "id": "unlock",
+      "category": "My Azeroth",
+      "question": "How do I check mounts and unlocks?",
+      "answer": "Connect through My Azeroth with wow.profile scope. The private account portal can request supported Blizzard-reported mounts, pets, toys, heirlooms and selected achievements. Missing records are not proof of missing unlocks, and live API availability can differ by account and region.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "mount",
+        "mounts",
+        "pets",
+        "toys",
+        "heirlooms",
+        "achievements",
+        "unlocked",
+        "collections"
+      ]
+    },
+    {
+      "id": "addons",
+      "category": "Addon Nexus",
+      "question": "How do I find and install an addon?",
+      "answer": "Addon Nexus provides a curated directory of World of Warcraft addon references with search and publisher links. Open the official provider's listing, verify game version and author, and follow its installation instructions. The companion does not automatically install addons or guarantee the safety of external downloads.",
+      "link": "./addon-nexus.html",
+      "keywords": [
+        "addon",
+        "add-ons",
+        "curseforge",
+        "wago",
+        "install",
+        "download"
+      ]
+    },
+    {
+      "id": "media",
+      "category": "Music and backgrounds",
+      "question": "How do music and custom backgrounds work?",
+      "answer": "Use the companion's optional local music and media controls to choose supported files from your device. Browser autoplay restrictions, file sizes and local storage vary by platform. Local media generally does not synchronize between devices; a user action may be needed to start music.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "music",
+        "background",
+        "gif",
+        "video",
+        "autoplay",
+        "song",
+        "upload"
+      ]
+    },
+    {
+      "id": "device",
+      "category": "Device support",
+      "question": "Does the companion work on iPhone and PC?",
+      "answer": "The site is designed for PC and mobile browsers. Desktop has left-side navigation; mobile uses compact navigation such as All Tools. On iPhone, Safari may offer Add to Home Screen through the Share menu. Some video, storage and autoplay behavior differs between devices.",
+      "link": "./player-handbook.html?device=mobile",
+      "keywords": [
+        "iphone",
+        "ios",
+        "mobile",
+        "pc",
+        "desktop",
+        "safari",
+        "install",
+        "device"
+      ]
+    },
+    {
+      "id": "tester",
+      "category": "Developer requests",
+      "question": "How do I report a bug or help test features?",
+      "answer": "Open Developer Test Requests, check only features you personally verified, and describe what failed or was unavailable. Generate a report locally and share it manually. Never include passwords, Battle.net session cookies, account tokens or private identifiers. The v7.9.4–v7.9.6 Blizzard data systems still need real-character testing.",
+      "link": "./player-test-checklist.html#developerRequests",
+      "keywords": [
+        "test",
+        "bug",
+        "report",
+        "feedback",
+        "checklist",
+        "developer",
+        "broken"
+      ]
+    },
+    {
+      "id": "status",
+      "category": "Release status",
+      "question": "Is this a fully verified release?",
+      "answer": "The main companion includes v7.9.7 preview features, but the Blizzard progression and combined-report workflows still await real-player and device acceptance tests. The official Discord release announcement remains gated until the release is verified. The live Worker was last reported to identify as v7.9.4.",
+      "link": "./release-notes.html",
+      "keywords": [
+        "version",
+        "latest",
+        "update",
+        "release",
+        "verified",
+        "tested",
+        "discord"
+      ]
+    },
+    {
+      "id": "privacy",
+      "category": "Privacy",
+      "question": "Does this assistant send my question to Blizzard or an AI service?",
+      "answer": "No. ZevRo | Azeroth Assistant in v7.9.7 is an on-device guided-answer interface backed by curated companion documentation. It does not call a generative AI provider, use Blizzard API credentials, or transmit questions to a server. Any linked studio fetches its own data only when you use it.",
+      "link": "./privacy.html",
+      "keywords": [
+        "privacy",
+        "ai",
+        "question",
+        "data",
+        "send",
+        "tracking",
+        "assistant",
+        "private"
+      ]
+    },
+    {
+      "id": "unknown",
+      "category": "Assistant help",
+      "question": "Can the assistant answer any World of Warcraft question?",
+      "answer": "Not yet. This first version retrieves curated, documented answers about the companion and supported Blizzard features. For unclear, patch-specific or unrelated questions it should say when no reliable answer is available instead of guessing. Use the linked studio or official Blizzard sources to verify current gameplay details.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "anything",
+        "not sure",
+        "answer",
+        "wrong",
+        "patch",
+        "current",
+        "general"
+      ]
+    }
+  ]
+}
