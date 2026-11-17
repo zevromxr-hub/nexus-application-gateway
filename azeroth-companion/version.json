@@ -16,6 +16,13 @@
     "Provided staged browser acceptance for the new gateway and protected the published Discord release index until verification.",
     "Made Living Azeroth the canonical first-visit cinematic homepage, with premium artwork, five studio paths, and an Enter Companion action that safely reveals the original application; session-scoped dismissal and direct bypass avoid navigation loops.",
     "Introduced Living Azeroth, a fully illustrated original cinematic entrance and five interactive destinations with adaptive fantasy presentation.",
-    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes."
+    "Built a reusable v9 visual engine with original SVG citadel and oracle artwork, atmospheric particles, source-aware visuals, and Cinematic/Balanced/Performance modes.",
+    "Enhanced the original Talent Forge with visual node selection, glowing allocated paths and a read-only selected-node inspector fed from existing Blizzard-reported talent text and rank controls.",
+    "Introduced a Living Armory presentation with selectable equipment slots and detail cards sourced strictly from existing Blizzard public equipment responses.",
+    "Added an Adventure Journal navigation and chapter styling around the existing Mythic+, raid and reputations research without inventing achievement or inventory records.",
+    "Transformed ZevRo | Azeroth Assistant into an illustrated Oracle persona with guided-response states while retaining the existing curated knowledge and Mission Architect.",
+    "Added cinematic styling and a five-chamber navigator to Sovereign Ascension, improved desktop/mobile responsiveness, opt-in performance settings and reduced-motion respect.",
+    "Preserved the v8.0 rollback branch, legacy saved-data formats, Battle.net Cloudflare Worker, existing original studios, Founder bubble and HYPER MUSIC without changing their logic.",
+    "Synchronized Player Handbook, Getting Started, developer test requests, QA device acceptance, Gateway and release notes; guarded Discord release draft remains staging until acceptance."
   ]
 }
