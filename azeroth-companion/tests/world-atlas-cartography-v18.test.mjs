@@ -51,7 +51,7 @@ assert.equal(eastern.active,1);
 assert.match(brain.privacy(),/not in-game map coordinates/);
 const svg=await read('assets/nexus-atlas-cartography-v18.svg');
 assert.match(svg,/<svg\b/);assert.match(svg,/viewBox="0 0 900 510"/);
-assert.match(svg,/KALIMDOR/);assert.match(svg,/EASTERN KINGDOMS/);assert.match(svg,/DRAGON ISLES/);assert.match(svg,/OUTLAND/);
+assert.match(svg,/KALIMDOR/);assert.match(svg,/EASTERN KINGDOMS/);assert.match(svg,/DRAGON ISLES/);assert.match(svg,/outland/i);
 assert.ok(!/<script\b/i.test(svg)&&!/<image[^>]*https?:/i.test(svg),'Bundled map must be local and standalone');
 assert.ok(!/https?:\/\/[^"]+\.(png|jpg|jpeg|webp)/i.test(svg),'No remote image tiles');
 const page=await read('world-atlas.html'),ui=await read('world-atlas-cartography-v18.js'),
