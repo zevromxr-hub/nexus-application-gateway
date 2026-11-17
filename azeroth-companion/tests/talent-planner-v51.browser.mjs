@@ -246,7 +246,10 @@ async function run(engine,phone){
       const rect=el.getBoundingClientRect(),parent=el.parentElement;
       return{tag:el.tagName,id:el.id,cls:String(el.className||'').slice(0,100),right:Math.round(rect.right),width:Math.round(rect.width),parentId:parent?.id||'',parentClass:String(parent?.className||'').slice(0,90),parentOverflow:parent?getComputedStyle(parent).overflowX:''};
     });
-    return{w,client,offenders};
+    const path=[];let current=document.querySelector('#tfTree .tf-canvas-stage .tf-positioned');
+    for(let k=0;current&&k<16;k++,current=current.parentElement){const b=current.getBoundingClientRect(),cs=getComputedStyle(current);path.push({tag:current.tagName,id:current.id,cls:String(current.className||'').slice(0,70),width:Math.round(b.width),right:Math.round(b.right),scrollWidth:current.scrollWidth,clientWidth:current.clientWidth,overflowX:cs.overflowX,minWidth:cs.minWidth,display:cs.display})}
+    const boundary=[...document.querySelectorAll('body *')].filter(el=>{const box=el.getBoundingClientRect(),cs=getComputedStyle(el);return cs.display!=='none'&&cs.visibility!=='hidden'&&box.width>0&&box.right>client+2&&box.right<client+200}).slice(0,25).map(el=>({id:el.id,cls:String(el.className||'').slice(0,65),right:Math.round(el.getBoundingClientRect().right),width:Math.round(el.getBoundingClientRect().width)}));
+    return{w,client,path,boundary,offenders};
   });
   assert.ok(finish.w<=finish.client+2,'Planner should not create horizontal overflow '+JSON.stringify(finish));
   assert.deepEqual(errors,[],'No browser JS exceptions');
