@@ -31,7 +31,7 @@ const SCENES=[
 const obj=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const text=(x,limit=92)=>typeof x==='string'?x.trim().slice(0,limit):'';
 const list=(x,limit)=>Array.isArray(x)?x.filter(obj).slice(0,limit):[];
-const validHref=href=>typeof href==='string'&&href.startsWith('./')&&!href.startsWith('.//')?href:APP;
+const validHref=href=>href==='#nx10Chronicle'||typeof href==='string'&&href.startsWith('./')&&!href.startsWith('.//')?href:APP;
 function readJson(key,max=3500000){
  try{const s=localStorage.getItem(key);return s&&s.length<=max?JSON.parse(s):null}catch(_){return null}
 }
@@ -230,16 +230,16 @@ document.addEventListener('keydown',event=>{
  if(event.key==='Escape'&&dialog.open)dialog.close();
 });
 dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
-function setVisual(mode){
+function setVisual(mode,persist=false){
  if(!['cinematic','balanced','performance'].includes(mode))return;
  for(const v of ['cinematic','balanced','performance'])document.body.classList.toggle('nx10-mode-'+v,mode===v);
  $('nx10Mode').value=mode;
- try{localStorage.setItem(KEY_VISUAL,mode)}catch(_){}
+ if(persist){try{localStorage.setItem(KEY_VISUAL,mode)}catch(_){}}
 }
 let mode='balanced';try{const m=localStorage.getItem(KEY_VISUAL);if(['cinematic','balanced','performance'].includes(m))mode=m}catch(_){}
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||navigator.connection?.saveData||navigator.deviceMemory&&navigator.deviceMemory<=2)mode='performance';
 setVisual(mode);
-$('nx10Mode').addEventListener('change',()=>setVisual($('nx10Mode').value));
+$('nx10Mode').addEventListener('change',()=>setVisual($('nx10Mode').value,true));
 const snow=$('nx10Snow');
 if(snow&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&!navigator.connection?.saveData){
  const hash=n=>{const x=Math.sin(n*73.193)*43872.3;return x-Math.floor(x)};
