@@ -33,7 +33,7 @@ async function run(label,engine,mobile){
   assert.equal(resources.filter(s=>/nexus-azeroth-api.*workers/.test(s)).length,0,'No private account call on gateway');
   await page.locator('[data-preview="forge"]').click();
   assert.equal(await page.locator('#nxHero').getAttribute('data-scene'),'forge');
-  assert.match(await page.locator('#nxHeroDestination').getAttribute('href'),/studio=talents/);
+  assert.match(await page.locator('#nxHeroDestination').getAttribute('href'),/view=talents/,'Citadel Forge uses supported Companion deep-link route');
   assert.equal(await page.locator('#nxHeroDestination').getAttribute('data-destination'),'forge');
   await page.locator('[data-pin="forge"]').click();
   assert.equal(await page.locator('[data-pin="forge"]').getAttribute('aria-pressed'),'true');
