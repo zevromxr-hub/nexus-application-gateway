@@ -36,6 +36,11 @@
 | `privacy.html` | Privacy and data guidance | Citadel HD + Radiant Warrior inset | Protected archive motif, subdued |
 | `release-notes.html` | Changes / release records | 2172px ZevRo wide panorama + Sovereign portrait | Regal record-keeping |
 
+**Cinematic Command Center Archive Wing (implemented in v12)**
+- Four purpose-linked art cards: Player Handbook (Oracle), Getting Started (Adventure Journal), Save Protection (Radiant Warrior), Developer Identity (Assassin Dominion).
+- Supporting direct links to Player Acceptance Checklist and Privacy & Data, plus Release History in the section header.
+- The original Five Great Chambers and Chronicle remain unchanged. Artwork reused at modest portrait sizes; no JavaScript added.
+
 **Technical constraints**
 1. A single, isolated `visual-unification-v12.css` is linked last. It styles only known `body[data-nx12-page]` values, not unrelated product pages, iframe embeddings, or user-generated content.
 2. Existing JavaScript, forms, user-data keys, server endpoints, Cloudflare, Battle.net, and music playback remain unchanged.
