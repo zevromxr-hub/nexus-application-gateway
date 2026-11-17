@@ -1,7 +1,17 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v7.9.9 Mission Architect & Assistant Placement (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v8.0.0 Sovereign Ascension (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v7.9.9 acceptance
+## New required v8.0 acceptance
+1. Open Sovereign Ascension on desktop at 1024, 1280 and 1920px and on physical iPhone Safari if available; inspect overflow, safe areas, controls and readable text.
+2. Verify Read My Local Plans is opt-in and does not mutate legacy storage; load known manual characters, talents, collections and goals and compare displayed counts.
+3. Compare two saved Talent Forge builds with known allocated node IDs; verify point totals, specialization mismatches and export behavior.
+4. Test public Blizzard profile/equipment lookup using real authorized public character data; validate timestamps and source badges. Cancel midway and check errors are non-destructive.
+5. Verify mission generation across five goals and assistant explanation for loaded, empty, and partial source snapshots, including JSON export/import preview.
+6. Revisit Connected, Hyper Music, Founder and mobile assistant launcher and confirm they remain accessible and non-overlapping.
+7. Ensure existing local drafts, saved items, backup restore workflows and Blizzard account verification still work.
+8. Confirm release metadata, guides, Gateway and Discord draft agree on 8.0.0 staging. Do not announce stable until these checks pass.
+
+## Previous required v7.9.9 acceptance
 1. Check the Connected button/status on desktop at 1024, 1280 and 1920px widths; the assistant launcher now sits in its own row below the Connected header; verify that neither control overlaps or blocks clicks. Test at 125% and 200% browser zoom.
 2. Confirm assistant avatar is still distinct from lower-right Founder and HYPER MUSIC controls and fits common viewport heights without obscuring essential controls.
 3. In the full assistant, generate each of the six Mission Architect action plans; verify 24 total instructions and first-party links are accurate and actionable.
