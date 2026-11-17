@@ -1,19 +1,19 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "7.9.7",
+  "version": "7.9.8",
   "channel": "staging",
   "release_date": "2026-11-16",
-  "subtitle": "ZevRo | Azeroth Assistant & Guided Player Answers",
-  "previous_version": "7.9.6",
+  "subtitle": "ZevRo Azeroth Assistant Floating Avatar & Contextual Help",
+  "previous_version": "7.9.7",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
-    "Added ZevRo | Azeroth Assistant, a responsive guided-answer studio with a conversational question interface and rotating suggested questions.",
-    "Published a curated, versioned knowledge base of 22 documented answers covering companion navigation, Blizzard account connections, talents, gear, progression, addon research, backup, mobile use and privacy.",
-    "Assistant offers category filters, clear evidence limitations and direct links to relevant studios; unsupported questions get a transparent fallback, not fabricated information.",
-    "Questions are processed locally against published guidance; no generative AI vendor, new Blizzard API calls, local-plan reads, cloud question logging, or account token exposure.",
-    "Preserved v7.9.6 combined progression reports, v7.9.5 character handoff, existing Cloudflare Worker, OAuth sessions and saved player data.",
-    "Updated player guidance, developer test requests, versioned release history, Gateway label, regression checks and draft Discord announcement; real-player acceptance remains pending."
+    "Replaced the old left-sidebar ZevRo | Azeroth Assistant link with a desktop upper-right avatar button and lightweight in-page mini assistant dialog.",
+    "On mobile, the assistant launcher is placed in the website header and the compact assistant opens as a closable bottom-aligned panel.",
+    "Preserved the separate Founder avatar, existing Hyper Music positioning, and full-page Azeroth Assistant for users who prefer a larger workspace.",
+    "Added studio-aware suggested question prioritization based only on the currently visible navigation section; no local plans or private account data are read.",
+    "Expanded curated assistant answers from 22 to 27 topics, including partial progression reports, report sharing, feedback, and assistant usage.",
+    "Updated documentation, device acceptance, tester checklist, release center, Gateway and Discord draft; live browser/real-character acceptance still pending."
   ]
 }
