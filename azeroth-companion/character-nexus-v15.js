@@ -24,7 +24,7 @@ let publicData=null,request=null,preview=null,guests=loadGuests();
 function safeLinks(){const x=read(KEY.research,70000);return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}
 function loadGuests(){
  const raw=read(KEY.guests,950000);
- return Array.isArray(raw)?raw.filter(x=>x&&typeof x.id==='string'&&x.package?.format==='nexus.character-nexus-package/1').slice(0,10):[];
+ return Array.isArray(raw)?raw.slice(0,10).filter(x=>x&&typeof x.id==='string').map(x=>{const checked=core.sanitizePackage(x.package);return checked.ok?{id:x.id.slice(0,90),receivedAt:clean(x.receivedAt,35),package:checked.package}:null}).filter(Boolean):[];
 }
 function setStatus(message){$('nx15FetchStatus').textContent=message}
 function currentSelector(){return core.normalizeSelector({region:$('nx15Region').value,realm:$('nx15Realm').value,name:$('nx15Name').value})}
@@ -230,7 +230,7 @@ function clearPublic(){
  $('nx15PublicFacts').replaceChildren();setStatus('Public research cleared. Load again explicitly; no account data was persisted.');
 }
 select.addEventListener('change',()=>{clearPublic();populateResearch();updateLocal()});
-$('nx15Region').addEventListener('change',updateLocal);
+for(const id of ['nx15Region','nx15Realm','nx15Name'])$(id).addEventListener('change',()=>{clearPublic();updateLocal()});
 $('nx15Fetch').addEventListener('click',requestBlizzard);
 $('nx15Remember').addEventListener('click',rememberLink);
 $('nx15OpenArmory').addEventListener('click',openArmory);
