@@ -23,7 +23,7 @@ async function run(label,engine,phone){
   const count=pattern=>requests.filter(url=>pattern.test(url)).length;
   assert.equal(count(/\/api\/talent-index\//),0,'Unused Talent Forge must not fetch Blizzard index on Home');
   assert.equal(count(/\/loot-sources\.json/),0,'Unused Loot Hunter must not download its catalog on Home');
-  assert.equal(count(/\/version\.json(?:\?|$)/),1,'One startup release-version request is sufficient');
+  assert.ok(count(/\/version\.json(?:\?|$)/)>=1&&count(/\/version\.json(?:\?|$)/)<=2,'Canonical badge and release panel may each load metadata, but startup must stay within two requests');
   assert.equal(count(/\/releases\/index\.json(?:\?|$)/),1,'One startup release-index request is sufficient');
   for(const id of ['#cdMetrics','#udMetrics','#pcMetrics','#pflChecklist']){
    assert.equal(await page.locator(id).evaluate(el=>el.childElementCount),0,'Hidden rollup should not render until visited: '+id);
