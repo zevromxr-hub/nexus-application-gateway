@@ -16,6 +16,19 @@ async function run(label,engine,mobile){
   await page.locator('#nxCitadel .portal-wrap').first().waitFor();
   assert.equal(await page.locator('.portal-wrap').count(),5);
   assert.ok(await page.locator('#nxHero').isVisible());
+
+  const portraits=await page.locator('.portal-wrap').evaluateAll(els=>els.map(el=>{
+    const rect=el.getBoundingClientRect();return{width:rect.width,height:rect.height};
+  }));
+  assert.ok(portraits.every(p=>p.width<=381),'Studio cards must never stretch the original 380px portrait art');
+  assert.ok(portraits.every(p=>p.height>=p.width*1.55),'Portrait scenes must occupy matching upright boxes');
+  if(!mobile){
+    const heroBg=await page.locator('#nxHero').evaluate(el=>getComputedStyle(el,'::before').backgroundImage);
+    assert.match(heroBg,/citadel-hero-hd-v9\.1\.1\.webp/,'Desktop intro must use dedicated HD widescreen art');
+    const frame=await page.locator('#nxHero').evaluate(el=>getComputedStyle(el,'::after').width);
+    assert.ok(parseFloat(frame)<=361,'Framed chamber preview must not upscale a 380px source');
+  }
+
   assert.equal(resources.filter(s=>/scripts-(core|experience).*\.js/.test(s)).length,0,'Gateway must not download app bundles');
   assert.equal(resources.filter(s=>/nexus-azeroth-api.*workers/.test(s)).length,0,'No private account call on gateway');
   await page.locator('[data-preview="forge"]').click();
