@@ -176,8 +176,19 @@ const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
 const declaredVersion=html.match(/data-nx-bundle-version="(\d+\.\d+\.\d+)"/)?.[1];
 assert.ok(declaredVersion,'Companion must declare the staged UI bundle version');
 assert.equal(version.version,declaredVersion,'Published metadata version must match the active Companion bundle');
-assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
-assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
+assert.ok(['staging','owner-approved'].includes(version.channel),'Explicit stage or owner-approval status required');
+if(version.channel==='owner-approved'){
+ assert.equal(version.acceptance?.owner_approved,true,'Owner release approval must be explicitly recorded');
+ assert.equal(index.releases?.[0]?.version,version.version,'Official release index must head with current owner-approved version');
+ const approvedManifest=JSON.parse(await read('azeroth-companion/releases/v'+version.version+'.json'));
+ assert.equal(approvedManifest.owner_approved,true,'Owner-approved manifest required before Discord release');
+ assert.equal(approvedManifest.version,version.version,'Release manifest must match the active application');
+ assert.equal(approvedManifest.source_repository,'zevromxr-hub/nexus-application-gateway','Manifest must identify the original repository');
+ assert.ok(['pending','partial','complete'].includes(approvedManifest.tester_status),'Tester acceptance must be truthfully disclosed');
+ assert.equal(version.acceptance?.tester_status,approvedManifest.tester_status,'Do not misrepresent player acceptance');
+}else{
+ assert.ok(Array.isArray(index.releases)&&index.releases.length>0,'Staging must preserve historical release records');
+}
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
 assert.equal(previousRelease.version,'7.9.3');
 assert.ok(previousRelease.features.length>=5);
