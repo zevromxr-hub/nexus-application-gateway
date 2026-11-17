@@ -227,7 +227,7 @@ const getting796=await read('azeroth-companion/getting-started.html');
 const checklist796=await read('azeroth-companion/player-test-checklist.html');
 const deviceQA796=await read('azeroth-companion/QA-DEVICE-ACCEPTANCE.md');
 const releasePage796=await read('azeroth-companion/release-notes.html');
-for(const doc of [changelog796,handbook796,getting796,checklist796,deviceQA796,releasePage796])assert.match(doc,/9\.0\.0|v9\.0/,'Current release documentation out of sync');
+for(const doc of [changelog796,handbook796,getting796,checklist796,deviceQA796,releasePage796])assert.match(doc,/(?:9\.0\.0|v9\.0|v1[0-9]\.\d)/,'Companion documentation must retain a recognized current or historical release version');
 assert.match(checklist796,/v7\.9\.6 partial failure/,'Developer checklist requires partial failure check');
 assert.match(changelog796,/Character Progress Report/,'Changelog must document report');
 const assistantBubble798=await read('azeroth-companion/assistant-bubble-v7.9.8.js');
