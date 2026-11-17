@@ -16,7 +16,7 @@ const SCENES=[
  {title:'Sovereign Player Experience',group:'Player workspace',desc:'Character dossier, linked builds, checkpoint history and personal quests',url:'./player-experience.html',tokens:'my character player experience dossier build intelligence history quest journal'},
  {title:'Save Protection Center',group:'Safety',desc:'Export a private backup of supported local planning records',url:'./save-protection.html',tokens:'save protection safety backup export recovery browser local storage'},
  {title:'Sovereign Ascension',group:'Studio',desc:'Unified character command and public research',url:'./sovereign-ascension.html',tokens:'sovereign ascension character command research profile'},
- {title:'Talent Forge',group:'Studio',desc:'Skill and build planning with allocated ranks',url:'./?enter=1&studio=talents',tokens:'talent forge skill builds planner trees specialization'},
+ {title:'Talent Forge',group:'Studio',desc:'Skill and build planning with allocated ranks',url:'./?enter=1&view=talents',tokens:'talent forge skill builds planner trees specialization'},
  {title:'The Living Armory',group:'Studio',desc:'Public equipment comparison and item research',url:'./character-intelligence.html',tokens:'living armory equipment gear characters items'},
  {title:'Adventure Journal',group:'Studio',desc:'Mythic+, raids and reputation research',url:'./progression-intelligence.html',tokens:'adventure journal progression raids mythic reputations'},
  {title:'The Azeroth Oracle',group:'Studio',desc:'Guided companion help and missions',url:'./azeroth-assistant.html',tokens:'oracle assistant help missions guide'},
@@ -86,7 +86,7 @@ function resume(){
   info='Resume your recent companion view: '+(text(recent.label,75)||text(recent.view,30))+'.';
  }else{
   const last=(()=>{try{return localStorage.getItem('nexus_citadel_last_v9_1')}catch(_){return null}})();
-  const map={sovereign:'./sovereign-ascension.html',forge:'./?enter=1&studio=talents',armory:'./character-intelligence.html',adventure:'./progression-intelligence.html',oracle:'./azeroth-assistant.html'};
+  const map={sovereign:'./sovereign-ascension.html',forge:'./?enter=1&view=talents',armory:'./character-intelligence.html',adventure:'./progression-intelligence.html',oracle:'./azeroth-assistant.html'};
   if(map[last]){href=map[last];info='Resume your last visited studio: '+SCENES.filter(x=>x.url===href).map(x=>x.title).join(', ')+'.'}
  }
  $('nx10Resume').href=validHref(href);
@@ -124,9 +124,9 @@ function countRanks(raw){
 }
 function renderBuilds(){
  const host=$('nx10BuildsList');host.replaceChildren();
- if(!mainBuilds.length&&!talentBuilds.length){empty(host,'Your forge is ready','Save a build in Talent Forge or Build Architect to see it here.','./?enter=1&studio=talents','OPEN TALENT FORGE ↗');return}
+ if(!mainBuilds.length&&!talentBuilds.length){empty(host,'Your forge is ready','Save a build in Talent Forge or Build Architect to see it here.','./?enter=1&view=talents','OPEN TALENT FORGE ↗');return}
  const entries=[
-  ...talentBuilds.slice(0,6).map(b=>({title:text(b.name,75),desc:[text(b.identity,62),countRanks(b.rankByNode)+' planned ranks','Local draft · not game-confirmed'].filter(Boolean).join(' · '),url:'./?enter=1&studio=talents'})),
+  ...talentBuilds.slice(0,6).map(b=>({title:text(b.name,75),desc:[text(b.identity,62),countRanks(b.rankByNode)+' planned ranks','Local draft · not game-confirmed'].filter(Boolean).join(' · '),url:'./?enter=1&view=talents'})),
   ...mainBuilds.slice(0,6).map(b=>({title:text(b.title,75),desc:[text(b.mode,42),'Saved reference · manually entered'].filter(Boolean).join(' · '),url:'./?enter=1&view=builds'}))
  ].slice(0,8);
  entries.forEach(b=>addRecord(host,'✧',b.title,b.desc,b.url,'CONTINUE ↗'));
@@ -201,7 +201,7 @@ function searchIndex(){
  const local=[
   ...chars.map(c=>({title:text(c.name,65),group:'Saved manual character',desc:[text(c.className,35),text(c.realm,50)].filter(Boolean).join(' · '),url:'./?enter=1&view=characters',tokens:text(c.name)+' '+text(c.className)+' '+text(c.spec)})),
   ...mainBuilds.map(b=>({title:text(b.title,75),group:'Saved build reference',desc:'Locally saved in Build Architect',url:'./?enter=1&view=builds',tokens:text(b.title)+' '+text(b.notes)})),
-  ...talentBuilds.map(b=>({title:text(b.name,75),group:'Talent Forge draft',desc:'Manual build draft with '+countRanks(b.rankByNode)+' planned ranks',url:'./?enter=1&studio=talents',tokens:text(b.name)+' '+text(b.identity)})),
+  ...talentBuilds.map(b=>({title:text(b.name,75),group:'Talent Forge draft',desc:'Manual build draft with '+countRanks(b.rankByNode)+' planned ranks',url:'./?enter=1&view=talents',tokens:text(b.name)+' '+text(b.identity)})),
   ...tasks.filter(t=>text(t.title)).map(t=>({title:text(t.title,85),group:'Manual objective',desc:'Original companion task',url:'./?enter=1&view=progress',tokens:text(t.title)+' '+text(t.goal)})),
   ...collections.filter(t=>text(t.name)).map(t=>({title:text(t.name,85),group:'Collection target',desc:'Original companion collection',url:'./?enter=1&view=collections',tokens:text(t.name)+' '+text(t.type)})),
   ...goals.map(g=>({title:g.title,group:'Command board objective',desc:g.category+(g.done?' · complete':''),url:'#nx10Chronicle',tokens:g.title+' '+g.category}))
