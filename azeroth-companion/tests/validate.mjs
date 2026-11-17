@@ -181,14 +181,14 @@ assert.equal(index.releases[0].version,'7.9.3','Discord release index must remai
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
 assert.equal(previousRelease.version,'7.9.3');
 assert.ok(previousRelease.features.length>=5);
-// v13.2: source-matched Blender icon overlays are additive, no saved-data mutation.
+// v13.2: source-matched Blizzard spell icon overlays are additive, no saved-data mutation.
 const iconAscension=await read('azeroth-companion/talent-forge-icon-ascension-v13.2.js');
 const iconAscensionCSS=await read('azeroth-companion/talent-forge-icon-ascension-v13.2.css');
 new vm.Script(iconAscension);
-assert.match(html,/talent-forge-icon-ascension-v13\\.2\\.js\\?v=1320/,'Source-matched Blizzard talent icon loader must be linked');
-assert.match(html,/talent-forge-icon-ascension-v13\\.2\\.css\\?v=1320/,'Icon art must preserve the styled Reforged frame');
+assert.match(html,/talent-forge-icon-ascension-v13\.2\.js\?v=1320/,'Source-matched Blizzard talent icon loader must be linked');
+assert.match(html,/talent-forge-icon-ascension-v13\.2\.css\?v=1320/,'Icon art must preserve the styled Reforged frame');
 assert.match(iconAscension,/NexusTalentSourceBridge/,'Icons must reuse the existing official talent-source snapshot');
-assert.match(iconAscension,/entry\\?\\.spellId/,'Blizzard spell identity must come from current rank-choice source data');
+assert.match(iconAscension,/entry\?\.spellId/,'Blizzard spell identity must come from current rank-choice source data');
 assert.match(iconAscension,/\/api\/spell-media\//,'Icons must use existing optional Blizzard media route');
 assert.ok(!iconAscension.includes('localStorage.setItem'),'Icon visual add-on must not modify saved builds');
 assert.match(iconAscensionCSS,/nx132-has-icon/,'Source art must retain premium node and inspector framing');
