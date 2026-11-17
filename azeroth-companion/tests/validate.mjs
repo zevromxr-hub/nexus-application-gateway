@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.1\.0/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.1\.1/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'9.1.0');
+assert.equal(version.version,'9.1.1');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -653,8 +653,8 @@ new vm.Script(citadelJS);new vm.Script(citadelReturn);
 assert.ok(html.includes("location.replace('./citadel-entry.html')"),'Fresh route must precede app bundle loading');
 assert.ok(html.includes('nexus_citadel_recent_view_v91'),'Inline resume bridge missing');
 assert.ok(citadelHTML.includes('id="nxCitadel"'));
-assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=910'));
-assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=910'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=911'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=911'));
 for(const key of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+key+'"'),'Missing chamber '+key);
 assert.ok(!citadelHTML.includes('scripts-core-')&&!citadelHTML.includes('scripts-experience-'),'Standalone entrance should not load app bundles');
 assert.ok(citadelCSS.includes('@media(max-width:660px)'));
@@ -673,5 +673,19 @@ for(const data of artBytes.filter(Boolean)){
  assert.equal(data.toString('ascii',0,4),'RIFF','Artwork must be a valid WebP RIFF container');
  assert.equal(data.toString('ascii',8,12),'WEBP','Artwork must be WebP, not a renamed PNG/JPEG');
 }
+
+
+/* v9.1.1 Sharp Art: do not release without a genuine landscape image. */
+const hdPath=path.join(root,'azeroth-companion/assets/citadel-hero-hd-v9.1.1.webp');
+const heroHD=await readFile(hdPath);
+assert.ok(heroHD.length>100000&&heroHD.length<1200000,'HD hero must remain optimized under 1.2 MB');
+assert.equal(heroHD.toString('ascii',0,4),'RIFF');
+assert.equal(heroHD.toString('ascii',8,12),'WEBP');
+const vp=heroHD.indexOf(Buffer.from([0x9d,0x01,0x2a]),20);
+assert.ok(vp>=0,'HD hero image must use supported WebP VP8 encoding');
+const heroW=heroHD.readUInt16LE(vp+3)&0x3fff,heroH=heroHD.readUInt16LE(vp+5)&0x3fff;
+assert.ok(heroW>=1500&&heroH>=850,'HD hero must be a real widescreen artwork rather than a stretched 380px portrait');
+assert.ok(citadelCSS.includes('CITADEL SHARP ART v9.1.1'),'Portrait card geometry patch missing');
+assert.ok(citadelHTML.includes('citadel-hero-hd-v9.1.1.webp'),'HD desktop preload missing');
 
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
