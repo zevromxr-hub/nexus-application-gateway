@@ -48,6 +48,10 @@ jobs:
         id: character
         continue-on-error: true
         run: node azeroth-companion/tests/character-nexus-v15.test.mjs
+      - name: Validate v16 World Engine curated source and mission isolation
+        id: world
+        continue-on-error: true
+        run: node azeroth-companion/tests/living-world-engine-v16.test.mjs
       - name: Record truthful non-blocking acceptance findings
         if: always()
         env:
@@ -57,6 +61,7 @@ jobs:
           SOCIAL: ${{ steps.social.outcome }}
           ARCHITECT: ${{ steps.architect.outcome }}
           CHARACTER: ${{ steps.character.outcome }}
+          WORLD: ${{ steps.world.outcome }}
         run: |
           {
             echo "## NEXUS | Azeroth — advisory source checks"
@@ -70,10 +75,11 @@ jobs:
             echo "| Discord social preview | $SOCIAL |"
             echo "| v14 Build Architect source graph | $ARCHITECT |"
             echo "| v15 Character Nexus and package safety | $CHARACTER |"
+            echo "| v16 Living World Engine and local mission safety | $WORLD |"
             echo ""
             echo "Any failure remains a real, unresolved finding for later testers, not an automatic pass."
           } >> "$GITHUB_STEP_SUMMARY"
-          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER"; do
+          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER" "$WORLD"; do
             if [ "$state" != "success" ]; then
               echo "::warning title=Azeroth advisory test::Outcome $state — review later; owner release is not blocked."
             fi
