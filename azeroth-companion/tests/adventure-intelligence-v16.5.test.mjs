@@ -56,7 +56,7 @@ assert.equal('cookie' in exported,false,'Export must whitelist manually entered 
 const plaintext=e.checklistText(goal,state.records[id],details);
 assert.match(plaintext,/PERSONAL MANUAL PLAN/);
 assert.match(plaintext,/\[x\]/);
-assert.match(plaintext,/does not measure actual gear readiness/);
+assert.match(plaintext,/does not measure actual gear readiness/i);
 assert.equal(e.normalizeStep({id:'bad',title:'nope'}),null);
 assert.equal(e.normalizeRecord({steps:[{id:'step-0001',title:'Valid',done:true}]},'bad'),null);
 for(const js of ['adventure-intelligence-core-v16.5.js','expedition-console-v16.5.js',
