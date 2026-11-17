@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-nx-version="10.0.0">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080e1e">
+<meta name="description" content="NEXUS | Azeroth Companion — Living Command Center. Explore five cinematic studios and resume browser-local characters, builds and adventure plans.">
+<title>Living Command Center | NEXUS Azeroth v10.0</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/command-center.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS | Living Command Center">
+<meta property="og:description" content="Your world. Your command. Explore the studios, builds and adventures of NEXUS Azeroth Companion.">
+<meta property="og:url" content="https://zevarchives.com/azeroth-companion/command-center.html">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AZEROTH">
+<link rel="preload" href="./assets/citadel-hero-hd-v9.1.1.webp" as="image" fetchpriority="high">
+<link rel="stylesheet" href="./command-center-v10.css?v=1000">
+<script defer src="./command-center-v10.js?v=1000"></script>
+</head>
+<body class="nx10-mode-balanced">
+<div class="nx10-global-snow" id="nx10Snow" aria-hidden="true"></div>
+<div class="nx10-root" id="nx10Root">
+<header class="nx10-header">
+  <div class="nx10-header-inner">
+    <a class="nx10-brand" href="./command-center.html" aria-label="NEXUS Living Command Center homepage"><span class="nx10-logo" aria-hidden="true">N</span><span><strong>NEXUS</strong><small>AZEROTH COMPANION</small></span></a>
+    <nav class="nx10-nav" aria-label="Main navigation">
+      <a class="nx10-active" href="#nx10Home">Command Center</a>
+      <a href="#nx10Chambers">Studios</a>
+      <a href="#nx10Chronicle">My Chronicle</a>
+      <a href="./developer.html">Developer</a>
+    </nav>
+    <div class="nx10-header-actions">
+      <button type="button" class="nx10-search-launch" id="nx10SearchTrigger" aria-haspopup="dialog" aria-controls="nx10SearchDialog"><span aria-hidden="true">⌕</span> <span>Search</span><kbd>⌘ K</kbd></button>
+      <a class="nx10-enter" href="./?enter=1" data-nx10-app>Enter Companion <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+<main class="nx10-shell">
+  <section class="nx10-hero" id="nx10Home" aria-label="Cinematic Living Command Center">
+    <div class="nx10-hero-atmosphere" aria-hidden="true"></div>
+    <div class="nx10-hero-content">
+      <div class="nx10-overline"><span class="nx10-light-dot"></span> THE LIVING COMMAND CENTER <span class="nx10-divider-dot">✦</span> VERSION 10.0</div>
+      <h1>YOUR WORLD.<br><em>YOUR COMMAND.</em></h1>
+      <p class="nx10-hero-desc">An entire realm at your fingertips. Return to your characters, forge your next build, plan the adventure ahead and explore every chamber of Azeroth.</p>
+      <div class="nx10-hero-buttons">
+        <a class="nx10-btn nx10-btn-gold" href="./?enter=1" data-nx10-app>ENTER THE COMPANION <span aria-hidden="true">↗</span></a>
+        <a class="nx10-btn nx10-btn-glass" href="#nx10Chambers">EXPLORE THE REALM <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="nx10-hero-trust"><span>✦ NO DOWNLOADS</span><span>✦ BROWSER-LOCAL PLANS</span><span>✦ PC & IPHONE</span></div>
+    </div>
+    <aside class="nx10-hero-character" aria-label="Featured sovereign artwork and saved character">
+      <div class="nx10-hero-character-art" role="img" aria-label="Existing Sovereign throne-room fantasy illustration"></div>
+      <div class="nx10-character-title"><span class="nx10-label">YOUR ROSTER</span><strong id="nx10FeaturedName">YOUR LEGEND AWAITS</strong><span id="nx10FeaturedMeta">Create a character in the full companion to personalize this panel.</span><span class="nx10-source">LOCALLY SAVED PROFILE · NOT A LIVE GAME SCAN</span></div>
+    </aside>
+    <div class="nx10-hero-corner" aria-hidden="true">✧</div>
+  </section>
+
+  <section class="nx10-status-strip" aria-label="Your browser-local workspace summary">
+    <div class="nx10-status-intro"><span class="nx10-label">THE PERSONAL ARCHIVE</span><strong>Your journey at a glance</strong><small>Saved in this browser, not synchronized with Battle.net.</small></div>
+    <div class="nx10-metric"><span class="nx10-metric-glyph" aria-hidden="true">♟</span><div><strong id="nx10CountCharacters">—</strong><small>Saved characters</small></div></div>
+    <div class="nx10-metric"><span class="nx10-metric-glyph" aria-hidden="true">✧</span><div><strong id="nx10CountBuilds">—</strong><small>Build drafts</small></div></div>
+    <div class="nx10-metric"><span class="nx10-metric-glyph" aria-hidden="true">✥</span><div><strong id="nx10CountGoals">—</strong><small>Open objectives</small></div></div>
+    <a class="nx10-metric nx10-metric-link" href="#nx10Chronicle"><span class="nx10-metric-glyph" aria-hidden="true">↗</span><div><strong>OPEN</strong><small>Your chronicle</small></div></a>
+  </section>
+
+  <section class="nx10-section nx10-chambers-section" id="nx10Chambers">
+    <div class="nx10-section-head"><div><span class="nx10-overline">CINEMATIC DESTINATIONS</span><h2>The Five Great Chambers</h2><p>Five original illustrations. Five working paths into your existing companion.</p></div><a class="nx10-text-link" href="./citadel-entry.html">Classic Citadel Entrance ↗</a></div>
+    <div class="nx10-chambers" id="nx10ChamberGrid">
+      <a class="nx10-chamber nx10-chamber-sovereign" data-nx10-scene="sovereign" href="./sovereign-ascension.html"><span class="nx10-chamber-top"><span>01 / COMMAND</span><span aria-hidden="true">↗</span></span><span class="nx10-chamber-bottom"><span class="nx10-chamber-glyph" aria-hidden="true">✦</span><strong>SOVEREIGN<br>ASCENSION</strong><small>Character command & research</small></span></a>
+      <a class="nx10-chamber nx10-chamber-talent" data-nx10-scene="talent" href="./?enter=1&amp;studio=talents"><span class="nx10-chamber-top"><span>02 / CREATE</span><span aria-hidden="true">↗</span></span><span class="nx10-chamber-bottom"><span class="nx10-chamber-glyph" aria-hidden="true">✧</span><strong>TALENT<br>FORGE</strong><small>Design and compare your builds</small></span></a>
+      <a class="nx10-chamber nx10-chamber-armory" data-nx10-scene="armory" href="./character-intelligence.html"><span class="nx10-chamber-top"><span>03 / EQUIP</span><span aria-hidden="true">↗</span></span><span class="nx10-chamber-bottom"><span class="nx10-chamber-glyph" aria-hidden="true">⚔</span><strong>LIVING<br>ARMORY</strong><small>Blizzard-reported gear research</small></span></a>
+      <a class="nx10-chamber nx10-chamber-adventure" data-nx10-scene="adventure" href="./progression-intelligence.html"><span class="nx10-chamber-top"><span>04 / EXPLORE</span><span aria-hidden="true">↗</span></span><span class="nx10-chamber-bottom"><span class="nx10-chamber-glyph" aria-hidden="true">✥</span><strong>ADVENTURE<br>JOURNAL</strong><small>Mythic+, raid & reputation research</small></span></a>
+      <a class="nx10-chamber nx10-chamber-oracle" data-nx10-scene="oracle" href="./azeroth-assistant.html"><span class="nx10-chamber-top"><span>05 / DISCOVER</span><span aria-hidden="true">↗</span></span><span class="nx10-chamber-bottom"><span class="nx10-chamber-glyph" aria-hidden="true">☼</span><strong>AZEROTH<br>ORACLE</strong><small>Guided answers & mission planning</small></span></a>
+    </div>
+  </section>
+
+  <section class="nx10-section nx10-workbench" id="nx10Chronicle" aria-labelledby="nx10ChronicleTitle">
+    <div class="nx10-section-head"><div><span class="nx10-overline">YOUR ADVENTURE CONTINUES</span><h2 id="nx10ChronicleTitle">The Personal Chronicle</h2><p>A read-only window into your existing companion records, plus a separate local adventure board.</p></div><a class="nx10-text-link" id="nx10Resume" href="./?enter=1">Resume Full Companion ↗</a></div>
+    <div class="nx10-workbench-layout">
+      <div class="nx10-chronicle-panel">
+        <div class="nx10-tabs" role="tablist" aria-label="Personal Chronicle views">
+          <button type="button" role="tab" aria-selected="true" aria-controls="nx10PanelCharacters" id="nx10TabCharacters" data-nx10-tab="characters">♟ Characters</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="nx10PanelBuilds" id="nx10TabBuilds" data-nx10-tab="builds">✧ Saved Builds</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="nx10PanelGoals" id="nx10TabGoals" data-nx10-tab="goals">✥ Adventure Board</button>
+        </div>
+        <div class="nx10-tab-content" id="nx10PanelCharacters" role="tabpanel" aria-labelledby="nx10TabCharacters">
+          <div class="nx10-panel-intro"><strong>YOUR SAVED ROSTER</strong><a href="./?enter=1&amp;view=characters" data-nx10-app>Manage characters ↗</a></div><div id="nx10CharactersList" class="nx10-records"></div>
+        </div>
+        <div class="nx10-tab-content" id="nx10PanelBuilds" role="tabpanel" aria-labelledby="nx10TabBuilds" hidden>
+          <div class="nx10-panel-intro"><strong>YOUR BUILD ARCHIVE</strong><a href="./?enter=1&amp;view=builds" data-nx10-app>Open Build Architect ↗</a></div><div id="nx10BuildsList" class="nx10-records"></div>
+        </div>
+        <div class="nx10-tab-content" id="nx10PanelGoals" role="tabpanel" aria-labelledby="nx10TabGoals" hidden>
+          <div class="nx10-panel-intro"><strong>YOUR OWN ADVENTURE BOARD</strong><button class="nx10-link-button" type="button" id="nx10ExportGoals">Export this board ↗</button></div>
+          <form class="nx10-goal-form" id="nx10GoalForm"><label><span>New objective</span><input id="nx10GoalTitle" name="title" maxlength="96" required placeholder="e.g. Prepare my next dungeon build"></label><label><span>Category</span><select id="nx10GoalCategory" name="category"><option>Adventure</option><option>Builds</option><option>Equipment</option><option>Collections</option><option>Custom</option></select></label><button class="nx10-add-goal" type="submit">+ ADD OBJECTIVE</button></form>
+          <div id="nx10GoalsList" class="nx10-records" aria-live="polite"></div>
+          <div id="nx10ExistingTasks" class="nx10-existing-tasks"></div>
+          <p class="nx10-board-note">New board objectives are saved under a separate v10 browser key. Existing companion tasks are displayed for reference only and are never changed here.</p>
+        </div>
+      </div>
+      <aside class="nx10-side-panel">
+        <div class="nx10-side-top"><span class="nx10-overline">YOUR NEXT MOVE</span><h3>Pick up where you left off.</h3><p id="nx10ResumeText">Your latest companion destination will appear here when available.</p><a id="nx10ResumeButton" class="nx10-btn nx10-btn-outline" href="./?enter=1" data-nx10-app>CONTINUE JOURNEY ↗</a></div>
+        <div class="nx10-side-art" role="img" aria-label="Original Adventure Journal fantasy artwork"></div>
+        <div class="nx10-side-bottom"><strong>One companion. Many possibilities.</strong><small>Each chamber uses the real tools you already have. No simulated inventory or claimed achievements.</small></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="nx10-section nx10-utility" aria-label="Quick tools and visual preferences">
+    <div><span class="nx10-overline">QUICK ACCESS</span><h2>Everything within reach.</h2><p>Continue into the original application or use a focused research studio.</p></div>
+    <div class="nx10-utility-links"><a href="./?enter=1&amp;view=collections" data-nx10-app>Collection Vault ↗</a><a href="./addon-nexus.html">Addon Nexus ↗</a><a href="./player-handbook.html">Player Handbook ↗</a><a href="./release-notes.html">Release Notes ↗</a></div>
+    <label class="nx10-mode-label"><span>Visual atmosphere</span><select id="nx10Mode" aria-label="Visual atmosphere strength"><option value="cinematic">Cinematic</option><option value="balanced">Balanced</option><option value="performance">Performance</option></select></label>
+  </section>
+  <footer class="nx10-footer"><span>NEXUS | AZEROTH COMPANION · v10.0.0 STAGING</span><span>POWERED BY ZEVRO | NEXUS</span><p>Independent, unofficial World of Warcraft fan companion. Not affiliated with Blizzard Entertainment. Saved records shown here are local plans, not live Battle.net ownership or achievement confirmations.</p></footer>
+</main>
+</div>
+
+<dialog id="nx10SearchDialog" class="nx10-search-dialog" aria-labelledby="nx10SearchTitle">
+  <div class="nx10-dialog-header"><div><span class="nx10-overline">UNIVERSAL COMMAND SEARCH</span><h2 id="nx10SearchTitle">Find your next destination</h2></div><button type="button" id="nx10SearchClose" aria-label="Close search">✕</button></div>
+  <label class="nx10-palette-field"><span aria-hidden="true">⌕</span><input type="search" id="nx10SearchInput" autocomplete="off" placeholder="Search studios, saved builds, characters, goals…" aria-label="Search existing studio destinations and local plans"></label>
+  <div class="nx10-search-results" id="nx10SearchResults" role="list" aria-live="polite"></div>
+  <p>Search is local to this browser and the known studio directory. No search text is sent to a server.</p>
+</dialog>
+<div class="nx10-toast" id="nx10Toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
