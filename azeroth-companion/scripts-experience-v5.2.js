@@ -769,7 +769,7 @@ if(window.NexusStartup?.whenView)window.NexusStartup.whenView('dashboard',render
  */
 (()=>{'use strict';
 const WORKER='https://nexus-azeroth-api.zevromxr.workers.dev';
-const CHECK=WORKER+'/account/verify-companion';
+const CHECK=WORKER+'/account/verify-companion'+(location.origin==='https://zevarchives.com'?'?site=zevarchives':'');
 const API=WORKER+'/api/companion/verify';
 const STORAGE='nexus_azeroth_verified_receipt_v39';
 const badge=document.querySelector('.ud-account-badge');
