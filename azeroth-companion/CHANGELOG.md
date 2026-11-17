@@ -2,6 +2,10 @@
 
 ## v9.0.0 · 2026-11-16 — LIVING AZEROTH (Staging)
 
+- **Visual art correction:** Replaced flat geometric citadel illustration with locally hosted premium fantasy character imagery across the gateway, main app, Sovereign Dashboard and studios. Rebuilt five small icon boxes into an asymmetric, illustrated navigation gallery with distinct image crops, stronger lighting/typography and responsive layouts.
+- **No new dependency:** Art reuses already shipped repository WebP files; if the player selects Performance mode, animation remains optional. This is a visual change only, not an account or game-data change.
+
+
 - **Cinematic entry:** Original illustrated citadel and five destination chambers in the new Living Azeroth world gateway, with matching visuals integrated into the original homepage and Sovereign Ascension.
 - **Talent Forge laboratory:** Source-backed talent-node inspection, selected/allocated visual states, and preserved native rank, undo, save and export controls.
 - **Living character armory:** Selectable equipment slot layout reflects only Blizzard public character equipment records returned by the original Character Intelligence studio.
