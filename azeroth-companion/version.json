@@ -10,6 +10,7 @@
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/azeroth-companion/",
   "changes": [
     "Implemented the v12 Sovereign World Atlas art framework across all 17 Azeroth Companion HTML pages, using only existing hosted original art without adding external requests, credentials, or a particle engine.",
+    "Added an art-rich Archive Wing to the Command Center with direct illustrated routes to Player Handbook, Getting Started, Save Protection and Developer Identity, plus shortcuts to QA, Privacy and Release History.",
     "Added prominent illustrated HD panorama covers to Getting Started, Player Handbook, Player Acceptance Checklist, Privacy & Data Guide and Release History, preserving their original text and functional scripts.",
     "Strengthened distinct cinematic research headers for Sovereign Ascension, Character Intelligence, Progression Intelligence, Azeroth Assistant and Addon Nexus using studio-specific, source-safe portrait art.",
     "Gave the original main companion's Overview, Characters, Build Architect, Progression, Collections and Data & Backup workspaces distinctive illustrated headers without modifying JS-owned forms or saved records.",
