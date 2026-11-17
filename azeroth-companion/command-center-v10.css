@@ -209,3 +209,5 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{ou
 }
 @media(prefers-reduced-transparency:reduce){.nx10-header{-webkit-backdrop-filter:none;backdrop-filter:none}}
 @media print{.nx10-global-snow,.nx10-header-actions,.nx10-hero-buttons,.nx10-goal-form,.nx10-search-dialog{display:none!important}body{background:#fff;color:#111}.nx10-hero{background:#eee!important;color:#111}}
+
+@media(max-width:430px){.nx10-hero{min-height:735px}.nx10-hero-content{padding-bottom:30px}}
