@@ -1,0 +1,20 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "18.1.0",
+  "title": "SOVEREIGN ROUTE ARCHITECT — Interactive Atlas Expedition Itineraries",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner requested continued Azeroth development after v18 World Atlas. Physical-device and real World of Warcraft account/gameplay acceptance remains pending.",
+  "features": [
+    "World Atlas v18.1 Sovereign Route Architect: create up to six private named expedition itineraries containing up to twelve curated locations each.",
+    "Select destination map pins and display numbered route markers and illustrative intra-region line connections; route ordering is never misrepresented as official in-game travel guidance.",
+    "Mark personal visits, save bounded research notes, reorder stops and view matching manual Atlas missions, with links into Expedition Intelligence and v17 Adventure Operations.",
+    "Curated route starter sets for capital research, Dragon Isles and Khaz Algar; optional grouping by research region with no travel-time claims.",
+    "Portable export/import, confirmation before replacement, cross-tab overwrite protection and complete Save Protection coverage for the single new v18.1 key.",
+    "Polished desktop/iPhone layouts with reduced-motion support; older saved missions, bookmarks, character builds, account connection, Cloudflare Worker and existing site remain unchanged."
+  ]
+}
