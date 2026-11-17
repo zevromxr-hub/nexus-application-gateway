@@ -644,21 +644,21 @@ await import('./experience-stability.test.mjs');
 await import('./sovereign-command-v5.test.mjs');
 await import('./talent-planner-v51.test.mjs');
 
-/* v9.1 Citadel: static checks on completely separate startup assets. */
+/* v9.1 standalone launcher static verification. */
 const citadelHTML=await read('azeroth-companion/citadel-entry.html');
 const citadelCSS=await read('azeroth-companion/citadel-entry-v9.1.css');
 const citadelJS=await read('azeroth-companion/citadel-entry-v9.1.js');
 const citadelReturn=await read('azeroth-companion/citadel-return-v9.1.js');
 new vm.Script(citadelJS);new vm.Script(citadelReturn);
-assert.match(html,/location\\.replace\\('\\.\\/citadel-entry\\.html'\\)/,'Fresh welcome must load before app bundles');
-assert.match(html,/citadel-return-v9\\.1\\.js\\?v=910/);
-assert.match(citadelHTML,/id="nxCitadel"/);
-assert.match(citadelHTML,/citadel-entry-v9\\.1\\.css\\?v=910/);
-assert.match(citadelHTML,/citadel-entry-v9\\.1\\.js\\?v=910/);
-for(const marker of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+marker+'"'),'Missing chamber '+marker);
-assert.doesNotMatch(citadelHTML,/scripts-(?:core|experience)|\\/api\\/me\\//i,'The welcome must stay standalone');
-assert.match(citadelCSS,/@media\\(max-width:660px\\)/);
-assert.match(citadelJS,/nexus_citadel_pins_v9_1/);
-assert.match(citadelReturn,/nexus_citadel_recent_view_v91/);
+assert.ok(html.includes("location.replace('./citadel-entry.html')"),'Fresh route must precede app bundle loading');
+assert.ok(html.includes('citadel-return-v9.1.js?v=910'),'Resume bridge missing');
+assert.ok(citadelHTML.includes('id="nxCitadel"'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.css?v=910'));
+assert.ok(citadelHTML.includes('citadel-entry-v9.1.js?v=910'));
+for(const key of ['sovereign','forge','armory','adventure','oracle'])assert.ok(citadelHTML.includes('data-key="'+key+'"'),'Missing chamber '+key);
+assert.ok(!citadelHTML.includes('scripts-core-')&&!citadelHTML.includes('scripts-experience-'),'Standalone entrance should not load app bundles');
+assert.ok(citadelCSS.includes('@media(max-width:660px)'));
+assert.ok(citadelJS.includes('nexus_citadel_pins_v9_1'));
+assert.ok(citadelReturn.includes('nexus_citadel_recent_view_v91'));
 
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
