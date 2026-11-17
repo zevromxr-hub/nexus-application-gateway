@@ -38,7 +38,7 @@ for(const [site,expected] of [
  ['?site=https://example-evil.invalid',oldOrigin+'/nexus-application-gateway/azeroth-companion/']
 ]){
  const response=await handle('/account/verify-companion'+site);
- assert.equal(response.status,302,'Unauthenticated portal flow must safely redirect');
+ assert.equal(response.status,303,'Unauthenticated portal flow must safely redirect');
  const location=response.headers.get('location')||'';
  assert.ok(location.startsWith(expected),'Verification return may target only an allowlisted site: '+location);
 }
