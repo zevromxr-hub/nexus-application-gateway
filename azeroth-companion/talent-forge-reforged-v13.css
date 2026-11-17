@@ -176,3 +176,6 @@
 @media(prefers-reduced-motion:reduce){#talentForge .nx13-node,#talentForge .nx13-hero-actions :is(button,a){transition:none}}
 @media(prefers-reduced-transparency:reduce){#talentForge .nx13-hero{background-color:#081629}#talentForge .nx13-scroll{background-color:#08152a}}
 @media print{#talentForge .nx13-hero{background:#101b30}#talentForge .nx13-node{break-inside:avoid}#talentForge .nx13-feedback{display:none}}
+
+/* Prominent direct navigation from the original companion. */
+body.nx-art-studios .sidebar .nav .nx13-nav-entry{border:1px solid #e2c18baf!important;border-radius:11px!important;background:linear-gradient(115deg,#563d7199,#8463417d)!important;color:#ffe8bf!important;box-shadow:inset 0 1px #ffedce2b,0 7px 21px #0003!important;font-weight:900!important;letter-spacing:.03em}
