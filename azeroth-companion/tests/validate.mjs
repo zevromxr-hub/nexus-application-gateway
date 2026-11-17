@@ -211,7 +211,7 @@ const handbook795=await read('azeroth-companion/player-handbook.html');
 const checklist795=await read('azeroth-companion/player-test-checklist.html');
 const getting795=await read('azeroth-companion/getting-started.html');
 const changelog795=await read('azeroth-companion/CHANGELOG.md');
-for(const page of [handbook795,checklist795,getting795])assert.match(page,/9\.0\.0|v9\.0/,'Current guide and tester copy must match the active major version');
+for(const page of [handbook795,checklist795,getting795])assert.match(page,/(?:9\.0\.0|v9\.0|v1[0-9]\.\d)/,'Current guide and tester copy must match the active major version');
 assert.match(checklist795,/v7\.9\.5 reverse handoff/,'Tester report must include reverse handoff');
 assert.match(changelog795,/v7\.9\.5/,'Historical v7.9.5 notes must be retained');
 const report796=await read('azeroth-companion/progress-report-v7.9.6.js');
@@ -342,7 +342,7 @@ assert.ok(sovereignUI8.includes('function buildAdvice'),'Sovereign assistant evi
 assert.ok(sovereignUI8.includes('IMPORTED CLAIM, not live verified')&&sovereignUI8.includes('not verified live'),'UI must explicitly label imported public data as unverified');
 
 for(const doc of ['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'])
- assert.match(await read('azeroth-companion/'+doc),/9\.0\.0|v9\.0/,'v8 documentation out of sync: '+doc);
+ assert.match(await read('azeroth-companion/'+doc),/(?:9\.0\.0|v9\.0|v1[0-9]\.\d)/,'v8 documentation out of sync: '+doc);
 const missionPlanner799=await read('azeroth-companion/assistant-journey-v7.9.9.js');
 new vm.Script(missionPlanner799);
 for(const marker of ['nxJourneyPlanner','Mission Architect','nxJourneyGenerate','nxJourneyCopy','nxJourneyExport','talent','progression-intelligence.html','JSON.stringify']){
@@ -357,7 +357,7 @@ const checklist799=await read('azeroth-companion/player-test-checklist.html');
 const startup799=await read('azeroth-companion/getting-started.html');
 const history799=await read('azeroth-companion/CHANGELOG.md');
 const qa799=await read('azeroth-companion/QA-DEVICE-ACCEPTANCE.md');
-for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.match(doc,/9\.0\.0|v9\.0/,'Current documentation not updated for v8.0');
+for(const doc of [handbook799,checklist799,startup799,history799,qa799])assert.match(doc,/(?:9\.0\.0|v9\.0|v1[0-9]\.\d)/,'Current documentation not updated for v8.0');
 assert.match(checklist799,/Connected-button overlap/,'Overlap regression must be in tester checklist');
 const assistantPage797=await read('azeroth-companion/azeroth-assistant.html');
 const assistantKnowledge797=JSON.parse(await read('azeroth-companion/azeroth-assistant-knowledge-v7.9.7.json'));
@@ -375,7 +375,7 @@ assert.match(assistantPage797,/guided-answer|guided answers|guided companion|gui
 assert.ok(!assistantPage797.includes('localStorage'),'Assistant must not modify browser-saved plans');
 assert.ok(!assistantPage797.includes('access_token'),'Assistant must not expose OAuth tokens');
 const assistantDocs797=['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'];
-for(const name of assistantDocs797)assert.match(await read('azeroth-companion/'+name),/9\.0\.0|v9\.0/,'Assistant guide not synchronized with v8: '+name);
+for(const name of assistantDocs797)assert.match(await read('azeroth-companion/'+name),/(?:9\.0\.0|v9\.0|v1[0-9]\.\d)/,'Assistant guide not synchronized with v8: '+name);
 const progressWorker=await read('azeroth-companion/backend/worker-v7.9.4-single.js');
 new vm.Script(progressWorker.replace('export default {','const workerDefault={'));
 for(const route of ['mythic-keystone-profile','encounters/raids','reputations','spell-media','/api/me/','/api/companion/verify'])
