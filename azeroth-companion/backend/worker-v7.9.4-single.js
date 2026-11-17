@@ -219,9 +219,10 @@ async function handlePersonal(request,env,url){
  * BLIZZARD_CLIENT_ID and BLIZZARD_CLIENT_SECRET stay in encrypted Worker secrets.
  */
 const ORIGIN='https://zevromxr-hub.github.io';
+const ALLOWED_PUBLIC_ORIGINS=new Set([ORIGIN,'https://zevarchives.com']);
 const LOCALE={us:'en_US',eu:'en_GB',kr:'ko_KR',tw:'zh_TW'};
 let bearer='',expiry=0,pending=null;
-const json=(value,status=200)=>new Response(JSON.stringify(value),{status,headers:{'content-type':'application/json; charset=utf-8','access-control-allow-origin':ORIGIN,'access-control-allow-methods':'GET, OPTIONS','access-control-allow-headers':'Content-Type, Accept','cache-control':'no-store','x-content-type-options':'nosniff'}});
+const json=(value,status=200,origin=ORIGIN)=>new Response(JSON.stringify(value),{status,headers:{'content-type':'application/json; charset=utf-8','access-control-allow-origin':origin,'access-control-allow-methods':'GET, OPTIONS','access-control-allow-headers':'Content-Type, Accept','cache-control':'no-store','x-content-type-options':'nosniff','vary':'Origin'}});
 const fail=(message,status=400)=>json({success:false,message},status);
 async function token(env){
  if(bearer&&Date.now()<expiry)return bearer;
@@ -250,13 +251,19 @@ export default {
  async fetch(request,env){
   const u=new URL(request.url);
   if(u.pathname==='/account'||u.pathname==='/account/privacy'||u.pathname==='/account/app.js'||u.pathname.startsWith('/auth/')||u.pathname.startsWith('/api/me/')||u.pathname==='/account/verify-companion'||u.pathname==='/api/companion/verify')return handlePersonal(request,env,u);
-  if(request.method==='OPTIONS')return json({ok:true});
-  if(request.method!=='GET')return fail('Method not allowed',405);
-  if(u.pathname==='/'||u.pathname==='/health')return json({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'7.9.4',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
+  // Two exact authorized browser origins; response headers are derived from this request, never shared mutable state.
+  const incomingOrigin=request.headers.get('origin');
+  if(incomingOrigin&&!ALLOWED_PUBLIC_ORIGINS.has(incomingOrigin))return new Response(JSON.stringify({success:false,message:'Origin not allowed'}),{status:403,headers:{...jheaders,'vary':'Origin'}});
+  const responseOrigin=incomingOrigin||ORIGIN;
+  const reply=(obj,status=200)=>json(obj,status,responseOrigin);
+  const reject=(message,status=400)=>reply({success:false,message},status);
+  if(request.method==='OPTIONS')return reply({ok:true});
+  if(request.method!=='GET')return reject('Method not allowed',405);
+  if(u.pathname==='/'||u.pathname==='/health')return reply({application:'NEXUS | AZEROTH COMPANION',service:'Blizzard API Gateway',version:'7.9.4',status:'online',credentialsConfigured:Boolean(env.BLIZZARD_CLIENT_ID&&env.BLIZZARD_CLIENT_SECRET),personalPortalConfigured:Boolean(env.AZEROTH_SESSION_SECRET&&String(env.AZEROTH_SESSION_SECRET).length>=32)});
   const p=u.pathname.split('/').filter(Boolean);
-  if(p[0]!=='api'||p.length>6)return fail('Unknown route',404);
+  if(p[0]!=='api'||p.length>6)return reject('Unknown route',404);
   const type=p[1],region=p[2],arg=p[3],arg2=p[4];
-  if(!Object.hasOwn(LOCALE,region))return fail('Unsupported region');
+  if(!Object.hasOwn(LOCALE,region))return reject('Unsupported region');
   const goodId=/^[1-9][0-9]{0,9}$/,slug=/^[a-z0-9-]{2,80}$/,name=/^[a-z0-9-]{2,50}$/;
   let path,namespace,params={};
   if((type==='progression')&&p.length===6&&slug.test(arg)&&name.test(arg2)){
@@ -264,14 +271,14 @@ export default {
    const routes={mythic:base+'/mythic-keystone-profile',raids:base+'/encounters/raids',reputations:base+'/reputations'};
    let path=routes[section];if(section==='mythic-season'){
     const season=u.searchParams.get('season')||'';
-    if(!goodId.test(season))return fail('Invalid Mythic+ season ID',400);
+    if(!goodId.test(season))return reject('Invalid Mythic+ season ID',400);
     path=base+'/mythic-keystone-profile/season/'+season;
    }
-   if(!path)return fail('Unsupported progression endpoint',404);
+   if(!path)return reject('Unsupported progression endpoint',404);
    try{const r=await blizzard(env,region,path,'profile');
-    if(r.error)return fail(r.error===404?'No Blizzard data for this character and category':r.error===429?'Blizzard rate limit reached':'Blizzard progression data unavailable',r.error===404?404:r.error===429?429:502);
-    return json({success:true,source:'Blizzard Battle.net API',region,section,fetchedAt:new Date().toISOString(),data:r.data});
-   }catch(_){return fail('Blizzard progression service temporarily unavailable',502)}
+    if(r.error)return reject(r.error===404?'No Blizzard data for this character and category':r.error===429?'Blizzard rate limit reached':'Blizzard progression data unavailable',r.error===404?404:r.error===429?429:502);
+    return reply({success:true,source:'Blizzard Battle.net API',region,section,fetchedAt:new Date().toISOString(),data:r.data});
+   }catch(_){return reject('Blizzard progression service temporarily unavailable',502)}
   }
 
   if((type==='item'||type==='media'||type==='spell-media')&&p.length===4&&goodId.test(arg)){
@@ -282,15 +289,15 @@ export default {
    path='/data/wow/talent-tree/'+arg+'/playable-specialization/'+arg2;namespace='static';
   }else if(type==='search'&&p.length===3){
    const q=(u.searchParams.get('q')||'').trim();
-   if(q.length<2||q.length>70||/[<>]/.test(q))return fail('Search needs 2–70 valid characters');
-   const page=Number(u.searchParams.get('page')||1);if(!Number.isSafeInteger(page)||page<1||page>50)return fail('Search page must be 1–50');
+   if(q.length<2||q.length>70||/[<>]/.test(q))return reject('Search needs 2–70 valid characters');
+   const page=Number(u.searchParams.get('page')||1);if(!Number.isSafeInteger(page)||page<1||page>50)return reject('Search page must be 1–50');
    path='/data/wow/search/item';namespace='static';params['name.'+LOCALE[region]]=q;params._pageSize=20;params._page=page;
   }else if((type==='character'||type==='equipment')&&p.length===5&&slug.test(arg)&&name.test(arg2)){
    path='/profile/wow/character/'+arg+'/'+arg2+(type==='equipment'?'/equipment':'');namespace='profile';
-  }else return fail('Unknown or invalid API route',404);
+  }else return reject('Unknown or invalid API route',404);
   try{
    const r=await blizzard(env,region,path,namespace,params);
-   if(r.error)return fail(r.error===404?'Blizzard record not found':r.error===429?'Blizzard rate limit reached':'Blizzard request unavailable',r.error===404?404:r.error===429?429:502);
+   if(r.error)return reject(r.error===404?'Blizzard record not found':r.error===429?'Blizzard rate limit reached':'Blizzard request unavailable',r.error===404?404:r.error===429?429:502);
    let data=r.data;
    if(type==='search'){
     data={query:u.searchParams.get('q'),items:(Array.isArray(data.results)?data.results:[]).map(row=>({id:Number(row?.data?.id),name:nameOf(row?.data?.name,region),quality:nameOf(row?.data?.quality?.name,region),level:row?.data?.level??null})).filter(row=>Number.isSafeInteger(row.id)&&row.id>0&&row.name).slice(0,20),page:Number(data.page)||1,pageCount:Number(data.pageCount)||1,resultCount:Number(data.resultCount)||0,resultCountCapped:Boolean(data.resultCountCapped),pageSize:Number(data.pageSize)||20};
@@ -298,7 +305,7 @@ export default {
    if(type==='media'||type==='spell-media'){
     data={id:Number(arg),assets:(Array.isArray(data.assets)?data.assets:[]).filter(a=>a&&a.key&&typeof a.value==='string'&&/^https:\/\//.test(a.value)).slice(0,10).map(a=>({key:a.key,url:a.value}))};
    }
-   return json({success:true,source:'Blizzard Battle.net API',region,fetchedAt:new Date().toISOString(),data});
-  }catch(error){console.error('Blizzard upstream unavailable');return fail('Blizzard upstream temporarily unavailable',502)}
+   return reply({success:true,source:'Blizzard Battle.net API',region,fetchedAt:new Date().toISOString(),data});
+  }catch(error){console.error('Blizzard upstream unavailable');return reject('Blizzard upstream temporarily unavailable',502)}
  }
 };
