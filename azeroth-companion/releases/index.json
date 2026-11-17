@@ -1,8 +1,15 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "releases": [
+    {
+      "version": "14.0.0",
+      "title": "Sovereign Build Architect — Owner-Approved Release",
+      "date": "2026-11-17",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
     {
       "version": "7.9.3",
       "title": "Character Intelligence & Gear Comparison",
