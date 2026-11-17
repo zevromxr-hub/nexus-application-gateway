@@ -50,6 +50,12 @@ function save(profile){
 const card=document.createElement('div');card.className='panel nx-character-handoff';
 card.innerHTML='<h3>Connected Character Center</h3><p class="muted">Choose a character in the secure My Azeroth portal, or type its public region, realm and name in Live Armory. Adding it to your local planners is optional and does not establish account ownership.</p><div class="nx-character-actions"><a class="button primary" href="https://nexus-azeroth-api.zevromxr.workers.dev/account" rel="noopener noreferrer" target="_blank">VIEW ACCOUNT CHARACTERS</a><a class="button" href="https://nexus-azeroth-api.zevromxr.workers.dev/account/verify-companion">VERIFY CONNECTION</a><button type="button" id="nxOpenDominion">OPEN CHARACTER DOMINION</button></div><div id="nxCharacterSelection" class="nx-character-selection" role="status"></div>';
 area.append(card);
+if(location.origin==='https://zevarchives.com'){
+ const accountLink=card.querySelector('.nx-character-actions a[href$="/account"]');
+ const proofLink=card.querySelector('.nx-character-actions a[href$="/account/verify-companion"]');
+ if(accountLink)accountLink.href+='?site=zevarchives';
+ if(proofLink)proofLink.href+='?site=zevarchives';
+}
 const message=card.querySelector('#nxCharacterSelection');message.textContent=incoming?'Public character selector received from the portal: '+p.name+' · '+p.realm+' ('+p.region.toUpperCase()+'). Check the Armory or save manually.':'No character selected yet. A Battle.net account without World of Warcraft characters can still verify successfully.';
 card.querySelector('#nxOpenDominion').addEventListener('click',()=>document.querySelector('.nav [data-view="dominion"]')?.click());
 const control=document.createElement('div');control.id='nxArmorySave';control.className='nx-character-selection nx-armory-import';

@@ -23,3 +23,5 @@ jobs:
           node-version: '22'
       - name: Validate Azeroth Companion and versioned release metadata
         run: node azeroth-companion/tests/validate.mjs
+      - name: Verify ZevArchives frontend compatibility only
+        run: node azeroth-companion/tests/zevarchives-frontend-handoff.test.mjs
