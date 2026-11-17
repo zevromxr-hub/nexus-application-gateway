@@ -1,7 +1,16 @@
 # NEXUS | AZEROTH — Browser & Device Acceptance Checklist
-Release focus: **v7.9.5 Character Research Handoff (staging; v7.9.4 Blizzard data pending real-player tests)**
+Release focus: **v7.9.6 Character Progress Report (staging; v7.9.4 Blizzard data pending real-player tests)**
 
-## New required v7.9.5 acceptance
+## New required v7.9.6 acceptance
+1. With a public Retail character, run Build Character Progress Report and confirm Mythic+, raids and reputations are requested sequentially, not in a burst.
+2. Check that a single API error does not destroy successful categories and that missing fields are not presented as confirmed zero progress.
+3. Verify Copy Summary provides only public character research, and Export Combined JSON produces a readable snapshot.
+4. Cancel a report in flight and ensure the page stays usable, cancellation is represented accurately, and a subsequent report is possible.
+5. Test PC and mobile layouts including the combined-report controls, scroll and button overlap, without modifying existing saved plans.
+6. Confirm individual Mythic+, Raid and Reputation tabs continue functioning.
+7. Retain volunteer checks for real Blizzard API data and Battle.net session regressions before stable Discord announcement.
+
+## Previous required v7.9.5 acceptance
 1. From Character Intelligence, enter a valid public character and choose Mythic+, Raids, or Reputations. Confirm all three carry the correct region, realm slug, and character name and select the requested progression tab without triggering an automatic API fetch.
 2. From Progression Intelligence, use Compare This Character; confirm Character A is prefilled and Character B remains optional, with no automatic Blizzard lookup.
 3. Use Copy Research Link and inspect it: only public region, realm, character, and optional selected tab may appear. No cookies, passwords, Blizzard access token, or session proof.
