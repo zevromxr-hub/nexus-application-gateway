@@ -37,7 +37,7 @@ await page.goto(BASE+'azeroth-assistant.html',{waitUntil:'domcontentloaded'});
 await page.locator('#lv9OracleHeader').waitFor();
 await page.locator('#question').fill('How do I compare equipment?');
 await page.locator('#askForm button[type=submit]').click();
-await page.locator('#lv9OracleStatus').getByText('Oracle responded',{exact:false}).waitFor({timeout:8000});
+await page.waitForFunction(() => document.getElementById('lv9OracleStatus')?.textContent?.includes('Oracle responded'),null,{timeout:8000});
 const size=await page.evaluate(()=>({page:document.documentElement.scrollWidth,width:document.documentElement.clientWidth}));
 assert.ok(size.page<=size.width+3,'No horizontal overflow at '+label+': '+JSON.stringify(size));
 assert.deepEqual(errors,[],'No unexpected JavaScript errors in '+label);
