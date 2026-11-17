@@ -15,7 +15,7 @@ const KEY='nexus_forge_reforged_checkpoints_v13';
 const str=(v,n=110)=>typeof v==='string'?v.trim().slice(0,n):'';
 const nodeId=x=>Number.isSafeInteger(Number(x))&&Number(x)>0&&Number(x)<=9999999999;
 const e=(tag,cls,txt)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(txt!==undefined)x.textContent=String(txt);return x};
-let chosen=null,baseline='',only=false,mode=true,scheduled=0,drawId=0,signature='',toastTimer=0;
+let chosen=null,baseline='',only=false,mode=true,scheduled=0,drawId=0,signature='',toastTimer=0,lastBaselineKey='';
 const snapshot=()=>{try{return bridge.snapshot()}catch(_){return null}};
 const read=(key,max=800000)=>{try{const raw=localStorage.getItem(key);return raw&&raw.length<=max?JSON.parse(raw):null}catch(_){return null}};
 function feedback(msg){const x=$('nx13Feedback');x.textContent=msg;x.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>x.hidden=true,3300)}
@@ -199,7 +199,10 @@ function draw(s){
 }
 function hash(s){return JSON.stringify([s?.ready,s?.identity,s?.active,s?.allocations,s?.choiceByNode,s?.savedDrafts?.map(d=>d.savedAt),$('tfSpec')?.options.length,$('tfSpec')?.value,$('tfRegion')?.value,$('tfBuildName')?.value,$('tfPlanActivity')?.value,$('tfSaved')?.querySelectorAll('[data-tf-open]').length,source.querySelectorAll('[data-tf-node] img').length,baseline,only,$('nx13Search').value,checkpoints().length])}
 function render(force=false){
- const s=snapshot();sync();totals(s);const next=hash(s);if(!force&&next===signature)return;signature=next;
+ const s=snapshot();sync();totals(s);
+ const nextKey=String(s?.identity||'')+'|'+(s?.savedDrafts||[]).map(d=>str(d.savedAt,40)).join(';')+'|'+checkpoints().map(d=>d.id).join(';');
+ if(nextKey!==lastBaselineKey){lastBaselineKey=nextKey;renderBaselines()}
+ const next=hash(s);if(!force&&next===signature)return;signature=next;
  draw(s);inspect(s);renderLibrary();
 }
 function schedule(){if(scheduled)return;scheduled=setTimeout(()=>{scheduled=0;render()},130)}
