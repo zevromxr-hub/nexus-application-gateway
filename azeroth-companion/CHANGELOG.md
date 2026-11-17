@@ -2,6 +2,11 @@
 
 ## v9.0.0 · 2026-11-16 — LIVING AZEROTH (Staging)
 
+- **Cinematic canonical homepage:** The established Azeroth URL now opens an immersive full-screen Living Azeroth entrance with five illustrated studio links. Enter Azeroth Companion reveals the *same preserved* fully functional application in place; no router migration or saved-data schema changes.
+- **Premium entrance refinements:** Added headline and hero navigation, performance mode, quick reference links, accessible controls, keyboard closing, responsive layout and a return-to-gateway shortcut. Session-based dismissal prevents repetitive intro screens while navigating in the same tab.
+- **Safe direct access:** `?enter=1` opens the full app without welcome, while `?gateway=1` reopens the cinematic entrance. The standalone `living-azeroth.html` Original Studios link uses direct access to avoid redirect loops.
+
+
 - **Visual art correction:** Replaced flat geometric citadel illustration with locally hosted premium fantasy character imagery across the gateway, main app, Sovereign Dashboard and studios. Rebuilt five small icon boxes into an asymmetric, illustrated navigation gallery with distinct image crops, stronger lighting/typography and responsive layouts.
 - **No new dependency:** Art reuses already shipped repository WebP files; if the player selects Performance mode, animation remains optional. This is a visual change only, not an account or game-data change.
 
