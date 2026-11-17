@@ -219,14 +219,16 @@ assert.match(changelog796,/Character Progress Report/,'Changelog must document r
 const assistantBubble798=await read('azeroth-companion/assistant-bubble-v7.9.8.js');
 const assistantBubbleStyles798=await read('azeroth-companion/assistant-bubble-v7.9.8.css');
 new vm.Script(assistantBubble798);
-assert.match(html,/assistant-bubble-v7\.9\.8\.js\?v=799/,'Assistant avatar module must load');
-assert.match(html,/assistant-bubble-v7\.9\.8\.css\?v=799/,'Assistant avatar stylesheet must load');
+assert.match(html,/assistant-bubble-v7\.9\.8\.js\?v=7991/,'Assistant avatar module must load');
+assert.match(html,/assistant-bubble-v7\.9\.8\.css\?v=7991/,'Assistant avatar stylesheet must load');
 assert.doesNotMatch(html,/<a href="\.\/azeroth-assistant\.html" style="display:block/,'Old assistant sidebar shortcut must be removed');
 for(const marker of ['nxAssistantLauncher','nxAssistantDialog','nxAssistantMobileSlot','aria-expanded','character','mini','allow-popups']){
  assert.ok(assistantBubble798.includes(marker)||marker==='character','Missing assistant launcher behavior: '+marker);
 }
 assert.match(assistantBubbleStyles798,/@media\(max-width:800px\)/,'Mobile assistant must use header flow');
-assert.match(assistantBubbleStyles798,/top:112px/,'Desktop assistant must appear at top-right');
+assert.match(assistantBubbleStyles798,/position:static!important/,'Assistant launcher must remain in layout flow');
+assert.ok(assistantBubble798.includes("top.insertAdjacentElement('afterend',slot)"),'Assistant must occupy a separate row beneath Connected header');
+assert.ok(!assistantBubble798.includes('document.body.append(avatar)'),'Launcher must never float above account controls');
 assert.match(assistantBubbleStyles798,/nx-assistant-dialog/,'Embedded assistant dialog must be styled');
 assert.ok(!assistantBubble798.includes('localStorage'),'Launcher must not access saved records');
 assert.ok(!assistantBubble798.includes('fetch('),'Launcher must not add new API requests');
