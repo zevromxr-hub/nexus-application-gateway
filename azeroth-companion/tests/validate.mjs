@@ -264,6 +264,14 @@ const sovereignPublic=sovereign.withPublic(sovereignSample,{region:'us',realm:'a
 assert.equal(sovereignPublic.public.gear[0].itemId,123);
 assert.equal(sovereignPublic.public.source,'blizzard-public-api');
 assert.equal(sovereignPublic.local.builds.length,2,'Public lookup must preserve manual plans');
+const sovereignImported=sovereign.validateImport(sovereignPublic);
+assert.equal(sovereignImported.local.builds.length,2);
+assert.equal(sovereignImported.public.source,'imported-public-claim','Imported files must not masquerade as freshly verified Blizzard responses');
+assert.equal(sovereignImported.public.verified,'NOT LIVE VERIFIED — import provided by user');
+assert.throws(()=>sovereign.validateImport({format:sovereign.SCHEMA,local:{builds:[],characters:[]}}),'Missing target data must not crash imported previews');
+assert.ok(sovereignUI8.includes('function buildAdvice'),'Sovereign assistant evidence review required');
+assert.ok(sovereignUI8.includes('imported-public-claim'),'UI must label imported public data as unverified');
+
 for(const doc of ['player-handbook.html','player-test-checklist.html','getting-started.html','CHANGELOG.md','QA-DEVICE-ACCEPTANCE.md','release-notes.html'])
  assert.match(await read('azeroth-companion/'+doc),/8\.0\.0|v8\.0/,'v8 documentation out of sync: '+doc);
 const missionPlanner799=await read('azeroth-companion/assistant-journey-v7.9.9.js');
