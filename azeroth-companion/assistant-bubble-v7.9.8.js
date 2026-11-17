@@ -7,7 +7,7 @@ const top=document.querySelector('main.main > .top')||document.querySelector('ma
 if(!top)return;
 const mobile=matchMedia('(max-width: 800px)');
 const avatar=document.createElement('button');avatar.type='button';avatar.id='nxAssistantLauncher';avatar.className='nx-assistant-launcher';avatar.setAttribute('aria-controls','nxAssistantDialog');avatar.setAttribute('aria-expanded','false');avatar.setAttribute('aria-haspopup','dialog');avatar.setAttribute('aria-label','Open ZevRo Azeroth Assistant');
-const art=document.createElement('span');art.className='nx-assistant-avatar';art.setAttribute('aria-hidden','true');art.textContent='✦';
+const art=document.createElement('span');art.className='nx-assistant-avatar';art.setAttribute('aria-hidden','true');const pic=document.createElement('img');pic.src='./assets/nexus-warrior-favicon-48.png';pic.alt='';pic.width=42;pic.height=42;pic.decoding='async';pic.onerror=()=>{pic.remove();art.textContent='✦'};art.append(pic);
 const copy=document.createElement('span');copy.className='nx-assistant-label';const title=document.createElement('strong');title.textContent='AZEROTH ASSISTANT';const sub=document.createElement('small');sub.textContent='ZevRo · ASK ME';copy.append(title,sub);avatar.append(art,copy);
 const slot=document.createElement('div');slot.className='nx-assistant-mobile-slot';slot.id='nxAssistantMobileSlot';top.append(slot);
 document.body.append(avatar);
