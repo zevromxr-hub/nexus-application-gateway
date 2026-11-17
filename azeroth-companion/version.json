@@ -1,14 +1,25 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "16.0.0",
+  "version": "16.5.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "LIVING WORLD ENGINE — THE WAR ROOM, INTERACTIVE WORLD ATLAS, ADVENTURE MISSIONS & COMMAND SEARCH 2.0",
-  "previous_version": "15.0.0",
+  "subtitle": "ADVENTURE INTELLIGENCE — EXPEDITION CONSOLE, WORLD ATLAS OVERDRIVE & LIVING WAR ROOM PULSE",
+  "previous_version": "16.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Launched Expedition Console v16.5, a cinematic preparation studio that opens existing manual World Atlas missions, presents the selected destination and links back to original research and character workspaces.",
+    "Added seven practical activity-specific mission-preparation templates, user-customizable manual checklists (20-step cap), progress percentages representing only checked personal actions, reset confirmation and persistent private strategy notes.",
+    "Introduced owner-local priority, pinned missions, character/status filters and goal search without inventing game-ready ratings, combat performance, loot outcomes, confirmed quest completion or official encounter guides.",
+    "Added source-aware integrity cards for optional locally saved characters, Talent Forge draft references and Item Atlas IDs, with explicit unavailable-link warnings rather than fabricated Blizzard account state.",
+    "Provided user-directed exportable JSON Expedition Briefs and copyable manual checklist text (where clipboard permission allows), with whitelisted fields and warnings to review personal notes before sharing.",
+    "Supercharged the interactive v16 World Atlas with bookmarkable curated destinations, per-region manual mission counts, World Engine war table, direct Prepare Mission links and next-expedition shortcuts.",
+    "Upgraded the cinematic War Room with a selected-character-aware Expedition Pulse, checklist progress, bookmarked location shortcuts and one-click links to Expedition Console; original Command Search and studios remain available.",
+    "Isolated all new personal preparation records and destination bookmarks in nexus_adventure_intelligence_v165 and extended read-only Save Protection backup to include them. All original account, character, native Forge rank and v16 mission keys remain unchanged.",
+    "Preserved dark-violet/gold/blue original artwork, responsive iPhone/PC layouts, reduced-motion support, Blizzard OAuth/Worker routing, original spell icons, HYPER MUSIC and v15 portable build packages.",
+    "Added v16.5 source checks, synthetic desktop Chromium and iPhone-style WebKit adventure workflow tests, optional tester scenarios, full release guide and rollback branch backup/azeroth-v16-before-adventure-intelligence-v16-5-2026-11-17.",
+    "Owner approval authorizes publication without device-test gates; physical iPhone/browser and in-game player acceptance remain pending and are not falsely marked verified.",
     "Introduced Living World Engine v16 with a new illustrated personal War Room inside the original Command Center. Read-only local profile, Talent Forge drafts, manual item targets and next local mission appear together without disrupting previous v10–v15 work.",
     "Added browser-local Command Search 2.0 for curated regions, known studio routes, saved characters, manual talent drafts, Item Atlas entries and personal Atlas missions. Original Command Center search remains operational; no search text goes to Blizzard or another service.",
     "Launched a separate World Atlas with a conceptual not-to-scale in-game research map, eight curated region groups and more than twenty real, recognizable city/hub/zone destinations, plus destination filtering and targeted research links.",
@@ -112,12 +123,11 @@
     "Corrected blurry cinematic entrance imagery with a dedicated 1600 × 900 WebP landscape hero and framed chamber preview artwork.",
     "Changed the five chamber destinations into a responsive portrait gallery, capped at the original 380px illustration width rather than stretching the portraits into landscape cards.",
     "Improved first-view artwork loading and retained all studio links, user preferences, saved data, performance modes and account flows.",
-    "Added a self-contained Citadel Awakening gateway at the canonical site URL for fresh visits, with the app's heavy resources loading only after selecting the full companion.",
-    "Added five previewable chambers, searchable navigation, three locally pinned shortcuts and a recent-chamber launcher; all links open existing working studios."
+    "Added a self-contained Citadel Awakening gateway at the canonical site URL for fresh visits, with the app's heavy resources loading only after selecting the full companion."
   ],
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "User approved continued v16 development and release. Automated source/device checks are advisory; Blizzard gameplay and physical-device acceptance remain pending."
+    "note": "Project owner authorized v16.5 Expedition Intelligence and public release/Discord. Automated synthetic desktop/mobile tests are separate from real-device and in-game acceptance."
   }
 }
