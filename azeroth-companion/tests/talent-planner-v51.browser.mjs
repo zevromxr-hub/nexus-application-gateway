@@ -4,7 +4,7 @@
  */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
-const URL='http://127.0.0.1:4173/azeroth-companion/';
+const URL='http://127.0.0.1:4173/azeroth-companion/?enter=1';
 const INDEX={success:true,data:{spec_talent_trees:[
  {name:'Fixture Specialization',key:{href:'https://us.api.blizzard.com/data/wow/talent-tree/111/playable-specialization/222'}}
 ]}};
