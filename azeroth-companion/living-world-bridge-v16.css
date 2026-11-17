@@ -1,0 +1,25 @@
+/* NEXUS v16 World Atlas link within existing Character Nexus. */
+.nx16-character-world{position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;gap:26px;min-width:0;
+ margin:24px 0;border:1px solid #e5c190a2;border-radius:17px;background:linear-gradient(115deg,#171d37f9,#11233ef5);
+ box-shadow:0 16px 41px #0008;padding:22px}
+.nx16-world-bridge-art{flex:0 0 195px;align-self:stretch;min-height:260px;border-radius:12px;border:1px solid #c7b39c7b;
+ background:linear-gradient(0deg,#0e1b32a1,transparent),url('./assets/adventure-journal-v9.1.webp') center/cover no-repeat;
+ box-shadow:0 0 16px #ac88c338}
+.nx16-world-bridge-copy{flex:1;min-width:0;color:#e4dded}
+.nx16-world-bridge-copy>span{color:#d8bde9;font-size:9px;font-weight:900;letter-spacing:.14em}
+.nx16-world-bridge-copy h3{font-size:clamp(23px,3vw,38px);letter-spacing:-.055em;font-weight:950;color:#f7d8a4;margin:5px 0}
+.nx16-world-bridge-copy>p{font-size:12px;line-height:1.7;color:#c0d3e1;max-width:660px}
+.nx16-world-bridge-stats{font-size:11px;line-height:1.65;color:#d6e5ed;border-left:3px solid #dabb86;background:#24324b99;padding:10px 13px;margin:14px 0}
+.nx16-world-goals{display:grid;gap:7px}
+.nx16-world-goal{display:flex;align-items:center;gap:10px;min-width:0;padding:10px;border:1px solid #aaacbb78;border-radius:9px;background:#1e304db3;color:#f6debf;text-decoration:none}
+.nx16-world-goal strong{font-size:11px;overflow-wrap:anywhere;flex:1;min-width:0}
+.nx16-world-goal small{font-size:10px;color:#bdd5e3;min-width:0;flex:1}
+.nx16-world-goal span{font-size:17px;color:#dabb87}
+.nx16-world-empty{font-size:11px;color:#c0d2df;line-height:1.6;padding:12px;border:1px dashed #a3aab980;border-radius:9px}
+.nx16-world-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
+.nx16-world-actions a{min-height:43px;display:inline-flex;align-items:center;padding:9px 14px;color:#231e21!important;border-radius:8px;
+ border:1px solid #e7cc9f;background:linear-gradient(110deg,#bd9063,#f0d4a1);font-size:10px;font-weight:900;text-decoration:none}
+.nx16-world-actions a+a{background:#2b3c58;border-color:#afb8c781;color:#f1d4aa!important}
+@media(max-width:760px){.nx16-character-world{padding:16px}.nx16-world-bridge-art{flex-basis:82px;min-height:220px;opacity:.7}.nx16-world-goal{display:grid;grid-template-columns:1fr auto}.nx16-world-goal small{grid-column:1/-1}.nx16-world-goal span{grid-column:2;grid-row:1}}
+@media(max-width:540px){.nx16-world-bridge-art{position:absolute;inset:0;opacity:.10;border:0;pointer-events:none}.nx16-world-bridge-copy{position:relative;z-index:1}.nx16-character-world{padding:18px}.nx16-world-actions a{flex:1 1 100%;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.nx16-character-world *{animation:none!important;transition:none!important}}
