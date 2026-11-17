@@ -164,7 +164,7 @@ assert.match(compiledCore,/data-section="weekly-vault"/,'The published core bund
 assert.match(backupVault,/data-section="vault"/,'The Sovereign Data Vault must retain its original route');
 
 assert.match(html,/warcraft-overdrive\.js/);assert.match(html,/warcraft-overdrive\.css/);
-assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.2\.1/);
+assert.match(html,/id="nxCanonicalVersion"[^>]*>AZEROTH v9\.3\.0/);
 assert.match(html,/player-utility\.js/);
 assert.match(html,/player-utility\.css/);
 const inline=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);assert.ok(inline.length>=1,'At least one inline companion script required');
@@ -173,7 +173,7 @@ const js=await read('azeroth-companion/warcraft-overdrive.js');new vm.Script(js)
 for(const id of ['wowRouteForm','wowCraftForm','wowGearFields','wowWeeklyForm','wowEncounterForm','wowReleaseHistory','wowCheckUpdates','wowExport'])assert.ok(js.includes(id),'Missing '+id);
 const version=JSON.parse(await read('azeroth-companion/version.json'));
 const index=JSON.parse(await read('azeroth-companion/releases/index.json'));
-assert.equal(version.version,'9.2.1');
+assert.equal(version.version,'9.3.0');
 assert.equal(version.channel,'staging','New progression endpoints must remain staged until live Cloudflare testing');
 assert.equal(index.releases[0].version,'7.9.3','Discord release index must remain on last published release during staging');
 const previousRelease=JSON.parse(await read('azeroth-companion/releases/v7.9.3.json'));
@@ -691,7 +691,7 @@ assert.ok(citadelHTML.includes('citadel-hero-hd-v9.1.1.webp'),'HD desktop preloa
 
 /* v9.2 Studio Art Direction: static scope, local assets and preservation. */
 const studioArt=await read('azeroth-companion/studio-art-direction-v9.2.css');
-assert.ok(html.includes('studio-art-direction-v9.2.css?v=921'));
+assert.ok(html.includes('studio-art-direction-v9.2.css?v=930'));
 assert.ok(html.includes('class="nx-art-studios"'));
 for(const [file,scope] of [
  ['character-intelligence.html','character'],
@@ -702,7 +702,7 @@ for(const [file,scope] of [
  ['living-azeroth.html','living']
 ]){
  const external=await read('azeroth-companion/'+file);
- assert.ok(external.includes('studio-art-direction-v9.2.css?v=921'),file+' missing studio art styles');
+ assert.ok(external.includes('studio-art-direction-v9.2.css?v=930'),file+' missing studio art styles');
  assert.ok(external.includes('data-nx-art-page="'+scope+'"'),file+' missing scope');
 }
 for(const name of ['citadel-hero-hd-v9.1.1.webp','sovereign-throne-v9.1.webp','talent-forge-v9.1.webp','living-armory-v9.1.webp','adventure-journal-v9.1.webp','azeroth-oracle-v9.1.webp']){
@@ -732,5 +732,18 @@ assert.ok(bannerSignature>=0,'Panorama must use a supported VP8 WebP image encod
 const bannerWidth=bannerBytes.readUInt16LE(bannerSignature+3)&0x3fff;
 const bannerHeight=bannerBytes.readUInt16LE(bannerSignature+5)&0x3fff;
 assert.ok(bannerWidth>=2100&&bannerHeight>=700,'Panorama must retain the real 2172 × 724 detail');
+
+
+/* v9.3 Luminous Glass: preserve current resources, UI/data behavior and accessible modes. */
+assert.ok(studioArt.includes('NEXUS | AZEROTH v9.3 — LUMINOUS GLASS'),'Glass treatment absent');
+for(const token of ['--nx-glass-face','--nx-glass-metric','--nx-glass-inset','--nx-glass-field',
+ 'loot-metrics > div','.loot-entry','.loot-goal','.nx-warcraft-research','.citadel-panel',
+ 'prefers-reduced-motion','lv9-mode-performance']){
+ assert.ok(studioArt.includes(token),'Expected glass component missing: '+token);
+}
+assert.ok(!studioArt.includes('createElement(')&&!studioArt.includes('localStorage')&&!studioArt.includes('@import'),
+ 'Glass styling must not add storage, application execution or imported stylesheets');
+assert.equal((html.match(/<link rel="stylesheet" href=/g)||[]).length,26,
+ 'Premium glass must use the already-loaded stylesheet without extra requests');
 
 console.log('Azeroth Companion validation passed: script syntax, integrations, metadata, release payload, preserved hub entries.');
