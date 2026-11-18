@@ -1,14 +1,23 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "ADAPTIVE EXPERIENCE ENGINE — PREMIUM CROSS-STUDIO VISUALS, FOUR DISPLAY MODES & MOBILE PERFORMANCE",
-  "previous_version": "18.2.0",
+  "subtitle": "SOVEREIGN PRIVATE VIDEO VAULT — REAL LOCAL PASSWORD ENCRYPTION, PORTABLE PRIVATE ARCHIVES & CONNECTED COMMAND PULSE",
+  "previous_version": "19.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Introduced Sovereign Private Video Vault v20: password-created local video archive encrypted with AES-256-GCM in browser IndexedDB, 600,000-iteration SHA-256 PBKDF2 key derivation and per-part random IVs.",
+    "Private media bytes, filenames and notes are sealed as ciphertext before storage; no actual video is uploaded to GitHub Pages, Cloudflare, Discord or a public repository. The password and decryption key are never saved.",
+    "Supports secure browser-local MP4, MOV, M4V, WebM, OGV and OGG imports, authenticated encrypted per-part storage, bounded per-video memory, personal notes, favorite markers, search and temporary in-memory playback while unlocked.",
+    "Built portable encrypted .nxvault backups and browser-profile/device restore into empty storage only, with original-password unlock required and strong warnings that browser storage may be evicted or deleted.",
+    "Vault page uses strict no-network Content Security Policy, no inline/third-party scripts, and explicit manual/background lock that revokes decrypted object URLs. No fake shared password gate or publicly hosted media.",
+    "Expanded Command Center with a new cinematic, read-only Continuity Pulse that shows local active Atlas missions, saved expedition routes, v17 session entries, native Talent Forge drafts and one-tap original studio handoffs.",
+    "Integrated Private Video Vault into Command Center search, main companion navigation, World Atlas and Character Nexus, without changing original character, login, music, game progress, route or mission storage.",
+    "Automated safety tests verify isolated encrypted browser data, private metadata, wrong password denial, portable backup/restore and synthetic desktop Chromium/iPhone WebKit behavior; real hardware codec/storage acceptance remains pending.",
+    "Rollback protection available under backup/azeroth-v19-before-private-vault-v20-2026-11-17; browser-local vault will not automatically synchronize across devices; true shared cloud media would require a separately secured server and private object storage.",
     "Introduced the NEXUS Adaptive Experience Engine v19: an accessible, shared visual presentation controller across PROXIMUS Gateway, Asset Alchemist and primary Azeroth pages without changing the apps' underlying functional identities.",
     "Added four explicit visual presets (Auto adaptive, Cinematic, Balanced, Quiet) in an unobtrusive page-header menu. Only the visual choice is saved in a new isolated, optional browser-local key nexus_visual_presentation_v19.",
     "Auto selects low-cost effects on narrow touch displays, operating-system reduced-motion preferences or Save-Data connections; users can manually choose Cinematic or Balanced, but OS reduced-motion is always respected.",
@@ -176,6 +185,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner selected the premium adaptive visual engine as the next development priority. Automated source and browser acceptance are advisory; real connected account, Windows app launcher and physical device tests remain pending."
+    "note": "Owner requested a personal password-protected video vault and useful existing studio enhancements. This device-local encrypted implementation requires no new Cloudflare bindings or publicly uploaded video. Real iPhone hardware, Safari quota, video codec and connected WoW player acceptance remain pending."
   }
 }
