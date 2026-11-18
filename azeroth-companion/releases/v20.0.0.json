@@ -1,0 +1,20 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "20.0.0",
+  "title": "SOVEREIGN PRIVATE VIDEO VAULT — Password-Encrypted Personal Media & Command Pulse",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/private-video-vault.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner approved a real password-protected personal vault and additive improvements to existing Azeroth functionality. Device/codec acceptance remains pending; content is private browser-local ciphertext, not cloud video hosting.",
+  "features": [
+    "New Sovereign Private Video Vault encrypts videos, titles and private notes locally using AES-256-GCM and a password-derived key, never uploading media to GitHub Pages or Cloudflare.",
+    "Support for local MP4/MOV/M4V/WebM/OGV/OGG imports, encrypted file parts, personal title/note editing, favorites, search and native private browser playback.",
+    "Encrypted portable .nxvault backups and opt-in restore into an empty device/browser, plus manual lock, background security and strict no-network vault policies.",
+    "A more useful Living Command Center now shows the real local status of manual Atlas missions, expedition routes, saved Adventure Operations and Talent Forge drafts in a premium Continue Your Adventure panel.",
+    "Vault access integrated into Command Center search, main companion sidebar, World Atlas and Character Nexus. All older tools, account verification, music, saves and Cloudflare backend retained.",
+    "Privacy scope: each browser/device owns its local media archive. A password cannot make publicly hosted GitHub video files private; optional server-backed cross-device vault would require future secure storage infrastructure."
+  ]
+}
