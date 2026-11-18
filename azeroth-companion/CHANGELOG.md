@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v20.0.0 · 2026-11-17 — SOVEREIGN PRIVATE VIDEO VAULT + COMMAND PULSE (Owner approved; physical-device acceptance pending)
+
+- Introduced a true password-derived, client-side encrypted Personal Video Vault at `private-video-vault.html`. Videos, names and notes remain in per-device IndexedDB ciphertext encrypted under AES-256-GCM; password key derivation uses PBKDF2/SHA-256 with 600,000 iterations and a random salt. No raw video is ever uploaded to GitHub or Cloudflare. There is no hard-coded shared password or server-based public video storage.
+- Supports local video imports in 2 MiB encrypted chunks, native format-dependent playback from temporary reconstructed memory Blob URLs, private editable notes/titles, favorite markers, search, one-tap Lock and background auto-lock, with native iPhone/desktop interface.
+- Adds ciphertext-only portable `.nxvault` export and deliberate restore **only into an empty browser-local vault**, protecting existing libraries. The original password is required after restoration; the password is not stored or recoverable. Browser eviction and memory limits require external backups.
+- Adds a premium Command Center `Continue the Adventure` pulse that reads local Atlas mission progress, saved v18.1 routes, Adventure Operations entries and Talent Forge drafts without mutating original records. Adds Vault to central search, side navigation, character links and Atlas crossroad shortcuts.
+- Restricts the Vault page with a deny-by-default CSP: no inline script, no external network connections and no media source besides in-memory Blob URLs. No new Cloudflare API, auth, license or account permission changes. Privacy scope is device-local; automatic cross-device cloud access would require a separately secured backend.
+- Adds dedicated source checks and synthetic desktop Chromium/iPhone WebKit encryption, wrong-password, lock and portable archive tests. Preserved rollback branch `backup/azeroth-v19-before-private-vault-v20-2026-11-17`. Actual iPhone Safari, file codec, quota and live player acceptance remain pending.
+
+
 ## v19.0.0 · 2026-11-17 — ADAPTIVE EXPERIENCE ENGINE (Owner approved; real-device acceptance pending)
 
 - Added a lightweight unified visual presentation layer on PROXIMUS Gateway, Asset Alchemist and major Azeroth Companion studios; each keeps its product-specific palette and original features.

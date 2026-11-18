@@ -43,11 +43,13 @@ async function audit(label,engine,mobile){
   assert.match(await page.locator('#nx16GoalTitle').inputValue(),/Explore Azj-Kahet/);
   await page.locator('.nx182-region-tile[data-region="northrend"]').click();
   await page.waitForFunction(()=>document.querySelector('#nx18Chart')?.dataset.region==='northrend');
+  await page.waitForFunction(()=>/Icebound/.test(document.getElementById('nx182RegionMotto')?.textContent||''));
   assert.match(await page.locator('#nx182RegionMotto').textContent(),/Icebound/);
   assert.match(await page.locator('#nx182SceneArt').getAttribute('src'),/nexus-region-northrend-v182\.svg$/);
+  const priorFocus=await page.locator('#nx182Density').getAttribute('aria-pressed');
   await page.locator('#nx182Density').click();
   const focus=await page.locator('#nx182Density').getAttribute('aria-pressed');
-  assert.equal(focus,mobile?'false':'true');
+  assert.equal(focus,priorFocus==='true'?'false':'true','Focus Pins must toggle the previous state regardless of device or reduced-motion defaults');
   await page.locator('#nx18Filter').selectOption('goals');
   assert.match(await page.locator('#nx182Status').textContent(),/1 manual goal/);
   const after=await page.evaluate(()=>Object.fromEntries(
