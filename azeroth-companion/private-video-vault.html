@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-nx-version="20.0.0">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1022">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="NEXUS Azeroth Private Video Vault — password-encrypted local personal videos. No videos are uploaded to a server.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Private Video Vault | NEXUS Azeroth v20</title>
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=700">
+<link rel="stylesheet" href="./private-video-vault-v20.css?v=2000">
+<script defer src="./private-video-vault-v20-core.js?v=2000"></script>
+<script defer src="./private-video-vault-v20.js?v=2000"></script>
+</head>
+<body>
+<header class="nv20-header">
+ <a href="./command-center.html" class="nv20-brand" aria-label="Return to NEXUS Azeroth Command Center"><span class="nv20-mark">N</span><span><strong>NEXUS</strong><small>PRIVATE MEDIA · V20</small></span></a>
+ <nav aria-label="NEXUS navigation">
+  <a href="./command-center.html">COMMAND CENTER</a>
+  <a href="./world-atlas.html">WORLD ATLAS</a>
+  <a href="./player-experience.html">CHARACTER NEXUS</a>
+  <a href="./save-protection.html">SAVE PROTECTION</a>
+ </nav>
+</header>
+<main class="nv20-main">
+ <section class="nv20-hero" aria-label="Private Video Vault">
+  <div class="nv20-hero-content">
+   <div class="nv20-eyebrow">NEXUS / PERSONAL MEDIA SECURITY / V20.0.0</div>
+   <h1>THE PRIVATE<br><em>VIDEO VAULT.</em></h1>
+   <p>Give your own video collection a cinematic home, protected by a password and real encryption. Your files stay on this browser/device—not on GitHub, NEXUS servers, or the public website.</p>
+   <div class="nv20-trust"><span><b>256</b> AES-GCM encryption</span><span><b>0</b> video uploads to servers</span><span><b>1</b> private password</span></div>
+  </div>
+  <div class="nv20-hero-emblem" aria-hidden="true"><div class="nv20-hero-ring"><span>✦</span></div><span class="nv20-emblem-caption">SOVEREIGN ARCHIVES</span></div>
+ </section>
+ <div id="nv20Alert" class="nv20-alert" role="status" aria-live="polite">Checking secure browser storage…</div>
+ <section id="nv20Gate" class="nv20-gate" aria-labelledby="nv20GateTitle">
+  <div class="nv20-gate-art" aria-hidden="true"><span class="nv20-key-icon">◆</span><span>PERSONAL ENCRYPTION CHAMBER</span></div>
+  <div class="nv20-gate-content">
+   <div class="nv20-kicker" id="nv20GateLabel">SECURE ACCESS</div>
+   <h2 id="nv20GateTitle">Preparing your private vault…</h2>
+   <p id="nv20GateDescription">Your browser stores only encrypted media. Unlocking never sends your password over the network.</p>
+   <form id="nv20PasswordForm">
+    <label for="nv20Password">PRIVATE VAULT PASSWORD</label>
+    <input id="nv20Password" name="password" type="password" minlength="12" maxlength="512" required autocomplete="off" spellcheck="false" placeholder="Enter a strong private password">
+    <div id="nv20ConfirmWrap" hidden><label for="nv20Confirm">CONFIRM YOUR PASSWORD</label>
+    <input id="nv20Confirm" name="confirmation" type="password" minlength="12" maxlength="512" autocomplete="off" spellcheck="false" placeholder="Enter the same password again"></div>
+    <button id="nv20GateSubmit" type="submit">UNLOCK VAULT</button>
+   </form>
+   <p class="nv20-gate-notice">No reset or recovery key is stored. <strong>Forgetting your password means losing access to encrypted videos.</strong> Browser storage can be erased; export an encrypted backup regularly.</p>
+   <div id="nv20RestoreEntry" class="nv20-restore-entry" hidden>
+    <strong>HAVE A BACKUP FROM ANOTHER DEVICE?</strong>
+    <label class="nv20-file-action">CHOOSE ENCRYPTED .NXVAULT FILE<input id="nv20RestoreFile" type="file" accept=".nxvault,application/octet-stream"></label>
+    <button id="nv20Restore" type="button" disabled>RESTORE THIS ENCRYPTED LIBRARY</button>
+    <small>Only available when no local vault exists. Importing does not decrypt anything; unlock with the backup’s original password afterward.</small>
+   </div>
+  </div>
+ </section>
+ <section id="nv20Workspace" class="nv20-workspace" hidden aria-labelledby="nv20WorkspaceTitle">
+  <div class="nv20-toolbar">
+   <div><span class="nv20-kicker">UNLOCKED · LOCAL SESSION</span><h2 id="nv20WorkspaceTitle">YOUR PERSONAL CINEMA</h2>
+   <p>Private titles and notes only appear after decryption. Locking removes playback URLs and hides your library.</p></div>
+   <button type="button" class="nv20-lock" id="nv20Lock">◆ LOCK VAULT</button>
+  </div>
+  <div class="nv20-pulse">
+   <div><small>ENCRYPTED VIDEOS</small><strong id="nv20Count">0</strong></div>
+   <div><small>RECORDED FILE SIZE</small><strong id="nv20Size">0 MB</strong></div>
+   <div><small>AVAILABLE PER CLIP</small><strong id="nv20Limit">—</strong></div>
+   <div><small>LOCAL STORAGE</small><strong id="nv20Quota">CHECKING</strong></div>
+  </div>
+  <div class="nv20-work-grid">
+   <section class="nv20-import" aria-labelledby="nv20ImportTitle">
+    <span class="nv20-eyebrow">01 / ADD TO YOUR ENCRYPTED LIBRARY</span>
+    <h3 id="nv20ImportTitle">Import your personal videos.</h3>
+    <p>MP4, M4V, MOV, WebM, OGV and OGG. Playback support depends on your browser. Encryption is performed in small pieces to keep the import responsive.</p>
+    <label class="nv20-drop">
+     <span aria-hidden="true">＋</span><strong>CHOOSE VIDEO FILES</strong><small>File selection stays on your device</small>
+     <input id="nv20Files" type="file" accept=".mp4,.m4v,.mov,.webm,.ogv,.ogg,video/*" multiple>
+    </label>
+    <p class="nv20-hint" id="nv20LimitNote">Your device-specific file limit appears above.</p>
+    <button id="nv20Persist" type="button" class="nv20-secondary">REQUEST MORE DURABLE BROWSER STORAGE</button>
+    <p id="nv20Persistence" class="nv20-hint">A browser may still clear site data. An encrypted .nxvault backup is your reliable recovery copy.</p>
+   </section>
+   <section class="nv20-portable" aria-labelledby="nv20PortableTitle">
+    <span class="nv20-eyebrow">02 / BACKUP YOUR ARCHIVE</span>
+    <h3 id="nv20PortableTitle">Your library. Your key.</h3>
+    <p>Export everything as a single encrypted .nxvault file. It contains ciphertext only, including encrypted filenames and notes. It can be restored on another browser/device without making videos public.</p>
+    <button id="nv20Backup" type="button">EXPORT ENCRYPTED VAULT</button>
+    <div class="nv20-portable-warning"><strong>IMPORTANT</strong><span>Your password is never included in a backup. Keep the file and password separate, and do not clear your original browser data until you have verified a restore.</span></div>
+   </section>
+  </div>
+  <section class="nv20-library" aria-labelledby="nv20LibraryTitle">
+   <div class="nv20-library-head"><div><span class="nv20-eyebrow">03 / PERSONAL ARCHIVE</span>
+    <h3 id="nv20LibraryTitle">The sealed collection</h3></div>
+    <label class="nv20-search"><span>SEARCH UNLOCKED TITLES</span><input id="nv20Search" type="search" maxlength="120" autocomplete="off" placeholder="Search names or private notes…"></label></div>
+   <div class="nv20-grid" id="nv20Grid" aria-live="polite"></div>
+   <div class="nv20-empty" id="nv20Empty">Your vault is empty. Import a video to create your first encrypted collection entry.</div>
+  </section>
+  <section id="nv20PlayerPanel" class="nv20-player-panel" hidden aria-label="Unlocked local video player">
+   <div class="nv20-player-head"><div><span class="nv20-eyebrow">PRIVATE PLAYBACK · TEMPORARY MEMORY</span>
+    <h3 id="nv20NowPlaying">Your private video</h3></div><button id="nv20Stop" type="button">CLOSE PLAYER</button></div>
+   <video id="nv20Video" controls playsinline preload="metadata" controlsList="nodownload" aria-label="Decrypted local video playback"></video>
+   <p>Video is reconstructed in memory only while unlocked. If a format cannot play in your browser, use the original local file or convert it with a compatible media tool.</p>
+  </section>
+ </section>
+ <section class="nv20-disclosures" aria-label="Privacy and storage limitations">
+  <h2>WHAT THIS VAULT PROTECTS</h2>
+  <div><article><strong>Real content encryption</strong><p>Your video bytes, names and notes are encrypted in browser storage before saving. A different visitor opening this page sees their own separate local library—not yours.</p></article>
+  <article><strong>Not a cloud video host</strong><p>Files are not uploaded to GitHub Pages or Cloudflare and will not automatically appear on your other devices. Move libraries with an encrypted backup.</p></article>
+  <article><strong>Storage and device limits</strong><p>Safari, iPhone Home Screen apps and desktop browsers have different storage limits. Private browsing and clearing website data may erase the vault; keep a backup outside the browser.</p></article></div>
+ </section>
+</main>
+<footer class="nv20-footer"><span>POWERED BY ZEVRO | NEXUS</span><span>AES-256-GCM · LOCAL-ONLY ENCRYPTED MEDIA · v20.0.0</span><a href="./command-center.html">RETURN TO AZEROTH ↗</a></footer>
+</body>
+</html>
