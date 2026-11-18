@@ -1,5 +1,16 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v20.1.0 · 2026-11-17 — PRIVATE VIDEO VAULT RECOVERY & IPHONE ONBOARDING (Owner approved; physical-iPhone acceptance pending)
+
+- Added an explicit **Forgot Password / Reset Options** panel on the locked Private Video Vault. It shows a ciphertext-only encrypted clip count, optionally exports an **encrypted backup without unlocking**, and allows an owner-directed reset **only after** typing `DELETE MY VAULT`, acknowledging irreversible deletion, and confirming the browser dialog.
+- Reset clears **only three private IndexedDB stores** (Vault configuration/verifier, clip metadata, encrypted video parts) in an atomic transaction. It cannot reveal or recover encrypted media without the original password; all other Azeroth saved data, account verification, maps, plans, Forge drafts and music remain untouched.
+- Improved iPhone Passwords/Keychain compatibility via a recognizable saved-login label, proper `new-password`/ `current-password` hints, Show/Hide Passwords, and a **required confirmation that the password has been securely recorded before creating a new vault**. No server retains credentials or recovery keys.
+- Added gallery sorting by recent upload, title or video size and a Favorites Only filter. No new persistence keys, remote scripts, Cloudflare bindings, or public media URLs.
+- Multi-tab reset messages clear any decrypted view still open in another cooperating tab, where BroadcastChannel is supported.
+- Expanded browser security tests: forgotten password, locked ciphertext export, explicit reset confirmation, disappearance of old encrypted parts, fresh password enrollment, old-password rejection, and unrelated saved-data isolation.
+- Existing v20 AES-256-GCM scheme and `.nxvault` file format remain compatible; password recovery is *not* implied. Keep an archive and the exact password securely stored. Real iPhone Safari/Home Screen acceptance remains pending.
+
+
 ## v20.0.0 · 2026-11-17 — SOVEREIGN PRIVATE VIDEO VAULT + COMMAND PULSE (Owner approved; physical-device acceptance pending)
 
 - Introduced a true password-derived, client-side encrypted Personal Video Vault at `private-video-vault.html`. Videos, names and notes remain in per-device IndexedDB ciphertext encrypted under AES-256-GCM; password key derivation uses PBKDF2/SHA-256 with 600,000 iterations and a random salt. No raw video is ever uploaded to GitHub or Cloudflare. There is no hard-coded shared password or server-based public video storage.
