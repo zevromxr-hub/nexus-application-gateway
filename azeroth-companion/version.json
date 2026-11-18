@@ -1,14 +1,23 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "18.2.0",
+  "version": "19.0.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "CARTOGRAPHER’S LENS — REGIONAL PANORAMAS, SOURCE-LINKED FIELD GUIDES & FAST IPHONE MAP CONTROLS",
-  "previous_version": "18.1.0",
+  "subtitle": "ADAPTIVE EXPERIENCE ENGINE — PREMIUM CROSS-STUDIO VISUALS, FOUR DISPLAY MODES & MOBILE PERFORMANCE",
+  "previous_version": "18.2.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Introduced the NEXUS Adaptive Experience Engine v19: an accessible, shared visual presentation controller across PROXIMUS Gateway, Asset Alchemist and primary Azeroth pages without changing the apps' underlying functional identities.",
+    "Added four explicit visual presets (Auto adaptive, Cinematic, Balanced, Quiet) in an unobtrusive page-header menu. Only the visual choice is saved in a new isolated, optional browser-local key nexus_visual_presentation_v19.",
+    "Auto selects low-cost effects on narrow touch displays, operating-system reduced-motion preferences or Save-Data connections; users can manually choose Cinematic or Balanced, but OS reduced-motion is always respected.",
+    "Refined luminous edges, differentiated product palettes, visual card depth, accent treatments, hero lighting and keyboard focus across the Gateway, Azeroth Command Center, World Atlas, Character Nexus, expedition studios and browser creator.",
+    "Optimized animated Gateway star-paint behavior when Quiet mode is selected; expensive decorative flourishes are disabled in Quiet and on reduced-motion configurations without hiding actual content or controlling any music/video playback.",
+    "Kept the Azeroth main app's existing number of CSS/JS resource requests: the exact same shared presentation CSS and JS are bundled inside already-loaded studio-art-direction-v9.2.css and performance-overdrive-v7.5.js with cache-busted references.",
+    "Preserved every native studio, historic Talent Forge performance option, all saved browser-local goals, routes, characters, items, media, Battle.net authentication, launcher protocol/Content Security Policy, Cloudflare Workers and Discord release infrastructure.",
+    "Added v19 CSS/JS source and synthetic desktop Chromium/iPhone WebKit cross-site regression tests, preserving old versioned component names and the safety rollback branch backup/azeroth-v18-2-before-adaptive-visual-v19-2026-11-17.",
+    "Owner publication approval applies to this additive display upgrade; real physical iPhone, connected Battle.net player and performance metric collection remain pending and no invented FPS improvement is claimed.",
     "World Atlas v18.2 Cartographer’s Lens adds eight new original lightweight vector regional panoramas with distinct landscape treatments, retaining all existing v18 cartography and v18.1 route planning features.",
     "Introduces a responsive eight-region navigation rail with visual region identities, destination counts and source-labeled personal mission counters.",
     "Adds a region-specific field guide, contextual research prompts for all 25 existing curated destinations, and a source-indexed dossier summarizing local manual goals, saved bookmarks, v17 session presence and v18.1 route stops.",
@@ -167,6 +176,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Project owner approved further Atlas visual and performance upgrades. Automated source and synthetic browser checks are advisory; real user devices/accounts and in-game data acceptance remain pending."
+    "note": "Owner selected the premium adaptive visual engine as the next development priority. Automated source and browser acceptance are advisory; real connected account, Windows app launcher and physical device tests remain pending."
   }
 }

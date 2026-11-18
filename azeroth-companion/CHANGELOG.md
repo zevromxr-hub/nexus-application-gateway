@@ -1,5 +1,15 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v19.0.0 · 2026-11-17 — ADAPTIVE EXPERIENCE ENGINE (Owner approved; real-device acceptance pending)
+
+- Added a lightweight unified visual presentation layer on PROXIMUS Gateway, Asset Alchemist and major Azeroth Companion studios; each keeps its product-specific palette and original features.
+- Introduced accessible header visual settings with **Auto, Cinematic, Balanced and Quiet** modes, plus device-responsive motion/data preferences and readable iPhone controls. Reduced-motion settings remain respected in every mode.
+- Refined hero lighting, card depth, accent hierarchy, mobile readability and desktop hover treatment without new heavy art downloads or animation frameworks. Quiet mode reduces decorative effects and stops Gateway particle painting.
+- Kept original main Azeroth stylesheet/script request count by bundling the shared engine into existing cache-busted v9.2 art CSS and v7.5 performance JS; the native Talent Forge performance option remains separate.
+- The **only** new optional browser key is `nexus_visual_presentation_v19`. No account, media, route, mission, inventory, character, Talent Forge or verification data changes. Launcher CSP/protocol handoffs remain untouched.
+- Added source and desktop Chromium/iPhone-style WebKit tests and a v18.2 rollback branch `backup/azeroth-v18-2-before-adaptive-visual-v19-2026-11-17`. Performance gains are not quantified without actual device data; physical player acceptance remains pending.
+
+
 ## v18.2.0 · 2026-11-17 — CARTOGRAPHER’S LENS (Owner approved; physical-device/game acceptance pending)
 
 - Created eight original lightweight regional fantasy panoramic scenes and a premium scrollable continent navigator, retaining the familiar v18 world-map artwork, v18.1 routes and all previous studios.

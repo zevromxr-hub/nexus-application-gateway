@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "19.0.0",
+  "title": "ADAPTIVE EXPERIENCE ENGINE — Premium Cross-Studio Visuals & Performance",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner selected visual adaptive engine for next site release. Real-device and connected game/player checks pending.",
+  "features": [
+    "NEXUS Adaptive Experience Engine: shared premium visual design for PROXIMUS Gateway, Asset Alchemist and primary Azeroth Companion studios, preserving each product's signature look.",
+    "Choose Auto, Cinematic, Balanced or Quiet in an accessible visual settings control; browser-local preference persists between compatible pages on the same host.",
+    "Auto responds to small touch viewports, Save-Data and operating-system reduced-motion preferences; reduced motion always takes precedence over optional decorative animation.",
+    "Refined lighting, accent borders, depth, and gentle desktop card hover, with quieter iPhone visual effects and strong keyboard focus.",
+    "Gateway's decorative star painter avoids drawing in Quiet mode, while the main companion reuses existing CSS/JS requests rather than adding startup files.",
+    "Entirely presentation-only: no changes to Blizzard login, characters, item collections, Talent Forge, saved expedition routes, music, media libraries, license bridges or application redirect protocols.",
+    "Source safety and synthetic desktop/iPhone browser audits accompany rollback and pending physical-player/device testing."
+  ]
+}
