@@ -57,6 +57,7 @@ function host(){
 }
 function install(){
  if(document.getElementById('nx19VisualMode'))return;
+ document.querySelector('.hero,.nx10-hero,.nx16-atlas-hero,.nx165-hero,.nx17-hero')?.classList.add('nx19-aura');
  const parent=host();if(!parent)return;
  const menu=document.createElement('details');menu.id='nx19VisualMode';
  menu.className='nx19-visual-mode';
