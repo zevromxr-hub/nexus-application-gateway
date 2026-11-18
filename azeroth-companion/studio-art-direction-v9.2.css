@@ -708,7 +708,7 @@ html[data-nx19-resolved="quiet"] :is(.appCard,.nx10-player-feature,.nx12-archive
  box-shadow:var(--nx19-depth);transition:none!important;animation:none!important
 }
 html[data-nx19-resolved="quiet"] body.nx-art-studios:after{opacity:.2!important}
-html[data-nx19-resolved="quiet"] :is(.bg::after,.orb,.orbit,.energyCircle){animation:none!important;filter:none!important}
+html[data-nx19-resolved="quiet"] :is(.orb,.orbit,.energyCircle){animation:none!important;filter:none!important}
 html[data-nx19-resolved="quiet"] .bg::after{opacity:.02!important}
 html[data-nx19-resolved="quiet"] .nx182-region-tile{transition:none!important}
 html[data-nx19-resolved="quiet"] :is(.nx18-zone-pin,.nx18-icon){transition:none!important}
