@@ -39,19 +39,19 @@ assert.match(html,/script-src 'self'/,'No inline or third-party scripts in vault
 assert.match(html,/media-src blob:/,'Only decrypted temporary blob URL playback permitted');
 assert.match(html,/noindex,nofollow,noarchive/);
 assert.match(html,/type="password"/);
-assert.match(html,/required autocomplete="off"/);
+assert.match(html,/required autocomplete="current-password"/);
 assert.match(html,/No reset or recovery key is stored/);
 assert.match(html,/not uploaded to a server/i);
 assert.match(html,/private-video-vault-v20-core\.js\?v=2000/);
-assert.match(html,/private-video-vault-v20\.js\?v=2000/);
-assert.match(html,/private-video-vault-v20\.css\?v=2000/);
+assert.match(html,/private-video-vault-v20\.js\?v=2010/);
+assert.match(html,/private-video-vault-v20\.css\?v=2010/);
 for(const file of ['command-center.html','index.html','world-atlas.html','player-experience.html']){
  const markup=await read(file);
  assert.ok(markup.includes('private-video-vault.html'),file+' must link to secure personal vault');
 }
 const command=await read('command-center.html');
-assert.match(command,/command-pulse-v20\.css\?v=2000/);
-assert.match(command,/command-pulse-v20\.js\?v=2000/);
+assert.match(command,/command-pulse-v20\.css\?v=2010/);
+assert.match(command,/command-pulse-v20\.js\?v=2010/);
 const native=await read('command-center-v10.js');
 assert.match(native,/Private Video Vault v20/,'Command search must include vault');
 for(const ref of ['nexus_world_atlas_goals_v16','nexus_atlas_routes_v181','nexus_adventure_operations_v17','nexus_azeroth_talent_forge_v1'])
@@ -63,4 +63,20 @@ assert.match(main,/talent-build-architect-core-v14\.js/,'Native build planner pr
 const save=await read('save-protection.html');
 for(const ref of ['nexus_world_atlas_goals_v16','nexus_atlas_routes_v181','nexus_adventure_operations_v17'])assert.ok(save.includes(ref));
 assert.ok(!save.includes('nexus_azeroth_secure_video_v20'),'Original JSON save protection MUST NOT export vault ciphertext or password metadata');
+assert.match(core,/resetVault\(confirmation\)/,'Owner reset function exists but requires confirmation');
+assert.match(core,/['"]DELETE MY VAULT['"]/,'Reset requires exact destructive phrase');
+assert.match(core,/db\.transaction\(\['config','clips','parts'\],'readwrite'\)/,'Reset clears only three vault stores atomically');
+assert.match(core,/encryptedClipCount/,'Locked owner can inspect encrypted clip count without exposing metadata');
+assert.match(ui,/nv201LockedBackup/,'Locked encrypted archive can be exported before reset');
+assert.match(ui,/nv201ResetAgree/,'Reset needs an explicit irreversible warning acknowledgement');
+assert.match(ui,/nv201PasswordSaved/,'Creation requires confirmed safe password storage');
+assert.match(ui,/nv201ShowPassword/,'Owner can visually verify password before creation');
+assert.match(ui,/BroadcastChannel/,'Reset locks other open vault tabs');
+assert.match(html,/autocomplete="username"/,'iPhone password manager has a stable username label');
+assert.match(html,/autocomplete="new-password"/,'iPhone should be able to suggest saving a new password');
+assert.match(html,/autocomplete="current-password"/,'iPhone can autofill an existing password');
+assert.match(html,/id="nv201ResetPhrase"/);
+assert.match(html,/id="nv201Sort"/);
+assert.match(html,/id="nv201FavoritesOnly"/);
+console.log('PASS v20.1: reset confirmation, locked ciphertext backup, iPhone Passwords support, all-other-studios isolation.');
 console.log('PASS v20: authenticated AES-GCM password encryption, no public video upload, ciphertext-only backups, CSP, local data isolation, Command Pulse and cross-site navigation.');
