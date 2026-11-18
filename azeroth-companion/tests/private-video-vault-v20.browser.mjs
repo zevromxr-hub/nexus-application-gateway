@@ -22,8 +22,18 @@ async function check(label,engine,mobile){
   await page.waitForFunction(()=>document.getElementById('nv20GateTitle')?.textContent?.includes('Create your private vault'));
   assert.equal(await page.locator('#nv20Workspace').isHidden(),true);
   assert.equal(await page.locator('#nv20ConfirmWrap').isHidden(),false);
+  assert.equal(await page.locator('#nv20Password').getAttribute('autocomplete'),'new-password');
+  assert.equal(await page.locator('#nv201Username').getAttribute('autocomplete'),'username');
+  assert.equal(await page.locator('#nv201PasswordChecklist').isVisible(),true);
   await page.locator('#nv20Password').fill(PASSWORD);
   await page.locator('#nv20Confirm').fill(PASSWORD);
+  await page.locator('#nv201ShowPassword').click();
+  assert.equal(await page.locator('#nv20Password').getAttribute('type'),'text');
+  await page.locator('#nv201ShowPassword').click();
+  assert.equal(await page.locator('#nv20Password').getAttribute('type'),'password');
+  await page.locator('#nv20GateSubmit').click();
+  assert.equal(await page.locator('#nv20Workspace').isHidden(),true,'Owner must acknowledge storing password');
+  await page.locator('#nv201PasswordSaved').check();
   await page.locator('#nv20GateSubmit').click();
   await page.locator('#nv20Workspace').waitFor({state:'visible'});
   assert.equal(await page.locator('#nv20Count').textContent(),'0');
@@ -69,6 +79,11 @@ async function check(label,engine,mobile){
   await page.waitForFunction(()=>document.querySelector('.nv20-clip-title')?.textContent==='My Secret Master Clip');
   await page.locator('button[data-action="favorite"]').click();
   await page.waitForFunction(()=>document.querySelector('.nv20-favorite')?.textContent==='★');
+  await page.locator('#nv201FavoritesOnly').check();
+  assert.equal(await page.locator('.nv20-clip-title').count(),1);
+  await page.locator('#nv201Sort').selectOption('name');
+  assert.equal(await page.locator('.nv20-clip-title').textContent(),'My Secret Master Clip');
+  await page.locator('#nv201FavoritesOnly').uncheck();
   // Ensure playback is assembled into a temporary blob URL, not a public file link.
   await page.locator('button[data-action="play"]').click();
   await page.locator('#nv20PlayerPanel').waitFor({state:'visible'});
@@ -90,6 +105,19 @@ async function check(label,engine,mobile){
   await page.locator('#nv20Gate').waitFor({state:'visible'});
   assert.equal(await page.locator('#nv20Workspace').isHidden(),true);
   assert.equal(await page.locator('.nv20-clip-title').count(),0,'Titles must be cleared after lock');
+  assert.equal(await page.locator('#nv20Password').getAttribute('autocomplete'),'current-password');
+  await page.locator('#nv201Forgot').click();
+  await page.waitForFunction(()=>/1 encrypted video/.test(document.getElementById('nv201ProtectedCount')?.textContent||''));
+  assert.equal(await page.locator('#nv201Reset').isDisabled(),true,'Reset should require typed and checked confirmation');
+  const lockedDownloadPromise=page.waitForEvent('download');
+  await page.locator('#nv201LockedBackup').click();
+  const lockedDownload=await lockedDownloadPromise;
+  assert.match(lockedDownload.suggestedFilename(),/\.nxvault$/);
+  const lockedBackupPath='test-results/azeroth-device-audit/vault-locked-before-reset-'+label+'.nxvault';
+  await lockedDownload.saveAs(lockedBackupPath);
+  const lockedArchive=await readFile(lockedBackupPath);
+  assert.equal(lockedArchive.toString('ascii',0,4),'NXV1');
+  assert.ok(!lockedArchive.includes(Buffer.from('My Secret Master Clip')),'Locked backup must remain ciphertext-only');
   await page.locator('#nv20Password').fill('The wrong password 987654321!');
   await page.locator('#nv20GateSubmit').click();
   await page.waitForFunction(()=>document.getElementById('nv20Alert')?.textContent?.includes('Incorrect vault password'));
@@ -114,6 +142,39 @@ async function check(label,engine,mobile){
   await fresh.locator('#nv20Workspace').waitFor({state:'visible'});
   assert.equal(await fresh.locator('.nv20-clip-title').textContent(),'My Secret Master Clip');
   await second.close();
+  // A forgotten-password reset must irreversibly erase only this local vault
+  // after typed, checkbox and browser confirmation; no decryption backdoor.
+  await page.locator('#nv20Lock').click();
+  await page.locator('#nv201Forgot').click();
+  await page.locator('#nv201ResetPhrase').fill('DELETE MY VAULT');
+  assert.equal(await page.locator('#nv201Reset').isDisabled(),true,'Typed phrase alone cannot reset');
+  await page.locator('#nv201ResetAgree').check();
+  assert.equal(await page.locator('#nv201Reset').isEnabled(),true);
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#nv201Reset').click();
+  await page.waitForFunction(()=>document.getElementById('nv20GateTitle')?.textContent?.includes('Create your private vault'));
+  const cleared=await page.evaluate(async()=>({
+   vault:await window.NexusSecureVideoVaultV20.get('config','vault'),
+   clips:await window.NexusSecureVideoVaultV20.encryptedClipCount(),
+   parts:(await window.NexusSecureVideoVaultV20.all('parts')).length
+  }));
+  assert.equal(cleared.vault,null);
+  assert.equal(cleared.clips,0);
+  assert.equal(cleared.parts,0);
+  const newPassword='Different strong private password 2026! 🗝️';
+  await page.locator('#nv20Password').fill(newPassword);
+  await page.locator('#nv20Confirm').fill(newPassword);
+  await page.locator('#nv201PasswordSaved').check();
+  await page.locator('#nv20GateSubmit').click();
+  await page.locator('#nv20Workspace').waitFor({state:'visible'});
+  assert.equal(await page.locator('#nv20Count').textContent(),'0','Reset must create a new EMPTY vault');
+  await page.locator('#nv20Lock').click();
+  await page.locator('#nv20Password').fill(PASSWORD);
+  await page.locator('#nv20GateSubmit').click();
+  await page.waitForFunction(()=>document.getElementById('nv20Alert')?.textContent?.includes('Incorrect vault password'));
+  await page.locator('#nv20Password').fill(newPassword);
+  await page.locator('#nv20GateSubmit').click();
+  await page.locator('#nv20Workspace').waitFor({state:'visible'});
   const after=await page.evaluate(keys=>Object.fromEntries(keys.map(k=>[k,localStorage.getItem(k)])),existing);
   assert.deepEqual(after,prior,'Vault must not touch companion mission/talent/route storage');
   if(mobile){
@@ -123,7 +184,7 @@ async function check(label,engine,mobile){
   assert.deepEqual(errors,[],'Vault UI should have no page exceptions');
   assert.deepEqual(remote,[],'No server media uploads or remote connections allowed');
   await page.screenshot({path:'test-results/azeroth-device-audit/vault-v20-'+label+'.png',fullPage:true});
-  console.log('PASS v20 '+label+': real AES encryption and locked titles, wrong-password rejection, encrypted import/edit/favorite, temporary playback, portable restore, source isolation.');
+  console.log('PASS v20.1 '+label+': password manager onboarding, confirmed reset/no bypass, ciphertext locked backup, AES import/edit/play, secure restore, saved-data isolation.');
  }catch(e){
   await page.screenshot({path:'test-results/azeroth-device-audit/vault-v20-error-'+label+'.png',fullPage:true}).catch(()=>{});
   throw e;
