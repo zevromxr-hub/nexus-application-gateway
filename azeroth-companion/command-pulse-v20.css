@@ -1,0 +1,25 @@
+/* NEXUS | AZEROTH v20 — CINEMATIC COMMAND PULSE; LOCAL READ-ONLY CONTINUITY */
+.nx20-pulse{position:relative;isolation:isolate;overflow:hidden;min-width:0;margin:20px auto 25px;padding:clamp(18px,3vw,29px);border:1px solid #e0bd8a9c;border-radius:16px;background:linear-gradient(115deg,#12243ef2,#201d39ed 70%,#142d3de8),url("./assets/adventure-journal-v9.1.webp") right center/auto 100% no-repeat;box-shadow:0 17px 38px #0009}
+.nx20-pulse:after{content:"";position:absolute;left:18px;right:18px;top:0;height:2px;background:linear-gradient(90deg,transparent,#e7c395,#a5cce3,transparent);pointer-events:none}
+.nx20-pulse-art{position:absolute;inset:auto -15px -39px auto;display:grid;place-items:center;pointer-events:none;opacity:.13;width:240px;height:240px;font-size:118px;color:#e4cda8;border:1px solid #e6c498;border-radius:50%;box-shadow:0 0 0 20px #d4c2a71a,0 0 0 45px #c0a3d119}
+.nx20-pulse-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;position:relative;z-index:1}
+.nx20-pulse-overline{color:#b1dbe1;font-size:9px;font-weight:1000;letter-spacing:.15em}
+.nx20-pulse-head h2{font-size:clamp(25px,3vw,39px);line-height:1.2;margin:7px 0;color:#f4d6ad;letter-spacing:-.045em}
+.nx20-pulse-head h2 em{font-style:normal;color:#c3a7e4}
+.nx20-pulse-head p{color:#c4d2df;font-size:11px;line-height:1.6;max-width:610px}
+.nx20-pulse-primary{display:grid;place-items:center;flex:0 1 270px;min-height:46px;text-align:center;padding:11px;border:1px solid #f1d5ae;border-radius:10px;background:linear-gradient(110deg,#c49e6b,#f1d4a6);color:#1b273c;font-size:10px;font-weight:950;overflow-wrap:anywhere}
+.nx20-pulse-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:20px 0 16px;position:relative;z-index:1}
+.nx20-metric{display:grid;align-content:center;gap:3px;padding:14px 15px;border:1px solid #b0adc07d;border-radius:11px;background:#18283eda;min-height:99px}
+.nx20-metric strong{font-size:29px;color:#f5d4a6;font-weight:1000;line-height:1.2}
+.nx20-metric span{color:#d1e4e5;font-size:9px;font-weight:950;letter-spacing:.09em}
+.nx20-metric small{font-size:9px;line-height:1.3;color:#abc3d4}
+.nx20-pulse-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:13px;padding-top:14px;border-top:1px solid #adabc078;position:relative;z-index:1}
+#nx20ContinueText{flex:1 1 230px;color:#d8d1df;font-size:10px;line-height:1.6}
+.nx20-pulse-links{display:flex;flex-wrap:wrap;gap:7px}
+.nx20-pulse-links a{display:flex;align-items:center;gap:6px;min-height:37px;padding:7px 9px;border-radius:8px;border:1px solid #b1a7bf85;background:#30324acb;color:#f0dcc1;font-size:9px;font-weight:950;letter-spacing:.01em}
+.nx20-pulse-links strong{font-size:14px;color:#dfc69f}
+.nx20-pulse-links a:first-child{border-color:#e2c19e9f;background:#3b2e4bd6}
+.nx20-pulse a:focus-visible{outline:3px solid #b3eff7;outline-offset:3px}
+@media(max-width:1100px){.nx20-pulse-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.nx20-pulse-primary{flex:1 1 100%}}
+@media(max-width:650px){.nx20-pulse{padding:17px}.nx20-pulse-metrics{gap:7px}.nx20-metric{padding:10px;min-height:85px}.nx20-metric strong{font-size:25px}.nx20-pulse-links a{flex:1 1 43%;justify-content:center;font-size:8px;min-width:0}.nx20-pulse-art{opacity:.07}}
+@media(prefers-reduced-motion:reduce){.nx20-pulse *{transition:none!important;animation:none!important}}
