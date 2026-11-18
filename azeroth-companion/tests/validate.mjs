@@ -717,7 +717,7 @@ assert.ok(citadelHTML.includes('citadel-hero-hd-v9.1.1.webp'),'HD desktop preloa
 
 /* v9.2 Studio Art Direction: static scope, local assets and preservation. */
 const studioArt=await read('azeroth-companion/studio-art-direction-v9.2.css');
-assert.ok(html.includes('studio-art-direction-v9.2.css?v=930'));
+assert.ok(html.includes('studio-art-direction-v9.2.css?v=1900'),'Bundled v19 visual CSS must use a cache-busted URL');
 assert.ok(html.includes('class="nx-art-studios"'));
 for(const [file,scope] of [
  ['character-intelligence.html','character'],
