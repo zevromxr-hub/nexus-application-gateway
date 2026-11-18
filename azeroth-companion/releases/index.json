@@ -4,6 +4,13 @@
   "updated": "2026-11-17",
   "releases": [
     {
+      "version": "19.0.0",
+      "title": "Adaptive Experience Engine — Premium Visual System & iPhone Performance Modes",
+      "date": "2026-11-17",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "18.2.0",
       "title": "Cartographer’s Lens — Premium Region Panoramas, Smart Dossiers & Performance",
       "date": "2026-11-17",
