@@ -50,8 +50,8 @@ for(const file of ['command-center.html','index.html','world-atlas.html','player
  assert.ok(markup.includes('private-video-vault.html'),file+' must link to secure personal vault');
 }
 const command=await read('command-center.html');
-assert.match(command,/command-pulse-v20\.css\?v=2010/);
-assert.match(command,/command-pulse-v20\.js\?v=2010/);
+assert.match(command,/command-pulse-v20\.css\?v=2000/);
+assert.match(command,/command-pulse-v20\.js\?v=2000/);
 const native=await read('command-center-v10.js');
 assert.match(native,/Private Video Vault v20/,'Command search must include vault');
 for(const ref of ['nexus_world_atlas_goals_v16','nexus_atlas_routes_v181','nexus_adventure_operations_v17','nexus_azeroth_talent_forge_v1'])
