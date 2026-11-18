@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-nx-version="20.0.0">
+<html lang="en" data-nx-version="20.1.0">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -8,17 +8,17 @@
 <meta name="robots" content="noindex,nofollow,noarchive">
 <meta name="description" content="NEXUS Azeroth Private Video Vault — password-encrypted local personal videos. No videos are uploaded to a server.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>Private Video Vault | NEXUS Azeroth v20</title>
+<title>Private Video Vault | NEXUS Azeroth v20.1</title>
 <link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/nexus-warrior-apple-touch-icon.png">
 <link rel="manifest" href="./site.webmanifest?v=700">
-<link rel="stylesheet" href="./private-video-vault-v20.css?v=2000">
-<script defer src="./private-video-vault-v20-core.js?v=2000"></script>
-<script defer src="./private-video-vault-v20.js?v=2000"></script>
+<link rel="stylesheet" href="./private-video-vault-v20.css?v=2010">
+<script defer src="./private-video-vault-v20-core.js?v=2010"></script>
+<script defer src="./private-video-vault-v20.js?v=2010"></script>
 </head>
 <body>
 <header class="nv20-header">
- <a href="./command-center.html" class="nv20-brand" aria-label="Return to NEXUS Azeroth Command Center"><span class="nv20-mark">N</span><span><strong>NEXUS</strong><small>PRIVATE MEDIA · V20</small></span></a>
+ <a href="./command-center.html" class="nv20-brand" aria-label="Return to NEXUS Azeroth Command Center"><span class="nv20-mark">N</span><span><strong>NEXUS</strong><small>PRIVATE MEDIA · V20.1</small></span></a>
  <nav aria-label="NEXUS navigation">
   <a href="./command-center.html">COMMAND CENTER</a>
   <a href="./world-atlas.html">WORLD ATLAS</a>
@@ -29,7 +29,7 @@
 <main class="nv20-main">
  <section class="nv20-hero" aria-label="Private Video Vault">
   <div class="nv20-hero-content">
-   <div class="nv20-eyebrow">NEXUS / PERSONAL MEDIA SECURITY / V20.0.0</div>
+   <div class="nv20-eyebrow">NEXUS / PERSONAL MEDIA SECURITY / V20.1.0</div>
    <h1>THE PRIVATE<br><em>VIDEO VAULT.</em></h1>
    <p>Give your own video collection a cinematic home, protected by a password and real encryption. Your files stay on this browser/device—not on GitHub, NEXUS servers, or the public website.</p>
    <div class="nv20-trust"><span><b>256</b> AES-GCM encryption</span><span><b>0</b> video uploads to servers</span><span><b>1</b> private password</span></div>
@@ -44,13 +44,36 @@
    <h2 id="nv20GateTitle">Preparing your private vault…</h2>
    <p id="nv20GateDescription">Your browser stores only encrypted media. Unlocking never sends your password over the network.</p>
    <form id="nv20PasswordForm">
+    <label for="nv201Username">PASSWORD MANAGER LABEL</label>
+    <input id="nv201Username" name="username" type="text" autocomplete="username" value="nexus-private-video-vault" readonly aria-describedby="nv201UsernameHint">
+    <p id="nv201UsernameHint" class="nv201-helper">This label helps iPhone Passwords/Keychain recognize the Vault login. It does not create an online account.</p>
     <label for="nv20Password">PRIVATE VAULT PASSWORD</label>
-    <input id="nv20Password" name="password" type="password" minlength="12" maxlength="512" required autocomplete="off" spellcheck="false" placeholder="Enter a strong private password">
+    <input id="nv20Password" name="password" type="password" minlength="12" maxlength="512" required autocomplete="current-password" spellcheck="false" placeholder="Enter a strong private password">
     <div id="nv20ConfirmWrap" hidden><label for="nv20Confirm">CONFIRM YOUR PASSWORD</label>
-    <input id="nv20Confirm" name="confirmation" type="password" minlength="12" maxlength="512" autocomplete="off" spellcheck="false" placeholder="Enter the same password again"></div>
+    <input id="nv20Confirm" name="confirmation" type="password" minlength="12" maxlength="512" autocomplete="new-password" spellcheck="false" placeholder="Enter the same password again"></div>
+    <button id="nv201ShowPassword" type="button" class="nv201-outline">SHOW PASSWORDS</button>
+    <div id="nv201PasswordChecklist" class="nv201-password-check" hidden>
+      <strong>SECURE YOUR PASSWORD BEFORE CREATING</strong>
+      <p>iPhone-generated passwords are not always saved. Check the Passwords app or write your password down securely <em>before</em> creating the encrypted vault.</p>
+      <label class="nv201-check"><input id="nv201PasswordSaved" type="checkbox"> I have safely recorded or saved this exact password, and understand it cannot be recovered by NEXUS.</label>
+    </div>
     <button id="nv20GateSubmit" type="submit">UNLOCK VAULT</button>
    </form>
-   <p class="nv20-gate-notice">No reset or recovery key is stored. <strong>Forgetting your password means losing access to encrypted videos.</strong> Browser storage can be erased; export an encrypted backup regularly.</p>
+   <p class="nv20-gate-notice">NEXUS does not store a password reset key. <strong>If the password is lost, existing encrypted videos cannot be decrypted.</strong> A new empty vault can be created only after explicitly deleting the old local collection. Keep encrypted backups before making changes.</p>
+   <section id="nv201RecoveryEntry" class="nv201-recovery-entry" hidden aria-label="Forgot password recovery and reset options">
+    <button type="button" id="nv201Forgot" class="nv201-outline" aria-expanded="false" aria-controls="nv201RecoveryPanel">FORGOT PASSWORD? · RESET OPTIONS</button>
+    <div id="nv201RecoveryPanel" class="nv201-recovery-panel" hidden>
+     <strong class="nv201-warn-title">PASSWORD CANNOT BE RECOVERED</strong>
+     <p>First check your iPhone Passwords app or other password manager. If you have an encrypted backup, it still needs the <em>original</em> password. Resetting this device deletes the encrypted videos stored here; there is no undo.</p>
+     <div class="nv201-recovery-metrics" id="nv201ProtectedCount">Checking encrypted records…</div>
+     <button type="button" id="nv201LockedBackup" class="nv201-outline">DOWNLOAD ENCRYPTED BACKUP FIRST</button>
+     <small>This is a ciphertext-only safety copy; downloading it does not recover the old password.</small>
+     <label for="nv201ResetPhrase">TYPE <code>DELETE MY VAULT</code> TO CONFIRM</label>
+     <input id="nv201ResetPhrase" type="text" autocomplete="off" spellcheck="false" placeholder="DELETE MY VAULT">
+     <label class="nv201-check"><input id="nv201ResetAgree" type="checkbox"> I understand that deleting this local vault permanently makes its videos inaccessible without an earlier backup and its password.</label>
+     <button type="button" id="nv201Reset" class="nv201-destructive" disabled>DELETE OLD VAULT AND START OVER</button>
+    </div>
+   </section>
    <div id="nv20RestoreEntry" class="nv20-restore-entry" hidden>
     <strong>HAVE A BACKUP FROM ANOTHER DEVICE?</strong>
     <label class="nv20-file-action">CHOOSE ENCRYPTED .NXVAULT FILE<input id="nv20RestoreFile" type="file" accept=".nxvault,application/octet-stream"></label>
@@ -95,7 +118,9 @@
   <section class="nv20-library" aria-labelledby="nv20LibraryTitle">
    <div class="nv20-library-head"><div><span class="nv20-eyebrow">03 / PERSONAL ARCHIVE</span>
     <h3 id="nv20LibraryTitle">The sealed collection</h3></div>
-    <label class="nv20-search"><span>SEARCH UNLOCKED TITLES</span><input id="nv20Search" type="search" maxlength="120" autocomplete="off" placeholder="Search names or private notes…"></label></div>
+    <div class="nv201-library-controls"><label class="nv20-search"><span>SEARCH UNLOCKED TITLES</span><input id="nv20Search" type="search" maxlength="120" autocomplete="off" placeholder="Search names or private notes…"></label>
+     <label class="nv201-sort"><span>SORT COLLECTION</span><select id="nv201Sort"><option value="recent">RECENTLY ADDED</option><option value="name">TITLE · A TO Z</option><option value="largest">LARGEST FILE</option><option value="smallest">SMALLEST FILE</option></select></label>
+     <label class="nv201-favorites-filter"><input id="nv201FavoritesOnly" type="checkbox"> ★ FAVORITES ONLY</label></div></div>
    <div class="nv20-grid" id="nv20Grid" aria-live="polite"></div>
    <div class="nv20-empty" id="nv20Empty">Your vault is empty. Import a video to create your first encrypted collection entry.</div>
   </section>
@@ -113,6 +138,6 @@
   <article><strong>Storage and device limits</strong><p>Safari, iPhone Home Screen apps and desktop browsers have different storage limits. Private browsing and clearing website data may erase the vault; keep a backup outside the browser.</p></article></div>
  </section>
 </main>
-<footer class="nv20-footer"><span>POWERED BY ZEVRO | NEXUS</span><span>AES-256-GCM · LOCAL-ONLY ENCRYPTED MEDIA · v20.0.0</span><a href="./command-center.html">RETURN TO AZEROTH ↗</a></footer>
+<footer class="nv20-footer"><span>POWERED BY ZEVRO | NEXUS</span><span>AES-256-GCM · LOCAL-ONLY ENCRYPTED MEDIA · v20.1.0</span><a href="./command-center.html">RETURN TO AZEROTH ↗</a></footer>
 </body>
 </html>

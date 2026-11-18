@@ -4,6 +4,13 @@
   "updated": "2026-11-17",
   "releases": [
     {
+      "version": "20.1.0",
+      "title": "Private Vault Recovery — Safe Owner Reset, iPhone Passwords and Premium Library",
+      "date": "2026-11-17",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "20.0.0",
       "title": "Sovereign Private Video Vault — AES Password Encryption, Portable Backups & Command Pulse",
       "date": "2026-11-17",

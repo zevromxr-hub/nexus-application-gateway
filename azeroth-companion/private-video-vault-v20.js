@@ -8,21 +8,34 @@ if(!core||!document.getElementById('nv20Gate'))return;
 const $=id=>document.getElementById(id);
 const el=(tag,cls,content)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(content!==undefined)node.textContent=String(content);return node};
 const state={key:null,clips:[],busy:false,epoch:0,url:null,gate:'checking',hiddenAt:0,timer:null};
+const RESET_PHRASE='DELETE MY VAULT';
 function say(message,error=false){
  $('nv20Alert').textContent=message;$('nv20Alert').dataset.error=String(error);
 }
 function setBusy(value){
  state.busy=!!value;
- for(const id of ['nv20GateSubmit','nv20Restore','nv20Backup','nv20Lock','nv20Persist']){
+ for(const id of ['nv20GateSubmit','nv20Restore','nv20Backup','nv20Lock','nv20Persist','nv201LockedBackup','nv201Reset','nv201Forgot','nv201ShowPassword']){
   const button=$(id);if(button)button.disabled=value||(id==='nv20Restore'&&!$('nv20RestoreFile').files.length);
  }
  $('nv20Files').disabled=value;
+ if(!value)updateResetEnabled();
 }
 function gate(mode){
  state.gate=mode;
  const configured=mode==='unlock',creating=mode==='create';
  $('nv20Gate').hidden=false;$('nv20Workspace').hidden=true;
  $('nv20ConfirmWrap').hidden=!creating;
+ $('nv201PasswordChecklist').hidden=!creating;
+ $('nv201RecoveryEntry').hidden=!configured;
+ $('nv201RecoveryPanel').hidden=true;
+ $('nv201Forgot').setAttribute('aria-expanded','false');
+ $('nv201PasswordSaved').checked=false;
+ $('nv201ResetAgree').checked=false;
+ $('nv201ResetPhrase').value='';
+ $('nv201Reset').disabled=true;
+ $('nv20Password').type='password';$('nv20Confirm').type='password';
+ $('nv201ShowPassword').textContent='SHOW PASSWORDS';
+ $('nv20Password').setAttribute('autocomplete',creating?'new-password':'current-password');
  $('nv20GateLabel').textContent=configured?'RETURN TO YOUR ARCHIVE':creating?'FIRST-TIME OWNER SETUP':'SECURE BROWSER REQUIREMENTS';
  $('nv20GateTitle').textContent=configured?'Unlock your encrypted collection.':creating?'Create your private vault password.':'Encrypted storage unavailable.';
  $('nv20GateDescription').textContent=configured?
@@ -80,7 +93,13 @@ function button(name,action,id,cls){
 function draw(){
  const host=$('nv20Grid');host.replaceChildren();
  const query=$('nv20Search').value.trim().toLowerCase();
- const matches=state.clips.filter(c=>(c.name+' '+(c.note||'')).toLowerCase().includes(query));
+ const favoritesOnly=$('nv201FavoritesOnly').checked;
+ const matches=state.clips.filter(c=>(!favoritesOnly||c.favorite)&&
+  (c.name+' '+(c.note||'')).toLowerCase().includes(query));
+ const sort=$('nv201Sort').value;
+ const collator=new Intl.Collator(undefined,{sensitivity:'base',numeric:true});
+ if(sort==='name')matches.sort((a,b)=>collator.compare(a.name,b.name));
+ else if(sort==='largest'||sort==='smallest')matches.sort((a,b)=>sort==='largest'?(b.size||0)-(a.size||0):(a.size||0)-(b.size||0));
  $('nv20Empty').hidden=matches.length!==0;
  $('nv20Empty').textContent=state.clips.length?
   'Nothing matched that private search. Try a different name or note.':
@@ -113,11 +132,89 @@ function beginUnlocked(key){
  say('Your private encrypted vault is unlocked on this device. Lock it when finished.');
  updateNumbers();
 }
+/* v20.1: explicit lost-password recovery flow. It does not bypass AES keys.
+ * The locked-screen backup copies ciphertext only; it cannot recover a lost key.
+ */
+function updateResetEnabled(){
+ $('nv201Reset').disabled=state.busy||$('nv201ResetPhrase').value!==RESET_PHRASE||
+  !$('nv201ResetAgree').checked||state.gate!=='unlock';
+}
+function downloadCiphertext(blob,fileName){
+ const url=URL.createObjectURL(blob),link=el('a');
+ link.href=url;link.download=fileName;
+ document.body.append(link);link.click();link.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+$('nv201ShowPassword').addEventListener('click',()=>{
+ const showing=$('nv20Password').type==='text';
+ $('nv20Password').type=showing?'password':'text';
+ $('nv20Confirm').type=showing?'password':'text';
+ $('nv201ShowPassword').textContent=showing?'SHOW PASSWORDS':'HIDE PASSWORDS';
+});
+$('nv201Forgot').addEventListener('click',async()=>{
+ if(state.gate!=='unlock'||state.busy)return;
+ const panel=$('nv201RecoveryPanel'),show=panel.hidden;
+ panel.hidden=!show;
+ $('nv201Forgot').setAttribute('aria-expanded',String(show));
+ if(!show)return;
+ $('nv201ProtectedCount').textContent='Checking stored encrypted records…';
+ try{
+  const count=await core.encryptedClipCount();
+  $('nv201ProtectedCount').textContent=count+
+   ' encrypted video'+(count===1?'':'s')+' stored in this browser. Reset deletes all of them.';
+ }catch(_){$('nv201ProtectedCount').textContent='Encrypted record count unavailable; reset still deletes this browser’s entire Vault.'}
+});
+$('nv201ResetPhrase').addEventListener('input',updateResetEnabled);
+$('nv201ResetAgree').addEventListener('change',updateResetEnabled);
+$('nv201LockedBackup').addEventListener('click',async()=>{
+ if(state.busy||state.gate!=='unlock')return;
+ setBusy(true);
+ say('Preparing an encrypted backup of the locked Vault. Original password is still needed to decrypt it.');
+ try{
+  const blob=await core.exportEncrypted();
+  downloadCiphertext(blob,'nexus-vault-locked-preservation-copy.nxvault');
+  say('A ciphertext-only .nxvault file has been prepared. This does NOT recover the forgotten password.');
+ }catch(error){say('Could not create encrypted preservation backup: '+(error.message||'Unknown error'),true)}
+ finally{setBusy(false)}
+});
+$('nv201Reset').addEventListener('click',async()=>{
+ if(state.busy||state.gate!=='unlock'||$('nv201ResetPhrase').value!==RESET_PHRASE||
+  !$('nv201ResetAgree').checked)return;
+ if(!confirm('FINAL CONFIRMATION: Permanently delete this browser’s encrypted video library, titles, notes, and password verifier? This CANNOT recover any videos or undo encryption. Other Azeroth studios stay untouched.'))return;
+ setBusy(true);
+ say('Deleting ONLY the local encrypted Video Vault, not any Azeroth characters or plans…');
+ try{
+  // Clear locally unlocked playback and keys before any destructive transaction.
+  state.epoch++;state.key=null;state.clips=[];
+  closePlayer();$('nv20Grid').replaceChildren();
+  await core.resetVault(RESET_PHRASE);
+  gate('create');
+  say('The old local encrypted Vault has been deleted on this browser. Create a NEW password and save it securely before importing videos.');
+  try{crossTab?.postMessage({type:'reset'})}catch(_){}
+ }catch(error){gate('unlock');say('Reset could not be completed. Your old vault may still exist: '+(error.message||'Unknown browser storage error'),true)}
+ finally{setBusy(false)}
+});
+let crossTab=null;
+try{
+ crossTab=new BroadcastChannel('nexus-private-vault-lifecycle-v20');
+ crossTab.addEventListener('message',event=>{
+  if(event.data?.type!=='reset')return;
+  state.epoch++;state.key=null;state.clips=[];
+  closePlayer();$('nv20Grid').replaceChildren();
+  gate('create');
+  say('The local encrypted vault was reset in another tab. This tab is now locked.');
+ });
+}catch(_){}
+
 $('nv20PasswordForm').addEventListener('submit',async event=>{
  event.preventDefault();if(state.busy)return;
  const password=$('nv20Password').value,create=state.gate==='create';
  if(password.length<12||password.length>512){say('Use a password of at least 12 characters.',true);return}
  if(create&&password!==$('nv20Confirm').value){say('The confirmation password does not match.',true);return}
+ if(create&&!$('nv201PasswordSaved').checked){
+  say('Confirm that you saved or securely recorded the exact password before creating your vault.',true);
+  return;
+ }
  setBusy(true);say(create?'Creating a password-protected encrypted vault…':'Checking your private password…');
  try{
   const key=create?await core.create(password):await core.unlock(password);
@@ -150,6 +247,8 @@ $('nv20Files').addEventListener('change',async event=>{
  finally{setBusy(false)}
 });
 $('nv20Search').addEventListener('input',()=>{if(state.key)draw()});
+$('nv201Sort').addEventListener('change',()=>{if(state.key)draw()});
+$('nv201FavoritesOnly').addEventListener('change',()=>{if(state.key)draw()});
 $('nv20Grid').addEventListener('click',async event=>{
  const hit=event.target.closest('button[data-action]');if(!hit||!available())return;
  const id=hit.dataset.id,info=state.clips.find(c=>c.id===id);if(!info)return;
@@ -216,9 +315,7 @@ $('nv20Backup').addEventListener('click',async()=>{
  setBusy(true);say('Preparing a ciphertext-only encrypted backup. No video is decrypted or uploaded.');
  try{
   const blob=await core.exportEncrypted(done=>{if(done%8===0)say('Collecting encrypted archive parts: '+done+' segments…')});
-  const url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download='nexus-private-video-vault-v20.nxvault';
-  document.body.append(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  downloadCiphertext(blob,'nexus-private-video-vault-v20.nxvault');
   say('Encrypted archive prepared ('+printableSize(blob.size)+'). Save it safely along with your separately stored password.');
  }catch(error){say('Backup failed: '+(error.message||'Browser could not build the archive'),true)}
  finally{setBusy(false)}

@@ -265,11 +265,34 @@ async function restoreEncrypted(file,onProgress){
  }catch(error){await clearOrphans().catch(()=>{});throw error}
  return {clips:archive.header.clips.length};
 }
+/* v20.1 owner-directed local recovery: atomic reset of ONLY this vault's three
+ * IndexedDB stores. No password bypass and no access to old encrypted videos.
+ * The caller must explicitly confirm this irreversible operation.
+ */
+async function encryptedClipCount(){
+ const db=await open();
+ return new Promise((resolve,reject)=>{
+  const req=db.transaction('clips','readonly').objectStore('clips').count();
+  req.onsuccess=()=>resolve(req.result||0);
+  req.onerror=()=>reject(req.error||Error('Cannot inspect encrypted local archive'));
+ });
+}
+async function resetVault(confirmation){
+ if(confirmation!=='DELETE MY VAULT')throw Error('Explicit destructive confirmation is required');
+ const db=await open();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(['config','clips','parts'],'readwrite');
+  for(const store of ['config','clips','parts'])tx.objectStore(store).clear();
+  tx.oncomplete=()=>resolve();
+  tx.onerror=()=>reject(tx.error||Error('Encrypted vault reset failed; original records may still be present'));
+  tx.onabort=()=>reject(tx.error||Error('Encrypted vault reset was aborted; original records were retained'));
+ });
+}
 async function estimate(){
  const info=await navigator.storage?.estimate?.().catch(()=>null);
  return info?{usage:info.usage||0,quota:info.quota||0}:null;
 }
 window.NexusSecureVideoVaultV20=Object.freeze({NAME,FORMAT,ARCHIVE,CHUNK,ITERATIONS,MAX_CLIPS,fileLimit,clean,
  open,get,all,create,unlock,list,importVideo,updateInfo,playback,removeClip,
- exportEncrypted,parseHeader,restoreEncrypted,estimate});
+ exportEncrypted,parseHeader,restoreEncrypted,encryptedClipCount,resetVault,estimate});
 })();

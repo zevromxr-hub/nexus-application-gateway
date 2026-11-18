@@ -1,14 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "20.0.0",
+  "version": "20.1.0",
   "channel": "owner-approved",
   "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN PRIVATE VIDEO VAULT — REAL LOCAL PASSWORD ENCRYPTION, PORTABLE PRIVATE ARCHIVES & CONNECTED COMMAND PULSE",
-  "previous_version": "19.0.0",
+  "subtitle": "SOVEREIGN PRIVATE VIDEO VAULT RECOVERY — EXPLICIT LOCAL RESET, IPHONE PASSWORDS & ENHANCED PRIVATE COLLECTION",
+  "previous_version": "20.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Added explicit Forgotten Password / Reset Vault assistance on the locked screen. The owner can inspect encrypted clip count, export a ciphertext-only .nxvault safety copy without unlocking, and deliberately delete ONLY this browser's encrypted Video Vault after typing DELETE MY VAULT, checking an irreversible-deletion acknowledgment and accepting a second confirmation.",
+    "Reset does not bypass encryption or reveal lost passwords, names or videos. AES-256-GCM authenticated ciphertext from the prior vault cannot be recovered without its original password; previously stored characters, builds, routes, missions, other studios and Cloudflare accounts are unaffected.",
+    "Improved iPhone Passwords/Keychain compatibility using a stable named username field and new-password/current-password autocomplete settings, plus SHOW/HIDE passwords, matched confirmation and explicit acknowledgement that the exact password was securely saved before creating a new encrypted vault.",
+    "Added premium sorting by recent uploads, alphabetical title or file size and a Favorites Only gallery filter without introducing new storage keys or network calls.",
+    "Improved multi-tab safety: a BroadcastChannel lifecycle notice locks other open Vault tabs after a confirmed reset when supported, clearing decrypted thumbnails, names, object URLs and keys held in app state.",
+    "Retained encrypted browser-local uploads, personal notes, search, playback, private archives, conservative iPhone storage limits, no remote media hosting, saved-data protection and v20 Command Pulse utility.",
+    "Added extended source checks and simulated desktop Chromium/iPhone WebKit tests for locked backup downloads, typed/checked destructive reset, fresh password create, old-password rejection, cryptographic record deletion, preserved companion saves and favorites filtering. Physical iPhone/password-manager acceptance remains pending.",
     "Introduced Sovereign Private Video Vault v20: password-created local video archive encrypted with AES-256-GCM in browser IndexedDB, 600,000-iteration SHA-256 PBKDF2 key derivation and per-part random IVs.",
     "Private media bytes, filenames and notes are sealed as ciphertext before storage; no actual video is uploaded to GitHub Pages, Cloudflare, Discord or a public repository. The password and decryption key are never saved.",
     "Supports secure browser-local MP4, MOV, M4V, WebM, OGV and OGG imports, authenticated encrypted per-part storage, bounded per-video memory, personal notes, favorite markers, search and temporary in-memory playback while unlocked.",
@@ -185,6 +192,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner requested a personal password-protected video vault and useful existing studio enhancements. This device-local encrypted implementation requires no new Cloudflare bindings or publicly uploaded video. Real iPhone hardware, Safari quota, video codec and connected WoW player acceptance remain pending."
+    "note": "User expressly requested reset of an inaccessible iPhone Vault after a lost password and further system improvements. The solution provides an owner-operated local destructive reset, not a server-side recovery bypass. Existing ciphertext remains unrecoverable without the original password; physical iPhone Passwords acceptance is pending."
   }
 }

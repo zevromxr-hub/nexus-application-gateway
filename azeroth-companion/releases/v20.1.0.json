@@ -1,0 +1,20 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "20.1.0",
+  "title": "PRIVATE VAULT RECOVERY — Safe Reset, iPhone Passwords & Better Organization",
+  "release_date": "2026-11-17",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/private-video-vault.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner explicitly requested a reset after losing an iPhone-generated vault password. Safe local deletion is offered after three confirmations; it does not decrypt/recover old media, and no remote browser reset is performed.",
+  "features": [
+    "Forgot Password now offers a clear locked-screen path to RESET ONLY the local encrypted Vault—not the entire companion or other saved game progress—with record count, typed confirmation, acknowledgement and final confirmation dialog.",
+    "Option to export ciphertext-only .nxvault preservation copy even while locked; the original password remains necessary to restore/decrypt it.",
+    "Improved iPhone Passwords/Keychain hints, saved-login label, new/current password autofill settings and a Show Passwords toggle. Creation requires acknowledging that the exact password has been saved somewhere safe.",
+    "Advanced local video gallery: Favorites Only filter and sorting by recent, alphabetical names and file size.",
+    "Multi-tab reset notifications lock other Vault views on supported browsers; no password bypass, secret master key or remote video hosting.",
+    "All v20 private AES-256-GCM features and previously developed NEXUS/Azeroth studios remain intact."
+  ]
+}
