@@ -37,6 +37,7 @@ jobs:
           node azeroth-companion/tests/world-atlas-routes-v18.1.browser.mjs
           node azeroth-companion/tests/world-atlas-lens-v18.2.browser.mjs
           node azeroth-companion/tests/visual-experience-v19.browser.mjs
+          node azeroth-companion/tests/private-video-vault-v20.browser.mjs
           node azeroth-companion/tests/adventure-operations-v17.browser.mjs
           node azeroth-companion/tests/adventure-intelligence-v16.5.browser.mjs
           node azeroth-companion/tests/living-world-engine-v16.browser.mjs
