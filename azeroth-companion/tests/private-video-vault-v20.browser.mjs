@@ -16,7 +16,7 @@ async function check(label,engine,mobile){
  });
  const page=await context.newPage(),errors=[],remote=[];
  page.on('pageerror',e=>errors.push(String(e)));
- page.on('request',request=>{if(!request.url().startsWith('http://127.0.0.1:4173/'))remote.push(request.url())});
+ page.on('request',request=>{const url=request.url();if(url.startsWith('blob:')||url.startsWith('data:'))return; if(!url.startsWith('http://127.0.0.1:4173/'))remote.push(url)});
  try{
   await page.goto(ROOT+'private-video-vault.html',{waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.getElementById('nv20GateTitle')?.textContent?.includes('Create your private vault'));
