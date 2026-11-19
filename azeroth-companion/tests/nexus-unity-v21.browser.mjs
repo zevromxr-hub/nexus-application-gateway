@@ -34,7 +34,7 @@ async function audit(label,engine,mobile){
  const snapshot=()=>page.evaluate(k=>Object.fromEntries(k.map(x=>[x,localStorage.getItem(x)])),keys);
  async function visit(path){
   const res=await page.goto(URL+path,{waitUntil:'domcontentloaded',timeout:40000});
-  assert.equal(res?.status(),200,path+' should load');
+  assert.ok([200,304].includes(res?.status()),path+' should load or safely reuse a cached page (HTTP 304)');
   await page.locator('#nx21Launch').waitFor({timeout:15000});
   assert.equal(await page.locator('#nx21Dialog').count(),1);
  }
