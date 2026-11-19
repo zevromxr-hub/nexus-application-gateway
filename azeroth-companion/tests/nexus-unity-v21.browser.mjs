@@ -43,7 +43,7 @@ async function audit(label,engine,mobile){
   await page.locator('#nx21Dialog').waitFor({state:'visible'});
   assert.ok(await page.locator('#nx21Search').isVisible());
   const rect=await page.locator('#nx21Dialog').boundingBox();
-  assert.ok(rect&&rect.x>=-2&&rect.width<=mobile?390+2:1440+2,'Dialog must be contained in viewport');
+  assert.ok(rect&&rect.x>=-2&&rect.width<=(mobile?392:1442),'Dialog must be contained in viewport');
  }
  try{
   await visit('command-center.html');
