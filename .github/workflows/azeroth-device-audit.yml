@@ -34,6 +34,7 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           node azeroth-companion/tests/private-video-vault-v20.browser.mjs
+          node azeroth-companion/tests/nexus-unity-v21.browser.mjs
           node azeroth-companion/tests/world-atlas-cartography-v18.browser.mjs
           node azeroth-companion/tests/world-atlas-routes-v18.1.browser.mjs
           node azeroth-companion/tests/world-atlas-lens-v18.2.browser.mjs
