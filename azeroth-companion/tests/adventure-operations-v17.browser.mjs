@@ -65,6 +65,9 @@ async function run(label,engine,mobile){
    name:'session.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(payload))
   });
   assert.match(await page.locator('#nx17ImportPreview').textContent(),/2 objectives/);
+  await page.locator('details.nx17-import summary').click();
+  assert.equal(await page.locator('details.nx17-import').getAttribute('open'),'','Import disclosure must be opened before clicking its child button');
+  assert.equal(await page.locator('#nx17Import').isVisible(),true);
   assert.equal(await page.locator('#nx17Import').isEnabled(),true);
   page.once('dialog',d=>d.accept());
   await page.locator('#nx17Import').click();
