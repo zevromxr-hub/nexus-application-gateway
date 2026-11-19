@@ -1,0 +1,22 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "21.0.0",
+  "title": "SOVEREIGN UNITY — A Premium Connected Azeroth Companion",
+  "release_date": "2026-11-18",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/command-center.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner requested upgrades throughout Azeroth. v21 introduces a shared presentation/navigation and manually sourced continuity layer without modifying Blizzard authentication, saved profiles or private Vault data. Physical device and live gameplay acceptance remain pending.",
+  "features": [
+    "Every Azeroth Companion page now features a compact ✦ NEXUS COMMAND launcher with fast search, grouped studio navigation and a premium iPhone/desktop interface.",
+    "Search 19 actual companion/NEXUS destinations and your saved manual World Atlas goals, then jump directly to the correct research screen.",
+    "Save your favorite six studios, revisit your eight most recently opened studio destinations, and view sourced manual counts of characters, builds, routes and active goals without sending search queries to any server.",
+    "Four cross-studio Guided Journeys: Prepare an Adventure, Build Your Character, Plan a Collection, and Organize Your Media.",
+    "Command Center gains four cinematic discovery portals with existing original NEXUS artwork and useful mission continuity; the full companion gains a compact navigation strip.",
+    "Premium performance: reusable CSS/JS bundles, zero additional CSS/JS startup requests on the main app, on-demand local indexing, reduced-motion/iPhone layout and accessible keyboard navigation.",
+    "PWA shortcuts now launch Command Center, World Atlas, Character Nexus and locally encrypted Private Video Vault. The PROXIMUS Gateway Azeroth card also reflects the new experience.",
+    "Vault AES encryption and password reset, Battle.net verification, all game research features, saved character/talent/Atlas data and original rollback paths are retained."
+  ]
+}
