@@ -2,7 +2,7 @@
   "id": "./",
   "name": "NEXUS | AZEROTH COMPANION",
   "short_name": "AZEROTH",
-  "description": "Unofficial World of Warcraft companion",
+  "description": "Unofficial World of Warcraft companion with connected research studios, World Atlas, Talent Forge, private planning and encrypted local media.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -20,6 +20,32 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "NEXUS Command Center",
+      "short_name": "Command",
+      "description": "Open the unified studio command hub",
+      "url": "./command-center.html"
+    },
+    {
+      "name": "World Atlas",
+      "short_name": "Atlas",
+      "description": "Research regions and continue personal Atlas routes",
+      "url": "./world-atlas.html"
+    },
+    {
+      "name": "Character Nexus",
+      "short_name": "Character",
+      "description": "Open character records and planning",
+      "url": "./player-experience.html"
+    },
+    {
+      "name": "Private Video Vault",
+      "short_name": "Vault",
+      "description": "Open your browser-local encrypted video library",
+      "url": "./private-video-vault.html"
     }
   ]
 }
