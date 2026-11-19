@@ -641,6 +641,139 @@ body:has(#nxCitadel) .citadel-portals .portal-wrap:focus-within{
 }
 
 
+/* v21 SOVEREIGN UNITY bundled visual design — no new main page CSS requests */
+/* NEXUS | AZEROTH v21 — SOVEREIGN UNITY VISUAL SYSTEM
+ * Lightweight first-party CSS; standalone app features remain independent.
+ * All new controls are scoped to nx21 classes and IDs.
+ */
+:root{--nx21-gold:#f5d3a2;--nx21-lav:#d0b4f1;--nx21-aqua:#b3e8f0;--nx21-shadow:0 28px 90px #02060de8}
+.nx21-launcher{position:fixed;bottom:calc(19px + env(safe-area-inset-bottom,0px));left:calc(17px + env(safe-area-inset-left,0px));z-index:95;display:inline-flex;align-items:center;justify-content:center;gap:9px;width:auto;min-width:155px;min-height:50px;padding:9px 15px;color:#fff4e0;background:linear-gradient(120deg,#3d3057f4,#222e4dec);border:1px solid #e8c9a1d6;border-radius:999px;box-shadow:0 12px 37px #000b,inset 0 0 0 1px #fff2;cursor:pointer;font:950 10px/1.2 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;letter-spacing:.07em;white-space:nowrap;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.nx21-launcher:hover{border-color:#e1f5f8;box-shadow:0 8px 33px #9e8fd270,0 12px 38px #000a}
+.nx21-launch-symbol{display:grid;place-items:center;flex:none;width:29px;height:29px;border-radius:9px;color:#fff2cf;background:linear-gradient(135deg,#9a76b9,#d6ad73);font-size:19px;box-shadow:0 0 0 1px #fff4}
+.nx21-launch-label{color:#f5dfbb}
+.nx21-launcher:focus-visible,.nx21-dialog :is(button,a,input):focus-visible,.nx21-bridge :is(button,a):focus-visible,.nx21-home-hub button:focus-visible{outline:3px solid #b4f2ff;outline-offset:3px}
+.nx21-dialog{box-sizing:border-box;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);margin:0;min-width:0;width:min(1050px,calc(100vw - 34px));max-width:none;max-height:min(89dvh,870px);height:min(760px,89dvh);padding:0;border:1px solid #d8bd9cbf;border-radius:21px;overflow:hidden;background:#0c1526;color:#f3edec;box-shadow:var(--nx21-shadow);font:13px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;isolation:isolate}
+.nx21-dialog::backdrop{background:rgba(0,4,15,.84);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.nx21-dialog *{box-sizing:border-box}
+.nx21-dialog button,.nx21-home-hub button,.nx21-bridge button{font:inherit;cursor:pointer}
+.nx21-dialog a{text-decoration:none;color:inherit}
+.nx21-shell{position:relative;display:flex;flex-direction:column;width:100%;height:100%;min-height:0;background:radial-gradient(ellipse at 87% 2%,#5e4b7a34,transparent 48%),linear-gradient(110deg,#0b1528,#142039 65%,#0d1829)}
+.nx21-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px clamp(15px,2.3vw,26px);border-bottom:1px solid #c3afb876;background:linear-gradient(90deg,#17253adf,#28243cd9)}
+.nx21-brand{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:1000;letter-spacing:.18em;color:#f4d5a7;white-space:nowrap}
+.nx21-brand small{font-size:9px;color:#a8cbd6;letter-spacing:.1em;white-space:normal}
+.nx21-header-right{display:flex;gap:13px;align-items:center}
+#nx21CurrentMode{font-size:9px;color:#bad4df;letter-spacing:.075em;font-weight:850}
+.nx21-close{width:42px;height:42px;border-radius:10px;border:1px solid #c8bdd282;background:#2b3850;color:#ffe6dc;font-size:19px!important;line-height:1;display:grid;place-items:center}
+.nx21-hero{position:relative;display:flex;justify-content:space-between;gap:10px;align-items:center;flex:none;min-height:155px;padding:clamp(16px,2.6vw,29px);background-image:linear-gradient(100deg,#0e1b2af5,#152441e3 60%,#34274494),url("./assets/citadel-hero-hd-v9.1.1.webp");background-size:cover;background-position:center 46%;border-bottom:1px solid #e7c79e85;overflow:hidden}
+.nx21-hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,#d0a77e,transparent,#baa7e6)}
+.nx21-eyebrow{font:950 9px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;letter-spacing:.19em;color:#b2d9e6}
+.nx21-hero h2{font-size:clamp(26px,3.6vw,48px);line-height:1.07;letter-spacing:-.055em;font-weight:1000;color:#fff0d0;margin:7px 0 8px}
+.nx21-hero h2 em{font-style:normal;color:#c9b1ed}
+.nx21-hero p{font-size:11px;line-height:1.65;color:#e0e4ea;max-width:710px;margin:0}
+.nx21-hero-icon{font-size:78px;line-height:1;color:#f0c99e99;text-shadow:0 0 32px #af83d55e;flex:none;pointer-events:none}
+.nx21-tabs{display:flex;align-items:center;gap:6px;padding:10px clamp(13px,2vw,22px);flex:none;border-bottom:1px solid #aab7c444;background:#102037}
+.nx21-tabs button{background:#29354ca8;color:#d3d4e1;border:1px solid #b6b0c555;padding:9px 14px;min-height:39px;border-radius:9px;font-size:10px!important;letter-spacing:.075em;font-weight:900!important}
+.nx21-tabs button.nx21-selected{background:linear-gradient(120deg,#c9a578,#f3d4a3);color:#20283a;border-color:#f5d3a5}
+.nx21-explore,.nx21-journeys-panel{min-height:0;overflow-y:auto;overscroll-behavior:contain;flex:1;padding:16px clamp(13px,2vw,22px) 25px;scrollbar-width:thin}
+.nx21-search-label{display:block;font-size:9px;font-weight:950;letter-spacing:.115em;color:#b3cfdc;margin-bottom:8px}
+.nx21-search-wrap{display:flex;align-items:center;gap:12px;background:#09172bf5;border:1px solid #b2b6c79a;border-radius:11px;padding:0 13px}
+.nx21-search-wrap:focus-within{border-color:#e5d0a9;box-shadow:0 0 0 2px #a8b2e135}
+.nx21-search-wrap>span{font-size:25px;color:#d4b28c}
+.nx21-search-wrap input{width:100%;min-width:0;min-height:48px;display:block;background:transparent;border:0;outline:none;font-size:14px;color:#f9eee5;font-family:inherit}
+.nx21-search-wrap input::placeholder{color:#8ba1b4}
+.nx21-groups{display:flex;align-items:center;gap:6px;margin:11px 0 18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+.nx21-filter{flex:none;min-height:35px;padding:7px 11px;background:#26344ac7;border:1px solid #9eacc86a;color:#d4dcea;border-radius:999px;font-size:10px!important;font-weight:850!important;white-space:nowrap}
+.nx21-filter[aria-pressed="true"]{color:#fff0cb;border-color:#e5c498;background:#554165}
+.nx21-columns{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(235px,.85fr);gap:13px;align-items:start}
+.nx21-directory,.nx21-personal{background:#131f34b8;border:1px solid #b0acc272;border-radius:13px;padding:12px;min-width:0}
+.nx21-section-line{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:3px 3px 10px;font-size:10px;color:#efd0a1;letter-spacing:.095em}
+.nx21-section-line strong{font-weight:950}.nx21-section-line small{font-size:9px;color:#b6c4d5;font-weight:900}
+.nx21-results{display:grid;gap:7px}
+.nx21-result{display:flex;min-width:0;align-items:stretch;overflow:hidden;background:linear-gradient(115deg,#20334b,#1b2842);border:1px solid #94abc47a;border-radius:9px;min-height:66px}
+.nx21-result-link{display:flex;gap:10px;align-items:center;padding:10px 11px;min-width:0;flex:1;cursor:pointer}
+.nx21-result-link:hover{background:#53617c45}
+.nx21-result-icon{display:grid;place-items:center;flex:none;font-size:24px;width:41px;height:41px;background:linear-gradient(125deg,#6c59847a,#314d62a0);border:1px solid #aeb9ca63;color:#f5d4a6;border-radius:10px}
+.nx21-result-text{display:grid;gap:2px;min-width:0}
+.nx21-result-text strong{font-size:12px;color:#f4e2c9;font-weight:950;line-height:1.3;overflow-wrap:anywhere}
+.nx21-result-text small{font-size:10px;color:#b6cddd;line-height:1.35}
+.nx21-result-arrow{margin-left:auto;color:#c4dbdc;flex:none;font-size:17px}
+.nx21-pin{flex:none;width:43px;min-height:54px;background:#1b2c47;border:0;border-left:1px solid #7c91ae65;color:#eed39b;font-size:22px!important}
+.nx21-pin[aria-pressed="true"]{color:#ffe4a6;background:#47374e}
+.nx21-manual-result{border-color:#d7b68b86}
+.nx21-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.nx21-stat{padding:12px 10px;min-width:0;border-radius:9px;border:1px solid #a5a8be79;background:linear-gradient(135deg,#30354f,#1a3347)}
+.nx21-stat strong{font-size:25px;line-height:1.2;color:#f5d5a5;display:block;font-weight:1000}
+.nx21-stat span{font-size:9px;line-height:1.3;color:#d5d9e6;font-weight:850;letter-spacing:.035em;display:block}
+.nx21-source{font-size:10px;line-height:1.55;color:#b5d1db;margin:10px 2px}
+.nx21-continue{display:grid;gap:4px;padding:15px;border:1px solid #e7c997b2;border-radius:10px;background:linear-gradient(120deg,#50415a,#2b4a5a);color:#f4e8d9}
+.nx21-continue small{font-size:9px;letter-spacing:.13em;color:#cadfee;font-weight:950}
+.nx21-continue strong{font-size:14px;font-weight:950;line-height:1.4;overflow-wrap:anywhere}
+.nx21-continue span{font-size:10px;color:#f1d09e;font-weight:950}
+.nx21-private-link{margin-top:9px;display:block;padding:12px 8px;border-radius:8px;text-align:center;font-size:10px;font-weight:950;border:1px solid #b3bfce7a;background:#243850}
+.nx21-private-notice{font-size:12px;line-height:1.7;color:#e6d7c9;padding:12px;background:#1d3045;border:1px solid #d7b99a86;border-radius:9px}
+.nx21-empty{padding:15px;font-size:11px;color:#d2d4e4;border:1px dashed #bac4d077;border-radius:9px;background:#23304a}
+.nx21-journeys-intro{font-size:11px;color:#c9d7e0;line-height:1.7;margin:0 0 15px}
+.nx21-journeys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.nx21-journey{padding:18px;border:1px solid #bca9b78c;border-radius:13px;background:linear-gradient(150deg,#292a46,#183249);min-width:0}
+.nx21-journey-title{font-size:17px;color:#f3d6ad;letter-spacing:-.02em}
+.nx21-journey p{font-size:11px;line-height:1.6;color:#c6d7e4}
+.nx21-journey-steps{display:grid;gap:7px;margin-top:12px}
+.nx21-step{display:flex;gap:10px;align-items:center;min-height:42px;padding:7px 10px;background:#13233c;border-radius:8px;border:1px solid #99a9b97d;font-size:11px;font-weight:850}
+.nx21-step b{color:#f4d2a3;font-weight:1000;font-size:12px}
+.nx21-step:hover{background:#39435e}
+.nx21-footer{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap;border-top:1px solid #a5aabd68;padding:12px clamp(14px,2vw,22px);background:#101c32;color:#b0c7d1;font-size:9px;letter-spacing:.06em;font-weight:800}
+.nx21-shortcut{display:inline-block;border:1px solid #a2aabc69;padding:2px 5px;border-radius:5px;margin-left:7px;color:#f1dfbf}
+.nx21-bridge{position:relative;isolation:isolate;overflow:hidden;margin:23px 0 20px;padding:clamp(18px,3vw,28px);border-radius:18px;border:1px solid #e5c59c94;background:linear-gradient(110deg,#14233b,#202b44 59%,#24213e);box-shadow:0 13px 43px #0009}
+.nx21-bridge:before{content:"";position:absolute;inset:-1px;pointer-events:none;background:radial-gradient(circle at 98% 0,#b69fe021,transparent 48%)}
+.nx21-bridge-head{position:relative;z-index:1;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.nx21-bridge-head h2{font-size:clamp(26px,3.1vw,43px);letter-spacing:-.055em;line-height:1.15;color:#f2d8b4;margin:7px 0}
+.nx21-bridge-head h2 em{font-style:normal;color:#cbb4ef}
+.nx21-bridge-head p{font-size:12px;color:#c8d6e3;line-height:1.65;margin:4px 0}
+.nx21-bridge-head button{min-height:45px;border:1px solid #f4d6b5;border-radius:9px;color:#26243c;background:linear-gradient(110deg,#d8ae7a,#ffe4bb);font-size:10px!important;font-weight:950!important;letter-spacing:.05em;padding:9px 14px}
+.nx21-bridge-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:19px;position:relative;z-index:1}
+.nx21-showcase{display:flex;flex-direction:column;gap:7px;min-height:184px;min-width:0;padding:15px;border:1px solid #d1bfbe8c;border-radius:11px;background-image:linear-gradient(130deg,#17243bed,#2d324acd 53%,#242439ae),url("./assets/citadel-hero-hd-v9.1.1.webp");background-size:cover;background-position:center;box-shadow:inset 0 1px #fff2}
+.nx21-showcase:hover{border-color:#eed3a8;box-shadow:0 8px 27px #04081497}
+.nx21-showcase-character{background-image:linear-gradient(145deg,#13192be8,#2d2646bd),url("./assets/sovereign-throne-v9.1.webp");background-position:right center}
+.nx21-showcase-atlas{background-image:linear-gradient(145deg,#0c243be8,#152e44cc),url("./assets/nexus-atlas-cartography-v18.svg");background-position:center}
+.nx21-showcase-adventure{background-image:linear-gradient(140deg,#13273af0,#2e3750b9),url("./assets/talent-forge-v9.1.webp")}
+.nx21-showcase-vault{background-image:linear-gradient(140deg,#1d1d35ed,#382b4dc4),url("./assets/sovereign-throne-v9.1.webp")}
+.nx21-showcase-icon{font-size:22px;color:#f0d4a7}
+.nx21-showcase strong{font-size:14px;color:#ffebc9;font-weight:1000;line-height:1.2;letter-spacing:.01em}
+.nx21-showcase small{font-size:10px;line-height:1.5;color:#e1e8ef}
+.nx21-showcase b{margin-top:auto;font-size:10px;letter-spacing:.08em;color:#e5c3a0}
+.nx21-bridge-foot{position:relative;z-index:1;margin:13px 0 0;color:#c6dbdf;font-size:10px;font-weight:850;letter-spacing:.025em}
+.nx21-home-hub{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;min-width:0;margin:16px 0 19px;padding:18px 22px;border:1px solid #e1bf8d98;border-radius:14px;background:linear-gradient(125deg,#20344ac9,#322841c9);box-shadow:0 9px 23px #04071973}
+.nx21-home-hub>div{flex:1 1 290px;min-width:0}
+.nx21-home-hub strong{display:block;font-size:clamp(16px,2vw,22px);letter-spacing:-.015em;color:#f3d4a6;margin:3px 0}
+.nx21-home-hub p{color:#cad6e1;font-size:11px;line-height:1.55;margin:3px 0}
+.nx21-home-hub button{flex:0 1 auto;min-height:42px;border:1px solid #f6dcad;color:#20263b;background:linear-gradient(115deg,#d2ab7a,#f2d7b6);border-radius:9px;padding:10px 14px;font-size:10px!important;font-weight:950!important;letter-spacing:.03em}
+@media(max-width:1100px){.nx21-bridge-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.nx21-showcase{min-height:157px}}
+@media(max-width:720px){
+ .nx21-launcher{min-width:49px;width:49px;height:49px;padding:7px;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(15px + env(safe-area-inset-bottom,0px));border-radius:14px}
+ .nx21-launch-label{display:none}.nx21-launch-symbol{width:31px;height:31px}
+ .nx21-dialog{width:100vw;max-width:100vw;max-height:100dvh;height:100dvh;border-radius:0;border:0;top:0;left:0;transform:none}
+ .nx21-shell{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+ .nx21-header{padding:10px 12px}.nx21-brand{font-size:13px;letter-spacing:.09em}.nx21-brand small{font-size:8px}.nx21-header-right{gap:6px}#nx21CurrentMode{display:none}
+ .nx21-hero{padding:14px 17px;min-height:120px}.nx21-hero h2{font-size:29px;margin:5px 0}.nx21-hero p{font-size:10px}.nx21-hero-icon{display:none}
+ .nx21-tabs{padding:9px 11px}.nx21-tabs button{flex:1;padding:8px 9px;font-size:9px!important}
+ .nx21-explore,.nx21-journeys-panel{padding:14px 11px 25px}
+ .nx21-columns{grid-template-columns:1fr}.nx21-personal{order:-1}.nx21-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .nx21-stat{padding:9px 6px}.nx21-stat strong{font-size:21px}.nx21-stat span{font-size:8px}.nx21-personal .nx21-continue{padding:11px}
+ .nx21-private-link,.nx21-source{display:none}
+ .nx21-journeys{grid-template-columns:1fr}
+ .nx21-footer{font-size:8px}.nx21-shortcut{display:none}
+ .nx21-bridge{padding:16px}.nx21-bridge-cards{gap:7px}.nx21-showcase{padding:12px;min-height:170px}
+ .nx21-showcase strong{font-size:12px}.nx21-showcase small{font-size:9px}
+ .nx21-home-hub{padding:16px}.nx21-home-hub button{width:100%}
+}
+@media(max-width:400px){.nx21-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.nx21-bridge-cards{grid-template-columns:1fr 1fr}.nx21-showcase{min-height:185px}}
+@media(prefers-reduced-motion:reduce){
+ .nx21-dialog *, .nx21-bridge *, .nx21-launcher{animation:none!important;transition:none!important;scroll-behavior:auto!important;transform:none}
+}
+html[data-nx19-resolved="quiet"] .nx21-launcher{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 6px 15px #0008}
+html[data-nx19-resolved="quiet"] .nx21-showcase{box-shadow:none}
+
+
 /* v19 main companion bundled display CSS: matches shared/nexus-experience-v19.css */
 /* NEXUS | ADAPTIVE EXPERIENCE ENGINE v19.0.0
  * CSS-only depth, responsive contrast, surface-specific identities & quiet mode.

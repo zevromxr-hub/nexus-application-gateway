@@ -1,5 +1,19 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v21.0.0 · 2026-11-18 — SOVEREIGN UNITY: CONNECTED AZEROTH EXPERIENCE (Owner approved; physical-device/live-player acceptance pending)
+
+- Connected **all 21 Azeroth website pages** through one accessible global NEXUS COMMAND launcher. Its dialog offers fast search across **19 real studio destinations**, category filters, direct links into manually saved Atlas objectives and real guided workflows; it does not invent quest, level, achievement or equipment verification.
+- Added **Pinned Studios** (six max) and **Recent Studio Destinations** (eight max). Only a bounded whitelist of public studio IDs is persisted in new key nexus_azeroth_unity_v21; no personal quest titles, access tokens, passwords, music, videos, encrypted Vault data or external links are saved.
+- Introduced four useful Guided Journeys: Prepare an Adventure, Build Your Character, Plan a Collection, and Organize Your Media. Each opens real existing studios instead of static buttons or fake features.
+- Added a cinematic four-path discovery bridge to the Command Center, with existing local original art and sourced counts of manually saved goals, routes and build drafts. The full companion now has a compact Unity launch and progress strip.
+- Added device-aware, keyboard accessible Ctrl/Cmd+K global search on pages that do not already use a native command palette; the Command Center's pre-existing shortcut remains untouched. Escape closes the dialog. iPhone uses a compact launcher and full-height modal with safe-area support.
+- Improved performance: no heavy UI framework, off-origin runtime, continuous animation loop or new artwork downloads. The main companion bundles exact Unity JS/CSS within its existing loaded performance/art files to retain original CSS/JS startup request count. Local search indexes are read on demand, not polled.
+- Left Vault v20.1 **strictly isolated**: global navigation does not inspect or unlock encrypted video storage, credentials or media. Preserved original CSP, local AES encryption, password reset flow and separate encrypted backup files. All login/verification and older feature save keys are also preserved.
+- Updated installed-app webmanifest with four direct-launch shortcuts, refreshed PROXIMUS Gateway Azeroth card and preserved all other NEXUS products. Release rollback: backup/azeroth-v20-1-before-sovereign-unity-v21-2026-11-18.
+- New source and synthetic desktop Chromium/iPhone WebKit audits validate 21-page integration, grouped search, pinned/recents, guided experiences, read-only manual objective sources, secure Vault separation, and actual JS/CSS startup request parity. Physical iPhone/Home Screen and real game accounts remain pending.
+
+
+
 ## v20.1.0 · 2026-11-17 — PRIVATE VIDEO VAULT RECOVERY & IPHONE ONBOARDING (Owner approved; physical-iPhone acceptance pending)
 
 - Added an explicit **Forgot Password / Reset Options** panel on the locked Private Video Vault. It shows a ciphertext-only encrypted clip count, optionally exports an **encrypted backup without unlocking**, and allows an owner-directed reset **only after** typing `DELETE MY VAULT`, acknowledging irreversible deletion, and confirming the browser dialog.

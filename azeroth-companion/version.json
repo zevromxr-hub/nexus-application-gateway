@@ -1,14 +1,24 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "20.1.0",
+  "version": "21.0.0",
   "channel": "owner-approved",
-  "release_date": "2026-11-17",
-  "subtitle": "SOVEREIGN PRIVATE VIDEO VAULT RECOVERY — EXPLICIT LOCAL RESET, IPHONE PASSWORDS & ENHANCED PRIVATE COLLECTION",
-  "previous_version": "20.0.0",
+  "release_date": "2026-11-18",
+  "subtitle": "SOVEREIGN UNITY — SITEWIDE COMMAND, DISCOVERY, PERSONAL PLANNING INTELLIGENCE & PERFORMANCE",
+  "previous_version": "20.1.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "NEXUS Sovereign Unity v21 connects every one of Azeroth's 21 HTML pages through a single accessible cross-studio launcher, with a consistent cinematic premium design respecting existing studio individuality and prior v19 visual presets.",
+    "Introduced an on-demand Command Palette with 19 curated destinations, fast local studio search, manual saved Atlas mission lookup with safe direct zone links, and source-labeled summaries of your browser-local character drafts, builds, saved routes and sessions. It never claims actual Blizzard account or quest progress.",
+    "Added up to six user-pinned studios and eight recent destinations. The only new browser-local persistence key is nexus_azeroth_unity_v21 containing bounded public studio identifiers—not personal details, passwords, tokens, video metadata or player data.",
+    "Launched four guided cross-studio experiences: Prepare an Adventure, Build Your Character, Plan a Collection and Organize Your Media. Each journey links existing working tools rather than simulating live gameplay or adding an empty placeholder feature.",
+    "Reimagined Command Center discovery with four immersive original-art-powered studio portals and a contextual manual-progress recap; added an actionable Unity Launch strip to the main companion overview. All art comes from existing locally hosted NEXUS assets.",
+    "Improved iPhone usability with a compact bottom-left launcher, full-height searchable responsive command dialog, reduced-motion behavior, accessible search and focus controls, keyboard Escape and Ctrl/Cmd+K shortcut on pages without an existing native command search.",
+    "Preserved existing Command Center Cmd+K palette, native studio navigation, Talent Forge builds, World Atlas v18.2, v18.1 saved routes, v20.1 locally encrypted Vault, v19 display preferences, media, Battle.net verification, Worker services and all prior stored records.",
+    "On the main Azeroth app, exact v21 shared JS/CSS sources are bundled into already-loaded performance and art files before the unchanged v19 engine, so the number of JS/CSS startup requests does not grow. Other pages load only small self-hosted first-party resources, with no external runtime, analytics or remote map tiles.",
+    "Updated the NEXUS Gateway Azeroth card and installed-app webmanifest shortcuts for Command Center, Atlas, Character Nexus and encrypted Vault without changing PWA start_url, scope, launch behavior or account persistence.",
+    "Added dedicated source/unit and synthetic desktop Chromium/iPhone WebKit acceptance checks for 21-page integration, keyboard navigation, mission search, pinned destinations, guided flows, Vault privacy, native bundle parity and previous save preservation. Physical iPhone and live-player acceptance remain pending.",
     "Added explicit Forgotten Password / Reset Vault assistance on the locked screen. The owner can inspect encrypted clip count, export a ciphertext-only .nxvault safety copy without unlocking, and deliberately delete ONLY this browser's encrypted Video Vault after typing DELETE MY VAULT, checking an irreversible-deletion acknowledgment and accepting a second confirmation.",
     "Reset does not bypass encryption or reveal lost passwords, names or videos. AES-256-GCM authenticated ciphertext from the prior vault cannot be recovered without its original password; previously stored characters, builds, routes, missions, other studios and Cloudflare accounts are unaffected.",
     "Improved iPhone Passwords/Keychain compatibility using a stable named username field and new-password/current-password autocomplete settings, plus SHOW/HIDE passwords, matched confirmation and explicit acknowledgement that the exact password was securely saved before creating a new encrypted vault.",
@@ -192,6 +202,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "User expressly requested reset of an inaccessible iPhone Vault after a lost password and further system improvements. The solution provides an owner-operated local destructive reset, not a server-side recovery bypass. Existing ciphertext remains unrecoverable without the original password; physical iPhone Passwords acceptance is pending."
+    "note": "Owner requested enhancement of the entire Azeroth website and connected experiences. This v21 adds cross-studio visual/navigation and source-labeled browser-local utility without modifying authentication or previously saved records. Automated tests are advisory and real hardware/character acceptance remains pending."
   }
 }

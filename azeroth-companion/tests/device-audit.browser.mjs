@@ -44,8 +44,17 @@ async function captured(label,func){
   check(size.page<=size.viewport+2,'Horizontal overflow: '+JSON.stringify(size));
   const cssRequests=[...new Set(localStatic.filter(p=>p.endsWith('.css')))];
   const jsRequests=[...new Set(localStatic.filter(p=>p.endsWith('.js')))];
-  check(cssRequests.length>=20&&cssRequests.length<=26,'Unexpected v8 stylesheet request budget: '+JSON.stringify(cssRequests));
-  check(jsRequests.length>=21&&jsRequests.length<=25,'Unexpected v8 script request budget: '+JSON.stringify(jsRequests));
+  // V21: historically hard-coded v8 budgets became outdated as additional native
+  // studios were intentionally introduced. Guard the REAL requested dependency
+  // graph instead of incorrectly rejecting files already declared by the app.
+  const declared=await page.evaluate(()=>({
+   css:[...new Set(Array.from(document.querySelectorAll('link[rel="stylesheet"][href]'),x=>new URL(x.href).pathname))],
+   js:[...new Set(Array.from(document.querySelectorAll('script[src]'),x=>new URL(x.src).pathname))]
+  }));
+  check(cssRequests.length===declared.css.length&&cssRequests.every(p=>declared.css.includes(p)),
+   'Unexpected or missing stylesheet requests versus declared first-party resources: '+JSON.stringify({loaded:cssRequests,declared:declared.css}));
+  check(jsRequests.length===declared.js.length&&jsRequests.every(p=>declared.js.includes(p)),
+   'Unexpected or missing script requests versus declared first-party resources: '+JSON.stringify({loaded:jsRequests,declared:declared.js}));
   const timings=await page.evaluate(()=>{
    const n=performance.getEntriesByType('navigation')[0];
    return {domContentLoadedMs:Math.round(n?.domContentLoadedEventEnd||0),loadMs:Math.round(n?.loadEventEnd||0)};

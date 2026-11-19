@@ -24,6 +24,9 @@ footer{color:#97b3c7;text-align:center;font-size:11px;margin-top:40px}#nxSafetyS
 @media(max-width:700px){.grid{grid-template-columns:1fr}.hero{background:linear-gradient(100deg,#101b30f4,#10192ced),url("./assets/sovereign-throne-v9.1.webp") right center/auto 100% no-repeat}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style><link rel="stylesheet" href="./visual-unification-v12.css?v=1200">
+<link rel="stylesheet" href="./nexus-unity-v21.css?v=2100">
+<script defer src="./nexus-unity-v21-core.js?v=2100"></script>
+<script defer src="./nexus-unity-v21.js?v=2100"></script>
 </head><body data-nx12-page="save-protection">
 <header><strong>NEXUS | AZEROTH COMPANION</strong><nav><a href="./command-center.html">← Command Center</a> · <a href="./player-experience.html">My Character</a> · <a href="./?enter=1">Full Companion</a></nav></header>
 <main><section class="hero"><div class="eyebrow">NEXUS / SAFETY FOUNDATION · v11</div><h1>Save <span>Protection Center</span></h1><p>Protect your existing local planning work with a read-only export. This tool inspects an explicit list of supported, non-authentication browser records and never changes or clears them.</p><div class="actions"><button id="nxExportSafety" type="button">EXPORT MY LOCAL PLANNING BACKUP</button><a href="./?enter=1&amp;view=data">Open original Data &amp; Backup ↗</a></div><p id="nxSafetyStatus" role="status" aria-live="polite">Inspecting supported local records…</p></section>
@@ -52,7 +55,8 @@ const KEYS=[
  ['nexus_world_atlas_goals_v16','World Atlas personal destination missions and optional character/build/item links'],
  ['nexus_adventure_intelligence_v165','Expedition preparation checklists, personal priorities and bookmarked Atlas destinations'],
  ['nexus_adventure_operations_v17','Sovereign Adventure Operations v17 ordered personal sessions, estimates and field notes'],
- ['nexus_atlas_routes_v181','World Atlas v18.1 personal expedition routes, manual ordered stops, private field notes and manual visited flags']
+ ['nexus_atlas_routes_v181','World Atlas v18.1 personal expedition routes, manual ordered stops, private field notes and manual visited flags'],
+ ['nexus_azeroth_unity_v21','Sovereign Unity v21 pinned and recent public studio IDs (no private media, passwords or character identifiers)']
 ];
 const $=id=>document.getElementById(id);
 const data={};let bytes=0,found=0,unreadable=0;
