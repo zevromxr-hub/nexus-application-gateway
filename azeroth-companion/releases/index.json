@@ -1,8 +1,15 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "releases": [
+    {
+      "version": "21.0.0",
+      "title": "Sovereign Unity — Connected Azeroth, Premium Studio Navigation & Manual Progress Intelligence",
+      "date": "2026-11-18",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
     {
       "version": "20.1.0",
       "title": "Private Vault Recovery — Safe Owner Reset, iPhone Passwords and Premium Library",
