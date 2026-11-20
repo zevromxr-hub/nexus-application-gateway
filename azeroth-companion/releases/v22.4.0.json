@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "22.4.0",
+  "title": "BOSS & LOOT INTELLIGENCE — Curated Encounters and Source-Aware Loot",
+  "release_date": "2026-11-20",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Curated, provenance-linked boss and two verified sample item associations only. No claims of comprehensive live loot or internal boss coordinates. Browser/device tests pending.",
+  "features": [
+    "Source-verifiable boss encounter index covering Nerub-ar Palace, The Stonevault and Priory of the Sacred Flame.",
+    "Two documented Stonevault sample loot item references with corresponding boss sources.",
+    "Search results embedded under existing map discovery results, no additional studio screens.",
+    "One-click zone entrance map focus and full external journal loot references.",
+    "No new data keys, authorization scopes, account mutations, backend changes, drop-rate claims or fake map coordinates."
+  ]
+}
