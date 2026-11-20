@@ -1,14 +1,21 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "22.0.0",
+  "version": "22.1.0",
   "channel": "owner-approved",
   "release_date": "2026-11-20",
-  "subtitle": "LIVING INTELLIGENCE — ZONE MAP COORDINATES, DATED BLIZZARD EQUIPMENT RESEARCH & CONNECTED ADVENTURE DIRECTOR",
-  "previous_version": "21.0.0",
+  "subtitle": "REAL MAP FIRST — CURRENT MIDNIGHT ZONES, SOURCE-BACKED GAME MAPS, IN-GAME POIS & DIRECT COORDINATES",
+  "previous_version": "22.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Product correction based on owner feedback: the World Atlas now OPENS with a real game-derived zone map and immediate clickable points of interest, not the older decorative continent art or a blank coordinate editor. No player setup, character linking or multiple planner screens needed.",
+    "Added a focused, first-screen map interface with ten Retail zone maps, including current Midnight Zul'Aman (2437), Harandar (2413) and Voidstorm (2405) as the default/first choices. Their actual game-derived map images and selected POIs/flight nodes were verified on the external source. Previously supported Khaz Algar and Dragon Isles maps remain available, with direct provider links, attribution and a full-source fallback when image hosting is unavailable.",
+    "Curated directly actionable source-backed location samples, including current Midnight flight routes, portals, delves, quest hubs, plus known dungeons and raid points in older zones. Every pin exposes in-game X/Y and UI Map ID, with source links; these samples are not exhaustive nor actual player tracking.",
+    "Search and filter a zone's visible locations; click a marker or list item to see coordinates and source, copy an in-game waypoint macro, zoom with +/− and drag the enlarged image on desktop/mobile. The interface is built for immediate use rather than additional forms or click-through steps.",
+    "Existing manually saved v22 zone-coordinate pins appear automatically on the real zone images, separately marked Personal. The original pin editor, v16 mission goals, v18.1 route archive, illustrated v18.2 research Atlas and v22 Living Intelligence Director are preserved below as optional advanced tools.",
+    "Updated Command Center navigation and native search, the PROXIMUS Gateway card and user-facing Atlas descriptions so outdated art is no longer promoted as the primary map. No new browser storage keys, Blizzard APIs, OAuth permissions, video access or worker changes.",
+    "Dedicated structural/provenance and synthetic desktop Chromium/iPhone WebKit browser tests check direct visible source maps, click-to-select reference markers, search, zoom, saved coordinate overlays, remote media failure fallback and original user record preservation. External provider uptime and real mobile device verification remain separately pending.",
     "Added a coordinate-aware World Atlas v22 laboratory: players can enter exact 0–100 zone-map X/Y positions tied to an in-game UI Map ID, choose a pin type, add personal descriptions and view clickable markers on a neutral coordinate grid or an optional user-owned, local-only zone map preview.",
     "Referenced seven independently researched in-game UI Map IDs for selected Dragon Isles and Khaz Algar areas; invalid IDs and out-of-range coordinates are rejected. The existing illustrated continent map remains clearly labeled schematic, never falsely claimed to be a precise Blizzard map. User-provided coordinate records are sourced as manual.",
     "Added one-tap copyable World of Warcraft in-game user-waypoint macros using C_Map.CanSetUserWaypointOnMap and UiMapPoint.CreateFromCoordinates, plus safe portable export/import of user waypoint JSON and immediate links to the user's original Atlas missions and adventure plans.",
@@ -212,6 +219,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner requested upgrades to accurate/functioning World Atlas coordinates, stronger character equipment intelligence and a personal Adventure Director. New markers are player-entered, sourced in-game zone map coordinates, not precise global map art. Blizzard equipment reports are captured only after a successful existing API request and opt-in save. All real-device, physical-iPhone and live-player acceptance remains pending."
+    "note": "Owner requested real, contemporary, usable maps instead of a blank grid and stale art. Corrective v22.1 puts current Retail Midnight Zul'Aman, Harandar and Voidstorm sourced maps first and supports ten zones total. All media remains externally hosted, attribution and image-load fallbacks included. Real game and physical-iPhone acceptance remain pending."
   }
 }
