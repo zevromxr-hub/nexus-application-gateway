@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-nx-version="22.0.0"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e1729">
+<meta name="description" content="NEXUS Azeroth v22 Living Intelligence: coordinate-aware planning, source-labeled Blizzard gear research and a personal World of Warcraft adventure director.">
+<title>Living Intelligence | NEXUS Azeroth v22</title>
+<link rel="canonical" href="https://zevarchives.com/azeroth-companion/living-intelligence.html">
+<meta property="og:type" content="website"><meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
+<meta property="og:title" content="NEXUS Azeroth v22 — Living Intelligence">
+<meta property="og:description" content="One connected personal adventure director across the World Atlas, Character Nexus and Blizzard research.">
+<meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
+<meta property="og:url" content="https://zevarchives.com/azeroth-companion/living-intelligence.html">
+<link rel="icon" href="./assets/nexus-warrior-favicon-48.png">
+<link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
+<link rel="manifest" href="./site.webmanifest?v=2200">
+<link rel="stylesheet" href="./living-intelligence-v22.css?v=2200">
+<link rel="stylesheet" href="./nexus-unity-v21.css?v=2200">
+<script defer src="./living-intelligence-v22-core.js?v=2200"></script>
+<script defer src="./living-director-v22.js?v=2200"></script>
+<script defer src="./nexus-unity-v21-core.js?v=2200"></script>
+<script defer src="./nexus-unity-v21.js?v=2200"></script>
+</head>
+<body class="nx22-director-body" data-nx12-page="living-intelligence">
+<header class="nx22-director-header"><a href="./command-center.html" class="nx22-brand" aria-label="Back to NEXUS Azeroth Command Center"><span>N</span><strong>NEXUS</strong><small>AZEROTH / LIVING INTELLIGENCE</small></a>
+<nav aria-label="Azeroth studio navigation">
+<a href="./world-atlas.html#nx22Atlas">WORLD ATLAS</a><a href="./character-intelligence.html">EQUIPMENT RESEARCH</a><a href="./player-experience.html">CHARACTER NEXUS</a><a href="./adventure-operations.html">ADVENTURE OPERATIONS</a><a href="./save-protection.html">BACKUP</a>
+</nav></header>
+<main class="nx22-director-main" id="nx22Director">
+<section class="nx22-director-hero"><div class="nx22-hero-copy">
+<span class="nx22-eyebrow">NEXUS · SOVEREIGN INTELLIGENCE ENGINE / V22.0.0</span>
+<h1>YOUR WORLD.<br><em>YOUR NEXT MOVE.</em></h1>
+<p>Make a purposeful personal session from your existing Atlas goals, saved expedition entries, build plans, and optional, dated Blizzard public-equipment research.</p>
+<div class="nx22-hero-actions"><a href="#nx22PlanEditor">BUILD A SESSION ↘</a><a href="./world-atlas.html#nx22Atlas">ADD REAL MAP COORDINATES ↗</a></div>
+<div class="nx22-trust"><span>NO AUTOMATED CHARACTER TRACKING</span><span>SAVED DATA STAYS ON THIS DEVICE</span><span>MANUAL STATUS IS LABELED</span></div>
+</div><div class="nx22-hero-sigil" aria-hidden="true"><span>✧</span><small>SOVEREIGN DIRECTOR</small></div></section>
+<section class="nx22-director-metrics" aria-label="Your manually saved planning inventory">
+<div><small>OPEN ATLAS OBJECTIVES</small><strong id="nx22DirectorGoals">0</strong></div>
+<div><small>SAVED MAP COORDINATES</small><strong id="nx22DirectorPins">0</strong></div>
+<div><small>ADVENTURE OPERATIONS ENTRIES</small><strong id="nx22DirectorSessions">0</strong></div>
+<div><small>BLIZZARD RESEARCH SNAPSHOTS</small><strong id="nx22DirectorResearch">0</strong></div>
+</section>
+<section class="nx22-director-work" id="nx22PlanEditor" aria-labelledby="nx22PlanTitle">
+<div class="nx22-director-work-head"><div><span class="nx22-eyebrow">01 / CONNECTED PERSONAL PLANNING</span>
+<h2 id="nx22PlanTitle">DESIGN YOUR <em>SESSION.</em></h2><p>Choose a manual character, your available time and preferred activity. NEXUS will order only objectives already saved by you, with clearly estimated times.</p></div>
+<a href="./world-atlas.html#nx16Missions">+ ADD A WORLD ATLAS GOAL ↗</a></div>
+<div class="nx22-plan-layout"><form id="nx22DirectorForm" class="nx22-director-form">
+<label for="nx22DirectorCharacter">PERSONAL CHARACTER / OPTIONAL<select id="nx22DirectorCharacter"><option value="">All browser-local characters</option></select></label>
+<label for="nx22DirectorMode">CURRENT ADVENTURE FOCUS<select id="nx22DirectorMode">
+<option value="balanced">BALANCED · MY TOP PRIORITIES</option>
+<option value="exploration">EXPLORATION · DISCOVER ZONES</option>
+<option value="equipment">EQUIPMENT · BUILD PREPARATION</option>
+<option value="collecting">COLLECTION · PERSONAL GOALS</option>
+</select></label>
+<label for="nx22DirectorBudget">TIME AVAILABLE · MINUTES<select id="nx22DirectorBudget">
+<option value="30">30 MINUTES</option><option value="60">60 MINUTES</option>
+<option value="90">90 MINUTES</option><option value="120">2 HOURS</option><option value="180">3 HOURS</option><option value="240">4 HOURS</option></select></label>
+<div class="nx22-director-form-actions"><button id="nx22Generate" type="submit">✦ GENERATE MY PLAN</button>
+<button id="nx22SaveSettings" type="button">SAVE THESE PREFERENCES</button></div>
+<p class="nx22-director-form-hint">Suggestions are based on your manual records, not in-game telemetry. Session estimates are planning assumptions—not travel times or completion predictions.</p>
+<div id="nx22DirectorResearchPanel" class="nx22-director-gear" aria-label="Optional public character research evidence"></div>
+</form>
+<div class="nx22-plan-output"><div class="nx22-output-head"><span class="nx22-eyebrow">02 / YOUR ACTIONABLE BRIEFING</span>
+<strong id="nx22DirectorOutcome">PERSONAL SESSION · 90 MIN</strong><span id="nx22DirectorSummary">Calculating your saved research…</span></div>
+<div id="nx22DirectorAgenda" class="nx22-director-agenda" aria-live="polite"></div>
+<div class="nx22-output-actions"><button type="button" id="nx22CopyPlan">COPY SESSION BRIEF</button><button type="button" id="nx22ExportPlan">EXPORT JSON BRIEF</button>
+<a href="./adventure-operations.html">OPEN ORIGINAL SESSION BUILDER ↗</a></div>
+</div></div></section>
+<section class="nx22-preparation" aria-labelledby="nx22PrepTitle"><div class="nx22-preparation-head"><div><span class="nx22-eyebrow">03 / BEFORE YOU ENTER THE WORLD</span>
+<h2 id="nx22PrepTitle">PREPARE WITH <em>EVIDENCE.</em></h2></div><a href="./character-intelligence.html">BLIZZARD GEAR RESEARCH ↗</a></div>
+<div id="nx22DirectorPrep" class="nx22-prep-grid" aria-live="polite"></div>
+</section>
+<section class="nx22-transparency"><h2>SOURCE CONFIDENCE</h2><div class="nx22-source-grid">
+<article><strong>PLAYER-MANUAL</strong><p>Atlas goals, route stops, characters, builds, notes and checkboxes are entered by you. They do not demonstrate what happened in-game.</p></article>
+<article><strong>BLIZZARD-REPORTED</strong><p>Optional saved equipment snapshots come from the existing public Blizzard API research flow and include their original fetch time. They can become stale.</p></article>
+<article><strong>MAP COORDINATES</strong><p>Coordinate pins are your own 0–100 X/Y entries tied to an in-game UI Map ID, not live player GPS or the illustrative regional artwork.</p></article>
+</div></section>
+<p class="nx22-director-status" id="nx22DirectorStatus" role="status">Reading your existing local plans without changing them…</p>
+</main>
+<footer class="nx22-director-footer">POWERED BY ZEVRO | NEXUS <span>UNOFFICIAL FAN COMPANION · v22.0.0 · OWNER APPROVED</span><a href="./command-center.html">RETURN TO COMMAND CENTER ↗</a></footer>
+</body></html>
