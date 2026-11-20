@@ -172,5 +172,5 @@ $('nx22Import').addEventListener('change',async e=>{
  }catch(err){status(err.message||'Invalid JSON archive',true)}
 });
 window.addEventListener('storage',e=>{if(e.key===core.KEYS.waypoints){rows=read();render()}});
-render();
+setZone(selected); // Also prefill the sourced in-game UI Map ID on first load.
 })();
