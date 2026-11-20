@@ -12,7 +12,7 @@ new vm.Script(uiJS,{filename:'nexus-unity-v21.js'});
 const core=scope.window.NexusUnityCoreV21;
 assert.equal(core.VERSION,'21.0.0');
 assert.equal(core.KEY,'nexus_azeroth_unity_v21');
-assert.equal(core.DIR.length,19);
+assert.equal(core.DIR.length,20);
 assert.equal(new Set(core.DIR.map(x=>x.id)).size,core.DIR.length);
 assert.equal(core.JOURNEYS.length,4);
 assert.equal(css.split('{').length,css.split('}').length,'Scoped premium CSS braces must balance');
@@ -76,11 +76,11 @@ const pages=['command-center.html','world-atlas.html','player-experience.html','
 for(const name of pages){
  const html=await read(name);
  for(const file of ['nexus-unity-v21.css','nexus-unity-v21-core.js','nexus-unity-v21.js'])
-  assert.ok(html.includes(file+'?v=2100'),'Missing v21 shared UI on '+name+': '+file);
+  assert.ok(html.includes(file+'?v='+(file==='nexus-unity-v21-core.js'?'2200':'2100')),'Missing shared Unity UI on '+name+': '+file);
 }
 const main=await read('index.html'),perf=await read('performance-overdrive-v7.5.js'),
  art=await read('studio-art-direction-v9.2.css');
-assert.ok(main.includes('performance-overdrive-v7.5.js?v=2100')&&main.includes('studio-art-direction-v9.2.css?v=2100'));
+assert.ok(main.includes('performance-overdrive-v7.5.js?v=2200')&&main.includes('studio-art-direction-v9.2.css?v=2100'));
 assert.ok(!main.includes('nexus-unity-v21.js'),'Native main page must retain original JS request count');
 assert.ok(perf.includes(coreJS)&&perf.includes(uiJS),'Main should reuse identical v21 core and UI sources');
 assert.ok(art.includes(css),'Main should reuse identical v21 scoped CSS');
@@ -102,4 +102,4 @@ assert.ok(manifest.shortcuts.some(x=>x.url==='./private-video-vault.html'));
 const save=await read('save-protection.html');
 assert.ok(!save.includes('nexus_azeroth_secure_video_v20'),'Standard JSON planning backup must not import private Vault secrets');
 const gw=await read('../hub/index.html');assert.ok(gw.includes("v21.0 • Sovereign Unity"));
-console.log('PASS v21 Unity: 21 Azeroth pages, 19 valid destinations, saved manual research, strict isolated favorites, private Vault CSP, original builds/auth and exact bundled startup request counts.');
+console.log('PASS v21 Unity: 21 Azeroth pages, 20 valid destinations, saved manual research, strict isolated favorites, private Vault CSP, original builds/auth and exact bundled startup request counts.');
