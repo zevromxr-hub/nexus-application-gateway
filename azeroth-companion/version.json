@@ -3,15 +3,15 @@
   "version": "22.1.0",
   "channel": "owner-approved",
   "release_date": "2026-11-20",
-  "subtitle": "REAL MAP FIRST — AN ACTIONABLE ATLAS WITH GAME-DERIVED IMAGERY, DOCUMENTED POINTS OF INTEREST & ONE-TAP COORDINATES",
+  "subtitle": "REAL MAP FIRST — CURRENT MIDNIGHT ZONES, SOURCE-BACKED GAME MAPS, IN-GAME POIS & DIRECT COORDINATES",
   "previous_version": "22.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
     "Product correction based on owner feedback: the World Atlas now OPENS with a real game-derived zone map and immediate clickable points of interest, not the older decorative continent art or a blank coordinate editor. No player setup, character linking or multiple planner screens needed.",
-    "Added a focused, first-screen map interface with seven selected Retail zone-map references (Khaz Algar and Dragon Isles), sourced game map art loaded from TheWoWDB's public image URLs, direct provider links, explicit copyright/source attribution and a useful full-source fallback if an external map image is unavailable. NEXUS does not rehost the media or misrepresent any map as its own.",
-    "Curated directly actionable location samples per zone, including known flight masters, dungeons, delves, raid points and quest/map landmarks with the in-game X/Y positions and UI Map IDs documented by TheWoWDB or Warcraft Wiki. The samples are not exhaustive or live player positions.",
+    "Added a focused, first-screen map interface with ten Retail zone maps, including current Midnight Zul'Aman (2437), Harandar (2413) and Voidstorm (2405) as the default/first choices. Their actual game-derived map images and selected POIs/flight nodes were verified on the external source. Previously supported Khaz Algar and Dragon Isles maps remain available, with direct provider links, attribution and a full-source fallback when image hosting is unavailable.",
+    "Curated directly actionable source-backed location samples, including current Midnight flight routes, portals, delves, quest hubs, plus known dungeons and raid points in older zones. Every pin exposes in-game X/Y and UI Map ID, with source links; these samples are not exhaustive nor actual player tracking.",
     "Search and filter a zone's visible locations; click a marker or list item to see coordinates and source, copy an in-game waypoint macro, zoom with +/− and drag the enlarged image on desktop/mobile. The interface is built for immediate use rather than additional forms or click-through steps.",
     "Existing manually saved v22 zone-coordinate pins appear automatically on the real zone images, separately marked Personal. The original pin editor, v16 mission goals, v18.1 route archive, illustrated v18.2 research Atlas and v22 Living Intelligence Director are preserved below as optional advanced tools.",
     "Updated Command Center navigation and native search, the PROXIMUS Gateway card and user-facing Atlas descriptions so outdated art is no longer promoted as the primary map. No new browser storage keys, Blizzard APIs, OAuth permissions, video access or worker changes.",
@@ -219,6 +219,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner reported that v22's blank coordinate grid and dated illustrations were not useful as a map. The v22.1 corrective release puts sourced real Retail zone images and annotated clickable known points of interest first, with optional personal tools below. External artwork remains provider-hosted, third-party availability is not guaranteed, and legal/source attribution is explicit. Real in-game and physical device acceptance remains pending."
+    "note": "Owner requested real, contemporary, usable maps instead of a blank grid and stale art. Corrective v22.1 puts current Retail Midnight Zul'Aman, Harandar and Voidstorm sourced maps first and supports ten zones total. All media remains externally hosted, attribution and image-load fallbacks included. Real game and physical-iPhone acceptance remain pending."
   }
 }
