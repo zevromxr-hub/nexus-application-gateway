@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "22.3.0",
+  "title": "ATLAS DISCOVERY — Cross-Zone Search & Map-Integrated Research",
+  "release_date": "2026-11-20",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Requested search-first dungeon, raid, loot and farming usability without adding panels. Real data and actual-device acceptance pending, no fictional loot claims.",
+  "features": [
+    "Cross-zone search of existing source-curated markers inside the map sidebar, including geographic match and category filter.",
+    "In-map destination selection retains coordinate copying, original map zoom and pan, source credit and image fallback.",
+    "Activity chips expose dungeons, raids, delves, gathering markers, travel nodes and places without separate panels.",
+    "Gear, bosses, loot and farming research open an explicitly external searchable Wowhead database; no fabricated drop tables or unverified farming paths.",
+    "No new browser storage keys, worker or authentication changes; prior Atlas records remain intact."
+  ]
+}
