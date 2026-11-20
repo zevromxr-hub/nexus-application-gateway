@@ -9,7 +9,7 @@ if(!core||!root||document.getElementById('nx22Atlas'))return;
 const $=id=>document.getElementById(id),
  el=(tag,cls,value)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(value!==undefined)x.textContent=String(value);return x};
 const read=()=>{try{const raw=localStorage.getItem(core.KEYS.waypoints);return core.cleanWaypoints(raw?JSON.parse(raw):null)}catch(_){return []}};
-const save=items=>{try{localStorage.setItem(core.KEYS.waypoints,JSON.stringify(core.cleanWaypoints(items)));return true}catch(_){status('Browser local storage is full or unavailable; export your waypoints.',true);return false}};
+const save=items=>{try{localStorage.setItem(core.KEYS.waypoints,JSON.stringify(core.cleanWaypoints(items)));window.dispatchEvent(new Event('nexus:waypoints-changed'));return true}catch(_){status('Browser local storage is full or unavailable; export your waypoints.',true);return false}};
 let rows=read(),mapURL=null,selected='',filter='all';
 const requested=new URLSearchParams(location.search).get('zone');
 selected=core.zoneMap.has(requested)?requested:'hallowfall';

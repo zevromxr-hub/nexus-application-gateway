@@ -1,3 +1,12 @@
+## v22.2.0 — Unified Real Maps & Legacy Atlas Retirement (2026-11-20)
+
+- Retired duplicate decorative Atlas map surfaces from the active page; retained original compatibility scripts and all local records.
+- Made the ten sourced WoW zone maps the single primary map viewer, with a searchable directory of all 25 historical destinations.
+- Continued saved v16 missions, v18.1 routes and v22 waypoint notebook; fixed route stop links to open matching game maps, not unrelated default zones.
+- Consolidated manual coordinate editing into a collapsible advanced section and refreshes personal map pins immediately after updates.
+- Locations not yet represented by a verified in-page map use an external map directory; game-derived imagery depends on its external provider.
+- No changes to private video data, account authentication, Blizzard API permissions or the Cloudflare backend. Actual-player and iPhone acceptance remains pending.
+
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
 ## v22.1.0 · 2026-11-20 — REAL MAP FIRST: USABLE ATLAS RESET
