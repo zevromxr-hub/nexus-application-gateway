@@ -117,7 +117,7 @@ function cleanResearch(raw){
  return out.sort((a,b)=>b.fetchedAt.localeCompare(a.fetchedAt));
 }
 function upsertResearch(rows,report){
- const item=normalizeResearch(report);
+ const item=normalizeStoredResearch(report)||normalizeResearch(report);
  if(!item)throw Error('A valid Blizzard API character and equipment result must be loaded first.');
  const key=r=>[r.selector.region,r.selector.realm,r.selector.name].join('/');
  return cleanResearch([item,...cleanResearch(rows).filter(x=>key(x)!==key(item))]);
