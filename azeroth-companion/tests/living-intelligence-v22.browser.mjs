@@ -66,7 +66,7 @@ async function check(label,browserType,mobile){
    8,6,0,0,0,31,21,196,137])});
   assert.ok(await page.locator('#nx22Grid').evaluate(el=>el.classList.contains('nx22-user-image')));
   await page.locator('#nx22ClearImage').click();
-  assert.equal(await page.locator('#nx22Grid').getAttribute('style')?.includes('blob:'),false);
+  assert.ok(!((await page.locator('#nx22Grid').getAttribute('style'))||'').includes('blob:'));
   assert.deepEqual(await snapshot(),old,'Atlas v22 may not alter old Atlas, character, routes or session data');
   await load('character-intelligence.html');
   await page.locator('#nx22CharacterResearch').waitFor({state:'visible'});
