@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+const base=new URL('../',import.meta.url);
+const read=p=>readFile(new URL(p,base),'utf8');
+const [page,discovery,boss,css,version,index]=await Promise.all(['world-atlas.html','atlas-discovery-v22.3.js','boss-loot-intelligence-v22.4.js','boss-loot-intelligence-v22.4.css','version.json','releases/index.json'].map(read));
+new vm.Script(discovery);new vm.Script(boss);
+assert.ok(page.includes('boss-loot-intelligence-v22.4.js?v=2240'));
+assert.ok(page.indexOf('atlas-discovery-v22.3.js')<page.indexOf('boss-loot-intelligence-v22.4.js'));
+assert.ok(discovery.includes('NexusBossLootV224?.render'));
+for(const name of ['Nerub-ar Palace','The Stonevault','Priory of the Sacred Flame','Queen Ansurek','E.D.N.A.','Augmented Refractor Cannon'])assert.ok(boss.includes(name),name);
+assert.ok(boss.includes('bridge.open(r.zone,r.pin)'));
+assert.ok(boss.includes('www.wowhead.com/dungeon-journal/'));
+assert.ok(!/localStorage\.(setItem|removeItem|clear)\(|fetch\(|eval\(/.test(boss));
+assert.equal(JSON.parse(version).version,'22.4.0');
+assert.equal(JSON.parse(index).releases[0].version,'22.4.0');
+assert.equal(css.split('{').length,css.split('}').length);
+console.log('PASS v22.4 Boss & Loot Intelligence: sources, map entrance routing, no storage mutation');

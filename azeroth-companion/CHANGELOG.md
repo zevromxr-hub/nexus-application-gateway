@@ -1,3 +1,11 @@
+## v22.4.0 — Boss & Loot Intelligence (2026-11-20)
+
+- Added source-indexed encounter search in the existing Atlas sidebar for Nerub-ar Palace, The Stonevault and Priory of the Sacred Flame.
+- Added two verified example Stonevault item/boss associations with direct encounter-journal and reference links; this is not a comprehensive or live loot database.
+- Search a boss or sample item, identify its parent instance and open the **outdoor entrance** marker on the matching zone map; no boss interior positions are invented.
+- Preserved v22.3 global search, saved missions, personal waypoints, original routes, OAuth and the encrypted video vault.
+- Pending actual-device tests and ongoing source coverage validation.
+
 ## v22.3.0 — Atlas Discovery (2026-11-20)
 
 - Search curated map points across all ten real map zones using the existing map sidebar; category filters cover instances (dungeons, raids and delves), gathering-related landmarks, travel nodes and general places.

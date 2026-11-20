@@ -4,6 +4,13 @@
   "updated": "2026-11-20",
   "releases": [
     {
+      "version": "22.4.0",
+      "title": "Boss & Loot Intelligence — Source-Verified Encounters and Instance Entrance Handoff",
+      "date": "2026-11-20",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "22.3.0",
       "title": "Atlas Discovery — Search Dungeons, Raids & Gathering Across Real Zone Maps",
       "date": "2026-11-20",
