@@ -33,6 +33,7 @@ const mapIDs=Object.freeze({
 });
 const obj=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const text=(v,n=120)=>typeof v==='string'?v.trim().slice(0,n):'';
+const localName=(v,n=120)=>{if(typeof v==='string')return text(v,n);if(!obj(v))return '';return text(v.en_US||v.en_GB||Object.values(v).find(x=>typeof x==='string'),n)};
 const array=(v,n=150)=>Array.isArray(v)?v.slice(0,n):[];
 const coord=v=>typeof v==='number'||typeof v==='string'&&v.trim()!==''?Number(v):NaN;
 const percent=v=>{const n=coord(v);return Number.isFinite(n)&&n>=0&&n<=100?Math.round(n*100)/100:null};
@@ -85,8 +86,8 @@ function normalizeResearch(raw){
  return {
   selector:{region,realm,name},
   character:{name:text(p.name,50)||name,realm:text(p.realm?.name,80)||realm,
-   className:text(p.character_class?.name,60)||text(p.playable_class?.name,60)||'Unreported',
-   spec:text(p.active_spec?.name,65)||'Unreported',
+   className:localName(p.character_class?.name,60)||localName(p.playable_class?.name,60)||'Unreported',
+   spec:localName(p.active_spec?.name,65)||'Unreported',
    level:Number.isInteger(lv)&&lv>0&&lv<200?lv:null,
    equippedItemLevel:Number.isInteger(ilvl)&&ilvl>0&&ilvl<2000?ilvl:null},
   items, fetchedAt:ts,source:'blizzard-public-api-via-nexus',verifiedAtFetch:true
