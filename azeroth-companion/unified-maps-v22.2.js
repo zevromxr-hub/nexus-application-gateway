@@ -57,7 +57,7 @@ if(notebook){
 const route=$('nx181RouteStudio');
 if(route){
  const jump=node('button','nx222-route-map','OPEN SELECTED ROUTE STOP ON REAL MAP');
- jump.type='button';
+ jump.type='button';jump.textContent='OPEN FIRST ROUTE STOP ON REAL MAP';
  const status=node('p','nx222-note','In-page game maps are currently available for 10 supported zones; older saved stops retain their original IDs and can use the external map directory.');
  jump.addEventListener('click',()=>{
   const selected=$('nx181Board')?.querySelector('[data-zone]');
@@ -72,6 +72,26 @@ if(route){
   const b=event.target.closest('[data-nx222-map]');if(b)go(b.dataset.nx222Map);
  });
 }
+
+// Redirect legacy per-stop OPEN ZONE links to an actual matching game map,
+// never to the Zul'Aman default for an unsupported saved destination.
+const routeBoard=$('nx181Board');
+function patchRouteLinks(){
+ if(!routeBoard)return;
+ for(const link of routeBoard.querySelectorAll('a[href*="world-atlas.html?zone="]')){
+  const id=new URL(link.href,location.href).searchParams.get('zone');
+  if(safeMap.has(id)){
+   link.href='./world-atlas.html?zone='+encodeURIComponent(id)+'#nx221RealAtlas';
+   link.textContent='OPEN REAL ZONE MAP ↗';
+  } else {
+   link.href='https://www.wowhead.com/maps';link.target='_blank';link.rel='noopener noreferrer';
+   link.textContent='FIND EXTERNAL MAP ↗';
+   link.title='No verified in-page map for this zone yet; find it in the external map directory';
+  }
+ }
+}
+if(routeBoard){new MutationObserver(patchRouteLinks).observe(routeBoard,{childList:true});patchRouteLinks()}
+
 const missions=$('nx16Missions');
 if(missions){
  const form=$('nx16GoalForm');
