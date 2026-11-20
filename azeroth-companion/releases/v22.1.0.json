@@ -10,8 +10,8 @@
   "tester_status": "pending",
   "approval_note": "Owner requested usefulness and actual map content instead of repetitive planning workflows. Direct sourced WoW zone map imagery replaces art as the first Atlas experience. Map files remain externally hosted and copyright credited; external availability and real-game tests are separate.",
   "features": [
-    "Atlas now opens directly to a GAME-DERIVED Retail zone map (Hallowfall by default) rather than fantasy art or an empty coordinate grid; seven selectable Khaz Algar/Dragon Isles map references.",
-    "Documented dungeon, raid, delve, flight path, landmark and quest markers appear over the real image with source-backed X/Y/map IDs; select a pin or search/filter to find a location instantly.",
+    "Atlas now opens directly to a current Retail Midnight Zul'Aman game map (UI Map 2437), with Harandar (2413), Voidstorm (2405) and seven additional Khaz Algar/Dragon Isles sourced map choices. Original fantasy art and empty grid no longer gate access.",
+    "Real current Midnight portals, quest hubs, delves, flight points and older game dungeons/raids are searchable, filterable, selectable on the real zone image, with in-game X/Y/map IDs and copyable waypoint macros.",
     "Copy an actual WoW user-waypoint macro in one action, zoom and drag the game map, open the full external source for complete map databases, and show clear fallback links if external map hosting blocks an image.",
     "Previously saved personal coordinate pins appear on the actual game-derived map in a separate Personal style; all original Atlas route planning and decorative field guides remain preserved as optional archival sections.",
     "The Command Center and Gateway now describe the accurate game map experience, not stale illustrative art.",
