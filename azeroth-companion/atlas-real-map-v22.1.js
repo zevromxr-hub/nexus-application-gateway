@@ -55,7 +55,7 @@ const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=
 const $=id=>document.getElementById(id);
 const zone=id=>maps.find(x=>x.id===id)||null;
 const params=new URLSearchParams(location.search);
-const state={id:zone(params.get('zone'))?.id||'hallowfall',filter:'all',query:'',zoom:1,selected:null,own:[]};
+const state={id:zone(params.get('zone'))?.id||'hallowfall',filter:'all',query:'',zoom:1,panX:0,panY:0,selected:null,own:[]};
 function readOwn(){
  try{const raw=localStorage.getItem(core.KEYS.waypoints);return core.cleanWaypoints(raw?JSON.parse(raw):null)}
  catch(_){return []}
@@ -81,7 +81,7 @@ function setSource(z){
 }
 function show(id){
  const z=zone(id);if(!z)return;
- state.id=z.id;state.zoom=1;state.filter='all';state.query='';state.selected=null;
+ state.id=z.id;state.zoom=1;state.panX=0;state.panY=0;state.filter='all';state.query='';state.selected=null;
  $('nx221Search').value='';$('nx221SelectedName').textContent='Choose a destination';
  $('nx221SelectedInfo').textContent='Click a sourced marker to see its coordinates.';
  $('nx221Copy').disabled=true;
@@ -144,12 +144,37 @@ function render(){
  if(state.selected&&visible.some(p=>p.id===state.selected.id))select(state.selected.id);
 }
 function applyZoom(){
- $('nx221MapSurface').style.transform='scale('+state.zoom+')';
+ const viewport=$('nx221MapViewport');
+ const maxX=viewport.clientWidth*(state.zoom-1)/2,maxY=viewport.clientHeight*(state.zoom-1)/2;
+ state.panX=Math.min(maxX,Math.max(-maxX,state.panX));
+ state.panY=Math.min(maxY,Math.max(-maxY,state.panY));
+ $('nx221MapSurface').style.transform='translate('+state.panX+'px,'+state.panY+'px) scale('+state.zoom+')';
+ viewport.classList.toggle('nx221-pannable',state.zoom>1);
  $('nx221ZoomOut').disabled=state.zoom<=1;$('nx221ZoomIn').disabled=state.zoom>=2.5;
 }
 $('nx221ZoomIn').addEventListener('click',()=>{state.zoom=Math.min(2.5,state.zoom+.25);applyZoom()});
 $('nx221ZoomOut').addEventListener('click',()=>{state.zoom=Math.max(1,state.zoom-.25);applyZoom()});
 $('nx221Reset').addEventListener('click',()=>{state.zoom=1;applyZoom()});
+const viewport=$('nx221MapViewport');
+let drag=null;
+viewport.addEventListener('pointerdown',event=>{
+ if(state.zoom<=1||event.target.closest('button'))return;
+ drag={id:event.pointerId,x:event.clientX,y:event.clientY,baseX:state.panX,baseY:state.panY};
+ viewport.setPointerCapture(event.pointerId);
+});
+viewport.addEventListener('pointermove',event=>{
+ if(!drag||drag.id!==event.pointerId)return;
+ state.panX=drag.baseX+(event.clientX-drag.x);
+ state.panY=drag.baseY+(event.clientY-drag.y);
+ applyZoom();
+});
+const stop=event=>{
+ if(drag?.id!==event.pointerId)return;
+ drag=null;
+ if(viewport.hasPointerCapture(event.pointerId))viewport.releasePointerCapture(event.pointerId);
+};
+viewport.addEventListener('pointerup',stop);
+viewport.addEventListener('pointercancel',stop);
 $('nx221Search').addEventListener('input',e=>{state.query=e.target.value.trim().toLowerCase().slice(0,80);render()});
 async function copy(value){
  if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}
