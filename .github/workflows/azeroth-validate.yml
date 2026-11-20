@@ -84,6 +84,10 @@ jobs:
         id: unity21
         continue-on-error: true
         run: node azeroth-companion/tests/nexus-unity-v21.test.mjs
+      - name: Verify v22 Living Intelligence map coordinates, public character reports and manual Adventure Director
+        id: living22
+        continue-on-error: true
+        run: node azeroth-companion/tests/living-intelligence-v22.test.mjs
       - name: Guard preserved Sovereign Command shell against newer releases
         id: legacy_shell
         continue-on-error: true
@@ -112,6 +116,7 @@ jobs:
           EXPERIENCE19: ${{ steps.experience19.outcome }}
           VAULT20: ${{ steps.vault20.outcome }}
           UNITY21: ${{ steps.unity21.outcome }}
+          LIVING22: ${{ steps.living22.outcome }}
         run: |
           {
             echo "## NEXUS | Azeroth — advisory source checks"
@@ -134,12 +139,13 @@ jobs:
             echo "| v19 Cross-studio visual engine, accessibility and saved-data isolation | $EXPERIENCE19 |"
             echo "| v20 Private Video Vault AES password encryption, backups and existing studio bridges | $VAULT20 |"
             echo "| v21 Sovereign Unity sitewide navigation, native bundle budget and data isolation | $UNITY21 |"
+            echo "| v22 Living Intelligence source, sourced map IDs, public research and old-data safety | $LIVING22 |"
             echo "| Preserved v5 Sovereign Command shell | $LEGACY_SHELL |"
             echo "| Preserved native v5.1 Talent Forge and current version badge | $LEGACY_FORGE |"
             echo ""
             echo "Any failure remains a real, unresolved finding for later testers, not an automatic pass."
           } >> "$GITHUB_STEP_SUMMARY"
-          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER" "$WORLD" "$EXPEDITION" "$OPERATIONS" "$CARTOGRAPHY" "$ROUTES" "$LENS" "$EXPERIENCE19" "$VAULT20" "$UNITY21" "$LEGACY_SHELL" "$LEGACY_FORGE"; do
+          for state in "$SOURCE" "$HANDOFF" "$IOS" "$SOCIAL" "$ARCHITECT" "$CHARACTER" "$WORLD" "$EXPEDITION" "$OPERATIONS" "$CARTOGRAPHY" "$ROUTES" "$LENS" "$EXPERIENCE19" "$VAULT20" "$UNITY21" "$LIVING22" "$LEGACY_SHELL" "$LEGACY_FORGE"; do
             if [ "$state" != "success" ]; then
               echo "::warning title=Azeroth advisory test::Outcome $state — review later; owner release is not blocked."
             fi

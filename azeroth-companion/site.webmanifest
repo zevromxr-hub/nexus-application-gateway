@@ -2,7 +2,7 @@
   "id": "./",
   "name": "NEXUS | AZEROTH COMPANION",
   "short_name": "AZEROTH",
-  "description": "Unofficial World of Warcraft companion with connected research studios, World Atlas, Talent Forge, private planning and encrypted local media.",
+  "description": "Unofficial WoW companion: zone coordinate notebook, public Blizzard gear research, Living Intelligence adventure planner, Talent Forge and encrypted local media.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -28,6 +28,12 @@
       "short_name": "Command",
       "description": "Open the unified studio command hub",
       "url": "./command-center.html"
+    },
+    {
+      "name": "Living Intelligence Director",
+      "short_name": "Director",
+      "description": "Build your source-labeled manual adventure itinerary",
+      "url": "./living-intelligence.html"
     },
     {
       "name": "World Atlas",

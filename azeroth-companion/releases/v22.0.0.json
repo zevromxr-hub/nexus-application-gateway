@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "22.0.0",
+  "title": "LIVING INTELLIGENCE — Atlas Coordinates, Blizzard Gear Intelligence & Adventure Director",
+  "release_date": "2026-11-20",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/living-intelligence.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner approved the next development milestone focused on three useful tools: zone map coordinates, explicit public Blizzard research snapshots and manual adventure preparation. Real-world and iPhone device validation remain pending.",
+  "features": [
+    "World Atlas now has a 0–100 zone coordinate laboratory with seven referenced in-game UI Map IDs, 6 themed pin types, personal notes, user-supplied session-only zone map image preview, copyable in-game waypoint macros and safe portable JSON waypoint library.",
+    "The illustrated continent map remains artistic; it does not pretend to provide official Blizzard zone tiles or auto-detected character location. No images uploaded or map tiles scraped.",
+    "Character Intelligence expands existing public Blizzard profile/gear fetches into transparent, detailed slot-level and item-level research with explicitly saved, dated reports. The Character Nexus and Adventure Director can read those saved public research snapshots later.",
+    "New Living Intelligence Director turns saved manual Atlas missions, existing Adventure Operations time estimates and optional saved gear research into a personalized 30-minute to four-hour suggested agenda with character filters, sourced preparation links, checklists and exportable briefing.",
+    "New v22 waypoint, gear snapshot and director preference keys are isolated from original saves; Save Protection exports them but never includes AES-encrypted private Vault videos or keys.",
+    "NEXUS Command navigation, native Command Center search, PROXIMUS Gateway and PWA shortcuts now include Living Intelligence; all existing talent, maps, media, account verification, music and private Vault features remain unchanged.",
+    "Dedicated source-level and synthetic desktop Chromium/iPhone WebKit tests cover correct user-entered coordinates, safe public API capture, planning algorithms, data isolation and mobile accessibility."
+  ]
+}
