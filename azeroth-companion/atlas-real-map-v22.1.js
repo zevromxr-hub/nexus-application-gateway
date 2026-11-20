@@ -231,5 +231,20 @@ window.addEventListener('storage',event=>{
 });
 window.addEventListener('pageshow',()=>{state.own=readOwn();render()});
 window.addEventListener('nexus:waypoints-changed',()=>{state.own=readOwn();render()});
+
+// A read-only discovery bridge for the shared Atlas sidebar. Never exposes or mutates saved data.
+window.NexusRealMapDiscoveryV223=Object.freeze({
+ catalog:maps.map(m=>({id:m.id,name:m.name,mapId:m.mapId,era:m.era,source:m.source,
+  points:m.points.map((p,i)=>({id:'catalog-'+i,title:p[0],kind:p[1],x:p[2],y:p[3]}))})),
+ current:()=>state.id,
+ open:(id,pointId)=>{
+  if(!zone(id))return false;
+  if(state.id!==id)show(id);
+  else {state.query='';state.filter='all';$('nx221Search').value='';render()}
+  if(pointId&&rows(zone(id)).some(p=>p.id===pointId)){select(pointId);return true}
+  return true;
+ },
+ reset:()=>{state.query='';state.filter='all';$('nx221Search').value='';render()}
+});
 state.own=readOwn();show(state.id);
 })();
