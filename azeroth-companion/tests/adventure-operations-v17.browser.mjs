@@ -64,6 +64,7 @@ async function run(label,engine,mobile){
   await page.locator('#nx17ImportFile').setInputFiles({
    name:'session.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(payload))
   });
+  await page.waitForFunction(()=>/2 objectives/.test(document.getElementById('nx17ImportPreview')?.textContent||''),null,{timeout:8000});
   assert.match(await page.locator('#nx17ImportPreview').textContent(),/2 objectives/);
   await page.locator('details.nx17-import summary').click();
   assert.equal(await page.locator('details.nx17-import').getAttribute('open'),'','Import disclosure must be opened before clicking its child button');
