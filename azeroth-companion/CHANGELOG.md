@@ -1,3 +1,11 @@
+## v22.3.0 — Atlas Discovery (2026-11-20)
+
+- Search curated map points across all ten real map zones using the existing map sidebar; category filters cover instances (dungeons, raids and delves), gathering-related landmarks, travel nodes and general places.
+- Selecting a sourced result switches to its actual zone map and selects the marker for existing game-waypoint copying; the original per-zone map filters remain intact.
+- For gear, loot, bosses or named items outside the curated coordinate catalog, provide a labeled external Wowhead search, without inventing drop rates, spawn locations or map pins.
+- No additional studio panels or authentication/storage changes. Saved v16 missions, v18.1 routes, v22 personal waypoint notebook and v22.2 compatibility remain.
+- External map images, live item source coverage and iPhone/PC browser acceptance are still subject to availability and testing.
+
 ## v22.2.0 — Unified Real Maps & Legacy Atlas Retirement (2026-11-20)
 
 - Retired duplicate decorative Atlas map surfaces from the active page; retained original compatibility scripts and all local records.

@@ -1,0 +1,16 @@
+/* Compact search and category intelligence integrated inside the existing right sidebar */
+#nx221RealAtlas .nx223-discovery{display:grid;gap:8px;padding:8px 0 10px}
+#nx221RealAtlas .nx223-filters{display:flex;gap:5px;flex-wrap:wrap}
+#nx221RealAtlas .nx223-filter{padding:7px 9px;border:1px solid #7487a7;border-radius:20px;background:#20324a;color:#e9f2fb;font:700 10px/1.3 system-ui;cursor:pointer;min-height:33px}
+#nx221RealAtlas .nx223-filter[aria-pressed=true]{background:#dfbd88;color:#18243a;border-color:#f3ddb2}
+#nx221RealAtlas .nx223-status{margin:0;color:#bed1e3;font-size:11px;line-height:1.5}
+#nx221RealAtlas .nx223-external{color:#f1d4a3;font-size:10px;font-weight:850;overflow-wrap:anywhere;text-decoration:underline}
+#nx221RealAtlas .nx223-result{display:block;width:100%;min-height:65px;padding:12px 11px;margin:0 0 6px;text-align:left;background:#1a2c45;border:1px solid #51667e;border-radius:9px;color:#edf5ff;cursor:pointer}
+#nx221RealAtlas .nx223-result:hover,#nx221RealAtlas .nx223-result:focus-visible{background:#2e4563;border-color:#e5c598}
+#nx221RealAtlas .nx223-result-line{display:flex;align-items:start;gap:5px;justify-content:space-between}
+#nx221RealAtlas .nx223-result-line strong{font-size:12px}
+#nx221RealAtlas .nx223-result-line small{font-size:9px;color:#e4c48d;white-space:nowrap}
+#nx221RealAtlas .nx223-result-meta{display:block;margin-top:4px;color:#a9c2d9;font-size:10px}
+#nx221RealAtlas .nx223-empty{padding:13px;color:#b9cadb;line-height:1.55}
+#nx221RealAtlas #nx221Types[hidden]{display:none!important}
+@media(max-width:620px){#nx221RealAtlas .nx223-filter{min-height:39px;font-size:10px}}
