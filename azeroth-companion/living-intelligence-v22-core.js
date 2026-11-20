@@ -152,8 +152,10 @@ function plan(raw){
  .filter(g=>g.status==='planned'||g.status==='active')
  .filter(g=>idOK(g.id)&&zoneMap.has(g.zoneId)&&text(g.title,110))
  .filter(g=>!state.focus||!g.charId||g.charId===state.focus);
+ const scheduled=array(input.operations?.entries,18).filter(obj);
+ const sessionMinutes=new Map(scheduled.filter(e=>idOK(e.id)).map(e=>[e.id,Math.max(0,Math.min(240,Number(e.minutes)||0))]));
  const scored=goals.map(g=>{
-  const priority=g.status==='active'?8:0;
+  const priority=(g.status==='active'?8:0)+(sessionMinutes.has(g.id)?6:0);
   const type=state.mode==='balanced'?3:goalTypes[state.mode]?.includes(g.category)?7:0;
   const record=!!(input.waypoints||[]).find(w=>w.zoneId===g.zoneId)?3:0;
   return {g,rank:priority+type+record};
@@ -162,7 +164,7 @@ function plan(raw){
  // Follow user's own goals; suggested estimates are NOT gameplay route metrics.
  for(const row of scored){
   if(steps.length>=max)break;
-  const g=row.g,estimated=g.status==='active'?25:30;
+  const g=row.g,estimated=sessionMinutes.get(g.id)|| (g.status==='active'?25:30);
   if(steps.length&&minutesUsed+estimated>state.budget)continue;
   const minutes=Math.min(estimated,Math.max(5,state.budget-minutesUsed));
   const label=text(g.title,100),id='goal-'+g.id;
