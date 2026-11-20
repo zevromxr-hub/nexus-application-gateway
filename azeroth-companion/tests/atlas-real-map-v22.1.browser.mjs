@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 import {mkdir} from 'node:fs/promises';
 await mkdir('test-results/azeroth-device-audit',{recursive:true});
-const base='http://127.0.0.1:4173/azeroth-companion/world-atlas.html';
+const base='http://127.0.0.1:4173/azeroth-companion/world-atlas.html?zone=hallowfall';
 const gif=Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==','base64');
 const old={
  nexus_world_atlas_goals_v16:[{
@@ -77,6 +77,15 @@ async function run(label,engine,mobile){
   assert.match(await page.locator('#nx221MapFailure').textContent(),/Map image unavailable from its source/);
   await page.locator('.nx221-zone-tab').filter({hasText:'Hallowfall'}).click();
   assert.equal(await page.locator('#nx221MapFailure').isHidden(),true);
+  await page.locator('.nx221-zone-tab').filter({hasText:"Zul'Aman"}).click();
+  assert.equal(await page.locator('#nx221MapImage').getAttribute('src'),'https://thewowdb.com/assets/wowdex/maps/worldmap/2437.jpg');
+  assert.match(await page.locator('#nx221ZoneInfo').textContent(),/Midnight/);
+  await page.locator('.nx221-zone-tab').filter({hasText:'Harandar'}).click();
+  assert.equal(await page.locator('#nx221MapImage').getAttribute('src'),'https://thewowdb.com/assets/wowdex/maps/worldmap/2413.jpg');
+  assert.match(await page.locator('#nx221PlacesList').textContent(),/Portal to Voidstorm/);
+  await page.locator('.nx221-zone-tab').filter({hasText:'Voidstorm'}).click();
+  assert.equal(await page.locator('#nx221MapImage').getAttribute('src'),'https://thewowdb.com/assets/wowdex/maps/worldmap/2405.jpg');
+  assert.match(await page.locator('#nx221PlacesList').textContent(),/Portal to Harandar/);
   assert.deepEqual(await before(),savedBefore,
    'Real map-first feature may not mutate stored user pins, goals, routes or characters');
   const unexpected=await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.includes('221')||k.includes('real_map')));
