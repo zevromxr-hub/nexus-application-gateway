@@ -1,0 +1,18 @@
+/* v22.2 retire duplicate map surfaces, without deleting their storage or compatibility code */
+.nx222-unified #nx16Map,.nx222-unified .nx16-atlas-hero,.nx222-unified .nx16-atlas-overview{display:none!important}
+.nx222-unified .nx222-directory{margin:24px auto;padding:20px;border:1px solid rgba(155,180,225,.28);border-radius:20px;background:rgba(12,20,39,.85);color:#e5ebfa}
+.nx222-directory-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:14px}
+.nx222-directory-header strong{font-size:1.15rem;letter-spacing:.06em}
+.nx222-directory-header p{max-width:750px;line-height:1.6;color:#acbfd8}
+.nx222-directory-header a{color:#b6d9ff}
+#nx222DirectorySearch{width:100%;margin:16px 0;padding:13px;border-radius:12px;background:#101d33;color:#fff;border:1px solid #536783}
+.nx222-directory-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.nx222-directory-entry{display:flex;flex-direction:column;gap:6px;text-align:left;text-decoration:none;padding:13px;border:1px solid #384c6a;border-radius:12px;background:#152541;color:#fff;cursor:pointer}
+.nx222-directory-entry:hover,.nx222-directory-entry:focus-visible{border-color:#a9d7ff;background:#203759}
+.nx222-directory-entry small{font-size:.75rem;color:#b5c9e5}
+.nx222-tool-details{margin:20px 0;border:1px solid #435371;border-radius:14px;padding:15px;background:rgba(13,25,47,.88)}
+.nx222-tool-details>summary{cursor:pointer;font-weight:800;color:#d9e8ff;letter-spacing:.04em;padding:8px}
+.nx222-tool-details #nx22Atlas{margin-top:16px}
+.nx222-route-map{font:inherit;font-size:.78rem;cursor:pointer;border:1px solid #5d7da7;background:#1b3556;color:#fff;border-radius:10px;padding:10px;margin:7px}
+.nx222-note{font-size:.85rem;color:#b4c7df;line-height:1.5;margin:10px}
+@media(max-width:650px){.nx222-unified .nx222-directory{padding:14px}.nx222-directory-results{grid-template-columns:1fr 1fr}.nx222-directory-entry{min-width:0}}
