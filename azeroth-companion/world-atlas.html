@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en" data-nx-version="22.0.0">
+<html lang="en" data-nx-version="22.1.0">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b1326">
 <meta name="description" content="NEXUS World Atlas Cartographer’s Lens v18.2 — explore original cartographic region charts, iconic destinations and manual mission overlays and connect personal, browser-local exploration goals to characters and saved builds.">
-<title>Cartographer’s Lens | NEXUS Azeroth v22</title>
+<title>REAL MAP ATLAS | NEXUS Azeroth v22.1</title>
 <link rel="canonical" href="https://zevarchives.com/azeroth-companion/world-atlas.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="NEXUS | AZEROTH COMPANION">
-<meta property="og:title" content="NEXUS | Cartographer’s Lens v18.2">
-<meta property="og:description" content="Explore Azeroth through a cinematic research atlas and connected personal mission planner.">
+<meta property="og:title" content="NEXUS | Real Map Atlas v22.1">
+<meta property="og:description" content="Open real WoW zone maps with documented flight points, dungeons and in-game coordinates—no setup needed.">
 <meta property="og:image" content="https://zevarchives.com/azeroth-companion/assets/zevro-wide-banner-v9.2.webp">
 <meta property="og:url" content="https://zevarchives.com/azeroth-companion/world-atlas.html">
 <link rel="icon" href="./assets/nexus-warrior-favicon-48.png"><link rel="apple-touch-icon" href="./assets/nexus-warrior-apple-touch-icon.png">
@@ -37,6 +37,8 @@
 <link rel="stylesheet" href="./living-intelligence-v22.css?v=2200">
 <script defer src="./living-intelligence-v22-core.js?v=2200"></script>
 <script defer src="./atlas-waypoints-v22.js?v=2200"></script>
+<link rel="stylesheet" href="./atlas-real-map-v22.1.css?v=2210">
+<script defer src="./atlas-real-map-v22.1.js?v=2210"></script>
 </head>
 <body class="nx16-atlas-body">
 <div class="nx16-atlas-shell" id="nx16Atlas">
@@ -45,6 +47,56 @@
  <nav aria-label="World Atlas navigation"><a href="./command-center.html">WAR ROOM</a><a href="./player-experience.html">MY CHARACTER</a><a href="./?enter=1&amp;view=talents">TALENT FORGE</a><a href="./save-protection.html">SAVE PROTECTION</a><a href="./private-video-vault.html">PRIVATE VAULT</a></nav>
 </header>
 <main>
+<section class="nx221-real-atlas" id="nx221RealAtlas" aria-labelledby="nx221Title">
+ <div class="nx221-head">
+  <div><span class="nx221-overline">NEXUS / AZEROTH · ACTUAL MAPS, NOT SIMULATED PLANNING</span>
+   <h1 id="nx221Title">OPEN THE <em>REAL WORLD MAP.</em></h1>
+   <p>Pick a zone, click a documented point of interest, and copy its in-game coordinates. No profile, setup or saved goals required.</p>
+  </div>
+  <a id="nx221SourceHero" class="nx221-source-open" target="_blank" rel="noopener noreferrer">VIEW FULL SOURCE MAP ↗</a>
+ </div>
+ <div class="nx221-zones" id="nx221ZoneTabs" role="group" aria-label="Available sourced in-game zone maps"></div>
+ <div class="nx221-stage">
+  <div class="nx221-stage-main">
+   <div class="nx221-stagebar"><div><strong id="nx221ZoneTitle">HALLOWFALL</strong><small id="nx221ZoneInfo">IN-GAME ZONE MAP</small></div>
+    <div class="nx221-controls"><button type="button" id="nx221ZoomOut" title="Zoom out">−</button><button type="button" id="nx221ZoomIn" title="Zoom in">+</button><button type="button" id="nx221Reset">RESET</button></div>
+   </div>
+   <div id="nx221MapViewport" class="nx221-map-viewport" role="group" aria-label="Game-derived zone map and documented points of interest">
+    <div id="nx221MapSurface" class="nx221-map-surface">
+     <img id="nx221MapImage" alt="" loading="eager" decoding="async" referrerpolicy="no-referrer">
+     <div id="nx221PinLayer" class="nx221-pin-layer"></div>
+    </div>
+    <div id="nx221MapFailure" class="nx221-map-failure" hidden>
+     <strong>Map image unavailable from its source</strong>
+     <p>The external host did not deliver this image. The full source page still shows the zone's real map and reference locations.</p>
+     <a id="nx221MapFallback" target="_blank" rel="noopener noreferrer">OPEN REAL MAP AT SOURCE ↗</a>
+    </div>
+   </div>
+   <div class="nx221-map-foot"><span id="nx221MediaCredit">Map artwork © Blizzard Entertainment · externally hosted by TheWoWDB</span>
+    <span>Markers use each zone's 0–100 in-game map grid—not the illustrated world chart below.</span></div>
+  </div>
+  <aside class="nx221-places" aria-label="Clickable game map destinations">
+   <div class="nx221-places-header"><strong>FIND A LOCATION.</strong><span id="nx221Count">0 PLACES</span></div>
+   <input id="nx221Search" type="search" placeholder="Search dungeons, flight points, locations…" aria-label="Filter documented map locations by name">
+   <div id="nx221Types" class="nx221-types" role="group" aria-label="Point of interest filters"></div>
+   <div id="nx221PlacesList" class="nx221-places-list"></div>
+   <div id="nx221Selected" class="nx221-selected">
+    <small>SELECT A LOCATION ON THE MAP OR LIST</small>
+    <strong id="nx221SelectedName">Choose a destination</strong>
+    <p id="nx221SelectedInfo">Click a sourced marker to see its map coordinates.</p>
+    <div class="nx221-selected-actions"><button type="button" id="nx221Copy" disabled>COPY GAME PIN</button>
+     <a id="nx221OpenResearch" target="_blank" rel="noopener noreferrer">FULL SOURCE ↗</a></div>
+   </div>
+  </aside>
+ </div>
+ <div class="nx221-trust"><span>REAL SOURCE MAPS / EXTERNAL MEDIA</span><span>DOCUMENTED COORDINATES</span><span>PERSONAL PINS CLEARLY LABELED</span><span>NO LIVE TRACKING</span></div>
+ <div class="nx221-footer"><strong>MORE MAPS AND COMPLETE DATABASES</strong>
+  <span>See the source for more quests, NPCs, flight routes and locations. Original NEXUS planning tools remain below but are entirely optional.</span>
+  <a href="https://wowmap.gg/" target="_blank" rel="noopener noreferrer">BROWSE MORE WOW MAPS ↗</a>
+  <a href="#nx22Atlas">OPTIONAL PERSONAL PIN EDITOR ↘</a>
+ </div>
+</section>
+
 <section class="nx16-atlas-hero">
  <div class="nx16-atlas-title"><span class="nx16-kicker">NEXUS / CARTOGRAPHER’S LENS · VERSION 18.2</span><h1>DISCOVER THE<br><em>KNOWN WORLD.</em></h1>
  <p>A richer personal atlas with eight original regional landscapes, detailed local destination research, map-pin focus controls and a fully preserved expedition route library.</p>
