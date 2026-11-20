@@ -1,5 +1,17 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v22.1.0 · 2026-11-20 — REAL MAP FIRST: USABLE ATLAS RESET
+
+- Responding to owner usability feedback, World Atlas now opens with **actual in-game zone map artwork** from an external source, not our decorative region chart or blank 0–100 editor. Immediate zone selection, sourced real POI markers and one-click coordinate copies require no profile, new account, saved goal or setup.
+- Seven selected zones: Hallowfall, The Ringing Deeps, Isle of Dorn, Azj-Kahet, Valdrakken, The Waking Shores and The Azure Span. The map images are game-derived, externally served by TheWoWDB under Blizzard's copyright; direct source links and author attribution are shown on the page. External image uptime cannot be guaranteed: a clear, working full-source map link replaces the image if the provider blocks it. The reference points/coordinates are curated small samples and are **not a complete current database**.
+- Clicking any sourced POI or searchable location list reveals its X/Y values, UI Map ID, type and source. Copy an in-game WoW waypoint macro. Zoom map 1–2.5× and drag when zoomed. Filter by dungeon, delve, flight path, raid, landmark, quest or Personal.
+- Player-saved v22 map pins appear immediately over the actual source map with a different Personal style, without altering the saved pin records. Original v16 Atlas missions, v18.1 route planner, v18.2 illustrated Cartographer's Lens and v22 coordinate editor remain optional beneath the functional map.
+- Command Center native search and links, PROXIMUS Gateway and Atlas metadata now lead with sourced practical maps, not stale decorative art. No new browser-local key, authentication scope, Blizzard API call or Cloudflare Worker change.
+- Added dedicated source-provenance tests and synthetic desktop Chromium/iPhone WebKit acceptance for first-screen real maps, locations, direct source links, image failure fallback, existing record preservation and responsive experience. Physical iPhone, real game macro verification and media host availability remain pending.
+- Rollback branch: backup/azeroth-v22-before-atlas-real-map-correction-2026-11-20.
+
+
+
 ## v22.0.0 · 2026-11-20 — LIVING INTELLIGENCE: ZONE COORDINATES, PUBLIC EQUIPMENT RESEARCH & ADVENTURE DIRECTOR
 
 - **Atlas Coordinate Laboratory:** On World Atlas, enter player-supplied X/Y map percentages (0–100) tied to a specific WoW UI Map ID, then plot a marker on a dedicated neutral zone-coordinate grid or a temporary locally provided zone map image. Curated map references include Hallowfall (2215), Azj-Kahet (2255), Ringing Deeps (2214), Isle of Dorn (2248), Valdrakken (2112), Waking Shores (2022), and Azure Span (2024). Original continent art remains explicitly illustrative; no false claims of in-game accuracy.
