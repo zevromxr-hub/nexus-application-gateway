@@ -230,5 +230,6 @@ window.addEventListener('storage',event=>{
  if(event.key===core.KEYS.waypoints){state.own=readOwn();render()}
 });
 window.addEventListener('pageshow',()=>{state.own=readOwn();render()});
+window.addEventListener('nexus:waypoints-changed',()=>{state.own=readOwn();render()});
 state.own=readOwn();show(state.id);
 })();
