@@ -9,6 +9,43 @@ const core=window.NexusLivingIntelligenceV22,root=document.getElementById('nx221
 if(!core||!root)return;
 const imageBase='https://thewowdb.com/assets/wowdex/maps/worldmap/';
 const maps=[
+ {id:'zul-aman',name:"Zul'Aman",era:'Midnight · current Retail',mapId:2437,
+ source:'https://thewowdb.com/zone/zul-aman-15947/',
+ points:[['Abundance: Enchanting Crypt','Landmark',17.5,38.0],
+ ['Abundance: Skinning Den','Landmark',31.6,26.1],
+ ['Abyss Anglers','Landmark',68.2,20.2],
+ ['Aqir Invasion of Zul’Aman','Landmark',35.9,50.4],
+ ['Maisara Caverns','Landmark',43.8,39.5],
+ ["Amani'Zar Village",'Flight',44.8,65.5],["Atal'Aman",'Flight',31.6,53.4],
+ ['Camp Stonewash','Flight',47.3,25.5],['Shadebasin Watch','Flight',44.0,33.7],
+ ['Torntusk Overlook','Flight',33.8,78.4],['Witherbark Bluffs','Flight',38.8,23.2],
+ ["Quest hub near Amani'Zar Village",'Quest',44.6,67.0],
+ ['Quest hub near Witherbark Bluffs','Quest',38.0,23.8]]},
+ {id:'harandar',name:'Harandar',era:'Midnight · current Retail',mapId:2413,
+ source:'https://thewowdb.com/zone/harandar-15355/',
+ points:[['Abundance: Herbalism Grotto','Landmark',66.2,61.7],
+ ['Eversong Rootway','Landmark',53.3,55.5],
+ ['Portal to Voidstorm','Landmark',53.0,55.7],
+ ['Rootway to Fairbreeze','Landmark',75.7,53.6],
+ ['The Grudge Pit','Delve',70.5,64.9],['The Gulf of Memory','Delve',36.3,49.1],
+ ["Har'alnor",'Flight',31.7,67.4],["Har'athir",'Flight',69.4,52.6],
+ ["Har'kuai",'Flight',64.6,23.1],["Har'mara",'Flight',35.5,23.8],
+ ['The Den','Flight',54.1,53.2],
+ ['Quest hub near The Den','Quest',54.2,53.3],
+ ['Quest hub near Har’mara','Quest',35.0,25.3]]},
+ {id:'voidstorm',name:'Voidstorm',era:'Midnight · current Retail',mapId:2405,
+ source:'https://thewowdb.com/zone/voidstorm-16648/',
+ points:[['Abundance: Mining Voidburrow','Landmark',38.9,53.4],
+ ['Portal to Harandar','Landmark',51.7,70.4],
+ ['Portal to Naigtal','Landmark',51.4,71.3],
+ ['Portal to Silvermoon','Landmark',34.0,60.7],
+ ['Howling Ridge','Flight',51.2,69.2],
+ ['Locus Point','Flight',42.3,73.7],
+ ["Masters’ Perch",'Flight',44.8,39.5],
+ ['The Ingress','Flight',36.9,58.9],
+ ['Quest hub near Howling Ridge','Quest',52.0,68.8],
+ ['Quest hub near Locus Point','Quest',41.8,74.4],
+ ['Quest hub near The Ingress','Quest',35.6,59.5]]},
  {id:'hallowfall',name:'Hallowfall',era:'Khaz Algar · The War Within',mapId:2215,
  source:'https://thewowdb.com/zone/hallowfall-14838/',
  points:[['The Dawnbreaker','Dungeon',54.9,63.1],['Priory of the Sacred Flame','Dungeon',41.3,49.3],
@@ -55,7 +92,7 @@ const el=(tag,cls,txt)=>{const n=document.createElement(tag);if(cls)n.className=
 const $=id=>document.getElementById(id);
 const zone=id=>maps.find(x=>x.id===id)||null;
 const params=new URLSearchParams(location.search);
-const state={id:zone(params.get('zone'))?.id||'hallowfall',filter:'all',query:'',zoom:1,panX:0,panY:0,selected:null,own:[]};
+const state={id:zone(params.get('zone'))?.id||'zul-aman',filter:'all',query:'',zoom:1,panX:0,panY:0,selected:null,own:[]};
 function readOwn(){
  try{const raw=localStorage.getItem(core.KEYS.waypoints);return core.cleanWaypoints(raw?JSON.parse(raw):null)}
  catch(_){return []}
