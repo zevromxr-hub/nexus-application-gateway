@@ -1,0 +1,16 @@
+/* v22.4 details share the existing map result sidebar */
+#nx221RealAtlas .nx224-encounters{margin:9px 0;border-top:1px solid #74869b;padding-top:12px}
+#nx221RealAtlas .nx224-encounters[hidden]{display:none!important}
+#nx221RealAtlas .nx224-intro{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+#nx221RealAtlas .nx224-intro strong{color:#ffdbac;font-size:11px;letter-spacing:.04em}
+#nx221RealAtlas .nx224-intro small{color:#aec8d8;font-size:10px}
+#nx221RealAtlas .nx224-list{display:grid;gap:8px}
+#nx221RealAtlas .nx224-card{background:#172b40;border:1px solid #607088;border-radius:11px;padding:11px}
+#nx221RealAtlas .nx224-card-head{display:flex;gap:5px;align-items:center;justify-content:space-between}
+#nx221RealAtlas .nx224-card-head strong{font-size:12px;color:#f9e9d1}
+#nx221RealAtlas .nx224-kind{font-size:9px;color:#c7d9ed;border:1px solid #52657e;padding:2px 6px;border-radius:20px}
+#nx221RealAtlas .nx224-muted{font-size:10px;color:#b9ccdf;line-height:1.6;margin:7px 0}
+#nx221RealAtlas .nx224-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+#nx221RealAtlas .nx224-jump{font:800 9px system-ui;color:#192b3d;background:#e3c391;border:0;border-radius:8px;padding:9px;cursor:pointer}
+#nx221RealAtlas .nx224-source{font:800 9px system-ui;color:#b3e8ff;text-decoration:underline}
+#nx221RealAtlas .nx224-disclaimer{color:#b4c6d5;font-size:10px;line-height:1.6;margin:4px 0}
