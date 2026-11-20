@@ -40,7 +40,7 @@ function draw(){
  }
  active=Boolean(query)||category!=='all';
  types.hidden=active;
- if(!active){status.textContent='Search all '+bridge.catalog.length+' zone maps. Select a location or use the map’s original filters below.';external.textContent='RESEARCH ITEMS & LOOT ↗';external.href='https://www.wowhead.com/';bridge.reset();return}
+ if(!active){window.NexusBossLootV224?.render('',category);status.textContent='Search all '+bridge.catalog.length+' zone maps. Select a location or use the map’s original filters below.';external.textContent='RESEARCH ITEMS & LOOT ↗';external.href='https://www.wowhead.com/';bridge.reset();return}
  results.replaceChildren();
  const found=all.filter(p=>(category==='all'||p.group===category)&&matches(p,query)).slice(0,60);
  $('nx221Count').textContent=found.length+(found.length===60?'+':'')+' MATCHES';
@@ -62,6 +62,7 @@ function draw(){
   });
   results.append(b);
  }
+ window.NexusBossLootV224?.render(query,category);
  if(!found.length){
   results.append(make('p','nx223-empty','No verified markers in our current map catalog. Search the external database for more items, bosses and sources; nothing has been invented here.'));
  }
