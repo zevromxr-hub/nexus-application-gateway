@@ -1,14 +1,24 @@
 {
   "product": "NEXUS | AZEROTH COMPANION",
-  "version": "21.0.0",
+  "version": "22.0.0",
   "channel": "owner-approved",
-  "release_date": "2026-11-18",
-  "subtitle": "SOVEREIGN UNITY — SITEWIDE COMMAND, DISCOVERY, PERSONAL PLANNING INTELLIGENCE & PERFORMANCE",
-  "previous_version": "20.1.0",
+  "release_date": "2026-11-20",
+  "subtitle": "LIVING INTELLIGENCE — ZONE MAP COORDINATES, DATED BLIZZARD EQUIPMENT RESEARCH & CONNECTED ADVENTURE DIRECTOR",
+  "previous_version": "21.0.0",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "azeroth-companion/",
   "web_url": "https://zevarchives.com/azeroth-companion/",
   "changes": [
+    "Added a coordinate-aware World Atlas v22 laboratory: players can enter exact 0–100 zone-map X/Y positions tied to an in-game UI Map ID, choose a pin type, add personal descriptions and view clickable markers on a neutral coordinate grid or an optional user-owned, local-only zone map preview.",
+    "Referenced seven independently researched in-game UI Map IDs for selected Dragon Isles and Khaz Algar areas; invalid IDs and out-of-range coordinates are rejected. The existing illustrated continent map remains clearly labeled schematic, never falsely claimed to be a precise Blizzard map. User-provided coordinate records are sourced as manual.",
+    "Added one-tap copyable World of Warcraft in-game user-waypoint macros using C_Map.CanSetUserWaypointOnMap and UiMapPoint.CreateFromCoordinates, plus safe portable export/import of user waypoint JSON and immediate links to the user's original Atlas missions and adventure plans.",
+    "Enhanced existing Character Intelligence without increasing API calls: it listens to the existing successful Blizzard public profile/equipment responses, shows time-stamped equipment slot coverage and reported item-level ranges, and permits explicit opt-in save/delete of at most 12 sanitized public research snapshots.",
+    "Integrated those optional published-equipment research snapshots into Character Nexus and the new Director as time-labeled source-backed evidence, never as automatic game inventory, ownership, or proof of equipment still being worn. Does not store OAuth tokens, full API profile payloads or any secret.",
+    "Built a premium standalone Living Intelligence Adventure Director unifying original v16 manual Atlas objectives, v17 Adventure Operations session time estimates, v22 coordinate notebook and optional user-captured public gear reports into a focused 30–240 minute personal session with suggested priorities and preparation research links.",
+    "Added character filtering, activity modes (Balanced, Exploration, Equipment, Collecting), actionable source-labeled steps, conservative estimated planning times, manual-only completion checkboxes, copyable summaries and downloadable portable JSON briefings. No gameplay progress, real travel durations or Blizzard state is simulated as fact.",
+    "Preserved v16 goals, v18.1 routes, v17 operations, v14 Talent Forge, v15 Character Nexus saved profiles, v19 display modes, v20.1 AES-encrypted Private Video Vault, Battle.net verification and Cloudflare Worker endpoints. Only three isolated new browser-local keys are written, each by explicit user action; all appear in Save Protection except the separately encrypted Vault.",
+    "Extended NEXUS v21 Unity to 20 real studio destinations with the new Director, updated main companion links, native Command Center search, PROXIMUS Gateway Azeroth card and five optional PWA direct-launch shortcuts while retaining the main app's original JavaScript/CSS request count.",
+    "Added pure source/unit and synthetic Chromium/iPhone WebKit tests covering zone-map IDs, input bounds, Waypoint macro format, verified equipment event capture, opt-in snapshot storage, time-budget plan ranking, original save byte preservation, Vault isolation and mobile layouts. Real player and physical-iPhone acceptance remains pending.",
     "NEXUS Sovereign Unity v21 connects every one of Azeroth's 21 HTML pages through a single accessible cross-studio launcher, with a consistent cinematic premium design respecting existing studio individuality and prior v19 visual presets.",
     "Introduced an on-demand Command Palette with 19 curated destinations, fast local studio search, manual saved Atlas mission lookup with safe direct zone links, and source-labeled summaries of your browser-local character drafts, builds, saved routes and sessions. It never claims actual Blizzard account or quest progress.",
     "Added up to six user-pinned studios and eight recent destinations. The only new browser-local persistence key is nexus_azeroth_unity_v21 containing bounded public studio identifiers—not personal details, passwords, tokens, video metadata or player data.",
@@ -202,6 +212,6 @@
   "acceptance": {
     "owner_approved": true,
     "tester_status": "pending",
-    "note": "Owner requested enhancement of the entire Azeroth website and connected experiences. This v21 adds cross-studio visual/navigation and source-labeled browser-local utility without modifying authentication or previously saved records. Automated tests are advisory and real hardware/character acceptance remains pending."
+    "note": "Owner requested upgrades to accurate/functioning World Atlas coordinates, stronger character equipment intelligence and a personal Adventure Director. New markers are player-entered, sourced in-game zone map coordinates, not precise global map art. Blizzard equipment reports are captured only after a successful existing API request and opt-in save. All real-device, physical-iPhone and live-player acceptance remains pending."
   }
 }
