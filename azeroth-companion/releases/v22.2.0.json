@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "22.2.0",
+  "title": "UNIFIED REAL MAPS — Legacy Map Retirement & Feature Migration",
+  "release_date": "2026-11-20",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Requested replacement of redundant older Atlas maps while retaining their existing saved behavior. External map availability and actual-player acceptance remain unverified.",
+  "features": [
+    "Real game-derived maps remain the sole primary visual map viewer; schematic charts and stale illustrative lens are retired from view.",
+    "All 25 older Atlas destination identifiers remain usable for missions and saved route plans, with searchable destination lookup and supported-zone deep links.",
+    "Previous v16 missions, v18.1 routes, v22 waypoints, bookmarks and local records are never migrated destructively or deleted.",
+    "Advanced coordinate notebook remains accessible under one expandable panel; pins saved here refresh in the real map on the same page.",
+    "Unsupported historic zones use an external map directory instead of falsely displaying a different zone's map."
+  ]
+}
