@@ -29,6 +29,9 @@ async function audit(label,engine,mobile){
  page.on('request',r=>{
   const url=r.url();
   if(url.startsWith('blob:')||url.startsWith('data:')||url.startsWith('http://127.0.0.1:4173/'))return;
+  // v22.1: ONLY explicitly sourced WoW zone map images may originate off-site.
+  // All other unexpected remote scripts, trackers, API calls and media remain failures.
+  if(r.resourceType()==='image'&&/^https:\/\/thewowdb\.com\/assets\/wowdex\/maps\/worldmap\/(?:2215|2214|2248|2255|2112|2022|2024)\.jpg$/.test(url))return;
   unexpected.push(url);
  });
  const snapshot=()=>page.evaluate(k=>Object.fromEntries(k.map(x=>[x,localStorage.getItem(x)])),keys);
