@@ -11,11 +11,14 @@ const [js,css,atlas,version,core,waypoints,save,vault]=await Promise.all([
 new vm.Script(js,{filename:'atlas-real-map-v22.1.js'});
 assert.match(js,/assets\/wowdex\/maps\/worldmap\//,'Real game-derived map URLs must point to actual provider, not decorative NEXUS SVGs');
 assert.match(js,/thewowdb\.com\/zone\/hallowfall-14838/);
+assert.match(js,/thewowdb\.com\/zone\/zul-aman-15947/);
+assert.match(js,/thewowdb\.com\/zone\/harandar-15355/);
+assert.match(js,/thewowdb\.com\/zone\/voidstorm-16648/);
 assert.match(js,/thewowdb\.com\/zone\/the-ringing-deeps-14795/);
 assert.match(js,/thewowdb\.com\/zone\/isle-of-dorn-14717/);
 assert.match(js,/warcraft\.wiki\.gg\/wiki\/Azj-Kahet/);
-assert.equal([...js.matchAll(/mapId:\d{4}/g)].length,7,'Seven grounded zone-map ID viewers');
-for(const id of [2215,2214,2248,2255,2112,2022,2024])
+assert.equal([...js.matchAll(/mapId:\d{4}/g)].length,10,'Ten grounded zone-map ID viewers, including three verified current Retail Midnight zones');
+for(const id of [2437,2413,2405,2215,2214,2248,2255,2112,2022,2024])
  assert.ok(js.includes('mapId:'+id),'Missing in-game zone map '+id);
 assert.ok(js.includes('state.own=readOwn()'));
 assert.ok(js.includes('core.KEYS.waypoints'));
