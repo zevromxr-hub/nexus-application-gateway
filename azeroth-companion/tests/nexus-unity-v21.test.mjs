@@ -97,7 +97,7 @@ assert.match(vault,/private-video-vault-v20\.js\?v=2010/,'Unmodified local encry
 const manifest=JSON.parse(await read('site.webmanifest'));
 assert.equal(manifest.start_url,'./');
 assert.equal(manifest.display,'standalone');
-assert.equal(manifest.shortcuts.length,4);
+assert.equal(manifest.shortcuts.length,5);
 assert.ok(manifest.shortcuts.some(x=>x.url==='./private-video-vault.html'));
 const save=await read('save-protection.html');
 assert.ok(!save.includes('nexus_azeroth_secure_video_v20'),'Standard JSON planning backup must not import private Vault secrets');
