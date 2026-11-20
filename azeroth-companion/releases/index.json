@@ -1,8 +1,15 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-18",
+  "updated": "2026-11-20",
   "releases": [
+    {
+      "version": "22.0.0",
+      "title": "Living Intelligence — Exact Zone Coordinates, Time-Stamped Public Gear Research & Adventure Director",
+      "date": "2026-11-20",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
     {
       "version": "21.0.0",
       "title": "Sovereign Unity — Connected Azeroth, Premium Studio Navigation & Manual Progress Intelligence",
