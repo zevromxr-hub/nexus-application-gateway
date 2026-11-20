@@ -1,5 +1,18 @@
 # NEXUS | AZEROTH COMPANION — RELEASE HISTORY
 
+## v22.0.0 · 2026-11-20 — LIVING INTELLIGENCE: ZONE COORDINATES, PUBLIC EQUIPMENT RESEARCH & ADVENTURE DIRECTOR
+
+- **Atlas Coordinate Laboratory:** On World Atlas, enter player-supplied X/Y map percentages (0–100) tied to a specific WoW UI Map ID, then plot a marker on a dedicated neutral zone-coordinate grid or a temporary locally provided zone map image. Curated map references include Hallowfall (2215), Azj-Kahet (2255), Ringing Deeps (2214), Isle of Dorn (2248), Valdrakken (2112), Waking Shores (2022), and Azure Span (2024). Original continent art remains explicitly illustrative; no false claims of in-game accuracy.
+- Up to 160 manually sourced pin records, personal labels, category icons and notes; copy valid Warcraft user-waypoint macros and export/import portable JSON pins. Previous Atlas goals, bookmarks and route itineraries remain independent. No automatic character position tracking, external map tiles or user image upload.
+- **Character Research v22:** Existing public Blizzard profile/equipment API calls remain unchanged. After a successful response, a separate panel shows time-stamped returned slot counts and item-level coverage. Users may explicitly save/delete up to 12 sanitized public-gear reports for Character Nexus and Director. Not an automatic account inventory or proof of current ownership; no tokens or raw API payloads are persisted.
+- **Living Intelligence Director:** New standalone living-intelligence.html unifies original v16 Atlas manual goals, v17 Adventure Operations time estimates, v22 coordinate pins and optional public research snapshots. Choose a saved character, activity mode and 30–240 minute time budget; generate a suggested research agenda with source labels, dated gear references, manual-only checkmarks, optional preferences, and text/JSON briefing exports.
+- New isolated keys: nexus_atlas_waypoints_v22, nexus_character_research_snapshots_v22 and nexus_living_director_v22. General Save Protection includes them; AES-encrypted Video Vault stays out of ordinary JSON exports. Old keys, login, Cloudflare Worker, builds and media remain untouched.
+- NEXUS Command now includes 20 searchable destinations. Native Command Center search, PROXIMUS Gateway and PWA shortcuts also include the Director. The main companion reuses its original JS/CSS request count via one cache-busted pre-existing Unity bundle.
+- Dedicated source and simulated desktop Chromium/iPhone WebKit tests validate exact map IDs, X/Y validation, source-backed gear captures, plan budgets, saved-record isolation, mobile interface and preserved Private Vault. Physical iPhone, live game coordinates/macros, linked player and real Blizzard API acceptance remain pending.
+- Rollback branch: backup/azeroth-v21-before-living-intelligence-v22-2026-11-20. v21 and earlier feature behavior is preserved.
+
+
+
 ## v21.0.0 · 2026-11-18 — SOVEREIGN UNITY: CONNECTED AZEROTH EXPERIENCE (Owner approved; physical-device/live-player acceptance pending)
 
 - Connected **all 21 Azeroth website pages** through one accessible global NEXUS COMMAND launcher. Its dialog offers fast search across **19 real studio destinations**, category filters, direct links into manually saved Atlas objectives and real guided workflows; it does not invent quest, level, achievement or equipment verification.
