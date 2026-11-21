@@ -1,0 +1,21 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "24.0.0",
+  "title": "ATLAS INTELLIGENCE — In-App Item Discovery & Farm Progress",
+  "release_date": "2026-11-21",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "User requested concrete functionality inside Atlas rather than external-site links. Curated in-app guide and existing Blizzard item gateway added; complete loot tables, interiors, and farming density are not yet verified or claimed.",
+  "features": [
+    "Show in-app item acquisition steps, difficulty and source details from existing versioned Loot Hunter data.",
+    "Search Blizzard item names/IDs explicitly using existing read-only Cloudflare item API, inspect results in the Atlas rather than redirecting.",
+    "Search boss encounters and display source-backed instance boss lineup and known sample item sources.",
+    "Save Item Atlas wishlist entries, Loot Hunter farm goals and manual attempt/step progress using existing on-device storage keys.",
+    "Browse documented nearby points from one source zone without speculative travel times, respawns or heatmaps.",
+    "Collapse external source references and cross-site research behind optional disclosure.",
+    "Preserve iPhone native fullscreen modal, source image fallback, waypoints, missions and player data."
+  ]
+}
