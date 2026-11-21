@@ -1,3 +1,12 @@
+## v23.0.0 — World Discovery Ascension (2026-11-21)
+
+- Unified previously separate v22.3 location and v22.4 boss/loot search interfaces into a single compact map-sidebar discovery experience; retained older source scripts for rollback.
+- Added sourced Midnight Silvermoon City (UI Map 2393) and Eversong Woods (UI Map 2395) zone maps, with selected documented hub/dungeon/quest coordinates, alongside existing ten zones.
+- Search documented map points, bosses, dungeons and raids, travel connections, gathering-related sites, and a small curated set of item/collectible source references. Select results to open their source or precise outdoor map entrance when known.
+- Added fullscreen map presentation and two-finger pinch zoom on pointer-capable mobile devices. Zoom buttons and existing personal pin/waypoint actions remain.
+- No fabricated dungeon interior floors, spawn-density heatmaps, current drop probabilities, verified player item ownership or complete game loot claims; source references are clearly identified.
+- Original mission, route, item tracking and encrypted vault data are not mutated by this upgrade. Actual player and browser acceptance remains pending.
+
 ## v22.4.0 — Boss & Loot Intelligence (2026-11-20)
 
 - Added source-indexed encounter search in the existing Atlas sidebar for Nerub-ar Palace, The Stonevault and Priory of the Sacred Flame.
