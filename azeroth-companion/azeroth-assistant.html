@@ -47,7 +47,7 @@ $('newQuestions').addEventListener('click',()=>{suggestionOffset+=7;refresh()});
  // Release status is sourced from the same public manifest as the application badge.
  // This does not read the player's account, plans, cookies or local storage.
  fetch('./version.json',{cache:'no-store'}).then(x=>x.ok?x.json():null).then(meta=>{
-  if(!meta||!/^\\d+\\.\\d+\\.\\d+$/.test(String(meta.version||'')))return;
+  if(!meta||!/^\d+\.\d+\.\d+$/.test(String(meta.version||'')))return;
   const status=articles.find(a=>a.id==='status');
   if(status)status.answer='The current published Azeroth release is v'+meta.version+
    (typeof meta.subtitle==='string'?' — '+meta.subtitle+'. ':' . ')+
