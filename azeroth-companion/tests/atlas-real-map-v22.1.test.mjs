@@ -17,7 +17,7 @@ assert.match(js,/thewowdb\.com\/zone\/voidstorm-16648/);
 assert.match(js,/thewowdb\.com\/zone\/the-ringing-deeps-14795/);
 assert.match(js,/thewowdb\.com\/zone\/isle-of-dorn-14717/);
 assert.match(js,/warcraft\.wiki\.gg\/wiki\/Azj-Kahet/);
-assert.equal([...js.matchAll(/mapId:\d{4}/g)].length,10,'Ten grounded zone-map ID viewers, including three verified current Retail Midnight zones');
+assert.ok([...js.matchAll(/mapId:\d{4}/g)].length>=10,'At least ten sourced zone maps, plus optional verified expansion maps');
 for(const id of [2437,2413,2405,2215,2214,2248,2255,2112,2022,2024])
  assert.ok(js.includes('mapId:'+id),'Missing in-game zone map '+id);
 assert.ok(js.includes('state.own=readOwn()'));
