@@ -1,3 +1,14 @@
+## v24.0.0 — Atlas Intelligence / Research Where You Play (2026-11-21)
+
+- External website links are now optional source disclosures instead of primary actions in the Atlas discovery card. The Atlas presents immediate actionable content, using original NEXUS datasets where possible.
+- Search the existing **official Blizzard item gateway inside the Atlas**, by item name or valid numeric ID. Review official item names, quality and levels when available. Item-data responses alone do not establish drop sources.
+- Item discoveries connect to the actual existing Item Atlas wishlist and Loot Hunter farm-goal record formats in the same browser. Users can log manual attempts, mark a farm goal obtained/farming, and check off acquisition-guide steps without navigating to another studio.
+- The existing curated Loot Hunter guide is displayed as an acquisition checklist with source and difficulty context for known legacy items, while unknown sources are clearly labeled unverified.
+- Instance cards now reveal known boss lineups and any previously curated sample loot internally; boss results show their parent instance. Only verifiable outdoor entrances are plotted on zone maps.
+- Map location cards expose nearby **documented** points in that zone, with direct navigation and coordinate macro support; this is not an estimated farming-density model or travel-time calculator.
+- A collapsible personal farm board and item search appear within the current Atlas sidebar, preserving the compact mobile layout. The v23.0.2 native iPhone fullscreen dialog and personal waypoint overlay remain unchanged.
+- No live drop rates, comprehensive loot tables, interior-floor maps, automatic player ownership or material spawn heatmaps are claimed. No Blizzard credentials, backend, OAuth, route/mission key or Private Video Vault changes.
+
 ## v23.0.2 — iPhone Native Map Dialog Rebuild (2026-11-21)
 
 - Owner screenshot confirmed v23.0.1 fullscreen still covered the whole iPhone screen without accessible exit or visible marker details; the previous portal approach did not solve the real-device behavior.
