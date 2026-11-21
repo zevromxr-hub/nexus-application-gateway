@@ -33,7 +33,7 @@ for(const article of knowledge.articles){
  assert.ok(Array.isArray(article.keywords)&&article.keywords.length>=3);
  assert.ok(typeof article.link==='string'&&article.link.length>0);
 }
-const cacheTag=tag.replace(/\\D/g,'');
+const cacheTag=tag.replace(/\D/g,'');
 assert.ok(assistant.includes("const FILE='./azeroth-assistant-knowledge.json?v="+cacheTag+"'"));
 assert.ok(assistant.includes("fetch('./version.json',{cache:'no-store'})"),'Assistant status must use live public release metadata');
 assert.ok(!assistant.includes("const FILE='./azeroth-assistant-knowledge-v7.9.7.json"));
