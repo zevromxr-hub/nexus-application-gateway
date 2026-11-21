@@ -4,6 +4,13 @@
   "updated": "2026-11-21",
   "releases": [
     {
+      "version": "24.0.1",
+      "title": "Current Documentation & Assistant Synchronization — Atlas v24 Guide and Site Simplification Plan",
+      "date": "2026-11-21",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "24.0.0",
       "title": "Atlas Intelligence — Official Item Search, In-App Boss/Loot Guides and Farm Board",
       "date": "2026-11-21",
