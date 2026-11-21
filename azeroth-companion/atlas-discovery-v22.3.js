@@ -2,6 +2,7 @@
    Only curated sourced coordinates get pins. Loot/gear queries go to a clearly
    labeled external database; never invent drops, drop rates, spawn points or routes. */
 (()=>{'use strict';
+if(window.NexusAtlasV23)return;
 const bridge=window.NexusRealMapDiscoveryV223,root=document.getElementById('nx221RealAtlas');
 if(!bridge||!root)return;
 const $=id=>document.getElementById(id),input=$('nx221Search'),results=$('nx221PlacesList'),types=$('nx221Types');

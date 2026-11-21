@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "23.0.0",
+  "title": "WORLD DISCOVERY ASCENSION — Unified Search & Real Map Enhancement",
+  "release_date": "2026-11-21",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner authorized v23 roadmap. Implemented validated subset: unified discovery, sourced Midnight map expansion, search/encounter/legacy item integration, touch and fullscreen. Complete loot indexing, reliable gathering-density heatmaps and verified dungeon interiors are not represented as finished.",
+  "features": [
+    "Unify location, boss, instance, selected loot/legacy collectibles, gathering landmarks and travel research in one map sidebar.",
+    "Add Midnight Silvermoon City and Eversong Woods sourced 2393/2395 map viewers with selected verified coordinates.",
+    "Introduce fullscreen map mode and pointer-driven two-finger zoom while retaining existing wheel-free touch and desktop buttons.",
+    "Preserve original map image fallback, coordinates macro, saved routes, mission and personal pins, plus external source references.",
+    "No fabricated indoor maps, heatmaps, loot rates or character ownership. No OAuth or backend changes."
+  ]
+}

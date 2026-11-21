@@ -1,0 +1,30 @@
+/* NEXUS v23 — single-column contextual discovery, no new studio surfaces */
+#nx221RealAtlas .nx230-searchbar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:5px;margin:5px 0 12px;color:#e8c796;font-size:11px;letter-spacing:.07em}
+#nx221RealAtlas .nx230-searchbar span{color:#c0d0e0;font-size:10px}
+#nx221RealAtlas .nx230-chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+#nx221RealAtlas .nx230-chip{background:#223952;color:#ebf3fa;border:1px solid #72849f;border-radius:25px;font-size:10px;font-weight:800;padding:9px 10px;cursor:pointer;min-height:39px}
+#nx221RealAtlas .nx230-chip[aria-pressed=true]{background:#e6c18d;border-color:#f5dcad;color:#192538}
+#nx221RealAtlas .nx230-status{color:#b9cbe1;font-size:11px;line-height:1.5;margin:7px 0}
+#nx221RealAtlas .nx230-results{display:grid;gap:6px;max-height:410px;overflow:auto;overscroll-behavior:contain}
+#nx221RealAtlas .nx230-result{display:flex;gap:10px;justify-content:space-between;align-items:center;text-align:left;min-height:58px;width:100%;padding:11px;background:#1a2b43;color:#e8f2fd;border:1px solid #546987;border-radius:10px;cursor:pointer}
+#nx221RealAtlas .nx230-result:hover,#nx221RealAtlas .nx230-result:focus-visible{border-color:#f2cf97;background:#263e59}
+#nx221RealAtlas .nx230-resultcontent{display:grid;gap:2px;min-width:0}
+#nx221RealAtlas .nx230-resultcontent strong{font-size:12px;overflow-wrap:anywhere}
+#nx221RealAtlas .nx230-resultcontent small{font-size:10px;color:#b6c8dc;line-height:1.4}
+#nx221RealAtlas .nx230-kind{color:#e5cfab;font-size:9px;white-space:nowrap}
+#nx221RealAtlas .nx230-detail{margin-top:12px;padding:14px;background:linear-gradient(145deg,#26344e,#15263f);border:1px solid #b99a73;border-radius:13px;overflow:hidden}
+#nx221RealAtlas .nx230-detailhead{display:grid;gap:4px}
+#nx221RealAtlas .nx230-detailhead span{font-size:10px;color:#efcc91;letter-spacing:.1em}
+#nx221RealAtlas .nx230-detailhead strong{font-size:17px;color:#fff1d4}
+#nx221RealAtlas .nx230-description,#nx221RealAtlas .nx230-note{font-size:11px;line-height:1.65;color:#d1e0eb}
+#nx221RealAtlas .nx230-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#nx221RealAtlas .nx230-primary{cursor:pointer;background:#e6bf85;color:#13243c;border:0;border-radius:9px;padding:10px 12px;font-size:10px;font-weight:900}
+#nx221RealAtlas .nx230-link{font-size:10px;color:#aee2f8;text-decoration:underline;overflow-wrap:anywhere}
+#nx221RealAtlas .nx230-itemicon{float:right;width:48px;height:48px;object-fit:contain;border-radius:9px;margin:0 0 9px 9px}
+#nx221RealAtlas .nx230-more{display:grid;gap:5px;margin-top:10px}
+#nx221RealAtlas .nx230-full{font-size:10px;color:#f2d4a8;text-decoration:underline;font-weight:800}
+#nx221RealAtlas .nx230-trust,#nx221RealAtlas .nx230-empty{font-size:10px;line-height:1.6;color:#b6c9da}
+#nx221RealAtlas .nx230-detail[hidden],#nx221RealAtlas #nx221PlacesList[hidden],#nx221RealAtlas #nx221Types[hidden],#nx221RealAtlas .nx223-discovery[hidden],#nx221RealAtlas #nx224EncounterResults[hidden]{display:none!important}
+#nx221RealAtlas .nx230-fullscreen{height:36px;border:1px solid #aeb9c9;border-radius:8px;background:#304760;color:#fff;font-weight:800;cursor:pointer;padding:6px 10px}
+#nx221RealAtlas .nx230-map-fullscreen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-height:none!important;aspect-ratio:auto!important;z-index:100000;background:#101c2e;touch-action:none}
+@media(max-width:650px){#nx221RealAtlas .nx230-results{max-height:310px}#nx221RealAtlas .nx230-chip{font-size:10px;min-height:42px}#nx221RealAtlas .nx230-map-fullscreen{height:100svh!important}}

@@ -2,6 +2,7 @@
    Bosses live INSIDE instances; entrance coordinates are the only map pins.
    A curated index, not live loot, drop odds or personalized eligibility. */
 (()=>{'use strict';
+if(window.NexusAtlasV23)return;
 const bridge=window.NexusRealMapDiscoveryV223,side=document.querySelector('#nx221RealAtlas .nx221-places'),
  input=document.getElementById('nx221Search');
 if(!bridge||!side||!input)return;

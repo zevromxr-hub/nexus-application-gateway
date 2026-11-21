@@ -9,6 +9,18 @@ const core=window.NexusLivingIntelligenceV22,root=document.getElementById('nx221
 if(!core||!root)return;
 const imageBase='https://thewowdb.com/assets/wowdex/maps/worldmap/';
 const maps=[
+ {id:'silvermoon-midnight',name:'Silvermoon City (Midnight)',era:'Midnight · Silvermoon City',mapId:2393,
+ source:'https://thewowdb.com/zone/silvermoon-city-15969/',
+ points:[['Murder Row','Dungeon',56.2,61.1],['Great Vault & Bank','Landmark',50.6,65.4],
+ ['Auction House','Landmark',50.3,74.9],['Item Upgrader','Landmark',48.6,61.8],
+ ['Work Orders & Professions','Landmark',45.6,54.0],['Portal Room','Landmark',53.3,66.2],
+ ['Sanctum of Light flight point','Flight',51.0,71.0],['The Royal Exchange flight point','Flight',69.4,63.6],
+ ['Harandar portal','Landmark',36.8,68.4],['Voidstorm portal','Landmark',35.3,65.5]]},
+ {id:'eversong-midnight',name:'Eversong Woods (Midnight)',era:'Midnight · Eversong Woods',mapId:2395,
+ source:'https://thewowdb.com/zone/eversong-woods-16312/',
+ points:[['To the Central Tower · quest turn-in','Quest',48.6,57.6],
+ ['To the Central Tower · objective area','Quest',56.7,40.8],
+ ['Dangerous Showpieces · objective area','Quest',43.5,68.9]]},
  {id:'zul-aman',name:"Zul'Aman",era:'Midnight · current Retail',mapId:2437,
  source:'https://thewowdb.com/zone/zul-aman-15947/',
  points:[['Abundance: Enchanting Crypt','Landmark',17.5,38.0],
@@ -119,7 +131,7 @@ function setSource(z){
 function show(id){
  const z=zone(id);if(!z)return;
  state.id=z.id;state.zoom=1;state.panX=0;state.panY=0;state.filter='all';state.query='';state.selected=null;
- $('nx221Search').value='';$('nx221SelectedName').textContent='Choose a destination';
+ if(!window.NexusAtlasV23)$('nx221Search').value='';$('nx221SelectedName').textContent='Choose a destination';
  $('nx221SelectedInfo').textContent='Click a sourced marker to see its coordinates.';
  $('nx221Copy').disabled=true;
  const url=new URL(location.href);url.searchParams.set('zone',z.id);
@@ -212,7 +224,41 @@ const stop=event=>{
 };
 viewport.addEventListener('pointerup',stop);
 viewport.addEventListener('pointercancel',stop);
-$('nx221Search').addEventListener('input',e=>{state.query=e.target.value.trim().toLowerCase().slice(0,80);render()});
+
+// Accessible fullscreen map viewer and two-finger pinch zoom (native pointer events).
+const fullscreen=el('button','nx230-fullscreen','FULLSCREEN');fullscreen.type='button';
+fullscreen.title='Expand or exit the map';fullscreen.setAttribute('aria-pressed','false');
+$('nx221Reset').after(fullscreen);
+let full=false;
+function setFull(next){
+ full=!!next;viewport.classList.toggle('nx230-map-fullscreen',full);
+ fullscreen.textContent=full?'EXIT FULLSCREEN':'FULLSCREEN';
+ fullscreen.setAttribute('aria-pressed',String(full));applyZoom();
+}
+fullscreen.addEventListener('click',()=>setFull(!full));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&full)setFull(false)});
+const touches=new Map();let pinchStart=null;
+viewport.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='mouse'||e.target.closest('button'))return;
+ touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(touches.size===2){
+  const pts=[...touches.values()],dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+  pinchStart={dist:Math.max(1,dist),zoom:state.zoom};
+  drag=null;
+ }
+});
+viewport.addEventListener('pointermove',e=>{
+ if(!touches.has(e.pointerId))return;
+ touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(touches.size!==2||!pinchStart)return;
+ const pts=[...touches.values()],dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);
+ state.zoom=Math.max(1,Math.min(2.5,pinchStart.zoom*dist/pinchStart.dist));applyZoom();
+},{passive:true});
+const endTouch=e=>{touches.delete(e.pointerId);if(touches.size<2)pinchStart=null};
+viewport.addEventListener('pointerup',endTouch);
+viewport.addEventListener('pointercancel',endTouch);
+
+$('nx221Search').addEventListener('input',e=>{if(window.NexusAtlasV23)return;state.query=e.target.value.trim().toLowerCase().slice(0,80);render()});
 async function copy(value){
  if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(value);return true}
  const ta=el('textarea');ta.value=value;ta.style.cssText='position:fixed;left:-9999px;opacity:0';
@@ -240,7 +286,7 @@ window.NexusRealMapDiscoveryV223=Object.freeze({
  open:(id,pointId)=>{
   if(!zone(id))return false;
   if(state.id!==id)show(id);
-  else {state.query='';state.filter='all';$('nx221Search').value='';render()}
+  else {state.query='';state.filter='all';if(!window.NexusAtlasV23)$('nx221Search').value='';render()}
   if(pointId&&rows(zone(id)).some(p=>p.id===pointId)){select(pointId);return true}
   return true;
  },

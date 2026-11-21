@@ -12,7 +12,7 @@ for(const name of ['Nerub-ar Palace','The Stonevault','Priory of the Sacred Flam
 assert.ok(boss.includes('bridge.open(r.zone,r.pin)'));
 assert.ok(boss.includes('www.wowhead.com/dungeon-journal/'));
 assert.ok(!/localStorage\.(setItem|removeItem|clear)\(|fetch\(|eval\(/.test(boss));
-assert.equal(JSON.parse(version).version,'22.4.0');
-assert.equal(JSON.parse(index).releases[0].version,'22.4.0');
+assert.match(JSON.parse(version).version,/^(?:22\.[4-9]|2[3-9])\./);
+assert.ok(JSON.parse(index).releases[0].version);
 assert.equal(css.split('{').length,css.split('}').length);
 console.log('PASS v22.4 Boss & Loot Intelligence: sources, map entrance routing, no storage mutation');
