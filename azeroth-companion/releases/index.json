@@ -4,6 +4,13 @@
   "updated": "2026-11-21",
   "releases": [
     {
+      "version": "24.0.0",
+      "title": "Atlas Intelligence — Official Item Search, In-App Boss/Loot Guides and Farm Board",
+      "date": "2026-11-21",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "23.0.2",
       "title": "iPhone Native Fullscreen Map Rebuild — Visible Exit and Result Panel",
       "date": "2026-11-21",
