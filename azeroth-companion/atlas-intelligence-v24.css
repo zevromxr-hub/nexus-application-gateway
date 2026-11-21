@@ -1,0 +1,37 @@
+/* Atlas Intelligence v24 — practical in-app actions inside the existing card */
+#nx221RealAtlas .nx240-enhanced{margin-top:12px;border-top:1px solid #5e738d;padding-top:12px;display:grid;gap:11px}
+#nx221RealAtlas .nx240-section{padding:12px;border:1px solid #5e7793;background:linear-gradient(145deg,#20364e,#15283e);border-radius:11px;display:grid;gap:8px}
+#nx221RealAtlas .nx240-label{color:#f4d5a4;font:850 10px system-ui;letter-spacing:.08em}
+#nx221RealAtlas .nx240-fact{margin:0;color:#d3e2e9;font:12px/1.65 system-ui}
+#nx221RealAtlas .nx240-actions{display:flex;flex-wrap:wrap;gap:7px}
+#nx221RealAtlas .nx240-action{border:1px solid #b8cce0;border-radius:8px;background:#304c63;color:#eef4fa;
+ min-height:40px;padding:9px 11px;font:800 10px/1.4 system-ui;cursor:pointer;text-align:left}
+#nx221RealAtlas .nx240-action:hover,#nx221RealAtlas .nx240-action:focus-visible{border-color:#f5d8a7;background:#405c75}
+#nx221RealAtlas .nx240-boss-list{display:flex;flex-wrap:wrap;gap:5px}
+#nx221RealAtlas .nx240-boss-list .nx240-action{min-height:34px;font-size:10px}
+#nx221RealAtlas .nx240-steps{margin:5px 0;padding-left:20px;display:grid;gap:8px;color:#d8e4ed;font:11px/1.55 system-ui}
+#nx221RealAtlas .nx240-fine{margin:0;color:#aebfd1;font-size:10px;line-height:1.6}
+#nx221RealAtlas .nx240-card-sources{margin-top:12px;padding:10px;border:1px solid #62748b;border-radius:8px}
+#nx221RealAtlas .nx240-card-sources summary,#nx221RealAtlas .nx240-source-drawer summary{cursor:pointer;
+ color:#b7c9d9;font:750 10px/1.5 system-ui}
+#nx221RealAtlas .nx240-card-sources a,#nx221RealAtlas .nx240-source-drawer a{display:block;margin-top:8px;font-size:11px}
+#nx221RealAtlas .nx240-official{margin:9px 0;display:grid;gap:8px;padding:11px;border:1px solid #b69970a3;
+ background:linear-gradient(130deg,#293747,#1c2b3f);border-radius:10px}
+#nx221RealAtlas .nx240-remote-config{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#nx221RealAtlas .nx240-region{border:1px solid #758aa6;border-radius:7px;background:#162c40;color:#f8eedf;
+ min-height:40px;padding:7px;font-size:12px}
+#nx221RealAtlas .nx240-official-button{flex:1;min-height:42px;border:1px solid #f6dbad;border-radius:9px;
+ background:#e9c28c;color:#18293d;padding:10px;font:900 10px system-ui;cursor:pointer}
+#nx221RealAtlas .nx240-official-status{margin:0;color:#c3d7e5;font:11px/1.6 system-ui}
+#nx221RealAtlas .nx240-official-results{display:grid;gap:6px;max-height:270px;overflow:auto;overscroll-behavior:contain}
+#nx221RealAtlas .nx240-official-row{display:flex;gap:6px;align-items:center;justify-content:space-between;
+ border:1px solid #607a8b;border-radius:8px;background:#182b40;padding:7px;color:#edf2f6;font-size:11px}
+#nx221RealAtlas .nx240-official-row span{flex:1;min-width:0;overflow-wrap:anywhere}
+#nx221RealAtlas .nx240-official-row button{flex:none}
+#nx221RealAtlas .nx240-status{margin:0;color:#d9efc8;font:11px/1.5 system-ui}
+#nx221RealAtlas .nx240-source-drawer{margin-top:6px;padding:6px 0}
+#nx221RealAtlas .nx230-more>a.nx230-full{display:none}
+#nx221RealAtlas .nx221-source-open{background:#293e54;color:#b7d5e5!important;border-color:#54738d;font-size:9px}
+@media(max-width:650px){#nx221RealAtlas .nx240-action{min-height:43px}
+ #nx221RealAtlas .nx240-official-row{align-items:start;flex-wrap:wrap}
+ #nx221RealAtlas .nx240-official-row .nx240-action{min-height:36px}}
