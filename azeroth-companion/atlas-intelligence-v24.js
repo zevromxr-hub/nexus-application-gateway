@@ -36,6 +36,32 @@ for(const [id,name] of [['us','US'],['eu','EU'],['kr','KR'],['tw','TW']]){const 
 remoteMode.append(region,officialButton);
 searchBox.append(remoteMode,officialStatus,officialResults);
 more.before(searchBox);
+const board=make('details','nx240-farm-board');
+board.append(make('summary','','MY FARM BOARD · OPEN WHEN NEEDED'));
+const boardList=make('div','nx240-board-list');board.append(boardList);
+searchBox.after(board);
+function renderBoard(){
+ boardList.replaceChildren();
+ const goals=readArray(farmKey).filter(x=>validId(x?.id)).slice(0,25);
+ if(!goals.length){boardList.append(make('p','nx240-fine','No tracked farm goals on this device yet. Select a supported item and choose ADD FARM GOAL.'));return}
+ for(const g of goals){
+  const row=make('div','nx240-board-entry');
+  const meta=make('div','');
+  meta.append(make('strong','',clean(g.name)),make('small','',(g.done?'Manually obtained':'Still farming')+' · '+Math.max(0,Number(g.attempts)||0)+' attempts'));
+  const toggle=make('button','nx240-action',g.done?'MARK FARMING':'MARK OBTAINED');toggle.type='button';
+  toggle.addEventListener('click',()=>{
+   try{
+    const all=readArray(farmKey),found=all.find(x=>Number(x.id)===Number(g.id));if(!found)return;
+    found.done=!Boolean(found.done);saveArray(farmKey,all,250000);renderBoard();
+    window.dispatchEvent(new Event('nexus:loot-updated'));
+    flash('Updated manual status for '+g.name+'.');
+   }catch(e){flash('Could not update farm goal: '+e.message)}
+  });
+  row.append(meta,toggle);boardList.append(row);
+ }
+}
+window.addEventListener('nexus:loot-updated',renderBoard);
+renderBoard();
 const sourceDrawer=make('details','nx240-source-drawer');
 sourceDrawer.append(make('summary','','SOURCE REFERENCES · OPTIONAL'));
 const outgoing=more.querySelector('a.nx230-full');
@@ -88,13 +114,14 @@ function trackFarm(p){
   saveArray(farmKey,goals,250000);
   window.dispatchEvent(new CustomEvent('nexus:loot-updated',{detail:{count:goals.length}}));
   window.NexusWorldDiscoveryV23?.selectObject?.(p);
+  renderBoard();
   flash('Added '+p.name+' to your existing Loot Hunter farm board. Progress is manual and stored on this device.');
  }catch(e){flash('Could not add farming goal: '+e.message)}
 }
 function logAttempt(p){
  const id=Number(p.itemId),goals=readArray(farmKey),g=goals.find(x=>Number(x.id)===id);
  if(!g)return flash('Add this item to your farm board first.');
- try{g.attempts=Math.min(1000000,Math.max(0,Number(g.attempts)||0)+1);saveArray(farmKey,goals,250000);flash('Attempt '+g.attempts+' recorded for '+p.name+'. This is a manual log.');window.dispatchEvent(new Event('nexus:loot-updated'))}
+ try{g.attempts=Math.min(1000000,Math.max(0,Number(g.attempts)||0)+1);saveArray(farmKey,goals,250000);renderBoard();flash('Attempt '+g.attempts+' recorded for '+p.name+'. This is a manual log.');window.dispatchEvent(new Event('nexus:loot-updated'))}
  catch(e){flash('Could not log attempt: '+e.message)}
 }
 function button(text,action){
@@ -120,8 +147,25 @@ function decorate(p,detail,actions){
   if(guide?.difficulty)main.append(make('p','nx240-fact','Difficulty / acquisition: '+guide.difficulty));
   if(guide?.steps?.length){
    const steps=make('ol','nx240-steps');
-   for(const s of guide.steps.slice(0,12))steps.append(make('li','',s));
+   const active=readArray(farmKey).find(g=>Number(g.id)===Number(p.itemId));
+   for(const [index,text] of guide.steps.slice(0,12).entries()){
+    const li=make('li'),label=make('label','nx240-step'),box=make('input');
+    box.type='checkbox';box.checked=Boolean(active&&Array.isArray(active.steps)&&active.steps.includes(index));
+    box.disabled=!active;box.setAttribute('aria-label','Complete step '+(index+1)+' for '+p.name);
+    box.addEventListener('change',()=>{
+     try{
+      const goals=readArray(farmKey),g=goals.find(x=>Number(x.id)===Number(p.itemId));if(!g)return;
+      const selected=new Set(Array.isArray(g.steps)?g.steps.filter(i=>Number.isInteger(i)&&i>=0&&i<12):[]);
+      if(box.checked)selected.add(index);else selected.delete(index);
+      g.steps=[...selected].sort((a,b)=>a-b);
+      saveArray(farmKey,goals,250000);window.dispatchEvent(new Event('nexus:loot-updated'));
+      flash('Saved manual acquisition checklist for '+p.name);
+     }catch(e){box.checked=!box.checked;flash('Could not save checklist: '+e.message)}
+    });
+    label.append(box,make('span','',text));li.append(label);steps.append(li);
+   }
    main.append(steps);
+   if(!active)main.append(make('p','nx240-fine','Choose ADD FARM GOAL to enable saving each checklist step.'));
   }
   const controls=make('div','nx240-actions');
   if(validId(p.itemId)){controls.append(button('SAVE TO ITEM ATLAS',()=>saveItem(p)),button('ADD FARM GOAL',()=>trackFarm(p)));
