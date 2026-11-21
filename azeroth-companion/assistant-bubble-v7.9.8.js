@@ -21,7 +21,7 @@ const frame=document.createElement('iframe');frame.id='nxAssistantFrame';frame.t
 let previouslyFocused=null,opened=false;
 function context(){const active=document.querySelector('.section.active[data-section]');const key=active?.dataset.section||'';const lookup={builds:'Talent Forge',characters:'Public Armory',collections:'My Azeroth',progress:'Progression Intelligence',data:'Data & backups',overview:'Getting started'};return lookup[key]||''}
 function place(){if(avatar.parentElement!==slot)slot.append(avatar)}
-function open(){if(opened)return;opened=true;previouslyFocused=document.activeElement;const u=new URL('./azeroth-assistant.html',location.href);u.searchParams.set('mini','1');const topic=context();if(topic)u.searchParams.set('topic',topic);frame.src=u.href;overlay.hidden=false;document.body.classList.add('nx-assistant-open');avatar.setAttribute('aria-expanded','true');close.focus()}
+function open(){if(opened)return;opened=true;previouslyFocused=document.activeElement;const u=new URL('./azeroth-assistant.html',location.href);u.searchParams.set('mini','1');u.searchParams.set('v','2401');const topic=context();if(topic)u.searchParams.set('topic',topic);frame.src=u.href;overlay.hidden=false;document.body.classList.add('nx-assistant-open');avatar.setAttribute('aria-expanded','true');close.focus()}
 function shut(){if(!opened)return;opened=false;overlay.hidden=true;document.body.classList.remove('nx-assistant-open');avatar.setAttribute('aria-expanded','false');frame.removeAttribute('src');if(previouslyFocused?.isConnected)previouslyFocused.focus();else avatar.focus()}
 avatar.addEventListener('click',()=>opened?shut():open());close.addEventListener('click',shut);
 overlay.addEventListener('pointerdown',e=>{if(e.target===overlay)shut()});
