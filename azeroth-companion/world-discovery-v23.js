@@ -18,8 +18,8 @@ const data=[
  {id:'priory',kind:'Dungeon',name:'Priory of the Sacred Flame',zone:'hallowfall',pin:'catalog-1',details:'Dungeon entrance. Three documented encounters.',source:'https://www.wowhead.com/dungeon-journal/priory-of-the-sacred-flame',bosses:['Captain Dailcry','Baron Braunpyke','Prioress Murrpray']},
  {id:'item-refractor',kind:'Item',name:'Augmented Refractor Cannon',zone:'ringing-deeps',pin:'catalog-0',details:'Sample loot reference: E.D.N.A. · The Stonevault. Verify current reward difficulty at source.',source:'https://www.wowhead.com/guide/the-war-within/dungeons/the-stonevault-overview',itemQuery:'Augmented Refractor Cannon',bosses:['E.D.N.A.']},
  {id:'item-fist',kind:'Item',name:"Eirich's Fist of Deception",zone:'ringing-deeps',pin:'catalog-0',details:'Sample loot reference: Void Speaker Eirich · The Stonevault. Check the full journal for difficulty variants.',source:'https://www.wowhead.com/guide/the-war-within/dungeons/the-stonevault-overview',itemQuery:"Eirich's Fist of Deception",bosses:['Void Speaker Eirich']},
- {id:'thunderfury',kind:'Item',name:'Thunderfury, Blessed Blade of the Windseeker',details:'Legacy legendary quest chain involving Molten Core and Silithus; source not mapped in current in-page coverage.',source:'https://warcraft.wiki.gg/wiki/Thunderfury,_Blessed_Blade_of_the_Windseeker',itemId:19019,icon:'https://render.worldofwarcraft.com/us/icons/56/inv_sword_39.jpg'},
- {id:'invincible',kind:'Item',name:"Invincible's Reins",details:'Legacy mount source: The Lich King · Icecrown Citadel · 25-player Heroic. Entrance not yet supported in-page.',source:'https://www.wowhead.com/item=50818',itemId:50818,icon:'https://render.worldofwarcraft.com/us/icons/56/ability_mount_pegasus.jpg'},
+ {id:'thunderfury',kind:'Item',name:'Thunderfury, Blessed Blade of the Windseeker',details:'Legacy legendary quest chain involving Molten Core and Silithus; source not mapped in current in-page coverage.',source:'https://warcraft.wiki.gg/wiki/Thunderfury,_Blessed_Blade_of_the_Windseeker',itemId:19019},
+ {id:'invincible',kind:'Item',name:"Invincible's Reins",details:'Legacy mount source: The Lich King · Icecrown Citadel · 25-player Heroic. Entrance not yet supported in-page.',source:'https://www.wowhead.com/item=50818',itemId:50818},
  {id:'ashes',kind:'Item',name:"Ashes of Al'ar",details:"Legacy mount source: Kael'thas Sunstrider · The Eye. Entrance not yet mapped in-page.",source:'https://www.wowhead.com/item=32458',itemId:32458},
  {id:'shadowmourne',kind:'Item',name:'Shadowmourne',details:'Legacy Ashen Verdict raid quest chain in Icecrown Citadel. Entrance not yet mapped in-page.',source:'https://www.wowhead.com/item=49623',itemId:49623}
 ];
@@ -116,6 +116,9 @@ function select(p){
  }
  if(p.kind==='Boss'||p.kind==='Raid'||p.kind==='Dungeon'){
   actions.append(sourceAnchor('https://www.wowhead.com/search?q='+encodeURIComponent(p.name),'LOOT & ENCOUNTERS'));
+ }
+ if(p.kind==='Dungeon'||p.kind==='Raid'||p.kind==='Boss'){
+  const note=el('p','nx230-note','Interior floors are not plotted on the outdoor map. Use the sourced encounter/journal reference for boss locations and loot.');detail.append(note);
  }
  detail.append(actions);
  detail.scrollIntoView({behavior:'smooth',block:'nearest'});
