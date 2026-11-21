@@ -34,6 +34,14 @@ jobs:
           SERVER_PID=$!
           trap 'kill "$SERVER_PID" || true' EXIT
           node azeroth-companion/tests/atlas-iphone-fullscreen-v23.0.1.browser.mjs
+      - name: Test in-app Atlas Intelligence on iPhone WebKit and desktop Chromium
+        id: intelligence24
+        continue-on-error: true
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/azeroth-intelligence-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          node azeroth-companion/tests/atlas-intelligence-v24.browser.mjs
       - name: Test local Azeroth website on desktop and phone browsers
         id: browser
         continue-on-error: true
@@ -77,11 +85,13 @@ jobs:
         env:
           BROWSER: ${{ steps.browser.outcome }}
           MAP_FULLSCREEN: ${{ steps.mapfullscreen.outcome }}
+          INTELLIGENCE24: ${{ steps.intelligence24.outcome }}
         run: |
           {
             echo "## NEXUS | Azeroth — advisory desktop/iPhone audit"
             echo "Browser test outcome: **$BROWSER**."
             echo "iPhone/WebKit fullscreen map regression: **$MAP_FULLSCREEN**."
+            echo "v24 Atlas Intelligence in-app browser regression: **$INTELLIGENCE24**."
             echo "Release approval belongs to the project owner, not this test."
             echo "Failed browser checks are genuine pending findings; inspect logs/screenshots before marking them verified."
           } >> "$GITHUB_STEP_SUMMARY"

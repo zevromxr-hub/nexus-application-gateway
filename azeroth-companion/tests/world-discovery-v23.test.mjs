@@ -9,7 +9,7 @@ const [html,base,unified,discovery,loot,v23,css,version,index]=await Promise.all
  'world-discovery-v23.js','world-discovery-v23.css','version.json','releases/index.json'].map(read));
 for(const [name,src] of [['real-map',base],['unified',unified],['discovery',discovery],['loot',loot],['v23',v23]])
  new vm.Script(src,{filename:name});
-assert.match(html,/data-nx-version="23\.0\.[012]"/);
+assert.match(html,/data-nx-version="(?:23\.0\.[012]|24\.0\.0)"/);
 assert.ok(html.indexOf('world-discovery-v23.js?v=2300')<html.indexOf('atlas-discovery-v22.3.js?v=2230'));
 assert.ok(discovery.includes('if(window.NexusAtlasV23)return;'));
 assert.ok(loot.includes('if(window.NexusAtlasV23)return;'));
@@ -22,7 +22,7 @@ assert.ok(v23.includes("www.wowhead.com/item=")&&v23.includes('VIEW')===false);
 assert.ok(v23.includes('worldofwarcraft')===false,'Do not invent item icon URLs');
 assert.ok(!/localStorage\.(setItem|removeItem|clear)\(|eval\(|new Function\(/.test(v23));
 assert.ok(css.includes('nx230-map-fullscreen'));
-assert.match(JSON.parse(version).version,/^23\.0\.[012]$/);
-assert.match(JSON.parse(index).releases[0].version,/^23\.0\.[012]$/);
+assert.match(JSON.parse(version).version,/^(?:23\.0\.[012]|24\.0\.0)$/);
+assert.match(JSON.parse(index).releases[0].version,/^(?:23\.0\.[012]|24\.0\.0)$/);
 assert.equal(css.split('{').length,css.split('}').length);
 console.log('PASS v23 World Discovery source checks; interactive browser and external provider acceptance separate');

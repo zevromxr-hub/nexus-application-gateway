@@ -50,7 +50,7 @@ function match(p,q){
 function allowed(p){return state.mode==='all'||state.mode===categoryFor(p)||
   (state.mode==='instances'&&['Raid','Dungeon','Delve','Boss'].includes(p.kind))}
 const header=el('div','nx230-searchbar');
-header.innerHTML='<strong>WORLD DISCOVERY / v23.0</strong><span>Verified catalog · one map</span>';
+header.innerHTML='<strong>WORLD DISCOVERY / v24.0</strong><span>Verified catalog · one map</span>';
 const chips=el('div','nx230-chips');
 const status=el('p','nx230-status','');
 status.setAttribute('role','status');
@@ -105,7 +105,7 @@ function select(p,scroll=true){
    }
   });actions.append(b);
  }
- actions.append(sourceAnchor(p.source,'RESEARCH SOURCE'));
+ if(p.source)actions.append(sourceAnchor(p.source,'RESEARCH SOURCE'));
  if(p.itemId){
   actions.append(sourceAnchor('https://www.wowhead.com/item='+p.itemId,'ITEM DETAILS'));
   const hand=el('a','nx230-link','OPEN ITEM CODEX ↗');hand.href='./?enter=1&view=atlas';actions.append(hand);
@@ -117,11 +117,12 @@ function select(p,scroll=true){
   const note=el('p','nx230-note','Interior floors are not plotted on the outdoor map. Use the sourced encounter/journal reference for boss locations and loot.');detail.append(note);
  }
  detail.append(actions);
+ window.NexusAtlasIntelligenceV24?.decorate(p,detail,actions);
  if(scroll)detail.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function draw(){
  renderChips();results.replaceChildren();
- let found=entries.filter(p=>allowed(p)&&match(p,state.query));
+ let found=[...entries,...(window.NexusAtlasIntelligenceV24?.extraEntries||[])].filter(p=>allowed(p)&&match(p,state.query));
  if(!state.query&&state.mode==='all')found=regionPins.filter(x=>x.zone===map.current()).slice(0,16);
  else found=found.slice(0,65);
  state.results=found;
@@ -157,5 +158,13 @@ input.addEventListener('keydown',e=>{if(e.key==='Escape'){input.value='';state.q
 const params=new URLSearchParams(location.search);const find=params.get('find');
 if(find&&find.length<=100){input.value=find;state.query=find}
 draw();
-window.NexusWorldDiscoveryV23=Object.freeze({search:q=>{input.value=String(q).slice(0,100);state.query=input.value;draw();input.focus()},counts:()=>({zones:zones.length,mapPoints:regionPins.length,encounters:bossRows.length,items:items.length}),open:openMap});
+window.NexusWorldDiscoveryV23=Object.freeze({
+ search:q=>{input.value=String(q).slice(0,100);state.query=input.value;draw();input.focus()},
+ refresh:draw,
+ catalog:()=>entries,
+ selectObject:p=>select(p),
+ selectEntry:id=>{const p=[...entries,...(window.NexusAtlasIntelligenceV24?.extraEntries||[])].find(x=>x.id===id);if(p)select(p)},
+ counts:()=>({zones:zones.length,mapPoints:regionPins.length,encounters:bossRows.length,items:items.length}),
+ open:openMap
+});
 })();
