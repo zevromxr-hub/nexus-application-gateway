@@ -89,10 +89,6 @@ function select(p){
  const head=el('div','nx230-detailhead');
  head.append(el('span','',p.kind.toUpperCase()),el('strong','',p.name));
  detail.append(head,el('p','nx230-description',p.details||'Catalog reference. Confirm details from the source.'));
- if(p.icon&&/^https:\/\/render\.worldofwarcraft\.com\//.test(p.icon)){
-  const img=el('img','nx230-itemicon');img.src=p.icon;img.alt='Item icon for '+p.name;img.loading='lazy';
-  img.onerror=()=>img.remove();detail.prepend(img);
- }
  const actions=el('div','nx230-actions');
  if(p.zone){
   const b=el('button','nx230-primary','SHOW ON MAP');b.type='button';
@@ -147,6 +143,8 @@ function draw(){
   results.append(el('p','nx230-empty','No verified entries yet. Open the full database to research this query; we will not invent a map position.'));
  }
 }
+$('nx221ZoneTabs')?.addEventListener('click',()=>{if(!state.query&&state.mode==='all')queueMicrotask(draw)});
+$('nx221PinLayer')?.addEventListener('click',e=>{if(e.target.closest('button')){const old=$('nx221Selected');if(old)old.hidden=false;}});
 input.addEventListener('input',()=>{state.query=input.value.trim().slice(0,100);draw()});
 input.addEventListener('keydown',e=>{if(e.key==='Escape'){input.value='';state.query='';draw()}});
 const params=new URLSearchParams(location.search);const find=params.get('find');
