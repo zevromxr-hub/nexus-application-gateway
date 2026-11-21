@@ -1,3 +1,12 @@
+## v23.0.2 — iPhone Native Map Dialog Rebuild (2026-11-21)
+
+- Owner screenshot confirmed v23.0.1 fullscreen still covered the whole iPhone screen without accessible exit or visible marker details; the previous portal approach did not solve the real-device behavior.
+- Replaced fixed-position portal with a native HTML modal dialog in the browser top layer. Exit bar and selected-destination sheet are siblings of the zoomable map, never children of the transformed image.
+- View Destination Details closes the dialog and scrolls to the matching World Discovery card; the dialog also supports Escape/cancel and Copy Game Pin.
+- Scope-specific styling preserves clickable pins and map-source failure links; new asset URL versions avoid reusing v23.0.1 scripts on cached mobile instances.
+- Added emulated iPhone WebKit and Chromium dialog regression. Physical iPhone acceptance remains pending and must not be claimed from emulation alone.
+- Saved routes, original personal pins, missions, character records, API/OAuth data and Private Video Vault remain untouched.
+
 ## v23.0.1 — iPhone Fullscreen Map Stability (2026-11-21)
 
 - Fixed the fullscreen trap by moving the map viewport to a body-level overlay; an always-visible close control stays inside the map's iPhone safe area.

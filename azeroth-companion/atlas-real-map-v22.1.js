@@ -229,28 +229,30 @@ const stop=event=>{
 viewport.addEventListener('pointerup',stop);
 viewport.addEventListener('pointercancel',stop);
 
-// v23.0.1 — iOS-safe fullscreen: portal the viewport to <body> so the site shell
-// cannot clip fixed controls, and always provide selection feedback ON the map.
+// v23.0.2: native <dialog> top-layer fullscreen. Unlike portaled fixed elements,
+// a modal dialog stays above all PWA/UI stacking contexts in iPhone WebKit.
 const fullscreen=el('button','nx230-fullscreen','FULLSCREEN');fullscreen.type='button';
-fullscreen.title='Expand or exit the map';fullscreen.setAttribute('aria-pressed','false');
+fullscreen.title='Expand map';fullscreen.setAttribute('aria-pressed','false');
 $('nx221Reset').after(fullscreen);
 const mapHome=viewport.parentNode,mapFollowing=viewport.nextSibling;
-const toolbar=el('div','nx230-map-toolbar');
-const toolbarTitle=el('span','nx230-map-toolbar-title','WORLD MAP');
-const closeMap=el('button','nx230-map-close','✕  EXIT MAP');closeMap.type='button';
-closeMap.setAttribute('aria-label','Close fullscreen map');
+const dialog=el('dialog','nx232-dialog');dialog.id='nx232MapDialog';
+dialog.setAttribute('aria-label','Expanded interactive World of Warcraft zone map');
+const toolbar=el('header','nx232-header');
+const toolbarTitle=el('strong','nx232-heading','WORLD MAP');
+const closeMap=el('button','nx232-close','✕  EXIT MAP');closeMap.type='button';
+closeMap.setAttribute('aria-label','Exit expanded map');
 toolbar.append(toolbarTitle,closeMap);
-const selection=el('section','nx230-map-selection');
+const selection=el('section','nx232-selection');
 selection.setAttribute('role','status');selection.setAttribute('aria-live','polite');
 selection.hidden=true;
-const selectionName=el('strong','', 'Selected location');
-const selectionInfo=el('span','', '');
-const selectionActions=el('div','nx230-map-selection-actions');
-const detailsBtn=el('button','', 'VIEW DESTINATION DETAILS');detailsBtn.type='button';
-const quickCopy=el('button','', 'COPY GAME PIN');quickCopy.type='button';
+const selectionName=el('strong','','Selected location');
+const selectionInfo=el('span','','');
+const selectionActions=el('div','nx232-actions');
+const detailsBtn=el('button','','VIEW DESTINATION DETAILS');detailsBtn.type='button';
+const quickCopy=el('button','','COPY GAME PIN');quickCopy.type='button';
 selectionActions.append(detailsBtn,quickCopy);
 selection.append(selectionName,selectionInfo,selectionActions);
-viewport.append(toolbar,selection);
+dialog.append(toolbar,selection);document.body.append(dialog);
 let full=false,previousFocus=null;
 function showSelectedOnMap(p){
  if(!p)return;
@@ -260,20 +262,33 @@ function showSelectedOnMap(p){
 }
 function setFull(next){
  if(full===!!next)return;
- full=!!next;
- if(full){
+ if(next){
+  if(typeof dialog.showModal!=='function'){
+   // Never trap players in a fullscreen mode that cannot show its exit controls.
+   fullscreen.textContent='FULLSCREEN UNAVAILABLE';return;
+  }
   previousFocus=document.activeElement;
-  document.body.append(viewport); // Portaling avoids ancestor overflow/transform bugs in iOS WebKit.
-  document.documentElement.classList.add('nx230-map-open');
+  dialog.insertBefore(viewport,selection);
+  viewport.classList.add('nx232-dialog-viewport');
   toolbarTitle.textContent=zone(state.id)?.name||'WORLD MAP';
+  selection.hidden=!state.selected;
   if(state.selected)showSelectedOnMap(state.selected);
-  viewport.classList.add('nx230-map-fullscreen');
+  try{dialog.showModal()}catch(_){
+   viewport.classList.remove('nx232-dialog-viewport');
+   if(mapFollowing&&mapFollowing.parentNode===mapHome)mapHome.insertBefore(viewport,mapFollowing);
+   else mapHome.append(viewport);
+   fullscreen.textContent='FULLSCREEN UNAVAILABLE';return;
+  }
+  full=true;
+  document.documentElement.classList.add('nx232-map-open');
   closeMap.focus({preventScroll:true});
  }else{
-  viewport.classList.remove('nx230-map-fullscreen');
-  document.documentElement.classList.remove('nx230-map-open');
+  full=false;
+  viewport.classList.remove('nx232-dialog-viewport');
   if(mapFollowing&&mapFollowing.parentNode===mapHome)mapHome.insertBefore(viewport,mapFollowing);
   else mapHome.append(viewport);
+  if(dialog.open)dialog.close();
+  document.documentElement.classList.remove('nx232-map-open');
   if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
   previousFocus=null;
  }
@@ -284,20 +299,21 @@ function setFull(next){
 }
 fullscreen.addEventListener('click',()=>setFull(!full));
 closeMap.addEventListener('click',()=>setFull(false));
+dialog.addEventListener('cancel',e=>{e.preventDefault();setFull(false)});
+dialog.addEventListener('close',()=>{if(full)setFull(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&full){e.preventDefault();setFull(false)}});
 window.addEventListener('pagehide',()=>{if(full)setFull(false)});
 detailsBtn.addEventListener('click',()=>{
  setFull(false);
- const card=$('nx230Detail')&&!$('nx230Detail').hidden?$('nx230Detail'):$('nx221Selected');
  $('nx221Selected').hidden=false;
- if(card)card.scrollIntoView({block:'center',behavior:'smooth'});
+ const card=$('nx230Detail')&&!$('nx230Detail').hidden?$('nx230Detail'):$('nx221Selected');
+ card?.scrollIntoView({block:'center',behavior:'smooth'});
 });
 quickCopy.addEventListener('click',()=>{quickCopy.textContent='COPYING…';$('nx221Copy')?.click()});
 window.addEventListener('nexus:atlas-pin-copy-result',event=>{
  quickCopy.textContent=event.detail?.success?'COPIED ✓':'CLIPBOARD BLOCKED';
  setTimeout(()=>{quickCopy.textContent='COPY GAME PIN'},2000);
 });
-// Keep a readable selection response in fullscreen even when the map's sidebar is hidden.
 viewport.addEventListener('click',e=>{
  const pin=e.target.closest('button[data-point-id]');
  if(!pin)return;
