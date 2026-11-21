@@ -67,7 +67,14 @@ sourceDrawer.append(make('summary','','SOURCE REFERENCES · OPTIONAL'));
 const outgoing=more.querySelector('a.nx230-full');
 if(outgoing){sourceDrawer.append(outgoing);more.append(sourceDrawer)}
 const note=more.querySelector('.nx230-trust');if(note)note.textContent='Direct map, item research and personal tracking are available here. Verified in-page catalog is curated; item rewards and farming nodes are not complete.';
-const flash=s=>{status.textContent=s};
+const flash=s=>{
+ status.textContent=s;
+ if(!panel.hidden){
+  let feedback=panel.querySelector('.nx240-card-feedback');
+  if(!feedback){feedback=make('p','nx240-card-feedback');feedback.setAttribute('role','status');panel.append(feedback)}
+  feedback.textContent=s;
+ }
+};
 q.after(status);
 function guideEntry(g){
  return {id:'local-guide-'+g.id,kind:'Item',name:g.name,itemId:g.id,details:g.kind+' · '+g.source+' · '+g.area,
