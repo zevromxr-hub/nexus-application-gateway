@@ -292,7 +292,11 @@ detailsBtn.addEventListener('click',()=>{
  $('nx221Selected').hidden=false;
  if(card)card.scrollIntoView({block:'center',behavior:'smooth'});
 });
-quickCopy.addEventListener('click',()=>{$('nx221Copy')?.click()});
+quickCopy.addEventListener('click',()=>{quickCopy.textContent='COPYING…';$('nx221Copy')?.click()});
+window.addEventListener('nexus:atlas-pin-copy-result',event=>{
+ quickCopy.textContent=event.detail?.success?'COPIED ✓':'CLIPBOARD BLOCKED';
+ setTimeout(()=>{quickCopy.textContent='COPY GAME PIN'},2000);
+});
 // Keep a readable selection response in fullscreen even when the map's sidebar is hidden.
 viewport.addEventListener('click',e=>{
  const pin=e.target.closest('button[data-point-id]');
@@ -332,8 +336,8 @@ $('nx221Copy').addEventListener('click',async()=>{
  const macro='/run local m='+p.mapId+' if C_Map.CanSetUserWaypointOnMap(m) then C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(m,'+
   (p.x/100).toFixed(4)+','+(p.y/100).toFixed(4)+')) end';
  const b=$('nx221Copy');
- try{if(!await copy(macro))throw Error('blocked');b.textContent='COPIED ✓';setTimeout(()=>b.textContent='COPY GAME PIN',1500)}
- catch(_){b.textContent='CLIPBOARD BLOCKED';setTimeout(()=>b.textContent='COPY GAME PIN',1800)}
+ try{if(!await copy(macro))throw Error('blocked');b.textContent='COPIED ✓';window.dispatchEvent(new CustomEvent('nexus:atlas-pin-copy-result',{detail:{success:true}}));setTimeout(()=>b.textContent='COPY GAME PIN',1500)}
+ catch(_){b.textContent='CLIPBOARD BLOCKED';window.dispatchEvent(new CustomEvent('nexus:atlas-pin-copy-result',{detail:{success:false}}));setTimeout(()=>b.textContent='COPY GAME PIN',1800)}
 });
 window.addEventListener('storage',event=>{
  if(event.key===core.KEYS.waypoints){state.own=readOwn();render()}
