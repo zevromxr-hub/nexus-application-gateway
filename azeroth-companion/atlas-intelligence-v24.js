@@ -87,6 +87,7 @@ function trackFarm(p){
   goals.unshift({id,name:clean(p.name),notes:clean(p.details||'',400),attempts:0,done:false,steps:[]});
   saveArray(farmKey,goals,250000);
   window.dispatchEvent(new CustomEvent('nexus:loot-updated',{detail:{count:goals.length}}));
+  window.NexusWorldDiscoveryV23?.selectObject?.(p);
   flash('Added '+p.name+' to your existing Loot Hunter farm board. Progress is manual and stored on this device.');
  }catch(e){flash('Could not add farming goal: '+e.message)}
 }
