@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "23.0.2",
+  "title": "iPhone Native Fullscreen Map Rebuild",
+  "release_date": "2026-11-21",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "features": [
+    "Native dialog top-layer, no CSS fixed-portal trapping.",
+    "Exit button in persistent dialog header, outside panning/zooming viewport.",
+    "Destination detail sheet in dialog footer, also outside map surface.",
+    "View destination details closes modal and navigates to in-page discovery card.",
+    "Escape/cancel exits; original viewport/selection/records remain intact.",
+    "Updated device browser tests; physical iPhone verification still pending."
+  ]
+}
