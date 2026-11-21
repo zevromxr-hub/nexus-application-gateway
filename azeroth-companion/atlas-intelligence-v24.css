@@ -50,3 +50,5 @@
 #nx221RealAtlas .nx240-step input:disabled{opacity:.45}
 #nx221RealAtlas .nx240-step span{flex:1}
 @media(max-width:650px){#nx221RealAtlas .nx240-board-entry{align-items:flex-start;flex-wrap:wrap}}
+
+#nx221RealAtlas .nx240-card-feedback{margin:10px 0 0;padding:10px 12px;border-left:3px solid #e9c58e;background:#21364a;color:#e8f1df;font-size:11px;line-height:1.6;border-radius:7px}
