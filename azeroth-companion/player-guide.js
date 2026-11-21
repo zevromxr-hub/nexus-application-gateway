@@ -6,6 +6,7 @@
 (()=>{'use strict';
 const nav=document.querySelector('.sidebar .nav'),main=document.querySelector('.main'),footer=main?.querySelector('.footer');
 if(!nav||!main||!footer)return;
+const DOCS_RELEASE_VERSION='24.0.1';
 const WORKER='https://nexus-azeroth-api.zevromxr.workers.dev/account';
 const PATCH='https://worldofwarcraft.blizzard.com/en-us/content-update-notes';
 const DOCUMENTED_PATCH='12.1.5',PATCH_REVIEW_DATE='2026-11-15';
