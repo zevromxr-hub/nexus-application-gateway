@@ -1,0 +1,54 @@
+/* NEXUS | Azeroth v23.0.2 - Native dialog map. The header and selection
+   are SIBLINGS of the viewport, never covered by its transformed map surface. */
+#nx232MapDialog:not([open]){display:none!important}
+#nx232MapDialog[open]{box-sizing:border-box;display:flex!important;flex-direction:column;position:fixed;
+ inset:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;
+ background:#101d31;color:#ffecd2;overflow:hidden;z-index:2147483647!important;
+ box-shadow:0 0 0 100vmax #0009;font:12px/1.5 system-ui,sans-serif}
+#nx232MapDialog::backdrop{background:#040917d9}
+#nx232MapDialog *,#nx232MapDialog *::before,#nx232MapDialog *::after{box-sizing:border-box}
+#nx232MapDialog .nx232-header{position:relative!important;z-index:2;flex:0 0 auto;display:flex!important;
+ justify-content:space-between;align-items:center;gap:10px;min-height:72px;
+ padding:calc(12px + env(safe-area-inset-top,0px)) calc(16px + env(safe-area-inset-right,0px)) 12px calc(16px + env(safe-area-inset-left,0px));
+ background:#0b182a!important;border-bottom:1px solid #aa936f;color:#ffecd2}
+#nx232MapDialog .nx232-heading{font:900 13px/1.3 system-ui;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#nx232MapDialog .nx232-close{display:block!important;visibility:visible!important;opacity:1!important;
+ position:relative!important;z-index:3!important;flex:none;min-width:120px;min-height:48px;
+ border:2px solid #fff1d0;border-radius:10px;background:#e5bf82;color:#142236;
+ font:900 12px system-ui;touch-action:manipulation;cursor:pointer;pointer-events:auto}
+#nx232MapDialog .nx232-dialog-viewport{position:relative!important;inset:auto!important;z-index:0!important;
+ flex:1 1 auto;min-height:100px!important;max-height:none!important;height:auto!important;width:100%!important;
+ aspect-ratio:auto!important;overflow:hidden!important;background:#101c2f;touch-action:none}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-surface{position:relative;width:100%;height:100%;transform-origin:center center}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-surface>img{display:block;width:100%;height:100%;object-fit:fill}
+#nx232MapDialog .nx232-dialog-viewport .nx221-pin-layer{position:absolute;inset:0;pointer-events:none}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin{display:grid;place-items:center;position:absolute;
+ width:36px;height:36px;padding:0;transform:translate(-50%,-50%);border:2px solid #f2d9b5;
+ border-radius:50%;background:#354169;color:#fff8df;box-shadow:0 1px 8px #000b;
+ font:900 15px system-ui;pointer-events:auto;cursor:pointer;z-index:1}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin[data-kind=Flight]{background:#22606b}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin[data-kind=Dungeon],
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin[data-kind=Raid]{background:#793c59}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin[data-kind=Personal]{background:#4f3a81}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-pin[aria-pressed=true]{background:#e8ca9d;color:#1b253c;z-index:3}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-failure{position:absolute;inset:0;display:flex;
+ align-items:center;justify-content:center;flex-direction:column;background:#15243a;color:#f9eacf;
+ padding:30px;gap:9px;text-align:center}
+#nx232MapDialog .nx232-dialog-viewport .nx221-map-failure a{background:#e5bf82;color:#142236;padding:10px;border-radius:8px}
+#nx232MapDialog [hidden]{display:none!important}
+#nx232MapDialog .nx232-selection{position:relative!important;z-index:2;flex:0 0 auto;display:grid!important;
+ gap:6px;max-height:34dvh;overflow-y:auto;padding:12px calc(14px + env(safe-area-inset-right,0px))
+ calc(12px + env(safe-area-inset-bottom,0px)) calc(14px + env(safe-area-inset-left,0px));
+ background:#0b182a!important;border-top:1px solid #aa936f}
+#nx232MapDialog .nx232-selection strong{font:850 15px system-ui;color:#ffe4b4}
+#nx232MapDialog .nx232-selection span{font:12px/1.4 system-ui;color:#c4d8e5}
+#nx232MapDialog .nx232-actions{display:flex;flex-wrap:wrap;gap:7px}
+#nx232MapDialog .nx232-actions button{flex:1 1 120px;min-height:44px;cursor:pointer;
+ padding:10px;border:1px solid #e8d2a8;border-radius:9px;font:850 11px system-ui;background:#31465e;color:#f5e7cc;
+ touch-action:manipulation}
+#nx232MapDialog .nx232-actions button:first-child{background:#e4bd82;color:#142236}
+@media(max-width:650px){#nx232MapDialog .nx232-header{min-height:68px}
+ #nx232MapDialog .nx232-close{min-width:110px;min-height:48px}
+ #nx232MapDialog .nx232-dialog-viewport .nx221-map-pin{width:32px;height:32px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){#nx232MapDialog *{transition:none!important;animation:none!important}}
