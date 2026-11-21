@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "24.0.1",
+  "title": "Documentation & Assistant Synchronization — Site Simplification Roadmap",
+  "release_date": "2026-11-21",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "features": [
+    "Canonical curated ZevRo Assistant knowledge with v24 Atlas how-to, iPhone fullscreen, in-app Blizzard item lookup, known limits and manual farm goals.",
+    "Current assistant loads the public version manifest to give a more accurate release-status answer.",
+    "Player Handbook and embedded Player Guide updated for Atlas v24; release page now relies on live version records instead of showcasing a stale v16.5 announcement.",
+    "Player tester report includes current Atlas browser and live iPhone acceptance checks.",
+    "Evidence-based site-wide decluttering and migration plan; no production features deleted.",
+    "Future release acceptance includes a documented assistant/handbook synchronization rule and a static regression guard."
+  ]
+}

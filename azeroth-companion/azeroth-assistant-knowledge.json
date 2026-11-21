@@ -1,0 +1,594 @@
+{
+  "schema": "nexus.azeroth.assistant-knowledge/1",
+  "edition": "24.0.1",
+  "disclaimer": "First-party curated companion help, not generative AI, live gameplay verification, or character ownership proof. Read the up-to-date release manifest for the currently published version. Game facts and API coverage require source checks.",
+  "articles": [
+    {
+      "id": "start",
+      "category": "Getting started",
+      "question": "How do I start using Azeroth Companion?",
+      "answer": "Open the companion's Command Center, then choose World Atlas for map, boss and item research, My Character for public character context, or Talent Forge for local drafts. The Player Handbook covers PC and iPhone workflows. Saved plans generally stay in this browser; export a backup before switching devices.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "getting started",
+        "begin",
+        "new player",
+        "overview",
+        "start",
+        "how use"
+      ]
+    },
+    {
+      "id": "login",
+      "category": "Battle.net connection",
+      "question": "How do I connect my Battle.net account?",
+      "answer": "Open My Azeroth in the Cloudflare-hosted account portal, select your Battle.net region, then authorize the read-only wow.profile permission directly with Blizzard. Use Verify & Return when offered. The public website does not receive your Blizzard access token.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "login",
+        "sign in",
+        "connect",
+        "battle.net",
+        "account",
+        "authorize",
+        "verified"
+      ]
+    },
+    {
+      "id": "expiry",
+      "category": "Battle.net connection",
+      "question": "Why did my verified session expire?",
+      "answer": "Battle.net authorization and the companion's verified badge have separate lifetimes. The Cloudflare session cannot outlive Blizzard's issued access token, capped at 24 hours; the public companion verification receipt lasts at most 15 minutes. Refresh verification or reconnect when necessary. Session expiry does not delete your browser-local talent drafts or goals.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "expired",
+        "timeout",
+        "verified",
+        "session",
+        "reconnect",
+        "login"
+      ]
+    },
+    {
+      "id": "storage",
+      "category": "Data & backups",
+      "question": "Will I lose my saved builds when I sign out?",
+      "answer": "Signing out of Battle.net should not erase browser-local planning records. However, local storage is device- and browser-specific and can be lost if you clear site data, use private browsing, or change devices. Export a trusted backup from the Sovereign Data Vault before major changes.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "data",
+        "backup",
+        "save",
+        "lost",
+        "wiped",
+        "browser",
+        "storage",
+        "sync",
+        "sign out"
+      ]
+    },
+    {
+      "id": "talents",
+      "category": "Talent Forge",
+      "question": "How do I plan talents?",
+      "answer": "Open Talent Forge, choose a supported class and specialization, inspect Blizzard-reported talent nodes, and adjust available ranks in a local draft. Use the guided views to understand your choices, then save or export. Talent prerequisites, import strings and in-game validity should always be verified in World of Warcraft.",
+      "link": "./",
+      "keywords": [
+        "talent",
+        "skill",
+        "spec",
+        "build",
+        "points",
+        "passive",
+        "hero",
+        "ranks",
+        "planner"
+      ]
+    },
+    {
+      "id": "gear",
+      "category": "Character Intelligence",
+      "question": "How can I compare equipment?",
+      "answer": "Open Character Intelligence, enter a public Retail character's region, realm slug and name, then optionally enter another character. Load Blizzard-reported equipped items and compare corresponding slots and item levels. Item level alone does not prove a better upgrade for a specialization.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "gear",
+        "item level",
+        "compare",
+        "equipment",
+        "ilvl",
+        "slots",
+        "items"
+      ]
+    },
+    {
+      "id": "item",
+      "category": "Item Codex",
+      "question": "Where do I search for item IDs?",
+      "answer": "Open World Atlas and use the Search Official Blizzard Items action to search a name or numeric ID through the existing read-only item gateway. Inspect returned item information directly in the Atlas; Item Codex and Universal Item Atlas also remain available. An official item record does not itself verify its drop boss or acquisition method.",
+      "link": "./",
+      "keywords": [
+        "codex",
+        "item id",
+        "item search",
+        "item database",
+        "item lookup",
+        "discover"
+      ]
+    },
+    {
+      "id": "armory",
+      "category": "Public Armory",
+      "question": "Why does a character not appear in Armory?",
+      "answer": "Check that the region, exact realm slug, and character name are correct. Blizzard public profiles may lag behind the game or be unavailable. A missing response is not proof that the character or its equipment does not exist. Try again later rather than clearing saved plans.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "character not found",
+        "armory",
+        "realm",
+        "region",
+        "missing",
+        "404",
+        "not loading"
+      ]
+    },
+    {
+      "id": "mythic",
+      "category": "Progression Intelligence",
+      "question": "How do I view Mythic+ scores and runs?",
+      "answer": "Open Progression Intelligence, enter a public Retail character and choose Mythic+. You can load the profile index or specify a known season ID. Blizzard may return rating and a selection of best runs; it is not a complete run history.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "mythic",
+        "keystone",
+        "dungeon",
+        "rating",
+        "score",
+        "season",
+        "m+"
+      ]
+    },
+    {
+      "id": "raids",
+      "category": "Progression Intelligence",
+      "question": "Can I see raid completion progress?",
+      "answer": "Use the Raids tab in Progression Intelligence. Where Blizzard provides data, the studio displays expansion, raid, difficulty and encounter completion information. It does not show current weekly raid lockouts and may lack records for certain characters.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "raid",
+        "boss",
+        "encounters",
+        "difficulty",
+        "completion",
+        "lockout"
+      ]
+    },
+    {
+      "id": "reputation",
+      "category": "Progression Intelligence",
+      "question": "Where can I inspect reputation and Renown?",
+      "answer": "Open the Reputations tab in Progression Intelligence and load a public character. You may see Blizzard-reported faction standing, points and Renown fields where supported. The endpoint may not cover every faction or warband-related value.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "reputation",
+        "renown",
+        "faction",
+        "standing",
+        "points"
+      ]
+    },
+    {
+      "id": "combined",
+      "category": "Character Progress Report",
+      "question": "How can I get one report for my whole character?",
+      "answer": "In Progression Intelligence, select a public character and press Build Character Progress Report. The studio requests Mythic+, raids and reputations sequentially, preserving successful categories when another returns an error. Copy a text summary or export a JSON file. It never saves automatically.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "character report",
+        "all progression",
+        "combined",
+        "snapshot",
+        "summary",
+        "json",
+        "export",
+        "generate report"
+      ]
+    },
+    {
+      "id": "handoff",
+      "category": "Connected Character Research",
+      "question": "Can I reuse the same character between studios?",
+      "answer": "Yes. Use Mythic+, Raids or Reputations shortcuts in Character Intelligence, or Compare This Character inside Progression Intelligence. The destination receives only public region, realm and character-name parameters; loading Blizzard results requires a separate button click.",
+      "link": "./character-intelligence.html",
+      "keywords": [
+        "reuse",
+        "character",
+        "switch",
+        "handoff",
+        "shortcut",
+        "share link"
+      ]
+    },
+    {
+      "id": "inventory",
+      "category": "Blizzard API limitations",
+      "question": "Can the website read my entire inventory and currencies?",
+      "answer": "No. The current Blizzard web endpoints integrated here can show supported equipped items and some account collections, but do not provide complete bag/bank inventory and live character currency balances. This companion must not invent those values. A separately authorized in-game addon export would be needed for more complete local inventory data.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "inventory",
+        "bag",
+        "bank",
+        "currencies",
+        "currency",
+        "gold",
+        "wallet",
+        "all items"
+      ]
+    },
+    {
+      "id": "unlock",
+      "category": "My Azeroth",
+      "question": "How do I check mounts and unlocks?",
+      "answer": "Connect through My Azeroth with wow.profile scope. The private account portal can request supported Blizzard-reported mounts, pets, toys, heirlooms and selected achievements. Missing records are not proof of missing unlocks, and live API availability can differ by account and region.",
+      "link": "https://nexus-azeroth-api.zevromxr.workers.dev/account",
+      "keywords": [
+        "mount",
+        "mounts",
+        "pets",
+        "toys",
+        "heirlooms",
+        "achievements",
+        "unlocked",
+        "collections"
+      ]
+    },
+    {
+      "id": "addons",
+      "category": "Addon Nexus",
+      "question": "How do I find and install an addon?",
+      "answer": "Addon Nexus provides a curated directory of World of Warcraft addon references with search and publisher links. Open the official provider's listing, verify game version and author, and follow its installation instructions. The companion does not automatically install addons or guarantee the safety of external downloads.",
+      "link": "./addon-nexus.html",
+      "keywords": [
+        "addon",
+        "add-ons",
+        "curseforge",
+        "wago",
+        "install",
+        "download"
+      ]
+    },
+    {
+      "id": "media",
+      "category": "Music and backgrounds",
+      "question": "How do music and custom backgrounds work?",
+      "answer": "Use the companion's optional local music and media controls to choose supported files from your device. Browser autoplay restrictions, file sizes and local storage vary by platform. Local media generally does not synchronize between devices; a user action may be needed to start music.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "music",
+        "background",
+        "gif",
+        "video",
+        "autoplay",
+        "song",
+        "upload"
+      ]
+    },
+    {
+      "id": "device",
+      "category": "Device support",
+      "question": "Does the companion work on iPhone and PC?",
+      "answer": "Azeroth supports desktop and iPhone browsers. Atlas fullscreen on iPhone uses a native modal map with Exit Map in its header, a destination summary and View Destination Details below the map, and Copy Game Pin. If an older view remains, load the current Atlas page directly in Safari rather than an outdated Home Screen shortcut. Browser-local plans do not automatically sync across devices.",
+      "link": "./player-handbook.html?device=mobile",
+      "keywords": [
+        "iphone",
+        "ios",
+        "mobile",
+        "pc",
+        "desktop",
+        "safari",
+        "install",
+        "device"
+      ]
+    },
+    {
+      "id": "tester",
+      "category": "Developer requests",
+      "question": "How do I report a bug or help test features?",
+      "answer": "Open Developer Test Requests, verify only what you personally saw on your device and record which feature, browser, and exact steps failed. For Atlas, test standard and fullscreen map selection, the exit button, item lookup, farming checklists, and backups. Generate a report locally and share it manually; never include passwords, tokens, private videos, or cookies.",
+      "link": "./player-test-checklist.html#developerRequests",
+      "keywords": [
+        "test",
+        "bug",
+        "report",
+        "feedback",
+        "checklist",
+        "developer",
+        "broken"
+      ]
+    },
+    {
+      "id": "status",
+      "category": "Release status",
+      "question": "Is this a fully verified release?",
+      "answer": "The release center reads the latest public versioned manifest. An owner-approved GitHub release does not by itself mean its Blizzard data, external maps, or device behavior has been verified on a player's own device. The current build and last-known test scope appear in Release History; report any iPhone or live-game differences to the developer.",
+      "link": "./release-notes.html",
+      "keywords": [
+        "version",
+        "latest",
+        "update",
+        "release",
+        "verified",
+        "tested",
+        "discord"
+      ]
+    },
+    {
+      "id": "privacy",
+      "category": "Privacy",
+      "question": "Does this assistant send my question to Blizzard or an AI service?",
+      "answer": "This is a browser-side guided-answer system backed by first-party curated articles, not a live generative-AI assistant. Questions are processed on this page rather than sent to an AI provider or Blizzard. Linked studios may separately request official game data only when you use their own controls.",
+      "link": "./privacy.html",
+      "keywords": [
+        "privacy",
+        "ai",
+        "question",
+        "data",
+        "send",
+        "tracking",
+        "assistant",
+        "private"
+      ]
+    },
+    {
+      "id": "unknown",
+      "category": "Assistant help",
+      "question": "Can the assistant answer any World of Warcraft question?",
+      "answer": "Not yet. This first version retrieves curated, documented answers about the companion and supported Blizzard features. For unclear, patch-specific or unrelated questions it should say when no reliable answer is available instead of guessing. Use the linked studio or official Blizzard sources to verify current gameplay details.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "anything",
+        "not sure",
+        "answer",
+        "wrong",
+        "patch",
+        "current",
+        "general"
+      ]
+    },
+    {
+      "id": "report-fail",
+      "category": "Character Progress Report",
+      "question": "Why does my combined progression report show a partial result?",
+      "answer": "The combined report checks three public Blizzard categories sequentially. A category can be unavailable because of a missing profile, upstream error, timeout, or rate limit. Other successful categories remain visible. Unavailable does not mean zero Mythic+ runs, no raid encounters or no reputations. Verify the character region/realm and retry later.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "partial report",
+        "failed report",
+        "unavailable",
+        "no result",
+        "mythic",
+        "raids",
+        "reputation"
+      ]
+    },
+    {
+      "id": "report-export",
+      "category": "Character Progress Report",
+      "question": "How do I share my combined progression report?",
+      "answer": "Use Build Character Progress Report, then choose Copy Summary for a concise text overview or Export Combined JSON for the returned public character research snapshot. Review the file before sharing; character name and realm are included. Reports are not automatically uploaded to Discord or linked to your Battle.net session.",
+      "link": "./progression-intelligence.html",
+      "keywords": [
+        "report export",
+        "share report",
+        "copy summary",
+        "combined",
+        "json"
+      ]
+    },
+    {
+      "id": "assistant-popup",
+      "category": "Assistant help",
+      "question": "How do I open and close the floating assistant?",
+      "answer": "On desktop, select the ZevRo | Azeroth Assistant avatar in the upper-right corner; on mobile, use the assistant shortcut in the page header. Close the mini panel with its × button or Escape, or choose Full Page to view the larger assistant. The Founder and Hyper Music controls remain separate.",
+      "link": "./azeroth-assistant.html",
+      "keywords": [
+        "bubble",
+        "floating",
+        "avatar",
+        "close",
+        "popup",
+        "mini panel",
+        "assistant"
+      ]
+    },
+    {
+      "id": "assistant-context",
+      "category": "Assistant help",
+      "question": "Does the assistant know which studio I am viewing?",
+      "answer": "When opened from the main companion, the mini assistant can prioritize documented questions for the currently visible section. It does not read private character records, local talent points, account cookies or Blizzard tokens, and it does not fetch new character data.",
+      "link": "./azeroth-assistant.html",
+      "keywords": [
+        "context",
+        "which studio",
+        "current tab",
+        "questions",
+        "suggestions",
+        "privacy"
+      ]
+    },
+    {
+      "id": "test-community",
+      "category": "Developer requests",
+      "question": "Where do I send testing feedback for new features?",
+      "answer": "Use Developer Test Requests to mark only what you personally verified, note errors and the device/browser, and Generate Report. Copy and share the report manually through your existing community channel. No automatic submission or Discord webhook is included, and you should never share account cookies or access tokens.",
+      "link": "./player-test-checklist.html#developerRequests",
+      "keywords": [
+        "testing",
+        "send report",
+        "discord",
+        "feedback",
+        "bugs"
+      ]
+    },
+    {
+      "id": "atlas-now",
+      "category": "World Atlas",
+      "question": "How do I find a dungeon, raid, boss, resource or location on the Atlas?",
+      "answer": "Open World Atlas, search across the supported game-derived zone maps, or choose Dungeons & raids, Loot & items, Gathering, Travel, or Places. Select a sourced result to see its location and available in-app information. Show On Map focuses a documented outdoor entrance or marker. The Atlas does not claim to map every zone, resource spawn, dungeon floor or boss room.",
+      "link": "./world-atlas.html",
+      "keywords": [
+        "atlas",
+        "map",
+        "dungeon",
+        "raid",
+        "boss",
+        "resource",
+        "location",
+        "zone",
+        "search",
+        "find",
+        "travel",
+        "marker"
+      ]
+    },
+    {
+      "id": "atlas-items",
+      "category": "World Atlas",
+      "question": "Can I inspect loot and Blizzard items without leaving the Atlas?",
+      "answer": "Yes, for supported data. World Atlas includes Search Official Blizzard Items (name or numeric item ID), read-only item details from the existing Blizzard data gateway, curated acquisition guidance, and selected boss-to-instance references. Complete loot tables, drop probabilities, difficulty-specific reward data and item-to-boss links are not automatically supplied for every item. Source links are optional reference sections.",
+      "link": "./world-atlas.html",
+      "keywords": [
+        "loot",
+        "item",
+        "codex",
+        "blizzard",
+        "gear",
+        "item id",
+        "drop",
+        "source",
+        "equipment",
+        "raid loot",
+        "search"
+      ]
+    },
+    {
+      "id": "atlas-farming",
+      "category": "World Atlas",
+      "question": "How do I track farming attempts and acquisition checklist steps in the Atlas?",
+      "answer": "Select an item with a valid Blizzard item ID in World Atlas. Choose Save to Item Atlas to add it to your manual wishlist or Add Farm Goal to use the existing Loot Hunter tracker. For curated guides, check acquisition steps, log attempts, and expand My Farm Board to mark a goal obtained or still farming. These records stay in this browser; they do not read game drops or automatically prove ownership.",
+      "link": "./world-atlas.html",
+      "keywords": [
+        "farm",
+        "farming",
+        "attempts",
+        "wishlist",
+        "loot hunter",
+        "progress",
+        "checklist",
+        "obtained",
+        "quest steps",
+        "track",
+        "collectible"
+      ]
+    },
+    {
+      "id": "atlas-fullscreen",
+      "category": "World Atlas",
+      "question": "How do I leave fullscreen or see what I clicked on the iPhone map?",
+      "answer": "Open a sourced map and select Fullscreen. The current Atlas uses a native modal on iPhone; Exit Map is in the top header. Selecting a pin shows its name, coordinates, and View Destination Details/Copy Game Pin actions beneath the map. View Destination Details closes fullscreen and opens the Atlas information card. If an old full-screen overlay appears, open the current Atlas link directly in Safari and report the browser/version used.",
+      "link": "./world-atlas.html",
+      "keywords": [
+        "iphone",
+        "fullscreen",
+        "full screen",
+        "exit map",
+        "close",
+        "tapping",
+        "marker",
+        "destination",
+        "can't leave",
+        "glitch",
+        "ios",
+        "pin"
+      ]
+    },
+    {
+      "id": "atlas-sources",
+      "category": "World Atlas",
+      "question": "Why are some Atlas results incomplete, and where did the external links go?",
+      "answer": "Azeroth now prioritizes information and actions within the Atlas. Original source references are available under optional expandable Sources sections for checking accuracy. The existing map catalog and Loot Hunter acquisition guides are curated, not exhaustive; no complete farming heatmaps, live rare spawns, loot odds or dungeon interior floors are claimed without verified data.",
+      "link": "./world-atlas.html",
+      "keywords": [
+        "source",
+        "external",
+        "links",
+        "wowhead",
+        "redirect",
+        "missing",
+        "incomplete",
+        "heatmap",
+        "interior",
+        "loot",
+        "maps"
+      ]
+    },
+    {
+      "id": "atlas-saved",
+      "category": "World Atlas",
+      "question": "Will the new Atlas delete my old routes, saved pins or missions?",
+      "answer": "The current Atlas keeps legacy mission, route and personal waypoint records, including existing coordinate notebook data. Recent Atlas upgrades reuse the existing manual Item Atlas and Loot Hunter storage formats; the new fullscreen viewer does not erase saved progress. Browser-local data can still be lost if site data is cleared, so export a backup before device migration or major changes.",
+      "link": "./save-protection.html",
+      "keywords": [
+        "saved",
+        "routes",
+        "goals",
+        "missions",
+        "pin",
+        "waypoint",
+        "old maps",
+        "preserve",
+        "backup",
+        "progress"
+      ]
+    },
+    {
+      "id": "site-simplification",
+      "category": "Website navigation",
+      "question": "Why are there so many studios, and will the site be simplified?",
+      "answer": "The owner has requested a future site-wide feature audit focused on direct usefulness and fewer redundant studios. No destructive removal has been approved. When functionality overlaps, future versions should consolidate its interface first, preserve saved data and dependable navigation, update the handbook and assistant, and document a rollback path. Current navigation may still show legacy or optional planning tools.",
+      "link": "./player-handbook.html",
+      "keywords": [
+        "declutter",
+        "too many",
+        "studios",
+        "menus",
+        "simplify",
+        "remove",
+        "useless",
+        "duplicate",
+        "clean",
+        "retire"
+      ]
+    },
+    {
+      "id": "assistant-updates",
+      "category": "Assistant help",
+      "question": "Does this assistant stay updated with new Azeroth features?",
+      "answer": "The assistant uses curated help articles and reads the public release manifest to show current release status; it is not an AI that learns changes automatically. Development releases should update this knowledge library, the Player Handbook, Release History and tester instructions together. If a feature behaves differently from the article, report the version and device so the developer can correct the guidance.",
+      "link": "./release-notes.html",
+      "keywords": [
+        "assistant",
+        "updated",
+        "documentation",
+        "guide",
+        "outdated",
+        "new version",
+        "release notes",
+        "changelog"
+      ]
+    }
+  ],
+  "last_reviewed": "2026-11-21",
+  "last_reviewed_release": "24.0.1"
+}

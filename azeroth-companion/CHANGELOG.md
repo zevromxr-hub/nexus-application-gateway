@@ -1,3 +1,13 @@
+## v24.0.1 — Current Documentation, Assistant Sync & Site-Simplification Standard (2026-11-21)
+
+- Replaced the v7-era guided assistant content source with a canonical `azeroth-assistant-knowledge.json` reference, expanded to cover present-day World Atlas, native iPhone fullscreen, curated encounters, supported Blizzard item lookup, local farming steps and data limits. The mini assistant opens this same page.
+- Guided assistant release-status answers now consult the public `version.json` manifest and explain why owner-approved GitHub or simulated browser passes are not the same as real-player verification.
+- Updated the Player Handbook's introductory section, source-map explanation, v24 Atlas steps, device tips, Player Guide and test report checkboxes. Older v15/v16 sections remain explicitly historical instead of being presented as the current primary Atlas.
+- Removed an outdated hard-coded v16.5 top release announcement from the Release History page. Dynamic release records remain the source of truth.
+- Added `SITE-SIMPLIFICATION-AND-DOCS-STANDARD.md`, an evidence-driven audit protocol for consolidating redundant Atlas, item research, character, and manual planning UIs, without deleting production features or saved data yet.
+- Introduced a maintainable release rule: each subsequent functional release must review public metadata, current handbook, guided assistant knowledge, embedded player help, and real-device tester instructions, with automated source checks identifying drift.
+- No changes to Blizzard client APIs or secrets, account permissions, encrypted Private Video Vault, personal route/mission data, saved waypoints, or other production tools.
+
 ## v24.0.0 — Atlas Intelligence / Research Where You Play (2026-11-21)
 
 - External website links are now optional source disclosures instead of primary actions in the Atlas discovery card. The Atlas presents immediate actionable content, using original NEXUS datasets where possible.
