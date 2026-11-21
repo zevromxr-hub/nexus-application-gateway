@@ -286,7 +286,7 @@ window.NexusRealMapDiscoveryV223=Object.freeze({
  open:(id,pointId)=>{
   if(!zone(id))return false;
   if(state.id!==id)show(id);
-  else {state.query='';state.filter='all';$('nx221Search').value='';render()}
+  else {state.query='';state.filter='all';if(!window.NexusAtlasV23)$('nx221Search').value='';render()}
   if(pointId&&rows(zone(id)).some(p=>p.id===pointId)){select(pointId);return true}
   return true;
  },
