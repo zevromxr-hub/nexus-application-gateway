@@ -5,13 +5,14 @@ const world=window.NexusWorldEngineCoreV16;
 if(!root||!real||!world)return;
 root.classList.add('nx222-unified');
 const $=id=>document.getElementById(id);
-const aliases={'ringing-deeps':'ringing-deeps','hallowfall':'hallowfall','azj-kahet':'azj-kahet','isle-of-dorn':'isle-of-dorn','valdrakken':'valdrakken','waking-shores':'waking-shores','azure-span':'azure-span'};
-const safeMap=new Set(['zul-aman','harandar','voidstorm','hallowfall','ringing-deeps','isle-of-dorn','azj-kahet','valdrakken','waking-shores','azure-span']);
+const aliases={'ringing-deeps':'ringing-deeps','hallowfall':'hallowfall','azj-kahet':'azj-kahet','isle-of-dorn':'isle-of-dorn','valdrakken':'valdrakken','waking-shores':'waking-shores','azure-span':'azure-span','silvermoon-midnight':'silvermoon-midnight','eversong-midnight':'eversong-midnight'};
+const safeMap=new Set(['zul-aman','harandar','voidstorm','hallowfall','ringing-deeps','isle-of-dorn','azj-kahet','valdrakken','waking-shores','azure-span','silvermoon-midnight','eversong-midnight']);
 const node=(tag,cls,txt)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;return el};
 function go(id,point){
  const target=aliases[id]||id;
  if(!safeMap.has(target))return false;
- const btn=[...real.querySelectorAll('#nx221ZoneTabs button')].find(b=>b.textContent.trim().toLowerCase()===({'ringing-deeps':'the ringing deeps','azj-kahet':"azj-kahet"}[target]||world.zoneById(id)?.name.toLowerCase()||target.replaceAll('-',' ')));
+ const label=({'ringing-deeps':'the ringing deeps','azj-kahet':"azj-kahet",'silvermoon-midnight':'silvermoon city (midnight)','eversong-midnight':'eversong woods (midnight)'}[target]||world.zoneById(id)?.name.toLowerCase()||target.replaceAll('-',' '));
+ const btn=[...real.querySelectorAll('#nx221ZoneTabs button')].find(b=>b.textContent.trim().toLowerCase()===label);
  if(btn)btn.click();
  else {
   const url=new URL(location.href);url.searchParams.set('zone',target);
