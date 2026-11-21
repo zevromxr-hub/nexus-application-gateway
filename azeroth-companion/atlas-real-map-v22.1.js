@@ -167,6 +167,7 @@ function select(id){
  $('nx221OpenResearch').href=p.url;
  $('nx221Copy').disabled=false;
  for(const b of root.querySelectorAll('[data-point-id]'))b.setAttribute('aria-pressed',String(b.dataset.pointId===id));
+ window.dispatchEvent(new CustomEvent('nexus:atlas-pin-selected',{detail:{zoneId:state.id,pointId:id}}));
 }
 function render(){
  const z=zone(state.id);if(!z)return;
