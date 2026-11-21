@@ -166,7 +166,7 @@ function select(id){
   ' · UI Map '+p.mapId+' · '+p.source+(p.note?' · '+p.note:'');
  $('nx221OpenResearch').href=p.url;
  $('nx221Copy').disabled=false;
- for(const b of root.querySelectorAll('[data-point-id]'))b.setAttribute('aria-pressed',String(b.dataset.pointId===id));
+ for(const b of viewport.querySelectorAll('[data-point-id]'))b.setAttribute('aria-pressed',String(b.dataset.pointId===id));
  window.dispatchEvent(new CustomEvent('nexus:atlas-pin-selected',{detail:{zoneId:state.id,pointId:id}}));
 }
 function render(){
@@ -288,8 +288,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&full){e.preventDefa
 window.addEventListener('pagehide',()=>{if(full)setFull(false)});
 detailsBtn.addEventListener('click',()=>{
  setFull(false);
- const card=$('nx221Selected');
- if(card){card.hidden=false;card.scrollIntoView({block:'center',behavior:'smooth'});}
+ const card=$('nx230Detail')&&!$('nx230Detail').hidden?$('nx230Detail'):$('nx221Selected');
+ $('nx221Selected').hidden=false;
+ if(card)card.scrollIntoView({block:'center',behavior:'smooth'});
 });
 quickCopy.addEventListener('click',()=>{$('nx221Copy')?.click()});
 // Keep a readable selection response in fullscreen even when the map's sidebar is hidden.
