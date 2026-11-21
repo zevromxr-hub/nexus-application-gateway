@@ -131,6 +131,8 @@ function setSource(z){
 function show(id){
  const z=zone(id);if(!z)return;
  state.id=z.id;state.zoom=1;state.panX=0;state.panY=0;state.filter='all';state.query='';state.selected=null;
+ if(typeof selection!=='undefined')selection.hidden=true;
+ if(typeof toolbarTitle!=='undefined')toolbarTitle.textContent=z.name;
  if(!window.NexusAtlasV23)$('nx221Search').value='';$('nx221SelectedName').textContent='Choose a destination';
  $('nx221SelectedInfo').textContent='Click a sourced marker to see its coordinates.';
  $('nx221Copy').disabled=true;
@@ -158,12 +160,14 @@ function show(id){
 function select(id){
  const z=zone(state.id),p=rows(z).find(x=>x.id===id);if(!p)return;
  state.selected=p;
+ if(typeof showSelectedOnMap==='function')showSelectedOnMap(p);
  $('nx221SelectedName').textContent=p.title;
  $('nx221SelectedInfo').textContent=p.kind+' · '+p.x.toFixed(1)+', '+p.y.toFixed(1)+
   ' · UI Map '+p.mapId+' · '+p.source+(p.note?' · '+p.note:'');
  $('nx221OpenResearch').href=p.url;
  $('nx221Copy').disabled=false;
- for(const b of root.querySelectorAll('[data-point-id]'))b.setAttribute('aria-pressed',String(b.dataset.pointId===id));
+ for(const b of viewport.querySelectorAll('[data-point-id]'))b.setAttribute('aria-pressed',String(b.dataset.pointId===id));
+ window.dispatchEvent(new CustomEvent('nexus:atlas-pin-selected',{detail:{zoneId:state.id,pointId:id}}));
 }
 function render(){
  const z=zone(state.id);if(!z)return;
@@ -225,18 +229,81 @@ const stop=event=>{
 viewport.addEventListener('pointerup',stop);
 viewport.addEventListener('pointercancel',stop);
 
-// Accessible fullscreen map viewer and two-finger pinch zoom (native pointer events).
+// v23.0.1 — iOS-safe fullscreen: portal the viewport to <body> so the site shell
+// cannot clip fixed controls, and always provide selection feedback ON the map.
 const fullscreen=el('button','nx230-fullscreen','FULLSCREEN');fullscreen.type='button';
 fullscreen.title='Expand or exit the map';fullscreen.setAttribute('aria-pressed','false');
 $('nx221Reset').after(fullscreen);
-let full=false;
+const mapHome=viewport.parentNode,mapFollowing=viewport.nextSibling;
+const toolbar=el('div','nx230-map-toolbar');
+const toolbarTitle=el('span','nx230-map-toolbar-title','WORLD MAP');
+const closeMap=el('button','nx230-map-close','✕  EXIT MAP');closeMap.type='button';
+closeMap.setAttribute('aria-label','Close fullscreen map');
+toolbar.append(toolbarTitle,closeMap);
+const selection=el('section','nx230-map-selection');
+selection.setAttribute('role','status');selection.setAttribute('aria-live','polite');
+selection.hidden=true;
+const selectionName=el('strong','', 'Selected location');
+const selectionInfo=el('span','', '');
+const selectionActions=el('div','nx230-map-selection-actions');
+const detailsBtn=el('button','', 'VIEW DESTINATION DETAILS');detailsBtn.type='button';
+const quickCopy=el('button','', 'COPY GAME PIN');quickCopy.type='button';
+selectionActions.append(detailsBtn,quickCopy);
+selection.append(selectionName,selectionInfo,selectionActions);
+viewport.append(toolbar,selection);
+let full=false,previousFocus=null;
+function showSelectedOnMap(p){
+ if(!p)return;
+ selectionName.textContent=p.title;
+ selectionInfo.textContent=p.kind+' · X '+p.x.toFixed(1)+' / Y '+p.y.toFixed(1)+' · UI Map '+p.mapId;
+ selection.hidden=false;
+}
 function setFull(next){
- full=!!next;viewport.classList.toggle('nx230-map-fullscreen',full);
+ if(full===!!next)return;
+ full=!!next;
+ if(full){
+  previousFocus=document.activeElement;
+  document.body.append(viewport); // Portaling avoids ancestor overflow/transform bugs in iOS WebKit.
+  document.documentElement.classList.add('nx230-map-open');
+  toolbarTitle.textContent=zone(state.id)?.name||'WORLD MAP';
+  if(state.selected)showSelectedOnMap(state.selected);
+  viewport.classList.add('nx230-map-fullscreen');
+  closeMap.focus({preventScroll:true});
+ }else{
+  viewport.classList.remove('nx230-map-fullscreen');
+  document.documentElement.classList.remove('nx230-map-open');
+  if(mapFollowing&&mapFollowing.parentNode===mapHome)mapHome.insertBefore(viewport,mapFollowing);
+  else mapHome.append(viewport);
+  if(previousFocus?.isConnected)previousFocus.focus({preventScroll:true});
+  previousFocus=null;
+ }
  fullscreen.textContent=full?'EXIT FULLSCREEN':'FULLSCREEN';
- fullscreen.setAttribute('aria-pressed',String(full));applyZoom();
+ fullscreen.setAttribute('aria-pressed',String(full));
+ drag=null;touches.clear();pinchStart=null;
+ applyZoom();
 }
 fullscreen.addEventListener('click',()=>setFull(!full));
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&full)setFull(false)});
+closeMap.addEventListener('click',()=>setFull(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&full){e.preventDefault();setFull(false)}});
+window.addEventListener('pagehide',()=>{if(full)setFull(false)});
+detailsBtn.addEventListener('click',()=>{
+ setFull(false);
+ const card=$('nx230Detail')&&!$('nx230Detail').hidden?$('nx230Detail'):$('nx221Selected');
+ $('nx221Selected').hidden=false;
+ if(card)card.scrollIntoView({block:'center',behavior:'smooth'});
+});
+quickCopy.addEventListener('click',()=>{quickCopy.textContent='COPYING…';$('nx221Copy')?.click()});
+window.addEventListener('nexus:atlas-pin-copy-result',event=>{
+ quickCopy.textContent=event.detail?.success?'COPIED ✓':'CLIPBOARD BLOCKED';
+ setTimeout(()=>{quickCopy.textContent='COPY GAME PIN'},2000);
+});
+// Keep a readable selection response in fullscreen even when the map's sidebar is hidden.
+viewport.addEventListener('click',e=>{
+ const pin=e.target.closest('button[data-point-id]');
+ if(!pin)return;
+ const point=rows(zone(state.id)).find(p=>p.id===pin.dataset.pointId);
+ if(point)showSelectedOnMap(point);
+});
 const touches=new Map();let pinchStart=null;
 viewport.addEventListener('pointerdown',e=>{
  if(e.pointerType==='mouse'||e.target.closest('button'))return;
@@ -269,8 +336,8 @@ $('nx221Copy').addEventListener('click',async()=>{
  const macro='/run local m='+p.mapId+' if C_Map.CanSetUserWaypointOnMap(m) then C_Map.SetUserWaypoint(UiMapPoint.CreateFromCoordinates(m,'+
   (p.x/100).toFixed(4)+','+(p.y/100).toFixed(4)+')) end';
  const b=$('nx221Copy');
- try{if(!await copy(macro))throw Error('blocked');b.textContent='COPIED ✓';setTimeout(()=>b.textContent='COPY GAME PIN',1500)}
- catch(_){b.textContent='CLIPBOARD BLOCKED';setTimeout(()=>b.textContent='COPY GAME PIN',1800)}
+ try{if(!await copy(macro))throw Error('blocked');b.textContent='COPIED ✓';window.dispatchEvent(new CustomEvent('nexus:atlas-pin-copy-result',{detail:{success:true}}));setTimeout(()=>b.textContent='COPY GAME PIN',1500)}
+ catch(_){b.textContent='CLIPBOARD BLOCKED';window.dispatchEvent(new CustomEvent('nexus:atlas-pin-copy-result',{detail:{success:false}}));setTimeout(()=>b.textContent='COPY GAME PIN',1800)}
 });
 window.addEventListener('storage',event=>{
  if(event.key===core.KEYS.waypoints){state.own=readOwn();render()}

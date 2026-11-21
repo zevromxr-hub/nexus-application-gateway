@@ -26,5 +26,45 @@
 #nx221RealAtlas .nx230-trust,#nx221RealAtlas .nx230-empty{font-size:10px;line-height:1.6;color:#b6c9da}
 #nx221RealAtlas .nx230-detail[hidden],#nx221RealAtlas #nx221PlacesList[hidden],#nx221RealAtlas #nx221Types[hidden],#nx221RealAtlas .nx223-discovery[hidden],#nx221RealAtlas #nx224EncounterResults[hidden]{display:none!important}
 #nx221RealAtlas .nx230-fullscreen{height:36px;border:1px solid #aeb9c9;border-radius:8px;background:#304760;color:#fff;font-weight:800;cursor:pointer;padding:6px 10px}
-#nx221RealAtlas .nx230-map-fullscreen{position:fixed!important;inset:0!important;width:100vw!important;height:100dvh!important;max-height:none!important;aspect-ratio:auto!important;z-index:100000;background:#101c2e;touch-action:none}
-@media(max-width:650px){#nx221RealAtlas .nx230-results{max-height:310px}#nx221RealAtlas .nx230-chip{font-size:10px;min-height:42px}#nx221RealAtlas .nx230-map-fullscreen{height:100svh!important}}
+
+@media(max-width:650px){#nx221RealAtlas .nx230-results{max-height:310px}#nx221RealAtlas .nx230-chip{font-size:10px;min-height:42px}}
+
+/* iPhone v23.0.1: map viewport is moved directly to body in expanded mode.
+   These global rules intentionally survive the portal and restore on exit. */
+.nx230-map-toolbar,.nx230-map-selection{display:none}
+html.nx230-map-open,html.nx230-map-open body{overflow:hidden!important;overscroll-behavior:none!important}
+.nx230-map-fullscreen{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;
+ width:100vw!important;height:100dvh!important;min-height:0!important;max-height:none!important;aspect-ratio:auto!important;
+ z-index:2147483000!important;background:#101c2e!important;overflow:hidden!important;touch-action:none!important;isolation:isolate}
+.nx230-map-fullscreen .nx221-map-surface{width:100%;height:100%;position:relative;transform-origin:center center}
+.nx230-map-fullscreen .nx221-map-surface>img{display:block;width:100%;height:100%;object-fit:fill}
+.nx230-map-fullscreen .nx221-pin-layer{position:absolute;inset:0;pointer-events:none}
+.nx230-map-fullscreen .nx221-map-pin{position:absolute;display:grid;place-items:center;width:38px;height:38px;padding:0;
+ transform:translate(-50%,-50%);border:2px solid #f2d9b5;border-radius:50%;background:#354169;color:#fff8df;
+ box-shadow:0 2px 9px #000d;font:950 16px system-ui;pointer-events:auto;cursor:pointer;z-index:2}
+.nx230-map-fullscreen .nx221-map-pin[data-kind=Flight]{background:#22606b}
+.nx230-map-fullscreen .nx221-map-pin[data-kind=Dungeon],.nx230-map-fullscreen .nx221-map-pin[data-kind=Raid]{background:#793c59}
+.nx230-map-fullscreen .nx221-map-pin[data-kind=Personal]{background:#4f3a81}
+.nx230-map-fullscreen .nx221-map-pin[aria-pressed=true]{z-index:4;background:#e8ca9d;color:#1b253c;border-color:#fff}
+.nx230-map-fullscreen [hidden]{display:none!important}
+.nx230-map-fullscreen .nx221-map-failure{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;
+ align-items:center;text-align:center;gap:12px;padding:24px;background:#17253d;color:#e8f1f5}
+.nx230-map-fullscreen .nx221-map-failure a{border-radius:8px;padding:12px 16px;background:#d7b889;color:#18263a;font-weight:850}
+.nx230-map-fullscreen .nx230-map-toolbar{position:absolute;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;
+ justify-content:space-between;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 12px) calc(env(safe-area-inset-right,0px) + 14px) 12px calc(env(safe-area-inset-left,0px) + 14px);
+ background:linear-gradient(180deg,#071321ee,#102139bc);color:#f9e7c7;pointer-events:auto}
+.nx230-map-toolbar-title{font:850 12px system-ui;letter-spacing:.07em;text-shadow:0 1px 3px #000}
+.nx230-map-fullscreen .nx230-map-close{position:relative;z-index:31;min-width:118px;min-height:48px;border:2px solid #f5d29e;
+ background:#d9b782;color:#182438;border-radius:10px;font:900 12px system-ui;cursor:pointer;touch-action:manipulation}
+.nx230-map-fullscreen .nx230-map-selection{position:absolute;bottom:0;left:0;right:0;z-index:30;display:grid;gap:6px;
+ padding:14px calc(env(safe-area-inset-right,0px) + 14px) calc(env(safe-area-inset-bottom,0px) + 15px) calc(env(safe-area-inset-left,0px) + 14px);
+ background:linear-gradient(0deg,#071426f7,#12243ee9);color:#f6eddc;box-shadow:0 -9px 24px #0008;pointer-events:auto}
+.nx230-map-selection strong{font:850 15px system-ui}
+.nx230-map-selection span{color:#bcd3e3;font:12px/1.5 system-ui}
+.nx230-map-selection-actions{display:flex;flex-wrap:wrap;gap:9px}
+.nx230-map-selection-actions button{flex:1 1 130px;min-height:44px;padding:8px 12px;border:1px solid #e3c395;
+ border-radius:9px;background:#314a64;color:#fff3df;font:800 11px system-ui;cursor:pointer;touch-action:manipulation}
+.nx230-map-selection-actions button:first-child{background:#e3c395;color:#192638}
+@media(max-width:650px){.nx230-map-fullscreen .nx221-map-pin{width:34px;height:34px;font-size:14px}
+ .nx230-map-fullscreen .nx230-map-toolbar{padding-top:calc(env(safe-area-inset-top,0px) + 10px)}
+ .nx230-map-fullscreen .nx230-map-selection{max-height:38dvh;overflow-y:auto}}

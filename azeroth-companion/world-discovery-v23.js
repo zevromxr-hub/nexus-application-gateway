@@ -84,7 +84,7 @@ function openMap(p){
  if(!p.zone||!map.catalog.some(z=>z.id===p.zone))return false;
  return map.open(p.zone,p.pin||undefined);
 }
-function select(p){
+function select(p,scroll=true){
  state.selected=p;detail.hidden=false;detail.replaceChildren();
  const head=el('div','nx230-detailhead');
  head.append(el('span','',p.kind.toUpperCase()),el('strong','',p.name));
@@ -117,7 +117,7 @@ function select(p){
   const note=el('p','nx230-note','Interior floors are not plotted on the outdoor map. Use the sourced encounter/journal reference for boss locations and loot.');detail.append(note);
  }
  detail.append(actions);
- detail.scrollIntoView({behavior:'smooth',block:'nearest'});
+ if(scroll)detail.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 function draw(){
  renderChips();results.replaceChildren();
@@ -144,7 +144,14 @@ function draw(){
  }
 }
 $('nx221ZoneTabs')?.addEventListener('click',()=>{if(!state.query&&state.mode==='all')queueMicrotask(draw)});
-$('nx221PinLayer')?.addEventListener('click',e=>{if(e.target.closest('button')){const old=$('nx221Selected');if(old)old.hidden=false;}});
+window.addEventListener('nexus:atlas-pin-selected',event=>{
+ const {zoneId,pointId}=event.detail||{};
+ const pin=regionPins.find(p=>p.zone===zoneId&&p.pin===pointId);
+ if(!pin)return;
+ const old=$('nx221Selected');if(old)old.hidden=false;
+ const inFullscreen=$('nx221MapViewport')?.classList.contains('nx230-map-fullscreen');
+ select(pin,!inFullscreen);
+});
 input.addEventListener('input',()=>{state.query=input.value.trim().slice(0,100);draw()});
 input.addEventListener('keydown',e=>{if(e.key==='Escape'){input.value='';state.query='';draw()}});
 const params=new URLSearchParams(location.search);const find=params.get('find');

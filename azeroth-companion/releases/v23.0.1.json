@@ -1,0 +1,19 @@
+{
+  "schema": "nexus.azeroth.release/1",
+  "name": "Azeroth Companion",
+  "version": "23.0.1",
+  "title": "iPHONE FULLSCREEN MAP STABILITY — EXIT & SELECTION FEEDBACK",
+  "release_date": "2026-11-21",
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "website": "https://zevarchives.com/azeroth-companion/world-atlas.html",
+  "owner_approved": true,
+  "tester_status": "pending",
+  "approval_note": "Owner reported fullscreen map trapping iPhone users, no accessible close, and no indication of selected destinations. Source fix includes iOS-safe fullscreen portal, in-map controls and matching discovery detail synchronization. Real iPhone acceptance pending.",
+  "features": [
+    "Always-visible fullscreen exit button in top safe-area toolbar.",
+    "In-fullscreen destination details bottom sheet with View Destination Details and Copy Game Pin actions.",
+    "Return to prior layout with scroll unlock and focus restoration on exit.",
+    "Map pins and game-map imagery retain interactive styling when fullscreen is portaled outside the main site shell.",
+    "Synchronize pin selection with v23 discovery card and provide browser test coverage without resetting local saved data."
+  ]
+}

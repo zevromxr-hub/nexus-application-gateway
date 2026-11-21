@@ -1,3 +1,12 @@
+## v23.0.1 — iPhone Fullscreen Map Stability (2026-11-21)
+
+- Fixed the fullscreen trap by moving the map viewport to a body-level overlay; an always-visible close control stays inside the map's iPhone safe area.
+- Selecting a map marker reveals a compact in-map result with location, X/Y coordinates, View Destination Details, and Copy Game Pin controls.
+- View Destination Details exits fullscreen and opens the corresponding World Discovery card; ordinary map-pin clicks also update the main search/detail interface.
+- Restores the original map position, scroll lock and previous keyboard focus when leaving fullscreen; full-screen pin and image styles remain available outside the normal Atlas shell.
+- Added a dedicated emulated iPhone WebKit/desktop Chromium regression and asset cache busting to reduce stale PWA scripts; real hardware testing remains pending.
+- No changes to Blizzard API, Cloudflare, saved routes, waypoints, missions, item tracking, character data or the Private Video Vault.
+
 ## v23.0.0 — World Discovery Ascension (2026-11-21)
 
 - Unified previously separate v22.3 location and v22.4 boss/loot search interfaces into a single compact map-sidebar discovery experience; retained older source scripts for rollback.
