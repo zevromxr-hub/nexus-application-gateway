@@ -1,8 +1,15 @@
 {
   "schema": "nexus.azeroth.release-index/1",
   "product": "NEXUS | AZEROTH COMPANION",
-  "updated": "2026-11-20",
+  "updated": "2026-11-21",
   "releases": [
+    {
+      "version": "23.0.0",
+      "title": "World Discovery Ascension — Unified Source Search, Midnight Maps and Mobile Controls",
+      "date": "2026-11-21",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
     {
       "version": "22.4.0",
       "title": "Boss & Loot Intelligence — Source-Verified Encounters and Instance Entrance Handoff",
