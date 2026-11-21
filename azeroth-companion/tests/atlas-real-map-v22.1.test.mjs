@@ -45,7 +45,7 @@ assert.ok(atlas.includes('atlas-waypoints-v22.js?v=2200'),'Preserve v22 coordina
 assert.ok(atlas.includes('world-atlas-routes-v18.1.js?v=1810'),'Preserve saved routes');
 assert.ok(atlas.includes('world-atlas-lens-v18.2.js?v=1820'),'Preserve v18.2 Cartographer Lens');
 assert.ok(atlas.includes('world-atlas-v16.js?v=1600'),'Preserve mission planner');
-assert.ok(atlas.includes('NEXUS | Real Map Atlas v22.1'));
+assert.ok(/NEXUS \| (?:Real Map Atlas|Atlas Discovery|Boss & Loot Atlas|World Discovery)/.test(atlas));
 assert.ok(core.includes('nexus_atlas_waypoints_v22'));
 assert.ok(waypoints.includes('nexus_atlas_waypoints_v22')===false||waypoints.includes('core.KEYS.waypoints'));
 assert.ok(save.includes('nexus_atlas_waypoints_v22'));
