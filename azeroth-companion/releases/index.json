@@ -4,6 +4,13 @@
   "updated": "2026-11-21",
   "releases": [
     {
+      "version": "23.0.1",
+      "title": "iPhone Fullscreen Map Stability — Exit, Pin Selection and Visible Details",
+      "date": "2026-11-21",
+      "owner_approved": true,
+      "tester_status": "pending"
+    },
+    {
       "version": "23.0.0",
       "title": "World Discovery Ascension — Unified Source Search, Midnight Maps and Mobile Controls",
       "date": "2026-11-21",
