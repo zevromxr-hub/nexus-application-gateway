@@ -33,10 +33,11 @@ for(const article of knowledge.articles){
  assert.ok(Array.isArray(article.keywords)&&article.keywords.length>=3);
  assert.ok(typeof article.link==='string'&&article.link.length>0);
 }
-assert.ok(assistant.includes("const FILE='./azeroth-assistant-knowledge.json?v=2401'"));
+const cacheTag=tag.replace(/\\D/g,'');
+assert.ok(assistant.includes("const FILE='./azeroth-assistant-knowledge.json?v="+cacheTag+"'"));
 assert.ok(assistant.includes("fetch('./version.json',{cache:'no-store'})"),'Assistant status must use live public release metadata');
 assert.ok(!assistant.includes("const FILE='./azeroth-assistant-knowledge-v7.9.7.json"));
-assert.ok(bubble.includes("u.searchParams.set('v','2401')"),'Mini assistant must load updated full-page knowledge');
+assert.ok(bubble.includes("u.searchParams.set('v','"+cacheTag+"')"),'Mini assistant must load updated full-page knowledge');
 assert.ok(journey.includes('World Atlas')&&journey.includes('native modal'));
 assert.ok(guide.includes("const DOCS_RELEASE_VERSION='"+tag+"'"),'In-app player guide review must match release');
 for(const [file,value] of [['Player Handbook',handbook],['Assistant HTML',assistant],['Tester report',tester]]){
@@ -45,7 +46,7 @@ for(const [file,value] of [['Player Handbook',handbook],['Assistant HTML',assist
 for(const term of ['World Atlas &amp; Atlas Intelligence','Save to Item Atlas','Add Farm Goal','Exit Map','Copy Game Pin']){
  assert.ok(handbook.includes(term),'Current handbook missing '+term);
 }
-for(const term of ['data-test-group="World Atlas v24 Intelligence and iPhone"','native fullscreen','Thunderfury','The Stonevault']){
+for(const term of ['data-test-group="World Atlas v24 Intelligence and iPhone"','On a physical iPhone, open Fullscreen','Thunderfury','The Stonevault']){
  assert.ok(tester.includes(term),'Tester instructions missing '+term);
 }
 assert.ok(releases.includes("fetch('./releases/index.json'"),'Release history must use the current public index');
