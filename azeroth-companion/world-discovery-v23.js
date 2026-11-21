@@ -149,7 +149,7 @@ window.addEventListener('nexus:atlas-pin-selected',event=>{
  const pin=regionPins.find(p=>p.zone===zoneId&&p.pin===pointId);
  if(!pin)return;
  const old=$('nx221Selected');if(old)old.hidden=false;
- const inFullscreen=$('nx221MapViewport')?.classList.contains('nx230-map-fullscreen');
+ const inFullscreen=Boolean(document.getElementById('nx232MapDialog')?.open);
  select(pin,!inFullscreen);
 });
 input.addEventListener('input',()=>{state.query=input.value.trim().slice(0,100);draw()});
