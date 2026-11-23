@@ -1,0 +1,35 @@
+name: PROXIMUS — iPhone Cinematic Media Visual Audit
+on:
+  pull_request:
+    paths:
+      - 'alchemist/**'
+      - '.github/workflows/proximus-visual-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'alchemist/**'
+      - '.github/workflows/proximus-visual-audit.yml'
+permissions:
+  contents: read
+jobs:
+  browser-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chromium and iPhone WebKit engines
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium webkit
+      - name: Test background, master GIF and per-video local artwork
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/proximus-visual-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          node alchemist/tests/visual-pop-v3.7.browser.mjs
+      - name: Note physical iPhone acceptance
+        if: always()
+        run: echo "Browser simulation is not acceptance testing on a physical iPhone. Test the actual installed Home Screen app before claiming real-device verification."
