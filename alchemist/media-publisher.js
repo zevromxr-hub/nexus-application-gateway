@@ -14,10 +14,10 @@ export function chooseThumbnail(master,override,mode='force'){
 }
 export function mediaFitOptions(record){
  return {fit:record?.fit==='contain'?'contain':'cover',
-  opacity:Number.isFinite(Number(record?.opacity))?Math.min(1,Math.max(.1,Number(record.opacity))):.42};
+  opacity:Number.isFinite(Number(record?.opacity))?Math.min(1,Math.max(.1,Number(record.opacity))):.78};
 }
 const mediaRecords=new Map(),urls=new Map();
-let database=null,posterUrl=null,posterFor='',posterLoadingFor='';
+let database=null;const posters=new Map(),posterPending=new Set();
 function mimeType(file){
  const ext=file?.name?.split('.').pop()?.toLowerCase();
  const mime=ALLOWED.has(file?.type)?file.type:({gif:'image/gif',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',mp4:'video/mp4',webm:'video/webm'}[ext]);
@@ -54,33 +54,32 @@ function urlFor(rec){
  const existing=urls.get(rec.slot);if(existing)return existing;
  const url=URL.createObjectURL(rec.blob);urls.set(rec.slot,url);return url;
 }
-function setPoster(newUrl,key){
- if(posterUrl)URL.revokeObjectURL(posterUrl);
- posterUrl=newUrl;posterFor=key;
- refresh();
-}
+// Sharp 960x540 decoded posters for any local studio/master video.
+const posterKey=record=>record.slot+'|'+record.savedAt;
+function clearPoster(slot){for(const [key,url] of posters)if(key.startsWith(slot+'|')){URL.revokeObjectURL(url);posters.delete(key)}}
 async function generatePoster(record){
  if(!isVideo(record))return;
- const token=record.savedAt||record.name;
- if(posterFor===token||posterLoadingFor===token)return;
- posterLoadingFor=token;
- const node=document.createElement('video');node.muted=true;node.playsInline=true;node.preload='auto';
- const url=urlFor(record),guard=()=>mediaRecords.get('master')===record;
+ const key=posterKey(record);if(posters.has(key)||posterPending.has(key))return;
+ posterPending.add(key);const node=document.createElement('video');node.muted=true;node.playsInline=true;
  try{
   await new Promise((resolve,reject)=>{
-   const timer=setTimeout(()=>reject(Error('Video thumbnail poster timed out.')),12000);
-   const done=()=>{clearTimeout(timer);resolve();},fail=()=>{clearTimeout(timer);reject(Error('Video poster unavailable.'));};
-   node.addEventListener('loadeddata',done,{once:true});node.addEventListener('error',fail,{once:true});
-   node.src=url;node.load();
+   const timer=setTimeout(()=>{cleanup();reject(Error('Poster timed out'))},12000);
+   const cleanup=()=>{clearTimeout(timer);node.removeEventListener('loadeddata',loaded);node.removeEventListener('error',failed)};
+   const loaded=()=>{cleanup();resolve()},failed=()=>{cleanup();reject(Error('Cannot decode poster'))};
+   node.addEventListener('loadeddata',loaded);node.addEventListener('error',failed);
+   node.src=urlFor(record);node.preload='auto';node.load();
   });
-  if(!guard())return;
-  const c=document.createElement('canvas');c.width=512;c.height=288;
-  const x=c.getContext('2d');x.fillStyle='#100b22';x.fillRect(0,0,512,288);
-  const w=node.videoWidth||512,h=node.videoHeight||288,scale=Math.max(512/w,288/h);
-  x.drawImage(node,(512-w*scale)/2,(288-h*scale)/2,w*scale,h*scale);
-  const blob=await new Promise(resolve=>c.toBlob(resolve,'image/jpeg',.78));
-  if(blob&&guard())setPoster(URL.createObjectURL(blob),token);
- }catch(e){}finally{if(posterLoadingFor===token)posterLoadingFor='';node.pause();node.removeAttribute('src');node.load();}
+  if(mediaRecords.get(record.slot)!==record||!node.videoWidth||!node.videoHeight)return;
+  const cv=document.createElement('canvas');cv.width=960;cv.height=540;
+  const ctx=cv.getContext('2d',{alpha:false});if(!ctx)return;
+  ctx.fillStyle='#0b1222';ctx.fillRect(0,0,960,540);
+  const scale=Math.max(960/node.videoWidth,540/node.videoHeight);
+  const w=node.videoWidth*scale,h=node.videoHeight*scale;
+  ctx.drawImage(node,(960-w)/2,(540-h)/2,w,h);
+  const jpeg=await new Promise(resolve=>cv.toBlob(resolve,'image/jpeg',.9));
+  if(jpeg&&mediaRecords.get(record.slot)===record){clearPoster(record.slot);posters.set(key,URL.createObjectURL(jpeg));refresh()}
+ }catch(_){/* Unsupported codec: original file is preserved. */}
+ finally{posterPending.delete(key);node.pause();node.removeAttribute('src');node.load()}
 }
 function safeRecord(x){
  if(!x||!validSlot(x.slot)||!(x.blob instanceof Blob))throw Error('Invalid saved media record.');
@@ -94,12 +93,11 @@ function safeRecord(x){
 function nodeDisplay(record,{animated=true,slot=''}={}){
  const url=urlFor(record),video=isVideo(record);
  if(video&&!animated){
-  if(posterUrl&&posterFor===(record.savedAt||record.name)){
-   const image=document.createElement('img');image.src=posterUrl;image.alt='';image.className='personal-media';
-   image.setAttribute('aria-hidden','true');image.style.objectFit=record.fit;return image;
-  }
+  const poster=posters.get(posterKey(record));
+  if(poster){const image=document.createElement('img');image.src=poster;image.alt='';image.className='personal-media';
+   image.setAttribute('aria-hidden','true');image.style.objectFit=record.fit;return image;}
   const placeholder=document.createElement('div');placeholder.className='personal-media media-video-poster';
-  placeholder.textContent='✧';placeholder.setAttribute('aria-hidden','true');return placeholder;
+  placeholder.textContent='▶';placeholder.setAttribute('aria-hidden','true');void generatePoster(record);return placeholder;
  }
  const el=document.createElement(video?'video':'img');el.className='personal-media';el.setAttribute('aria-hidden','true');
  if(video){
@@ -113,8 +111,8 @@ function nodeDisplay(record,{animated=true,slot=''}={}){
 }
 function setDisplay(holder,record,{animated=true,signature='',hero=false}={}){
  if(!holder)return;
- const key=record?record.slot+'|'+record.savedAt+'|'+record.mode+'|'+record.motion+'|'+animated+'|'+signature+'|'+(isVideo(record)&&!animated?posterFor:''):'none';
- if(holder.dataset.mediaSignature===key)return;
+ const key=record?record.slot+'|'+record.savedAt+'|'+record.mode+'|'+record.motion+'|'+animated+'|'+signature+'|'+(isVideo(record)&&!animated?String(posters.has(posterKey(record))):''):'none';
+ if(holder.dataset.mediaSignature===key){if(animated&&!document.hidden)holder.querySelectorAll('video').forEach(v=>{if(v.paused)v.play().catch(()=>{})});return;}
  holder.dataset.mediaSignature=key;
  holder.querySelectorAll('video').forEach(v=>v.pause());
  if(!record){
