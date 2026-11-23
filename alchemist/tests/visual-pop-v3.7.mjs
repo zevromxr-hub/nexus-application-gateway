@@ -48,7 +48,7 @@ for(const file of ['visual-pop-v3.7.js','visual-pop-v3.7.css','video-vault-visua
 assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.7.0'"));
 assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.7.0');
 assert.equal(JSON.parse(read('releases/v3.7.0.json')).version,'3.7.0');
-for(const name of ['visual-pop-v3.7.js','video-vault-visual-v3.7.js','media-publisher.js','video-vault.js','app.js']){
+for(const name of ['visual-pop-v3.7.js','video-vault-visual-v3.7.js','media-publisher.js','video-vault.js','app.js','tests/visual-pop-v3.7.browser.mjs']){
  const p=spawnSync(process.execPath,['--check',path.join(root,name)],{encoding:'utf8'});
  assert.equal(p.status,0,name+': '+p.stderr);
 }
