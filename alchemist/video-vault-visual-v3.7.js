@@ -5,7 +5,7 @@
 import {$} from './core.js';
 import {listStoredVideos,updateStoredVideo} from './video-vault.js';
 import {sortVideoLibrary} from './video-vault-core.js';
-const mobile=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+const mobile=/iPhone|iPad|iPod/i.test(typeof navigator==='undefined'?'':navigator.userAgent);
 const TYPES={gif:'image/gif',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',mp4:'video/mp4',webm:'video/webm'};
 export function coverType(file){
  const ext=String(file?.name||'').split('.').pop()?.toLowerCase(),type=TYPES[ext]||'';
@@ -44,7 +44,10 @@ export function initVaultVisualCovers(){
   }
  }
  if('IntersectionObserver' in window)observer=new IntersectionObserver(entries=>{
-  for(const entry of entries)candidates.set(entry.target,entry.isIntersecting);
+  for(const entry of entries){
+   const movie=entry.target.querySelector('.video-vault-art-video');
+   if(movie)candidates.set(movie,entry.isIntersecting);
+  }
   reconcile();
  },{rootMargin:'80px 0px',threshold:.08});
  function clean(){
@@ -156,7 +159,7 @@ export function initVaultVisualCovers(){
       movie.setAttribute('muted','');movie.setAttribute('playsinline','');
       movie.setAttribute('aria-hidden','true');movie.hidden=true;
       movie.dataset.url=urlFor(item.coverBlob);movie.dataset.mime=type;
-      cover.append(movie);candidates.set(movie,false);observer?.observe(movie);
+      cover.append(movie);candidates.set(movie,false);observer?.observe(cover);
      }
     }
    }
