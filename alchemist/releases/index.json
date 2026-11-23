@@ -1,8 +1,13 @@
 {
   "schema": "proximus.alchemist.release-index/1",
-  "updated": "2026-11-14",
+  "updated": "2026-11-23",
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
+    {
+      "version": "3.7.0",
+      "title": "Cinematic Media Overdrive — High-Fidelity Local GIF/Video Thumbnails",
+      "date": "2026-11-23"
+    },
     {
       "version": "3.6.4",
       "title": "Video Vault Ultra Import — Large Local Files & Wider Format Support",
