@@ -90,7 +90,8 @@ export function initVaultVisualCovers(){
   const still=await stillFromMedia(file,type);
   const items=await listStoredVideos(),item=items.find(x=>x.id===id);
   if(!item)throw Error('This saved video was removed before the cover finished.');
-  item.coverBlob=file;item.coverMime=type;
+  // WebKit IndexedDB is more reliable with a plain Blob than a file-picker File.
+  item.coverBlob=new Blob([file],{type});item.coverMime=type;
   if(still)item.coverPoster=still;else delete item.coverPoster;
   item.updated=Date.now();
   await updateStoredVideo(item);
