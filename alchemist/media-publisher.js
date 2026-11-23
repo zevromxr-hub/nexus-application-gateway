@@ -124,14 +124,14 @@ function setDisplay(holder,record,{animated=true,signature='',hero=false}={}){
  if(hero)holder.classList.add('has-personal-media');
 }
 function activeStudio(){return document.querySelector('.studio:not([hidden])')?.dataset.panel||'';}
-function shouldAnimate(master,studioVisible,cardIndex=0){
- if(!isVideo(master))return true;
- if(master.motion==='poster')return false;
- if(master.motion==='live')return studioVisible&&cardIndex<6;
- // Adaptive: only two simultaneous video thumbnails to respect mobile power.
- const iphone=/iPhone|iPad|iPod/i.test(navigator.userAgent);
- return studioVisible&&cardIndex<(iphone?2:4);
+const iphone=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+function animationLimit(){const mode=window.ProximusVisualPopV37?.previewMode?.()||'balanced';
+ return mode==='still'?0:mode==='cinema'?(iphone?3:8):(iphone?1:3);}
+function shouldAnimate(record,visible,index=0){
+ if(!record||!isVideo(record))return true;
+ return visible&&!document.hidden&&record.motion!=='poster'&&index<animationLimit();
 }
+function onScreen(node){const r=node.getBoundingClientRect();return r.width>0&&r.height>0&&r.bottom>-150&&r.top<innerHeight+210}
 function refresh(){
  const master=document.body.dataset.identityMasterMedia==='off'?null:mediaRecords.get('master'),
   mode=master?.mode||'force',active=activeStudio();
@@ -161,23 +161,20 @@ function refresh(){
   setDisplay(holder,rec,{animated:shouldAnimate(rec,true,0),signature:'studio-'+studio});
  }
  const cardNodes=[...document.querySelectorAll('[data-proximus-thumbnail]')];
- let cardCount=0;
+ let cardCount=0,liveCount=0;
  for(const card of cardNodes){
   const studio=card.dataset.proximusThumbnail;
   const record=chooseThumbnail(master,mediaRecords.get('studio-'+studio),mode);
-  const holder=card.querySelector('.dashboard-thumb');
-  if(!holder)continue;
+  const holder=card.querySelector('.dashboard-thumb');if(!holder)continue;
   const visible=!card.hidden&&!card.closest('[hidden]')&&document.querySelector('[data-panel="command"]')?.hidden===false;
-  // For video, use a common decoded poster across all dashboard cards.
-  const iphone=/iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const videoLive=visible&&isVideo(record)&&record.motion==='live'&&cardCount<(iphone?1:4);
-  const animate=visible&&(record&&!isVideo(record)||videoLive);
-  setDisplay(holder,record,{animated:!!animate,signature:'card-'+studio});
+  const animate=Boolean(visible&&onScreen(card)&&record&&shouldAnimate(record,true,liveCount));
+  if(animate&&isVideo(record))liveCount++;
+  setDisplay(holder,record,{animated:animate,signature:'card-'+studio});
   cardCount++;
  }
  const masterLabel=$('mediaMasterStatus');
  if(masterLabel)masterLabel.textContent=master?'MASTER ACTIVE · '+master.name+' · '+cardCount+' dashboard slots · '+document.querySelectorAll('.studio[data-panel]').length+' studio thumbnails':'No master thumbnail selected.';
- if(master&&isVideo(master))void generatePoster(master);
+ if(master&&isVideo(master)&&document.querySelector('[data-panel="command"]')?.hidden===false)void generatePoster(master);
 }
 let debounce=null;
 function queueRefresh(){if(debounce)clearTimeout(debounce);debounce=setTimeout(refresh,0);}
@@ -185,7 +182,7 @@ async function writeMedia(record){
  const saved=safeRecord(record);
  const old=mediaRecords.get(saved.slot);
  mediaRecords.set(saved.slot,saved);releaseUrl(saved.slot);
- if(saved.slot==='master'&&old?.savedAt!==saved.savedAt){if(posterUrl)URL.revokeObjectURL(posterUrl);posterUrl=null;posterFor='';}
+ if(old?.savedAt!==saved.savedAt)clearPoster(saved.slot);
  refresh();
  await tx('readwrite',store=>store.put(saved));
  document.dispatchEvent(new CustomEvent('proximus-media-changed',{detail:{slot:saved.slot,name:saved.name}}));
@@ -193,7 +190,7 @@ async function writeMedia(record){
 }
 async function removeMedia(slot){
  mediaRecords.delete(slot);releaseUrl(slot);
- if(slot==='master'){if(posterUrl)URL.revokeObjectURL(posterUrl);posterUrl=null;posterFor='';}
+ clearPoster(slot);
  await tx('readwrite',store=>store.delete(slot));refresh();
  document.dispatchEvent(new CustomEvent('proximus-media-changed',{detail:{slot,removed:true}}));
 }
@@ -208,7 +205,7 @@ export async function importMediaRecords(records,{replace=false}={}){
  for(const item of list)await tx('readwrite',store=>store.put(item));
  if(replace){for(const key of [...mediaRecords.keys()]){mediaRecords.delete(key);releaseUrl(key);}}
  for(const item of list){releaseUrl(item.slot);mediaRecords.set(item.slot,item);}
- if(posterUrl)URL.revokeObjectURL(posterUrl);posterUrl=null;posterFor='';
+ for(const url of posters.values())URL.revokeObjectURL(url);posters.clear();
  refresh();document.dispatchEvent(new Event('proximus-media-imported'));return list.length;
 }
 export function initMediaPublisher(){
@@ -223,7 +220,7 @@ export function initMediaPublisher(){
  function ui(){
   const at=slot(),rec=mediaRecords.get(at),isMaster=at==='master';
   studioLabel.hidden=target.value!=='studio';masterRow.hidden=!isMaster;
-  opacity.value=String(rec?.opacity??.42);fit.value=rec?.fit||'cover';
+  opacity.value=String(rec?.opacity??.78);fit.value=rec?.fit||'cover';
   masterMode.value=rec?.mode||'force';masterMotion.value=rec?.motion||'adaptive';
   status.textContent=rec?'Saved: '+rec.name+' · '+bytes(rec.blob.size)+' · on this device':'No custom media saved for this location.';
   $('mediaClear').disabled=!rec;
@@ -272,6 +269,16 @@ export function initMediaPublisher(){
  document.addEventListener('proximus-view-changed',queueRefresh);
  document.addEventListener('proximus-identity-changed',queueRefresh);
  document.addEventListener('proximus-media-refresh',queueRefresh);
+ document.addEventListener('visibilitychange',queueRefresh);
+ document.addEventListener('scroll',queueRefresh,{passive:true,capture:true});
+ window.addEventListener('resize',queueRefresh,{passive:true});
+ document.addEventListener('proximus-cinema-background-preset',e=>{
+  const old=mediaRecords.get('background');
+  if(!old){status.textContent='Choose a local background video, GIF or image first.';return;}
+  void writeMedia({...old,opacity:Math.max(.1,Math.min(1,Number(e.detail?.opacity)||.85)),fit:'cover'})
+    .then(()=>{if(target.value==='background')ui();status.textContent='Cinematic background saved with 85% visibility.'})
+    .catch(err=>{status.textContent='Background not saved: '+err.message});
+ });
  void (async()=>{try{
   const entries=await tx('readonly',store=>store.getAll());
   for(const item of entries)if(item?.blob instanceof Blob&&validSlot(item.slot))mediaRecords.set(item.slot,safeRecord(item));
@@ -279,6 +286,6 @@ export function initMediaPublisher(){
  }catch(error){status.textContent='Local media storage unavailable: '+error.message;refresh();}})();
  window.addEventListener('pagehide',()=>{
   for(const url of urls.values())URL.revokeObjectURL(url);urls.clear();
-  if(posterUrl)URL.revokeObjectURL(posterUrl);
+  for(const url of posters.values())URL.revokeObjectURL(url);posters.clear();
  },{once:true});
 }
