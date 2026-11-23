@@ -17,7 +17,8 @@
     "Independent GIF, MP4, WebM, PNG, JPEG or WebP artwork cover per saved Video Vault movie; muted video covers animate only in the current viewport subject to iPhone decoder limits.",
     "New Video Vault current-frame cover button with 960×540 JPEG snapshots; personal cover reset does not delete original video, collection or metadata.",
     "No new studios, no external video downloading and no external media uploads. The existing OPFS/IndexedDB local video data is preserved.",
-    "All current Media Theater, Animation Forge, Reactor/Sonic, large-file Video Vault, mobile layout and privacy features remain."
+    "All current Media Theater, Animation Forge, Reactor/Sonic, large-file Video Vault, mobile layout and privacy features remain.",
+    "Personal Home Screen Icon Studio: export 180/512 PNG icons from user art or saved Master, with zoom/focus control, offline previews and separate iPhone Shortcuts vs native web-app installation instructions; existing installed icons do not update automatically."
   ],
   "retired_studios": [],
   "added_studios": [],
