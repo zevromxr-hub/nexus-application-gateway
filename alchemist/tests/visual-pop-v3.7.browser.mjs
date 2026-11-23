@@ -10,9 +10,9 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
  page.on('pageerror',e=>errors.push(String(e)));
  try{
   await page.goto('http://127.0.0.1:4173/alchemist/',{waitUntil:'domcontentloaded',timeout:40000});
-  await page.locator('#mediaOpen').waitFor({state:'visible',timeout:16000});
+  await page.locator(mobile?'#commandOpenMedia':'#mediaOpen').waitFor({state:'visible',timeout:16000});
   assert.match(await page.locator('#versionInfo').textContent(),/3\.7\.0/);
-  await page.locator('#mediaOpen').click();
+  await page.locator(mobile?'#commandOpenMedia':'#mediaOpen').click();
   await page.locator('#mediaTarget').selectOption('background');
   await page.locator('#mediaFile').setInputFiles({name:'vivid.gif',mimeType:'image/gif',buffer:gif});
   await page.locator('#mediaSave').click();
@@ -35,7 +35,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
      tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
    db.close();
   });
-  await page.locator('#vaultJump').click();
+  await page.locator(mobile?'#mobileDock [data-mobile-target="videos"]':'#vaultJump').click();
   await page.locator('#videoVaultRefresh').click();
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});
