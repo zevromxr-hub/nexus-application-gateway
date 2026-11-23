@@ -25,6 +25,26 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#mediaFile').setInputFiles({name:'master.gif',mimeType:'image/gif',buffer:gif});
   await page.locator('#mediaMasterApply').click();
   assert.ok(await page.locator('#heroOrb img.personal-media').count()>=1);
+  // Reuse saved Master artwork: icon crop and PNG generation must be completely local.
+  await page.locator('#homeIconUseMaster').click();
+  await page.waitForFunction(()=>String(document.querySelector('#homeIconStatus')?.textContent).includes('Using your existing Master artwork'),null,{timeout:12000});
+  await page.locator('#homeIconZoom').evaluate(node=>{
+   node.value='175';node.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  await page.waitForFunction(()=>JSON.parse(localStorage.getItem('proximus-personal-home-icon-v370')||'{}').zoom===175,null,{timeout:9000});
+  const icon=await page.evaluate(()=>{
+   const data=JSON.parse(localStorage.getItem('proximus-personal-home-icon-v370')||'{}');
+   return {hasLocalSource:String(data.source||'').startsWith('data:image/jpeg;base64,'),
+    canvasWidth:document.querySelector('#homeIconPreview')?.width,
+    canvasHeight:document.querySelector('#homeIconPreview')?.height,
+    hasInstructions:document.querySelector('#homeIconHelp')?.textContent.includes('Shortcuts')};
+  });
+  assert.equal(icon.hasLocalSource,true,'Custom iPhone icon source is browser-local');
+  assert.equal(icon.canvasWidth,180);assert.equal(icon.canvasHeight,180);
+  assert.equal(icon.hasInstructions,true);
+  const iconDownload=page.waitForEvent('download',{timeout:10000});
+  await page.locator('#homeIconExport180').click();
+  const exported=await iconDownload;assert.match(exported.suggestedFilename(),/180\.png$/);
   await page.locator('#mediaClose').click();
   // Critical: browser-local artwork must survive a fresh iPhone Home Screen-style
   // app reload, not just appear optimistically before IndexedDB finishes.
