@@ -14,7 +14,7 @@
     "Improved the existing local Media Publisher with 960×540 high-quality video poster rendering for studio, Command Center and master thumbnail surfaces, preserving previously chosen GIF, MP4, WebM and image media.",
     "Added Cinematic Visual Pop: adjustable thumbnail saturation/contrast, background brightness, panel readability and live-preview balance, including opt-in cinematic settings.",
     "Added cinematic background preset that raises a saved personal backdrop to 85% visibility without requiring a new upload; retains original media and uses browser-local preferences.",
-    "Enhanced every saved Video Vault card with independent local GIF, MP4, WebM and still-image cover upload and reset controls; attached cover clips remain optional and browser-local.",
+    "Enhanced every saved Video Vault card with independent local GIF, MP4, WebM and still-image cover upload and reset controls; attached covers use independent local binary storage.",
     "Animated video covers play muted only when on screen and within adaptive iPhone/desktop decoder limits; static 960×540 covers remain available where playback is unsupported or disabled.",
     "Improved the native Video Vault snapshot to a 960×540 high-quality cover, with a button to choose the current playback frame; all original video data, favorites, resumes, import capacities and collections preserved.",
     "Retains local-only media processing, existing IndexedDB/OPFS, Media Theater, Animation Forge, ORBIT mobile navigation, Power Guard and all 18 companion spaces."
