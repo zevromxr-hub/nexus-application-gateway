@@ -3,6 +3,7 @@ import {$,bytes,safe,stem,notice,download,makeZip,sha256,textFile,nowName,wrap} 
 import {initAnimationForge} from './animation-tools.js';
 import {initMediaPublisher} from './media-publisher.js';
 import {initVisualPop} from './visual-pop-v3.7.js';
+import {initHomeIconStudio} from './home-icon-studio-v3.7.js';
 import {initMediaTheater} from './media-theater.js';
 import {initSovereignReactor} from './reactor-studio.js';
 import {initArcadeChamber} from './arcade-chamber.js';
@@ -304,7 +305,7 @@ function setupVersion(){
 function launch(){
  mountUnifiedSonicTheater();
  initOrbitInterface(app);
- initAnimationForge(app);initVisualPop();initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initAnimationForge(app);initVisualPop();initMediaPublisher();initHomeIconStudio();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
