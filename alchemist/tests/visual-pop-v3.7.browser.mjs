@@ -42,7 +42,22 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   const cover=card.locator('button', {hasText:'✧ GIF/Video Cover'});
   await cover.waitFor({state:'attached',timeout:15000});
   await card.locator('input[type=file]').setInputFiles({name:'personal.gif',mimeType:'image/gif',buffer:gif});
-  await card.locator('.video-vault-art-image').waitFor({state:'attached',timeout:15000});
+  await page.waitForTimeout(1800);
+  console.log('COVER DEBUG '+name+' '+JSON.stringify(await page.evaluate(async()=>{
+   const db=await new Promise((resolve,reject)=>{const req=indexedDB.open('proximus-video-vault-v1',2);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
+   const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');const req=tx.objectStore('items').get('smoke-clip-1234');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
+   db.close();return {
+    localStatus:document.querySelector('#videoVaultStatus')?.textContent,
+    hasCoverBlob:item?.coverBlob instanceof Blob,coverSize:item?.coverBlob?.size,
+    cards:document.querySelectorAll('#videoVaultGrid .video-vault-card').length,
+    decorated:[...document.querySelectorAll('#videoVaultGrid .video-vault-card')].map(x=>({
+     title:x.querySelector('strong')?.textContent,enhanced:x.dataset.coverEnhanced,
+     image:!!x.querySelector('.video-vault-art-image'),controls:x.querySelectorAll('button').length
+    })),
+    artError:document.querySelector('#notice')?.textContent
+   };
+  }))));
+  await card.locator('.video-vault-art-image').waitFor({state:'attached',timeout:10000});
   const saved=await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
