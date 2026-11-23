@@ -31,7 +31,7 @@ for(const id of ['mediaVisualProfile','mediaThumbVibrancy','mediaThumbContrast',
 assert.ok(app.includes('initVisualPop();initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers()'));
 assert.ok(html.includes('./visual-pop-v3.7.css'));
 assert.ok(css.includes('--pv-panel-alpha')&&css.includes('--pv-saturation'));
-assert.ok(publisher.includes('canvas.width=960')&&publisher.includes('canvas.height=540'));
+assert.ok(publisher.includes('cv.width=960')&&publisher.includes('cv.height=540'));
 assert.ok(publisher.includes('clearPoster(')&&publisher.includes('onScreen('));
 assert.ok(publisher.includes('animationLimit()'));
 assert.ok(vault.includes('canvas.width=960')&&vault.includes('maybeCreatePoster(true)'));
