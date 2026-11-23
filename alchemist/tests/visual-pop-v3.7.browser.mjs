@@ -26,6 +26,12 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#mediaMasterApply').click();
   assert.ok(await page.locator('#heroOrb img.personal-media').count()>=1);
   await page.locator('#mediaClose').click();
+  // Critical: browser-local artwork must survive a fresh iPhone Home Screen-style
+  // app reload, not just appear optimistically before IndexedDB finishes.
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>document.body.classList.contains('has-ambient')&&
+    document.querySelector('#ambientMedia img')&&document.querySelector('#heroOrb img.personal-media'),null,{timeout:15000});
+  assert.equal(await page.evaluate(()=>Math.round(Number(document.querySelector('#ambientMedia').style.opacity)*100)),85);
   // Populate *test-only* local video metadata. Existing original blob/storage is
   // intentionally never modified or deleted by the cover layer.
   await page.evaluate(async()=>{
