@@ -56,7 +56,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
     })),
     artError:document.querySelector('#notice')?.textContent
    };
-  }))));
+  })));
   await card.locator('.video-vault-art-image').waitFor({state:'attached',timeout:10000});
   const saved=await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
