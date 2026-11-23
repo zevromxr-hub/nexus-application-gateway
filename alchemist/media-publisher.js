@@ -82,11 +82,20 @@ async function generatePoster(record){
  }catch(_){posterFailures.add(key);/* Unsupported codec: original file is preserved. */}
  finally{posterPending.delete(key);node.pause();node.removeAttribute('src');node.load()}
 }
+// Store typed binary buffers for newly selected artwork. Safari WebKit can
+// fail to commit File/Blob records whose data originates in a file picker.
+// Existing legacy Blob records remain readable without migrating or deleting.
+async function diskRecord(record){
+ const data=await record.blob.arrayBuffer();
+ const row={...record,blobData:data};delete row.blob;return row;
+}
 function safeRecord(x){
- if(!x||!validSlot(x.slot)||!(x.blob instanceof Blob))throw Error('Invalid saved media record.');
- const mime=mimeType({name:x.name,type:x.mime||x.blob.type,size:x.blob.size});
+ if(!x||!validSlot(x.slot))throw Error('Invalid saved media record.');
+ const blob=x.blob instanceof Blob?x.blob:(x.blobData instanceof ArrayBuffer?new Blob([x.blobData],{type:x.mime||''}):null);
+ if(!(blob instanceof Blob))throw Error('Personal media binary data is unavailable.');
+ const mime=mimeType({name:x.name,type:x.mime||blob.type,size:blob.size});
  const opt=mediaFitOptions(x);
- return {slot:x.slot,blob:x.blob,name:safe(x.name||'Personal Media'),mime,...opt,
+ return {slot:x.slot,blob,name:safe(x.name||'Personal Media'),mime,...opt,
   savedAt:x.savedAt||new Date().toISOString(),
   mode:MASTER_MODES.includes(x.mode)?x.mode:'force',
   motion:MASTER_MOTION.includes(x.motion)?x.motion:'adaptive'};
@@ -182,10 +191,11 @@ function queueRefresh(){if(debounce)clearTimeout(debounce);debounce=setTimeout(r
 async function writeMedia(record){
  const saved=safeRecord(record);
  const old=mediaRecords.get(saved.slot);
+ const row=await diskRecord(saved);
+ await tx('readwrite',store=>store.put(row));
  mediaRecords.set(saved.slot,saved);releaseUrl(saved.slot);
  if(old?.savedAt!==saved.savedAt)clearPoster(saved.slot);
  refresh();
- await tx('readwrite',store=>store.put(saved));
  document.dispatchEvent(new CustomEvent('proximus-media-changed',{detail:{slot:saved.slot,name:saved.name}}));
  return saved;
 }
@@ -197,13 +207,13 @@ async function removeMedia(slot){
 }
 export async function exportMediaRecords(){
  const all=await tx('readonly',store=>store.getAll());
- return all.filter(x=>x?.blob instanceof Blob&&validSlot(x.slot)).map(safeRecord);
+ return all.filter(x=>(x?.blob instanceof Blob||x?.blobData instanceof ArrayBuffer)&&validSlot(x.slot)).map(safeRecord);
 }
 export async function importMediaRecords(records,{replace=false}={}){
  if(!Array.isArray(records)||records.length>90)throw Error('Media backup exceeds 90 locations.');
  const list=records.map(safeRecord);
  if(replace)await tx('readwrite',store=>store.clear());
- for(const item of list)await tx('readwrite',store=>store.put(item));
+ for(const item of list){const row=await diskRecord(item);await tx('readwrite',store=>store.put(row));}
  if(replace){for(const key of [...mediaRecords.keys()]){mediaRecords.delete(key);releaseUrl(key);}}
  for(const item of list){releaseUrl(item.slot);mediaRecords.set(item.slot,item);}
  for(const url of posters.values())URL.revokeObjectURL(url);posters.clear();
@@ -282,7 +292,7 @@ export function initMediaPublisher(){
  });
  void (async()=>{try{
   const entries=await tx('readonly',store=>store.getAll());
-  for(const item of entries)if(item?.blob instanceof Blob&&validSlot(item.slot))mediaRecords.set(item.slot,safeRecord(item));
+  for(const item of entries)if((item?.blob instanceof Blob||item?.blobData instanceof ArrayBuffer)&&validSlot(item.slot))mediaRecords.set(item.slot,safeRecord(item));
   refresh();ui();
  }catch(error){status.textContent='Local media storage unavailable: '+error.message;refresh();}})();
  window.addEventListener('pagehide',()=>{
