@@ -379,7 +379,7 @@ export function initVideoVault(app){
   keepSession.disabled=false;$('videoVaultPiP').disabled=false;
   $('videoVaultSendTheater').disabled=true;$('videoVaultToGif').disabled=true;
   $('videoVaultSnapshot').disabled=false;
-    $('videoVaultUpdatePoster').disabled=false;
+   $('videoVaultUpdatePoster').disabled=true;
   say('Playing directly from Files without copying '+bytes(file.size)+' into website storage. Select again next visit unless saved.');
   try{await video.play();}catch{say('Session video ready. Tap the video player’s Play button on iPhone.');}
   video.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -427,6 +427,7 @@ export function initVideoVault(app){
    $('videoVaultSendTheater').disabled=false;
    $('videoVaultToGif').disabled=false;
    $('videoVaultSnapshot').disabled=false;
+   $('videoVaultUpdatePoster').disabled=false;
    video.playbackRate=Number($('videoVaultSpeed').value)||1;
    info.textContent+=' · '+videoPlaybackHint(item.mime,video.canPlayType(item.mime));
    drawBookmarks();render();
