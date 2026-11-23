@@ -29,7 +29,7 @@ export function initHomeIconStudio(){
  const reset=$('homeIconReset'),copy=$('homeIconCopyUrl'),guide=$('homeIconHelp');
  if(!source||!preview||!status||!zoom||!x||!y||!background||!frame)return;
  const ctx=preview.getContext('2d',{alpha:false});
- let photo=null,objectUrl=null,scheduled=false;
+ let photo=null,objectUrl=null,scheduled=false,sourcePreview=null;
  let crop=normalizeIconCrop();
  const say=text=>{status.textContent=text};
  const current=()=>{crop=normalizeIconCrop({
@@ -57,9 +57,16 @@ export function initHomeIconStudio(){
   }
   return cv;
  }
+ function makeSourcePreview(image){
+  const scale=Math.min(1,768/Math.max(image.naturalWidth,image.naturalHeight));
+  const c=document.createElement('canvas');
+  c.width=Math.max(1,Math.round(image.naturalWidth*scale));c.height=Math.max(1,Math.round(image.naturalHeight*scale));
+  c.getContext('2d').drawImage(image,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.85);
+ }
  function paint(){
   try{ctx.clearRect(0,0,180,180);ctx.drawImage(canvasImage(180),0,0,180,180);
-   try{localStorage.setItem(STORAGE,JSON.stringify({...current(),preview:preview.toDataURL('image/png')}))}
+   try{localStorage.setItem(STORAGE,JSON.stringify({...current(),source:sourcePreview}))}
    catch(_){say('Icon preview works, but browser storage is unavailable. Export your PNG before closing.')}
   }catch(e){say('Icon preview failed: '+e.message)}
  }
@@ -75,11 +82,48 @@ export function initHomeIconStudio(){
    const img=new Image();img.decoding='async';
    await new Promise((res,rej)=>{img.onload=()=>res();img.onerror=()=>rej(Error('Cannot decode this picture'));img.src=url});
    if(!img.naturalWidth||!img.naturalHeight)throw Error('No visible image in file');
-   revoke();objectUrl=url;photo=img;queuePaint();
+   revoke();objectUrl=url;photo=img;sourcePreview=makeSourcePreview(img);queuePaint();
    say('Artwork loaded locally. Adjust crop and zoom, then export the 180 or 512 PNG. GIF icons are static.');
   }catch(e){URL.revokeObjectURL(url);say('Artwork was not changed: '+e.message)}
  }
  source.addEventListener('change',()=>{const file=source.files?.[0];if(file)void choose(file);source.value=''});
+ // Reuse existing local Media Publisher Master art without any second manual upload.
+ const useMaster=$('homeIconUseMaster');
+ useMaster?.addEventListener('click',()=>document.dispatchEvent(new Event('proximus-home-icon-request-master')));
+ document.addEventListener('proximus-home-icon-master-result',e=>{
+  const data=e.detail||{};
+  if(data.error){say(data.error);return}
+  if(!(data.blob instanceof Blob)){say('Saved Master artwork was unavailable in this browser.');return}
+  if(data.mime?.startsWith('video/')){
+   void (async()=>{
+    const url=URL.createObjectURL(data.blob),video=document.createElement('video');
+    video.muted=true;video.playsInline=true;video.preload='auto';
+    try{
+     await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>{finish();reject(Error('Could not decode this video on your iPhone'))},10000);
+      const finish=()=>{clearTimeout(timer);video.removeEventListener('loadeddata',loaded);video.removeEventListener('error',fail)};
+      const loaded=()=>{finish();resolve()},fail=()=>{finish();reject(Error('Video artwork format unsupported'))};
+      video.addEventListener('loadeddata',loaded);video.addEventListener('error',fail);
+      video.src=url;video.load();
+     });
+     if(!video.videoWidth||!video.videoHeight)throw Error('Video has no decodable frame');
+     const cv=document.createElement('canvas');
+     const scale=Math.min(1,768/Math.max(video.videoWidth,video.videoHeight));
+     cv.width=Math.max(1,Math.round(video.videoWidth*scale));cv.height=Math.max(1,Math.round(video.videoHeight*scale));
+     cv.getContext('2d').drawImage(video,0,0,cv.width,cv.height);
+     const frame=await imageToBlob(cv);
+     await choose(new File([frame],'master-video-frame.png',{type:'image/png'}));
+     say('Using the first decoded frame of your saved Master video. Crop, then download your personal icon.');
+    }catch(err){say('Master video preview unavailable: '+err.message)}
+    finally{video.pause();video.removeAttribute('src');video.load();URL.revokeObjectURL(url)}
+   })();
+  }else{
+   const type=data.mime||data.blob.type||'image/png';
+   void choose(new File([data.blob],data.name||'master-art.png',{type})).then(()=>{
+    say('Using your existing Master artwork. Crop it and export the icon—no second upload required.');
+   });
+  }
+ });
  for(const input of [zoom,x,y,background,frame])input.addEventListener(input.tagName==='SELECT'?'change':'input',queuePaint);
  async function exportPNG(size,shareSheet=false){
   const canvas=canvasImage(size),blob=await imageToBlob(canvas);
@@ -104,7 +148,7 @@ export function initHomeIconStudio(){
   catch(_){say('Copy this address into Shortcuts → Open URLs: '+url)}
  });
  reset?.addEventListener('click',()=>{
-  revoke();photo=null;crop=normalizeIconCrop();controls();paint();
+  revoke();photo=null;sourcePreview=null;crop=normalizeIconCrop();controls();paint();
   say('Reset the icon preview; original files and existing installed icons are unchanged.');
  });
  // The preview is intentionally local-only. Safari will not read this as its
@@ -112,8 +156,8 @@ export function initHomeIconStudio(){
  try{
   const previous=JSON.parse(localStorage.getItem(STORAGE)||'null');
   if(previous){crop=normalizeIconCrop(previous);controls();
-   if(typeof previous.preview==='string'&&previous.preview.startsWith('data:image/png;base64,')){
-    const img=new Image();img.onload=()=>{photo=img;paint()};img.src=previous.preview;
+   if(typeof previous.source==='string'&&previous.source.startsWith('data:image/jpeg;base64,')){
+    const img=new Image();img.onload=()=>{photo=img;sourcePreview=previous.source;paint()};img.src=previous.source;
    }else paint();
   }else paint();
  }catch(_){paint()}
