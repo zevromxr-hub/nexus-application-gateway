@@ -3,10 +3,41 @@
  * video downloads or cross-origin access. Source media stays in OPFS/IndexedDB.
  * Custom GIF/video/image cover Blobs share the item's existing metadata row. */
 import {$} from './core.js';
-import {listStoredVideos,updateStoredVideo} from './video-vault.js';
+import {listStoredVideos} from './video-vault.js';
 import {sortVideoLibrary} from './video-vault-core.js';
 const mobile=/iPhone|iPad|iPod/i.test(typeof navigator==='undefined'?'':navigator.userAgent);
 const TYPES={gif:'image/gif',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',mp4:'video/mp4',webm:'video/webm'};
+const COVER_DB='proximus-video-vault-covers-v370',COVER_STORE='covers';
+let coverDatabase=null;
+async function coverDB(){
+ if(coverDatabase)return coverDatabase;
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open(COVER_DB,1);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(COVER_STORE))
+   req.result.createObjectStore(COVER_STORE,{keyPath:'id'});};
+  req.onsuccess=()=>{coverDatabase=req.result;coverDatabase.onversionchange=()=>{coverDatabase.close();coverDatabase=null};resolve(coverDatabase)};
+  req.onerror=()=>reject(req.error||Error('Cannot open local cover database'));
+ });
+}
+async function coverTx(mode,action){
+ const db=await coverDB();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(COVER_STORE,mode),store=tx.objectStore(COVER_STORE);
+  let result,problem;
+  try{const req=action(store);
+   req.onsuccess=()=>{result=req.result};req.onerror=()=>{problem=req.error};
+  }catch(e){try{tx.abort()}catch{}reject(e);return}
+  tx.oncomplete=()=>resolve(result);
+  tx.onabort=tx.onerror=()=>reject(problem||tx.error||Error('Could not save personal cover on this device'));
+ });
+}
+const listCoverArt=()=>coverTx('readonly',store=>store.getAll());
+const deleteCoverArt=id=>coverTx('readwrite',store=>store.delete(id));
+async function saveCoverArt(id,file,mime,poster){
+ const data=await file.arrayBuffer(),image=poster?await poster.arrayBuffer():null;
+ return coverTx('readwrite',store=>store.put({id,mime,data,image,savedAt:Date.now()}));
+}
+
 export function coverType(file){
  const ext=String(file?.name||'').split('.').pop()?.toLowerCase(),type=TYPES[ext]||'';
  if(!type)throw Error('Choose a local GIF, PNG, JPG, WebP, MP4 or WebM for the cover.');
@@ -90,20 +121,13 @@ export function initVaultVisualCovers(){
   const still=await stillFromMedia(file,type);
   const items=await listStoredVideos(),item=items.find(x=>x.id===id);
   if(!item)throw Error('This saved video was removed before the cover finished.');
-  // WebKit IndexedDB is more reliable with a plain Blob than a file-picker File.
-  item.coverBlob=new Blob([file],{type});item.coverMime=type;
-  if(still)item.coverPoster=still;else delete item.coverPoster;
-  item.updated=Date.now();
-  await updateStoredVideo(item);
+  await saveCoverArt(id,file,type,still);
   show('Saved a '+(type.startsWith('video/')?'muted animated video':type==='image/gif'?'GIF':'still image')+' cover for '+item.name+'. Your original video was not changed.');
   $('videoVaultRefresh')?.click();
  }
  async function resetCover(id){
-  const items=await listStoredVideos(),item=items.find(x=>x.id===id);
-  if(!item)return;
-  delete item.coverBlob;delete item.coverMime;delete item.coverPoster;
-  item.updated=Date.now();await updateStoredVideo(item);
-  show('Custom cover reset. Original video and existing snapshot preserved.');
+  await deleteCoverArt(id);
+  show('Custom cover reset. Original video, existing snapshot and collections preserved.');
   $('videoVaultRefresh')?.click();
  }
  function btn(text){
@@ -114,7 +138,8 @@ export function initVaultVisualCovers(){
   if(enhancing){pendingRender=true;return}
   const id=++generation;enhancing=true;
   try{
-   const videos=await listStoredVideos();
+   const [videos,arts]=await Promise.all([listStoredVideos(),listCoverArt()]);
+   const coverById=new Map(arts.map(x=>[x.id,x]));
    if(id!==generation)return;
    const list=sortVideoLibrary(videos,{query:$('videoVaultSearch')?.value||'',
     filter:$('videoVaultFilter')?.value||'all',sort:$('videoVaultSort')?.value||'recent'}).slice(0,180);
@@ -138,7 +163,9 @@ export function initVaultVisualCovers(){
      });
     });
     actions.append(choose,file);
-    if(item.coverBlob instanceof Blob){
+    const rawArt=coverById.get(item.id);
+    const personalCover=rawArt?.data instanceof ArrayBuffer?new Blob([rawArt.data],{type:rawArt.mime}):null;
+    if(personalCover){
      const reset=btn('↺ Cover');reset.title='Remove custom cover (keeps the video)';
      reset.addEventListener('click',()=>void resetCover(item.id).catch(e=>{
       status.dataset.error='true';status.textContent='Could not reset cover: '+e.message;
@@ -152,7 +179,7 @@ export function initVaultVisualCovers(){
      if(type.startsWith('image/')){
       if(window.ProximusVisualPopV37?.previewMode?.()!=='still'||type!=='image/gif'){
        const image=document.createElement('img');image.className='video-vault-art-image';
-       image.src=urlFor(item.coverBlob);image.alt='';image.loading='lazy';cover.append(image);
+       image.src=urlFor(personalCover);image.alt='';image.loading='lazy';cover.append(image);
       }
      }else if(type.startsWith('video/')){
       const movie=document.createElement('video');movie.className='video-vault-art-video';
