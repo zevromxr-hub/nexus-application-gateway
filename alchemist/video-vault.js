@@ -217,6 +217,7 @@ export function initVideoVault(app){
   $('videoVaultSendTheater').disabled=true;
   $('videoVaultToGif').disabled=true;
   $('videoVaultSnapshot').disabled=true;
+  $('videoVaultUpdatePoster').disabled=true;
   drawBookmarks();updateMini();
  }
  function getVisible(){
@@ -378,6 +379,7 @@ export function initVideoVault(app){
   keepSession.disabled=false;$('videoVaultPiP').disabled=false;
   $('videoVaultSendTheater').disabled=true;$('videoVaultToGif').disabled=true;
   $('videoVaultSnapshot').disabled=false;
+    $('videoVaultUpdatePoster').disabled=false;
   say('Playing directly from Files without copying '+bytes(file.size)+' into website storage. Select again next visit unless saved.');
   try{await video.play();}catch{say('Session video ready. Tap the video player’s Play button on iPhone.');}
   video.scrollIntoView({block:'nearest',behavior:'smooth'});
@@ -392,19 +394,19 @@ export function initVideoVault(app){
   if(Number.isFinite(video.duration))item.duration=Math.max(0,Math.floor(video.duration));
   try{await updateStoredVideo(item);}catch(e){say('Playback works, but saving the resume position failed: '+e.message,true);}
  }
- async function maybeCreatePoster(){
-  const item=active();if(!item||item.poster||posterWorking||video.readyState<2)return;
+ async function maybeCreatePoster(force=false){
+  const item=active();if(!item||(!force&&item.poster)||posterWorking||video.readyState<2)return;
   posterWorking=true;const id=item.id;
   try{
-   const canvas=document.createElement('canvas');canvas.width=320;canvas.height=180;
+   const canvas=document.createElement('canvas');canvas.width=960;canvas.height=540;
    const ctx=canvas.getContext('2d');
-   ctx.fillStyle='#110d24';ctx.fillRect(0,0,320,180);
+   ctx.fillStyle='#110d24';ctx.fillRect(0,0,960,540);
    const iw=video.videoWidth,ih=video.videoHeight;
    if(iw<1||ih<1)return;
-   const scale=Math.max(320/iw,180/ih),dw=iw*scale,dh=ih*scale;
-   ctx.drawImage(video,(320-dw)/2,(180-dh)/2,dw,dh);
-   const jpeg=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.7));
-   if(jpeg&&jpeg.size<200000&&activeId===id){
+   const scale=Math.max(960/iw,540/ih),dw=iw*scale,dh=ih*scale;
+   ctx.drawImage(video,(960-dw)/2,(540-dh)/2,dw,dh);
+   const jpeg=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.88));
+   if(jpeg&&jpeg.size<800000&&activeId===id){
     item.poster=jpeg;await updateStoredVideo(item);render();
    }
   }catch(e){}finally{posterWorking=false;}
@@ -586,6 +588,12 @@ export function initVideoVault(app){
   const blob=await loadStoredVideo(item.id);
   const outcome=await saveOrShare(blob,item.name);
   say(outcome==='shared'?'Video sent to your device share sheet.':'Original saved video exported.');
+ }));
+ $('videoVaultUpdatePoster').addEventListener('click',wrap(async()=>{
+  if(!active())throw Error('Select a saved video before updating its cover frame.');
+  if(video.readyState<2)throw Error('Play or seek to a decoded frame first.');
+  await maybeCreatePoster(true);
+  say('High-quality video cover captured from the current frame. Your original file is unchanged.');
  }));
  video.addEventListener('loadedmetadata',seekResume);
  video.addEventListener('play',()=>{
