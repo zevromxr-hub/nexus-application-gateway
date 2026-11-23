@@ -18,6 +18,7 @@ export function coverType(file){
 export function initVaultVisualCovers(){
  const grid=$('videoVaultGrid'),status=$('videoVaultStatus');
  if(!grid||!status)return;
+ grid.dataset.previewMode=window.ProximusVisualPopV37?.previewMode?.()||'balanced';
  const objectUrls=new Set(),candidates=new Map();
  let observer=null,generation=0,queued=false,enhancing=false,pendingRender=false;
  const show=s=>{status.textContent=s;status.dataset.error='false'};
@@ -180,7 +181,7 @@ export function initVaultVisualCovers(){
    $('videoVaultRefresh')?.click();}
   else reconcile();
  });
- document.addEventListener('proximus-view-changed',()=>{reconcile();if(active())schedule()});
+ document.addEventListener('proximus-view-changed',reconcile);
  document.addEventListener('visibilitychange',reconcile);
  window.addEventListener('pagehide',()=>{mutation.disconnect();clean()},{once:true});
  schedule();
