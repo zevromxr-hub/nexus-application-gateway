@@ -1,0 +1,34 @@
+/* PROXIMUS | ASSET ALCHEMIST v3.7 — vivid local artwork without dim video playback */
+.media-vivid-controls{margin:15px 0;padding:15px;border-radius:16px;border:1px solid #9a77c9;
+ background:linear-gradient(145deg,#2b1b46,#131f38);box-shadow:0 12px 40px #0004}
+.media-vivid-controls h3{color:#f4dcff;font:900 15px/1.3 system-ui;margin:0 0 6px}
+.media-vivid-controls .vivid-hint{font-size:11px;color:#d2c2e9;line-height:1.55;margin:4px 0 12px}
+.media-vivid-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.media-vivid-grid label{font-size:11px;min-width:0}
+.media-vivid-grid input,.media-vivid-grid select{width:100%;max-width:100%}
+.media-vivid-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.media-vivid-actions button{flex:1 1 170px;min-height:43px}
+#mediaVisualPopStatus{font-size:11px;color:#c1f0de;line-height:1.6;margin:8px 0 0}
+#ambientMedia .personal-media{filter:brightness(var(--pv-brightness,112%)) saturate(var(--pv-saturation,118%))
+ contrast(var(--pv-contrast,110%));}
+.personal-media-container{background:#121827}
+#heroOrb.has-personal-media .personal-media,
+.studio-personal-thumb .personal-media,
+.dashboard-thumb .personal-media{
+ filter:brightness(105%) saturate(var(--pv-saturation,118%)) contrast(var(--pv-contrast,110%));
+}
+.dashboard-thumb,.studio-personal-thumb{box-shadow:inset 0 0 8px #fff1,0 0 30px #8b70d233}
+.dashboard-thumb .personal-media{object-position:center}
+.command-studio-card{border-color:#9581bd9c;box-shadow:0 13px 28px #09071499}
+.command-studio-card:hover,.command-studio-card:focus-within{border-color:#f2d59e;box-shadow:0 12px 42px #b68dff35}
+body.has-ambient .welcome{background:linear-gradient(115deg,
+ rgba(16,19,37,var(--pv-panel-alpha,.78)),rgba(20,17,38,var(--pv-panel-alpha,.78)) 58%,rgba(11,16,30,var(--pv-panel-alpha,.78)))!important}
+body.has-ambient .panel,body.has-ambient .preview-panel{background:
+ linear-gradient(145deg,rgba(15,22,41,var(--pv-panel-alpha,.78)),rgba(16,20,36,var(--pv-panel-alpha,.78)))!important;
+ backdrop-filter:blur(5px)}
+body.has-ambient .rail{background:#111329ee}
+body.has-ambient .video-vault-cinema{background:#08070c!important;backdrop-filter:none!important}
+body.has-ambient #videoVaultPlayer{filter:none!important;background:#000!important}
+@media(max-width:620px){.media-vivid-controls{padding:12px}.media-vivid-grid{grid-template-columns:1fr}
+ .dashboard-thumb{aspect-ratio:16/10}}
+@media(prefers-reduced-motion:reduce){.command-studio-card{transition:none}}
