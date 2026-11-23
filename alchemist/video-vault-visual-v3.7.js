@@ -19,7 +19,7 @@ export function initVaultVisualCovers(){
  const grid=$('videoVaultGrid'),status=$('videoVaultStatus');
  if(!grid||!status)return;
  const objectUrls=new Set(),candidates=new Map();
- let observer=null,generation=0,queued=false,enhancing=false;
+ let observer=null,generation=0,queued=false,enhancing=false,pendingRender=false;
  const show=s=>{status.textContent=s;status.dataset.error='false'};
  const limit=()=>{
   const p=window.ProximusVisualPopV37?.previewMode?.()||'balanced';
@@ -106,9 +106,8 @@ export function initVaultVisualCovers(){
   b.textContent=text;b.style.minHeight='36px';return b;
  }
  async function decorate(){
-  const id=++generation;
-  if(enhancing)return;
-  enhancing=true;
+  if(enhancing){pendingRender=true;return}
+  const id=++generation;enhancing=true;
   try{
    const videos=await listStoredVideos();
    if(id!==generation)return;
@@ -162,7 +161,7 @@ export function initVaultVisualCovers(){
    }
    reconcile();
   }catch(e){status.textContent='Personal artwork unavailable: '+e.message;status.dataset.error='true'}
-  finally{enhancing=false}
+  finally{enhancing=false;if(pendingRender){pendingRender=false;schedule()}}
  }
  function schedule(){
   if(queued)return;queued=true;
@@ -174,11 +173,11 @@ export function initVaultVisualCovers(){
  });
  mutation.observe(grid,{childList:true});
  document.addEventListener('proximus-vault-visual-refresh',()=>{
-  // Other sliders are CSS-only; redraw only after user changes thumbnail motion mode.
+  // Settings sliders update existing art via CSS. Motion-profile changes trigger
+  // the Vault's own non-destructive card render; no duplicated cover controls.
   const mode=window.ProximusVisualPopV37?.previewMode?.();
   if(grid.dataset.previewMode!==mode){grid.dataset.previewMode=mode;
-   for(const card of grid.querySelectorAll('.video-vault-card'))delete card.dataset.coverEnhanced;
-   schedule();}
+   $('videoVaultRefresh')?.click();}
   else reconcile();
  });
  document.addEventListener('proximus-view-changed',()=>{reconcile();if(active())schedule()});
