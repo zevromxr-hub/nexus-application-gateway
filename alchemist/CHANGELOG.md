@@ -1,3 +1,17 @@
+## v3.7.0 — Cinematic Media Overdrive & Personal iPhone Icon Studio (2026-11-23)
+
+- Added a personal Home Screen Icon Studio within Media: import local artwork, reuse saved Master thumbnails, adjust square icon crop/zoom/frame, and export 180×180 or 512×512 PNG without uploading any files.
+- Added device-specific guidance for Apple Shortcuts custom icons versus the true Safari standalone web app, whose site-defined icon cannot be replaced automatically for one user; added standalone metadata.
+- Icon settings and preview persist locally, separate from Video Vault and Media Publisher data; saved original media and existing Home Screen installs remain unchanged.
+
+- Upgraded existing Media Publisher video thumbnails to decoded high-quality 960×540 posters, with improved full-width artwork presentation and viewport-limited live MP4/WebM playback.
+- Added local visual controls for background brightness, thumbnail saturation/contrast, panel readability, balanced/mobile and opt-in cinematic animated previews.
+- Added one-click cinematic background opacity 85% preset for already-saved local backgrounds. Does not edit original media bytes.
+- Added individual animated GIF, MP4, WebM and static personal thumbnail attachment/removal to each saved Video Vault item, without modifying original stored video or changing its database schema; each cover is kept in a separate, local binary-artwork store.
+- Upgraded Video Vault auto-generated poster quality from 320×180 to 960×540 and added a button to regenerate its frame from the current saved-video playhead.
+- Preserved original local-only playback, OPFS/chunked IndexedDB, iPhone performance guards, offline release caches, all existing studios and media exports.
+- New JPG/GIF/video covers are browser-local metadata; they take extra quota. Animated previews are muted and limited to visible cards, and iPhone hardware performance/codec playback remain subject to testing.
+
 # PROXIMUS | ASSET ALCHEMIST — Change Releases
 
 ## v3.6.4 — Video Vault Ultra Import: Large Videos & iPhone Compatibility (2026-11-14)

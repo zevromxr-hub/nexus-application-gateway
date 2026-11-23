@@ -1,3 +1,25 @@
+## v3.7.0 — Cinematic Local Media & Icon Studio iPhone/PC acceptance
+
+- [ ] Keep the original PROXIMUS Home Screen web app installed throughout icon testing. Safari Shortcuts can have a different IndexedDB/OPFS library; verify exported copies of local videos before any app deletion/reinstallation.
+- [ ] Open Media → Personal Home Screen Icon on iPhone Safari and installed web app. Import a photo/GIF and verify the crop, zoom and 180/512 PNG export.
+- [ ] Use an existing saved Master GIF, then an MP4 if available, as icon artwork; check the preview uses a still frame without affecting original Master art.
+- [ ] Verify icon preview settings survive reload. Export does not upload media and does not change an existing iPhone Home Screen icon.
+- [ ] In Apple Shortcuts, open the copied PROXIMUS URL, Add to Home Screen and choose the downloaded PNG. Confirm it launches the expected URL in Safari. Do not label this a native standalone PWA icon replacement.
+- [ ] Preserve the existing web-app icon for the installed standalone shortcut until the owner separately publishes a new site-wide touch-icon file and reinstalls as needed.
+
+- [ ] In existing iPhone Home Screen shortcut and directly in Safari, verify PROXIMUS v3.7.0 after updating without deleting the app or its website data.
+- [ ] In Media Publisher, upload a local high-quality GIF or MP4 background, choose **Cinematic Pop**, and confirm it remains more visible behind readable panels. Revisit the page to verify the preference persists.
+- [ ] Apply local GIF/video master artwork and verify the Command Center, the studio header thumbnail, and other dashboard thumbnails use the right artwork. Change the master priority to individual-first and verify an independent studio cover still works.
+- [ ] Switch Balanced, Cinema Live and Still video-preview settings; on iPhone confirm no runaway autoplay, audio, thermal load or broken scrolling. Pause/reset as needed.
+- [ ] Open Video Vault with existing saved videos; verify video playback, collections, favorite markers, bookmarks, resume position and original download/export still work.
+- [ ] On a saved video, choose **✧ GIF/Video Cover**; test animated GIF and a short supported local MP4/MOV converted to MP4/WebM, then remove only the cover. Unsupported video codecs must not delete originals.
+- [ ] While playing a saved video, seek to a frame and choose **Set sharp cover from current frame**. Confirm the new high-quality cover appears on its library card.
+- [ ] Switch studios and return to Video Vault. Verify animated covers and personal background survive navigation and iPhone reload in the same browser profile.
+- [ ] Verify that large-video imports and the existing no-copy Files preview still work. Browser quotas and Safari decoding constraints remain independently applicable.
+- [ ] Test original Animation Forge GIF exports, Media Theater and Reactor audio/video without visual overlays covering player controls.
+- [ ] Validate new user documentation, release manifest, Service Worker offline install, and old-version rollback without clearing saved personal media.
+- [ ] Report device, browser, exact file format, card behavior, visibility setting and whether the issue reproduces on Safari vs the Home Screen install.
+
 # NEXUS Asset Alchemist v1.0 — Development Verification
 
 ### Checks completed

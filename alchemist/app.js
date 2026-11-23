@@ -2,6 +2,8 @@ import {$,bytes,safe,stem,notice,download,makeZip,sha256,textFile,nowName,wrap} 
 // Retired studio source is preserved in v3.3 Git history; shared pack services stay active in Project Hub.
 import {initAnimationForge} from './animation-tools.js';
 import {initMediaPublisher} from './media-publisher.js';
+import {initVisualPop} from './visual-pop-v3.7.js';
+import {initHomeIconStudio} from './home-icon-studio-v3.7.js';
 import {initMediaTheater} from './media-theater.js';
 import {initSovereignReactor} from './reactor-studio.js';
 import {initArcadeChamber} from './arcade-chamber.js';
@@ -20,6 +22,7 @@ import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
+import {initVaultVisualCovers} from './video-vault-visual-v3.7.js';
 import {initWebCinemaGateway} from './web-cinema.js';
 import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
@@ -280,7 +283,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.6.4';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.7.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -302,12 +305,12 @@ function setupVersion(){
 function launch(){
  mountUnifiedSonicTheater();
  initOrbitInterface(app);
- initAnimationForge(app);initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initAnimationForge(app);initVisualPop();initMediaPublisher();initHomeIconStudio();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Video Vault Ultra Import v3.6.4 is ready. External websites and saved links are available inside Video Vault; all existing media remains intact.');
+ notice('PROXIMUS Cinematic Media Overdrive v3.7.0 is ready. Original local videos and saved artwork remain intact. Open Media to personalize your thumbnails and background.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

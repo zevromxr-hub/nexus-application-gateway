@@ -1,3 +1,33 @@
+# PROXIMUS | ASSET ALCHEMIST v3.7.0
+**CINEMATIC MEDIA OVERDRIVE — PERSONAL GIF/VIDEO COVERS & VIVID LOCAL BACKGROUNDS**
+
+Website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
+
+## Personal Home Screen Icon Studio (iPhone / PC)
+Open **Media → Personal Home Screen Icon**. Choose a local JPG, PNG, GIF or WebP (or **Use My Master Artwork**), adjust zoom and focus, then download the square **180×180 iPhone PNG** or **512×512 high-resolution PNG**. GIF/video masters are represented by a single still frame, not animation. The small icon preview persists in this browser; no icon art is sent to GitHub or another server.
+
+**CRITICAL iPhone data warning:** An installed Home Screen web app can store its IndexedDB/OPFS videos separately from Safari. A custom icon created through Shortcuts opens Safari and may not show the videos saved inside your existing installed PROXIMUS app. **Do not delete or reinstall the current Home Screen app merely to change its icon.** Export and verify local video copies first. Apple's web app storage isolation is intentional.
+
+**iPhone installation choices:**
+- **Personal custom icon:** Save the PNG to Photos/Files. In Apple **Shortcuts**, create **Open URLs** pointing to your existing PROXIMUS address. Choose **Add to Home Screen** and select the PNG as the shortcut icon. This opens the address through Safari; it is **not** equivalent to Safari's standalone web-app installation.
+- **True standalone web-app icon:** Safari uses an icon served from the website (Apple touch icon/manifest). A PNG must be intentionally published to the site for a site-wide change, and you may need to remove/re-add the Home Screen web app for the new icon. Websites cannot silently replace an already installed icon. The icon editor does not modify server files or your original media.
+
+The icon creator is entirely browser-local and does not add a studio tab.
+
+## What's new
+- **Master and studio artwork:** The Media Publisher still accepts local GIF, MP4, WebM, PNG, JPG and WebP media, including one master asset applied to studio headings and dashboard tiles. Video fallbacks now use high-quality **960×540 JPEG posters** where the browser can decode the first frame. Each studio can retain an independent override through the existing Master Priority selector.
+- **Cinematic Visual Pop:** Open **Media** in the app header. Adjust animated video thumbnail profile (Balanced, Cinema Live, or Still), image saturation, thumbnail contrast, background brightness and panel readability. **Activate Cinematic Pop** raises a *previously selected* local background to 85% opacity and saves its setting; it does not upload a new file.
+- **Local Video Vault personal covers:** Each saved video gets a **✧ GIF/Video Cover** action. Choose a local GIF, MP4, WebM or supported still image; the artwork is stored in a **separate local IndexedDB cover library** (as browser-compatible binary data), not uploaded or made public. Existing Video Vault originals and metadata are left unchanged. Covers can be reset without affecting the original movie, watch history, favorites or collections. Limit: 18 MB for animated video covers, 12 MB for image/GIF covers, subject to actual available browser storage.
+- **Animated thumbnail behavior:** GIF covers display their original animation where permitted. Compatible MP4/WebM covers loop silently only when visible and within a conservative decoder budget (Balanced: at most 1 on iPhone / 2 on desktop; Cinema Live: at most 2 on iPhone / 5 on desktop). If Safari blocks autoplay or can't decode the video, a saved JPEG frame or the existing snapshot remains visible. Choosing Cinema Live may increase battery use; use Balanced or Still if iPhone warms up.
+- **Sharper movie snapshots:** Video Vault now generates 960×540 JPEG frame thumbnails instead of 320×180. Once a saved movie is open, **Set sharp cover from current frame** lets you choose a better scene. Older snapshots remain until manually refreshed.
+- **No new studios or downloader features:** All original local video data, IndexedDB/OPFS storage, large-file import/export, Media Theater, Reactor/Sonic, Animation Forge, ORBIT iPhone navigation and existing backup/version controls remain intact.
+
+**Privacy and storage:** The app processes user-selected files in the current browser. GIF and video covers are extra browser-local copies and count toward iOS storage quotas. Clearing site data or storage eviction can remove both clips and saved artwork; keep original files in Files/Photos. These are **not** encrypted or remotely authenticated by this visual update.
+
+**Hardware status:** JavaScript/build and automated browser checks are separate from actual iPhone acceptance. Browser autoplay and video-codec compatibility vary; local files remain exportable even when a format cannot play.
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.6.4
 **VIDEO VAULT ULTRA IMPORT — LARGE PERSONAL VIDEOS, BETTER LOCAL STORAGE & NO-COPY PLAYBACK**
 

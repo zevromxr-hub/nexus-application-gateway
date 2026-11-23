@@ -1,0 +1,26 @@
+/* v3.7 Personal Home Screen Icon Studio — contained inside existing Media settings. */
+.home-icon-studio{margin:14px 0;padding:15px;border:1px solid #b48ddc;border-radius:15px;
+ background:linear-gradient(145deg,#2d1b42,#11253b 80%);box-shadow:inset 0 1px 0 #ffffff20}
+.home-icon-studio h3{margin:0 0 8px;color:#f0dbff;font:900 15px/1.4 system-ui}
+.home-icon-studio .home-icon-tip{color:#d1c5e5;font:11px/1.6 system-ui;margin:5px 0 12px}
+.home-icon-body{display:grid;grid-template-columns:minmax(112px,160px) 1fr;gap:15px;align-items:start}
+.home-icon-preview{width:100%;max-width:160px;aspect-ratio:1;display:block;background:#131d31;
+ border:2px solid #bda0e0;border-radius:24%;box-shadow:0 10px 30px #000a,0 0 32px #b47df042}
+.home-icon-controls{display:grid;gap:8px;min-width:0}
+.home-icon-controls label{display:grid;gap:3px;font:11px/1.4 system-ui;color:#e8e3f2}
+.home-icon-controls input[type=range],.home-icon-controls select{width:100%;min-width:0}
+.home-icon-controls select{min-height:36px}
+.home-icon-upload{display:block;margin:7px 0 10px;padding:12px;border:1px dashed #d4b1f2;border-radius:10px;cursor:pointer;
+ background:#ffffff0b;color:#eee3f8;text-align:center;font:800 11px/1.5 system-ui}
+.home-icon-upload input{position:absolute;opacity:0;width:1px;height:1px}
+.home-icon-operations{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 9px}
+.home-icon-operations button{flex:1 1 125px;min-height:42px;font-size:11px}
+#homeIconStatus{color:#d5f3dd;font:11px/1.6 system-ui;margin:6px 0}
+.home-icon-help{border:1px solid #627b9c;padding:10px 12px;border-radius:10px;color:#d9dfeb}
+.home-icon-help summary{font:850 11px/1.6 system-ui;cursor:pointer;color:#f6dfad}
+.home-icon-help p,.home-icon-help li{font:11px/1.65 system-ui}
+.home-icon-help ol{padding-left:17px;display:grid;gap:7px}
+.home-icon-note{color:#c8b8db;font:10px/1.6 system-ui}
+@media(max-width:460px){.home-icon-studio{padding:12px}.home-icon-body{grid-template-columns:118px minmax(0,1fr);gap:10px}
+ .home-icon-controls label{font-size:10px}.home-icon-preview{border-radius:22%}}
+@media(max-width:350px){.home-icon-body{grid-template-columns:1fr}.home-icon-preview{width:148px;margin:auto}}
