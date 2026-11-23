@@ -65,7 +65,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
      tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});
    db.close();
   });
-  await page.locator(mobile?'#mobileDock [data-mobile-target="videos"]:visible':'.nav[data-view="videos"]:visible, #vaultJump:visible').first().click();
+  await page.locator('#commandOpenVideos:visible, #mobileDock [data-mobile-target="videos"]:visible, .nav[data-view="videos"]:visible, #vaultJump:visible').first().click();
   await page.locator('#videoVaultRefresh').click();
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});
