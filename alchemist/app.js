@@ -309,7 +309,7 @@ function launch(){
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Video Vault Ultra Import v3.6.4 is ready. External websites and saved links are available inside Video Vault; all existing media remains intact.');
+ notice('PROXIMUS Cinematic Media Overdrive v3.7.0 is ready. Original local videos and saved artwork remain intact. Open Media to personalize your thumbnails and background.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
