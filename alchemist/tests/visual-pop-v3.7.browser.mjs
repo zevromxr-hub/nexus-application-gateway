@@ -48,7 +48,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');const req=tx.objectStore('items').get('smoke-clip-1234');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
    db.close();return {
     localStatus:document.querySelector('#videoVaultStatus')?.textContent,
-    hasCoverBlob:item?.coverBlob instanceof Blob,coverSize:item?.coverBlob?.size,
+    originalHasNewCover:item?.coverBlob instanceof Blob,coverSize:cover?.data?.byteLength||0,
     cards:document.querySelectorAll('#videoVaultGrid .video-vault-card').length,
     decorated:[...document.querySelectorAll('#videoVaultGrid .video-vault-card')].map(x=>({
      title:x.querySelector('strong')?.textContent,enhanced:x.dataset.coverEnhanced,
@@ -61,7 +61,10 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   const saved=await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
-   db.close();return {bytes:item.bytes,cover:item.coverBlob?.size||0,originalName:item.name};
+   db.close();
+    const artDb=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-covers-v370',1);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
+    const art=await new Promise((resolve,reject)=>{const tx=artDb.transaction('covers','readonly');const q=tx.objectStore('covers').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});artDb.close();
+    return {bytes:item.bytes,cover:art?.data?.byteLength||0,originalName:item.name,originalHasNewCover:!!item.coverBlob};
   });
   assert.equal(saved.bytes,12345,'Movie metadata must remain unchanged');
   assert.equal(saved.originalName,'Local Sample Movie.mp4');
