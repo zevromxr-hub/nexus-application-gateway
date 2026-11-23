@@ -17,7 +17,7 @@ export function mediaFitOptions(record){
   opacity:Number.isFinite(Number(record?.opacity))?Math.min(1,Math.max(.1,Number(record.opacity))):.78};
 }
 const mediaRecords=new Map(),urls=new Map();
-let database=null;const posters=new Map(),posterPending=new Set();
+let database=null;const posters=new Map(),posterPending=new Set(),posterFailures=new Set();
 function mimeType(file){
  const ext=file?.name?.split('.').pop()?.toLowerCase();
  const mime=ALLOWED.has(file?.type)?file.type:({gif:'image/gif',png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',mp4:'video/mp4',webm:'video/webm'}[ext]);
@@ -56,10 +56,11 @@ function urlFor(rec){
 }
 // Sharp 960x540 decoded posters for any local studio/master video.
 const posterKey=record=>record.slot+'|'+record.savedAt;
-function clearPoster(slot){for(const [key,url] of posters)if(key.startsWith(slot+'|')){URL.revokeObjectURL(url);posters.delete(key)}}
+function clearPoster(slot){for(const [key,url] of posters)if(key.startsWith(slot+'|')){URL.revokeObjectURL(url);posters.delete(key)}
+ for(const key of posterFailures)if(key.startsWith(slot+'|'))posterFailures.delete(key)}
 async function generatePoster(record){
  if(!isVideo(record))return;
- const key=posterKey(record);if(posters.has(key)||posterPending.has(key))return;
+ const key=posterKey(record);if(posters.has(key)||posterPending.has(key)||posterFailures.has(key))return;
  posterPending.add(key);const node=document.createElement('video');node.muted=true;node.playsInline=true;
  try{
   await new Promise((resolve,reject)=>{
@@ -78,7 +79,7 @@ async function generatePoster(record){
   ctx.drawImage(node,(960-w)/2,(540-h)/2,w,h);
   const jpeg=await new Promise(resolve=>cv.toBlob(resolve,'image/jpeg',.9));
   if(jpeg&&mediaRecords.get(record.slot)===record){clearPoster(record.slot);posters.set(key,URL.createObjectURL(jpeg));refresh()}
- }catch(_){/* Unsupported codec: original file is preserved. */}
+ }catch(_){posterFailures.add(key);/* Unsupported codec: original file is preserved. */}
  finally{posterPending.delete(key);node.pause();node.removeAttribute('src');node.load()}
 }
 function safeRecord(x){
@@ -106,7 +107,7 @@ function nodeDisplay(record,{animated=true,slot=''}={}){
   el.src=url;
   el.addEventListener('loadeddata',()=>el.play().catch(()=>{$('mediaResume').hidden=false;}),{once:true});
   el.play().catch(()=>{$('mediaResume').hidden=false;});
- }else{el.alt='';el.src=url;}
+ }else{el.alt='';if(slot.startsWith('card-'))el.loading='lazy';el.src=url;}
  el.style.objectFit=record.fit;el.dataset.mediaSlot=slot||record.slot;return el;
 }
 function setDisplay(holder,record,{animated=true,signature='',hero=false}={}){
