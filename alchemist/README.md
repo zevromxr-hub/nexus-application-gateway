@@ -6,6 +6,8 @@ Website: https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/
 ## Personal Home Screen Icon Studio (iPhone / PC)
 Open **Media → Personal Home Screen Icon**. Choose a local JPG, PNG, GIF or WebP (or **Use My Master Artwork**), adjust zoom and focus, then download the square **180×180 iPhone PNG** or **512×512 high-resolution PNG**. GIF/video masters are represented by a single still frame, not animation. The small icon preview persists in this browser; no icon art is sent to GitHub or another server.
 
+**CRITICAL iPhone data warning:** An installed Home Screen web app can store its IndexedDB/OPFS videos separately from Safari. A custom icon created through Shortcuts opens Safari and may not show the videos saved inside your existing installed PROXIMUS app. **Do not delete or reinstall the current Home Screen app merely to change its icon.** Export and verify local video copies first. Apple's web app storage isolation is intentional.
+
 **iPhone installation choices:**
 - **Personal custom icon:** Save the PNG to Photos/Files. In Apple **Shortcuts**, create **Open URLs** pointing to your existing PROXIMUS address. Choose **Add to Home Screen** and select the PNG as the shortcut icon. This opens the address through Safari; it is **not** equivalent to Safari's standalone web-app installation.
 - **True standalone web-app icon:** Safari uses an icon served from the website (Apple touch icon/manifest). A PNG must be intentionally published to the site for a site-wide change, and you may need to remove/re-add the Home Screen web app for the new icon. Websites cannot silently replace an already installed icon. The icon editor does not modify server files or your original media.
