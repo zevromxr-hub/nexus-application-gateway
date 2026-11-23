@@ -17,6 +17,7 @@
     "Enhanced every saved Video Vault card with independent local GIF, MP4, WebM and still-image cover upload and reset controls; attached covers use independent local binary storage.",
     "Animated video covers play muted only when on screen and within adaptive iPhone/desktop decoder limits; static 960×540 covers remain available where playback is unsupported or disabled.",
     "Improved the native Video Vault snapshot to a 960×540 high-quality cover, with a button to choose the current playback frame; all original video data, favorites, resumes, import capacities and collections preserved.",
-    "Retains local-only media processing, existing IndexedDB/OPFS, Media Theater, Animation Forge, ORBIT mobile navigation, Power Guard and all 18 companion spaces."
+    "Retains local-only media processing, existing IndexedDB/OPFS, Media Theater, Animation Forge, ORBIT mobile navigation, Power Guard and all 18 companion spaces.",
+    "Personal Home Screen Icon Studio lets iPhone/PC users load PNG/JPEG/WebP/GIF art or reuse saved Master GIF/video artwork, adjust focus/zoom/frame, preview locally, and export 180px/512px square PNG icons with Shortcuts installation instructions; no upload or change to existing installed web-app icons."
   ]
 }
