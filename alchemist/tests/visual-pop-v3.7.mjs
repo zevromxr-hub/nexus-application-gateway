@@ -38,8 +38,8 @@ assert.ok(vault.includes('canvas.width=960')&&vault.includes('maybeCreatePoster(
 assert.ok(covers.includes("return type.startsWith('video/')?18*1024*1024:12*1024*1024")===false);
 assert.ok(covers.includes("observer?.observe(cover)"),'IntersectionObserver must watch visible cards, not hidden video');
 assert.ok(covers.includes('video-vault-art-video')&&covers.includes('video-vault-art-image'));
-assert.ok(covers.includes("updateStoredVideo(item)")&&covers.includes("delete item.coverBlob"),'Cover save/reset must be independent of original movie');
-assert.ok(!covers.includes('removeStoredVideo('),'Visual update must not delete originals');
+assert.ok(covers.includes("COVER_DB='proximus-video-vault-covers-v370'")&&covers.includes('saveCoverArt(id,file,type,still)')&&covers.includes('deleteCoverArt(id)'),'Cover save/reset must use independent browser-local storage');
+assert.ok(!covers.includes('removeStoredVideo(')&&!covers.includes('updateStoredVideo('),'Visual update must not rewrite or delete original movie metadata');
 assert.ok(read('video-vault-core.js').includes("VIDEO_VAULT_DB='proximus-video-vault-v1'"),'Original video storage key must remain unchanged');
 for(const file of ['visual-pop-v3.7.js','visual-pop-v3.7.css','video-vault-visual-v3.7.js','releases/v3.7.0.json']){
  assert.ok(sw.includes("'./"+file+"'"),'Offline cache missing '+file);
