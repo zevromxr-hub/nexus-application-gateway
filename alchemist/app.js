@@ -21,6 +21,7 @@ import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
 import {initVideoVault} from './video-vault.js';
+import {initVaultVisualCovers} from './video-vault-visual-v3.7.js';
 import {initWebCinemaGateway} from './web-cinema.js';
 import {initLifeCommand} from './life-command.js';
 import {initMobileNavigation} from './mobile-navigation.js';
@@ -303,7 +304,7 @@ function setupVersion(){
 function launch(){
  mountUnifiedSonicTheater();
  initOrbitInterface(app);
- initAnimationForge(app);initVisualPop();initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
+ initAnimationForge(app);initVisualPop();initMediaPublisher();initVideoVault(app);initVaultVisualCovers();initWebCinemaGateway();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
