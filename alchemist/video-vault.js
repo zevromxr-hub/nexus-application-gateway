@@ -36,13 +36,14 @@ async function transaction(stores,mode,run){
  const db=await openVideoDB();
  return new Promise((resolve,reject)=>{
   const tx=db.transaction(stores,mode),objs=stores.map(name=>tx.objectStore(name));
-  let value;
+  let value,requestError=null;
   try{
    const request=run(...objs);
-   if(request)request.onsuccess=()=>{value=request.result;};
+   if(request){request.onsuccess=()=>{value=request.result;};
+    request.onerror=()=>{requestError=request.error;};}
   }catch(error){try{tx.abort();}catch(e){}reject(error);return;}
   tx.oncomplete=()=>resolve(value);
-  tx.onerror=tx.onabort=()=>reject(tx.error||Error('Video Vault local storage operation failed.'));
+  tx.onerror=tx.onabort=()=>reject(requestError||tx.error||Error('Video Vault local storage operation failed.'));
  });
 }
 export async function listStoredVideos(){
