@@ -6,7 +6,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 <link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
@@ -1151,6 +1151,40 @@
 </div>
 <div class="media-vivid-actions"><button class="primary" id="mediaCinematicPreset" type="button">✦ ACTIVATE CINEMATIC POP</button><button class="small-btn" id="mediaVisualReset" type="button">↺ Balanced settings</button></div>
 <p class="hint" id="mediaVisualPopStatus" role="status">Personal visual settings are kept on this browser only.</p>
+</section>
+<section class="home-icon-studio" aria-labelledby="homeIconTitle">
+ <h3 id="homeIconTitle">◈ PERSONAL HOME SCREEN ICON</h3>
+ <p class="home-icon-tip">Create your own PROXIMUS icon using a photo, game artwork, GIF frame or your saved Master thumbnail. Crop it here; all processing stays on your device.</p>
+ <label class="home-icon-upload">＋ CHOOSE ICON ARTWORK <input id="homeIconFile" type="file" accept=".png,.jpg,.jpeg,.webp,.gif,image/png,image/jpeg,image/webp,image/gif"></label>
+ <div class="home-icon-body">
+  <canvas id="homeIconPreview" class="home-icon-preview" width="180" height="180" role="img" aria-label="Preview of your personal PROXIMUS Home Screen icon"></canvas>
+  <div class="home-icon-controls">
+   <label>Zoom image<input type="range" id="homeIconZoom" min="100" max="300" step="5" value="100"></label>
+   <label>Horizontal focus<input type="range" id="homeIconX" min="0" max="100" step="5" value="50"></label>
+   <label>Vertical focus<input type="range" id="homeIconY" min="0" max="100" step="5" value="50"></label>
+   <label>Backdrop<select id="homeIconBackground"><option value="#111225">Violet Obsidian</option><option value="#0e2334">Midnight Cyan</option><option value="#f5e9d4">Ivory Gold</option></select></label>
+   <label>Icon outline<select id="homeIconFrame"><option value="soft">Sovereign Frame</option><option value="none">Clean Edge</option></select></label>
+  </div>
+ </div>
+ <div class="home-icon-operations">
+  <button type="button" class="small-btn" id="homeIconUseMaster">✧ Use My Master Artwork</button>
+  <button type="button" class="primary" id="homeIconExport180">↓ iPhone Icon · 180 PNG</button>
+  <button type="button" class="primary" id="homeIconExport512">↓ High-Res · 512 PNG</button>
+  <button type="button" class="small-btn" id="homeIconShare">↗ Share Icon</button>
+  <button type="button" class="small-btn" id="homeIconCopyUrl">⌁ Copy App Address</button>
+  <button type="button" class="small-btn" id="homeIconReset">↺ Reset Preview</button>
+ </div>
+ <p id="homeIconStatus" role="status">Choose your own art or use existing Master artwork to create a sharp square icon.</p>
+ <details id="homeIconHelp" class="home-icon-help">
+  <summary>How to put your custom icon on your iPhone</summary>
+  <p><strong>Personal custom icon (no GitHub or PC required)</strong></p>
+  <ol><li>Tap <strong>Share Icon</strong> or download a PNG, then save it in Photos or Files.</li>
+   <li>Open Apple's <strong>Shortcuts</strong> app → create a shortcut with <strong>Open URLs</strong> using the PROXIMUS address (Copy App Address).</li>
+   <li>In Shortcuts, choose <strong>Add to Home Screen</strong>, tap the icon to select your saved image, enter PROXIMUS, and add it.</li>
+  </ol>
+  <p><strong>Important:</strong> A Shortcuts icon opens a URL in Safari; it isn't a replacement for Safari's standalone web-app icon. To change the real installed web-app icon for everyone, the exported PNG must be published as the site's Apple touch icon and the web app may need to be added to Home Screen again. Existing installed icons cannot be changed silently by a website.</p>
+ </details>
+ <p class="home-icon-note">The icon preview stays in this browser; PNG files are generated locally. GIFs use a still frame. No wallpaper, original video, or existing Home Screen icon is changed automatically.</p>
 </section>
 <div class="actions"><button id="mediaMasterApply" class="primary">✧ Apply one file to ALL thumbnails</button><button id="mediaSave" class="primary">Save media locally</button><button id="mediaClear" class="small-btn">Remove selected media</button><button id="mediaResume" class="small-btn" hidden>▶ Play background video</button></div>
  <p id="mediaStatus" class="hint" role="status">Loading media settings…</p>
