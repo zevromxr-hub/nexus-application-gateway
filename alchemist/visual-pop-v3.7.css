@@ -25,10 +25,46 @@ body.has-ambient .welcome{background:linear-gradient(115deg,
  rgba(16,19,37,var(--pv-panel-alpha,.78)),rgba(20,17,38,var(--pv-panel-alpha,.78)) 58%,rgba(11,16,30,var(--pv-panel-alpha,.78)))!important}
 body.has-ambient .panel,body.has-ambient .preview-panel{background:
  linear-gradient(145deg,rgba(15,22,41,var(--pv-panel-alpha,.78)),rgba(16,20,36,var(--pv-panel-alpha,.78)))!important;
- backdrop-filter:blur(5px)}
+ backdrop-filter:blur(2px)}
 body.has-ambient .rail{background:#111329ee}
 body.has-ambient .video-vault-cinema{background:#08070c!important;backdrop-filter:none!important}
 body.has-ambient #videoVaultPlayer{filter:none!important;background:#000!important}
 @media(max-width:620px){.media-vivid-controls{padding:12px}.media-vivid-grid{grid-template-columns:1fr}
  .dashboard-thumb{aspect-ratio:16/10}}
 @media(prefers-reduced-motion:reduce){.command-studio-card{transition:none}}
+
+/* Local Video Vault: sharp personal covers and opt-in muted animated snippets. */
+#videoVaultStudio .video-vault-card{
+ border:1px solid #8d75ba;box-shadow:0 10px 28px #0007;
+ background:linear-gradient(145deg,#252038,#101726)}
+#videoVaultStudio .video-vault-card.selected{
+ border-color:#f1d6a1;box-shadow:0 0 0 1px #e8cc9e,0 0 27px #b28df54a}
+#videoVaultStudio .video-vault-cover{
+ background:radial-gradient(circle at 45% 38%,#5d4c91,#12172a);
+ aspect-ratio:16/9;min-height:115px;isolation:isolate}
+#videoVaultStudio .video-vault-cover .video-vault-art-image,
+#videoVaultStudio .video-vault-cover .video-vault-art-still,
+#videoVaultStudio .video-vault-cover .video-vault-art-video{
+ position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+ filter:brightness(1.06) saturate(var(--pv-saturation,118%)) contrast(var(--pv-contrast,110%));
+ pointer-events:none;display:block;z-index:1}
+#videoVaultStudio .video-vault-cover .video-vault-art-video[hidden]{display:none!important}
+#videoVaultStudio .video-vault-cover .video-vault-art-image,
+#videoVaultStudio .video-vault-cover .video-vault-art-still{z-index:1}
+#videoVaultStudio .video-vault-cover .video-vault-art-video{z-index:2}
+#videoVaultStudio .video-vault-cover .video-vault-duration{z-index:3}
+#videoVaultStudio .video-vault-cover::after{
+ content:"";position:absolute;inset:auto 0 0;height:34%;z-index:2;pointer-events:none;
+ background:linear-gradient(transparent,#0a0b18aa)}
+#videoVaultStudio .video-vault-card-actions button{
+ border-color:#8774ae;min-height:38px;white-space:normal}
+#videoVaultStudio .video-vault-cover:hover,#videoVaultStudio .video-vault-cover:focus-visible{
+ outline:2px solid #f2d9a5;outline-offset:-2px}
+@media(max-width:650px){
+ #videoVaultStudio .video-vault-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ #videoVaultStudio .video-vault-cover{min-height:110px}
+ #videoVaultStudio .video-vault-card-actions button{min-height:43px}
+}
+@media(prefers-reduced-motion:reduce){
+ #videoVaultStudio .video-vault-card,#videoVaultStudio .video-vault-cover{transition:none!important}
+}
