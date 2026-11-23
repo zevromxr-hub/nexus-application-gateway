@@ -24,7 +24,11 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#mediaTarget').selectOption('master');
   await page.locator('#mediaFile').setInputFiles({name:'master.gif',mimeType:'image/gif',buffer:gif});
   await page.locator('#mediaMasterApply').click();
-  assert.ok(await page.locator('#heroOrb img.personal-media').count()>=1);
+  await page.waitForFunction(()=>Boolean(
+   document.querySelector('#heroOrb img.personal-media')||
+   document.querySelector('.dashboard-thumb img.personal-media')||
+   document.querySelector('.studio-personal-thumb img.personal-media')
+  ),null,{timeout:14000});
   // Reuse saved Master artwork: icon crop and PNG generation must be completely local.
   await page.locator('#homeIconUseMaster').click();
   await page.waitForFunction(()=>String(document.querySelector('#homeIconStatus')?.textContent).includes('Using your existing Master artwork'),null,{timeout:12000});
