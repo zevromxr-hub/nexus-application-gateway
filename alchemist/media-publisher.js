@@ -266,6 +266,14 @@ export function initMediaPublisher(){
   fileInput.value='';target.value='master';ui();
   notice('Master thumbnail applied to all studio thumbnails and home displays.');
  }));
+ // Reuse previously selected artwork for the on-device Home Screen Icon Studio.
+ // This returns a local Blob only, never sends media or credentials to a server.
+ document.addEventListener('proximus-home-icon-request-master',()=>{
+  const master=mediaRecords.get('master'),result=master?
+   {blob:master.blob,name:master.name,mime:master.mime}:
+   {error:'Choose and save a MASTER thumbnail in Media first, or upload separate icon artwork.'};
+  document.dispatchEvent(new CustomEvent('proximus-home-icon-master-result',{detail:result}));
+ });
  $('mediaResume').addEventListener('click',()=>{
   for(const node of document.querySelectorAll('.personal-media'))if(node.tagName==='VIDEO'&&!node.closest('[hidden]'))node.play().catch(()=>{});
   $('mediaResume').hidden=true;
