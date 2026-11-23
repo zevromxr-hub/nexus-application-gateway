@@ -20,3 +20,21 @@ jobs:
           node-version: '22'
       - name: Validate all client modules, release metadata and UI controls
         run: node alchemist/tests/validate.mjs
+  browser-visual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chromium and iPhone WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright
+          npx playwright install --with-deps chromium webkit
+      - name: Test local cinematic background and personal GIF/video covers
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/proximus-visual-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          node alchemist/tests/visual-pop-v3.7.browser.mjs
