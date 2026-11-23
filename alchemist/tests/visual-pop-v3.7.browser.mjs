@@ -52,9 +52,12 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   console.log('COVER DEBUG '+name+' '+JSON.stringify(await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const req=indexedDB.open('proximus-video-vault-v1',2);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');const req=tx.objectStore('items').get('smoke-clip-1234');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
-   db.close();return {
+   db.close();
+   const artDb=await new Promise((resolve,reject)=>{const req=indexedDB.open('proximus-video-vault-covers-v370',1);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
+   const art=await new Promise((resolve,reject)=>{const tx=artDb.transaction('covers','readonly');const req=tx.objectStore('covers').get('smoke-clip-1234');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});artDb.close();
+   return {
     localStatus:document.querySelector('#videoVaultStatus')?.textContent,
-    originalHasNewCover:item?.coverBlob instanceof Blob,coverSize:cover?.data?.byteLength||0,
+    originalHasNewCover:item?.coverBlob instanceof Blob,coverSize:art?.data?.byteLength||0,
     cards:document.querySelectorAll('#videoVaultGrid .video-vault-card').length,
     decorated:[...document.querySelectorAll('#videoVaultGrid .video-vault-card')].map(x=>({
      title:x.querySelector('strong')?.textContent,enhanced:x.dataset.coverEnhanced,
