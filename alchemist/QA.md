@@ -1,5 +1,6 @@
 ## v3.7.0 — Cinematic Local Media & Icon Studio iPhone/PC acceptance
 
+- [ ] Keep the original PROXIMUS Home Screen web app installed throughout icon testing. Safari Shortcuts can have a different IndexedDB/OPFS library; verify exported copies of local videos before any app deletion/reinstallation.
 - [ ] Open Media → Personal Home Screen Icon on iPhone Safari and installed web app. Import a photo/GIF and verify the crop, zoom and 180/512 PNG export.
 - [ ] Use an existing saved Master GIF, then an MP4 if available, as icon artwork; check the preview uses a still frame without affecting original Master art.
 - [ ] Verify icon preview settings survive reload. Export does not upload media and does not change an existing iPhone Home Screen icon.
