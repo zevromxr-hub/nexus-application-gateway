@@ -1,4 +1,10 @@
-## v3.7.0 — Cinematic Local Media iPhone/PC acceptance
+## v3.7.0 — Cinematic Local Media & Icon Studio iPhone/PC acceptance
+
+- [ ] Open Media → Personal Home Screen Icon on iPhone Safari and installed web app. Import a photo/GIF and verify the crop, zoom and 180/512 PNG export.
+- [ ] Use an existing saved Master GIF, then an MP4 if available, as icon artwork; check the preview uses a still frame without affecting original Master art.
+- [ ] Verify icon preview settings survive reload. Export does not upload media and does not change an existing iPhone Home Screen icon.
+- [ ] In Apple Shortcuts, open the copied PROXIMUS URL, Add to Home Screen and choose the downloaded PNG. Confirm it launches the expected URL in Safari. Do not label this a native standalone PWA icon replacement.
+- [ ] Preserve the existing web-app icon for the installed standalone shortcut until the owner separately publishes a new site-wide touch-icon file and reinstalls as needed.
 
 - [ ] In existing iPhone Home Screen shortcut and directly in Safari, verify PROXIMUS v3.7.0 after updating without deleting the app or its website data.
 - [ ] In Media Publisher, upload a local high-quality GIF or MP4 background, choose **Cinematic Pop**, and confirm it remains more visible behind readable panels. Revisit the page to verify the preference persists.
