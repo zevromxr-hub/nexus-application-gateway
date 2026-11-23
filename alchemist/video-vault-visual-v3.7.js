@@ -170,8 +170,8 @@ export function initVaultVisualCovers(){
      reset.addEventListener('click',()=>void resetCover(item.id).catch(e=>{
       status.dataset.error='true';status.textContent='Could not reset cover: '+e.message;
      }));actions.append(reset);
-     const type=item.coverMime||item.coverBlob.type||'';
-     const imagePoster=item.coverPoster instanceof Blob?item.coverPoster:null;
+     const type=rawArt.mime||personalCover.type||'';
+     const imagePoster=rawArt.image instanceof ArrayBuffer?new Blob([rawArt.image],{type:'image/jpeg'}):null;
      if(imagePoster){
       const image=document.createElement('img');image.className='video-vault-art-still';
       image.src=urlFor(imagePoster);image.alt='';image.loading='lazy';cover.append(image);
@@ -186,7 +186,7 @@ export function initVaultVisualCovers(){
       movie.preload='none';movie.muted=true;movie.loop=true;movie.playsInline=true;
       movie.setAttribute('muted','');movie.setAttribute('playsinline','');
       movie.setAttribute('aria-hidden','true');movie.hidden=true;
-      movie.dataset.url=urlFor(item.coverBlob);movie.dataset.mime=type;
+      movie.dataset.url=urlFor(personalCover);movie.dataset.mime=type;
       cover.append(movie);candidates.set(movie,false);observer?.observe(cover);
      }
     }
