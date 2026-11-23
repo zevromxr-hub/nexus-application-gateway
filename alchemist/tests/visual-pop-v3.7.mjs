@@ -28,7 +28,7 @@ for(const id of ['mediaVisualProfile','mediaThumbVibrancy','mediaThumbContrast',
  'mediaPanelVisibility','mediaCinematicPreset','mediaVisualReset','mediaVisualPopStatus','videoVaultUpdatePoster']){
  assert.ok(html.includes('id="'+id+'"'),id+' control missing from existing studio');
 }
-assert.ok(app.includes('initVisualPop();initMediaPublisher();initVideoVault(app);initVaultVisualCovers()'));
+assert.ok(app.includes('initVisualPop();initMediaPublisher();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers()'));
 assert.ok(html.includes('./visual-pop-v3.7.css'));
 assert.ok(css.includes('--pv-panel-alpha')&&css.includes('--pv-saturation'));
 assert.ok(publisher.includes('canvas.width=960')&&publisher.includes('canvas.height=540'));
