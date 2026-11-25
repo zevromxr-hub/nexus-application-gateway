@@ -1,3 +1,21 @@
+# PROXIMUS | ASSET ALCHEMIST v3.8.0
+**CINEMATIC DOMINION — PERSONAL PREMIERE & IMMERSIVE ENTERTAINMENT**
+
+## What is new
+- **Cinematic welcome:** The homepage opens with an expansive, high-contrast violet/cyan/gold premiere stage, richer navigation, theatrical cards and a personal poster gallery.
+- **Feature from your own library:** Your saved local video—with its existing poster or the JPEG preview from a personal GIF/video cover—becomes the featured film. In-progress titles are surfaced first, then favorites and recent additions.
+- **Watch with fewer steps:** Select **Play Feature**, **Resume Feature**, a gallery poster or **Another spotlight**. Playback uses the current Video Vault and its original saved metadata, not a duplicate database.
+- **Choose your atmosphere:** Turn **Cinematic atmosphere** on or off. The setting is browser-local, and reduced-motion users retain accessible, calm controls.
+- **No empty promises:** With no saved films, the homepage shows useful Video Vault, Media, and Sonic Theater destinations instead of placeholder movies.
+
+**Preserved:** All 18 original studios, OPFS/IndexedDB local videos, favorites, resume points, high-quality custom GIF/MP4 covers, all media backgrounds and thumbnail artwork, personal iPhone icon editing, offline cache rollback and existing desktop/iPhone layouts. No new video server, upload process or website proxy is introduced.
+
+**Existing iPhone installation:** Do not delete and reinstall your Home Screen PROXIMUS to see a new icon. An installed PWA may store videos separately from Safari; preserve the current install and keep personal originals in Files/Photos.
+
+**Verification:** Source validation and browser-based Chromium/emulated WebKit tests are automated; physical iPhone acceptance must still be checked on-device.
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.7.1
 **SOVEREIGN POLISH — LOCAL ARTWORK INTEGRITY, SMART PREVIEWS & CINEMATIC CLARITY**
 
