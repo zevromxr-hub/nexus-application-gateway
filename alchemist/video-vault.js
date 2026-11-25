@@ -384,6 +384,7 @@ export function initVideoVault(app){
    $('videoVaultUpdatePoster').disabled=true;
   say('Playing directly from Files without copying '+bytes(file.size)+' into website storage. Select again next visit unless saved.');
   try{await video.play();}catch{say('Session video ready. Tap the video player’s Play button on iPhone.');}
+  document.dispatchEvent(new CustomEvent('proximus-video-vault-selected',{detail:{id:null,session:true}}));
   video.scrollIntoView({block:'nearest',behavior:'smooth'});
  }
  async function persistPosition(force=false){
@@ -438,6 +439,7 @@ export function initVideoVault(app){
    try{await video.play();say('Playing '+item.name+'.');}
    catch(e){say('Video ready — tap the ▶ control in the player to start on your iPhone.');}
   }
+  document.dispatchEvent(new CustomEvent('proximus-video-vault-selected',{detail:{id}}));
   $('videoVaultPlayer').scrollIntoView({block:'nearest',behavior:'smooth'});
   updateMini();
  }
