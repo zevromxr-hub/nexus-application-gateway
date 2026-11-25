@@ -18,6 +18,7 @@
     "Added Sovereign Polish, a lightweight violet/cyan/gold visual refresh for Command Center, library cards and personal-media controls, with better readable text, accessible focus and reduced-motion handling.",
     "Preserved the existing 18 studios, home icon editor, app storage keys, personal video/movie metadata, large-file import behavior, current PWA installation, and the previous v3.7.0 offline cache as a rollback option.",
     "Personal background/thumbnail backup restore now commits as one atomic IndexedDB transaction. If storage runs out mid-restore, existing saved artwork is retained rather than being partially cleared.",
-    "Desktop Video Vault now constrains its workspace width to the fixed studio rail, avoiding horizontally scrolled library controls appearing underneath sidebar navigation."
+    "Desktop Video Vault now constrains its workspace width to the fixed studio rail, avoiding horizontally scrolled library controls appearing underneath sidebar navigation.",
+    "Fixed malformed Animation Forge HTML that prematurely ended the main application shell, causing Video Vault and later studios to render outside the desktop workspace and behind the fixed sidebar."
   ]
 }
