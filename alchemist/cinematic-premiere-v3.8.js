@@ -164,7 +164,9 @@ export function initCinematicPremiere(app){
   html.dataset.px38View=String(event.detail?.studio||'command');
   if(event.detail?.studio==='command')queueRefresh();
  });
- document.addEventListener('proximus-video-vault-changed',queueRefresh);
+ document.addEventListener('proximus-video-vault-changed',()=>{
+  if(html.dataset.px38View==='command')queueRefresh();
+ });
  document.addEventListener('proximus-vault-visual-refresh',()=>{
   if(html.dataset.px38View==='command')queueRefresh();
  });
