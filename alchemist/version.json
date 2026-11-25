@@ -17,6 +17,7 @@
     "Corrected the Media Publisher removal flow to commit the IndexedDB deletion before revoking existing image/video URLs or hiding the background.",
     "Added Sovereign Polish, a lightweight violet/cyan/gold visual refresh for Command Center, library cards and personal-media controls, with better readable text, accessible focus and reduced-motion handling.",
     "Preserved the existing 18 studios, home icon editor, app storage keys, personal video/movie metadata, large-file import behavior, current PWA installation, and the previous v3.7.0 offline cache as a rollback option.",
-    "Personal background/thumbnail backup restore now commits as one atomic IndexedDB transaction. If storage runs out mid-restore, existing saved artwork is retained rather than being partially cleared."
+    "Personal background/thumbnail backup restore now commits as one atomic IndexedDB transaction. If storage runs out mid-restore, existing saved artwork is retained rather than being partially cleared.",
+    "Desktop Video Vault now constrains its workspace width to the fixed studio rail, avoiding horizontally scrolled library controls appearing underneath sidebar navigation."
   ]
 }
