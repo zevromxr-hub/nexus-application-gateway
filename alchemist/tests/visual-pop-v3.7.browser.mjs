@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
  try{
   await page.goto('http://127.0.0.1:4173/alchemist/',{waitUntil:'domcontentloaded',timeout:40000});
   await page.locator('#commandOpenMedia:visible, #mediaOpen:visible').first().waitFor({state:'visible',timeout:16000});
-  assert.match(await page.locator('#versionInfo').textContent(),/3\.7\.0/);
+  assert.match(await page.locator('#versionInfo').textContent(),/3\.7\.1/);
   await page.locator('#commandOpenMedia:visible, #mediaOpen:visible').first().click();
   await page.locator('#mediaTarget').selectOption('background');
   await page.locator('#mediaFile').setInputFiles({name:'vivid.gif',mimeType:'image/gif',buffer:gif});
@@ -69,6 +69,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#videoVaultRefresh').click();
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});
+  await card.scrollIntoViewIfNeeded();
   const cover=card.locator('button', {hasText:'✧ GIF/Video Cover'});
   await cover.waitFor({state:'attached',timeout:15000});
   await card.locator('input[type=file]').setInputFiles({name:'personal.gif',mimeType:'image/gif',buffer:gif});
@@ -90,6 +91,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
     artError:document.querySelector('#notice')?.textContent
    };
   })));
+  await card.scrollIntoViewIfNeeded();
   await card.locator('.video-vault-art-image').waitFor({state:'attached',timeout:10000});
   const saved=await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
@@ -103,9 +105,38 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   assert.equal(saved.originalName,'Local Sample Movie.mp4');
   assert.ok(saved.cover>0,'Animated cover should be saved locally as a separate blob');
   await page.locator('#videoVaultRefresh').click();
-  await page.locator('.video-vault-card .video-vault-art-image').waitFor({state:'attached'});
+  await page.locator('.video-vault-card').first().scrollIntoViewIfNeeded();
+  await page.locator('.video-vault-card .video-vault-art-image').waitFor({state:'attached',timeout:14000});
+  // The interface lists artwork IDs only, and retrieves binary data on demand.
+  await page.waitForFunction(()=>/1 personal cover/.test(document.querySelector('#videoVaultCoverIntegrity')?.textContent||''),null,{timeout:12000});
+  // Create a genuinely orphaned test cover and remove it via explicit confirmation.
+  await page.evaluate(async()=>{
+   const db=await new Promise((res,rej)=>{const q=indexedDB.open('proximus-video-vault-covers-v370',1);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+   await new Promise((res,rej)=>{const tx=db.transaction('covers','readwrite');
+    tx.objectStore('covers').put({id:'smoke-orphan-abc',mime:'image/gif',data:new Uint8Array([71,73,70]).buffer,image:null,savedAt:Date.now()});
+    tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});
+   db.close();
+  });
+  page.once('dialog',d=>d.accept());
+  await page.locator('#videoVaultCleanCovers').click();
+  await page.waitForFunction(async()=>{
+   const db=await new Promise((res,rej)=>{const q=indexedDB.open('proximus-video-vault-covers-v370',1);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+   const exists=await new Promise((res,rej)=>{const tx=db.transaction('covers','readonly');
+    const q=tx.objectStore('covers').get('smoke-orphan-abc');q.onsuccess=()=>res(!!q.result);q.onerror=()=>rej(q.error)});
+   db.close();return !exists;
+  },null,{timeout:15000});
+  assert.equal(await page.locator('.video-vault-card').count(),1,'Artwork cleanup cannot remove original movies');
+  // Deleting the test movie must also delete its *separately stored* personal cover.
+  page.once('dialog',d=>d.accept());
+  await page.locator('.video-vault-card [aria-label="Remove Local Sample Movie.mp4 from saved Video Vault"]').click();
+  await page.waitForFunction(async()=>{
+   const db=await new Promise((res,rej)=>{const q=indexedDB.open('proximus-video-vault-covers-v370',1);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+   const cover=await new Promise((res,rej)=>{const tx=db.transaction('covers','readonly');
+    const q=tx.objectStore('covers').get('smoke-clip-1234');q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});
+   db.close();return !cover;
+  },null,{timeout:15000});
   assert.deepEqual(errors,[],name+' JavaScript errors');
-  console.log('PASS '+name+' vivid background, master GIF, personal video cover and local data persistence');
+  console.log('PASS '+name+' vivid background, master GIF, lazy personal cover, orphan cleanup and movie-deletion integrity');
  }catch(e){
   console.error('FAIL '+name+' '+String(e));
   await page.screenshot({path:'/tmp/proximus-v37-'+name+'.png',fullPage:false}).catch(()=>{});
