@@ -18,6 +18,7 @@ import {initQRStudio} from './qr-studio.js';
 import {initRecoveryCenter} from './recovery-center.js';
 import {initTokenFoundry} from './token-foundry.js';
 import {initCommandCenter} from './command-center.js';
+import {initCinematicPremiere} from './cinematic-premiere-v3.8.js';
 import {initSyncBridge} from './workspace-sync.js';
 import {initReleaseGuard} from './release-guard.js';
 import {initVisualIdentity} from './visual-identity.js';
@@ -283,7 +284,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.7.1';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.8.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -307,10 +308,10 @@ function launch(){
  initOrbitInterface(app);
  initAnimationForge(app);initVisualPop();initMediaPublisher();initHomeIconStudio();initVideoVault(app);initWebCinemaGateway();initVaultVisualCovers();initLifeCommand(app);initMediaTheater(app);initSovereignReactor(app);initArcadeChamber(app);initWorkflowDesk(app);initUtilityForge(app);void initReleaseCenter();
  initProjectHub(app);initAutomationLab(app);initCaptureStudio(app);initDocumentForge(app);initQRStudio(app);initRecoveryCenter(app);initTokenFoundry(app);
- initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
+ initCommandCenter(app);try{initCinematicPremiere(app)}catch(error){console.warn('Cinematic Premiere unavailable:',error)}initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS v3.7.1 Sovereign Polish is ready. Local videos are preserved; custom covers now load only as needed, with artwork cleanup available in Video Vault.');
+ notice('PROXIMUS v3.8.0 Cinematic Dominion is ready. Your saved videos, custom covers and Home Screen icon settings remain local and unchanged.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
