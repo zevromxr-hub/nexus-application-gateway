@@ -5,6 +5,7 @@
 - [ ] Return to a previously viewed thumbnail: its original cover should appear again after any memory-release while keeping all original movie data.
 - [ ] Delete a test video only after exporting or verifying a separate original. Confirm its matching custom artwork is cleaned without affecting another video's artwork or any other saved video.
 - [ ] Try **Clean unused art**. Confirm it requires approval, reports the count, and never deletes original movies. Canceling must leave the unused artwork unchanged.
+- [ ] Export a personal Media Publisher backup and verify it restores safely. A failed replacement import must leave previous saved background/thumb records unchanged.
 - [ ] Choose a personal GIF/video background and attempt Save/Remove in Media. Confirm the background stays visible if browser storage rejects deletion; successful deletion removes only the selected media slot.
 - [ ] Verify Command Center and Video Vault theme colors, card contrast, iPhone touch controls, visible focus, no clipped buttons, no overly bright backgrounds, and reduced-motion accessibility.
 - [ ] Confirm Home Screen Icon Studio still imports/exports 180×180 and 512×512 PNG and can reuse your saved master art.
