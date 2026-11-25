@@ -148,7 +148,7 @@ export async function updateStoredVideo(meta){
  try{await transaction(['items'],'readwrite',store=>store.put(stored));}
  catch(error){
   const knownWebKitBlobFailure=meta?.poster instanceof Blob&&
-   (/Blob\\/File|Blob|File data|DataCloneError/i.test(String(error?.message||''))||error?.name==='DataCloneError');
+   (/Blob|File data|DataCloneError/i.test(String(error?.message||''))||error?.name==='DataCloneError');
   if(!knownWebKitBlobFailure)throw error;
   // Fallback writes only the small poster JPEG bytes in the same existing
   // item row; never copies, converts or modifies the saved video itself.
