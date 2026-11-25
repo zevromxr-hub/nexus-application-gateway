@@ -8,7 +8,7 @@ import {buildLivingShelves,chooseCinemaPick} from '../living-cinema-v3.9.js';
 const root=path.resolve(import.meta.dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const html=read('index.html'),app=read('app.js'),worker=read('sw.js');
 const version=JSON.parse(read('version.json'));
-assert.equal(version.version,'4.1.0');assert.equal(version.studio_count,18);assert.equal(version.previous_version,'3.9.0');
+assert.equal(version.version,'4.1.0');assert.equal(version.studio_count,18);assert.equal(version.previous_version,'4.0.0');
 assert.equal(IMMERSION_KEY,'proximus-immersion-v400');
 assert.deepEqual(Object.keys(IMMERSION_SCENES),['sovereign','frost','obsidian','ember','eclipse']);
 const def=normalizeImmersion();assert.equal(def.scene,'sovereign');
