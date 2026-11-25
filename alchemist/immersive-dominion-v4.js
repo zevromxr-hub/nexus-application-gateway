@@ -17,3 +17,14 @@ export function initImmersiveDominion(app){
   $('px40Intensity').value=config.intensity;$('px40IntensityValue').textContent=config.intensity+'%';
   $('px40Glass').value=config.glass;$('px40GlassValue').textContent=config.glass+'%';
   $('px40Motion').value=config.motion;$('px40Clarity').value=config.clarity;
+  for(const button of dialog.querySelectorAll('[data-px40-scene]')){
+   const on=button.dataset.px40Scene===config.scene;
+   button.classList.toggle('selected',on);button.setAttribute('aria-pressed',String(on));
+  }
+ }
+ function update(patch){
+  config=normalizeImmersion({...config,...patch});render();
+  try{localStorage.setItem(IMMERSION_KEY,JSON.stringify(config));$('px40Status').textContent='Scene saved on this device. Existing media stays untouched.'}
+  catch{$('px40Status').textContent='Applied temporarily; your browser did not save these settings.'}
+ }
+ const open=()=>{render();if(!dialog.open)dialog.showModal()};
