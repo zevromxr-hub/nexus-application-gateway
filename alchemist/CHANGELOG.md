@@ -1,3 +1,14 @@
+## v3.9.0 — The Living Cinema (2026-11-25)
+
+- Added a genuine Netflix-inspired Discovery Library inside Video Vault, driven only by the actual local video collection.
+- Continue Watching, Favorites, Recently Added and personal Collections now appear as scrollable shelves with posters, progress indicators, search and compact metadata. Empty libraries receive useful import instructions instead of fake movie listings.
+- Selecting a title opens a cinematic detail sheet with direct Play/Resume, local favorite controls, editable collection and a Poster Forge entry.
+- Added Sovereign Cinema Player toolbar (play/pause, rewind/forward, seek, clock, theater focus, fullscreen, PiP), all driving the original saved video player rather than duplicating it.
+- Launched Poster Forge: import a local JPG/PNG/GIF/WebP, reuse saved poster art or capture a still from the exact saved movie in playback, zoom/crop/focus, optionally overlay a title, export JPG and save a 960×540 poster.
+- Poster Forge commits only the existing movie's poster metadata after rechecking the saved movie. Original OPFS/IndexedDB video bytes, user-selected custom GIF/MP4/WebM covers and playback state remain unchanged.
+- Connected v3.8 homepage to the discovery library; enhanced iPhone horizontal swiping, touch targets, modal accessibility and desktop immersive theater visuals.
+- Preserved all 18 studios, direct local import, personal iPhone Home Screen icon, current storage keys, device preferences, background media, saved links, and prior offline release rollback.
+
 ## v3.8.0 — Cinematic Dominion & Personal Premiere (2026-11-25)
 
 - Launched a cinematic, locally personalized Command Center premiere: feature one real saved video with its native poster or the JPEG still from a chosen custom cover.
