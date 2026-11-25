@@ -1,0 +1,34 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.7.1",
+  "release_date": "2026-11-25",
+  "title": "Sovereign Polish — Artwork Integrity & Cinematic UI",
+  "subtitle": "Protected local video media, smarter cover previews and visual refinement",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Fixed local Video Vault cover leaks: custom GIF/video art is removed from its independent cover database after the corresponding saved movie is successfully deleted.",
+    "Redesigned custom-cover rendering to list keys only, lazy-fetch large artwork when cards enter the viewport, and trim offscreen artwork from memory on iPhone without changing the original video library.",
+    "Added safe one-click cleanup for orphaned personal artwork with confirmation, cover count, and no video deletion.",
+    "Corrected the Media Publisher removal flow to commit the IndexedDB deletion before revoking existing image/video URLs or hiding the background.",
+    "Added Sovereign Polish, a lightweight violet/cyan/gold visual refresh for Command Center, library cards and personal-media controls, with better readable text, accessible focus and reduced-motion handling.",
+    "Preserved the existing 18 studios, home icon editor, app storage keys, personal video/movie metadata, large-file import behavior, current PWA installation, and the previous v3.7.0 offline cache as a rollback option."
+  ],
+  "retired_studios": [],
+  "added_studios": [],
+  "upgraded_studios": [
+    "Video Vault personal cover reliability",
+    "iPhone media preview memory",
+    "Media Publisher removal safety",
+    "Sovereign Command Center UI",
+    "Cinematic artwork styles"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+    "github": "https://github.com/zevromxr-hub/nexus-application-gateway/tree/main/alchemist"
+  }
+}
