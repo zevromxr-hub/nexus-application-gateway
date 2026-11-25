@@ -149,6 +149,7 @@ export async function removeStoredVideo(id){
   });
   if(meta?.storage==='opfs')await deleteVideoOpfs(meta).catch(()=>{});
  }
+ document.dispatchEvent(new CustomEvent('proximus-video-vault-removed',{detail:{id}}));
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 function newId(){

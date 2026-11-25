@@ -9,7 +9,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 <link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
@@ -50,11 +50,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / ADAPTIVE COMPANION / v3.7.0</div>
+<div class="eyebrow">PROXIMUS / SOVEREIGN COMPANION / v3.7.1</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.7.0 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.7.1 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
  <div class="orbit-access-current">
   <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
@@ -74,9 +74,9 @@
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.7.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.7.1</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.7.0</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.7.1</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
@@ -255,7 +255,7 @@
   </div>
   <label>Quality profile<select id="animQualityProfile"><option value="balanced" selected>Balanced · smooth and manageable</option><option value="mobile">Mobile · compact and quick</option><option value="smooth">Smooth · 20 FPS motion</option><option value="cinema">Cinematic · 24 FPS short clip</option><option value="original">Manual · use my custom settings</option></select></label>
   <label>GIF FPS<select id="animFPS"><option value="6">6 · small file</option><option value="8">8 · balanced</option><option value="12">12 · steady</option><option value="15" selected>15 · smoother</option><option value="20">20 · fluid</option><option value="24">24 · cinematic</option></select>
- <small class="hint">For 20 FPS choose clips up to 6 seconds; for 24 FPS up to 5 seconds. Longer GIFs can use 15 FPS.</small></label></div>
+ <small class="hint">For 20 FPS choose clips up to 6 seconds; for 24 FPS up to 5 seconds. Longer GIFs can use 15 FPS.</small></label>
   <div class="two"><label>Fit mode<select id="animFit"><option value="contain">Contain · full video visible</option><option value="cover">Cover · crop to fill</option></select></label><label>Fill color<input id="animBg" type="color" value="#111020"></label></div>
   <div class="checks"><label><input id="animDither" type="checkbox" checked> Improve gradients with ordered dithering</label><label><input id="animTransparent" type="checkbox"> Preserve transparent areas where available</label></div>
   <div class="anim-preflight" id="animPreflight" role="status">Import a source to inspect estimated frame count and memory cost.</div>
@@ -449,6 +449,11 @@
  </div>
  <div class="panel video-vault-library"><h3>04 / YOUR VIDEO COLLECTIONS</h3>
   <p class="hint">Play, resume, favorite, organize, or delete local copies. Sharper cover snapshots appear after playback. Each saved video can also use its own local GIF, MP4/WebM or image cover through the ✧ Cover action. Muted live covers animate while visible, subject to iPhone performance settings.</p>
+  <div class="nx371-cover-care" role="group" aria-label="Personal artwork maintenance">
+   <span id="videoVaultCoverIntegrity" class="nx371-art-status" role="status">Checking local cover artwork…</span>
+   <button id="videoVaultCleanCovers" type="button" class="small-btn">✧ Clean unused art</button>
+   <small>Deletes only orphaned covers, never videos</small>
+  </div>
   <div id="videoVaultGrid" class="video-vault-grid"></div>
  </div>
 </section>
@@ -664,7 +669,7 @@
    </div>
 
    <div class="reactor-export-block sonic-dimension-controls" id="sonicDimensionControls">
-    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.7.0</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
+    <div class="sonic-dimension-title"><div><span class="eyebrow">03D / SONIC DIMENSION · v3.7.1</span><h3>Five Living Worlds</h3><p class="hint">New original animated environments that react to real music. Activate a world to replace the legacy visual scene without removing Reactor IV, media backdrops, effects presets, or export controls.</p></div><span class="sonic-dimension-label">OPT-IN VISUAL ENGINE</span></div>
     <div class="checks"><label><input id="reactorDimensionEnabled" type="checkbox"> Enable Sonic Dimension worlds</label><label><input id="reactorDimensionAuto" type="checkbox"> Evolve world every 8 detected beats (12s cooldown)</label></div>
     <div class="two">
      <label>World environment<select id="reactorDimensionWorld">
@@ -826,7 +831,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.7.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.7.1</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>

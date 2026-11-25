@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.7.0 — local cinematic media, GIF/video covers, customizable backgrounds and a personal Home Screen icon editor.",
+  "description": "PROXIMUS v3.7.1 — Sovereign Polish: privacy-first local media, cinematic covers, optimized iPhone previews and personal icon editing.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

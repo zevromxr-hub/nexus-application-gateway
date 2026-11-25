@@ -19,6 +19,26 @@ assert.ok(html.includes('v'+version.version),'Page version must match manifest')
 assert.ok(app.includes("LOCAL='"+version.version+"'"),'Client version must match manifest');
 assert.ok(service.includes('proximus-alchemist-v'+version.version),'Service worker cache must match manifest');
 assert.ok(html.includes('PROXIMUS'),'Branded user interface required');
+
+// Guard the main layout against malformed closing tags. A stray </div> in the
+// Animation Forge used to close the whole shell before Video Vault, exposing
+// video controls underneath the desktop sidebar.
+const nestingTags=/<\/?(div|main|section|article|form|aside|header|footer|nav|details|dialog)\b[^>]*>/gi;
+const openTags=[];let tagMatch;
+while((tagMatch=nestingTags.exec(html))){
+ const name=tagMatch[1],closing=tagMatch[0].startsWith('</');
+ if(!closing){openTags.push(name);continue}
+ const expected=openTags.pop();
+ assert.equal(name,expected,'Unbalanced HTML: '+tagMatch[0]+' while expecting '+expected+' near index '+tagMatch.index);
+}
+assert.equal(openTags.length,0,'Unclosed PROXIMUS layout wrapper tags');
+const mainStart=html.indexOf('<main class="content">'),mainEnd=html.lastIndexOf('</main>');
+for(const panel of ['videos','life','reactor','releases']){
+ const location=html.indexOf('data-panel="'+panel+'"');
+ assert.ok(location>mainStart&&location<mainEnd,
+  panel+' studio must remain inside the main application shell');
+}
+
 for(const label of ['animation','theater','videos','life','reactor','arcade','workflow','utility','projects','automation','capture','documents','qr','recovery','tokens','command','identity','sync','releases','creator']){
  assert.ok(html.includes('data-panel="'+label+'"'),'Missing studio: '+label);
  assert.ok(html.includes('data-view="'+label+'"'),'Missing navigation: '+label);
@@ -31,7 +51,7 @@ for(const id of ['vaultStatus','vaultReload','vaultInfo','versionInfo','versionC
 }
 const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
 assert.equal(new Set(ids).size,ids.length,'Duplicate UI IDs found');
-for(const file of ['./index.html','./style.css','./app.js','./core.js','./companion-core.js','./media-tools.js','./layout-adapter-core.js','./layout-adapter.js','./animation-tools.js','./media-suite-core.js','./life-command-core.js','./life-command.js','./video-vault-core.js','./video-vault.js','./video-vault-visual-v3.7.js','./visual-pop-v3.7.js','./visual-pop-v3.7.css','./home-icon-studio-v3.7.js','./home-icon-studio-v3.7.css','./mobile-navigation.js','./gif-codec.js','./gif-reader.js','./media-publisher.js','./visual-identity-core.js','./visual-identity.js','./reactor-iv.js','./command-center.js','./workspace-sync.js','./release-guard.js','./media-theater.js','./reactor-dsp.js','./reactor-studio.js','./token-crypto.js','./token-foundry.js','./arcade-chamber.js','./release-center.js','./workflow-desk.js','./utility-forge.js','./portable-kit.js','./project-hub.js','./automation-lab.js','./capture-studio.js','./document-forge.js','./qr-studio.js','./recovery-center.js','./version.json','./icon.svg','./manifest.webmanifest']){
+for(const file of ['./index.html','./style.css','./app.js','./core.js','./companion-core.js','./media-tools.js','./layout-adapter-core.js','./layout-adapter.js','./animation-tools.js','./media-suite-core.js','./life-command-core.js','./life-command.js','./video-vault-core.js','./video-vault.js','./video-vault-visual-v3.7.js','./visual-pop-v3.7.js','./visual-pop-v3.7.css','./sovereign-polish-v3.7.1.css','./home-icon-studio-v3.7.js','./home-icon-studio-v3.7.css','./mobile-navigation.js','./gif-codec.js','./gif-reader.js','./media-publisher.js','./visual-identity-core.js','./visual-identity.js','./reactor-iv.js','./command-center.js','./workspace-sync.js','./release-guard.js','./media-theater.js','./reactor-dsp.js','./reactor-studio.js','./token-crypto.js','./token-foundry.js','./arcade-chamber.js','./release-center.js','./workflow-desk.js','./utility-forge.js','./portable-kit.js','./project-hub.js','./automation-lab.js','./capture-studio.js','./document-forge.js','./qr-studio.js','./recovery-center.js','./version.json','./icon.svg','./manifest.webmanifest']){
  assert.ok(service.includes(file),'Cache missing '+file);
  assert.ok(fs.existsSync(path.join(ROOT,file)),'Source missing '+file);
 }

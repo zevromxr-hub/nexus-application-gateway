@@ -200,9 +200,10 @@ async function writeMedia(record){
  return saved;
 }
 async function removeMedia(slot){
- mediaRecords.delete(slot);releaseUrl(slot);
- clearPoster(slot);
- await tx('readwrite',store=>store.delete(slot));refresh();
+ // Commit to IndexedDB before updating UI and revoking the original media URL.
+ await tx('readwrite',store=>store.delete(slot));
+ mediaRecords.delete(slot);releaseUrl(slot);clearPoster(slot);
+ refresh();
  document.dispatchEvent(new CustomEvent('proximus-media-changed',{detail:{slot,removed:true}}));
 }
 export async function exportMediaRecords(){
@@ -212,11 +213,24 @@ export async function exportMediaRecords(){
 export async function importMediaRecords(records,{replace=false}={}){
  if(!Array.isArray(records)||records.length>90)throw Error('Media backup exceeds 90 locations.');
  const list=records.map(safeRecord);
- if(replace)await tx('readwrite',store=>store.clear());
- for(const item of list){const row=await diskRecord(item);await tx('readwrite',store=>store.put(row));}
+ // Prepare binary arrays *before* touching IndexedDB, including on Safari.
+ const rows=await Promise.all(list.map(diskRecord));
+ const db=await openDb();
+ // One atomic transaction: a replacement backup can never leave a half-empty
+ // media library if quota/errors occur midway through importing the new rows.
+ await new Promise((resolve,reject)=>{
+  const tr=db.transaction(STORE,'readwrite'),store=tr.objectStore(STORE);
+  try{
+   if(replace)store.clear();
+   for(const row of rows)store.put(row);
+  }catch(error){try{tr.abort()}catch(_){}reject(error);return}
+  tr.oncomplete=()=>resolve();
+  tr.onerror=tr.onabort=()=>reject(tr.error||Error('Media restore failed; original saved art is retained.'));
+ });
  if(replace){for(const key of [...mediaRecords.keys()]){mediaRecords.delete(key);releaseUrl(key);}}
  for(const item of list){releaseUrl(item.slot);mediaRecords.set(item.slot,item);}
  for(const url of posters.values())URL.revokeObjectURL(url);posters.clear();
+ posterFailures.clear();
  refresh();document.dispatchEvent(new Event('proximus-media-imported'));return list.length;
 }
 export function initMediaPublisher(){

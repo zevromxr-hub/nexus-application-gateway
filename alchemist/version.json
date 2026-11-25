@@ -1,23 +1,24 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "channel": "stable",
-  "release_date": "2026-11-23",
-  "subtitle": "Cinematic Media Overdrive — High-Fidelity GIF/Video Thumbnails & Visible Backgrounds",
+  "release_date": "2026-11-25",
+  "subtitle": "Sovereign Polish — Local Artwork Reliability, iPhone Memory Care & Cinematic UI",
   "studio_count": 18,
-  "previous_version": "3.6.4",
+  "previous_version": "3.7.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Improved the existing local Media Publisher with 960×540 high-quality video poster rendering for studio, Command Center and master thumbnail surfaces, preserving previously chosen GIF, MP4, WebM and image media.",
-    "Added Cinematic Visual Pop: adjustable thumbnail saturation/contrast, background brightness, panel readability and live-preview balance, including opt-in cinematic settings.",
-    "Added cinematic background preset that raises a saved personal backdrop to 85% visibility without requiring a new upload; retains original media and uses browser-local preferences.",
-    "Enhanced every saved Video Vault card with independent local GIF, MP4, WebM and still-image cover upload and reset controls; attached covers use independent local binary storage.",
-    "Animated video covers play muted only when on screen and within adaptive iPhone/desktop decoder limits; static 960×540 covers remain available where playback is unsupported or disabled.",
-    "Improved the native Video Vault snapshot to a 960×540 high-quality cover, with a button to choose the current playback frame; all original video data, favorites, resumes, import capacities and collections preserved.",
-    "Retains local-only media processing, existing IndexedDB/OPFS, Media Theater, Animation Forge, ORBIT mobile navigation, Power Guard and all 18 companion spaces.",
-    "Personal Home Screen Icon Studio lets iPhone/PC users load PNG/JPEG/WebP/GIF art or reuse saved Master GIF/video artwork, adjust focus/zoom/frame, preview locally, and export 180px/512px square PNG icons with Shortcuts installation instructions; no upload or change to existing installed web-app icons."
+    "Fixed local Video Vault cover leaks: custom GIF/video art is removed from its independent cover database after the corresponding saved movie is successfully deleted.",
+    "Redesigned custom-cover rendering to list keys only, lazy-fetch large artwork when cards enter the viewport, and trim offscreen artwork from memory on iPhone without changing the original video library.",
+    "Added safe one-click cleanup for orphaned personal artwork with confirmation, cover count, and no video deletion.",
+    "Corrected the Media Publisher removal flow to commit the IndexedDB deletion before revoking existing image/video URLs or hiding the background.",
+    "Added Sovereign Polish, a lightweight violet/cyan/gold visual refresh for Command Center, library cards and personal-media controls, with better readable text, accessible focus and reduced-motion handling.",
+    "Preserved the existing 18 studios, home icon editor, app storage keys, personal video/movie metadata, large-file import behavior, current PWA installation, and the previous v3.7.0 offline cache as a rollback option.",
+    "Personal background/thumbnail backup restore now commits as one atomic IndexedDB transaction. If storage runs out mid-restore, existing saved artwork is retained rather than being partially cleared.",
+    "Desktop Video Vault now constrains its workspace width to the fixed studio rail, avoiding horizontally scrolled library controls appearing underneath sidebar navigation.",
+    "Fixed malformed Animation Forge HTML that prematurely ended the main application shell, causing Video Vault and later studios to render outside the desktop workspace and behind the fixed sidebar."
   ]
 }
