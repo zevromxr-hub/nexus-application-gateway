@@ -332,3 +332,20 @@ html[data-px38-experience="calm"] .welcome::before{opacity:.20}
  #proximusPremiere *,#proximusPremiere *::before,#proximusPremiere *::after,
  .welcome *,.command-studio-card,.video-vault-card{animation:none!important;transition:none!important;transform:none!important}
 }
+
+/* The cinema is the first entertainment impression on Home.
+   Other studios retain a compact branded masthead, not a second large hero. */
+html[data-px38-view="command"] .welcome{
+ padding:10px 20px!important;margin-bottom:10px;min-height:0!important;
+}
+html[data-px38-view="command"] .welcome .metrics,
+html[data-px38-view="command"] .welcome-row p{display:none!important}
+html[data-px38-view="command"] .welcome h1{font-size:clamp(26px,3vw,37px)!important}
+html[data-px38-view="command"] .welcome .orb{max-width:68px;max-height:68px}
+html[data-px38-view]:not([data-px38-view="command"]) #proximusPremiere,
+html[data-px38-view]:not([data-px38-view="command"]) .px38-filmstrip-wrap{display:none!important}
+@media(max-width:720px){
+ html[data-px38-view="command"] .welcome{padding:10px 14px!important}
+ html[data-px38-view="command"] .welcome h1{font-size:28px!important}
+ html[data-px38-view="command"] .welcome .orb{max-width:50px;max-height:50px}
+}
