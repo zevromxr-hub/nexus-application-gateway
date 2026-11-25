@@ -1,3 +1,13 @@
+## v3.7.1 — Sovereign Polish & Local Artwork Reliability (2026-11-25)
+
+- Fixed orphaned cover retention on movie deletion by notifying the independently stored cover system only after original movie removal completes.
+- Added confirmed **Clean unused art** action and artwork health readout. No stored video, playback record, or media snapshot is deleted by the cleanup action.
+- Lazy-loaded individual GIF/MP4/WebM covers by visible card and released older offscreen decoded artwork as iPhone memory needs allow; all covers remain saved in local IndexedDB for later reuse.
+- Fixed Media Publisher background and thumbnail removal to wait for successful IndexedDB deletion before clearing on-screen media.
+- Introduced lightweight, responsive **Sovereign Polish** styling with themed accents, stronger card contrast, improved visual hierarchy, and accessible focus/reduced-motion states.
+- Preserved all studios, original local video storage and PWA cache rollback paths. No network video features or server uploads were added.
+- Updated release metadata, in-app version labels, owner documentation, and automated browser regressions.
+
 ## v3.7.0 — Cinematic Media Overdrive & Personal iPhone Icon Studio (2026-11-23)
 
 - Added a personal Home Screen Icon Studio within Media: import local artwork, reuse saved Master thumbnails, adjust square icon crop/zoom/frame, and export 180×180 or 512×512 PNG without uploading any files.
