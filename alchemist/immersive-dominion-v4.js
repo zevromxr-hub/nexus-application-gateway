@@ -28,3 +28,12 @@ export function initImmersiveDominion(app){
   catch{$('px40Status').textContent='Applied temporarily; your browser did not save these settings.'}
  }
  const open=()=>{render();if(!dialog.open)dialog.showModal()};
+ $('px40Open').addEventListener('click',open);
+ $('px40RealmCustomize').addEventListener('click',open);
+ $('px40Close').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
+ for(const button of dialog.querySelectorAll('[data-px40-scene]'))
+  button.addEventListener('click',()=>update({scene:button.dataset.px40Scene}));
+ for(const [id,key] of [['px40Intensity','intensity'],['px40Glass','glass'],
+  ['px40Motion','motion'],['px40Clarity','clarity']])
+  $(id).addEventListener('input',event=>update({[key]:event.target.value}));
