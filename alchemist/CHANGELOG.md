@@ -1,3 +1,14 @@
+## v3.8.0 — Cinematic Dominion & Personal Premiere (2026-11-25)
+
+- Launched a cinematic, locally personalized Command Center premiere: feature one real saved video with its native poster or the JPEG still from a chosen custom cover.
+- Added a responsive mini poster gallery of up to four other locally saved films, direct original Video Vault playback/resume and shuffle to another featured title.
+- Retained the original Video Vault event channel, saved metadata, favorites, collections, chapter bookmarks, OPFS/IndexedDB files and existing playback flow. No video data is duplicated, uploaded or moved.
+- Refreshed the entire site aesthetic: translucent night-violet surfaces, cyan/gold accents, luminous headings, refined navigation rail and iPhone dock, immersive cinema heroes and more detailed image surfaces.
+- Added a local Cinematic atmosphere toggle, calm mode and reduced-motion support; no added continuous rendering or hidden autoplay video.
+- Scoped home premiere library refresh to active home viewing, and added explicit object URL cleanup for loaded poster images.
+- Kept all 18 studios, Media Publisher background and thumbnail slots, personal iPhone icon editing, PWA installation identity, previous offline caches and backup options unchanged.
+- Added version/release metadata, PWA offline pre-cache entries and updated browser/regression tests.
+
 ## v3.7.1 — Sovereign Polish & Local Artwork Reliability (2026-11-25)
 
 - Fixed orphaned cover retention on movie deletion by notifying the independently stored cover system only after original movie removal completes.
