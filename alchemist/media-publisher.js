@@ -200,9 +200,10 @@ async function writeMedia(record){
  return saved;
 }
 async function removeMedia(slot){
- mediaRecords.delete(slot);releaseUrl(slot);
- clearPoster(slot);
- await tx('readwrite',store=>store.delete(slot));refresh();
+ // Commit to IndexedDB before updating UI and revoking the original media URL.
+ await tx('readwrite',store=>store.delete(slot));
+ mediaRecords.delete(slot);releaseUrl(slot);clearPoster(slot);
+ refresh();
  document.dispatchEvent(new CustomEvent('proximus-media-changed',{detail:{slot,removed:true}}));
 }
 export async function exportMediaRecords(){
