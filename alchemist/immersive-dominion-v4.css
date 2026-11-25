@@ -1,0 +1,98 @@
+/* PROXIMUS 4.0 — Immersive Dominion. Personal media always remains browser-local. */
+:root{--px40-main:#c5a0ff;--px40-alt:#80e8f5;--px40-glow:#a15cff;--px40-dark:#0e0926;--px40-intensity:.78;--px40-glass:.83;--px40-veil:.36}
+html[data-px40-scene] .topbar{border-bottom-color:color-mix(in srgb,var(--px40-main) 40%,transparent);box-shadow:0 9px 35px rgba(0,0,0,.15),0 1px 22px color-mix(in srgb,var(--px40-glow) 8%,transparent)}
+html[data-px40-scene] .rail .brand .sigil,html[data-px40-scene] .welcome h1 em{color:var(--px40-main);text-shadow:0 0 23px color-mix(in srgb,var(--px40-glow) 30%,transparent)}
+html[data-px40-scene] .nav.active{border-color:color-mix(in srgb,var(--px40-main) 40%,transparent);box-shadow:inset 3px 0 0 var(--px40-main),0 0 20px color-mix(in srgb,var(--px40-glow) 10%,transparent)}
+html[data-px40-scene] .release-strip,html[data-px40-scene] .orbit-access-bar{border-color:color-mix(in srgb,var(--px40-main) 24%,transparent)}
+html[data-px40-scene] .studio>.panel{border-color:color-mix(in srgb,var(--px40-main) 22%,transparent)}
+html[data-px40-scene] .px38-premiere{border-color:color-mix(in srgb,var(--px40-main) 50%,transparent);box-shadow:0 25px 72px rgba(0,0,0,.3),0 0 70px color-mix(in srgb,var(--px40-glow) 13%,transparent)}
+html[data-px40-scene] .px38-premiere-actions button:first-child,html[data-px40-scene] .px39-discovery-commands .primary{background:linear-gradient(132deg,color-mix(in srgb,var(--px40-glow) 63%,#271f55),color-mix(in srgb,var(--px40-dark) 76%,#57359b));border-color:color-mix(in srgb,var(--px40-main) 60%,#fff)}
+html[data-px40-scene] .px39-movie-card:focus-visible{outline-color:var(--px40-alt)}
+html[data-px40-scene] #px39Discovery{border-color:color-mix(in srgb,var(--px40-main) 45%,transparent);box-shadow:0 22px 60px rgba(0,0,0,.34),0 0 50px color-mix(in srgb,var(--px40-glow) 13%,transparent)}
+html[data-px40-scene] #px39Discovery .px39-shelf-head h4{color:color-mix(in srgb,var(--px40-main) 20%,#fff)}
+html[data-px40-scene] .px39-card-progress span{background:linear-gradient(90deg,var(--px40-alt),var(--px40-main))}
+html[data-px40-scene] .studio>.panel:not(.video-vault-cinema){background-color:rgb(13 17 34 / var(--px40-glass))}
+html[data-px40-scene] .px38-premiere-art{filter:saturate(calc(.85 + var(--px40-intensity)*.36))}
+#px40Open{background:linear-gradient(130deg,color-mix(in srgb,var(--px40-glow) 22%,#151329),rgba(16,20,37,.84));border-color:color-mix(in srgb,var(--px40-main) 53%,transparent);font-weight:800}
+#px40RealmBanner{
+ position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr);
+ gap:24px;align-items:center;margin:15px 0 19px;padding:clamp(20px,3.4vw,38px);min-height:184px;
+ border-radius:24px;border:1px solid color-mix(in srgb,var(--px40-main) 48%,transparent);
+ background:linear-gradient(107deg,color-mix(in srgb,var(--px40-dark) 83%,#111728),rgba(10,20,37,.85));
+ box-shadow:0 18px 48px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.09);
+}
+html[data-px38-view]:not([data-px38-view="command"]) #px40RealmBanner{display:none}
+#px40RealmBanner:before{content:"";position:absolute;z-index:-1;inset:0;pointer-events:none;
+ background:radial-gradient(ellipse 55% 100% at 77% 51%,color-mix(in srgb,var(--px40-glow) calc(var(--px40-intensity)*35%),transparent),transparent 74%),
+ radial-gradient(ellipse 39% 80% at 6% 85%,color-mix(in srgb,var(--px40-alt) 13%,transparent),transparent 78%)}
+.px40-realm-copy{min-width:0;position:relative;z-index:2}
+.px40-kicker{font-size:10px;letter-spacing:.22em;font-weight:900;color:var(--px40-alt);display:block}
+.px40-realm-copy h3{font-size:clamp(27px,3.5vw,43px);letter-spacing:-.038em;line-height:1.03;margin:9px 0 10px;color:#fff;text-shadow:0 10px 24px rgba(0,0,0,.45)}
+.px40-realm-copy p{font-size:12px;color:#ded6e7;line-height:1.7;max-width:530px;margin:0 0 17px}
+.px40-realm-commands{display:flex;flex-wrap:wrap;gap:10px}
+.px40-realm-commands button{cursor:pointer;min-height:43px;padding:10px 17px;border-radius:11px;border:1px solid color-mix(in srgb,var(--px40-main) 56%,transparent);color:#fff;font-size:12px;font-weight:800;background:color-mix(in srgb,var(--px40-dark) 72%,#33234a)}
+.px40-realm-commands button:first-child{background:linear-gradient(135deg,color-mix(in srgb,var(--px40-glow) 75%,#402e7a),#25244d)}
+.px40-realm-commands button:focus-visible{outline:2px solid var(--px40-alt);outline-offset:3px}
+.px40-realm-art{height:170px;position:relative;display:grid;place-items:center;pointer-events:none}
+.px40-realm-art:before,.px40-realm-art:after{content:"";position:absolute;border-radius:50%;aspect-ratio:1/1}
+.px40-realm-art:before{width:164px;border:2px solid color-mix(in srgb,var(--px40-main) 75%,transparent);box-shadow:inset 0 0 40px color-mix(in srgb,var(--px40-glow) 35%,transparent),0 0 43px color-mix(in srgb,var(--px40-glow) 38%,transparent);background:radial-gradient(circle at 45% 42%,color-mix(in srgb,var(--px40-glow) 52%,#0d0b2b),transparent 70%)}
+.px40-realm-art:after{width:211px;border:1px solid color-mix(in srgb,var(--px40-alt) 38%,transparent);box-shadow:0 0 36px color-mix(in srgb,var(--px40-glow) 18%,transparent)}
+.px40-realm-art span{color:#fff;font-size:69px;line-height:1;text-shadow:0 0 24px var(--px40-glow),0 0 65px var(--px40-alt);z-index:1}
+html[data-px40-motion="on"] .px40-realm-art:before{animation:px40-breathe 7s ease-in-out infinite alternate}
+@keyframes px40-breathe{from{transform:scale(.93);opacity:.7}to{transform:scale(1.07);opacity:1}}
+dialog.px40-dialog{width:min(93vw,950px);max-width:93vw;max-height:88vh;margin:auto;padding:0;
+ color:#f5efff;background:linear-gradient(138deg,#211a36,#0c172a 80%);border-radius:23px;
+ border:1px solid color-mix(in srgb,var(--px40-main) 60%,transparent);overflow:auto;
+ box-shadow:0 35px 100px rgba(0,0,0,.76),inset 0 1px 0 #fff2}
+dialog.px40-dialog::backdrop{background:rgba(2,4,14,.84);backdrop-filter:blur(8px)}
+.px40-dialog-inner{padding:clamp(18px,3vw,32px)}
+.px40-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.px40-dialog-head h3{margin:7px 0;color:#fff;font-size:clamp(25px,3vw,38px);letter-spacing:-.04em}
+.px40-dialog-head p{font-size:12px;line-height:1.6;color:#c6c3d9;max-width:570px}
+.px40-close{font-size:25px;cursor:pointer;color:#fff;border:1px solid #fff3;border-radius:13px;background:#14152c;min-width:44px;min-height:44px}
+.px40-scene-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px;margin:20px 0}
+.px40-scene-card{min-width:0;cursor:pointer;display:flex;flex-direction:column;gap:9px;text-align:left;padding:9px;border:1px solid #ffffff30;border-radius:15px;background:#ffffff0d;color:#f3edff;font-weight:780;font-size:10px;line-height:1.35}
+.px40-scene-card::before{content:"";display:block;aspect-ratio:4/3;width:100%;border-radius:9px;background:radial-gradient(circle at 70% 32%,var(--sc-a),transparent 57%),radial-gradient(circle at 10% 85%,var(--sc-b),transparent 75%),#0b1026}
+.px40-scene-card.selected{border-color:var(--px40-main);background:#ffffff19;box-shadow:0 0 0 1px var(--px40-main),0 0 25px color-mix(in srgb,var(--px40-glow) 21%,transparent)}
+.px40-scene-card:focus-visible{outline:2px solid var(--px40-alt);outline-offset:3px}
+.px40-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin:20px 0}
+.px40-controls label{font-size:12px;color:#ece3fa;display:flex;flex-direction:column;gap:9px}
+.px40-controls input,.px40-controls select{min-width:0;width:100%;accent-color:var(--px40-main)}
+.px40-controls select{padding:11px 12px;min-height:43px;border-radius:9px;color:#fff;background:#15132f;border:1px solid #ffffff43}
+.px40-actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}
+.px40-actions button{cursor:pointer;min-height:44px;padding:10px 13px;border-radius:10px;background:#272040;border:1px solid color-mix(in srgb,var(--px40-main) 40%,transparent);color:#fff;font-size:11px;font-weight:750}
+.px40-actions button:first-child{background:linear-gradient(135deg,color-mix(in srgb,var(--px40-glow) 70%,#44267f),#36315e)}
+.px40-actions button:focus-visible{outline:2px solid var(--px40-alt);outline-offset:3px}
+.px40-dialog-section{margin-top:20px;padding-top:17px;border-top:1px solid #ffffff28}
+.px40-dialog-section h4{margin:0 0 7px;color:#fff;font-size:16px}
+.px40-dialog-section p,.px40-status{font-size:11px;color:#c8c5dd;line-height:1.65;margin:6px 0}
+#px40StorageResults{padding:10px 13px;border-radius:11px;background:rgba(0,0,0,.24);min-height:38px}
+@media(max-width:850px){.px40-scene-options{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){#px40RealmBanner{grid-template-columns:1fr;min-height:0;padding:22px 16px;margin:11px 0 16px}.px40-realm-art{display:none}
+.px40-realm-copy h3{font-size:29px}.px40-scene-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+.px40-controls{grid-template-columns:1fr;gap:13px}
+dialog.px40-dialog{width:calc(100vw - 14px);max-width:calc(100vw - 14px);max-height:calc(100dvh - 25px);border-radius:16px}
+.px40-dialog-inner{padding:18px}
+#px40Open{padding:8px 10px;font-size:11px}}
+@media(hover:none){.px40-scene-card:active{border-color:var(--px40-alt)}}
+@media(prefers-reduced-motion:reduce){.px40-realm-art:before{animation:none!important}#px40RealmBanner *,dialog.px40-dialog *{transition:none!important;animation:none!important}}
+
+/* Live readability sliders affect the cinematic surfaces, not personal image/video bytes. */
+html[data-px40-scene] #px39Discovery{
+ background:linear-gradient(148deg,rgb(24 17 44 / var(--px40-glass)),rgb(11 25 43 / var(--px40-glass)));
+}
+html[data-px40-scene] .studio>.panel:not(.video-vault-cinema){
+ background-color:rgb(12 15 30 / var(--px40-glass))!important;
+}
+html[data-px40-scene] .px38-premiere-main{
+ background:linear-gradient(90deg,rgb(6 8 18 / var(--px40-veil)),transparent 95%);
+ border-radius:16px;
+}
+html[data-px40-scene] .px40-realm-copy{
+ background:linear-gradient(90deg,rgb(6 8 18 / var(--px40-veil)),transparent 95%);
+ border-radius:14px;
+}
+html[data-px40-scene] .px40-scene-card.selected::before{
+ box-shadow:inset 0 0 25px color-mix(in srgb,var(--px40-glow) 20%,transparent);
+}
+html[data-px40-scene] .px39-shelf-count{color:var(--px40-alt)}

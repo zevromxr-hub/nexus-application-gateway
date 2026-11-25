@@ -11,7 +11,18 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
  try{
   await page.goto('http://127.0.0.1:4173/alchemist/',{waitUntil:'domcontentloaded',timeout:40000});
   await page.locator('#commandOpenMedia:visible, #mediaOpen:visible').first().waitFor({state:'visible',timeout:16000});
-  assert.match(await page.locator('#versionInfo').textContent(),/3\.9\.0/);
+  assert.match(await page.locator('#versionInfo').textContent(),/4\.0\.0/);
+  // v4: scene switching changes CSS only, never personal media.
+  await page.locator('#px40RealmCustomize').click();
+  await page.locator('#px40Dialog').waitFor({state:'visible'});
+  await page.locator('[data-px40-scene="frost"]').click();
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.px40Scene),'frost');
+  await page.locator('#px40Motion').selectOption('off');
+  assert.equal(await page.evaluate(()=>document.documentElement.dataset.px40Motion),'off');
+  assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('proximus-immersion-v400')).scene),'frost');
+  await page.locator('#px40StorageCheck').click();
+  await page.waitForFunction(()=>String(document.querySelector('#px40StorageResults')?.textContent).includes('saved videos'),null,{timeout:12000});
+  await page.locator('#px40Close').click();
   assert.equal(await page.locator('#proximusPremiere').count(),1,'Cinematic home premiere must be installed');
   await page.locator('#px38PremiereMode').click();
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.px38Experience),'calm');
@@ -80,6 +91,8 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#px39Discovery .px39-movie-card').first().click();
   await page.locator('#px39DetailsDialog').waitFor({state:'visible',timeout:8000});
   assert.match(await page.locator('#px39DetailsTitle').textContent(),/Local Sample Movie/);
+  await page.locator('#px40WatchLater').click();
+  await page.waitForFunction(()=>document.querySelector('#px40WatchLater')?.textContent.includes('Saved to watchlist'),null,{timeout:10000});
   await page.locator('#px39DetailsFavorite').click();
   await page.waitForFunction(()=>document.querySelector('#px39DetailsFavorite')?.textContent.includes('Remove favorite'),null,{timeout:12000});
   await page.locator('#px39DetailsPoster').click();
@@ -98,11 +111,12 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');
     const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
-   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,poster:item.poster instanceof Blob?item.poster.size:(item.posterData instanceof ArrayBuffer?item.posterData.byteLength:0)};
+   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,watchLater:item.watchLater,poster:item.poster instanceof Blob?item.poster.size:(item.posterData instanceof ArrayBuffer?item.posterData.byteLength:0)};
   });
   assert.equal(posterSafe.bytes,12345,'Poster save must not change original movie bytes');
   assert.equal(posterSafe.name,'Local Sample Movie.mp4','Poster edit cannot rename source media');
   assert.equal(posterSafe.favorite,true,'Discovery favorite must persist locally');
+  assert.equal(posterSafe.watchLater,true,'Watchlist addition must persist without modifying movie files');
   assert.ok(posterSafe.poster>500,'Poster Forge must save a real JPG poster Blob');
   await page.locator('#px39PosterClose').click();
   assert.equal(await page.locator('#px39PosterDialog').evaluate(e=>e.open),false);

@@ -1,3 +1,12 @@
+## v4.0.0 — IMMERSIVE DOMINION (2026-11-25)
+
+- Rebuilt the site's atmospheric styling around five selectable full-site realms: Sovereign Violet, Frozen Dominion, Obsidian Gold, Ember Throne and Midnight Eclipse.
+- Added a persistent **Immersion Console** with atmosphere intensity, glass/readability, backdrop visibility and automatic/forced motion options. Settings are stored locally and do not touch the original Media Publisher GIF/MP4/WebM/image files.
+- Added a bold responsive entry portal, scene-tinted navigation and panels, and a safer low-motion mobile default. Explicit reduced-motion requests always override animation settings.
+- **Living Cinema** adds a persistent local **Watchlist** shelf, a one-tap Watchlist Only filter, Save for Later in movie details, and a **Surprise Me** action that chooses an existing film without starting autoplay.
+- Added **Local Library Health**: on-demand counts/bytes of saved movies, navigator.storage usage/quota estimate and optional persistence permission request where available. Report explicitly warns that offline/browser storage is not a backup.
+- Preserved the exact original Video Vault storage (OPFS and IndexedDB), video file bytes, posters, custom animated GIF/video covers, music, all 18 studios and preexisting v3.9 offline rollback.
+
 ## v3.9.0 — The Living Cinema (2026-11-25)
 
 - Added a genuine Netflix-inspired Discovery Library inside Video Vault, driven only by the actual local video collection.

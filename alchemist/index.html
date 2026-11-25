@@ -11,7 +11,7 @@
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css"><link rel="stylesheet" href="./cinematic-dominion-v3.8.css"><link rel="stylesheet" href="./living-cinema-v3.9.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
-<link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
+<link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900"><link rel="stylesheet" href="./immersive-dominion-v4.css">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
 </head><body>
 <div id="ambientMedia" hidden aria-hidden="true"></div>
@@ -46,13 +46,24 @@
 <div class="shell">
 <header class="topbar">
  <div class="crumb">PROXIMUS <span>/</span> COMPANION NETWORK <span>/</span> <strong>ASSET ALCHEMIST</strong></div>
- <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="lifeJump" class="tool-btn" title="Open your private tasks and daily plan">◷ Life</button><button id="layoutToggle" class="tool-btn" title="Configure PC/iPhone adaptive layout">▤ Layout <span id="layoutCurrent">Auto</span></button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent" title="Open collected exports inside Project Hub">▤ Exports <span id="packCount">0</span></button></div>
+ <div class="top-actions"><span class="live">● NO SERVER UPLOADS</span><button id="vaultJump" class="tool-btn" title="Open saved videos on this device">▣ Videos</button><button id="lifeJump" class="tool-btn" title="Open your private tasks and daily plan">◷ Life</button><button id="layoutToggle" class="tool-btn" title="Configure PC/iPhone adaptive layout">▤ Layout <span id="layoutCurrent">Auto</span></button><button id="px40Open" class="tool-btn" type="button" title="Custom immersive scenes">✧ Realm</button><button id="mediaOpen" class="tool-btn" title="Optional animated backgrounds and thumbnails">✧ Media</button><button id="cmdOpen" class="tool-btn" title="Search tools (Ctrl+K)">⌕ Tools <kbd>Ctrl K</kbd></button><button id="packJump" class="tool-btn accent" title="Open collected exports inside Project Hub">▤ Exports <span id="packCount">0</span></button></div>
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / THE LIVING CINEMA / v3.9.0</div>
+<div class="eyebrow">PROXIMUS / IMMERSIVE DOMINION / v4.0.0</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
+</section>
+<section id="px40RealmBanner" aria-label="Your immersive Proximus realm">
+ <div class="px40-realm-copy"><span class="px40-kicker">✧ PROXIMUS / IMMERSIVE DOMINION · v4.0</span>
+ <h3>Make this universe your own.</h3>
+ <p>Step into an atmosphere built around your personal films, artwork and animated environments, with a performance-conscious iPhone experience.</p>
+ <div class="px40-realm-commands">
+  <button id="px40RealmCustomize" type="button">✧ Customize My Realm</button>
+  <button id="px40StorageOpen" type="button">◈ Check Library Health</button>
+ </div>
+ <p class="px40-status"><span id="px40CurrentRealm">Sovereign Violet</span> · <span id="px40PowerStatus">Device-adaptive atmosphere</span></p>
+ </div><div class="px40-realm-art" aria-hidden="true"><span>✧</span></div>
 </section>
  <section id="proximusPremiere" class="px38-premiere" data-has-media="false" aria-label="Your personal cinema premiere">
   <div id="px38PremiereArt" class="px38-premiere-art" aria-hidden="true"></div>
@@ -76,7 +87,7 @@
   <div class="px38-filmstrip-header"><strong>✧ YOUR PERSONAL PREMIERES</strong><span>Pick any saved title to play instantly</span></div>
   <div id="px38Filmstrip" class="px38-filmstrip"></div>
  </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.9.0 · THE LIVING CINEMA</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v4.0.0 · IMMERSIVE DOMINION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
  <div class="orbit-access-current">
   <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
@@ -96,9 +107,9 @@
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.9.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v4.0.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.9.0</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v4.0.0</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
@@ -324,6 +335,8 @@
   </div>
   <div class="px39-discovery-commands">
    <button id="px39OpenPoster" type="button">✧ Poster Forge</button>
+   <button id="px40WatchlistFilter" type="button" aria-pressed="false">⌑ My Watchlist</button>
+   <button id="px40Surprise" type="button">✦ Surprise Me</button>
    <button id="px39BrowseAll" type="button">▦ All library controls</button>
    <button id="px39AddMovie" class="primary" type="button">＋ Add movies</button>
   </div>
@@ -1301,6 +1314,43 @@
   <div class="mobile-studio-footer"><button id="mobileStudioTop" class="small-btn">↑ Return to top of page</button></div>
  </div>
 </dialog>
+<dialog id="px40Dialog" class="px40-dialog" aria-label="Immersive Dominion appearance console">
+ <div class="px40-dialog-inner">
+  <div class="px40-dialog-head"><div><span class="px40-kicker">PROXIMUS / SOVEREIGN IMMERSION ENGINE</span>
+   <h3>Your realm. Your rules.</h3>
+   <p>Choose the complete visual atmosphere of your site without modifying existing local GIFs, videos, movie posters or saved backgrounds.</p>
+   </div><button id="px40Close" type="button" class="px40-close" aria-label="Close appearance console">×</button>
+  </div>
+  <div class="px40-scene-options" role="group" aria-label="Immersive visual scenes"><button type="button" class="px40-scene-card" data-px40-scene="sovereign" style="--sc-a:#a15cff;--sc-b:#80e8f5">✧ Sovereign Violet</button>
+<button type="button" class="px40-scene-card" data-px40-scene="frost" style="--sc-a:#5ea7ff;--sc-b:#d6f7ff">❄ Frozen Dominion</button>
+<button type="button" class="px40-scene-card" data-px40-scene="obsidian" style="--sc-a:#d49b51;--sc-b:#f7d39d">◆ Obsidian Gold</button>
+<button type="button" class="px40-scene-card" data-px40-scene="ember" style="--sc-a:#ef7050;--sc-b:#ffd18a">✦ Ember Throne</button>
+<button type="button" class="px40-scene-card" data-px40-scene="eclipse" style="--sc-a:#6f71c8;--sc-b:#94acd7">☾ Midnight Eclipse</button></div>
+  <div class="px40-controls">
+   <label>Atmosphere intensity <strong id="px40IntensityValue">78%</strong><input id="px40Intensity" type="range" min="25" max="100" step="5" value="78"></label>
+   <label>Panel readability <strong id="px40GlassValue">83%</strong><input id="px40Glass" type="range" min="55" max="98" step="1" value="83"></label>
+   <label>Animation and battery usage<select id="px40Motion"><option value="auto">Adaptive · iPhone-friendly</option><option value="off">Still · maximum efficiency</option><option value="on">Subtle live animation</option></select></label>
+   <label>Personal background presence<select id="px40Clarity"><option value="balanced">Balanced · text first</option><option value="bright">Artwork forward · reduced veil</option></select></label>
+  </div>
+  <div class="px40-actions">
+   <button id="px40PersonalArt" type="button">✧ Edit My GIF / Video Background</button>
+   <button id="px40Cinema" type="button">▣ Living Cinema</button>
+   <button id="px40Reset" type="button">↺ Reset Appearance</button>
+  </div>
+  <p id="px40Status" class="px40-status" role="status">These settings affect appearance only. Personal media stays stored on this device.</p>
+  <section class="px40-dialog-section" aria-label="Local storage health">
+   <h4>◈ Local Library Health</h4>
+   <p>Inspect saved movie counts, browser storage estimates, and persistence options without touching your videos.</p>
+   <div class="px40-actions">
+    <button id="px40StorageCheck" type="button">◈ Check Storage</button>
+    <button id="px40Persistence" type="button">▣ Request Storage Protection</button>
+    <button id="px40Recovery" type="button">⚙ Recovery Center</button>
+   </div>
+   <div id="px40StorageResults" role="status" aria-live="polite">Choose Check Storage to inspect this device.</div>
+   <p id="px40PersistenceStatus" class="px40-status" role="status"></p>
+  </section>
+ </div>
+</dialog>
 <dialog id="px39DetailsDialog" class="px39-dialog" aria-label="Personal movie details">
  <div class="px39-dialog-inner">
   <div class="px39-dialog-head"><div><strong id="px39DetailsKicker">YOUR PRIVATE COLLECTION</strong><h3 id="px39DetailsTitle">Saved Movie</h3></div><button class="px39-close" type="button" id="px39DetailsClose" aria-label="Close movie details">×</button></div>
@@ -1311,6 +1361,7 @@
     <div class="px39-dialog-actions">
      <button id="px39DetailsPlay" class="px39-cta" type="button">▶ Play Movie</button>
      <button id="px39DetailsFavorite" type="button">☆ Add favorite</button>
+     <button id="px40WatchLater" type="button">＋ Save for later</button>
      <button id="px39DetailsPoster" type="button">✧ Design Poster</button>
     </div>
     <label class="px39-dialog-field">Personal collection<input id="px39DetailsCollection" maxlength="42" autocomplete="off" placeholder="My Movies"></label>

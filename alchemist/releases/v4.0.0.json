@@ -1,0 +1,35 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "4.0.0",
+  "release_date": "2026-11-25",
+  "title": "Immersive Dominion — Five Cinematic Realms & Entertainment Intelligence",
+  "subtitle": "Personal immersive appearance, local movie watchlists, smart discovery and media library safety",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Introduced a complete five-realm site visual upgrade: Sovereign Violet, Frozen Dominion, Obsidian Gold, Ember Throne and Midnight Eclipse, with atmospheric navigation, responsive accents and a personalized landing portal.",
+    "Immersion Console supports on-device atmosphere intensity, glass readability, background visibility and motion controls, preserving the exact original personal GIF, video and media publisher settings.",
+    "Mobile-adaptive visuals automatically switch off continuous theme animations on coarse-pointer mobile devices unless explicitly enabled; reduced-motion preferences always take precedence.",
+    "Added personal Watchlist movies stored as metadata in the existing local Video Vault; the new watchlist shelf and one-tap Watchlist Only filter retain local privacy.",
+    "Added Surprise Me selection favoring previously unwatched saved movies without autoplaying or leaving the application.",
+    "Added on-demand Local Library Health reports with saved original video file totals, browser storage estimates, and optional persistent-storage requests with clear safety guidance.",
+    "Updated responsive scene controls, improved site branding and theme palettes while preserving all 18 studios, v3.9 poster and playback tools, original local video bytes and offline rollback."
+  ],
+  "added_studios": [],
+  "retired_studios": [],
+  "upgraded_studios": [
+    "Immersion Console",
+    "Visual Identity",
+    "Video Vault — Watchlist & Surprise Me",
+    "Entertainment Overdrive",
+    "Recovery — Local Storage Health",
+    "iPhone & PC Navigation"
+  ],
+  "links": {
+    "site": "https://zevarchives.com/alchemist/"
+  }
+}

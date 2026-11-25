@@ -1,21 +1,22 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.9.0",
+  "version": "4.0.0",
   "channel": "stable",
   "release_date": "2026-11-25",
-  "subtitle": "The Living Cinema — Discovery Library, Sovereign Theater and Poster Forge",
+  "subtitle": "Immersive Dominion — Five Personal Realms, Watchlist, Instant Picks & Storage Health",
   "studio_count": 18,
-  "previous_version": "3.8.0",
+  "previous_version": "3.9.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
-  "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
+  "web_url": "https://zevarchives.com/alchemist/",
   "changes": [
-    "Added gorgeous streaming-style discovery shelves from actual private local videos: Continue Watching, Favorites, Recent and named collections.",
-    "Added title-searchable cinematic movie cards and real detail pages with local favorite toggles, collection renaming and instant play/resume.",
-    "Added Sovereign Theater playback controls for the existing Video Vault player: pause, seek, skip, fullscreen, PiP and focus without duplicate decoding.",
-    "Added Poster Forge for still image imports, safe saved-video frame capture, zoom/focus adjustments and optional local title overlay.",
-    "Poster edits write only the existing saved-video poster field, retaining original movie file bytes, imported personal GIF covers and playback metadata.",
-    "Connected the cinematic homepage to the new library, polished responsive iPhone/PC artwork and retained all 18 studios, PWA rollback and Home Screen custom icon settings."
+    "Introduced a complete five-realm site visual upgrade: Sovereign Violet, Frozen Dominion, Obsidian Gold, Ember Throne and Midnight Eclipse, with atmospheric navigation, responsive accents and a personalized landing portal.",
+    "Immersion Console supports on-device atmosphere intensity, glass readability, background visibility and motion controls, preserving the exact original personal GIF, video and media publisher settings.",
+    "Mobile-adaptive visuals automatically switch off continuous theme animations on coarse-pointer mobile devices unless explicitly enabled; reduced-motion preferences always take precedence.",
+    "Added personal Watchlist movies stored as metadata in the existing local Video Vault; the new watchlist shelf and one-tap Watchlist Only filter retain local privacy.",
+    "Added Surprise Me selection favoring previously unwatched saved movies without autoplaying or leaving the application.",
+    "Added on-demand Local Library Health reports with saved original video file totals, browser storage estimates, and optional persistent-storage requests with clear safety guidance.",
+    "Updated responsive scene controls, improved site branding and theme palettes while preserving all 18 studios, v3.9 poster and playback tools, original local video bytes and offline rollback."
   ]
 }
