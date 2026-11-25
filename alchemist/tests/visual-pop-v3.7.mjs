@@ -59,6 +59,11 @@ assert.ok(covers.includes("document.addEventListener('proximus-video-vault-remov
  'Standalone artwork must be cleaned on movie delete');
 assert.ok(covers.includes('videoVaultCleanCovers')&&html.includes('id="videoVaultCoverIntegrity"'),
  'Safe cleanup and artwork health controls must be present');
+assert.ok(publisher.includes('const rows=await Promise.all(list.map(diskRecord))')&&
+ publisher.includes("const tr=db.transaction(STORE,'readwrite')")&&
+ publisher.includes('if(replace)store.clear()')&&
+ publisher.includes('for(const row of rows)store.put(row)'),
+ 'Restoring thumbnails must be one atomic IndexedDB transaction with no partial clear');
 assert.ok(publisher.indexOf("await tx('readwrite',store=>store.delete(slot))")<publisher.indexOf("mediaRecords.delete(slot)"),
  'Media removal must commit first, then change visible background state');
 assert.ok(read('sovereign-polish-v3.7.1.css').includes('@media (prefers-reduced-motion:reduce)'));
