@@ -46,8 +46,17 @@ async function transaction(stores,mode,run){
   tx.onerror=tx.onabort=()=>reject(requestError||tx.error||Error('Video Vault local storage operation failed.'));
  });
 }
+// Existing Blob posters remain untouched. On WebKit versions unable to persist
+// canvas-derived Blobs, posterData stores only JPEG bytes; hydrate for all
+// original consumers so thumbnails and older movie metadata retain behavior.
+function revivePoster(record){
+ if(record&&!(record.poster instanceof Blob)&&record.posterData instanceof ArrayBuffer&&record.posterData.byteLength)
+  return {...record,poster:new Blob([record.posterData],{type:'image/jpeg'})};
+ return record;
+}
 export async function listStoredVideos(){
- return transaction(['items'],'readonly',store=>store.getAll());
+ const rows=await transaction(['items'],'readonly',store=>store.getAll());
+ return (rows||[]).map(revivePoster);
 }
 // Additive storage v2. Existing IndexedDB 'files' videos remain playable, unchanged.
 const videoChunkRange=id=>IDBKeyRange.bound(id+':',id+':\uffff');
@@ -132,7 +141,22 @@ export async function loadStoredVideo(id){
  return record.blob;
 }
 export async function updateStoredVideo(meta){
- await transaction(['items'],'readwrite',store=>store.put(meta));
+ // Common path remains the original transaction and data format.
+ // For a poster already in byte-backed storage, avoid reintroducing a Blob
+ // during frequent resume-time metadata updates (important on iPhone).
+ const stored=meta?.posterData instanceof ArrayBuffer?{...meta,poster:null}:meta;
+ try{await transaction(['items'],'readwrite',store=>store.put(stored));}
+ catch(error){
+  const knownWebKitBlobFailure=meta?.poster instanceof Blob&&
+   (/Blob\\/File|Blob|File data|DataCloneError/i.test(String(error?.message||''))||error?.name==='DataCloneError');
+  if(!knownWebKitBlobFailure)throw error;
+  // Fallback writes only the small poster JPEG bytes in the same existing
+  // item row; never copies, converts or modifies the saved video itself.
+  const posterBytes=await meta.poster.arrayBuffer();
+  if(!posterBytes.byteLength||posterBytes.byteLength>2*1024*1024)throw error;
+  await transaction(['items'],'readwrite',store=>store.put({...meta,poster:null,posterData:posterBytes}));
+  meta.posterData=posterBytes;
+ }
  document.dispatchEvent(new Event('proximus-video-vault-changed'));
 }
 export async function removeStoredVideo(id){
@@ -410,7 +434,7 @@ export function initVideoVault(app){
    ctx.drawImage(video,(960-dw)/2,(540-dh)/2,dw,dh);
    const jpeg=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.88));
    if(jpeg&&jpeg.size<800000&&activeId===id){
-    item.poster=jpeg;await updateStoredVideo(item);render();
+    delete item.posterData;item.poster=jpeg;await updateStoredVideo(item);render();
    }
   }catch(e){}finally{posterWorking=false;}
  }
