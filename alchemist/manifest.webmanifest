@@ -1,7 +1,7 @@
 {
-  "name": "PROXIMUS | Asset Alchemist",
-  "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.9.0 — The Living Cinema: visual discovery of your own local movies, immersive playback, custom poster art and iPhone-friendly design.",
+  "name": "PROXIMUS | Living Cinema",
+  "short_name": "PROXIMUS",
+  "description": "PROXIMUS — Living Cinema, private local media, cinematic playback and creative studios.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
