@@ -98,7 +98,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');
     const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
-   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,poster:item.poster instanceof Blob?item.poster.size:0};
+   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,poster:item.poster instanceof Blob?item.poster.size:(item.posterData instanceof ArrayBuffer?item.posterData.byteLength:0)};
   });
   assert.equal(posterSafe.bytes,12345,'Poster save must not change original movie bytes');
   assert.equal(posterSafe.name,'Local Sample Movie.mp4','Poster edit cannot rename source media');
