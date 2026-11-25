@@ -3,6 +3,7 @@
 - Fixed orphaned cover retention on movie deletion by notifying the independently stored cover system only after original movie removal completes.
 - Added confirmed **Clean unused art** action and artwork health readout. No stored video, playback record, or media snapshot is deleted by the cleanup action.
 - Lazy-loaded individual GIF/MP4/WebM covers by visible card and released older offscreen decoded artwork as iPhone memory needs allow; all covers remain saved in local IndexedDB for later reuse.
+- Fixed Media Publisher backup restore to commit all replacement artwork rows together; storage failures roll back the transaction instead of wiping originals before a partial import.
 - Fixed Media Publisher background and thumbnail removal to wait for successful IndexedDB deletion before clearing on-screen media.
 - Introduced lightweight, responsive **Sovereign Polish** styling with themed accents, stronger card contrast, improved visual hierarchy, and accessible focus/reduced-motion states.
 - Preserved all studios, original local video storage and PWA cache rollback paths. No network video features or server uploads were added.
