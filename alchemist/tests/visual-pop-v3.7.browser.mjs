@@ -105,7 +105,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   assert.equal(saved.originalName,'Local Sample Movie.mp4');
   assert.ok(saved.cover>0,'Animated cover should be saved locally as a separate blob');
   await page.locator('#videoVaultRefresh').click();
-  await page.locator('.video-vault-card').first().scrollIntoViewIfNeeded();
+  await page.evaluate(()=>document.querySelector('.video-vault-card')?.scrollIntoView({block:'center'}));
   await page.locator('.video-vault-card .video-vault-art-image').waitFor({state:'attached',timeout:14000});
   // The interface lists artwork IDs only, and retrieves binary data on demand.
   await page.waitForFunction(()=>/1 personal cover/.test(document.querySelector('#videoVaultCoverIntegrity')?.textContent||''),null,{timeout:12000});
