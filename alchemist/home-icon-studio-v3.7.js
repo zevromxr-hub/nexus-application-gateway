@@ -28,6 +28,11 @@ export function initHomeIconStudio(){
  const download180=$('homeIconExport180'),download512=$('homeIconExport512'),share=$('homeIconShare');
  const reset=$('homeIconReset'),copy=$('homeIconCopyUrl'),guide=$('homeIconHelp');
  if(!source||!preview||!status||!zoom||!x||!y||!background||!frame)return;
+ const installStatus=$('proximusInstallStatus');
+ if(installStatus){
+  const standalone=window.matchMedia?.('(display-mode: standalone)').matches===true || window.navigator.standalone===true;
+  installStatus.textContent=standalone?'✓ PROXIMUS is running as a standalone Home Screen web app.':'Safari/browser launch detected. To hide the address bar, install with Open as Web App enabled (keep your existing app and locally saved media until backed up).';
+ }
  const ctx=preview.getContext('2d',{alpha:false});
  let photo=null,objectUrl=null,scheduled=false,sourcePreview=null;
  let crop=normalizeIconCrop();
