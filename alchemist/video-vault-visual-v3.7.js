@@ -41,6 +41,17 @@ async function saveCoverArt(id,file,mime,poster){
  return coverTx('readwrite',store=>store.put({id,mime,data,image,savedAt:Date.now()}));
 }
 
+/* A single small still for the Premiere hero; never loads an animated cover
+ * into a playing video, never copies the original movie, and handles IDB errors. */
+export async function getVaultCoverPoster(id){
+ if(typeof id!=='string'||!id)return null;
+ try{
+  const row=await getCoverArt(id);
+  return row?.image instanceof ArrayBuffer&&row.image.byteLength?
+   new Blob([row.image],{type:'image/jpeg'}):null;
+ }catch{return null}
+}
+
 export function coverType(file){
  const ext=String(file?.name||'').split('.').pop()?.toLowerCase(),type=TYPES[ext]||'';
  if(!type)throw Error('Choose a local GIF, PNG, JPG, WebP, MP4 or WebM for the cover.');
