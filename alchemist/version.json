@@ -1,21 +1,21 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.8.0",
+  "version": "3.9.0",
   "channel": "stable",
   "release_date": "2026-11-25",
-  "subtitle": "Cinematic Dominion — Personal Premiere, Local Poster Gallery & Full-Site Visual Redesign",
+  "subtitle": "The Living Cinema — Discovery Library, Sovereign Theater and Poster Forge",
   "studio_count": 18,
-  "previous_version": "3.7.1",
+  "previous_version": "3.8.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Added a cinematic feature premiere that highlights one personal saved local video with its best available poster, favorite or playback-resume context.",
-    "Added a filmstrip of up to four additional saved titles; play, resume, and shuffle use the original Video Vault playback event.",
-    "Reused small stills from personal GIF/video cover artwork for the featured title, while never auto-playing large cover media in the new hero.",
-    "Redesigned the header, global landing panel, Command Center, Overdrive destinations, cards, and iPhone dock with an immersive violet/cyan/gold treatment.",
-    "Added optional Calm/Cinematic appearance control persisted locally; supports reduced-motion and compact layouts without changing saved personal media.",
-    "Existing videos, local OPFS/IndexedDB, collections, favorites, custom animated covers, background art, icon editor, offline rollback and all 18 studios are preserved."
+    "Added gorgeous streaming-style discovery shelves from actual private local videos: Continue Watching, Favorites, Recent and named collections.",
+    "Added title-searchable cinematic movie cards and real detail pages with local favorite toggles, collection renaming and instant play/resume.",
+    "Added Sovereign Theater playback controls for the existing Video Vault player: pause, seek, skip, fullscreen, PiP and focus without duplicate decoding.",
+    "Added Poster Forge for still image imports, safe saved-video frame capture, zoom/focus adjustments and optional local title overlay.",
+    "Poster edits write only the existing saved-video poster field, retaining original movie file bytes, imported personal GIF covers and playback metadata.",
+    "Connected the cinematic homepage to the new library, polished responsive iPhone/PC artwork and retained all 18 studios, PWA rollback and Home Screen custom icon settings."
   ]
 }
