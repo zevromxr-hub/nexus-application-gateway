@@ -1,3 +1,19 @@
+## v3.9.0 — Living Cinema iPhone / PC acceptance
+
+- [ ] Keep the current Home Screen app installed. Open PROXIMUS Home → Explore My Cinema; confirm the new Discovery shelves load real previously saved videos, with no placeholder movies.
+- [ ] For an empty Vault, verify that Add Movies opens the original local import picker and the normal large-file / Play from Files options still work.
+- [ ] With multiple saved videos, verify Continue Watching, Favorites, Recently Added and your own Collections, with accessible horizontal scrolling on iPhone and mouse/touch on PC.
+- [ ] Search by movie name and collection; select a cover to open its real details. Tap Play to launch the original movie player, including saved resume position.
+- [ ] In Movie Details, star a test movie and change its Collection. Refresh the app and confirm these settings persist without affecting the original video file.
+- [ ] Use Sovereign Cinema toolbar to Play/Pause, skip ±10s, scrub, enter Cinema Focus and full screen; attempt PiP only if the device/browser supports it.
+- [ ] Open Poster Forge for a saved movie. Import PNG/JPEG/WebP or a GIF still, change framing/zoom and optional title color, export JPEG and save the poster.
+- [ ] With that same saved video already playing, capture its current video frame. With a different video or unsaved Files preview active, verify capture is blocked rather than being attached to the wrong movie.
+- [ ] On returning to the homepage, the feature and poster gallery should use the new saved art. Existing original animated covers should remain available and unchanged in Video Vault.
+- [ ] Verify iPhone landscape/portrait, touch controls, captions, video audio, native fullscreen and focus behavior. Check user-selected background visibility, reduced-motion and power guard.
+- [ ] Verify all 18 studios, version v3.9.0, previous cached rollback versions and all existing media/backups are still available.
+
+**Important:** Browser/WebKit emulation is not equivalent to a physical iPhone test. Do not uninstall your current installed web app merely to update its icon. Safari and standalone-app local storage may be isolated.
+
 ## v3.8.0 — Cinematic Dominion iPhone & PC acceptance
 
 - [ ] On an existing installed PROXIMUS Home Screen app, open without uninstalling. Confirm the new cinematic premiere is visible in Command Center and the underlying saved local videos still appear in Video Vault.
