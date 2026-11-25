@@ -1,3 +1,16 @@
+## v3.7.1 — Artwork Integrity & Sovereign Polish iPhone/PC acceptance
+
+- [ ] Open installed PROXIMUS on iPhone **without deleting it**; confirm v3.7.1 loads and original videos, favorites, resume positions and collections still work.
+- [ ] On Video Vault, scroll through several customized GIF and short MP4 covers. Verify art appears as cards enter view and muted video previews pause when leaving the view or opening another studio.
+- [ ] Return to a previously viewed thumbnail: its original cover should appear again after any memory-release while keeping all original movie data.
+- [ ] Delete a test video only after exporting or verifying a separate original. Confirm its matching custom artwork is cleaned without affecting another video's artwork or any other saved video.
+- [ ] Try **Clean unused art**. Confirm it requires approval, reports the count, and never deletes original movies. Canceling must leave the unused artwork unchanged.
+- [ ] Choose a personal GIF/video background and attempt Save/Remove in Media. Confirm the background stays visible if browser storage rejects deletion; successful deletion removes only the selected media slot.
+- [ ] Verify Command Center and Video Vault theme colors, card contrast, iPhone touch controls, visible focus, no clipped buttons, no overly bright backgrounds, and reduced-motion accessibility.
+- [ ] Confirm Home Screen Icon Studio still imports/exports 180×180 and 512×512 PNG and can reuse your saved master art.
+- [ ] Verify the original Cinema, Animation Forge, Sonic Theater, Media Theater and offline/rollback behavior still function.
+- [ ] Report device, Safari versus Home Screen mode, current release version, file format and exact reproduction steps.
+
 ## v3.7.0 — Cinematic Local Media & Icon Studio iPhone/PC acceptance
 
 - [ ] Keep the original PROXIMUS Home Screen web app installed throughout icon testing. Safari Shortcuts can have a different IndexedDB/OPFS library; verify exported copies of local videos before any app deletion/reinstallation.
