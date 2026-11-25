@@ -215,6 +215,13 @@ export function initVaultVisualCovers(){
    const [videos,coverKeys]=await Promise.all([listStoredVideos(),listCoverKeys()]);
    const coverIds=new Set(coverKeys);
    if(id!==generation)return;
+   const integrity=$('videoVaultCoverIntegrity');
+   if(integrity){
+    const validIds=new Set(videos.map(v=>v.id));
+    const orphanCount=coverKeys.filter(id=>!validIds.has(id)).length;
+    integrity.textContent=coverIds.size+' personal cover'+(coverIds.size===1?'':'s')+
+     ' · '+orphanCount+' unused · viewport-optimized previews';
+   }
    const list=sortVideoLibrary(videos,{query:$('videoVaultSearch')?.value||'',
     filter:$('videoVaultFilter')?.value||'all',sort:$('videoVaultSort')?.value||'recent'}).slice(0,180);
    const cards=[...grid.querySelectorAll('.video-vault-card')];
@@ -274,7 +281,7 @@ export function initVaultVisualCovers(){
  document.addEventListener('proximus-video-vault-removed',event=>{
   const id=event.detail?.id;
   if(typeof id!=='string'||!id)return;
-  void deleteCoverArt(id).catch(e=>{
+  void deleteCoverArt(id).then(()=>schedule()).catch(e=>{
    status.dataset.error='true';status.textContent='Movie removed, but its extra cover could not be cleaned: '+e.message;
   });
  });
@@ -289,6 +296,7 @@ export function initVaultVisualCovers(){
    if(!confirm('Delete '+unused.length+' unused custom artwork cover(s)? This never deletes a video or its original snapshot.'))return;
    for(const id of unused)await deleteCoverArt(id);
    show('Freed '+unused.length+' unused cover(s). All saved videos remain untouched.');
+   schedule();
   }catch(e){
    status.dataset.error='true';status.textContent='Cannot inspect unused artwork safely: '+e.message;
   }finally{cleanupButton.disabled=false}
