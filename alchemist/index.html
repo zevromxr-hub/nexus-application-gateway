@@ -9,7 +9,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 <link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
@@ -449,6 +449,11 @@
  </div>
  <div class="panel video-vault-library"><h3>04 / YOUR VIDEO COLLECTIONS</h3>
   <p class="hint">Play, resume, favorite, organize, or delete local copies. Sharper cover snapshots appear after playback. Each saved video can also use its own local GIF, MP4/WebM or image cover through the ✧ Cover action. Muted live covers animate while visible, subject to iPhone performance settings.</p>
+  <div class="nx371-cover-care" role="group" aria-label="Personal artwork maintenance">
+   <span id="videoVaultCoverIntegrity" class="nx371-art-status" role="status">Checking local cover artwork…</span>
+   <button id="videoVaultCleanCovers" type="button" class="small-btn">✧ Clean unused art</button>
+   <small>Deletes only orphaned covers, never videos</small>
+  </div>
   <div id="videoVaultGrid" class="video-vault-grid"></div>
  </div>
 </section>
