@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
  try{
   await page.goto('http://127.0.0.1:4173/alchemist/',{waitUntil:'domcontentloaded',timeout:40000});
   await page.locator('#commandOpenMedia:visible, #mediaOpen:visible').first().waitFor({state:'visible',timeout:16000});
-  assert.match(await page.locator('#versionInfo').textContent(),/3\.8\.0/);
+  assert.match(await page.locator('#versionInfo').textContent(),/3\.9\.0/);
   assert.equal(await page.locator('#proximusPremiere').count(),1,'Cinematic home premiere must be installed');
   await page.locator('#px38PremiereMode').click();
   assert.equal(await page.evaluate(()=>document.documentElement.dataset.px38Experience),'calm');
@@ -74,6 +74,32 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   assert.equal(await page.evaluate(()=>Boolean(document.querySelector('#videoVaultStudio')?.closest('main.content'))),true,
    'Video Vault must stay inside the application shell on iPhone and desktop');
   await page.locator('#videoVaultRefresh').click();
+  // Living Cinema must discover the actual local item, open real details and
+  // write only poster metadata through Poster Forge (never movie file bytes).
+  await page.locator('#px39Discovery .px39-movie-card').first().waitFor({state:'visible',timeout:15000});
+  await page.locator('#px39Discovery .px39-movie-card').first().click();
+  await page.locator('#px39DetailsDialog').waitFor({state:'visible',timeout:8000});
+  assert.match(await page.locator('#px39DetailsTitle').textContent(),/Local Sample Movie/);
+  await page.locator('#px39DetailsFavorite').click();
+  await page.waitForFunction(()=>document.querySelector('#px39DetailsFavorite')?.textContent.includes('Remove favorite'),null,{timeout:12000});
+  await page.locator('#px39DetailsPoster').click();
+  await page.locator('#px39PosterDialog').waitFor({state:'visible',timeout:8000});
+  await page.locator('#px39PosterFile').setInputFiles({name:'cinema-cover.gif',mimeType:'image/gif',buffer:gif});
+  await page.waitForFunction(()=>String(document.querySelector('#px39PosterStatus')?.textContent).includes('Preview loaded'),null,{timeout:12000});
+  await page.locator('#px39PosterSave').click();
+  await page.waitForFunction(()=>String(document.querySelector('#px39PosterStatus')?.textContent).includes('Poster saved'),null,{timeout:12000});
+  const posterSafe=await page.evaluate(async()=>{
+   const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
+   const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');
+    const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
+   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,poster:item.poster instanceof Blob?item.poster.size:0};
+  });
+  assert.equal(posterSafe.bytes,12345,'Poster save must not change original movie bytes');
+  assert.equal(posterSafe.name,'Local Sample Movie.mp4','Poster edit cannot rename source media');
+  assert.equal(posterSafe.favorite,true,'Discovery favorite must persist locally');
+  assert.ok(posterSafe.poster>500,'Poster Forge must save a real JPG poster Blob');
+  await page.locator('#px39PosterClose').click();
+  assert.equal(await page.locator('#px39PosterDialog').evaluate(e=>e.open),false);
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});
   await card.scrollIntoViewIfNeeded();
