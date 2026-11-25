@@ -1,0 +1,125 @@
+/* PROXIMUS | ASSET ALCHEMIST v3.7.1 — SOVEREIGN POLISH
+ * A functional visual pass: stronger artwork legibility, focus and local status.
+ * No external images, fonts, media fetches, or expensive infinite animations. */
+:root{--nx371-amethyst:#b99bed;--nx371-ice:#7ae5e9;--nx371-gold:#eac99d}
+.command-top,.video-vault-intro,.media-vivid-controls,.home-icon-studio{
+ border-color:#9e88c0;
+ background:linear-gradient(128deg,#261a40 0%,#172138 62%,#101627 100%);
+ box-shadow:0 15px 40px #02030d78,inset 0 1px 0 #e2bfff20;
+}
+.command-top{position:relative;isolation:isolate;overflow:hidden}
+.command-top::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(ellipse 48% 100% at 88% 12%,#72bcf922,transparent 76%),
+ linear-gradient(105deg,#b889e00f,transparent 45%);
+}
+.command-welcome h3{
+ color:#f5eaff;letter-spacing:.012em;
+ text-shadow:0 2px 24px #a578e633;
+}
+.command-metrics>div,.video-vault-metrics>div{
+ border-color:#796596;background:linear-gradient(135deg,#251c39,#101c2c);
+ box-shadow:inset 0 1px 0 #f4d5ff16,0 6px 18px #06091735;
+}
+.command-metrics strong{color:#eddaff}
+.command-studio-card{
+ --nx371-halo:#b48ce7;
+ border:1px solid #7c6997;position:relative;isolation:isolate;
+ border-radius:15px;
+ background:linear-gradient(147deg,#242039,#10172b);
+ box-shadow:0 11px 30px #06051188,inset 0 1px 0 #ffffff0d;
+ transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.command-studio-card:hover,.command-studio-card:focus-within{
+ border-color:var(--nx371-halo);box-shadow:0 16px 36px #070713aa,0 0 22px color-mix(in srgb,var(--nx371-halo) 21%,transparent);
+}
+.command-studio-card[data-proximus-thumbnail="videos"],
+.command-studio-card[data-proximus-thumbnail="capture"]{--nx371-halo:#c49cf9}
+.command-studio-card[data-proximus-thumbnail="theater"],
+.command-studio-card[data-proximus-thumbnail="reactor"]{--nx371-halo:#7ee2ef}
+.command-studio-card[data-proximus-thumbnail="life"],
+.command-studio-card[data-proximus-thumbnail="projects"]{--nx371-halo:#e6c491}
+.command-studio-card[data-proximus-thumbnail="animation"],
+.command-studio-card[data-proximus-thumbnail="identity"]{--nx371-halo:#ebafd7}
+.command-studio-card[data-proximus-thumbnail="arcade"]{--nx371-halo:#eba4b2}
+.command-studio-card .dashboard-thumb{
+ background:radial-gradient(ellipse at 58% 32%,color-mix(in srgb,var(--nx371-halo) 31%,transparent),#111b2e 70%);
+ border-bottom:1px solid #9a79bf66;
+}
+.command-studio-card .dashboard-thumb::after{
+ content:"";pointer-events:none;position:absolute;inset:0;z-index:2;
+ background:linear-gradient(0deg,#090b1db8 0%,transparent 38%,#b4a0db1a 100%);
+}
+.command-studio-card .dashboard-thumb .personal-media{
+ position:relative;z-index:1;width:100%;height:100%;object-fit:cover;
+}
+.command-studio-card .dashboard-thumb:empty::before{
+ color:var(--nx371-halo);opacity:.84;text-shadow:0 0 30px var(--nx371-halo);
+}
+.command-studio-info{gap:9px;min-height:155px}
+.command-studio-info strong{color:#faefff;line-height:1.48;font-size:13px}
+.command-studio-info p{font-size:11px;color:#c6bad6;line-height:1.65}
+.command-studio-actions .primary{
+ border:1px solid #c6a9f3;
+ background:linear-gradient(135deg,#8159b6,#584290);
+ color:#fff;box-shadow:inset 0 1px 0 #f4dfff38;
+}
+.command-studio-actions .small-btn{color:#e9defb;border-color:#8072a2}
+.video-vault-library{border-color:#7d699e}
+#videoVaultStudio .video-vault-card{
+ transition:border-color .16s ease,box-shadow .16s ease;
+}
+#videoVaultStudio .video-vault-card:hover{
+ border-color:#c6b0eb;
+ box-shadow:0 10px 34px #040814b0,0 0 16px #a080db22;
+}
+#videoVaultStudio .video-vault-card-body strong{color:#faecff;font-size:12px;line-height:1.5}
+#videoVaultStudio .video-vault-card-body small{color:#cbbbdc}
+#videoVaultStudio .video-vault-card-actions button:focus-visible,
+.command-studio-card button:focus-visible,
+#videoVaultCleanCovers:focus-visible{outline:2px solid #ecce9c;outline-offset:3px}
+#videoVaultStudio .video-vault-cover{background:radial-gradient(circle at 51% 39%,#67558e,#121c2d)}
+#videoVaultStudio .video-vault-cover:focus-visible{outline:3px solid #e6caa5;outline-offset:-3px}
+#videoVaultStudio .video-vault-cover .video-vault-art-video,
+#videoVaultStudio .video-vault-cover .video-vault-art-image,
+#videoVaultStudio .video-vault-cover .video-vault-art-still{
+ filter:brightness(1.05) saturate(var(--pv-saturation,118%))
+ contrast(var(--pv-contrast,110%));
+}
+.nx371-cover-care{
+ display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+ padding:9px 12px;margin:10px 0 14px;border-radius:12px;
+ border:1px solid #74628f;background:linear-gradient(90deg,#251d38,#15243a);
+}
+.nx371-art-status{
+ flex:1 1 180px;font-size:11px;color:#e6d4fa;line-height:1.45;font-weight:750;
+}
+.nx371-cover-care small{font-size:10px;color:#b7c7d8;line-height:1.4}
+#videoVaultCleanCovers{
+ border-color:#9b8dbb;color:#ede4ff;min-height:39px;
+ padding:9px 11px;font-size:11px;white-space:normal;
+}
+#videoVaultCleanCovers:disabled{opacity:.55;cursor:wait}
+.media-vivid-controls h3,.home-icon-studio h3{letter-spacing:.045em}
+#mediaVisualPopStatus,#homeIconStatus{color:#cdf0e7}
+.media-vivid-grid label,.home-icon-controls label{color:#eee4f5}
+#mediaDia :is(button,input,select):focus-visible{
+ outline:2px solid #ebd29f;outline-offset:2px;
+}
+.section-heading h2{color:#f6edff;text-shadow:0 2px 22px #9872cd19}
+@media (hover:none){
+ .command-studio-card:hover{transform:none;box-shadow:0 10px 29px #06051188}
+ .command-studio-card:active{border-color:var(--nx371-halo)}
+}
+@media(max-width:720px){
+ .command-top,.video-vault-intro{box-shadow:0 10px 26px #02020a70}
+ .command-studio-info{min-height:0}
+ .command-studio-info p{font-size:11px;line-height:1.6}
+ .nx371-cover-care{padding:10px;align-items:stretch}
+ .nx371-cover-care small{flex-basis:100%}
+ .nx371-art-status{flex-basis:140px}
+}
+@media (prefers-reduced-motion:reduce){
+ .command-studio-card,.video-vault-card{transition:none!important}
+ .command-studio-card:hover,.command-studio-card:focus-within{transform:none!important}
+}
