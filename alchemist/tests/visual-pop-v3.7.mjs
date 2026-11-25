@@ -11,7 +11,7 @@ const root=path.resolve(import.meta.dirname,'..'),read=p=>fs.readFileSync(path.j
 const html=read('index.html'),publisher=read('media-publisher.js'),vault=read('video-vault.js'),
  covers=read('video-vault-visual-v3.7.js'),app=read('app.js'),css=read('visual-pop-v3.7.css'),
  sw=read('sw.js'),manifest=JSON.parse(read('version.json'));
-assert.equal(manifest.version,'3.8.0');
+assert.equal(manifest.version,'3.9.0');
 const icon=normalizeIconCrop({zoom:500,x:-10,y:55,background:'#bad',frame:'none'});
 assert.deepEqual(icon,{zoom:300,x:0,y:55,background:'#111225',frame:'none'});
 const crop=computeCrop(800,600,180);
@@ -89,8 +89,8 @@ for(const file of ['visual-pop-v3.7.js','visual-pop-v3.7.css','video-vault-visua
  assert.ok(sw.includes("'./"+file+"'"),'Offline cache missing '+file);
  assert.ok(fs.existsSync(path.join(root,file)),file+' missing');
 }
-assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.8.0'"));
-assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.8.0');
+assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.9.0'"));
+assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.9.0');
 assert.equal(JSON.parse(read('releases/v3.7.1.json')).version,'3.7.1');
 for(const name of ['visual-pop-v3.7.js','home-icon-studio-v3.7.js','video-vault-visual-v3.7.js','media-publisher.js','video-vault.js','app.js','tests/visual-pop-v3.7.browser.mjs','cinematic-premiere-v3.8.js']){
  const p=spawnSync(process.execPath,['--check',path.join(root,name)],{encoding:'utf8'});

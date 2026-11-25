@@ -1,3 +1,21 @@
+# PROXIMUS | ASSET ALCHEMIST v3.9.0
+**THE LIVING CINEMA — IMMERSIVE MEDIA DISCOVERY, SOVEREIGN PLAYER & POSTER FORGE**
+
+## Use your new entertainment space
+- **Discover:** Open Home → Explore My Cinema or the original Video Vault. Cinematic shelves automatically arrange your actual saved films into Continue Watching, Favorites, Recently Added and your own Collections.
+- **Select:** Tap any poster for a detailed movie view. Play/Resume, mark it as a favorite, edit its personal Collection or open Poster Forge.
+- **Watch:** Use the new Sovereign Cinema toolbar to play, rewind, fast forward, seek, enter Cinema Focus, use fullscreen or attempt PiP, subject to the existing browser capabilities.
+- **Create:** In Poster Forge, upload your own static/GIF artwork, edit its crop/zoom and optional title, or capture a frame from the exact video currently playing. Save a sharp 960×540 JPEG to this movie or export it to Files/Photos. Your original movie file is not re-encoded or altered.
+- **Stay private:** Local movies, posters, favorites, playback progress, custom animated covers and visual preferences stay on this device unless you explicitly export or transfer them.
+
+**Preserved:** All 18 studios, original Video Vault local OPFS/IndexedDB file store, Web Cinema Gateway, Media Publisher GIF/MP4 backgrounds, Home Screen Icon Studio, all thumbnails, music, personal backup/recovery and previous v3.8.0 rollback cache.
+
+**iPhone storage safety:** Keep the existing installed Home Screen app; deleting it can remove videos stored in its isolated browser storage. Preserve originals in Photos/Files before uninstalling or clearing website data.
+
+**Verification:** Automated source/functional and emulated Chromium/iPhone WebKit checks run in GitHub Actions; physical iPhone testing is still recommended.
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.8.0
 **CINEMATIC DOMINION — PERSONAL PREMIERE & IMMERSIVE ENTERTAINMENT**
 

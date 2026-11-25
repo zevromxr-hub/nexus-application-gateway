@@ -9,7 +9,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css"><link rel="stylesheet" href="./cinematic-dominion-v3.8.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css"><link rel="stylesheet" href="./cinematic-dominion-v3.8.css"><link rel="stylesheet" href="./living-cinema-v3.9.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 <link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
@@ -50,7 +50,7 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / CINEMATIC DOMINION / v3.8.0</div>
+<div class="eyebrow">PROXIMUS / THE LIVING CINEMA / v3.9.0</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
@@ -64,6 +64,7 @@
    <div class="px38-premiere-actions">
     <button id="px38PremiereWatch" type="button">▶ Open My Video Vault</button>
     <button id="px38PremiereShuffle" type="button" hidden>↻ Another spotlight</button>
+    <button id="px39OpenDiscovery" type="button">▦ Explore My Cinema</button>
     <button id="px38PremiereMedia" type="button">✧ My Artwork</button>
     <button id="px38PremiereMode" type="button" aria-pressed="false">✧ Cinematic atmosphere: on</button>
    </div>
@@ -75,7 +76,7 @@
   <div class="px38-filmstrip-header"><strong>✧ YOUR PERSONAL PREMIERES</strong><span>Pick any saved title to play instantly</span></div>
   <div id="px38Filmstrip" class="px38-filmstrip"></div>
  </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.8.0 · CINEMATIC DOMINION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.9.0 · THE LIVING CINEMA</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
  <div class="orbit-access-current">
   <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
@@ -95,9 +96,9 @@
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.8.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.9.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.8.0</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.9.0</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
@@ -314,7 +315,24 @@
   <div class="video-vault-metrics"><div><b id="videoVaultCount">0 saved</b><span>LOCAL LIBRARY</span></div><div><b id="videoVaultFavorites">0</b><span>FAVORITES</span></div><div><b id="videoVaultSavedBytes">0 B</b><span>VIDEO FILE BYTES</span></div></div>
 
  </div>
- <details id="webCinemaGateway" class="web-cinema-gateway" aria-label="Web Cinema Gateway — external websites and saved video links">
+ <section id="px39Discovery" aria-label="Living Cinema private discovery" data-empty="true">
+ <div class="px39-discovery-head">
+  <div class="px39-discovery-heading">
+   <span class="px39-eyebrow">✧ PROXIMUS / THE LIVING CINEMA</span>
+   <h3>Find your next obsession.</h3>
+   <p>Your actual saved movies, transformed into an immersive personal library. Private on this device, with no fake recommendations or external catalog.</p>
+  </div>
+  <div class="px39-discovery-commands">
+   <button id="px39OpenPoster" type="button">✧ Poster Forge</button>
+   <button id="px39BrowseAll" type="button">▦ All library controls</button>
+   <button id="px39AddMovie" class="primary" type="button">＋ Add movies</button>
+  </div>
+ </div>
+ <label class="px39-search-wrap"><span>Search your local cinema</span><input id="px39Search" type="search" autocomplete="off" placeholder="Find a movie, series, clip, collection…"></label>
+ <div id="px39Shelves" aria-live="off"></div>
+ <p id="px39DiscoveryStatus" class="px39-discovery-status" role="status">Loading your private movie shelves…</p>
+</section>
+<details id="webCinemaGateway" class="web-cinema-gateway" aria-label="Web Cinema Gateway — external websites and saved video links">
   <summary>
    <span class="web-cinema-summary-icon" aria-hidden="true">◎</span>
    <span class="web-cinema-summary-text"><strong>WEB CINEMA GATEWAY</strong><small>Open compatible websites &amp; video links · save links to watch later</small></span>
@@ -430,6 +448,16 @@
   <div class="panel video-vault-cinema">
    <h3>03 / PRIVATE CINEMA PLAYER</h3>
    <div class="video-vault-stage"><video id="videoVaultPlayer" playsinline controls preload="metadata" aria-label="Your saved video library player"></video></div>
+   <div id="px39PlayerToolbar" class="px39-theater-toolbar" role="group" aria-label="Sovereign Cinema player controls">
+    <button id="px39Play" type="button">▶ Play</button>
+    <button id="px39Back" type="button" title="Rewind ten seconds">↶ 10s</button>
+    <button id="px39Forward" type="button" title="Skip ten seconds">10s ↷</button>
+    <input id="px39Seek" type="range" min="0" max="1000" value="0" step="1" disabled aria-label="Video playback position">
+    <span id="px39Clock" class="px39-player-time" aria-live="off">0:00 / 0:00</span>
+    <button id="px39Focus" type="button">▣ Theater focus</button>
+    <button id="px39Fullscreen" type="button">⛶ Fullscreen</button>
+    <button id="px39Picture" type="button">◧ PiP</button>
+   </div>
    <div class="video-vault-closing-controls" aria-label="Video Vault picture and focus controls">
     <label>Picture framing<select id="videoVaultPictureFit"><option value="contain" selected>Original frame · no cropping</option><option value="cover">Fill screen · crop edges</option></select></label>
     <button class="small-btn" id="videoVaultFocus" type="button" aria-pressed="false">⛶ Focus on player</button>
@@ -852,7 +880,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.8.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.9.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
@@ -1267,6 +1295,52 @@
   <p id="mobileStudioCount" class="hint">Loading studio library…</p>
   <div id="mobileStudioList" class="mobile-studio-list"></div>
   <div class="mobile-studio-footer"><button id="mobileStudioTop" class="small-btn">↑ Return to top of page</button></div>
+ </div>
+</dialog>
+<dialog id="px39DetailsDialog" class="px39-dialog" aria-label="Personal movie details">
+ <div class="px39-dialog-inner">
+  <div class="px39-dialog-head"><div><strong id="px39DetailsKicker">YOUR PRIVATE COLLECTION</strong><h3 id="px39DetailsTitle">Saved Movie</h3></div><button class="px39-close" type="button" id="px39DetailsClose" aria-label="Close movie details">×</button></div>
+  <div class="px39-details-layout">
+   <div id="px39DetailsArtwork" class="px39-details-art" aria-hidden="true">✧</div>
+   <div class="px39-details-body">
+    <p id="px39DetailsMeta">Your local movie · no server uploads</p>
+    <div class="px39-dialog-actions">
+     <button id="px39DetailsPlay" class="px39-cta" type="button">▶ Play Movie</button>
+     <button id="px39DetailsFavorite" type="button">☆ Add favorite</button>
+     <button id="px39DetailsPoster" type="button">✧ Design Poster</button>
+    </div>
+    <label class="px39-dialog-field">Personal collection<input id="px39DetailsCollection" maxlength="42" autocomplete="off" placeholder="My Movies"></label>
+    <div class="px39-dialog-actions"><button id="px39DetailsSaveCollection" type="button">✓ Save collection</button></div>
+    <p id="px39DetailsStatus" class="px39-status" role="status">Original video stays in your existing Vault.</p>
+   </div>
+  </div>
+ </div>
+</dialog>
+<dialog id="px39PosterDialog" class="px39-dialog" aria-label="Poster Forge local movie artwork editor">
+ <div class="px39-dialog-inner">
+  <div class="px39-dialog-head"><div><strong>PROXIMUS / POSTER FORGE</strong><h3>Craft your own movie artwork.</h3></div><button class="px39-close" type="button" id="px39PosterClose" aria-label="Close Poster Forge">×</button></div>
+  <div class="px39-forge-layout">
+   <div class="px39-poster-preview">
+    <canvas id="px39PosterCanvas" width="960" height="540" role="img" aria-label="Preview of your custom personal movie poster"></canvas>
+    <p class="px39-poster-note">High-quality 960 × 540 cover image. Only the poster metadata is saved; original movie files remain untouched. Uploads and editing stay in your browser.</p>
+    <div class="px39-forge-actions"><button id="px39PosterFrame" type="button">◈ Capture currently playing frame</button></div>
+   </div>
+   <div class="px39-forge-fields">
+    <label class="px39-dialog-field">Movie to customize<select id="px39PosterChoice" aria-label="Select saved local video"></select></label>
+    <label class="px39-dialog-field">Choose image / GIF still<input id="px39PosterFile" type="file" accept=".jpg,.jpeg,.png,.webp,.gif,image/png,image/jpeg,image/webp,image/gif"></label>
+    <label class="px39-poster-slider">Poster zoom<input id="px39PosterZoom" type="range" min="100" max="260" value="100"></label>
+    <label class="px39-poster-slider">Horizontal framing<input id="px39PosterX" type="range" min="0" max="100" value="50"></label>
+    <label class="px39-poster-slider">Vertical framing<input id="px39PosterY" type="range" min="0" max="100" value="50"></label>
+    <label class="px39-caption-check"><input id="px39PosterCaptionEnabled" type="checkbox"> Add cinematic title overlay</label>
+    <label class="px39-dialog-field">Optional poster title<input id="px39PosterCaption" maxlength="62" placeholder="Your custom film title"></label>
+    <label class="px39-dialog-field">Title color<input id="px39PosterColor" class="px39-color-input" type="color" value="#ffffff"></label>
+   </div>
+  </div>
+  <div class="px39-forge-actions">
+   <button id="px39PosterSave" class="px39-cta" type="button" disabled>✧ Save Poster to Local Movie</button>
+   <button id="px39PosterExport" type="button">↓ Export JPG</button>
+  </div>
+  <p id="px39PosterStatus" class="px39-status" role="status">Select a movie and image to begin. Your original media stays intact.</p>
  </div>
 </dialog>
 <script type="module" src="./app.js"></script>
