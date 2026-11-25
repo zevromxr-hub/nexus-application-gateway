@@ -123,3 +123,21 @@
  .command-studio-card,.video-vault-card{transition:none!important}
  .command-studio-card:hover,.command-studio-card:focus-within{transform:none!important}
 }
+
+/* Prevent wide Video Vault collections from shifting behind the fixed
+ * desktop studio rail when browser scrollIntoView or horizontal gestures fire. */
+@media(min-width:1281px){
+ html.orbit-interface body[data-device-layout="desktop"]{overflow-x:clip}
+ html.orbit-interface body[data-device-layout="desktop"] .shell{
+  width:calc(100vw - 246px);min-width:0;max-width:none;margin-left:246px;
+ }
+}
+@media(min-width:761px) and (max-width:1280px){
+ html.orbit-interface body[data-device-layout="desktop"]{overflow-x:clip}
+ html.orbit-interface body[data-device-layout="desktop"] .shell{
+  width:calc(100vw - 220px);min-width:0;max-width:none;margin-left:220px;
+ }
+}
+#videoVaultStudio .video-vault-library,
+#videoVaultStudio .video-vault-grid,
+#videoVaultStudio .video-vault-card{min-width:0;max-width:100%}
