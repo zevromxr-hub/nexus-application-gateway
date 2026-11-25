@@ -354,9 +354,29 @@ export function initLivingCinema(app){
   }catch(err){notice('px39PosterStatus','Unable to export: '+err.message)}
  });
  document.addEventListener('proximus-video-vault-selected',event=>{playingId=typeof event.detail?.id==='string'?event.detail.id:null});
- document.addEventListener('proximus-video-vault-changed',()=>{if(!document.hidden)queueRefresh()});
- document.addEventListener('proximus-view-changed',event=>{if(event.detail?.studio==='videos')queueRefresh()});
- document.addEventListener('proximus-workspace-restored',queueRefresh);
+ // Playback resume metadata is saved frequently. Do not repeatedly decode and
+ // replace dozens of poster URLs while the viewer is watching off-screen.
+ let shelfDirty=false;
+ const onScreen=()=>{
+  if(root.closest('[hidden]'))return false;
+  const box=root.getBoundingClientRect();
+  return box.bottom>0&&box.top<window.innerHeight;
+ };
+ document.addEventListener('proximus-video-vault-changed',()=>{
+  shelfDirty=true;
+  if(!document.hidden&&(onScreen()||details.open||forge.open)){
+   shelfDirty=false;queueRefresh();
+  }
+ });
+ window.addEventListener('scroll',()=>{
+  if(shelfDirty&&!document.hidden&&onScreen()){
+   shelfDirty=false;queueRefresh();
+  }
+ },{passive:true});
+ document.addEventListener('proximus-view-changed',event=>{
+  if(event.detail?.studio==='videos'){shelfDirty=false;queueRefresh()}
+ });
+ document.addEventListener('proximus-workspace-restored',()=>{shelfDirty=false;queueRefresh()});
  window.addEventListener('pagehide',()=>{recycleArt();releaseSource()});
  void refresh();
 }
