@@ -5,12 +5,13 @@ import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {normalizeVisualPop,VISUAL_POP_KEY} from '../visual-pop-v3.7.js';
 import {coverType} from '../video-vault-visual-v3.7.js';
+import {premiereOrder,premiereLabel} from '../cinematic-premiere-v3.8.js';
 import {normalizeIconCrop,computeCrop} from '../home-icon-studio-v3.7.js';
 const root=path.resolve(import.meta.dirname,'..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const html=read('index.html'),publisher=read('media-publisher.js'),vault=read('video-vault.js'),
  covers=read('video-vault-visual-v3.7.js'),app=read('app.js'),css=read('visual-pop-v3.7.css'),
  sw=read('sw.js'),manifest=JSON.parse(read('version.json'));
-assert.equal(manifest.version,'3.7.1');
+assert.equal(manifest.version,'3.8.0');
 const icon=normalizeIconCrop({zoom:500,x:-10,y:55,background:'#bad',frame:'none'});
 assert.deepEqual(icon,{zoom:300,x:0,y:55,background:'#111225',frame:'none'});
 const crop=computeCrop(800,600,180);
@@ -18,6 +19,17 @@ assert.equal(crop.sx,100);assert.equal(crop.sy,0);
 assert.equal(crop.sw,600);assert.equal(crop.sh,600);
 assert.equal(computeCrop(800,600,180,{zoom:200}).sw,300);
 assert.throws(()=>computeCrop(0,600,180),/dimensions/);
+assert.deepEqual(premiereOrder([
+ {id:'new',updated:9999,position:0,favorite:false},
+ {id:'resume',updated:1,position:40,duration:100,favorite:false},
+ {id:'favorite',updated:2,position:0,favorite:true}
+]).map(x=>x.id),['resume','favorite','new']);
+assert.equal(premiereLabel({id:'resume',position:40,duration:100}),'CONTINUE YOUR STORY');
+for(const id of ['proximusPremiere','px38PremiereTitle','px38PremiereWatch','px38PremiereMode','px38Filmstrip'])
+ assert.ok(html.includes('id="'+id+'"'),'Missing v3.8 premiere control: '+id);
+for(const asset of ['cinematic-premiere-v3.8.js','cinematic-dominion-v3.8.css','releases/v3.8.0.json'])
+ assert.ok(sw.includes("'./"+asset+"'"),'Missing v3.8 offline asset: '+asset);
+assert.ok(app.includes('initCinematicPremiere(app)'));
 assert.equal(manifest.studio_count,18);
 assert.equal(VISUAL_POP_KEY,'proximus-visual-pop-v370');
 assert.equal(normalizeVisualPop().preview,'balanced');
@@ -77,10 +89,10 @@ for(const file of ['visual-pop-v3.7.js','visual-pop-v3.7.css','video-vault-visua
  assert.ok(sw.includes("'./"+file+"'"),'Offline cache missing '+file);
  assert.ok(fs.existsSync(path.join(root,file)),file+' missing');
 }
-assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.7.1'"));
-assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.7.1');
+assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.8.0'"));
+assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.8.0');
 assert.equal(JSON.parse(read('releases/v3.7.1.json')).version,'3.7.1');
-for(const name of ['visual-pop-v3.7.js','home-icon-studio-v3.7.js','video-vault-visual-v3.7.js','media-publisher.js','video-vault.js','app.js','tests/visual-pop-v3.7.browser.mjs']){
+for(const name of ['visual-pop-v3.7.js','home-icon-studio-v3.7.js','video-vault-visual-v3.7.js','media-publisher.js','video-vault.js','app.js','tests/visual-pop-v3.7.browser.mjs','cinematic-premiere-v3.8.js']){
  const p=spawnSync(process.execPath,['--check',path.join(root,name)],{encoding:'utf8'});
  assert.equal(p.status,0,name+': '+p.stderr);
 }
