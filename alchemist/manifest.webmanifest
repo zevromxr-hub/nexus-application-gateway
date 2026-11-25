@@ -1,7 +1,7 @@
 {
   "name": "PROXIMUS | Asset Alchemist",
   "short_name": "Asset Alchemist",
-  "description": "PROXIMUS v3.8.0 — Cinematic Dominion: personal local movie premiere, high-quality saved artwork and immersive iPhone/PC entertainment.",
+  "description": "PROXIMUS v3.9.0 — The Living Cinema: visual discovery of your own local movies, immersive playback, custom poster art and iPhone-friendly design.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
