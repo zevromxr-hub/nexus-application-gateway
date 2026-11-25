@@ -1,0 +1,36 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "4.1.0",
+  "release_date": "2026-11-25",
+  "title": "Cinema Intelligence — Personal Movie Journal & Smart Discovery",
+  "subtitle": "Cinema Intelligence — Movie Journal, Smart Discovery, Library Insights & Theater Control",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Introduced a cinematic library overview with actual on-device movie, favorites, watchlist, and in-progress counts plus a featured title drawn from real saved movies.",
+    "Added custom display titles, private movie descriptions or notes, up to eight searchable tags, and optional release years to the existing Video Vault metadata, with safe length limits and text-only rendering.",
+    "Added instant combined search across local filenames, display titles, collections, notes, tags, and years, plus useful filters and sorts (unwatched, progress, favorites, watchlist, annotated, short clips, title, duration, size, recency).",
+    "Added metadata-only JSON catalog export that includes user-visible filenames and notes but never actual videos, posters, GIFs, account information, or storage blobs.",
+    "Added practical theater speed (0.75x–2x), optional repeat, and J/K/L keyboard shortcuts, all controlling the original Video Vault player without duplicate playback engines.",
+    "Improved poster-first cinema landing, title cards, detail editor, and responsive iPhone/PC browsing with reduced-motion styling and privacy guidance.",
+    "Preserved all 18 studios, original movie file bytes in OPFS/IndexedDB, v4 visual realms, user backgrounds, favorites, watchlist, Poster Forge, playback progress and offline rollback."
+  ],
+  "added_studios": [],
+  "retired_studios": [],
+  "upgraded_studios": [
+    "Living Cinema",
+    "Personal Movie Journal",
+    "Sovereign Player Controls",
+    "Movie Poster Gallery",
+    "Video Vault",
+    "iPhone Browsing",
+    "Recovery and Local Data Safety"
+  ],
+  "links": {
+    "site": "https://zevarchives.com/alchemist/"
+  }
+}

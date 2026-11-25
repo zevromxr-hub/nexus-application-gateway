@@ -41,7 +41,7 @@ const names=[
  {id:'identity',icon:'✧',title:'Master Visual Identity',detail:'Global themes palettes color editor master thumbnail branding font schedule studio appearance Reactor IV art'},
  {id:'animation',icon:'▣',title:'Animation Forge',detail:'Convert MP4 WebM to true GIF animated GIF icons packs resize'},
  {id:'theater',icon:'♫',title:'Media Theater',detail:'Local video audio GIF playlist music player live spectrum visualizer cinema screenshots'},
- {id:'videos',icon:'▣',title:'Video Vault',detail:'Cinematic discovery library watchlist surprise pick movie artwork poster forge immersive local theater player persistent local video library plus Web Cinema Gateway external websites online video links supported embeds watch later favorites resume iPhone PC'},
+ {id:'videos',icon:'▣',title:'Video Vault',detail:'Cinematic discovery library intelligent search sorting tags private movie notes journal watchlist poster forge immersive local theater player persistent local video library plus Web Cinema Gateway external websites online video links supported embeds watch later favorites resume iPhone PC'},
  {id:'life',icon:'◷',title:'Life Command',detail:'Private tasks recurring routines habits streaks due dates planner calendar export important personal dates everyday companion'},
  {id:'reactor',icon:'✺',title:'Sonic Theater',detail:'One connected music player MP3 playlist saved music Play on Start Reactor IV Sonic Dimension visualizer backgrounds audio export'},
  {id:'arcade',icon:'✦',title:'Arcade Chamber',detail:'Comet Catch Pulse Reflex Memory Matrix games local highscores touch arcade'},
@@ -286,7 +286,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='4.0.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='4.1.0';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -313,7 +313,7 @@ function launch(){
  initCommandCenter(app);try{initCinematicPremiere(app)}catch(error){console.warn('Cinematic Premiere unavailable:',error)}try{initLivingCinema(app)}catch(error){console.warn('Living Cinema unavailable:',error)}try{initImmersiveDominion(app)}catch(error){console.warn('Immersive Dominion unavailable:',error)}initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS v4.0.0 Immersive Dominion is ready. Explore new visual realms, your personal watchlist, one-click movie picks and local storage health. Existing media is preserved.');
+ notice('PROXIMUS v4.1.0 Cinema Intelligence is ready. Customize movie titles, notes and tags, browse with smart filters, and export a private metadata-only catalog. Original videos remain untouched.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){

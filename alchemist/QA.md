@@ -1,3 +1,17 @@
+## v4.1.0 — Cinema Intelligence iPhone/PC acceptance
+
+- [ ] Open PROXIMUS → Video Vault → Living Cinema. Confirm Library Journal counts reflect actual saved videos/favorites/watchlist/progress, with the Featured Movie presenting a real saved title and artwork or a useful empty state.
+- [ ] Select a saved video; fill in a custom display title, private description, comma-separated tags, optional year, and a collection. Save and refresh. The original filename and video bytes must remain unchanged.
+- [ ] Search by original filename, custom title, tag, description, collection and release year. Test combined filters (unwatched, favorites, watchlist, annotated, short clips) and sorting by recent/title/duration/file size. Clear filters to restore all shelves.
+- [ ] Check that unsaved edits to the details form are not erased by background Vault refreshes. Closing the dialog without saving must not write the draft.
+- [ ] Export the catalog JSON and inspect it: names, notes and metadata are included, but video files, poster images, GIF animations, tokens and passwords are excluded. Treat this export as an inventory, **not** a media backup.
+- [ ] Confirm the same existing theater player is used for playback, seeking, subtitles, fullscreen and PiP. Test speed 0.75×–2×, optional repeat and J/K/L keys with toolbar focused.
+- [ ] Confirm real movie poster artwork remains prominent and no new video players or animated thumbnails run needlessly while browsing on iPhone.
+- [ ] Test iPhone portrait, landscape, desktop scroll, reduced-motion preference, all v4 Immersive Dominion themes, and legibility over personally uploaded GIF/MP4 backgrounds.
+- [ ] Verify all 18 studios, video imports, local favorite/watchlist state, animated personal covers, saved posters, v4.0 rollback and your original Home Screen installation remain intact.
+
+**Never uninstall the existing Home Screen app or clear website data to get this update. Local browser data can be isolated and is not a substitute for backups in Files/Photos.**
+
 ## v4.0.0 — Immersive Dominion release checklist
 
 - [ ] On iPhone Home Screen and desktop browser, open PROXIMUS Home → Customize My Realm and choose all five scenes. Check global header, studio navigation, premiere poster, cinema cards and details.

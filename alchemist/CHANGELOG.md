@@ -1,3 +1,13 @@
+## v4.1.0 — CINEMA INTELLIGENCE (2026-11-25)
+
+- Introduced **Personal Movie Journal** directly within Living Cinema movie details. Set optional personal display titles, private movie notes/descriptions, up to 8 searchable tags, and release years. These are saved as metadata in the original Video Vault row without modifying the original movie bytes or filename.
+- Added search across local names, custom titles, existing collections, personal notes/tags, and release year. Combine search with practical filters (unwatched, resume, favorites, watchlist, notes/tags, short clips) and sorts (recent, alphabetical, recently played, duration, file size, oldest).
+- Added a premium poster-led featured movie panel selected from real saved videos, plus live Library Journal stats for saved movies, favorites, watchlist, and in-progress videos.
+- Added metadata-only JSON catalog export (explicitly no original movie files, media blobs, posters or personal credentials). Filenames and notes are included, so export files should be shared thoughtfully; they are not video backups.
+- Upgraded Sovereign Cinema's original video player with playback speed 0.75×–2×, optional repeat, and J/K/L shortcut handling when the player controls are focused.
+- Refined typography, cinematic artwork presentation and iPhone portrait responsiveness without new autoplay, heavy media decoding, a duplicate storage database or extra studio clutter.
+- Retained 18 studios, full PROXIMUS v4.0 Immersive Dominion appearance controls, Video Vault imports, Poster Forge, personal animated covers, OPFS/IndexedDB original video bytes, Home Screen support, and offline rollback.
+
 ## v4.0.0 — IMMERSIVE DOMINION (2026-11-25)
 
 - Rebuilt the site's atmospheric styling around five selectable full-site realms: Sovereign Violet, Frozen Dominion, Obsidian Gold, Ember Throne and Midnight Eclipse.
