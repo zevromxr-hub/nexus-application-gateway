@@ -1,22 +1,22 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "channel": "stable",
   "release_date": "2026-11-25",
-  "subtitle": "Immersive Dominion — Five Personal Realms, Watchlist, Instant Picks & Storage Health",
+  "subtitle": "Cinema Intelligence — Movie Journal, Smart Discovery, Library Insights & Theater Control",
   "studio_count": 18,
-  "previous_version": "3.9.0",
+  "previous_version": "4.0.0",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevarchives.com/alchemist/",
   "changes": [
-    "Introduced a complete five-realm site visual upgrade: Sovereign Violet, Frozen Dominion, Obsidian Gold, Ember Throne and Midnight Eclipse, with atmospheric navigation, responsive accents and a personalized landing portal.",
-    "Immersion Console supports on-device atmosphere intensity, glass readability, background visibility and motion controls, preserving the exact original personal GIF, video and media publisher settings.",
-    "Mobile-adaptive visuals automatically switch off continuous theme animations on coarse-pointer mobile devices unless explicitly enabled; reduced-motion preferences always take precedence.",
-    "Added personal Watchlist movies stored as metadata in the existing local Video Vault; the new watchlist shelf and one-tap Watchlist Only filter retain local privacy.",
-    "Added Surprise Me selection favoring previously unwatched saved movies without autoplaying or leaving the application.",
-    "Added on-demand Local Library Health reports with saved original video file totals, browser storage estimates, and optional persistent-storage requests with clear safety guidance.",
-    "Updated responsive scene controls, improved site branding and theme palettes while preserving all 18 studios, v3.9 poster and playback tools, original local video bytes and offline rollback."
+    "Introduced a cinematic library overview with actual on-device movie, favorites, watchlist, and in-progress counts plus a featured title drawn from real saved movies.",
+    "Added custom display titles, private movie descriptions or notes, up to eight searchable tags, and optional release years to the existing Video Vault metadata, with safe length limits and text-only rendering.",
+    "Added instant combined search across local filenames, display titles, collections, notes, tags, and years, plus useful filters and sorts (unwatched, progress, favorites, watchlist, annotated, short clips, title, duration, size, recency).",
+    "Added metadata-only JSON catalog export that includes user-visible filenames and notes but never actual videos, posters, GIFs, account information, or storage blobs.",
+    "Added practical theater speed (0.75x–2x), optional repeat, and J/K/L keyboard shortcuts, all controlling the original Video Vault player without duplicate playback engines.",
+    "Improved poster-first cinema landing, title cards, detail editor, and responsive iPhone/PC browsing with reduced-motion styling and privacy guidance.",
+    "Preserved all 18 studios, original movie file bytes in OPFS/IndexedDB, v4 visual realms, user backgrounds, favorites, watchlist, Poster Forge, playback progress and offline rollback."
   ]
 }

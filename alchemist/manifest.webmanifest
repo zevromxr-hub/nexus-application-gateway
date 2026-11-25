@@ -1,7 +1,7 @@
 {
-  "name": "PROXIMUS | Immersive Dominion",
+  "name": "PROXIMUS | Cinema Intelligence",
   "short_name": "PROXIMUS",
-  "description": "PROXIMUS v4.0 — immersive custom scenes, personal local video watchlists, movie artwork, music and 18 creative studios.",
+  "description": "PROXIMUS v4.1 — cinematic local movie library, private movie journal, smart filters, theater playback and creative tools.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

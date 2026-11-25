@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
  try{
   await page.goto('http://127.0.0.1:4173/alchemist/',{waitUntil:'domcontentloaded',timeout:40000});
   await page.locator('#commandOpenMedia:visible, #mediaOpen:visible').first().waitFor({state:'visible',timeout:16000});
-  assert.match(await page.locator('#versionInfo').textContent(),/4\.0\.0/);
+  assert.match(await page.locator('#versionInfo').textContent(),/4\.1\.0/);
   // v4: scene switching changes CSS only, never personal media.
   await page.locator('#px40RealmCustomize').click();
   await page.locator('#px40Dialog').waitFor({state:'visible'});
@@ -95,6 +95,13 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.waitForFunction(()=>document.querySelector('#px40WatchLater')?.textContent.includes('Saved to watchlist'),null,{timeout:10000});
   await page.locator('#px39DetailsFavorite').click();
   await page.waitForFunction(()=>document.querySelector('#px39DetailsFavorite')?.textContent.includes('Remove favorite'),null,{timeout:12000});
+  // v4.1: editing movie annotations must leave the underlying video filename and
+  // file bytes untouched. The same local metadata powers tag search and sorting.
+  await page.locator('#px41Synopsis').fill('A private moonlit movie note.');
+  await page.locator('#px41Tags').fill('Moonlit, Test, moonlit');
+  await page.locator('#px41Year').fill('2024');
+  await page.locator('#px39DetailsSaveCollection').click();
+  await page.waitForFunction(()=>String(document.querySelector('#px39DetailsStatus')?.textContent).includes('Movie details saved locally'),null,{timeout:12000});
   await page.locator('#px39DetailsPoster').click();
   await page.locator('#px39PosterDialog').waitFor({state:'visible',timeout:8000});
   await page.locator('#px39PosterFile').setInputFiles({name:'cinema-cover.gif',mimeType:'image/gif',buffer:gif});
@@ -111,14 +118,33 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');
     const q=tx.objectStore('items').get('smoke-clip-1234');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
-   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,watchLater:item.watchLater,poster:item.poster instanceof Blob?item.poster.size:(item.posterData instanceof ArrayBuffer?item.posterData.byteLength:0)};
+   db.close();return {bytes:item.bytes,name:item.name,favorite:item.favorite,watchLater:item.watchLater,synopsis:item.synopsis,tags:item.tags,releaseYear:item.releaseYear,poster:item.poster instanceof Blob?item.poster.size:(item.posterData instanceof ArrayBuffer?item.posterData.byteLength:0)};
   });
   assert.equal(posterSafe.bytes,12345,'Poster save must not change original movie bytes');
   assert.equal(posterSafe.name,'Local Sample Movie.mp4','Poster edit cannot rename source media');
   assert.equal(posterSafe.favorite,true,'Discovery favorite must persist locally');
   assert.equal(posterSafe.watchLater,true,'Watchlist addition must persist without modifying movie files');
+  assert.equal(posterSafe.synopsis,'A private moonlit movie note.');
+  assert.deepEqual(posterSafe.tags,['Moonlit','Test']);
+  assert.equal(posterSafe.releaseYear,2024);
   assert.ok(posterSafe.poster>500,'Poster Forge must save a real JPG poster Blob');
   await page.locator('#px39PosterClose').click();
+  await page.locator('#px39Search').fill('moonlit');
+  await page.locator('#px41Filter').selectOption('annotated');
+  await page.locator('#px41Sort').selectOption('name');
+  assert.equal(await page.locator('#px39Shelves .px39-movie-card').count(),1,
+   'Private movie tags and descriptions should be searchable');
+  assert.equal(await page.locator('#px41StatFilms').textContent(),'1');
+  await page.locator('#px41ClearFilters').click();
+  assert.equal(await page.locator('#px41Filter').inputValue(),'all');
+  assert.equal(await page.locator('#px41Sort').inputValue(),'recent');
+  await page.locator('#px41Speed').selectOption('1.25');
+  assert.equal(await page.locator('#videoVaultPlayer').evaluate(v=>v.playbackRate),1.25);
+  await page.locator('#px41Repeat').check();
+  assert.equal(await page.locator('#videoVaultPlayer').evaluate(v=>v.loop),true);
+  await page.locator('#px41Repeat').uncheck();
+  await page.locator('#px41Speed').selectOption('1');
+
   assert.equal(await page.locator('#px39PosterDialog').evaluate(e=>e.open),false);
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});

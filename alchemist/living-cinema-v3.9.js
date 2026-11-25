@@ -6,6 +6,7 @@
 import {listStoredVideos,updateStoredVideo} from './video-vault.js';
 import {getVaultCoverPoster} from './video-vault-visual-v3.7.js';
 import {saveOrShare} from './portable-kit.js';
+import {filterCinemaCatalog,normalizeCinemaMetadata,cinemaLibraryStats,cinemaCatalogSnapshot} from './cinema-intelligence-core-v4.1.js';
 
 const $=id=>document.getElementById(id);
 const MAX_ART=20*1024*1024,MAX_SHELVES=9,PER_SHELF=9;
@@ -70,7 +71,7 @@ export function initLivingCinema(app){
  const player=$('videoVaultPlayer'),bar=$('px39PlayerToolbar');
  if(!root||!shelves||!details||!forge||!player||!bar)return;
  let library=[],selectedId=null,playingId=null,preview=null,previewUrl=null,watchlistOnly=false;
- let artURLs=new Map(),renderToken=0,refreshQueued=false;
+ let artURLs=new Map(),renderToken=0,refreshQueued=false,detailsDirty=false,featuredId=null;
  let crop=normalizePosterCrop(),frameBlob=null,sourceName='';
  const notice=(id,value)=>{const el=$(id);if(el)el.textContent=value};
  const getItem=id=>library.find(x=>x.id===id);
@@ -105,6 +106,7 @@ export function initLivingCinema(app){
   return all.find(x=>x.id===id)||null;
  }
  function presentDetails(item){
+  if(selectedId!==item.id||!details.open)detailsDirty=false;
   selectedId=item.id;
   $('px39DetailsTitle').textContent=nameOf(item);
   $('px39DetailsKicker').textContent=inProgress(item)?'CONTINUE YOUR STORY':item.favorite?'★ FROM YOUR FAVORITES':'YOUR PRIVATE COLLECTION';
@@ -119,8 +121,14 @@ export function initLivingCinema(app){
   $('px39DetailsPlay').textContent=inProgress(item)?'▶ Resume Movie':'▶ Play Movie';
   $('px39DetailsFavorite').textContent=item.favorite?'★ Remove favorite':'☆ Add favorite';
   $('px40WatchLater').textContent=item.watchLater?'✓ Saved to watchlist':'＋ Save for later';
-  $('px39DetailsCollection').value=collection;
-  notice('px39DetailsStatus','Original movie and all playback data remain on this device.');
+  if(!detailsDirty){
+   $('px39DetailsCollection').value=collection;
+   $('px41Title').value=clean(item.displayTitle||'');
+   $('px41Synopsis').value=String(item.synopsis||'');
+   $('px41Tags').value=Array.isArray(item.tags)?item.tags.join(', '):String(item.tags||'');
+   $('px41Year').value=item.releaseYear?String(item.releaseYear):'';
+  }
+  if(!details.open)notice('px39DetailsStatus','Original movie and all playback data remain on this device.');
   if(!details.open)details.showModal();
  }
  function movieCard(item){
@@ -145,7 +153,31 @@ export function initLivingCinema(app){
  function render(){
   const token=++renderToken;
   recycleArt();shelves.replaceChildren();
-  const lists=buildLivingShelves(library,query.value,{watchlistOnly});
+  const mode=$('px41Filter').value,sort=$('px41Sort').value,term=query.value.trim();
+  const exploring=Boolean(term)||mode!=='all'||sort!=='recent';
+  const lists=exploring?(()=>{
+   const filtered=filterCinemaCatalog(library,{query:term,filter:watchlistOnly?'watchlist':mode,sort});
+   return filtered.length?[{id:'explore',label:watchlistOnly?'WATCHLIST RESULTS':'YOUR CINEMA RESULTS',
+    detail:filtered.length+' matching local title'+(filtered.length===1?'':'s'),items:filtered.slice(0,80)}]:[];
+  })():buildLivingShelves(library,'',{watchlistOnly});
+  const stats=cinemaLibraryStats(library);
+  for(const [id,val] of [['px41StatFilms',stats.titles],['px41StatFavorites',stats.favorites],
+   ['px41StatWatchlist',stats.watchlist],['px41StatResume',stats.continueWatching]])$(id).textContent=String(val);
+  const spotlight=filterCinemaCatalog(library,{filter:'resume',sort:'last-played'})[0]||
+   filterCinemaCatalog(library,{filter:'favorites',sort:'recent'})[0]||
+   filterCinemaCatalog(library,{sort:'recent'})[0]||null;
+  featuredId=spotlight?.id||null;
+  $('px41FeaturedTitle').textContent=spotlight?nameOf(spotlight):'Your personal premiere starts here.';
+  $('px41FeaturedSummary').textContent=spotlight?(clean(spotlight.synopsis).slice(0,190)||
+   [clean(spotlight.collection||'Unsorted',42),Number(spotlight.duration)>0?Math.round(spotlight.duration/60)+' minute movie':'Saved local movie'].join(' · ')):
+   'Import your own videos and turn them into a curated cinema.';
+  $('px41FeaturedButton').disabled=!spotlight;
+  const featuredArt=$('px41FeaturedArt');featuredArt.replaceChildren();
+  if(spotlight){
+   const image=artURL(spotlight);
+   if(image){const node=document.createElement('img');node.src=image;node.alt='';featuredArt.append(node)}
+   else{const symbol=document.createElement('span');symbol.textContent='✧';featuredArt.append(symbol)}
+  }
   root.dataset.empty=String(!library.length);
   if(!library.length){
    const empty=document.createElement('div');empty.className='px39-discovery-empty';
@@ -156,7 +188,7 @@ export function initLivingCinema(app){
   }
   if(!lists.length){
    const empty=document.createElement('p');empty.className='px39-discovery-empty';
-   empty.textContent=watchlistOnly?'Your watchlist is empty. Open a movie cover and choose Save for later.':'No titles match this search. Try a different name or collection.';
+   empty.textContent=watchlistOnly?'Your watchlist is empty or no titles match. Choose Save for Later in movie details.':'No titles match these search or filter settings. Clear filters to see everything.';
    shelves.append(empty);status(library.length+' titles stored privately · no matches');return;
   }
   for(const shelf of lists){
@@ -172,7 +204,7 @@ export function initLivingCinema(app){
    for(const item of shelf.items)track.append(movieCard(item));
    section.append(header,track);shelves.append(section);
   }
-  status(library.length+' personal title'+(library.length===1?'':'s')+' · local poster art · tap any cover for details.');
+  status(library.length+' saved local title'+(library.length===1?'':'s')+' · '+stats.favorites+' favorites · '+stats.watchlist+' watchlist · private browsing.');
  }
  async function refresh(){
   try{
@@ -189,6 +221,21 @@ export function initLivingCinema(app){
   refreshQueued=true;
   queueMicrotask(()=>{refreshQueued=false;if(!document.hidden)void refresh()});
  }
+ $('px41FeaturedButton').addEventListener('click',()=>{const item=getItem(featuredId);if(item)presentDetails(item)});
+ $('px41Filter').addEventListener('change',render);
+ $('px41Sort').addEventListener('change',render);
+ $('px41ClearFilters').addEventListener('click',()=>{
+  query.value='';$('px41Filter').value='all';$('px41Sort').value='recent';watchlistOnly=false;
+  $('px40WatchlistFilter').setAttribute('aria-pressed','false');
+  $('px40WatchlistFilter').textContent='⌑ My Watchlist';render();
+ });
+ $('px41ExportCatalog').addEventListener('click',async()=>{
+  try{
+   const blob=new Blob([JSON.stringify(cinemaCatalogSnapshot(library),null,2)],{type:'application/json'});
+   const result=await saveOrShare(blob,'PROXIMUS-Cinema-Catalog.json');
+   status(result==='cancelled'?'Catalog export cancelled.':'Catalog '+(result==='shared'?'shared':'exported')+'. No movie files or artwork were included.');
+  }catch(err){status('Catalog export unavailable: '+err.message)}
+ });
  $('px40WatchlistFilter').addEventListener('click',()=>{
   watchlistOnly=!watchlistOnly;
   $('px40WatchlistFilter').setAttribute('aria-pressed',String(watchlistOnly));
@@ -202,7 +249,10 @@ export function initLivingCinema(app){
  $('px39AddMovie').addEventListener('click',()=>$('videoVaultImportNow')?.click());
  $('px39OpenPoster').addEventListener('click',()=>openForge(selectedId||library[0]?.id));
  query.addEventListener('input',render);
- $('px39DetailsClose').addEventListener('click',()=>details.close());
+ for(const id of ['px41Title','px41Synopsis','px41Tags','px41Year','px39DetailsCollection'])
+  $(id).addEventListener('input',()=>{detailsDirty=true});
+ $('px39DetailsClose').addEventListener('click',()=>{detailsDirty=false;details.close()});
+ details.addEventListener('close',()=>{detailsDirty=false});
  $('px39DetailsPlay').addEventListener('click',()=>openPlayer(selectedId));
  $('px39DetailsFavorite').addEventListener('click',async()=>{
   const item=await latestItem(selectedId);if(!item)return;
@@ -219,8 +269,12 @@ export function initLivingCinema(app){
  $('px39DetailsSaveCollection').addEventListener('click',async()=>{
   const item=await latestItem(selectedId);if(!item)return;
   item.collection=clean($('px39DetailsCollection').value).slice(0,42)||'Unsorted';
+  Object.assign(item,normalizeCinemaMetadata({
+   displayTitle:$('px41Title').value,synopsis:$('px41Synopsis').value,
+   tags:$('px41Tags').value,releaseYear:$('px41Year').value
+  }));
   item.updated=Date.now();
-  try{await updateStoredVideo(item);notice('px39DetailsStatus','Collection saved to the original Vault record.');queueRefresh();$('videoVaultRefresh')?.click();}
+  try{await updateStoredVideo(item);detailsDirty=false;notice('px39DetailsStatus','Movie details saved locally. Original video bytes remain untouched.');queueRefresh();$('videoVaultRefresh')?.click();}
   catch(err){notice('px39DetailsStatus','Could not save collection: '+err.message)}
  });
  $('px39DetailsPoster').addEventListener('click',()=>{const id=selectedId;details.close();openForge(id)});
@@ -245,13 +299,22 @@ export function initLivingCinema(app){
  $('px39Focus').addEventListener('click',()=>$('videoVaultFocus')?.click());
  $('px39Fullscreen').addEventListener('click',()=>$('videoVaultCinema')?.click());
  $('px39Picture').addEventListener('click',()=>$('videoVaultPiP')?.click());
+ const applyPlayerPrefs=()=>{
+  const speed=Number($('px41Speed').value);
+  player.playbackRate=Number.isFinite(speed)&&speed>=.75&&speed<=2?speed:1;
+  player.loop=$('px41Repeat').checked;
+ };
+ $('px41Speed').addEventListener('change',applyPlayerPrefs);
+ $('px41Repeat').addEventListener('change',applyPlayerPrefs);
+ player.addEventListener('loadedmetadata',applyPlayerPrefs);
+ $('px41Speed').value='1';$('px41Repeat').checked=false;
  seek.addEventListener('input',()=>{const d=player.duration;if(Number.isFinite(d)&&d>0)player.currentTime=Number(seek.value)*d/1000});
  for(const e of ['timeupdate','loadedmetadata','durationchange','play','pause','ended','emptied','ratechange'])player.addEventListener(e,syncPlayback);
  bar.addEventListener('keydown',event=>{
   if(event.target?.tagName==='INPUT'||event.target?.tagName==='SELECT')return;
-  if(event.key==='ArrowLeft'){event.preventDefault();seekBy(-10)}
-  if(event.key==='ArrowRight'){event.preventDefault();seekBy(10)}
-  if(event.key===' '){event.preventDefault();playButton.click()}
+  if(event.key==='ArrowLeft'||event.key.toLowerCase()==='j'){event.preventDefault();seekBy(-10)}
+  if(event.key==='ArrowRight'||event.key.toLowerCase()==='l'){event.preventDefault();seekBy(10)}
+  if(event.key===' '||event.key.toLowerCase()==='k'){event.preventDefault();playButton.click()}
  });
  syncPlayback();
 

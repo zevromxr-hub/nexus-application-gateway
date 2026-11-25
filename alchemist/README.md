@@ -1,3 +1,25 @@
+# PROXIMUS | ASSET ALCHEMIST v4.1.0
+**CINEMA INTELLIGENCE — PERSONAL MOVIE JOURNAL & PREMIUM LOCAL DISCOVERY**
+
+Launch **https://zevarchives.com/alchemist/**.
+
+### Your saved films, now intelligently organized
+Open **Video Vault → Living Cinema**. Use the Cinema Journal overview, featured title, instant search, filters and sort selectors to find exactly what is already saved in your local video library. Search also matches personal notes, tags and optional years.
+
+### Make every title personal
+Select any movie cover to open the **Personal Movie Journal** within its details page. Give it a display title, a short synopsis/private note, custom tags, and a release year. Save details directly to the existing local Video Vault metadata. This does not rename the original source file or re-encode the movie.
+
+### Comfortable video playback
+The existing Sovereign Cinema player now includes adjustable speed, optional repeat, and J/K/L keyboard shortcuts on its focused toolbar. Original full-screen controls, PiP, poster artwork, auto-next and subtitles remain.
+
+### Catalog, not backup
+Use **Catalog JSON** to export an inventory of titles, filenames, collections and private notes. The exported JSON contains **no video files, audio files, cover images or credentials**, and cannot restore missing movies. The filenames and your notes are readable in the export—share it intentionally.
+
+### Personal media protection
+All 18 studios, visual realms, custom wallpapers, saved music, GIF/video thumbnails, movie bytes in OPFS/IndexedDB and prior release rollback are retained. **Keep the existing iPhone Home Screen installation.** Removing it or clearing website data can remove the app's private local video library. Keep original video copies in Photos/Files.
+
+---
+
 # PROXIMUS | ASSET ALCHEMIST v3.9.0
 **THE LIVING CINEMA — IMMERSIVE MEDIA DISCOVERY, SOVEREIGN PLAYER & POSTER FORGE**
 
