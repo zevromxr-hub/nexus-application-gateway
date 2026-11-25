@@ -1,0 +1,37 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.9.0",
+  "release_date": "2026-11-25",
+  "title": "The Living Cinema — Discovery, Sovereign Player & Poster Forge",
+  "subtitle": "Streaming-style private collections, theater-ready playback and local cinematic movie artwork",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "Introduced streaming-style discovery shelves inside the original Video Vault: Continue Watching, Favorites, Recently Added and real personal collections.",
+    "Added instant title search, visually rich local video covers, progress bars, artwork-first movie detail dialogs and direct playback.",
+    "Movie details now allow local favorite toggling and collection edits, preserving all existing video bytes and watch history.",
+    "Introduced a premium Sovereign Theater playback bar with play/pause, 10-second jumps, precise scrub control, time readout, fullscreen, picture-in-picture and the existing Cinema Focus mode.",
+    "Added the Poster Forge: select a saved movie, load local PNG/JPG/GIF/WebP art or capture a frame from that same currently playing saved movie, refine crop/zoom/framing, add optional title and export 960×540 JPG.",
+    "Poster Forge writes only the existing movie poster metadata Blob after checking the title still exists. Original OPFS / IndexedDB video file bytes and local artwork databases are unchanged.",
+    "Connected the v3.8 homepage feature to the new discovery library with one-tap navigation and continued use of local artwork.",
+    "Added responsive iPhone/PC cinematic shelves, immersive details, touch-size theater controls and reduced-motion safeguards without autoplaying extra videos.",
+    "Retained all 18 studios, Video Vault imports, playback positions, animated personal covers, Home Screen icon studio, backups and cached v3.8 rollback."
+  ],
+  "added_studios": [],
+  "retired_studios": [],
+  "upgraded_studios": [
+    "Video Vault — Living Cinema Discovery",
+    "Movie Details & Collection Organizer",
+    "Sovereign Cinema Playback",
+    "Poster Forge",
+    "Companion Center quick discovery",
+    "iPhone visual navigation"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/"
+  }
+}
