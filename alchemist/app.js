@@ -283,7 +283,7 @@ function setupDrop(){
 }
 
 function setupVersion(){
- const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.7.0';
+ const label=$('versionInfo'),btn=$('versionCheck'),LOCAL='3.7.1';
  async function check(){
   label.textContent='Checking Proximus release channel…';
   try{
@@ -310,7 +310,7 @@ function launch(){
  initCommandCenter(app);initSyncBridge(app);initReleaseGuard(app);initVisualIdentity(app);initMobileNavigation(app);initAdaptiveLayout();initEntertainmentOverdrive(app);initCinemaStudioImprovements();
  drawPack();drawCommands();setupDrop();void vaultRestore();setupVersion();
  const last=localStorage.getItem('nexus-alchemist-last-view')||'command';changeView(last);
- notice('PROXIMUS Cinematic Media Overdrive v3.7.0 is ready. Original local videos and saved artwork remain intact. Open Media to personalize your thumbnails and background.');
+ notice('PROXIMUS v3.7.1 Sovereign Polish is ready. Local videos are preserved; custom covers now load only as needed, with artwork cleanup available in Video Vault.');
  if('serviceWorker' in navigator && location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
 }
 try{launch()}catch(e){
