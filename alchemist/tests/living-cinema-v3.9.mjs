@@ -32,7 +32,7 @@ assert.deepEqual(zoom,{sx:400,sy:375,sw:400,sh:225});
 assert.throws(()=>posterSourceRect(0,100),/No image/);
 const html=read('index.html'),app=read('app.js'),module=read('living-cinema-v3.9.js');
 const sw=read('sw.js'),version=JSON.parse(read('version.json'));
-assert.equal(version.version,'3.9.0');
+assert.equal(version.version,'4.0.0');
 assert.equal(version.studio_count,18);
 assert.ok(app.includes('initLivingCinema(app)'),'New entertainment module must initialize');
 for(const id of ['px39Discovery','px39Search','px39Shelves','px39OpenDiscovery','px39PlayerToolbar','px39Play','px39Back','px39Forward','px39Seek','px39Focus','px39Fullscreen','px39Picture','px39DetailsDialog','px39DetailsArtwork','px39DetailsPlay','px39DetailsFavorite','px39DetailsCollection','px39DetailsPoster','px39PosterDialog','px39PosterCanvas','px39PosterFrame','px39PosterChoice','px39PosterFile','px39PosterZoom','px39PosterX','px39PosterY','px39PosterCaption','px39PosterCaptionEnabled','px39PosterSave','px39PosterExport','px39PosterStatus']){
@@ -47,8 +47,8 @@ assert.ok(module.includes('proximus-video-vault-watch'),'Video playing must use 
 assert.ok(!module.includes('saveStoredVideo(')&&!module.includes('removeStoredVideo('),'New experience must never write or delete original movie bytes');
 assert.ok(read('video-vault.js').includes('proximus-video-vault-selected'),'Frame capture must identify exact loaded saved movie');
 assert.ok(read('video-vault-core.js').includes("VIDEO_VAULT_DB='proximus-video-vault-v1'"),'Original media DB key must remain unchanged');
-assert.ok(sw.includes("const CACHE='proximus-alchemist-v3.9.0'"));
-assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'3.9.0');
+assert.ok(sw.includes("const CACHE='proximus-alchemist-v4.0.0'"));
+assert.equal(JSON.parse(read('releases/index.json')).releases[0].version,'4.0.0');
 for(const file of ['living-cinema-v3.9.js','app.js','video-vault.js']){
  const result=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8'});
  assert.equal(result.status,0,file+': '+result.stderr);

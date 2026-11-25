@@ -1,3 +1,18 @@
+## v4.0.0 — Immersive Dominion release checklist
+
+- [ ] On iPhone Home Screen and desktop browser, open PROXIMUS Home → Customize My Realm and choose all five scenes. Check global header, studio navigation, premiere poster, cinema cards and details.
+- [ ] Change atmosphere intensity, glass readability and background visibility. Confirm your uploaded GIF/video/image background stays selected and visible, with text remaining legible.
+- [ ] Choose Adaptive animation on iPhone and confirm continuous decorative motion is disabled; turn off animations and check reduced-motion settings. Video playback and personal animated assets must not be reset.
+- [ ] Reload the installed app; confirm your personal scene choice persists in local settings.
+- [ ] In Living Cinema, choose a real locally saved movie, tap Save for Later and open My Watchlist. Toggle Watchlist Only, refresh, and confirm the selection persists without changing original video bytes.
+- [ ] Tap Surprise Me with multiple saved movies and verify real movie details open without autoplay. If library empty, verify useful import guidance.
+- [ ] Open Check Library Health and verify accurate movie counts plus conditional browser storage/quota information. Request persistence only if supported; confirm no videos are modified or removed.
+- [ ] Check existing high-quality posters, GIF/video covers, Home Screen icon controls, Media Publisher settings, bookmarks, subtitles, picture-in-picture and 18 studios.
+- [ ] Test narrow iPhone portrait/landscape and desktop panels, with no horizontal overflow or obscured buttons.
+- [ ] Keep your existing Home Screen app installed; uninstalling or clearing website data can delete isolated local videos. This release has no migration requiring reinstalls.
+
+Automated browser suites cover emulated iPhone WebKit and desktop Chromium, not a physical device. Personal user videos never enter CI.
+
 ## v3.9.0 — Living Cinema iPhone / PC acceptance
 
 - [ ] Keep the current Home Screen app installed. Open PROXIMUS Home → Explore My Cinema; confirm the new Discovery shelves load real previously saved videos, with no placeholder movies.

@@ -15,8 +15,10 @@ const sizeOf=n=>!Number.isFinite(Number(n))?'Local video':Number(n)>=1024**3?(Nu
 const timeOf=s=>{const n=Math.max(0,Math.floor(Number(s)||0));return Math.floor(n/60)+':'+String(n%60).padStart(2,'0')};
 const inProgress=x=>Number(x.position)>2&&(!Number(x.duration)||Number(x.position)<Number(x.duration)-6);
 const safeId=x=>typeof x?.id==='string'&&x.id.length>0&&Number(x.bytes)>0;
-export function buildLivingShelves(entries,query=''){
+export function buildLivingShelves(entries,query='',options={}){
  const items=(Array.isArray(entries)?entries:[]).filter(safeId);
+ const watchlist=items.filter(x=>x.watchLater===true).sort((a,b)=>Number(b.updated||b.added||0)-Number(a.updated||a.added||0));
+ if(options.watchlistOnly)return watchlist.length?[{id:'watchlist',label:'YOUR WATCHLIST',detail:'Saved for a future movie night',items:watchlist.slice(0,36)}]:[];
  const watched=items.filter(inProgress).sort((a,b)=>Number(b.watched||0)-Number(a.watched||0));
  const favorites=items.filter(x=>x.favorite).sort((a,b)=>Number(b.watched||b.updated||b.added||0)-Number(a.watched||a.updated||a.added||0));
  const newest=[...items].sort((a,b)=>Number(b.added||0)-Number(a.added||0));
@@ -26,6 +28,7 @@ export function buildLivingShelves(entries,query=''){
   return matching.length?[{id:'matches',label:'SEARCH RESULTS',detail:matching.length+' matching local title'+(matching.length===1?'':'s'),items:matching.slice(0,36)}]:[];
  }
  const shelves=[];
+ if(watchlist.length)shelves.push({id:'watchlist',label:'MY WATCHLIST',detail:'Saved for later · pick up any time',items:watchlist.slice(0,PER_SHELF)});
  if(watched.length)shelves.push({id:'continue',label:'CONTINUE WATCHING',detail:'Pick up exactly where you left off',items:watched.slice(0,PER_SHELF)});
  if(favorites.length)shelves.push({id:'favorites',label:'YOUR FAVORITES',detail:'The titles worth keeping close',items:favorites.slice(0,PER_SHELF)});
  shelves.push({id:'recent',label:'RECENTLY ADDED',detail:'Freshly added to your private collection',items:newest.slice(0,PER_SHELF)});
@@ -40,6 +43,12 @@ export function buildLivingShelves(entries,query=''){
   shelves.push({id:'collection-'+shelves.length,label:label.toUpperCase(),detail:'PERSONAL COLLECTION · '+group.length+' TITLES',items:group.slice(0,PER_SHELF)});
  }
  return shelves;
+}
+export function chooseCinemaPick(entries,seed=0){
+ const movies=(Array.isArray(entries)?entries:[]).filter(safeId);
+ const unwatched=movies.filter(x=>!Number(x.watched||0)&&!inProgress(x));
+ const pool=unwatched.length?unwatched:movies;
+ return pool.length?pool[Math.abs(Math.trunc(Number(seed)||0))%pool.length]:null;
 }
 export function normalizePosterCrop(raw={}){
  const bounded=(x,a,b,d)=>Number.isFinite(Number(x))?Math.max(a,Math.min(b,Number(x))):d;
@@ -60,7 +69,7 @@ export function initLivingCinema(app){
  const details=$('px39DetailsDialog'),forge=$('px39PosterDialog');
  const player=$('videoVaultPlayer'),bar=$('px39PlayerToolbar');
  if(!root||!shelves||!details||!forge||!player||!bar)return;
- let library=[],selectedId=null,playingId=null,preview=null,previewUrl=null;
+ let library=[],selectedId=null,playingId=null,preview=null,previewUrl=null,watchlistOnly=false;
  let artURLs=new Map(),renderToken=0,refreshQueued=false;
  let crop=normalizePosterCrop(),frameBlob=null,sourceName='';
  const notice=(id,value)=>{const el=$(id);if(el)el.textContent=value};
@@ -109,6 +118,7 @@ export function initLivingCinema(app){
   else{const glyph=document.createElement('span');glyph.textContent='✧';poster.append(glyph)}
   $('px39DetailsPlay').textContent=inProgress(item)?'▶ Resume Movie':'▶ Play Movie';
   $('px39DetailsFavorite').textContent=item.favorite?'★ Remove favorite':'☆ Add favorite';
+  $('px40WatchLater').textContent=item.watchLater?'✓ Saved to watchlist':'＋ Save for later';
   $('px39DetailsCollection').value=collection;
   notice('px39DetailsStatus','Original movie and all playback data remain on this device.');
   if(!details.open)details.showModal();
@@ -118,7 +128,7 @@ export function initLivingCinema(app){
   button.title='Details: '+nameOf(item);
   const art=coverFor(item,'px39-card-art');
   const flag=document.createElement('span');flag.className='px39-card-flag';
-  flag.textContent=inProgress(item)?'CONTINUE':item.favorite?'★ FAVORITE':'LOCAL';
+  flag.textContent=inProgress(item)?'CONTINUE':item.favorite?'★ FAVORITE':item.watchLater?'⌑ WATCHLIST':'LOCAL';
   art.append(flag);
   if(inProgress(item)&&Number(item.duration)>0){
    const track=document.createElement('span');track.className='px39-card-progress';
@@ -135,7 +145,7 @@ export function initLivingCinema(app){
  function render(){
   const token=++renderToken;
   recycleArt();shelves.replaceChildren();
-  const lists=buildLivingShelves(library,query.value);
+  const lists=buildLivingShelves(library,query.value,{watchlistOnly});
   root.dataset.empty=String(!library.length);
   if(!library.length){
    const empty=document.createElement('div');empty.className='px39-discovery-empty';
@@ -146,7 +156,7 @@ export function initLivingCinema(app){
   }
   if(!lists.length){
    const empty=document.createElement('p');empty.className='px39-discovery-empty';
-   empty.textContent='No titles match this search. Try a different name or collection.';
+   empty.textContent=watchlistOnly?'Your watchlist is empty. Open a movie cover and choose Save for later.':'No titles match this search. Try a different name or collection.';
    shelves.append(empty);status(library.length+' titles stored privately · no matches');return;
   }
   for(const shelf of lists){
@@ -179,6 +189,15 @@ export function initLivingCinema(app){
   refreshQueued=true;
   queueMicrotask(()=>{refreshQueued=false;if(!document.hidden)void refresh()});
  }
+ $('px40WatchlistFilter').addEventListener('click',()=>{
+  watchlistOnly=!watchlistOnly;
+  $('px40WatchlistFilter').setAttribute('aria-pressed',String(watchlistOnly));
+  $('px40WatchlistFilter').textContent=watchlistOnly?'✓ Watchlist only':'⌑ My Watchlist';render();
+ });
+ $('px40Surprise').addEventListener('click',()=>{
+  const pick=chooseCinemaPick(library,Math.floor(Math.random()*1000000));
+  if(pick)presentDetails(pick);else status('Add a movie to get a personal cinema pick.');
+ });
  $('px39BrowseAll').addEventListener('click',()=>$('videoVaultGrid')?.scrollIntoView({behavior:'smooth',block:'start'}));
  $('px39AddMovie').addEventListener('click',()=>$('videoVaultImportNow')?.click());
  $('px39OpenPoster').addEventListener('click',()=>openForge(selectedId||library[0]?.id));
@@ -190,6 +209,12 @@ export function initLivingCinema(app){
   item.favorite=!item.favorite;item.updated=Date.now();
   try{await updateStoredVideo(item);notice('px39DetailsStatus','Favorites updated on this device.');queueRefresh();$('videoVaultRefresh')?.click();}
   catch(err){notice('px39DetailsStatus','Could not update favorite: '+err.message)}
+ });
+ $('px40WatchLater').addEventListener('click',async()=>{
+  const item=await latestItem(selectedId);if(!item)return;
+  item.watchLater=!item.watchLater;item.updated=Date.now();
+  try{await updateStoredVideo(item);$('px39DetailsStatus').textContent=item.watchLater?'Added to your personal watchlist.':'Removed from watchlist.';queueRefresh();$('videoVaultRefresh')?.click()}
+  catch(e){$('px39DetailsStatus').textContent='Watchlist could not be updated: '+e.message}
  });
  $('px39DetailsSaveCollection').addEventListener('click',async()=>{
   const item=await latestItem(selectedId);if(!item)return;

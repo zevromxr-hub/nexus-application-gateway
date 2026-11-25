@@ -1,12 +1,12 @@
 {
-  "name": "PROXIMUS | Living Cinema",
+  "name": "PROXIMUS | Immersive Dominion",
   "short_name": "PROXIMUS",
-  "description": "PROXIMUS — Living Cinema, private local media, cinematic playback and creative studios.",
+  "description": "PROXIMUS v4.0 — immersive custom scenes, personal local video watchlists, movie artwork, music and 18 creative studios.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#08121d",
-  "theme_color": "#101c2b",
+  "theme_color": "#0e0926",
   "icons": [
     {
       "src": "./icon.svg",

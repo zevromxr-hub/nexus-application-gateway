@@ -1,5 +1,6 @@
 /* PROXIMUS v4.0 immersive UI entrypoint */
 import {IMMERSION_KEY,IMMERSION_SCENES,normalizeImmersion} from './immersion-core-v4.js';
+import {initImmersionStorage} from './immersion-storage-v4.js';
 const $=id=>document.getElementById(id);
 export function initImmersiveDominion(app){
  const dialog=$('px40Dialog');if(!dialog)return;
@@ -37,3 +38,11 @@ export function initImmersiveDominion(app){
  for(const [id,key] of [['px40Intensity','intensity'],['px40Glass','glass'],
   ['px40Motion','motion'],['px40Clarity','clarity']])
   $(id).addEventListener('input',event=>update({[key]:event.target.value}));
+ $('px40Reset').addEventListener('click',()=>update(normalizeImmersion()));
+ $('px40PersonalArt').addEventListener('click',()=>{dialog.close();$('mediaOpen')?.click()});
+ $('px40Cinema').addEventListener('click',()=>{dialog.close();app.changeView('videos')});
+ $('px40Recovery').addEventListener('click',()=>{dialog.close();app.changeView('recovery')});
+ if(reduced.addEventListener)reduced.addEventListener('change',render);
+ else if(reduced.addListener)reduced.addListener(render);
+ initImmersionStorage();render();
+}
