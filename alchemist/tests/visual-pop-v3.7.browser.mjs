@@ -66,6 +66,8 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
    db.close();
   });
   await page.locator('#commandOpenVideos:visible, #mobileDock [data-mobile-target="videos"]:visible, .nav[data-view="videos"]:visible, #vaultJump:visible').first().click();
+  assert.equal(await page.evaluate(()=>Boolean(document.querySelector('#videoVaultStudio')?.closest('main.content'))),true,
+   'Video Vault must stay inside the application shell on iPhone and desktop');
   await page.locator('#videoVaultRefresh').click();
   const card=page.locator('.video-vault-card').filter({hasText:'Local Sample Movie.mp4'});
   await card.waitFor({state:'visible',timeout:15000});
