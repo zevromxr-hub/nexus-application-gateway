@@ -332,7 +332,12 @@ export function initLivingCinema(app){
   const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.90));
   if(!blob||blob.size<500)throw Error('Poster encoding failed.');
   if(blob.size>2*1024*1024)throw Error('Rendered poster is too large. Try another image.');
-  return blob;
+  // WebKit can expose a canvas-backed Blob whose internal lazy representation
+  // cannot be persisted in IndexedDB. Repack actual JPEG bytes into a fresh
+  // memory-backed Blob before assigning it to existing movie metadata.
+  const data=await blob.arrayBuffer();
+  if(data.byteLength<500)throw Error('Poster file could not be read.');
+  return new Blob([data],{type:'image/jpeg'});
  }
  $('px39PosterSave').addEventListener('click',async()=>{
   const id=choice.value;
