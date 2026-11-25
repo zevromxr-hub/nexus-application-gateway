@@ -67,6 +67,8 @@ assert.ok(publisher.includes('const rows=await Promise.all(list.map(diskRecord))
 assert.ok(publisher.indexOf("await tx('readwrite',store=>store.delete(slot))")<publisher.indexOf("mediaRecords.delete(slot)"),
  'Media removal must commit first, then change visible background state');
 assert.ok(read('sovereign-polish-v3.7.1.css').includes('@media (prefers-reduced-motion:reduce)'));
+assert.ok(read('sovereign-polish-v3.7.1.css').includes('width:calc(100vw - 246px)')&&read('sovereign-polish-v3.7.1.css').includes('overflow-x:clip'));
+
 assert.ok(html.includes('./sovereign-polish-v3.7.1.css'));
 assert.ok(covers.includes("COVER_DB='proximus-video-vault-covers-v370'")&&covers.includes('saveCoverArt(id,file,type,still)')&&covers.includes('deleteCoverArt(id)'),'Cover save/reset must use independent browser-local storage');
 assert.ok(!covers.includes('removeStoredVideo(')&&!covers.includes('updateStoredVideo('),'Visual update must not rewrite or delete original movie metadata');
