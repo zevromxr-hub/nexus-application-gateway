@@ -1,7 +1,8 @@
 /* PROXIMUS v3.7 — Local Animated Video Vault Covers.
  * Additive layer over existing Video Vault. No schema migration, video copies,
  * video downloads or cross-origin access. Source media stays in OPFS/IndexedDB.
- * Custom GIF/video/image cover Blobs share the item's existing metadata row. */
+ * Custom covers live in an independent browser-local IndexedDB store;
+ * original movie and metadata rows remain unchanged. */
 import {$} from './core.js';
 import {listStoredVideos} from './video-vault.js';
 import {sortVideoLibrary} from './video-vault-core.js';
@@ -31,7 +32,9 @@ async function coverTx(mode,action){
   tx.onabort=tx.onerror=()=>reject(problem||tx.error||Error('Could not save personal cover on this device'));
  });
 }
-const listCoverArt=()=>coverTx('readonly',store=>store.getAll());
+// Listing keys avoids cloning every large GIF/video into iPhone memory.
+const listCoverKeys=()=>coverTx('readonly',store=>store.getAllKeys());
+const getCoverArt=id=>coverTx('readonly',store=>store.get(id));
 const deleteCoverArt=id=>coverTx('readwrite',store=>store.delete(id));
 async function saveCoverArt(id,file,mime,poster){
  const data=await file.arrayBuffer(),image=poster?await poster.arrayBuffer():null;
@@ -50,7 +53,9 @@ export function initVaultVisualCovers(){
  const grid=$('videoVaultGrid'),status=$('videoVaultStatus');
  if(!grid||!status)return;
  grid.dataset.previewMode=window.ProximusVisualPopV37?.previewMode?.()||'balanced';
- const objectUrls=new Set(),candidates=new Map();
+ const objectUrls=new Set(),candidates=new Map(),lazyCards=new Map();
+ let loadedBytes=0;
+ const memoryBudget=mobile?32*1024*1024:100*1024*1024;
  let observer=null,generation=0,queued=false,enhancing=false,pendingRender=false;
  const show=s=>{status.textContent=s;status.dataset.error='false'};
  const limit=()=>{
@@ -76,17 +81,86 @@ export function initVaultVisualCovers(){
  }
  if('IntersectionObserver' in window)observer=new IntersectionObserver(entries=>{
   for(const entry of entries){
+   const state=lazyCards.get(entry.target);
+   if(state){
+    state.visible=entry.isIntersecting;
+    if(state.visible){state.lastSeen=Date.now();void loadCover(state);}
+   }
    const movie=entry.target.querySelector('.video-vault-art-video');
    if(movie)candidates.set(movie,entry.isIntersecting);
   }
-  reconcile();
- },{rootMargin:'80px 0px',threshold:.08});
+  reconcile();trimHidden();
+ },{rootMargin:'220px 0px',threshold:.05});
  function clean(){
   observer?.disconnect();
   for(const node of candidates.keys())stop(node);candidates.clear();
+  lazyCards.clear();loadedBytes=0;
   for(const url of objectUrls)URL.revokeObjectURL(url);objectUrls.clear();
  }
- const urlFor=blob=>{const url=URL.createObjectURL(blob);objectUrls.add(url);return url};
+ const urlFor=(blob,state)=>{
+  const url=URL.createObjectURL(blob);objectUrls.add(url);
+  if(state)state.urls.push(url);
+  return url;
+ };
+ function unloadCover(state){
+  if(!state.loaded)return;
+  for(const el of state.cover.querySelectorAll('.video-vault-art-still,.video-vault-art-image,.video-vault-art-video')){
+   if(el.tagName==='VIDEO'){stop(el);candidates.delete(el);}
+   el.remove();
+  }
+  for(const url of state.urls){URL.revokeObjectURL(url);objectUrls.delete(url)}
+  state.urls=[];loadedBytes=Math.max(0,loadedBytes-state.bytes);
+  state.bytes=0;state.loaded=false;
+ }
+ function trimHidden(){
+  if(loadedBytes<=memoryBudget)return;
+  const hidden=[...lazyCards.values()].filter(x=>x.loaded&&!x.visible)
+   .sort((a,b)=>a.lastSeen-b.lastSeen);
+  for(const state of hidden){
+   unloadCover(state);
+   if(loadedBytes<=memoryBudget)break;
+  }
+ }
+ async function loadCover(state){
+  if(state.loading||state.loaded||!state.card.isConnected)return;
+  state.loading=true;
+  try{
+   // Fetch this one item only when its card enters the scroll viewport.
+   const record=await getCoverArt(state.id);
+   if(!record||!state.card.isConnected||state.generation!==generation)return;
+   if(!(record.data instanceof ArrayBuffer))return;
+   const personalCover=new Blob([record.data],{type:record.mime||'image/png'});
+   const type=record.mime||personalCover.type;
+   const still=record.image instanceof ArrayBuffer?
+    new Blob([record.image],{type:'image/jpeg'}):null;
+   if(still){
+    const image=document.createElement('img');image.className='video-vault-art-still';
+    image.src=urlFor(still,state);image.alt='';image.loading='lazy';state.cover.append(image);
+   }
+   if(type.startsWith('image/')){
+    if(window.ProximusVisualPopV37?.previewMode?.()!=='still'||type!=='image/gif'){
+     const image=document.createElement('img');image.className='video-vault-art-image';
+     image.src=urlFor(personalCover,state);image.alt='';image.loading='lazy';state.cover.append(image);
+    }
+   }else if(type.startsWith('video/')){
+    const movie=document.createElement('video');movie.className='video-vault-art-video';
+    movie.preload='none';movie.muted=true;movie.loop=true;movie.playsInline=true;
+    movie.setAttribute('muted','');movie.setAttribute('playsinline','');
+    movie.setAttribute('aria-hidden','true');movie.hidden=true;
+    movie.dataset.url=urlFor(personalCover,state);movie.dataset.mime=type;
+    state.cover.append(movie);candidates.set(movie,state.visible);
+   }
+   state.loaded=true;state.lastSeen=Date.now();
+   state.bytes=record.data.byteLength+(record.image?.byteLength||0);
+   loadedBytes+=state.bytes;
+   reconcile();trimHidden();
+  }catch(e){
+   if(state.generation===generation){
+    status.dataset.error='true';
+    status.textContent='One local cover could not be opened: '+e.message+'. Original video preserved.';
+   }
+  }finally{state.loading=false}
+ }
  async function stillFromMedia(file,type){
   let node,url;
   try{
@@ -138,8 +212,8 @@ export function initVaultVisualCovers(){
   if(enhancing){pendingRender=true;return}
   const id=++generation;enhancing=true;
   try{
-   const [videos,arts]=await Promise.all([listStoredVideos(),listCoverArt()]);
-   const coverById=new Map(arts.map(x=>[x.id,x]));
+   const [videos,coverKeys]=await Promise.all([listStoredVideos(),listCoverKeys()]);
+   const coverIds=new Set(coverKeys);
    if(id!==generation)return;
    const list=sortVideoLibrary(videos,{query:$('videoVaultSearch')?.value||'',
     filter:$('videoVaultFilter')?.value||'all',sort:$('videoVaultSort')?.value||'recent'}).slice(0,180);
@@ -163,32 +237,16 @@ export function initVaultVisualCovers(){
      });
     });
     actions.append(choose,file);
-    const rawArt=coverById.get(item.id);
-    const personalCover=rawArt?.data instanceof ArrayBuffer?new Blob([rawArt.data],{type:rawArt.mime}):null;
-    if(personalCover){
-     const reset=btn('↺ Cover');reset.title='Remove custom cover (keeps the video)';
+    if(coverIds.has(item.id)){
+     const reset=btn('↺ Cover');reset.title='Remove only the custom cover, keeping the original saved movie';
      reset.addEventListener('click',()=>void resetCover(item.id).catch(e=>{
       status.dataset.error='true';status.textContent='Could not reset cover: '+e.message;
      }));actions.append(reset);
-     const type=rawArt.mime||personalCover.type||'';
-     const imagePoster=rawArt.image instanceof ArrayBuffer?new Blob([rawArt.image],{type:'image/jpeg'}):null;
-     if(imagePoster){
-      const image=document.createElement('img');image.className='video-vault-art-still';
-      image.src=urlFor(imagePoster);image.alt='';image.loading='lazy';cover.append(image);
-     }
-     if(type.startsWith('image/')){
-      if(window.ProximusVisualPopV37?.previewMode?.()!=='still'||type!=='image/gif'){
-       const image=document.createElement('img');image.className='video-vault-art-image';
-       image.src=urlFor(personalCover);image.alt='';image.loading='lazy';cover.append(image);
-      }
-     }else if(type.startsWith('video/')){
-      const movie=document.createElement('video');movie.className='video-vault-art-video';
-      movie.preload='none';movie.muted=true;movie.loop=true;movie.playsInline=true;
-      movie.setAttribute('muted','');movie.setAttribute('playsinline','');
-      movie.setAttribute('aria-hidden','true');movie.hidden=true;
-      movie.dataset.url=urlFor(personalCover);movie.dataset.mime=type;
-      cover.append(movie);candidates.set(movie,false);observer?.observe(cover);
-     }
+     const state={id:item.id,card,cover,generation,loaded:false,loading:false,
+      visible:false,urls:[],bytes:0,lastSeen:0};
+     lazyCards.set(cover,state);
+     if(observer)observer.observe(cover);
+     else if(i<12)void loadCover(state);
     }
    }
    reconcile();
@@ -211,6 +269,29 @@ export function initVaultVisualCovers(){
   if(grid.dataset.previewMode!==mode){grid.dataset.previewMode=mode;
    $('videoVaultRefresh')?.click();}
   else reconcile();
+ });
+ // This event is emitted only after the original movie deletion has committed.
+ document.addEventListener('proximus-video-vault-removed',event=>{
+  const id=event.detail?.id;
+  if(typeof id!=='string'||!id)return;
+  void deleteCoverArt(id).catch(e=>{
+   status.dataset.error='true';status.textContent='Movie removed, but its extra cover could not be cleaned: '+e.message;
+  });
+ });
+ const cleanupButton=$('videoVaultCleanCovers');
+ cleanupButton?.addEventListener('click',async()=>{
+  cleanupButton.disabled=true;
+  try{
+   const [keys,videos]=await Promise.all([listCoverKeys(),listStoredVideos()]);
+   const valid=new Set(videos.map(v=>v.id));
+   const unused=keys.filter(id=>!valid.has(id));
+   if(!unused.length){show('Artwork library is tidy. No unused custom covers found.');return}
+   if(!confirm('Delete '+unused.length+' unused custom artwork cover(s)? This never deletes a video or its original snapshot.'))return;
+   for(const id of unused)await deleteCoverArt(id);
+   show('Freed '+unused.length+' unused cover(s). All saved videos remain untouched.');
+  }catch(e){
+   status.dataset.error='true';status.textContent='Cannot inspect unused artwork safely: '+e.message;
+  }finally{cleanupButton.disabled=false}
  });
  document.addEventListener('proximus-view-changed',reconcile);
  document.addEventListener('visibilitychange',reconcile);
