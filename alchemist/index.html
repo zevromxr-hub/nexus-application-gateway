@@ -9,7 +9,7 @@
 <meta name="description" content="PROXIMUS Companion Edition — a private browser-based entertainment, media library and everyday creator utility workspace">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: data:; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./overdrive.css"><link rel="stylesheet" href="./sonic-dimension.css"><link rel="stylesheet" href="./cinema-clarity.css"><link rel="stylesheet" href="./sonic-theater.css"><link rel="stylesheet" href="./sonic-power.css"><link rel="stylesheet" href="./orbit-interface.css"><link rel="stylesheet" href="./web-cinema.css"><link rel="stylesheet" href="./video-vault-ultra.css"><link rel="stylesheet" href="./visual-pop-v3.7.css"><link rel="stylesheet" href="./home-icon-studio-v3.7.css"><link rel="stylesheet" href="./sovereign-polish-v3.7.1.css"><link rel="stylesheet" href="./cinematic-dominion-v3.8.css">
 <title>PROXIMUS | ASSET ALCHEMIST — Companion Edition</title>
 <link rel="stylesheet" href="../shared/nexus-experience-v19.css?v=1900">
 <script defer src="../shared/nexus-experience-v19.js?v=1900"></script>
@@ -50,11 +50,11 @@
 </header>
 <main class="content">
 <section class="welcome">
-<div class="eyebrow">PROXIMUS / SOVEREIGN COMPANION / v3.7.1</div>
+<div class="eyebrow">PROXIMUS / CINEMATIC DOMINION / v3.8.0</div>
 <div class="welcome-row"><div><h1>ASSET <em>ALCHEMIST</em></h1><p>Entertainment, personal video library, creative projects and useful everyday tools—all together, without unnecessary clutter.</p></div><div class="orb" id="heroOrb" aria-hidden="true">✧</div></div>
 <div class="metrics"><div><strong>18</strong><span>ACTIVE COMPANION SPACES</span></div><div><strong>LOCAL</strong><span>PRIVATE FILE PROCESSING</span></div><div><strong>ZIP</strong><span>COLLECTED EXPORTS</span></div><div><strong>FREE</strong><span>NO ACCOUNT REQUIRED</span></div></div>
 </section>
-<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.7.1 · ORBIT WORKSPACE</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
+<div class="release-strip" role="status" aria-live="polite"><span id="versionInfo">PROXIMUS v3.8.0 · CINEMATIC DOMINION</span><button class="small-btn" id="versionCheck">Check updates</button><a class="small-btn" href="./CHANGELOG.md" target="_blank" rel="noopener">Release notes</a></div>
 <section id="orbitAccessBar" class="orbit-access-bar" aria-label="Fast access to PROXIMUS studios">
  <div class="orbit-access-current">
   <span class="orbit-access-kicker" id="orbitCurrentCategory">Workspace</span>
@@ -73,10 +73,31 @@
 <div id="notice" role="status" aria-live="polite"></div>
 <section class="studio" data-panel="command" hidden>
  <div class="section-heading"><div><div class="eyebrow">28 / PERSONAL COMMAND DASHBOARD</div><h2>PROXIMUS Companion Center <span class="subtitle">Entertainment first · personal shortcuts · useful tools</span></h2></div></div>
+ <section id="proximusPremiere" class="px38-premiere" data-has-media="false" aria-label="Your personal cinema premiere">
+  <div id="px38PremiereArt" class="px38-premiere-art" aria-hidden="true"></div>
+  <div class="px38-premiere-main">
+   <span class="px38-kicker">✧ PROXIMUS / CINEMATIC DOMINION</span>
+   <div class="px38-indicators"><span id="px38PremiereEyebrow">WELCOME TO YOUR CINEMA</span><span id="px38PremiereCount">YOUR LIBRARY STARTS HERE</span><span>DEVICE-PRIVATE</span></div>
+   <h3 id="px38PremiereTitle">Your collection deserves a premiere.</h3>
+   <p id="px38PremiereDescription">A cinematic home for your saved films, personal artwork and immersive entertainment.</p>
+   <div class="px38-premiere-actions">
+    <button id="px38PremiereWatch" type="button">▶ Open My Video Vault</button>
+    <button id="px38PremiereShuffle" type="button" hidden>↻ Another spotlight</button>
+    <button id="px38PremiereMedia" type="button">✧ My Artwork</button>
+    <button id="px38PremiereMode" type="button" aria-pressed="false">✧ Cinematic atmosphere: on</button>
+   </div>
+   <p id="px38PremiereStatus" role="status" aria-live="polite">Your library and artwork stay on this device.</p>
+  </div>
+  <div id="px38PremierePoster" class="px38-premiere-poster" aria-hidden="true"></div>
+ </section>
+ <section class="px38-filmstrip-wrap" aria-label="Personal film poster gallery">
+  <div class="px38-filmstrip-header"><strong>✧ YOUR PERSONAL PREMIERES</strong><span>Pick any saved title to play instantly</span></div>
+  <div id="px38Filmstrip" class="px38-filmstrip"></div>
+ </section>
  <section id="overdriveHub" class="overdrive-hub" aria-label="PROXIMUS Entertainment Overdrive">
-  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.7.1</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
+  <div class="overdrive-heading"><div><span class="overdrive-eyebrow">PROXIMUS / ENTERTAINMENT OVERDRIVE · v3.8.0</span><h3>One connected entertainment universe.</h3><p>Your existing entertainment tools, gathered in one place. Customize scenes only when you need to.</p></div><span class="overdrive-ready">✦ FOUNDATION LIVE</span></div>
   <div class="overdrive-cards">
-   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.7.1</span></button>
+   <button type="button" class="overdrive-card" data-overdrive-target="videos"><span class="overdrive-symbol">▣</span><strong>Cinema Overdrive</strong><small>Personal Video Vault, bookmarks, theater playback and responsive ambient scenes.</small><span class="overdrive-tag">OPEN CINEMA · v3.8.0</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="reactor"><span class="overdrive-symbol">♫</span><strong>Sonic Dimension</strong><small>Explore five live Sonic Dimension worlds using Reactor IV audio analysis.</small><span class="overdrive-tag">OPEN SONIC WORLDS</span></button>
    <button type="button" class="overdrive-card" data-overdrive-target="arcade"><span class="overdrive-symbol">✦</span><strong>Arcade Nexus</strong><small>Play original games and daily challenges; additional experiences remain planned.</small><span class="overdrive-tag">OPEN ARCADE</span></button>
    <div class="overdrive-card overdrive-future"><span class="overdrive-symbol">◇</span><strong>Infinite Realms</strong><small>Branching fantasy and sci-fi adventures with local progress.</small><span class="overdrive-tag">PLANNED · FUTURE RELEASE</span></div>
@@ -831,7 +852,7 @@
 <section class="studio" data-panel="releases" hidden>
  <div class="section-heading"><div><div class="eyebrow">RELEASE INTELLIGENCE</div><h2>Release Center <span class="subtitle">Every published update, in one place</span></h2></div></div>
  <div class="release-dashboard">
-  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.7.1</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
+  <div class="release-spotlight"><div><div class="eyebrow">LATEST PROXIMUS RELEASE</div><div id="releaseLiveVersion" class="release-spotlight-version">v3.8.0</div><p>Version history from the official Asset Alchemist release records, with the newest changes shown first.</p></div><div class="desk-actions"><button id="releaseRefresh" class="small-btn">↻ Refresh releases</button><button id="releaseUpdateShortcut" class="primary">Check app updates</button></div></div>
   <div class="release-search-bar"><label>Find a version or feature<input id="releaseSearch" placeholder="Search 2.4, GIF, animation, arcade…" type="search"></label><span id="releaseCount" class="hint"></span></div>
   <p id="releaseCenterStatus" role="status" class="hint">Loading version history…</p>
   <div id="releaseCards" class="release-cards"></div>
