@@ -1,24 +1,21 @@
 {
   "product": "PROXIMUS | ASSET ALCHEMIST",
-  "version": "3.7.1",
+  "version": "3.8.0",
   "channel": "stable",
   "release_date": "2026-11-25",
-  "subtitle": "Sovereign Polish — Local Artwork Reliability, iPhone Memory Care & Cinematic UI",
+  "subtitle": "Cinematic Dominion — Personal Premiere, Local Poster Gallery & Full-Site Visual Redesign",
   "studio_count": 18,
-  "previous_version": "3.7.0",
+  "previous_version": "3.7.1",
   "changelog": "./CHANGELOG.md",
   "source_repository": "zevromxr-hub/nexus-application-gateway",
   "source_path": "alchemist/",
   "web_url": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/",
   "changes": [
-    "Fixed local Video Vault cover leaks: custom GIF/video art is removed from its independent cover database after the corresponding saved movie is successfully deleted.",
-    "Redesigned custom-cover rendering to list keys only, lazy-fetch large artwork when cards enter the viewport, and trim offscreen artwork from memory on iPhone without changing the original video library.",
-    "Added safe one-click cleanup for orphaned personal artwork with confirmation, cover count, and no video deletion.",
-    "Corrected the Media Publisher removal flow to commit the IndexedDB deletion before revoking existing image/video URLs or hiding the background.",
-    "Added Sovereign Polish, a lightweight violet/cyan/gold visual refresh for Command Center, library cards and personal-media controls, with better readable text, accessible focus and reduced-motion handling.",
-    "Preserved the existing 18 studios, home icon editor, app storage keys, personal video/movie metadata, large-file import behavior, current PWA installation, and the previous v3.7.0 offline cache as a rollback option.",
-    "Personal background/thumbnail backup restore now commits as one atomic IndexedDB transaction. If storage runs out mid-restore, existing saved artwork is retained rather than being partially cleared.",
-    "Desktop Video Vault now constrains its workspace width to the fixed studio rail, avoiding horizontally scrolled library controls appearing underneath sidebar navigation.",
-    "Fixed malformed Animation Forge HTML that prematurely ended the main application shell, causing Video Vault and later studios to render outside the desktop workspace and behind the fixed sidebar."
+    "Added a cinematic feature premiere that highlights one personal saved local video with its best available poster, favorite or playback-resume context.",
+    "Added a filmstrip of up to four additional saved titles; play, resume, and shuffle use the original Video Vault playback event.",
+    "Reused small stills from personal GIF/video cover artwork for the featured title, while never auto-playing large cover media in the new hero.",
+    "Redesigned the header, global landing panel, Command Center, Overdrive destinations, cards, and iPhone dock with an immersive violet/cyan/gold treatment.",
+    "Added optional Calm/Cinematic appearance control persisted locally; supports reduced-motion and compact layouts without changing saved personal media.",
+    "Existing videos, local OPFS/IndexedDB, collections, favorites, custom animated covers, background art, icon editor, offline rollback and all 18 studios are preserved."
   ]
 }
