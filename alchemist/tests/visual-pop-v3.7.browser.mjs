@@ -87,7 +87,13 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   await page.locator('#px39PosterFile').setInputFiles({name:'cinema-cover.gif',mimeType:'image/gif',buffer:gif});
   await page.waitForFunction(()=>String(document.querySelector('#px39PosterStatus')?.textContent).includes('Preview loaded'),null,{timeout:12000});
   await page.locator('#px39PosterSave').click();
-  await page.waitForFunction(()=>String(document.querySelector('#px39PosterStatus')?.textContent).includes('Poster saved'),null,{timeout:12000});
+  await page.waitForFunction(()=>{
+   const value=String(document.querySelector('#px39PosterStatus')?.textContent||'');
+   return value.includes('Poster saved')||value.includes('Unable to save');
+  },null,{timeout:12000});
+  const posterStatus=await page.locator('#px39PosterStatus').textContent();
+  console.log('POSTER FORGE STATUS '+name+': '+posterStatus);
+  assert.match(posterStatus,/Poster saved/,'Poster save failed: '+posterStatus);
   const posterSafe=await page.evaluate(async()=>{
    const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('proximus-video-vault-v1',2);q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});
    const item=await new Promise((resolve,reject)=>{const tx=db.transaction('items','readonly');
