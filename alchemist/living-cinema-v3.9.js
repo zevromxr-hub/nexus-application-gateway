@@ -345,7 +345,9 @@ export function initLivingCinema(app){
    const blob=await posterBlob();
    const item=await latestItem(id);
    if(!item)throw Error('This video was removed; no poster changes were saved.');
-   item.poster=blob;
+   // Replacing an older WebKit byte-backed cover must invalidate its old
+   // snapshot before the new art takes the normal Blob/fallback save path.
+   delete item.posterData;item.poster=blob;
    await updateStoredVideo(item);
    notice('px39PosterStatus','Poster saved to this local movie. Original video bytes are untouched.');
    $('videoVaultRefresh')?.click();queueRefresh();
