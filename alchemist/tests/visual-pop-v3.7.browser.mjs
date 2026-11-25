@@ -127,6 +127,19 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
   },null,{timeout:15000});
   assert.equal(await page.locator('.video-vault-card').count(),1,'Artwork cleanup cannot remove original movies');
   // Deleting the test movie must also delete its *separately stored* personal cover.
+  if(!mobile){
+   const geometry=await page.evaluate(()=>{
+    const btn=document.querySelector('.video-vault-card [aria-label="Remove Local Sample Movie.mp4 from saved Video Vault"]');
+    const nav=document.querySelector('.rail'),shell=document.querySelector('.shell');
+    const br=btn?.getBoundingClientRect(),nr=nav?.getBoundingClientRect(),sr=shell?.getBoundingClientRect();
+    return {button:br?{left:br.left,right:br.right,top:br.top}:null,
+     rail:nr?{left:nr.left,right:nr.right}:null,shell:sr?{left:sr.left,right:sr.right}:null,
+     overflow:document.documentElement.scrollWidth-innerWidth};
+   });
+   console.log('DESKTOP VAULT GEOMETRY '+JSON.stringify(geometry));
+   assert.ok(geometry.shell.left>=geometry.rail.right-2,'Desktop workspace must begin to the right of fixed rail');
+   assert.ok(geometry.button.left>=geometry.rail.right-2,'Video controls must not be positioned under fixed studio navigation');
+  }
   page.once('dialog',d=>d.accept());
   await page.locator('.video-vault-card [aria-label="Remove Local Sample Movie.mp4 from saved Video Vault"]').click();
   await page.waitForFunction(async()=>{
