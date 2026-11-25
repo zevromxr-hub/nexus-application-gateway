@@ -47,7 +47,7 @@ assert.ok(publisher.includes('clearPoster(')&&publisher.includes('onScreen('));
 assert.ok(publisher.includes('animationLimit()'));
 assert.ok(vault.includes('canvas.width=960')&&vault.includes('maybeCreatePoster(true)'));
 assert.ok(covers.includes("return type.startsWith('video/')?18*1024*1024:12*1024*1024")===false);
-assert.ok(covers.includes("observer?.observe(cover)"),'IntersectionObserver must watch visible cards, not hidden video');
+assert.ok(covers.includes("observer.observe(cover)")&&covers.includes("lazyCards.set(cover,state)"),'IntersectionObserver must watch visible cards, not hidden video');
 assert.ok(covers.includes('video-vault-art-video')&&covers.includes('video-vault-art-image'));
 assert.ok(covers.includes('listCoverKeys()')&&covers.includes('getCoverArt(state.id)'),
  'Artwork panel must read key inventory and fetch selected visible covers, not clone every binary record');
