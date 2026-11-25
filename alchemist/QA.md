@@ -1,3 +1,19 @@
+## v3.8.0 — Cinematic Dominion iPhone & PC acceptance
+
+- [ ] On an existing installed PROXIMUS Home Screen app, open without uninstalling. Confirm the new cinematic premiere is visible in Command Center and the underlying saved local videos still appear in Video Vault.
+- [ ] If Video Vault is empty, verify the premiere provides an Open Video Vault action and visually useful links to personal artwork and Sonic Theater; no fake demo movies appear.
+- [ ] Import one local video and create a poster, then return Home: the saved title should appear as the feature with the same playback history.
+- [ ] Save a personal GIF/MP4 video cover to that movie. Return Home and confirm the feature uses its high-quality still where available, without automatically playing the original animated cover.
+- [ ] Populate multiple videos: shuffle the spotlight, use a mini poster in the gallery to launch a real video, and verify the existing player can pause/resume and retains playback progress.
+- [ ] Toggle Cinematic atmosphere off/on, refresh and verify the same preference remains. Reduced Motion should prevent decorative movement while preserving controls.
+- [ ] Check iPhone narrow layout, native Home Screen dock, safe-area controls, album covers, backdrop brightness and no sideways clipping. Check desktop rail layout at normal and narrow browser widths.
+- [ ] Move between Video Vault, Sonic Theater, Animation Forge and Command Center; ensure large introduction collapses away from Home and existing tools stay accessible.
+- [ ] Confirm personal media, collections, bookmarks, custom icon crop, current Home Screen icon, original photos/videos and backups are not modified.
+- [ ] Verify v3.8.0 release label, v3.7.1 cached rollback availability where retained, and no orphaned cover cleanup regression.
+- [ ] Report actual iPhone/Safari hardware issues separately from automated emulated WebKit/Chromium checks.
+
+**Storage safety:** Existing installed Home Screen data can be isolated from Safari. Do not delete the installed app merely to refresh the icon; keep original media copies in Files/Photos.
+
 ## v3.7.1 — Artwork Integrity & Sovereign Polish iPhone/PC acceptance
 
 - [ ] Open installed PROXIMUS on iPhone **without deleting it**; confirm v3.7.1 loads and original videos, favorites, resume positions and collections still work.
