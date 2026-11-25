@@ -5,6 +5,7 @@
 - Lazy-loaded individual GIF/MP4/WebM covers by visible card and released older offscreen decoded artwork as iPhone memory needs allow; all covers remain saved in local IndexedDB for later reuse.
 - Fixed Media Publisher backup restore to commit all replacement artwork rows together; storage failures roll back the transaction instead of wiping originals before a partial import.
 - Fixed Media Publisher background and thumbnail removal to wait for successful IndexedDB deletion before clearing on-screen media.
+- Fixed a desktop responsive-width edge case where video cards/controls could be scrolled under fixed sidebar navigation.
 - Introduced lightweight, responsive **Sovereign Polish** styling with themed accents, stronger card contrast, improved visual hierarchy, and accessible focus/reduced-motion states.
 - Preserved all studios, original local video storage and PWA cache rollback paths. No network video features or server uploads were added.
 - Updated release metadata, in-app version labels, owner documentation, and automated browser regressions.
