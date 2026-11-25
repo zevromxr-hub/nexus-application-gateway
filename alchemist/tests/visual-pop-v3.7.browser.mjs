@@ -134,7 +134,19 @@ for(const [name,engine,mobile] of [['iphone-webkit',webkit,true],['desktop-chrom
     const br=btn?.getBoundingClientRect(),nr=nav?.getBoundingClientRect(),sr=shell?.getBoundingClientRect();
     return {button:br?{left:br.left,right:br.right,top:br.top}:null,
      rail:nr?{left:nr.left,right:nr.right}:null,shell:sr?{left:sr.left,right:sr.right}:null,
-     overflow:document.documentElement.scrollWidth-innerWidth};
+     overflow:document.documentElement.scrollWidth-innerWidth,
+     ancestors:(()=>{
+      const out=[];let el=btn;
+      while(el&&out.length<10){
+       const box=el.getBoundingClientRect(),style=getComputedStyle(el);
+       out.push({tag:el.tagName,className:String(el.className).slice(0,60),
+        left:Math.round(box.left),width:Math.round(box.width),scrollLeft:el.scrollLeft,
+        scrollWidth:el.scrollWidth,clientWidth:el.clientWidth,overflowX:style.overflowX,
+        transform:style.transform});
+       el=el.parentElement;
+      }
+      return out;
+     })()};
    });
    console.log('DESKTOP VAULT GEOMETRY '+JSON.stringify(geometry));
    assert.ok(geometry.shell.left>=geometry.rail.right-2,'Desktop workspace must begin to the right of fixed rail');
