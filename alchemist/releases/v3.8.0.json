@@ -1,0 +1,34 @@
+{
+  "schema": "proximus.alchemist.release/1",
+  "brand": "PROXIMUS",
+  "name": "Asset Alchemist",
+  "version": "3.8.0",
+  "release_date": "2026-11-25",
+  "title": "Cinematic Dominion — Personal Premiere & Entertainment Redesign",
+  "subtitle": "Cinematic homepage, featured personal films, real local posters and immersive responsive visuals",
+  "channel": "stable",
+  "studios": 18,
+  "source_repository": "zevromxr-hub/nexus-application-gateway",
+  "source_path": "alchemist/",
+  "features": [
+    "A dramatic responsive Premiere homepage highlights a real saved local video, its poster and its existing resume progress.",
+    "A personal filmstrip makes up to four additional videos available for immediate handoff to the existing Video Vault player.",
+    "Uses the user's own high-quality Vault posters and the small JPEG still of a saved personal cover; does not autoplay animated art or clone original movie files.",
+    "One-tap play/resume and alternate spotlight reuse the existing Video Vault watch event; no duplicate library or new save format.",
+    "Full-site dark violet, cyan and gold cinematic visual system refines Command Center, navigation, media art, studio cards and mobile dock.",
+    "Cinematic atmosphere on/off is stored as a small browser preference with reduced-motion support, without altering personal background or thumbnail files.",
+    "Existing 18 studios, original library, OPFS/IndexedDB media, favorite and resume metadata, Home Screen Icon Studio, web-app installation and offline rollback remain unchanged."
+  ],
+  "added_studios": [],
+  "retired_studios": [],
+  "upgraded_studios": [
+    "Companion Center Premiere",
+    "Video Vault personal poster handoff",
+    "Personal entertainment discovery",
+    "Cinema responsive design",
+    "iPhone visual comfort"
+  ],
+  "links": {
+    "site": "https://zevromxr-hub.github.io/nexus-application-gateway/alchemist/"
+  }
+}
