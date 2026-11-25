@@ -4,6 +4,11 @@
   "product": "PROXIMUS | ASSET ALCHEMIST",
   "releases": [
     {
+      "version": "3.8.0",
+      "title": "Cinematic Dominion — Personal Premiere & Entertainment Redesign",
+      "date": "2026-11-25"
+    },
+    {
       "version": "3.7.1",
       "title": "Sovereign Polish — Artwork Integrity & Cinematic UI",
       "date": "2026-11-25"
