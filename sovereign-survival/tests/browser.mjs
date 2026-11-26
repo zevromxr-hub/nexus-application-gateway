@@ -12,6 +12,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
   assert.match(await page.title(),/NIGHTFALL v1\.2/);
+  await page.waitForFunction(()=>document.body.dataset.realm==='sanctum',null,{timeout:10000});
   assert.equal(await page.locator('body').getAttribute('data-realm'),'sanctum');
   assert.equal(await page.locator('#recordElites').textContent(),'0');
   assert.equal(await page.locator('#recordBosses').textContent(),'0');
