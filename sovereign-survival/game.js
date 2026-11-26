@@ -342,6 +342,6 @@ function updatePointer(e){
 }
 window.addEventListener('resize',resize,{passive:true});
 if(typeof ResizeObserver==='function')new ResizeObserver(()=>resize()).observe(frame);
-renderRecords();buildLoadout();setOverlay();resize();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
+renderRecords();buildLoadout();setOverlay();resize();updateHud();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
 requestAnimationFrame(loop);
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
