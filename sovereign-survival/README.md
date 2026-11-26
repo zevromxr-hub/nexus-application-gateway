@@ -1,3 +1,33 @@
+# SOVEREIGN SURVIVAL v1.2 — NIGHTFALL COMBAT
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+A substantive action-game update to the Warbound full-screen fantasy survival game.
+
+### New combat features
+- **Hexer (Wave 3+):** ranged sorcerer; retreats and circles the player while preparing pink aimed projectiles. Its attack direction is locked during a visible warning, allowing skilled dodges.
+- **Ravager (Wave 5+):** aggressive enemy that pauses for a clear linear warning before a fast charge.
+- **Elites (Wave 3+):** rare enhanced enemies marked with a glowing gold crown and ring. They have stronger stats and award double score and XP.
+- **Runic rifts:** dangerous circles appear on odd waves beginning at Wave 3. Their bright warnings precede real damaging pulses; dodge out of the marked radius or use invulnerable dash timing.
+- **Void Monarch:** the triple bolt attack is now aimed at a locked position before the warning resolves, rather than unexpectedly tracking the moving player.
+- **Four arena realms:** Shattered Citadel (Waves 1–2), Ashen Rift (3–4), Moonlit Ruins (5–6), and Void Throne (7–8), repeating in later waves.
+- New damage numbers, attack arcs, enemy flash, differentiated projectiles, and death sparks.
+- The Warden's Codex now identifies all six enemy archetypes and explains the boss, elites, and rift warnings.
+- Hall of Legends keeps lifetime totals for elite and boss defeats, without losing earlier game records.
+
+### Controls
+On PC: WASD/arrows move, Shift dash, Space/P/Escape pause, 1/2/3 upgrades, mouse hold to aim when desired. On iPhone: use the left joystick and right dash rune; attacks automatically target nearby enemies. Keep moving, collect soul energy, and watch the marked attack lanes.
+
+### Privacy and compatibility
+The game remains a standalone offline-ready PWA. It saves only scores and counts to the original `proximus-sovereign-survival-v1` key in its own origin storage, safely defaulting new counters for players upgrading from v1.1. No access to or updates of PROXIMUS Asset Alchemist's personal movie/video files, posters or OPFS storage. Do not delete the existing Home Screen app or clear site data to update.
+
+### Tests
+Deterministic engine tests include Hexer locked aim, Ravager windup and charge, rift timing and invulnerability, elites, boss attacks, arena progression, original upgrades and loss. Browser runs check gameplay and legacy records on emulated iPhone WebKit and desktop Chromium. Physical iPhone gameplay testing is still recommended.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL — v1.1.0 WARBOUND INTERFACE
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/

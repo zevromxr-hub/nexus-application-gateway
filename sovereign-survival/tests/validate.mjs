@@ -1,9 +1,9 @@
-/* SOVEREIGN SURVIVAL GENESIS: engine, upgrades, boss, controls and asset safety */
+/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL: combat AI, hazards, upgrades, visuals and offline safety */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ENEMY_TYPES,WORLD,runSummary,durationLabel} from '../core.js';
+import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ENEMY_TYPES,WORLD,ARENAS,arenaForWave,runSummary,durationLabel} from '../core.js';
 const root=path.resolve(import.meta.dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const initial=createRun(12345),again=createRun(12345);
@@ -61,6 +61,80 @@ boss.x=waves.player.x+270;boss.y=waves.player.y;boss.shoot=0;
 waves.enemies=[boss];
 advance(waves,{},1/60);
 assert.equal(waves.hostile.length,3,'Boss fires three real damaging projectiles');
+// New enemies are real deterministic entities and appear at known progression points.
+const nightfall=createRun(2026);
+spawnWave(nightfall); // Wave 2
+spawnWave(nightfall); // Wave 3
+assert.equal(nightfall.wave,3);
+assert.ok(nightfall.enemies.some(e=>e.kind==='hexer'),'The Hexer arrives at Wave 3');
+assert.ok(nightfall.hazards.length>0,'Rift hazards arrive at Wave 3');
+assert.equal(arenaForWave(3).id,'ember');
+spawnWave(nightfall);spawnWave(nightfall); // Wave 5
+assert.equal(nightfall.wave,5);
+assert.ok(nightfall.enemies.some(e=>e.kind==='ravager'),'The Ravager arrives at Wave 5');
+assert.ok(nightfall.enemies.some(e=>e.elite),'Elite variants can appear after Wave 3');
+assert.equal(arenaForWave(5).id,'moon');
+assert.equal(new Set(ARENAS.map(a=>a.id)).size,4);
+assert.equal(arenaForWave(7).id,'throne');
+assert.equal(arenaForWave(9).id,'sanctum');
+// Hexer spells lock aim during telegraph instead of tracking a moving player.
+const hex=createRun(77);
+spawnWave(hex);spawnWave(hex);
+const caster=hex.enemies.find(e=>e.kind==='hexer');
+hex.enemies=[caster];hex.hazards=[];
+caster.x=hex.player.x+330;caster.y=hex.player.y;caster.speed=0;caster.shoot=.50;
+advance(hex,{},1/60);
+assert.equal(caster.aimLocked,true,'Caster locks an aim direction before shooting');
+const lockedAim=caster.aimAngle;
+hex.player.y+=230;
+for(let i=0;i<39;i++)advance(hex,{},1/60);
+const bolt=hex.hostile.find(b=>b.kind==='hexer');
+assert.ok(bolt,'Hexer releases a real damaging bolt');
+assert.ok(Math.abs(Math.atan2(bolt.vy,bolt.vx)-lockedAim)<.001,
+ 'Bolt must follow the warned, locked direction, not track the moved player');
+// Ravagers must stop, telegraph, then rush down the announced lane.
+const rav=createRun(105);
+for(let i=0;i<4;i++)spawnWave(rav);
+const charger=rav.enemies.find(e=>e.kind==='ravager');
+rav.enemies=[charger];rav.hazards=[];
+charger.x=rav.player.x+310;charger.y=rav.player.y;charger.shoot=100;charger.speed=88;
+charger.chargeCooldown=0;charger.chargeWindup=0;charger.chargeActive=0;
+const stand=charger.x;
+advance(rav,{},1/60);
+assert.ok(charger.chargeWindup>0,'Charge announces its windup');
+assert.equal(charger.x,stand,'Ravager must stop during its telegraph');
+for(let i=0;i<44;i++)advance(rav,{},1/60);
+assert.ok(charger.chargeActive>0,'Ravager must perform a real charge');
+assert.ok(charger.x<stand-4,'Ravager actually moves along its charge path');
+// A warning rift is harmless until its visible activation; dash immunity still works.
+const rift=createRun(313);
+spawnWave(rift);spawnWave(rift);
+assert.ok(rift.hazards.length>0);
+const hazard=rift.hazards[0];
+rift.enemies=[{...rift.enemies[0],x:100,y:100,speed:0,attack:100,shoot:100}];
+rift.player.x=hazard.x;rift.player.y=hazard.y;rift.player.invulnerable=0;
+hazard.timer=.5;
+advance(rift,{},1/60);
+assert.equal(rift.player.hp,100,'Telegraphed but inactive rift must not hurt');
+hazard.timer=hazard.telegraph-.015;
+advance(rift,{},1/30);
+assert.ok(rift.player.hp<100,'Active rift must inflict contact damage');
+const remaining=rift.player.hp;
+rift.player.invulnerable=.6;
+advance(rift,{},1/30);
+assert.equal(rift.player.hp,remaining,'Invulnerability protects from a repeated rift hit');
+// Elite enemies must give enhanced local rewards without online storage.
+const elite=createRun(44),eliteTarget=elite.enemies[0];
+eliteTarget.elite=true;eliteTarget.hp=1;eliteTarget.maxHp=1;
+eliteTarget.x=elite.player.x+55;eliteTarget.y=elite.player.y;
+elite.enemies=[eliteTarget];
+for(let i=0;i<12;i++)advance(elite,{aim:{x:eliteTarget.x,y:eliteTarget.y}},1/60);
+assert.equal(elite.eliteKills,1,'Elite kills are recorded');
+assert.ok(elite.score>=ENEMY_TYPES.wraith.score*2);
+assert.ok(elite.orbs.some(o=>o.value===ENEMY_TYPES.wraith.xp*2));
+assert.equal(runSummary(elite).eliteKills,1);
+assert.equal(runSummary(elite).bossKills,0);
+
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -94,18 +168,30 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.1.0');
-assert.equal(current.previous_version,'1.0.0');
-assert.equal(current.codename,'WARBOUND INTERFACE');
+assert.equal(current.version,'1.2.0');
+assert.equal(current.previous_version,'1.1.0');
+assert.equal(current.codename,'NIGHTFALL COMBAT');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
 assert.ok(game.includes('maxPixels=quality'));
-assert.ok(read('renderer.js').includes("e.shoot<.8"),'Monarch warning must be drawn before attack');
+assert.ok(read('renderer.js').includes("e.aimLocked"),'Warnings must follow locked aimed attacks');
+assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real rift warnings must be drawn');
+assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
+assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — WARBOUND v1.1'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-warbound-v1.1'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg']){
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — NIGHTFALL v1.2'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-nightfall-v1.2'));
+for(const id of ['riftCount','recordElites','recordBosses'])
+ assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
+assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
+assert.ok(game.includes('records.elites+=result.eliteKills'));
+assert.ok(game.includes('records.bosses+=result.bossKills'));
+assert.ok(game.includes("document.body.dataset.realm=arena.id"));
+const nightfallStyle=read('nightfall-v1.2.css');
+assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
+assert.ok(nightfallStyle.includes('.bestiary-grid'));
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
@@ -114,4 +200,4 @@ for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival Warbound v1.1: full screen cinema, menu pages, original combat, boss warnings, local storage and PWA isolation');
+console.log('PASS Sovereign Survival Nightfall v1.2: Hexer, Ravager, elites, rifts, locked boss telegraphs, four arenas, local records, mobile PWA isolation');

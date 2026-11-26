@@ -12,11 +12,12 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="./warbound-v1.1.css">
-<title>SOVEREIGN SURVIVAL — WARBOUND v1.1 | PROXIMUS</title>
+<link rel="stylesheet" href="./nightfall-v1.2.css">
+<title>SOVEREIGN SURVIVAL — NIGHTFALL v1.2 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Warbound game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Nightfall game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -26,7 +27,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">WARBOUND <b>v1.1</b></span>
+    <span class="build-version">NIGHTFALL <b>v1.2</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -54,15 +55,16 @@
    <span id="comboText">✧ BUILD YOUR COMBO</span>
    <span id="dashText">➤ DASH READY</span>
   </div>
+  <div class="rift-hud" id="riftCount" hidden>✧ NO RIFTS</div>
 
   <section class="overlay warbound-title-screen" id="menuOverlay" role="dialog" aria-modal="false" aria-label="Sovereign Survival main menu">
    <div class="title-atmosphere" aria-hidden="true"></div>
    <div class="title-frame">
-    <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> AN ORIGINAL DARK FANTASY SURVIVAL</div>
+    <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">W A R B O U N D <span>✦</span> E D I T I O N</div>
-    <p class="title-lore">One champion against the darkness. Every fallen enemy becomes another chance to ascend. Every fourth wave awakens the Monarch.</p>
+    <div class="game-edition">N I G H T F A L L <span>✦</span> E D I T I O N</div>
+    <p class="title-lore">The citadel has fractured into four realms. Outmaneuver ranged sorcery, charging beasts and deadly rifts. Every fourth wave awakens the Monarch.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
      <button id="menuRecords" type="button"><span>✦</span> HALL OF LEGENDS <small>RECORDS</small></button>
@@ -126,6 +128,8 @@
       <div><b id="recordWave">0</b><small>BEST WAVE</small></div>
       <div><b id="recordRuns">0</b><small>RUNS BEGUN</small></div>
       <div><b id="recordKills">0</b><small>TOTAL DEFEATS</small></div>
+      <div><b id="recordElites">0</b><small>ELITES DEFEATED</small></div>
+      <div><b id="recordBosses">0</b><small>MONARCHS SLAIN</small></div>
      </div>
     </div>
     <p class="archive-note">Records are stored only in this game's local browser storage. Clearing app data will erase them. No accounts or cloud sync required.</p>
@@ -142,6 +146,8 @@
      <div><span>02 / ATTACK</span><h3>Your blades seek prey.</h3><p>Attacks auto-target nearby enemies. On PC you may also hold the mouse to aim.</p></div>
      <div><span>03 / EVADE</span><h3>Dash through danger.</h3><p>Press Shift on PC or tap the right-hand dash rune on iPhone. Watch its cooldown.</p></div>
      <div><span>04 / ASCEND</span><h3>Harvest soul energy.</h3><p>Collect glowing orbs to level up, then choose one of three powers. Every fourth wave brings a boss.</p></div>
+     <div><span>05 / RIFT</span><h3>Leave the warning circle.</h3><p>Beginning on Wave 3, runic floor rifts warn with a bright expanding ring before releasing damage. Step outside their radius.</p></div>
+     <div><span>06 / TELEGRAPH</span><h3>Read the enemy's attack.</h3><p>Hexers mark a line of fire. Ravagers aim before charging. The Void Monarch locks its volley angle before release—dodge across the path.</p></div>
     </div>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
    </div>
@@ -182,6 +188,19 @@
      <section class="side-card upgrades-card"><div class="side-heading"><span class="eyebrow">YOUR POWERS</span><strong id="upgradeCount">0 UPGRADES</strong></div>
       <div id="buildList" class="build-list"><p>Collect soul energy to earn your first power.</p></div>
      </section>
+    </div>
+    <div class="bestiary">
+     <span class="eyebrow">✦ ENEMIES OF THE NIGHTFALL</span>
+     <p class="bestiary-intro">These threats behave differently. Read their tells instead of only outrunning them.</p>
+     <div class="bestiary-grid">
+      <div class="bestiary-entry"><span class="foe-icon wraith">✦</span><div><strong>WRAITH</strong><small>Fast melee swarm — keep moving.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon stalker">◇</span><div><strong>STALKER</strong><small>Quick flanking movement — watch your sides.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon brute">◆</span><div><strong>BRUTE</strong><small>Heavy health and contact damage — focus fire.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon hexer">✳</span><div><strong>HEXER</strong><small>Ranged sorcery from Wave 3 — dodge its locked beam.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon ravager">➤</span><div><strong>RAVAGER</strong><small>Charging attacker from Wave 5 — escape its marked lane.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon monarch">♛</span><div><strong>VOID MONARCH</strong><small>Boss every 4 waves — dodge the three locked bolts.</small></div></div>
+     </div>
+     <div class="bestiary-legend"><span>♛ GOLD CROWN = ELITE FOE · DOUBLE SOUL REWARD</span><span>⊗ GLOWING RIFT CIRCLE = INCOMING AREA DAMAGE</span></div>
     </div>
     <button class="cta auxBack" type="button">← RETURN TO PAUSED GAME</button>
    </div>
