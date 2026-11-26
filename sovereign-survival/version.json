@@ -1,21 +1,23 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.1.0",
-  "codename": "WARBOUND INTERFACE",
+  "version": "1.2.0",
+  "codename": "NIGHTFALL COMBAT",
   "channel": "stable",
   "release_date": "2026-11-26",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "Replaced dashboard-style start page with a cinematic fantasy title screen, custom original warrior illustration, visual sigil and true main menu.",
-    "Expanded combat canvas to fullscreen responsive game viewport with reduced HUD clutter and atmospheric game-style wave, boss and run information.",
-    "Added Hall of Legends local record screen, initiation guide, game settings and an in-run Warden's Codex for builds, stats and boss objectives.",
-    "Redesigned ascension upgrade cards, pause menu and game-over results into dramatic readable fantasy overlays.",
-    "Added boss volley visual warnings, short damage/dash screen impacts and dynamic lower-power rendering limits on iPhone.",
-    "Preserved 8 upgrade paths, enemy and boss combat, touchscreen joystick, PC movement, original audio, local records, separate standalone offline-ready app, and all PROXIMUS Video Vault media."
+    "New real Hexer ranged attacks with aimed warning and Ravager telegraphed dash-charge enemy behavior.",
+    "Rare elite enemies with additional health, damage and speed, golden crowns and double soul-energy rewards.",
+    "Four rotating fantasy arena palettes and runic environment details.",
+    "Dodgable rune-rift area hazards on odd waves beginning with Wave 3.",
+    "Monarch triple volley now locks the aim trajectory before the warning completes.",
+    "New attack, damage, dash and enemy death visual feedback; bounded Canvas2D rendering and iPhone-friendly effects.",
+    "Expanded Warden's Codex enemy bestiary and records for elite/boss defeats, migrating older saved records without resets.",
+    "Preserved Warbound main menu, all eight original upgrades, local records, offline PWA, and independent Proximus media storage."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.0.0"
+  "previous_version": "1.1.0"
 }

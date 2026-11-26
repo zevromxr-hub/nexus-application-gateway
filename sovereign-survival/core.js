@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.0 — deterministic, dependency-free arena engine.
+/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL — deterministic dependency-free combat engine.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
 export const WORLD={width:2800,height:1900};
@@ -16,11 +16,20 @@ export const ENEMY_TYPES=Object.freeze({
  wraith:{hp:28,speed:96,damage:10,rad:15,xp:5,color:'#bc86f7',score:100},
  stalker:{hp:21,speed:150,damage:8,rad:12,xp:6,color:'#61e6f2',score:130},
  brute:{hp:90,speed:62,damage:17,rad:23,xp:12,color:'#f7b16a',score:260},
+ hexer:{hp:40,speed:82,damage:10,rad:18,xp:10,color:'#ef87b5',score:220},
+ ravager:{hp:62,speed:95,damage:16,rad:20,xp:11,color:'#ffba68',score:270},
  monarch:{hp:660,speed:75,damage:22,rad:43,xp:54,color:'#ff777b',score:2200}
 });
 const PI=Math.PI,clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const length=(x,y)=>Math.hypot(x,y)||1;
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+export const ARENAS=Object.freeze([
+ {id:'sanctum',name:'THE SHATTERED CITADEL',short:'SANCTUM',floor:'#070b1b',glow:'#7e4bc7',sigil:'#b598ec',mist:'#34306b'},
+ {id:'ember',name:'THE ASHEN RIFT',short:'ASHEN RIFT',floor:'#130b19',glow:'#bd4a70',sigil:'#e7a16d',mist:'#6e304a'},
+ {id:'moon',name:'THE MOONLIT RUINS',short:'MOONLIT RUINS',floor:'#08131c',glow:'#3f9ab8',sigil:'#a2e1ef',mist:'#244c6a'},
+ {id:'throne',name:'THE VOID THRONE',short:'VOID THRONE',floor:'#110a20',glow:'#9753a6',sigil:'#e2a7ff',mist:'#573565'}
+]);
+export function arenaForWave(wave){return ARENAS[Math.floor((Math.max(1,wave)-1)/2)%ARENAS.length];}
 export const finite=(n,d=0)=>Number.isFinite(n)?n:d;
 export function rng(state){
  let x=state.seed|0;x^=x<<13;x^=x>>>17;x^=x<<5;state.seed=x|0;
@@ -29,7 +38,7 @@ export function rng(state){
 export function createRun(seed=0x59ab7e){
  const seedValue=(Number(seed)|0)||0x59ab7e;
  const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
-  bestCombo:0,combo:0,comboTime:0,options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],
+  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:100,maxHp:100,speed:225,damage:18,
@@ -41,22 +50,38 @@ export function createRun(seed=0x59ab7e){
 function newEnemy(s,kind,wave,index=0){
  const model=ENEMY_TYPES[kind];
  const angle=rng(s)*PI*2,range=485+rng(s)*240;
- const hp=Math.round(model.hp*(1+(wave-1)*(kind==='monarch'?0.32:0.18)));
- return {id:s.nextId++,kind,x:clamp(s.player.x+Math.cos(angle)*range,65,WORLD.width-65),
+ const elite=kind!=='monarch'&&wave>=3&&rng(s)<Math.min(.17,.075+wave*.007);
+ const hp=Math.round(model.hp*(1+(wave-1)*(kind==='monarch'?.32:.18))*(elite?1.8:1));
+ return {id:s.nextId++,kind,elite,x:clamp(s.player.x+Math.cos(angle)*range,65,WORLD.width-65),
   y:clamp(s.player.y+Math.sin(angle)*range,65,WORLD.height-65),hp,maxHp:hp,
-  speed:model.speed*(1+Math.min(wave,16)*.018),damage:model.damage,rad:model.rad,
-  attack:0.45+rng(s)*.4,shoot:1.4+rng(s),wobble:rng(s)*PI*2,phase:index*0.36};
+  speed:model.speed*(1+Math.min(wave,16)*.018)*(elite?1.1:1),damage:Math.round(model.damage*(elite?1.28:1)),rad:model.rad*(elite?1.14:1),
+  attack:.45+rng(s)*.4,shoot:1.4+rng(s),wobble:rng(s)*PI*2,phase:index*.36,
+  aimAngle:0,aimLocked:false,flash:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
+  chargeCooldown:2+rng(s)*.9};
+}
+function newHazard(s,index){
+ const a=rng(s)*PI*2,dist=200+rng(s)*310,p=s.player;
+ return {id:s.nextId++,x:clamp(p.x+Math.cos(a)*dist,100,WORLD.width-100),
+  y:clamp(p.y+Math.sin(a)*dist,100,WORLD.height-100),radius:54+(index%2)*11,
+  timer:rng(s)*.3,period:4.8,telegraph:1.35,active:.82,damage:12+s.wave*1.6};
 }
 export function spawnWave(s){
  if(s.phase==='gameover')return;
  s.wave++;
- const count=Math.min(40,6+s.wave*3),pool=s.wave<2?['wraith']:s.wave<3?['wraith','stalker']:['wraith','stalker','brute'];
+ s.hazards=[];
+ const count=Math.min(40,6+s.wave*3),
+  pool=s.wave<2?['wraith']:s.wave<3?['wraith','stalker']:
+   s.wave<5?['wraith','stalker','brute','hexer']:['wraith','stalker','brute','hexer','ravager'];
  for(let i=0;i<count;i++){
-  const kind=pool[Math.floor(rng(s)*pool.length)];
+  const kind=s.wave>=5&&i===1?'ravager':s.wave>=3&&i===0?'hexer':pool[Math.floor(rng(s)*pool.length)];
   s.enemies.push(newEnemy(s,kind,s.wave,i));
  }
  if(s.wave%4===0)s.enemies.push(newEnemy(s,'monarch',s.wave,99));
- s.events.push({type:'wave',wave:s.wave,boss:s.wave%4===0});
+ if(s.wave>=3&&s.wave%2===1){
+  for(let i=0;i<Math.min(4,1+Math.floor(s.wave/3));i++)s.hazards.push(newHazard(s,i));
+ }
+ s.events.push({type:'wave',wave:s.wave,boss:s.wave%4===0,arena:arenaForWave(s.wave).id,
+  hazards:s.hazards.length});
 }
 export function chooseUpgrade(s,id){
  if(s.phase!=='upgrade'||!s.options.includes(id))return false;
@@ -93,15 +118,20 @@ function addXp(s,value){
  }
 }
 function hitEnemy(s,e,damage){
- e.hp-=damage;s.effects.push({x:e.x,y:e.y,t:.24,kind:'impact',size:e.rad});
+ e.hp-=damage;e.flash=.13;
+ s.effects.push({x:e.x,y:e.y,t:.24,kind:'impact',size:e.rad});
+ if(s.effects.length<135)s.effects.push({x:e.x+(rng(s)-.5)*14,y:e.y-e.rad-8,
+  t:.55,kind:'number',size:0,value:Math.ceil(damage)});
  if(e.hp>0)return;
  const model=ENEMY_TYPES[e.kind],p=s.player;
- s.score+=model.score*(1+Math.floor(s.combo/8));s.kills++;
+ const reward=e.elite?2:1;
+ s.score+=Math.round(model.score*reward*(1+Math.floor(s.combo/8)));s.kills++;
+ if(e.elite){s.eliteKills++;s.events.push({type:'eliteDefeated',kind:e.kind})}
  s.combo++;s.comboTime=4.2;s.bestCombo=Math.max(s.combo,s.bestCombo);
  p.hp=Math.min(p.maxHp,p.hp+p.leech);
- s.orbs.push({x:e.x,y:e.y,value:model.xp,r:5+Math.min(5,model.xp/9)});
- s.effects.push({x:e.x,y:e.y,t:.55,kind:'death',size:e.rad});
- if(e.kind==='monarch')s.events.push({type:'bossDefeated',wave:s.wave});
+ s.orbs.push({x:e.x,y:e.y,value:model.xp*reward,r:5+Math.min(5,model.xp/9)});
+ s.effects.push({x:e.x,y:e.y,t:.55,kind:'death',size:e.rad*(e.elite?1.9:1)});
+ if(e.kind==='monarch'){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave})}
  s.events.push({type:'kill',kind:e.kind});
 }
 function fire(s,aim){
@@ -168,22 +198,77 @@ export function advance(s,input={},dt=1/60){
  for(const e of s.enemies){
   if(e.hp<=0)continue;
   const vx=p.x-e.x,vy=p.y-e.y,dist=length(vx,vy);
-  let drift=0;
-  if(e.kind==='stalker')drift=Math.sin(s.time*2+e.wobble)*.42;
-  e.x=clamp(e.x+(vx/dist-drift*vy/dist)*e.speed*dt,30,WORLD.width-30);
-  e.y=clamp(e.y+(vy/dist+drift*vx/dist)*e.speed*dt,30,WORLD.height-30);
-  e.attack-=dt;e.shoot-=dt;
-  if(dist<e.rad+18&&e.attack<=0){harmPlayer(s,e.damage);e.attack=e.kind==='monarch'?1.15:0.9}
-  if(e.kind==='monarch'&&e.shoot<=0&&dist<890){
-   const direction=Math.atan2(vy,vx);
-   for(let i=-1;i<=1;i++){
-    const angle=direction+i*.21;
-    s.hostile.push({x:e.x,y:e.y,vx:Math.cos(angle)*225,vy:Math.sin(angle)*225,
-     damage:12,r:8,ttl:3});
+  e.attack-=dt;e.shoot-=dt;e.flash=Math.max(0,e.flash-dt);
+  e.chargeCooldown=Math.max(0,e.chargeCooldown-dt);
+  let moveX=vx/dist,moveY=vy/dist,moveSpeed=e.speed;
+  if(e.kind==='stalker'){
+   const drift=Math.sin(s.time*2+e.wobble)*.42;
+   moveX-=drift*vy/dist;moveY+=drift*vx/dist;
+  }else if(e.kind==='hexer'){
+   // The Hexer prefers a mid-range duel and slowly strafes rather than
+   // behaving like another melee mob.
+   const side=Math.sin(s.time*.65+e.wobble)>0?1:-1;
+   if(dist<235){moveX=-moveX;moveY=-moveY}
+   else if(dist<450){moveX=-moveY*side*.85;moveY=vx/dist*side*.85}
+  }else if(e.kind==='ravager'){
+   if(e.chargeActive>0){
+    e.chargeActive=Math.max(0,e.chargeActive-dt);
+    moveX=Math.cos(e.chargeAngle);moveY=Math.sin(e.chargeAngle);moveSpeed=e.speed*4.1;
+   }else if(e.chargeWindup>0){
+    e.chargeWindup=Math.max(0,e.chargeWindup-dt);
+    moveSpeed=0;
+    if(e.chargeWindup===0){
+     e.chargeActive=.48;e.chargeCooldown=3.6;
+     s.events.push({type:'charge',kind:'ravager'});
+    }
+   }else if(e.chargeCooldown<=0&&dist>120&&dist<650){
+    e.chargeAngle=Math.atan2(vy,vx);
+    e.chargeWindup=.68;moveSpeed=0;
+    s.events.push({type:'chargeWarning',kind:'ravager'});
    }
-   e.shoot=2.3;s.events.push({type:'bossAttack'});
+  }
+  e.x=clamp(e.x+moveX*moveSpeed*dt,30,WORLD.width-30);
+  e.y=clamp(e.y+moveY*moveSpeed*dt,30,WORLD.height-30);
+  if(dist<e.rad+18&&e.attack<=0){
+   harmPlayer(s,e.damage+(e.kind==='ravager'&&e.chargeActive>0?5:0));
+   e.attack=e.kind==='monarch'?1.15:.9;
+  }
+  const isCaster=e.kind==='hexer'||e.kind==='monarch';
+  const maxRange=e.kind==='monarch'?890:770;
+  const windup=e.kind==='monarch'?.78:.58;
+  if(isCaster&&dist<maxRange){
+   if(e.shoot<=windup&&!e.aimLocked){
+    e.aimAngle=Math.atan2(vy,vx);e.aimLocked=true;
+    s.events.push({type:'castWarning',kind:e.kind});
+   }
+   if(e.shoot<=0){
+    const spread=e.kind==='monarch'?[-.22,0,.22]:[0];
+    for(const off of spread){
+     const angle=e.aimAngle+off;
+     const speed=e.kind==='monarch'?240:205;
+     s.hostile.push({x:e.x,y:e.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,
+      damage:e.kind==='monarch'?12:9,r:e.kind==='monarch'?8:7,
+      ttl:e.kind==='monarch'?3:3.3,kind:e.kind});
+    }
+    e.shoot=(e.kind==='monarch'?2.5:2.8)+rng(s)*.35;
+    e.aimLocked=false;
+    s.events.push({type:e.kind==='monarch'?'bossAttack':'hexAttack',kind:e.kind});
+   }
+  }else if(isCaster){
+   // Prevent a spell from firing without warning as an enemy enters range.
+   e.shoot=Math.max(e.shoot,windup+.08);
+   e.aimLocked=false;
   }
  }
+ // Rifts activate only after a clear circular warning and then cool down.
+ // Damage uses the same single-hit invulnerability logic as enemy contact.
+ for(const h of s.hazards){
+  h.timer=(h.timer+dt)%h.period;
+  if(h.timer>=h.telegraph&&h.timer<h.telegraph+h.active&&distance(h,p)<h.radius+12){
+   harmPlayer(s,h.damage);
+  }
+ }
+ if(s.hostile.length>90)s.hostile=s.hostile.slice(-90);
  for(const b of s.shots){
   b.x+=b.vx*dt;b.y+=b.vy*dt;b.ttl-=dt;
   if(b.ttl<=0)continue;
@@ -194,6 +279,7 @@ export function advance(s,input={},dt=1/60){
   }
  }
  s.shots=s.shots.filter(x=>x.ttl>0);
+ if(s.shots.length>130)s.shots=s.shots.slice(-130);
  s.enemies=s.enemies.filter(x=>x.hp>0);
  for(const b of s.hostile){
   b.x+=b.vx*dt;b.y+=b.vy*dt;b.ttl-=dt;
@@ -207,6 +293,7 @@ export function advance(s,input={},dt=1/60){
   if(dd<24){orb.collected=true;addXp(s,orb.value);s.events.push({type:'xp'})}
  }
  s.orbs=s.orbs.filter(o=>!o.collected);
+ if(s.orbs.length>230)s.orbs=s.orbs.slice(-230);
  for(const fx of s.effects)fx.t-=dt;
  s.effects=s.effects.filter(x=>x.t>0).slice(-140);
  if(s.phase!=='running')return;
@@ -218,7 +305,7 @@ export function advance(s,input={},dt=1/60){
 }
 export function runSummary(s){
  return {score:Math.max(0,Math.floor(s.score)),wave:s.wave,kills:s.kills,
-  duration:Math.round(s.time),bestCombo:s.bestCombo,level:s.level};
+  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,duration:Math.round(s.time),bestCombo:s.bestCombo,level:s.level};
 }
 export function durationLabel(seconds){
  const n=Math.max(0,Math.floor(finite(seconds))),m=Math.floor(n/60),s=n%60;

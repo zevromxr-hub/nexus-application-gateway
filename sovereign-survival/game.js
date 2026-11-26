@@ -1,7 +1,7 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / WARBOUND v1.1
+/* PROXIMUS | SOVEREIGN SURVIVAL / NIGHTFALL v1.2
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,runSummary,durationLabel,WORLD} from './core.js';
+import {createRun,advance,chooseUpgrade,UPGRADES,runSummary,durationLabel,WORLD,arenaForWave} from './core.js';
 import {drawArena} from './renderer.js';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
@@ -11,8 +11,9 @@ const readRecords=()=>{
  try{
   const x=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}');
   const number=k=>Number.isFinite(x[k])?clamp(Math.floor(x[k]),0,1000000000):0;
-  return {best:number('best'),bestWave:number('bestWave'),runs:number('runs'),kills:number('kills')};
- }catch{return {best:0,bestWave:0,runs:0,kills:0}}
+  return {best:number('best'),bestWave:number('bestWave'),runs:number('runs'),
+    kills:number('kills'),elites:number('elites'),bosses:number('bosses')};
+ }catch{return {best:0,bestWave:0,runs:0,kills:0,elites:0,bosses:0}}
 };
 let records=readRecords();
 const persist=()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(records))}catch{}};
@@ -21,6 +22,8 @@ function renderRecords(){
  $('recordWave').textContent=String(records.bestWave);
  $('recordRuns').textContent=String(records.runs);
  $('recordKills').textContent=records.kills.toLocaleString();
+ $('recordElites').textContent=records.elites.toLocaleString();
+ $('recordBosses').textContent=records.bosses.toLocaleString();
 }
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
 const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
@@ -83,7 +86,9 @@ function sound(type){
   hurt:[150,85,.18,'sawtooth'],level:[490,890,.35,'sine'],
   upgrade:[520,740,.2,'triangle'],wave:[260,520,.21,'triangle'],
   waveClear:[400,710,.18,'sine'],bossDefeated:[330,880,.5,'sine'],
-  bossAttack:[140,210,.18,'sawtooth'],gameover:[190,75,.5,'triangle']};
+  bossAttack:[140,210,.18,'sawtooth'],hexAttack:[540,260,.16,'triangle'],
+  charge:[180,440,.20,'sawtooth'],eliteDefeated:[420,900,.25,'sine'],
+  gameover:[190,75,.5,'triangle']};
  const n=notes[type];if(!n)return;
  try{
   const t=audio.currentTime,osc=audio.createOscillator(),gain=audio.createGain();
@@ -96,13 +101,19 @@ function sound(type){
 }
 function handleEvents(){
  for(const ev of game.events){
-  if(ev.type==='wave'){toast(ev.boss?'☄ THE VOID MONARCH HAS AWAKENED — WAVE '+ev.wave:'✧ WAVE '+ev.wave+' — THE SHADOWS RETURN',3000);sound('wave')}
+  if(ev.type==='wave'){
+   const arena=arenaForWave(ev.wave);
+   toast(ev.boss?'☄ VOID MONARCH · '+arena.name:
+    '✧ WAVE '+ev.wave+' · '+arena.name+(ev.hazards?' · RIFTS ACTIVE':''),3100);
+   sound('wave');
+  }
   else if(ev.type==='level'){showUpgrades();sound('level')}
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
   else if(ev.type==='bossDefeated'){toast('✦ VOID MONARCH DEFEATED · GLORY EARNED',3300);sound('bossDefeated')}
+  else if(ev.type==='eliteDefeated'){sound('eliteDefeated')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
   else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type)}
-  else if(['fire','bossAttack','upgrade'].includes(ev.type))sound(ev.type);
+  else if(['fire','bossAttack','upgrade','hexAttack','charge'].includes(ev.type))sound(ev.type);
  }
 }
 function showUpgrades(){
@@ -145,7 +156,7 @@ function startRun(){
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;manual.active=false;
  lastTime=performance.now();lastHud=0;buildLoadout();setOverlay();updateHud();
- toast('✧ WAVE 1 · SURVIVE THE SHADOWS',2300);
+ toast('✧ THE SHATTERED CITADEL · WAVE 1',2300);
  canvas.focus({preventScroll:true});
 }
 function finishRun(){
@@ -154,10 +165,13 @@ function finishRun(){
  records.best=Math.max(records.best,result.score);
  records.bestWave=Math.max(records.bestWave,result.wave);
  records.kills+=result.kills;
+ records.elites+=result.eliteKills;
+ records.bosses+=result.bossKills;
  persist();renderRecords();
  const wrap=$('endStats');wrap.replaceChildren();
  for(const [name,value] of [['SCORE',result.score.toLocaleString()],['WAVE',result.wave],
-  ['DEFEATS',result.kills],['TIME',durationLabel(result.duration)],['LEVEL',result.level],['BEST COMBO',result.bestCombo]]){
+  ['DEFEATS',result.kills],['TIME',durationLabel(result.duration)],['LEVEL',result.level],
+  ['ELITES',result.eliteKills],['BOSSES',result.bossKills],['BEST COMBO',result.bestCombo]]){
   const el=document.createElement('div'),num=document.createElement('strong'),label=document.createElement('span');
   num.textContent=String(value);label.textContent=name;el.append(num,label);wrap.append(el);
  }
@@ -195,8 +209,14 @@ function updateHud(){
  $('objectiveTitle').textContent=boss?'VOID MONARCH — ACTIVE':next===4?'THE VOID MONARCH':'ANOTHER MONARCH RISES';
  $('objectiveDescription').textContent=boss?'Evade its ranged volleys and attack from a safe angle.':
   'Face the towering monarch every fourth wave. Claim its soul to empower your ascension.';
- $('stageLabel').textContent=mode==='menu'?'SANCTUM / READY TO ENTER':
-  mode==='paused'?'WAVE '+game.wave+' / PAUSED':'WAVE '+game.wave+' / '+game.enemies.length+' HOSTILES';
+ const arena=arenaForWave(game.wave);
+ document.body.dataset.realm=arena.id;
+ $('stageLabel').textContent=mode==='menu'?'THE SHATTERED CITADEL':
+  arena.name+' · WAVE '+game.wave+' · '+game.enemies.length+' FOES';
+ const rift=$('riftCount');
+ rift.hidden=!game.hazards.length||mode==='menu'||mode==='ended';
+ rift.textContent=game.hazards.length?
+  '⊗ '+game.hazards.length+' RIFT'+(game.hazards.length===1?'':'S')+' ACTIVE':'✧ NO RIFTS';
 }
 function resetStick(){
  $('joystickKnob').style.transform='translate(-50%, -50%)';

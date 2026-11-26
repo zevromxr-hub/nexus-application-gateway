@@ -1,0 +1,82 @@
+/* SOVEREIGN SURVIVAL v1.2 — NIGHTFALL COMBAT PRESENTATION
+ * Additive to v1.1. Does not alter original game layout or media storage.
+ */
+body.warbound{--nightfall-accent:#b999ef;--nightfall-glow:rgba(170,110,231,.22);--nightfall-ink:#100d1f}
+body.warbound[data-realm="ember"]{--nightfall-accent:#efaa8d;--nightfall-glow:rgba(233,100,116,.22);--nightfall-ink:#210b17}
+body.warbound[data-realm="moon"]{--nightfall-accent:#a5e9f8;--nightfall-glow:rgba(76,201,226,.23);--nightfall-ink:#081c26}
+body.warbound[data-realm="throne"]{--nightfall-accent:#e2acff;--nightfall-glow:rgba(177,99,231,.3);--nightfall-ink:#170e27}
+body.warbound .game-wordmark em{background:linear-gradient(180deg,#fff1f3 10%,#efbedb 46%,#ae7ecb 95%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+body.warbound .title-atmosphere{background:
+ linear-gradient(90deg,rgba(3,4,13,.94),rgba(5,7,18,.89) 24%,rgba(8,6,20,.7) 45%,rgba(9,5,16,.19) 68%),
+ linear-gradient(0deg,rgba(2,5,15,.94),transparent 38%,transparent 75%,rgba(4,4,15,.2)),
+ url("./warbound-scene.svg") center / cover no-repeat}
+body.warbound .game-edition{color:#f4c9bd;border-top-color:#e9a6bf67;letter-spacing:.19em}
+body.warbound .game-chrome-center{color:var(--nightfall-accent);text-shadow:0 0 13px var(--nightfall-glow);transition:color .6s ease}
+body.warbound .game-frame::after{box-shadow:inset 0 0 125px var(--nightfall-glow)}
+body.warbound .game-mark-icon{color:#ffd6f6;border-color:var(--nightfall-accent);text-shadow:0 0 13px var(--nightfall-glow)}
+body.warbound .hud-main .meter{border-color:var(--nightfall-accent)}
+body.warbound .hud-right .wave-display b{text-shadow:0 0 23px var(--nightfall-glow)}
+body.warbound .rift-hud{position:absolute;z-index:4;bottom:max(60px,env(safe-area-inset-bottom) + 40px);
+ left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;min-width:145px;
+ padding:6px 13px;font-size:10px;letter-spacing:.14em;font-weight:900;color:#ffb1cb;
+ background:linear-gradient(90deg,transparent,rgba(27,8,32,.88) 20%,rgba(27,8,32,.88) 80%,transparent);
+ border-bottom:1px solid rgba(248,143,177,.3);text-shadow:0 0 9px #f5749c7d}
+body.warbound .rift-hud[hidden]{display:none!important}
+body.warbound .record-milestones{grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+body.warbound .record-milestones>div{padding-left:13px}
+body.warbound .record-milestones b{font-size:clamp(19px,2.4vw,28px)}
+body.warbound .record-milestones small{font-size:8px;line-height:1.45;display:block;letter-spacing:.09em}
+body.warbound .bestiary{margin-top:22px;padding-top:17px;border-top:1px solid #cba6ce5e;text-align:left}
+body.warbound .bestiary .eyebrow{font-size:11px;color:#f5c5a2}
+body.warbound .bestiary-intro{font-size:11px;color:#c8b9da;margin:7px 0 15px}
+body.warbound .bestiary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+body.warbound .bestiary-entry{display:flex;align-items:center;gap:10px;min-width:0;
+ border:1px solid #cba8da3e;background:linear-gradient(115deg,#241c36c7,#11182ec2);
+ padding:11px 10px}
+body.warbound .foe-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border:1px solid currentColor;
+ border-radius:3px;background:#101021;font-size:24px;text-shadow:0 0 16px currentColor}
+body.warbound .foe-icon.wraith{color:#c49bff}
+body.warbound .foe-icon.stalker{color:#7de6f0}
+body.warbound .foe-icon.brute{color:#e8ae88}
+body.warbound .foe-icon.hexer{color:#ff8ed4}
+body.warbound .foe-icon.ravager{color:#ffbd75}
+body.warbound .foe-icon.monarch{color:#ff928d}
+body.warbound .bestiary-entry strong{color:#f4e7fa;font-size:11px;letter-spacing:.1em;display:block}
+body.warbound .bestiary-entry small{display:block;font-size:10px;color:#c6b8d3;line-height:1.5;margin-top:3px}
+body.warbound .bestiary-legend{display:grid;gap:7px;margin:14px 0 17px;
+ font-size:9px;color:#edc49d;font-weight:850;letter-spacing:.1em}
+body.warbound .end-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+body.warbound .end-stats>div{min-width:0}
+body.warbound .end-stats strong{font-size:clamp(17px,2.3vw,29px);overflow-wrap:anywhere}
+body.warbound .guide-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.warbound .warbook-panel{width:min(100%,840px)}
+body.warbound .warbook-panel .warbook-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+body.warbound .warbook-panel .warbook-grid .upgrades-card{grid-column:1/-1}
+@media(max-width:680px){
+ body.warbound .title-atmosphere{background:
+ linear-gradient(0deg,#060917 0%,#060917ec 33%,#060917bc 64%,#06091742 100%),
+ linear-gradient(90deg,#070817a4,#0708172e),
+ url("./warbound-scene.svg") 66% 27% / auto 100% no-repeat}
+ body.warbound .bestiary-grid{grid-template-columns:1fr}
+ body.warbound .bestiary-entry{padding:8px 9px}
+ body.warbound .foe-icon{height:34px;width:34px;flex-basis:34px;font-size:20px}
+ body.warbound .record-milestones{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:12px}
+ body.warbound .record-milestones>div{padding:7px 6px}
+ body.warbound .record-milestones b{font-size:22px}
+ body.warbound .record-milestones small{font-size:8px}
+ body.warbound .end-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
+ body.warbound .end-stats strong{font-size:clamp(17px,4vw,22px)}
+ body.warbound .end-stats span{font-size:7px;letter-spacing:.06em}
+ body.warbound .rift-hud{bottom:max(39px,env(safe-area-inset-bottom) + 38px);
+  left:49%;min-width:115px;font-size:9px;padding:5px 8px}
+ body.warbound .warbook-panel .warbook-grid{gap:7px}
+}
+@media(max-width:370px){
+ body.warbound .end-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+ body.warbound .end-stats>div{padding:8px 2px}
+ body.warbound .end-stats strong{font-size:17px}
+ body.warbound .rift-hud{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.warbound *,body.warbound *::before,body.warbound *::after{transition:none!important}
+}
