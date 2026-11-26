@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1 — original Canvas2D fantasy arena renderer.
+/* SOVEREIGN SURVIVAL v1.1 WARBOUND — original Canvas2D fantasy arena renderer.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
 import {WORLD,ENEMY_TYPES} from './core.js';
@@ -125,6 +125,20 @@ export function drawArena(ctx,s,view,quality='auto'){
   circle(ctx,orb.x,orb.y,orb.r,'#80f9cd');ring(ctx,orb.x,orb.y,orb.r+4,'rgba(99,229,218,.4)');
  }
  for(const e of s.enemies)if(e.x>x-90&&e.x<x+w+90&&e.y>y-90&&e.y<y+h+90)enemy(ctx,e,s,quality);
+ // The Monarch's existing attack timer now gives a visible warning before
+ // its next three-projectile volley. This is visual-only: damage and timing
+ // still belong exclusively to the tested original combat engine.
+ for(const e of s.enemies){
+  if(e.kind!=='monarch'||!(e.shoot>0&&e.shoot<.8))continue;
+  const charge=Math.max(0,1-e.shoot/.8),angle=Math.atan2(s.player.y-e.y,s.player.x-e.x);
+  ctx.save();ctx.translate(e.x,e.y);ctx.rotate(angle);
+  const alpha=(.17+charge*.58).toFixed(3);
+  ctx.strokeStyle='rgba(255,112,136,'+alpha+')';ctx.lineWidth=2+charge*3;
+  ctx.beginPath();ctx.moveTo(53,-28-charge*34);ctx.lineTo(470,-70-charge*67);
+  ctx.moveTo(53,28+charge*34);ctx.lineTo(470,70+charge*67);ctx.stroke();
+  ring(ctx,0,0,49+charge*24,'rgba(255,114,148,'+alpha+')',2+charge*2);
+  ctx.restore();
+ }
  for(const b of s.shots)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,false,quality);
  for(const b of s.hostile)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,true,quality);
  for(const fx of s.effects){

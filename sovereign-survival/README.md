@@ -1,3 +1,28 @@
+# SOVEREIGN SURVIVAL — v1.1.0 WARBOUND INTERFACE
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+The first visual transformation of the standalone original arcade game. It is now presented as a **dark-fantasy game**, not a dashboard with side widgets.
+
+## New in v1.1
+- Cinematic title menu with handcrafted full-width fantasy character artwork, game sigil and four main actions: **Enter the Citadel**, **Hall of Legends**, **How to Play**, and **Game Settings**.
+- True full-viewport battlefield and a smaller, game-style combat HUD. The original arena, eight upgrades, projectiles and wave progression remain intact.
+- A dedicated **Warden's Codex** opened from the pause menu, with player stats, upgrades, and boss objectives. It no longer occupies a permanent sidebar.
+- Dramatic ascension cards, pause screen and defeat results. Visual boss attack warning pulses, damage/dash feedback, and adaptive pixel budget for battery-friendly iPhone gameplay.
+- Standalone iPhone/PWA install and local high scores remain preserved. No video data, PROXIMUS playlists, databases, or media files are accessed.
+
+## Main menu
+**Enter the Citadel:** start a fresh game. **Hall of Legends:** inspect personal best score, best wave, runs and total defeats stored on-device. **How to Play:** the combat, movement and dash guide. **Game Settings:** toggle generated sound effects, visual quality, and browser-supported fullscreen.
+
+**During combat:** PC: WASD/arrow keys to move, Shift to dash, Space/P/Escape to pause, and 1/2/3 to pick an upgrade. Touch: drag the left virtual joystick and tap the right dash rune. Tap Pause to open the Warden's Codex, game settings, restart or return to the title screen.
+
+### Performance and privacy
+The fullscreen background illustration is a **single static SVG** and introduces no extra video playback or continuous shader loop. Rendering resolution is capped according to screen pixels and the selected quality mode. Sound remains opt-in. The same independent `proximus-sovereign-survival-v1` record key is preserved; scores are not reset by v1.1. The PWA's new service-worker cache is scoped strictly to `sovereign-survival/`.
+
+**Do not uninstall either existing Home Screen app just to update it.** Keep copies of any media stored in other apps. v1.1 does not edit the Asset Alchemist or its local video library.
+
+---
+
 # PROXIMUS | SOVEREIGN SURVIVAL
 ## Genesis v1.0.0 — Standalone fantasy arena survival
 

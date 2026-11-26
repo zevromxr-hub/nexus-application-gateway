@@ -1,4 +1,4 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / GENESIS v1.0
+/* PROXIMUS | SOVEREIGN SURVIVAL / WARBOUND v1.1
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
 import {createRun,advance,chooseUpgrade,UPGRADES,runSummary,durationLabel,WORLD} from './core.js';
@@ -20,21 +20,56 @@ function renderRecords(){
  $('recordBest').textContent=records.best.toLocaleString();
  $('recordWave').textContent=String(records.bestWave);
  $('recordRuns').textContent=String(records.runs);
+ $('recordKills').textContent=records.kills.toLocaleString();
 }
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
 const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
 const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
-let dashQueued=false,audio=null,latestFire=0;
+let dashQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
+const AUX_PAGES=Object.freeze(['records','guide','settings','warbook']);
 function setOverlay(){
+ document.body.dataset.gameView=mode;
  for(const [id,visible] of [
   ['menuOverlay',mode==='menu'],['pauseOverlay',mode==='paused'],
   ['upgradeOverlay',mode==='playing'&&game.phase==='upgrade'],
-  ['endOverlay',mode==='ended']])$(id).hidden=!visible;
- $('pauseButton').disabled=mode==='menu'||mode==='ended';
+  ['endOverlay',mode==='ended']])$(id).hidden=!visible||Boolean(auxPage);
+ for(const name of AUX_PAGES)$(name+'Overlay').hidden=auxPage!==name;
+ $('pauseButton').disabled=mode==='menu'||mode==='ended'||Boolean(auxPage);
  $('pauseButton').textContent=mode==='paused'?'▶ Resume':'Ⅱ Pause';
- $('touchControls').hidden=mode!=='playing'||game.phase!=='running';
+ $('touchControls').hidden=mode!=='playing'||game.phase!=='running'||Boolean(auxPage);
+ for(const button of document.querySelectorAll('.auxBack'))
+  button.textContent=auxReturn==='paused'?'← RETURN TO PAUSE MENU':
+   auxReturn==='ended'?'← RETURN TO RESULTS':'← BACK TO TITLE MENU';
+}
+function openAux(page){
+ if(!AUX_PAGES.includes(page))return;
+ if(mode==='playing'){
+  if(game.phase==='upgrade')return;
+  mode='paused';keys.clear();joystick.x=joystick.y=0;resetStick();
+ }
+ auxReturn=mode;auxPage=page;setOverlay();
+ const next=$(page+'Overlay').querySelector('.auxBack');
+ if(next)next.focus({preventScroll:true});
+}
+function closeAux(){
+ if(!auxPage)return;
+ auxPage=null;setOverlay();
+ const next=auxReturn==='paused'?$('resumeRun'):auxReturn==='ended'?$('retryRun'):$('startRun');
+ next?.focus({preventScroll:true});
+}
+function returnToTitle(){
+ mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;manual.active=false;
+ resetStick();setOverlay();renderRecords();
+ $('startRun').focus({preventScroll:true});
+}
+function impact(type){
+ const klass=type==='hurt'?'damage-impact':'dash-impact';
+ frame.classList.remove('damage-impact','dash-impact');void frame.offsetWidth;
+ frame.classList.add(klass);
+ window.clearTimeout(impactTimer);
+ impactTimer=window.setTimeout(()=>frame.classList.remove('damage-impact','dash-impact'),225);
 }
 function toast(message,duration=2300){
  const el=$('messageToast');el.textContent=message;el.hidden=false;
@@ -66,7 +101,8 @@ function handleEvents(){
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
   else if(ev.type==='bossDefeated'){toast('✦ VOID MONARCH DEFEATED · GLORY EARNED',3300);sound('bossDefeated')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
-  else if(['fire','dash','hurt','bossAttack','upgrade'].includes(ev.type))sound(ev.type);
+  else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type)}
+  else if(['fire','bossAttack','upgrade'].includes(ev.type))sound(ev.type);
  }
 }
 function showUpgrades(){
@@ -78,6 +114,7 @@ function showUpgrades(){
   const icon=document.createElement('span');icon.className='glyph';icon.textContent=u.icon;
   const title=document.createElement('strong');title.textContent=u.name;
   const description=document.createElement('small');description.textContent=u.text+'  ·  Rank '+(game.ranks[id]+1)+'/'+u.max;
+  button.setAttribute('aria-label',u.name+', rank '+(game.ranks[id]+1)+'. '+u.text);
   button.append(num,icon,title,description);
   button.addEventListener('click',()=>applyUpgrade(id));
   wrap.append(button);
@@ -103,7 +140,7 @@ function buildLoadout(){
  }
 }
 function startRun(){
- game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af);
+ auxPage=null;game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af);
  records.runs++;persist();renderRecords();
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;manual.active=false;
@@ -127,6 +164,7 @@ function finishRun(){
  setOverlay();updateHud();
 }
 function pause(){
+ if(auxPage)return;
  if(mode==='playing'&&game.phase==='running'){mode='paused';keys.clear();joystick.x=joystick.y=0;
   resetStick();setOverlay();toast('THE BATTLE IS PAUSED',1200)}
  else if(mode==='paused'){mode='playing';lastTime=performance.now();setOverlay();canvas.focus({preventScroll:true})}
@@ -180,8 +218,10 @@ function input(){
 function resize(){
  const rect=frame.getBoundingClientRect();
  width=Math.max(300,rect.width);height=Math.max(300,rect.height);
- const recommended=quality==='eco'||quality==='auto'&&lowPower?1.25:1.8;
- dpr=Math.max(1,Math.min(devicePixelRatio||1,recommended));
+ const recommended=quality==='eco'||quality==='auto'&&lowPower?1.2:1.65;
+ const maxPixels=quality==='cinema'?3600000:2000000;
+ const budget=Math.sqrt(maxPixels/Math.max(1,width*height));
+ dpr=Math.max(.72,Math.min(devicePixelRatio||1,recommended,budget));
  const rw=Math.round(width*dpr),rh=Math.round(height*dpr);
  if(canvas.width!==rw)canvas.width=rw;
  if(canvas.height!==rh)canvas.height=rh;
@@ -210,6 +250,14 @@ function loop(now){
  if(toastUntil&&now>toastUntil){$('messageToast').hidden=true;toastUntil=0}
 }
 $('startRun').addEventListener('click',startRun);
+$('menuRecords').addEventListener('click',()=>openAux('records'));
+$('menuGuide').addEventListener('click',()=>openAux('guide'));
+$('menuSettings').addEventListener('click',()=>openAux('settings'));
+$('pauseWarbook').addEventListener('click',()=>openAux('warbook'));
+$('pauseSettings').addEventListener('click',()=>openAux('settings'));
+$('retreatToMenu').addEventListener('click',returnToTitle);
+$('endMenu').addEventListener('click',returnToTitle);
+document.querySelectorAll('.auxBack').forEach(button=>button.addEventListener('click',closeAux));
 $('retryRun').addEventListener('click',startRun);
 $('resumeRun').addEventListener('click',pause);
 $('abandonRun').addEventListener('click',startRun);
@@ -237,6 +285,7 @@ $('fullscreenToggle').addEventListener('click',async()=>{
 const moveKeys=new Set(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright']);
 window.addEventListener('keydown',e=>{
  const k=e.key.toLowerCase();
+ if(auxPage){if(k==='escape'){e.preventDefault();closeAux()}return}
  if(moveKeys.has(k)){keys.add(k);if(mode==='playing')e.preventDefault()}
  if((k==='shift')&&mode==='playing'){e.preventDefault();dashQueued=true}
  if((k===' '||k==='p'||k==='escape')&&mode!=='menu'&&mode!=='ended'){

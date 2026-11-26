@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" aria-hidden="true">
+<defs>
+ <radialGradient id="sky" cx="72%" cy="33%" r="77%"><stop stop-color="#36244b"/><stop offset=".33" stop-color="#191d3c"/><stop offset=".72" stop-color="#0c1026"/><stop offset="1" stop-color="#050916"/></radialGradient>
+ <radialGradient id="moon" cx="50%" cy="50%" r="50%"><stop stop-color="#f0e4fc"/><stop offset=".33" stop-color="#c0b3e7"/><stop offset=".66" stop-color="#8775c6"/><stop offset="1" stop-color="#6a5da4" stop-opacity="0"/></radialGradient>
+ <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#2b2546"/><stop offset=".58" stop-color="#0e1223"/><stop offset="1" stop-color="#060915"/></linearGradient>
+ <linearGradient id="cloak" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4c365f"/><stop offset=".28" stop-color="#241e41"/><stop offset=".66" stop-color="#14152b"/><stop offset="1" stop-color="#070c19"/></linearGradient>
+ <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#cec4eb"/><stop offset=".18" stop-color="#686995"/><stop offset=".44" stop-color="#292b55"/><stop offset=".65" stop-color="#131934"/><stop offset=".91" stop-color="#434977"/><stop offset="1" stop-color="#ded4f3"/></linearGradient>
+ <linearGradient id="sword" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#c0a9fc"/><stop offset=".35" stop-color="#f1edff"/><stop offset=".68" stop-color="#9bdbf2"/><stop offset="1" stop-color="#6d8cc0"/></linearGradient>
+ <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#6e4c83"/><stop offset=".45" stop-color="#262540"/><stop offset="1" stop-color="#080b18"/></linearGradient>
+ <filter id="blurHuge" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="65"/></filter>
+ <filter id="blur" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="18"/></filter>
+ <filter id="bladeGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>
+ <pattern id="stars" width="137" height="131" patternUnits="userSpaceOnUse"><circle cx="16" cy="29" r="1.2" fill="#d8cdff" opacity=".56"/><circle cx="92" cy="70" r=".7" fill="#b6dfff" opacity=".5"/><circle cx="118" cy="116" r=".8" fill="#e0c9fc" opacity=".37"/></pattern>
+</defs>
+<rect width="1600" height="1000" fill="url(#sky)"/>
+<rect width="1600" height="700" fill="url(#stars)" opacity=".72"/>
+<!-- Nebula atmosphere -->
+<ellipse cx="1210" cy="365" rx="330" ry="320" fill="#8964b5" opacity=".18" filter="url(#blurHuge)"/>
+<ellipse cx="710" cy="435" rx="350" ry="300" fill="#444e95" opacity=".13" filter="url(#blurHuge)"/>
+<path d="M1180 0C1210 115 1264 187 1355 213C1417 231 1470 205 1600 135V0Z" fill="#9d82ca" opacity=".1"/>
+<path d="M1060 0L1160 260L1110 320L1030 80Z" fill="#ba86e8" opacity=".07"/>
+<!-- distant rune moon -->
+<circle cx="1223" cy="270" r="178" fill="#bca5e8" opacity=".24" filter="url(#blur)"/>
+<circle cx="1223" cy="270" r="147" fill="url(#moon)" opacity=".52"/>
+<circle cx="1223" cy="270" r="137" fill="none" stroke="#eee7ff" stroke-width="3" opacity=".18"/>
+<circle cx="1223" cy="270" r="172" fill="none" stroke="#bca7ea" stroke-width="1.5" stroke-dasharray="3 17" opacity=".21"/>
+<!-- sharp mountain silhouettes -->
+<path d="M0 679L90 600L147 626L279 494L384 578L460 534L546 648L640 537L742 608L841 500L934 630L1050 509L1137 620L1225 458L1306 574L1430 495L1540 586L1600 546V1000H0Z" fill="#171c35" opacity=".94"/>
+<path d="M0 760L130 644L271 716L401 595L495 691L618 614L750 717L878 605L972 709L1110 593L1250 697L1415 607L1600 714V1000H0Z" fill="#11172b"/>
+<!-- cathedral ruins and distant towers -->
+<g fill="#0a1124" stroke="#5b4f81" stroke-opacity=".22" stroke-width="3">
+<path d="M810 776V496L845 463L884 496V776Z"/>
+<path d="M1009 783V444L1041 419L1077 444V783Z"/>
+<path d="M1384 781V449L1417 414L1455 449V781Z"/>
+<path d="M1501 773V553L1529 526L1557 553V773Z"/>
+<path d="M933 769V560L963 520L998 560V769Z"/>
+<path d="M803 496L828 452L828 423L846 390L865 423L865 452L886 496Z"/>
+<path d="M1007 444L1021 415L1041 385L1066 415L1082 444Z"/>
+<path d="M1382 449L1400 419L1417 379L1437 419L1459 449Z"/>
+</g>
+<path d="M0 837L200 770L431 818L670 748L878 806L1120 748L1360 793L1600 717V1000H0Z" fill="url(#floor)"/>
+<path d="M0 856Q450 785 800 847T1600 812" fill="none" stroke="#ab9ac5" stroke-width="11" opacity=".06" filter="url(#blur)"/>
+<!-- torch glows -->
+<g opacity=".65"><ellipse cx="1015" cy="679" rx="38" ry="60" fill="#ab69e8" opacity=".32" filter="url(#blur)"/><ellipse cx="1439" cy="660" rx="37" ry="61" fill="#c08de2" opacity=".26" filter="url(#blur)"/></g>
+<!-- first apparition behind warrior -->
+<g transform="translate(1460 610)" opacity=".46">
+ <path d="M-75 130L-45-32L-17-74L18-80L51-35L90 148L22 174Z" fill="#38273f"/>
+ <path d="M-35-43L0-111L41-45L21 20L-20 20Z" fill="#1e1d35"/>
+ <ellipse cx="-12" cy="-24" rx="8" ry="3" fill="#fe7299"/><ellipse cx="18" cy="-24" rx="8" ry="3" fill="#fe7299"/>
+</g>
+<!-- the Sovereign champion: original stylized cinematic armor -->
+<g transform="translate(1090 545)">
+ <!-- furthest cloak wings -->
+ <path d="M-130-90C-220-24-232 96-341 372C-219 351-132 408-25 374C81 403 219 349 318 404C237 255 199 35 113-97L45-183L-54-180Z" fill="url(#cloak)" stroke="#5f5179" stroke-opacity=".52" stroke-width="6"/>
+ <path d="M-96 9C-201 135-234 310-277 368M113 15C178 143 222 262 269 379" fill="none" stroke="#ab82c0" stroke-width="8" opacity=".14"/>
+ <!-- aura under feet -->
+ <ellipse cx="0" cy="356" rx="220" ry="30" fill="#cbb5ff" opacity=".22" filter="url(#blur)"/>
+ <!-- broad armored legs -->
+ <path d="M-81 76L-95 333L-30 338L10 140Z" fill="#1b1c39" stroke="#80749d" stroke-width="6"/>
+ <path d="M35 92L28 331L100 332L105 73Z" fill="#1c213b" stroke="#9081ac" stroke-width="6"/>
+ <path d="M-103 317L-118 364L-20 364L-30 325Z" fill="#161a2f" stroke="#a79bd3" stroke-width="5"/>
+ <path d="M24 314L17 361L119 360L103 324Z" fill="#161a2f" stroke="#a79bd3" stroke-width="5"/>
+ <!-- central banner -->
+ <path d="M-39 47L67 47L52 292L6 340L-58 292Z" fill="url(#robe)" stroke="#c2a4d9" stroke-width="7"/>
+ <path d="M5 65L5 289" stroke="#caadf4" stroke-width="5" opacity=".54"/>
+ <path d="M-25 116L32 116L7 155Z" fill="#d8bbed" opacity=".7"/>
+ <!-- shoulders -->
+ <path d="M-127-195Q-166-168-166-115L-129-33L-65-62L-37-138Z" fill="url(#plate)" stroke="#b4a8d6" stroke-width="7"/>
+ <path d="M107-195Q160-162 170-120L139-30L70-61L42-145Z" fill="url(#plate)" stroke="#b4a8d6" stroke-width="7"/>
+ <path d="M-149-177L-184-217L-171-116L-136-101Z" fill="#aaa0d1"/>
+ <path d="M136-176L184-226L165-122L135-99Z" fill="#aaa0d1"/>
+ <!-- chest armor -->
+ <path d="M-86-181L-59-226L64-226L97-177L86-15L44 80L-42 80L-94-18Z" fill="url(#plate)" stroke="#c6bbe1" stroke-width="9"/>
+ <path d="M-48-166L0-135L48-166L69-44L0 19L-70-44Z" fill="#252544" stroke="#9284bf" stroke-width="6"/>
+ <path d="M0-116L26-76L0-35L-26-76Z" fill="#c5f8ff" stroke="#f7eaff" stroke-width="8"/>
+ <ellipse cx="0" cy="-78" rx="19" ry="20" fill="#8bdeee" opacity=".77" filter="url(#bladeGlow)"/>
+ <!-- gauntlets -->
+ <path d="M-142-94L-177-20L-138 33L-94-63Z" fill="url(#plate)" stroke="#b6b1da" stroke-width="6"/>
+ <path d="M140-91L185-20L149 37L92-62Z" fill="url(#plate)" stroke="#b6b1da" stroke-width="6"/>
+ <!-- helmet and crown -->
+ <path d="M-61-248L-80-299L-48-340L-22-316L0-380L22-316L49-340L80-299L61-248Z" fill="#444164" stroke="#d1b5e2" stroke-width="8"/>
+ <path d="M-54-263L-60-330L-30-309L0-361L30-309L61-330L54-263Z" fill="#a6a2cf" opacity=".65"/>
+ <path d="M-70-257L-52-306L-19-320L19-320L52-306L70-257L54-185L20-164L-20-164L-54-185Z" fill="url(#plate)" stroke="#d7c4f5" stroke-width="8"/>
+ <path d="M-53-258L-17-247L0-233L17-247L53-258L43-201L0-185L-43-201Z" fill="#090f20"/>
+ <path d="M-46-249L-9-237L-3-225L-39-223Z" fill="#8af1ff"/><path d="M46-249L9-237L3-225L39-223Z" fill="#8af1ff"/>
+ <path d="M0-263L14-226L0-204L-14-226Z" fill="#b39be0"/>
+ <!-- very long bright blade on right, heavy sword -->
+ <g transform="translate(130 -85) rotate(29)">
+  <path d="M-13 13L13 13L24 318L0 387L-24 318Z" fill="#98deff" opacity=".55" filter="url(#bladeGlow)"/>
+  <path d="M-10 8L10 8L23 311L0 381L-23 311Z" fill="url(#sword)" stroke="#f0ecff" stroke-width="5"/>
+  <path d="M0 17L0 329" fill="none" stroke="#f5fbff" stroke-width="5" opacity=".75"/>
+  <path d="M-62-3L-13-18L0-46L13-18L62-3L13 14L0 10L-13 14Z" fill="#77699b" stroke="#dec8f7" stroke-width="6"/>
+  <path d="M-10-21L10-21L12-79L-12-79Z" fill="#3f395d" stroke="#a6a3d6" stroke-width="5"/>
+  <circle cx="0" cy="-80" r="16" fill="#d0b4fd" stroke="#fff4" stroke-width="5"/>
+ </g>
+ <!-- sword-hand armored fist -->
+ <path d="M127-30L176-43L194 3L150 26Z" fill="#8c89b9" stroke="#d4c8e5" stroke-width="7"/>
+ <!-- left blade -->
+ <g transform="translate(-162 -17) rotate(-17)">
+  <path d="M-13-10L13-10L18 173L0 220L-18 173Z" fill="url(#sword)" stroke="#d7efff" stroke-width="4"/>
+  <path d="M-43-12L0-37L43-12L0 8Z" fill="#6b638f" stroke="#e0ccff" stroke-width="5"/>
+ </g>
+</g>
+<!-- floating cinders / magical motes -->
+<g fill="#d9c1ff">
+ <circle cx="880" cy="380" r="3" opacity=".56"/><circle cx="812" cy="231" r="2" opacity=".51"/>
+ <circle cx="1455" cy="350" r="2.5" opacity=".4"/><circle cx="1020" cy="166" r="2" opacity=".61"/>
+ <circle cx="719" cy="600" r="2" opacity=".3"/><circle cx="1321" cy="699" r="3" opacity=".7"/>
+</g>
+<path d="M660 957Q990 844 1600 945V1000H660Z" fill="#0a0d1b" opacity=".9"/>
+<rect width="1600" height="1000" fill="none" stroke="#b08fce" stroke-opacity=".08" stroke-width="12"/>
+</svg>
