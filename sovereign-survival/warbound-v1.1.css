@@ -1,0 +1,334 @@
+/* SOVEREIGN SURVIVAL v1.1 — WARBOUND INTERFACE
+ * Visual-only game shell. Preserves the existing gameplay engine and all save keys.
+ */
+:root{--wb-gold:#e9c597;--wb-bone:#f5e8df;--wb-red:#d87795;--wb-plum:#b494f3;--wb-ice:#a7edff}
+html,body.warbound{height:100%;margin:0;background:#060916;overscroll-behavior:none}
+body.warbound{overflow:hidden;color:#f4ecfa}
+body.warbound .game-app{height:100%;width:100vw;position:relative;overflow:hidden}
+body.warbound .game-frame{height:100vh;height:100dvh;min-height:0;max-height:none;width:100%;margin:0;
+ border:0;border-radius:0;box-shadow:none;background:#070a18;overflow:hidden}
+body.warbound .game-frame::after{content:"";position:absolute;z-index:2;inset:0;
+ pointer-events:none;box-shadow:inset 0 0 140px rgba(1,2,9,.35)}
+body.warbound .arena-edge{border:1px solid rgba(200,167,250,.13);z-index:2;box-shadow:inset 0 0 58px #06071380}
+body.warbound .game-chrome{position:absolute;z-index:28;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;
+ gap:12px;min-height:58px;padding:7px max(19px,env(safe-area-inset-right)) 7px max(19px,env(safe-area-inset-left));
+ background:linear-gradient(180deg,rgba(3,4,14,.94),rgba(4,5,17,.64) 73%,rgba(4,5,17,0));
+ border-bottom:1px solid rgba(239,196,251,.09)}
+body.warbound .game-mark{display:flex;align-items:center;gap:10px;text-decoration:none;color:#f8ebff;
+ white-space:nowrap;min-width:0}
+body.warbound .game-mark-icon{display:grid;place-items:center;width:32px;height:32px;
+ background:radial-gradient(circle,#5f397b55,#141829aa);border:1px solid #caa5ee66;
+ color:#d3b7ff;font-size:24px;transform:rotate(20deg);
+ border-radius:50%;text-shadow:0 0 13px #b783f1}
+body.warbound .game-mark-text{font-size:12px;letter-spacing:.24em;font-weight:950;color:#f0e0ff}
+body.warbound .game-mark-text small{display:block;margin-top:3px;font-size:8px;letter-spacing:.26em;color:#b49cce}
+body.warbound .game-chrome-center{flex:1;text-align:center;min-width:0;
+ font-size:10px;color:#e3d2ee;letter-spacing:.22em;font-weight:900;
+ text-overflow:ellipsis;white-space:nowrap;overflow:hidden;opacity:.8}
+body.warbound .game-chrome-actions{display:flex;align-items:center;gap:14px}
+body.warbound .build-version{font-size:9px;letter-spacing:.15em;color:#ab9cb7;white-space:nowrap}
+body.warbound .build-version b{color:var(--wb-gold)}
+body.warbound .chrome-button{min-height:37px;padding:8px 14px;border-radius:3px;
+ border:1px solid #b89bca66;background:linear-gradient(120deg,#372741bb,#181a34bb);
+ color:#fbebff;font-size:11px;font-weight:900;letter-spacing:.13em}
+body.warbound .chrome-button:disabled{opacity:.34}
+body.warbound .chrome-button:not(:disabled):hover{border-color:#e1b9ef;background:#6b4c78bb}
+body.warbound[data-game-view="menu"] .game-chrome-center,
+body.warbound[data-game-view="ended"] .game-chrome-center{opacity:0}
+body.warbound .game-hud{top:74px;left:clamp(12px,2.2vw,34px);right:clamp(12px,2.2vw,34px);
+ gap:15px;z-index:4}
+body.warbound .hud-main{width:min(350px,43%);gap:9px}
+body.warbound .health-box,body.warbound .xp-box{
+ padding:0;background:none;border:0;border-radius:0;backdrop-filter:none;
+ box-shadow:none}
+body.warbound .hud-value{color:#e3cdda;font-weight:900;font-size:10px;letter-spacing:.18em;
+ text-shadow:0 2px 12px #000}
+body.warbound .hud-value strong{color:#fff8f4;font-size:12px}
+body.warbound .hud-main .meter{margin-top:9px}
+body.warbound .hud-main .meter{height:14px;border:1px solid #e9c6eb64;background:#150d22;
+ box-shadow:inset 0 1px 7px #000,0 3px 14px #000a;border-radius:1px;
+ transform:skew(-13deg);overflow:hidden}
+body.warbound .hp .meter>div,body.warbound .xp .meter>div{transform:skew(0deg)}
+body.warbound .meter.hp>div{background:linear-gradient(90deg,#9f3153,#dd557c 60%,#ffb28e)}
+body.warbound .meter.xp{height:7px;border-color:#a593e14d}
+body.warbound .meter.xp>div{background:linear-gradient(90deg,#5f4acb,#ab83fa 60%,#d7b6ff)}
+body.warbound .hud-right{gap:0;align-items:start}
+body.warbound .hud-right>div{min-width:76px;border:0;border-left:1px solid #d7b8e263;
+ border-radius:0;background:none;backdrop-filter:none;padding:0 16px;
+ text-shadow:0 2px 11px #000;box-shadow:none}
+body.warbound .hud-right small{font-weight:900;letter-spacing:.2em;color:#c0b2ce;font-size:9px}
+body.warbound .hud-right b{font-size:clamp(23px,3.1vw,36px);color:#fff3e5;font-weight:950;
+ letter-spacing:-.06em;margin-top:5px;font-variant-numeric:tabular-nums}
+body.warbound .hud-right .wave-display b{color:#f4d09c;font-size:clamp(31px,4.3vw,52px);
+ text-shadow:0 0 25px #ce845a66}
+body.warbound .arena-boss{top:clamp(174px,22vh,212px);left:29%;right:29%;background:rgba(16,5,16,.83);
+ border-radius:0;padding:11px 16px;box-shadow:0 10px 40px #000c;
+ border-top:1px solid #f49dbd88;border-bottom:1px solid #f49dbd88}
+body.warbound .arena-boss>span{color:#ffbdce;font-size:11px;letter-spacing:.24em}
+body.warbound .arena-boss .meter{height:8px;border-radius:0}
+body.warbound .arena-bottom{bottom:max(16px,env(safe-area-inset-bottom));left:22px;right:22px;
+ font-size:11px;letter-spacing:.11em;color:#fff6e8;z-index:4}
+body.warbound .arena-bottom>span{background:rgba(2,4,13,.5);border-top:1px solid #ead0ee42;
+ border-radius:2px;padding:8px 12px;text-shadow:0 2px 9px #000}
+body.warbound .arena-bottom .arena-time{color:#e7c39a}
+body.warbound .message-toast{top:32%;min-width:250px;max-width:min(680px,84vw);background:linear-gradient(90deg,transparent,#121326e8 14%,#1b1835ef 50%,#121326e8 86%,transparent);
+ border:0;border-top:1px solid #e6c18b77;border-bottom:1px solid #e6c18b77;
+ padding:16px 28px;border-radius:0;box-shadow:0 12px 42px #000c;
+ font-size:clamp(12px,1.5vw,21px);font-weight:950;letter-spacing:.12em;text-shadow:0 0 26px #cb91ef}
+body.warbound .overlay{z-index:16;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+ padding:76px 18px max(18px,env(safe-area-inset-bottom));border:0;
+ background:rgba(3,4,13,.81);backdrop-filter:blur(8px);overflow-y:auto;overscroll-behavior:contain}
+body.warbound .overlay[hidden]{display:none!important}
+body.warbound .overlay-panel{width:min(100%,670px);padding:clamp(23px,4vw,47px);border-radius:3px;
+ max-height:min(800px,calc(100dvh - 107px));overflow:auto;overscroll-behavior:contain;
+ background:linear-gradient(135deg,#17132bee,#0d162aea 74%,#1b142eea);
+ border:1px solid #b99ad477;box-shadow:0 0 0 7px #07091666,inset 0 0 0 1px #ffffff0b,0 28px 90px #000b;
+ color:#f7eefd}
+body.warbound .overlay h2{font-family:Georgia,Palatino,"Times New Roman",serif;
+ font-size:clamp(32px,4.5vw,60px);font-weight:700;line-height:1.05;letter-spacing:-.05em;margin:12px 0 14px}
+body.warbound .overlay h2 em{font-style:normal;color:#d5b2ff;text-shadow:0 0 35px #996be866}
+body.warbound .overlay .eyebrow{color:var(--wb-gold);font-size:10px;letter-spacing:.24em;font-weight:950}
+body.warbound .overlay p{font-size:13px;line-height:1.65;color:#d4ccdf}
+body.warbound .ornament{color:#d2b185;letter-spacing:.28em;font-family:Georgia,serif;margin:4px 0 22px;font-size:14px;opacity:.77}
+body.warbound .cta{border-radius:2px;border:1px solid #e3c794b5;
+ color:#fcf4ea;letter-spacing:.13em;background:linear-gradient(112deg,#775076,#503159 48%,#222e53);
+ box-shadow:inset 0 1px #ffffff34,0 12px 29px #05050f9c;max-width:380px}
+body.warbound .cta:hover{background:linear-gradient(120deg,#9d6899,#5e477c)}
+body.warbound .title-atmosphere{pointer-events:none;position:absolute;inset:0;z-index:0;
+ background:
+ linear-gradient(90deg,rgba(3,5,16,.93) 0%,rgba(5,6,19,.91) 22%,rgba(5,7,20,.73) 39%,rgba(6,6,17,.19) 66%,rgba(4,5,13,.2) 100%),
+ linear-gradient(0deg,rgba(3,5,16,.95),transparent 31%,transparent 76%,rgba(4,5,16,.25)),
+ url("./warbound-scene.svg") center center / cover no-repeat}
+body.warbound .warbound-title-screen{z-index:17;display:flex;justify-content:flex-start;align-items:center;
+ background:#050718;padding:74px clamp(23px,5.9vw,105px) max(32px,env(safe-area-inset-bottom));
+ backdrop-filter:none}
+body.warbound .title-frame{position:relative;z-index:1;width:min(615px,53%);max-width:620px;
+ flex:none;min-height:0;text-align:left}
+body.warbound .title-brow{display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:#dcc4e8;
+ letter-spacing:.23em;font-size:9px;font-weight:900;opacity:.87}
+body.warbound .title-brow i{height:1px;width:37px;background:#bca3bd77;display:inline-block}
+body.warbound .title-brow-diamond{font-size:20px;color:#eccb9c}
+body.warbound .title-crest{position:relative;width:90px;height:92px;display:grid;place-items:center;margin:18px 0 7px;
+ font-size:75px;color:#eccbff;text-shadow:0 0 22px #9c75ea,0 0 53px #955fdf;
+ filter:drop-shadow(0 0 20px #9a63cc62)}
+body.warbound .title-crest::before{content:"";position:absolute;inset:4px;border:2px solid #d1ade67d;transform:rotate(45deg) scale(.7);opacity:.66}
+body.warbound .game-wordmark{font-family:Georgia,Palatino,"Times New Roman",serif;
+ color:#fbf2ed;font-size:clamp(54px,6vw,100px);font-weight:700;letter-spacing:-.082em;line-height:.90;
+ margin:2px 0 15px;text-shadow:0 3px 28px #090610e0;white-space:nowrap}
+body.warbound .game-wordmark>span,body.warbound .game-wordmark em{display:block;font-style:normal}
+body.warbound .game-wordmark em{color:#dfb4ec;letter-spacing:-.075em;
+ background:linear-gradient(180deg,#f9e4fc 9%,#c49cd4 57%,#976cb9 100%);
+ -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+body.warbound .game-edition{font-size:10px;font-weight:850;letter-spacing:.23em;color:var(--wb-gold);
+ border-top:1px solid #ba99b347;padding-top:9px;max-width:380px}
+body.warbound .game-edition>span{color:#d7a8ef;margin:0 9px}
+body.warbound .title-lore{font-size:13px;line-height:1.7;color:#e7dae9;
+ max-width:430px;margin:17px 0 18px;font-weight:500}
+body.warbound .title-menu{display:grid;gap:5px;width:min(100%,410px)}
+body.warbound .title-menu>button{border:1px solid transparent;min-height:47px;text-align:left;
+ background:linear-gradient(90deg,rgba(29,22,46,.83),rgba(11,14,26,.7) 84%);
+ color:#eae0ed;padding:10px 15px;display:flex;gap:14px;align-items:center;
+ font-size:12px;font-weight:900;letter-spacing:.12em;border-left:2px solid #af9cbb66;border-radius:0;
+ transition:background .15s,border-color .15s,transform .15s}
+body.warbound .title-menu>button>span:first-child{font-size:22px;color:#d3b1f2;min-width:24px}
+body.warbound .title-menu>button small{margin-left:auto;color:#aca2c5;white-space:nowrap;font-size:8px;letter-spacing:.13em}
+body.warbound .title-menu>button:hover{border-color:#c9b2de8c;border-left-color:#efd3a9;
+ background:linear-gradient(90deg,#563454d9,#28273d91);transform:translateX(4px)}
+body.warbound .title-menu .title-start{background:linear-gradient(105deg,#8d547e,#4b325f);
+ min-height:64px;border:1px solid #edc58b8f;border-left:3px solid #fbdab0;
+ margin-bottom:10px;box-shadow:0 6px 33px #ae64ab40;
+ color:#fff2e7;padding:10px 14px}
+body.warbound .title-start>span:nth-child(2){display:flex;flex-direction:column;gap:5px}
+body.warbound .title-menu .title-start small{margin:0;color:#f4dccc;letter-spacing:.17em}
+body.warbound .title-menu .title-start .button-caret{margin-left:auto;font-size:30px;color:#f8dec9}
+body.warbound .menu-signature{margin-top:24px;font-size:9px;color:#c6aac9;letter-spacing:.1em;
+ display:flex;flex-wrap:wrap;gap:11px;opacity:.79}
+body.warbound .title-side-art{position:absolute;inset:0;pointer-events:none;z-index:0;
+ background:linear-gradient(90deg,transparent 55%,#06091720 88%,#06091782)}
+body.warbound .title-corner{position:absolute;z-index:1;right:clamp(24px,3vw,60px);
+ bottom:max(32px,env(safe-area-inset-bottom));font-size:10px;letter-spacing:.24em;color:#e4cce6;font-weight:950;
+ text-align:right;text-shadow:0 2px 18px #000}
+body.warbound .title-corner>span{display:block;font-family:Georgia,serif;font-size:28px;color:#efc99b;letter-spacing:.05em;margin-top:4px}
+body.warbound .upgrade-panel{width:min(100%,850px)}
+body.warbound .upgrade-panel h2{font-size:clamp(31px,4.7vw,61px)}
+body.warbound .upgrade-options{margin:22px 0 16px;gap:11px}
+body.warbound .upgrade-choice{position:relative;min-height:205px;max-height:260px;overflow:hidden;border-radius:3px;
+ padding:18px 13px;border:1px solid #ad93d66c;background:
+ radial-gradient(ellipse at 50% 25%,#694c9170,transparent 62%),
+ linear-gradient(150deg,#30233b,#101627);box-shadow:inset 0 1px #ffffff22;transition:transform .15s,border-color .15s}
+body.warbound .upgrade-choice::after{content:"";pointer-events:none;position:absolute;inset:7px;
+ border:1px solid #d6b7e21f}
+body.warbound .upgrade-choice:hover{transform:translateY(-5px);border-color:#edcda0;
+ background:radial-gradient(ellipse at 50% 25%,#8c6eb988,transparent 62%),linear-gradient(150deg,#402f50,#141d32)}
+body.warbound .upgrade-choice .number{font-size:10px;letter-spacing:.1em;color:#eccda2}
+body.warbound .upgrade-choice .glyph{font-size:57px;text-shadow:0 0 25px #ab79e7a3;margin:11px 0}
+body.warbound .upgrade-choice strong{font-size:15px;letter-spacing:.02em}
+body.warbound .upgrade-choice small{font-size:11px;color:#ddd1e6;line-height:1.52}
+body.warbound .upgrade-hint{font-size:10px;letter-spacing:.18em;color:#c6accd}
+body.warbound .pause-panel{width:min(100%,555px)}
+body.warbound .pause-secondary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:18px 0}
+body.warbound .pause-secondary>button,body.warbound .secondary-action{border:1px solid #a98abb67;
+ border-radius:2px;min-height:49px;background:#211a35b9;color:#e8d9f0;
+ font-size:11px;letter-spacing:.1em;font-weight:850;padding:10px 14px}
+body.warbound .pause-secondary>button:hover,body.warbound .secondary-action:hover{background:#4c315e;border-color:#caa6d7}
+body.warbound .pause-footnote{font-size:9px;color:#bda7c6;letter-spacing:.12em;line-height:1.7}
+body.warbound .defeat-sigil{font-size:65px;color:#d5acd8;text-shadow:0 0 27px #bb6cc5}
+body.warbound .defeat-panel{width:min(100%,660px)}
+body.warbound .end-stats{grid-template-columns:repeat(3,1fr);margin:21px 0;gap:9px}
+body.warbound .end-stats>div{border:1px solid #d3b9ca47;border-radius:1px;background:#0c1226bd;padding:16px 8px}
+body.warbound .end-stats strong{font-family:Georgia,serif;font-size:29px;color:#efd2a4}
+body.warbound .end-stats span{color:#cdb2d3;font-size:9px;letter-spacing:.13em}
+body.warbound .secondary-action{display:block;max-width:380px;width:100%;margin:8px auto}
+body.warbound .auxiliary-overlay{z-index:19}
+body.warbound .auxiliary-panel{width:min(100%,760px)}
+body.warbound .legacy-record{margin:20px 0;border-top:1px solid #cfb4da48;
+ border-bottom:1px solid #cfb4da48;padding:15px 0}
+body.warbound .record-large small{display:block;font-size:11px;letter-spacing:.19em;color:#d8b9d3}
+body.warbound .record-large strong{font-family:Georgia,serif;font-size:clamp(58px,7vw,89px);color:#f2d3a3;
+ letter-spacing:-.07em;line-height:1.1;display:block;text-shadow:0 0 38px #bb815752;font-variant-numeric:tabular-nums}
+body.warbound .record-milestones{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+body.warbound .record-milestones>div{padding:13px 7px;border-left:1px solid #c6b0d06e}
+body.warbound .record-milestones b{font-family:Georgia,serif;font-size:28px;color:#f5eaf3;display:block}
+body.warbound .record-milestones small{font-size:9px;letter-spacing:.1em;color:#c8b4d3}
+body.warbound .archive-note{font-size:11px;color:#ac9fb8}
+body.warbound .guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+body.warbound .guide-grid>div{border:1px solid #b798c144;background:#100f23a0;padding:17px;text-align:left}
+body.warbound .guide-grid span{font-size:10px;color:#e6c592;letter-spacing:.15em;font-weight:900}
+body.warbound .guide-grid h3{color:#f8e9fc;font-size:17px;margin:8px 0}
+body.warbound .guide-grid p{font-size:12px;margin:0;line-height:1.6}
+body.warbound .settings-list{display:grid;gap:8px;margin:25px 0}
+body.warbound .settings-list>div{display:flex;justify-content:space-between;align-items:center;gap:15px;
+ border:1px solid #c5acd548;background:#151327a1;padding:15px;text-align:left}
+body.warbound .settings-list b{font-size:12px;letter-spacing:.11em;display:block;color:#f0e1ef}
+body.warbound .settings-list small{font-size:11px;line-height:1.5;color:#b5a8c7;margin-top:5px;display:block}
+body.warbound .settings-list button{min-width:120px;border-radius:2px;border:1px solid #c7a6d281;
+ background:#302341;color:#fff3f8;padding:11px 14px;font-size:11px;font-weight:900;white-space:nowrap}
+body.warbound .settings-list button:hover{background:#58366c}
+body.warbound .warbook-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;text-align:left}
+body.warbound .warbook-grid>.upgrades-card{grid-column:1/-1}
+body.warbound .warbook-grid .side-card{padding:16px;background:linear-gradient(130deg,#241c38d6,#0b1730db);
+ border:1px solid #bb9fc05e;border-radius:1px}
+body.warbound .warbook-grid .hero-avatar{height:90px}
+body.warbound .warbook-grid .hero-avatar span{font-size:47px}
+body.warbound .warbook-grid .side-heading{margin-bottom:12px}
+body.warbound .warbook-grid .build-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+body.warbound .warbook-grid .build-item{min-width:0}
+body.warbound .touch-controls{bottom:max(50px,env(safe-area-inset-bottom) + 41px);left:15px;right:15px;z-index:9}
+body.warbound .joystick-zone{width:154px;height:156px}
+body.warbound .joystick-base{border:2px solid #dec7f483;background:radial-gradient(circle,#5c39724f,#0d1026a8);
+ box-shadow:0 0 31px #a567db28,inset 0 0 16px #9f61b424}
+body.warbound .joystick-knob{background:radial-gradient(circle at 34% 23%,#efd2ff,#8261b8 75%);box-shadow:0 0 24px #cc8df890}
+body.warbound .dash-button{border:2px solid #a6eefa9c;background:radial-gradient(circle at 35% 25%,#5279a08a,#141e3bde 73%);
+ box-shadow:0 0 26px #55abc637}
+body.warbound .touch-controls span{user-select:none}
+body.warbound .warbound-credit{position:absolute;z-index:5;left:50%;bottom:max(6px,env(safe-area-inset-bottom));transform:translateX(-50%);
+ pointer-events:none;text-align:center;color:#e2c6e279;font-size:8px;letter-spacing:.21em;white-space:nowrap;font-weight:900}
+body.warbound .warbound-credit span{color:#dfac86}
+body.warbound[data-game-view="menu"] .game-hud,body.warbound[data-game-view="menu"] .arena-bottom,
+body.warbound[data-game-view="ended"] .game-hud,body.warbound[data-game-view="ended"] .arena-bottom{visibility:hidden}
+body.warbound .game-frame.damage-impact{box-shadow:inset 0 0 140px rgba(244,42,82,.46)}
+body.warbound .game-frame.damage-impact .arena-edge{box-shadow:inset 0 0 85px rgba(233,43,86,.42)}
+body.warbound .game-frame.dash-impact .arena-edge{box-shadow:inset 0 0 75px rgba(88,199,241,.25)}
+@media(max-width:900px){
+ body.warbound .game-wordmark{font-size:clamp(53px,6vw,72px)}
+ body.warbound .title-frame{width:min(575px,64%)}
+ body.warbound .title-lore{font-size:12px;max-width:360px}
+ body.warbound .warbound-title-screen{padding-left:4.5vw}
+}
+@media(max-width:680px){
+ body.warbound .game-chrome{min-height:52px;padding:7px max(11px,env(safe-area-inset-right)) 7px max(11px,env(safe-area-inset-left))}
+ body.warbound .game-mark-text{font-size:10px;letter-spacing:.14em}
+ body.warbound .game-mark-text small{font-size:7px;letter-spacing:.12em}
+ body.warbound .game-chrome-center{font-size:8px;letter-spacing:.08em}
+ body.warbound .build-version{display:none}
+ body.warbound .game-hud{top:62px;left:11px;right:11px;gap:7px}
+ body.warbound .hud-main{width:53%;gap:7px}
+ body.warbound .hud-value{font-size:8px;letter-spacing:.08em}
+ body.warbound .hud-value strong{font-size:10px}
+ body.warbound .hud-main .meter{height:11px}
+ body.warbound .hud-main .meter.xp{height:6px}
+ body.warbound .hud-right>div{min-width:49px;padding:0 6px}
+ body.warbound .hud-right small{font-size:7px;letter-spacing:.08em}
+ body.warbound .hud-right b{font-size:18px}
+ body.warbound .hud-right .wave-display b{font-size:27px}
+ body.warbound .arena-boss{top:157px;left:18%;right:18%;padding:8px}
+ body.warbound .arena-boss>span{font-size:9px}
+ body.warbound .warbound-title-screen{align-items:center;justify-content:center;padding:64px 15px max(35px,env(safe-area-inset-bottom));
+  background:#050717}
+ body.warbound .title-atmosphere{background:
+  linear-gradient(0deg,#060917 0%,#060917eb 32%,#060917b9 65%,#06091742 100%),
+  linear-gradient(90deg,#070817a6,#0708172e),
+  url("./warbound-scene.svg") 66% 27% / auto 100% no-repeat}
+ body.warbound .title-frame{width:min(100%,420px);text-align:center;margin:0 auto;align-self:center}
+ body.warbound .title-brow{justify-content:center;gap:7px;font-size:8px;letter-spacing:.1em}
+ body.warbound .title-brow i{width:16px}
+ body.warbound .title-crest{margin:10px auto 1px;width:67px;height:70px;font-size:51px}
+ body.warbound .game-wordmark{font-size:clamp(49px,12.9vw,67px);margin:5px 0 11px}
+ body.warbound .game-edition{max-width:330px;margin:0 auto;letter-spacing:.16em;font-size:9px}
+ body.warbound .title-lore{font-size:11px;line-height:1.5;max-width:360px;margin:14px auto 16px}
+ body.warbound .title-menu{width:min(100%,355px);gap:6px;margin:0 auto}
+ body.warbound .title-menu>button{min-height:43px;font-size:11px;padding:9px 13px}
+ body.warbound .title-menu .title-start{min-height:56px;margin-bottom:5px}
+ body.warbound .title-menu>button>span:first-child{font-size:19px}
+ body.warbound .title-menu>button small{font-size:7px}
+ body.warbound .menu-signature{justify-content:center;gap:8px;margin-top:16px;font-size:7px}
+ body.warbound .title-corner{display:none}
+ body.warbound .overlay{padding:67px 13px max(22px,env(safe-area-inset-bottom))}
+ body.warbound .overlay-panel{padding:19px 15px;max-height:calc(100dvh - 92px)}
+ body.warbound .overlay h2{font-size:clamp(28px,8vw,39px)}
+ body.warbound .overlay p{font-size:11px}
+ body.warbound .ornament{margin:0 0 13px}
+ body.warbound .upgrade-options{gap:6px;margin:12px 0}
+ body.warbound .upgrade-choice{min-height:173px;padding:10px 6px}
+ body.warbound .upgrade-choice .glyph{font-size:32px;margin:8px 0}
+ body.warbound .upgrade-choice strong{font-size:11px}
+ body.warbound .upgrade-choice small{font-size:9px}
+ body.warbound .upgrade-hint{font-size:8px}
+ body.warbound .pause-secondary{gap:7px}
+ body.warbound .pause-secondary>button{min-height:43px;font-size:9px;padding:9px}
+ body.warbound .end-stats{grid-template-columns:repeat(3,1fr);gap:5px}
+ body.warbound .end-stats>div{padding:11px 3px}
+ body.warbound .end-stats strong{font-size:22px}
+ body.warbound .end-stats span{font-size:8px}
+ body.warbound .record-large strong{font-size:58px}
+ body.warbound .guide-grid{gap:7px}
+ body.warbound .guide-grid>div{padding:10px}
+ body.warbound .guide-grid h3{font-size:14px}
+ body.warbound .guide-grid p{font-size:10px}
+ body.warbound .settings-list>div{padding:10px;gap:9px}
+ body.warbound .settings-list small{font-size:9px}
+ body.warbound .settings-list b{font-size:10px}
+ body.warbound .settings-list button{min-width:91px;font-size:10px;padding:9px}
+ body.warbound .warbook-grid{gap:8px}
+ body.warbound .warbook-grid .side-card{padding:10px}
+ body.warbound .warbook-grid .build-list{grid-template-columns:1fr}
+ body.warbound .touch-controls{bottom:max(45px,env(safe-area-inset-bottom) + 37px);left:9px;right:9px}
+ body.warbound .joystick-zone{width:130px;height:139px}
+ body.warbound .joystick-base{width:96px;height:96px}
+ body.warbound .dash-button{width:76px;height:76px}
+ body.warbound .arena-bottom{left:8px;right:8px;bottom:max(12px,env(safe-area-inset-bottom));font-size:9px;letter-spacing:.025em;gap:4px}
+ body.warbound .arena-bottom>span{padding:6px 6px}
+ body.warbound .warbound-credit{font-size:7px}
+}
+@media(max-width:370px){
+ body.warbound .game-wordmark{font-size:clamp(42px,12.5vw,54px)}
+ body.warbound .title-menu>button{min-height:39px}
+ body.warbound .title-menu .title-start{min-height:52px}
+ body.warbound .title-lore{font-size:10px;margin:12px 0}
+ body.warbound .menu-signature{margin-top:9px;font-size:7px}
+ body.warbound .title-crest{width:55px;height:54px;font-size:45px}
+ body.warbound .overlay-panel{padding:14px 11px}
+}
+@media(max-height:670px){
+ body.warbound .title-crest{display:none}
+ body.warbound .game-wordmark{font-size:clamp(42px,6.7vw,62px)}
+ body.warbound .title-lore{margin:10px 0;font-size:11px}
+ body.warbound .title-menu .title-start{min-height:50px}
+ body.warbound .title-menu>button{min-height:38px}
+ body.warbound .menu-signature{display:none}
+ body.warbound .overlay{align-items:flex-start}
+ body.warbound .warbound-title-screen{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){
+ body.warbound *,body.warbound *::before,body.warbound *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}

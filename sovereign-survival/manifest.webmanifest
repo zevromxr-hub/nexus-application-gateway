@@ -1,7 +1,7 @@
 {
-  "name": "PROXIMUS | Sovereign Survival",
+  "name": "Sovereign Survival | Warbound",
   "short_name": "Sovereign",
-  "description": "Sovereign Survival Genesis — an offline-ready fantasy arena survival game for iPhone and PC.",
+  "description": "Sovereign Survival v1.1 WARBOUND — cinematic full-screen dark fantasy survival for iPhone and PC.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

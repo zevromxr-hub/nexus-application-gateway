@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL browser smoke: true game interaction in Chromium/WebKit */
+/* SOVEREIGN SURVIVAL v1.1 WARBOUND: full game UI and gameplay in desktop Chromium and mobile WebKit */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-webkit',webkit,true]]){
@@ -12,12 +12,35 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
   assert.ok(await page.locator('#arenaCanvas').evaluate(el=>el.width>300&&el.height>300));
+  // v1.1 title screen must function like a game menu instead of a tool dashboard.
+  assert.equal(await page.locator('.side-column').count(),0,'No permanent tools sidebar during battle');
+  assert.equal(await page.locator('.intro').count(),0,'No landing dashboard above the game');
+  const viewport=await page.locator('#gameFrame').evaluate(el=>({
+   height:Math.round(el.getBoundingClientRect().height),
+   available:Math.round(window.innerHeight),
+   width:Math.round(el.getBoundingClientRect().width)
+  }));
+  assert.ok(Math.abs(viewport.height-viewport.available)<4,'The battlefield must fill the visible screen');
+  assert.ok(viewport.width>=380,'The arena should fill the available screen width');
+  await page.locator('#menuRecords').click();
+  assert.equal(await page.locator('#recordsOverlay').isVisible(),true,'Hall of Legends opens from main menu');
+  assert.equal(await page.locator('#recordRuns').textContent(),'0');
+  await page.locator('#recordsOverlay .auxBack').click();
+  assert.equal(await page.locator('#menuOverlay').isVisible(),true);
+  await page.locator('#menuGuide').click();
+  assert.equal(await page.locator('#guideOverlay').isVisible(),true,'The initiation guide opens');
+  await page.locator('#guideOverlay .auxBack').click();
+  await page.locator('#menuSettings').click();
+  assert.equal(await page.locator('#settingsOverlay').isVisible(),true);
+  await page.locator('#qualityToggle').click();
+  assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));
+  await page.locator('#settingsOverlay .auxBack').click();
+  assert.equal(await page.locator('#menuOverlay').isVisible(),true);
   await page.locator('#startRun').click();
   assert.equal(await page.locator('#menuOverlay').isVisible(),false);
   assert.equal(await page.locator('#waveText').textContent(),'01');
   await page.waitForTimeout(550);
   assert.ok((await page.locator('#stageLabel').textContent()).includes('WAVE 1'));
-  await page.locator('#qualityToggle').click();
   assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));
   if(mobile){
    assert.equal(await page.locator('#joystickZone').isVisible(),true);
@@ -28,6 +51,15 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   }
   await page.locator('#pauseButton').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),true);
+  await page.locator('#pauseWarbook').click();
+  assert.equal(await page.locator('#warbookOverlay').isVisible(),true,'The in-run Codex replaces the side dashboard');
+  assert.equal(await page.locator('#buildList').count(),1,'Original upgrade list is preserved in Codex');
+  await page.locator('#warbookOverlay .auxBack').click();
+  assert.equal(await page.locator('#pauseOverlay').isVisible(),true);
+  await page.locator('#pauseSettings').click();
+  assert.equal(await page.locator('#settingsOverlay').isVisible(),true);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#pauseOverlay').isVisible(),true,'Escape returns from settings without resuming combat');
   await page.waitForTimeout(300);
   await page.locator('#resumeRun').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),false);
@@ -35,6 +67,12 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#abandonRun').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),false);
   assert.equal(await page.locator('#recordRuns').textContent(),'2','Starting a new run increments local record');
+  await page.locator('#pauseButton').click();
+  await page.locator('#retreatToMenu').click();
+  assert.equal(await page.locator('#menuOverlay').isVisible(),true,'Title menu is reachable from pause');
+  await page.locator('#menuRecords').click();
+  assert.equal(await page.locator('#recordRuns').textContent(),'2');
+  await page.locator('#recordsOverlay .auxBack').click();
   assert.equal(await page.locator('#menuOverlay').count(),1);
   assert.deepEqual(errors,[],'No client runtime exceptions');
   console.log('PASS '+name+' gameplay startup, controls, pause/restart and local records');

@@ -1,133 +1,201 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#090b19">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b18">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Sovereign Survival">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Sovereign Survival — a free, offline-ready fantasy arena survival game for iPhone and PC. Fight enemy waves, defeat bosses and build your own sovereign.">
+<meta name="description" content="Sovereign Survival: Warbound — a cinematic dark fantasy arena survival game for iPhone and PC. Fight waves, unlock powers, conquer the Void Monarch.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./style.css">
-<title>PROXIMUS | SOVEREIGN SURVIVAL — GENESIS v1.0</title>
+<link rel="stylesheet" href="./warbound-v1.1.css">
+<title>SOVEREIGN SURVIVAL — WARBOUND v1.1 | PROXIMUS</title>
 </head>
-<body>
-<div class="universe" aria-hidden="true"></div>
-<div class="app-shell">
- <header class="topbar">
-  <a class="brand" href="../alchemist/" title="Back to PROXIMUS">
-   <span class="brand-sigil" aria-hidden="true">✧</span>
-   <span>PROXIMUS <small>SOVEREIGN SURVIVAL</small></span>
-  </a>
-  <div class="topbar-right">
-   <span class="header-version">GENESIS <strong>v1.0.0</strong></span>
-   <button id="soundToggle" type="button" class="utility" aria-pressed="false" title="Original in-game sound effects are off by default">♪ Sound Off</button>
-   <button id="qualityToggle" type="button" class="utility" title="Reduce visual effects for lower power use">◈ Auto</button>
-   <button id="fullscreenToggle" type="button" class="utility" title="Fullscreen the game if supported">⛶</button>
-  </div>
- </header>
- <main>
-  <section class="intro" aria-label="Game introduction">
-   <div class="intro-copy">
-    <div class="intro-kicker">✧ THE SOVEREIGN INITIATIVE / ARCADE DOMINION</div>
-    <h1>ENTER THE <em>LAST STAND.</em></h1>
-    <p>One warrior. Endless shadows. Reclaim the citadel, master forbidden powers, and survive long enough to face the Void Monarch.</p>
-    <div class="intro-tags"><span>⚔ REAL-TIME ARENA COMBAT</span><span>✧ 8 UPGRADE PATHS</span><span>◈ BOSS EVERY 4 WAVES</span></div>
+<body class="warbound" data-game-view="menu">
+<div class="game-app">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Warbound game">
+  <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
+  <div class="arena-edge" aria-hidden="true"></div>
+  <header class="game-chrome">
+   <a class="game-mark" href="../alchemist/" title="Return to PROXIMUS Arcade">
+    <span class="game-mark-icon" aria-hidden="true">✧</span>
+    <span class="game-mark-text">PROXIMUS <small>ARCADE DOMINION</small></span>
+   </a>
+   <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
+   <div class="game-chrome-actions">
+    <span class="build-version">WARBOUND <b>v1.1</b></span>
+    <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
-   <div class="intro-record"><small>YOUR LEGACY / SAVED ON THIS DEVICE</small>
-    <strong id="recordBest">0</strong><span>PERSONAL BEST SCORE</span>
-    <div class="intro-record-bottom"><span><b id="recordWave">0</b> BEST WAVE</span><span><b id="recordRuns">0</b> RUNS</span></div>
+  </header>
+  <div class="game-hud" aria-live="off">
+   <div class="hud-main">
+    <div class="health-box">
+     <div class="hud-value"><span>♥ VITALITY</span><strong id="healthText">100 / 100</strong></div>
+     <div class="meter hp"><div id="hpFill"></div></div>
+    </div>
+    <div class="xp-box">
+     <div class="hud-value"><span>✧ LEVEL <strong id="levelText">1</strong></span><span id="xpText">0 / 20 XP</span></div>
+     <div class="meter xp"><div id="xpFill"></div></div>
+    </div>
+   </div>
+   <div class="hud-right">
+    <div class="wave-display"><small>WAVE</small><b id="waveText">01</b></div>
+    <div><small>DEFEATS</small><b id="killText">0</b></div>
+    <div><small>SCORE</small><b id="scoreText">0</b></div>
+   </div>
+  </div>
+  <div class="arena-boss" id="bossBar" hidden><span>✦ VOID MONARCH</span><div class="meter"><div id="bossFill"></div></div></div>
+  <div id="messageToast" class="message-toast" role="status" aria-live="polite" hidden></div>
+  <div class="arena-bottom">
+   <span class="arena-time" id="timerText">0:00</span>
+   <span id="comboText">✧ BUILD YOUR COMBO</span>
+   <span id="dashText">➤ DASH READY</span>
+  </div>
+
+  <section class="overlay warbound-title-screen" id="menuOverlay" role="dialog" aria-modal="false" aria-label="Sovereign Survival main menu">
+   <div class="title-atmosphere" aria-hidden="true"></div>
+   <div class="title-frame">
+    <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> AN ORIGINAL DARK FANTASY SURVIVAL</div>
+    <div class="title-crest" aria-hidden="true"><span>✧</span></div>
+    <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
+    <div class="game-edition">W A R B O U N D <span>✦</span> E D I T I O N</div>
+    <p class="title-lore">One champion against the darkness. Every fallen enemy becomes another chance to ascend. Every fourth wave awakens the Monarch.</p>
+    <nav class="title-menu" aria-label="Main game menu">
+     <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
+     <button id="menuRecords" type="button"><span>✦</span> HALL OF LEGENDS <small>RECORDS</small></button>
+     <button id="menuGuide" type="button"><span>◇</span> HOW TO PLAY <small>CONTROLS</small></button>
+     <button id="menuSettings" type="button"><span>⚙</span> GAME SETTINGS <small>AUDIO / DISPLAY</small></button>
+    </nav>
+    <div class="menu-signature"><span>✧ PURE SINGLE PLAYER</span><span>OFFLINE-READY</span><span>POWERED BY ZEVRO</span></div>
+   </div>
+   <div class="title-side-art" aria-hidden="true"></div>
+   <div class="title-corner">THE LAST WARDEN <span>AWAKENS.</span></div>
+  </section>
+
+  <section class="overlay" id="upgradeOverlay" role="dialog" aria-modal="false" aria-label="Choose your next upgrade" hidden>
+   <div class="overlay-panel upgrade-panel">
+    <div class="ornament">✧ ───── ✦ ───── ✧</div>
+    <span class="eyebrow">ANOTHER SOUL. ANOTHER CHOICE.</span>
+    <h2>CHOOSE YOUR <em>ASCENSION</em></h2>
+    <p>Three powers answer your call. Only one can join your build.</p>
+    <div id="upgradeOptions" class="upgrade-options" role="group" aria-label="Available power upgrades"></div>
+    <small class="upgrade-hint">SELECT A RUNIC CARD · KEYBOARD 1 / 2 / 3</small>
    </div>
   </section>
-  <div class="game-layout">
-   <section class="battle-shell" aria-label="Sovereign Survival gameplay">
-    <div class="battle-header">
-     <div class="battle-heading"><span class="stage-light"></span><span>THE SHATTERED CITADEL</span><small id="stageLabel">SANCTUM / READY TO ENTER</small></div>
-     <div class="battle-top-actions"><button id="pauseButton" class="small-button" type="button" disabled>Ⅱ Pause</button></div>
+
+  <section class="overlay" id="pauseOverlay" role="dialog" aria-modal="false" aria-label="Paused game menu" hidden>
+   <div class="overlay-panel pause-panel">
+    <div class="ornament">✧ ─── ✦ ─── ✧</div>
+    <span class="eyebrow">THE BATTLE HAS BEEN STILLED</span>
+    <h2>THE CITADEL <em>AWAITS.</em></h2>
+    <p>Your champion's fate is suspended until you return.</p>
+    <button id="resumeRun" class="cta" type="button">▶ RETURN TO BATTLE</button>
+    <div class="pause-secondary">
+     <button id="pauseWarbook" type="button">◈ WARDEN'S CODEX</button>
+     <button id="pauseSettings" type="button">⚙ SETTINGS</button>
+     <button id="abandonRun" type="button">↺ RESTART RUN</button>
+     <button id="retreatToMenu" type="button">⌂ RETURN TO TITLE</button>
     </div>
-    <div class="game-frame" id="gameFrame">
-     <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks target the nearest enemies automatically."></canvas>
-     <div class="arena-edge" aria-hidden="true"></div>
-     <div class="game-hud" aria-live="off">
-      <div class="hud-main">
-       <div class="health-box"><div class="hud-value"><span>♥ SOVEREIGN VITALITY</span><strong id="healthText">100 / 100</strong></div><div class="meter hp"><div id="hpFill"></div></div></div>
-       <div class="xp-box"><div class="hud-value"><span>✧ LEVEL <strong id="levelText">1</strong></span><span id="xpText">0 / 20 XP</span></div><div class="meter xp"><div id="xpFill"></div></div></div>
-      </div>
-      <div class="hud-right"><div><small>WAVE</small><b id="waveText">01</b></div><div><small>DEFEATS</small><b id="killText">0</b></div><div><small>SCORE</small><b id="scoreText">0</b></div></div>
-     </div>
-     <div class="arena-boss" id="bossBar" hidden><span>✦ VOID MONARCH</span><div class="meter"><div id="bossFill"></div></div></div>
-     <div id="messageToast" class="message-toast" role="status" aria-live="polite" hidden></div>
-     <div class="arena-bottom"><span id="timerText">0:00</span><span id="comboText">✧ NO COMBO</span><span id="dashText">➤ DASH READY</span></div>
-     <div class="overlay" id="menuOverlay" role="dialog" aria-modal="false" aria-label="Begin Sovereign Survival">
-      <div class="overlay-panel menu-panel">
-       <div class="menu-emblem" aria-hidden="true">✧</div>
-       <span class="eyebrow">PROXIMUS / ARCADE DOMINION PRESENTS</span>
-       <h2>THE SOVEREIGN <em>AWAKENS.</em></h2>
-       <p>Fight through waves of supernatural enemies. Gather lost soul energy, select powerful upgrades and challenge the Void Monarch every fourth wave.</p>
-       <button id="startRun" class="cta" type="button">⚔ BEGIN SURVIVAL</button>
-       <span class="controls-summary">PC: WASD / ARROWS · SHIFT DASH · SPACE PAUSE | iPHONE: DRAG TO MOVE · TAP DASH</span>
-      </div>
-     </div>
-     <div class="overlay" id="upgradeOverlay" role="dialog" aria-modal="false" aria-label="Choose your next upgrade" hidden>
-      <div class="overlay-panel upgrade-panel">
-       <span class="eyebrow">✧ POWER IS EARNED IN BATTLE</span>
-       <h2>CHOOSE YOUR <em>ASCENSION.</em></h2>
-       <p>Pick one ability. Each choice changes how your sovereign survives.</p>
-       <div id="upgradeOptions" class="upgrade-options" role="group" aria-label="Available power upgrades"></div>
-       <small class="upgrade-hint">TAP A CARD · OR PRESS 1, 2 OR 3 ON PC</small>
-      </div>
-     </div>
-     <div class="overlay" id="pauseOverlay" role="dialog" aria-modal="false" aria-label="Pause menu" hidden>
-      <div class="overlay-panel compact-panel">
-       <span class="eyebrow">THE CITADEL AWAITS</span><h2>THE BATTLE <em>PAUSES.</em></h2>
-       <p>Your current run is frozen while this menu is open.</p>
-       <button id="resumeRun" class="cta" type="button">▶ RESUME BATTLE</button>
-       <button id="abandonRun" class="quiet" type="button">↺ START A NEW RUN</button>
-      </div>
-     </div>
-     <div class="overlay" id="endOverlay" role="dialog" aria-modal="false" aria-label="Survival results" hidden>
-      <div class="overlay-panel compact-panel">
-       <span class="eyebrow">✧ YOUR LEGEND HAS BEEN WRITTEN</span><h2>THE SOVEREIGN <em>FALLS.</em></h2>
-       <p>The void consumed your champion. Your record remains on this device.</p>
-       <div id="endStats" class="end-stats" aria-label="Final score"></div>
-       <button id="retryRun" class="cta" type="button">⚔ RISE AGAIN</button>
-      </div>
-     </div>
-     <div id="touchControls" class="touch-controls" aria-label="Touch gameplay controls">
-      <div id="joystickZone" class="joystick-zone" aria-label="Drag to move"><div class="joystick-base"><div id="joystickKnob" class="joystick-knob"></div></div><span>DRAG TO MOVE</span></div>
-      <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small>DASH</small></button>
+    <div class="pause-footnote">YOUR CURRENT RUN WILL NOT BE SAVED IF YOU LEAVE IT</div>
+   </div>
+  </section>
+
+  <section class="overlay" id="endOverlay" role="dialog" aria-modal="false" aria-label="End of run results" hidden>
+   <div class="overlay-panel defeat-panel">
+    <div class="defeat-sigil" aria-hidden="true">✧</div>
+    <span class="eyebrow">THE CITADEL CLAIMED ANOTHER SOUL</span>
+    <h2>YOUR LEGEND <em>ENDURES.</em></h2>
+    <p>You fell in battle, but your legacy is written into the Hall of Legends.</p>
+    <div id="endStats" class="end-stats" aria-label="Final score and run statistics"></div>
+    <button id="retryRun" class="cta" type="button">⚔ RISE AGAIN</button>
+    <button id="endMenu" class="secondary-action" type="button">⌂ RETURN TO TITLE</button>
+   </div>
+  </section>
+
+  <section class="overlay auxiliary-overlay" id="recordsOverlay" role="dialog" aria-modal="false" aria-label="Hall of Legends" hidden>
+   <div class="overlay-panel auxiliary-panel">
+    <span class="eyebrow">✦ SOVEREIGN ARCHIVES</span>
+    <h2>HALL OF <em>LEGENDS.</em></h2>
+    <p>Every victory is hard-earned. Your best records remain in this browser, even when you return tomorrow.</p>
+    <div class="legacy-record">
+     <div class="record-large"><small>BEST SCORE</small><strong id="recordBest">0</strong></div>
+     <div class="record-milestones">
+      <div><b id="recordWave">0</b><small>BEST WAVE</small></div>
+      <div><b id="recordRuns">0</b><small>RUNS BEGUN</small></div>
+      <div><b id="recordKills">0</b><small>TOTAL DEFEATS</small></div>
      </div>
     </div>
-    <div class="battle-footer">
-     <span><i></i> <b>LOCAL / SINGLE PLAYER</b> · NO ACCOUNTS · NO ADS</span>
-     <span>BUILT FOR iPHONE + PC · AUTO-AIM ENABLED</span>
+    <p class="archive-note">Records are stored only in this game's local browser storage. Clearing app data will erase them. No accounts or cloud sync required.</p>
+    <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
+   </div>
+  </section>
+
+  <section class="overlay auxiliary-overlay" id="guideOverlay" role="dialog" aria-modal="false" aria-label="Survival guide" hidden>
+   <div class="overlay-panel auxiliary-panel">
+    <span class="eyebrow">◇ THE WARDEN'S INITIATION</span>
+    <h2>LEARN TO <em>SURVIVE.</em></h2>
+    <div class="guide-grid">
+     <div><span>01 / MOVE</span><h3>Never stop moving.</h3><p>PC: WASD or Arrow keys. iPhone: drag the joystick on the lower left.</p></div>
+     <div><span>02 / ATTACK</span><h3>Your blades seek prey.</h3><p>Attacks auto-target nearby enemies. On PC you may also hold the mouse to aim.</p></div>
+     <div><span>03 / EVADE</span><h3>Dash through danger.</h3><p>Press Shift on PC or tap the right-hand dash rune on iPhone. Watch its cooldown.</p></div>
+     <div><span>04 / ASCEND</span><h3>Harvest soul energy.</h3><p>Collect glowing orbs to level up, then choose one of three powers. Every fourth wave brings a boss.</p></div>
     </div>
-   </section>
-   <aside class="side-column">
-    <section class="side-card hero-card">
-     <span class="eyebrow">◈ YOUR CHAMPION</span>
-     <div class="hero-avatar" aria-hidden="true"><span>✧</span></div>
-     <h3>THE VOID WARDEN</h3>
-     <p>Wield arcane steel. Evade the darkness. Rise beyond every wave.</p>
-     <div class="hero-attributes"><div><small>POWER</small><strong id="powerStat">18</strong></div><div><small>MOVE SPEED</small><strong id="speedStat">225</strong></div><div><small>ARMOR</small><strong id="armorStat">0%</strong></div></div>
-    </section>
-    <section class="side-card objective-card"><span class="eyebrow">✦ THE NEXT CHALLENGE</span>
-     <h3 id="objectiveTitle">THE VOID MONARCH</h3><p id="objectiveDescription">A boss will emerge on Wave 4. Survive the shadows to confront it.</p>
-     <div class="boss-progress"><span id="bossWaveHint">BOSS AT WAVE 4</span><div class="meter"><div id="waveProgress"></div></div></div>
-    </section>
-    <section class="side-card upgrades-card"><div class="side-heading"><span class="eyebrow">✺ SOVEREIGN POWER</span><strong id="upgradeCount">0 UPGRADES</strong></div>
-     <div id="buildList" class="build-list"><p>Earn soul energy in combat to unlock powers.</p></div>
-    </section>
-    <section class="side-card help-card"><span class="eyebrow">✧ HOW TO SURVIVE</span>
-     <p>Move to stay out of reach. Your blades automatically seek the nearest enemy. Pick up glowing soul orbs for upgrades. Dash through danger, then challenge the boss.</p>
-     <div class="help-controls"><span>PC <b>WASD / ARROWS</b> MOVE</span><span><b>SHIFT</b> DASH</span><span><b>SPACE / P</b> PAUSE</span><span><b>iPHONE</b> TOUCH JOYSTICK + DASH</span></div>
-    </section>
-   </aside>
+    <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
+   </div>
+  </section>
+
+  <section class="overlay auxiliary-overlay" id="settingsOverlay" role="dialog" aria-modal="false" aria-label="Game settings" hidden>
+   <div class="overlay-panel auxiliary-panel">
+    <span class="eyebrow">⚙ CONTROL THE BATTLEFIELD</span>
+    <h2>GAME <em>SETTINGS.</em></h2>
+    <div class="settings-list">
+     <div><span><b>GAME AUDIO</b><small>Original synthesized combat effects. Off by default.</small></span><button id="soundToggle" type="button" aria-pressed="false">♪ Sound Off</button></div>
+     <div><span><b>VISUAL QUALITY</b><small>Auto selects lower effects on mobile; Eco reduces glow.</small></span><button id="qualityToggle" type="button">◈ Auto</button></div>
+     <div><span><b>FULLSCREEN</b><small>Uses your browser's fullscreen support when available.</small></span><button id="fullscreenToggle" type="button">⛶ Fullscreen</button></div>
+    </div>
+    <p class="archive-note">On iPhone, add the game to your Home Screen for a more app-like display. Your existing PROXIMUS entertainment app remains separate.</p>
+    <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
+   </div>
+  </section>
+
+  <section class="overlay auxiliary-overlay" id="warbookOverlay" role="dialog" aria-modal="false" aria-label="Warden's Codex" hidden>
+   <div class="overlay-panel auxiliary-panel warbook-panel">
+    <span class="eyebrow">◈ THE WARDEN'S CODEX</span>
+    <h2>YOUR <em>WARPATH.</em></h2>
+    <div class="warbook-grid">
+     <section class="side-card hero-card"><span class="eyebrow">YOUR CHAMPION</span>
+      <div class="hero-avatar" aria-hidden="true"><span>✧</span></div><h3>THE VOID WARDEN</h3>
+      <div class="hero-attributes">
+       <div><small>POWER</small><strong id="powerStat">18</strong></div>
+       <div><small>MOVE SPEED</small><strong id="speedStat">225</strong></div>
+       <div><small>ARMOR</small><strong id="armorStat">0%</strong></div>
+      </div>
+     </section>
+     <section class="side-card objective-card"><span class="eyebrow">THE NEXT CHALLENGE</span>
+      <h3 id="objectiveTitle">THE VOID MONARCH</h3>
+      <p id="objectiveDescription">A boss emerges every fourth wave.</p>
+      <div class="boss-progress"><span id="bossWaveHint">BOSS AT WAVE 4</span><div class="meter"><div id="waveProgress"></div></div></div>
+     </section>
+     <section class="side-card upgrades-card"><div class="side-heading"><span class="eyebrow">YOUR POWERS</span><strong id="upgradeCount">0 UPGRADES</strong></div>
+      <div id="buildList" class="build-list"><p>Collect soul energy to earn your first power.</p></div>
+     </section>
+    </div>
+    <button class="cta auxBack" type="button">← RETURN TO PAUSED GAME</button>
+   </div>
+  </section>
+
+  <div id="touchControls" class="touch-controls" aria-label="Touch movement and dash controls" hidden>
+   <div id="joystickZone" class="joystick-zone" aria-label="Drag to move">
+    <div class="joystick-base"><div id="joystickKnob" class="joystick-knob"></div></div>
+    <span>MOVE</span>
+   </div>
+   <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small>DASH</small></button>
   </div>
+  <div class="warbound-credit" aria-hidden="true">POWERED BY ZEVRO <span>✧</span> PROXIMUS ARCHIVES</div>
  </main>
- <footer>POWERED BY ZEVRO | PROXIMUS ARCHIVES <span>• ORIGINAL SINGLE-PLAYER GAME • OFFLINE-READY</span></footer>
 </div>
 <script type="module" src="./game.js"></script>
 </body></html>

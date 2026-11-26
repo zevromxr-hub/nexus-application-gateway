@@ -84,9 +84,34 @@ assert.ok(game.includes("zone.addEventListener('pointerdown'"));
 assert.ok(game.includes("document.addEventListener('visibilitychange'"));
 assert.ok(game.includes("register('./sw.js'"));
 assert.ok(css.includes('@media(pointer:coarse)'));
+const warbound=read('warbound-v1.1.css');
+assert.ok(warbound.includes('height:100dvh'),'Game must fill the mobile viewport');
+assert.ok(warbound.includes('warbound-scene.svg'),'Main menu must show original cinematic artwork');
+assert.ok(warbound.includes('[data-game-view="menu"]'),'Different overlays must have appropriate HUD visibility');
+assert.ok(!html.includes('class="side-column"'),'Tools sidebar must not appear during actual game');
+assert.ok(!html.includes('class="intro"'),'The main game should not begin with an app dashboard');
+for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guideOverlay',
+ 'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
+ assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
+const current=JSON.parse(read('version.json'));
+assert.equal(current.version,'1.1.0');
+assert.equal(current.previous_version,'1.0.0');
+assert.equal(current.codename,'WARBOUND INTERFACE');
+assert.ok(game.includes('function openAux('));
+assert.ok(game.includes('document.body.dataset.gameView=mode'));
+assert.ok(game.includes('auxReturn'));
+assert.ok(game.includes('maxPixels=quality'));
+assert.ok(read('renderer.js').includes("e.shoot<.8"),'Monarch warning must be drawn before attack');
+assert.ok(read('index.html').includes('warbound-v1.1.css'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — WARBOUND v1.1'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-warbound-v1.1'));
+for(const file of ['warbound-v1.1.css','warbound-scene.svg']){
+ assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
+ assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
+}
 assert.ok(css.includes('safe-area')||html.includes('viewport-fit=cover'));
 for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','manifest.webmanifest','icon.svg'])
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival: seeded waves, playable combat, dash, XP, ranks, boss, defeat, touch UI, original local PWA');
+console.log('PASS Sovereign Survival Warbound v1.1: full screen cinema, menu pages, original combat, boss warnings, local storage and PWA isolation');
