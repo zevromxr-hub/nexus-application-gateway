@@ -32,14 +32,15 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#guideOverlay .auxBack').click();
   await page.locator('#menuSettings').click();
   assert.equal(await page.locator('#settingsOverlay').isVisible(),true);
-  assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));  await page.locator('#settingsOverlay .auxBack').click();
+  await page.locator('#qualityToggle').click();
+  assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));
+  await page.locator('#settingsOverlay .auxBack').click();
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
   await page.locator('#startRun').click();
   assert.equal(await page.locator('#menuOverlay').isVisible(),false);
   assert.equal(await page.locator('#waveText').textContent(),'01');
   await page.waitForTimeout(550);
   assert.ok((await page.locator('#stageLabel').textContent()).includes('WAVE 1'));
-  await page.locator('#qualityToggle').click();
   assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));
   if(mobile){
    assert.equal(await page.locator('#joystickZone').isVisible(),true);
