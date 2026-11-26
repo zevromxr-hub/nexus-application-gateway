@@ -1,0 +1,20 @@
+{
+  "brand": "PROXIMUS",
+  "product": "SOVEREIGN SURVIVAL",
+  "version": "1.0.0",
+  "codename": "GENESIS",
+  "channel": "stable",
+  "release_date": "2026-11-26",
+  "mode": "standalone single-player offline-ready PWA",
+  "studio_count": 1,
+  "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
+  "features": [
+    "Canvas2D original fantasy combat arena",
+    "iPhone joystick and dash; PC keyboard/mouse",
+    "endless waves with wraith, stalker, brute and Void Monarch boss every four waves",
+    "eight upgrade paths and level-up choices",
+    "soul pickups, combo, score and local highscore",
+    "original sound synth opt-in, pause and offline-ready PWA"
+  ],
+  "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files."
+}

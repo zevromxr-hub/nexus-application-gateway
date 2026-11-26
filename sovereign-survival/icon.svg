@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Sovereign Survival rune icon"><defs>
+<radialGradient id="bg" cx=".35" cy=".22" r=".94"><stop stop-color="#483073"/><stop offset=".55" stop-color="#16132d"/><stop offset="1" stop-color="#080e1d"/></radialGradient>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4e3ff"/><stop offset=".5" stop-color="#bba0ff"/><stop offset="1" stop-color="#72e7f1"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="14"/></filter></defs>
+<rect width="512" height="512" rx="112" fill="url(#bg)"/>
+<circle cx="256" cy="254" r="180" fill="none" stroke="#a78cfa" stroke-opacity=".42" stroke-width="8"/>
+<circle cx="256" cy="254" r="158" fill="none" stroke="#7fe1f2" stroke-opacity=".22" stroke-width="3"/>
+<path d="M256 64 L278 187 L373 140 L318 230 L446 256 L318 282 L373 373 L278 325 L256 448 L234 325 L140 373 L192 282 L66 256 L192 230 L140 140 L234 187 Z" fill="#a46aff" opacity=".44" filter="url(#glow)"/>
+<path d="M256 95 L285 215 L365 152 L309 243 L412 256 L309 269 L365 360 L285 297 L256 417 L227 297 L147 360 L203 269 L100 256 L203 243 L147 152 L227 215 Z" fill="none" stroke="url(#metal)" stroke-width="12" stroke-linejoin="round"/>
+<path d="M256 173 L278 236 L340 256 L278 277 L256 339 L234 277 L172 256 L234 236 Z" fill="url(#metal)" stroke="#fff4" stroke-width="5"/>
+<circle cx="256" cy="256" r="21" fill="#fff0fd"/>
+</svg>
