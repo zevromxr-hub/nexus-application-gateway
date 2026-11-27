@@ -50,6 +50,14 @@ body.warbound .relic-card .blueprint-status{display:block;margin-top:7px;
 body.warbound .relic-card.blueprint-locked{border-color:#dba5a55c}
 body.warbound .bestiary-entry .foe-icon.tyrant{color:#cbb3ff;text-shadow:0 0 11px #8658ea}
 body.warbound .record-milestones{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* On narrow iPhones, a boss takes precedence over quest text. Keep the
+   objective and progress visible without covering the centered boss bar. */
+@media(max-width:680px){
+ body.warbound[data-boss="true"] .expedition-hud{top:clamp(250px,30vh,275px);
+  padding-top:6px;padding-bottom:6px}
+ body.warbound[data-boss="true"] .expedition-hud p{display:none}
+ body.warbound[data-boss="true"] .expedition-hud-progress{margin-top:6px}
+}
 body.warbound .arena-boss[data-phase="2"]{border-color:#f8cbf6;
  box-shadow:0 0 24px #a75aff38,0 12px 33px #000b}
 @media(max-width:680px){

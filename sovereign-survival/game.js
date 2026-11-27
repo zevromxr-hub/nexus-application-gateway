@@ -385,6 +385,7 @@ function updateHud(){
  $('speedStat').textContent=p.speed;
  $('armorStat').textContent=Math.round(p.damageReduction*100)+'%';
  const boss=game.enemies.find(isBoss);
+ document.body.dataset.boss=String(Boolean(boss));
  $('bossBar').hidden=!boss;
  $('bossBar').dataset.phase=String(boss?.bossPhase||1);
  if(boss){
