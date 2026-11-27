@@ -128,12 +128,18 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#relicSlots').textContent(),'2 / 2 EQUIPPED');
   assert.equal(await page.locator('#armoryRenown').textContent(),'190');
   assert.equal(await page.locator('.relic-card.equipped').count(),2);
-  assert.equal(await page.locator('.relic-card').nth(2).locator('.armory-action').isDisabled(),true);
+  // Slot capacity prevents EQUIPPING more than two relics, not FORGING more.
+  const third=page.locator('.relic-card').nth(2).locator('.armory-action');
+  assert.equal(await third.isDisabled(),false,'A third relic may still be forged');
+  await third.click(); // Phantom Spurs (80), now owned
+  assert.equal(await page.locator('#armoryRenown').textContent(),'110');
+  assert.equal(await page.locator('.relic-card').nth(2).locator('.armory-action').isDisabled(),
+   true,'Third forged relic cannot be equipped until a slot is freed');
   await page.locator('#armoryOverlay .auxBack').click();
   assert.ok((await page.locator('#menuLoadout').textContent()).includes('FROST SENTINEL'));
   await page.reload({waitUntil:'domcontentloaded'});
   await page.locator('#menuArmory').click();
-  assert.equal(await page.locator('#armoryRenown').textContent(),'190');
+  assert.equal(await page.locator('#armoryRenown').textContent(),'110');
   assert.equal(await page.locator('.champion-card.frost.selected').count(),1);
   assert.equal(await page.locator('.relic-card.equipped').count(),2);
   await page.locator('#armoryOverlay .auxBack').click();
