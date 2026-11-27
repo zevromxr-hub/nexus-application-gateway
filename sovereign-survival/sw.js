@@ -1,6 +1,6 @@
 /* SOVEREIGN SURVIVAL Character Ascension — static application shell only, never personal content. */
-const CACHE='proximus-sovereign-survival-vanguard-v1.8';
-const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./ascension-v1.7.css','./vanguard-v1.8.css','./legacy.js','./progression.js','./warbound-scene.svg','./game.js','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
+const CACHE='proximus-sovereign-survival-vanguard-v1.8.1';
+const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./ascension-v1.7.css','./vanguard-v1.8.css','./touchfix-v1.8.1.css','./legacy.js','./progression.js','./warbound-scene.svg','./game.js','./game.js?v=1.8.1','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'})))).then(()=>self.skipWaiting()));
 });

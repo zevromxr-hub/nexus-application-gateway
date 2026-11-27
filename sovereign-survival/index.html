@@ -19,7 +19,8 @@
 <link rel="stylesheet" href="./legacy-v1.6.css">
 <link rel="stylesheet" href="./ascension-v1.7.css">
 <link rel="stylesheet" href="./vanguard-v1.8.css">
-<title>SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8 | PROXIMUS</title>
+<link rel="stylesheet" href="./touchfix-v1.8.1.css">
+<title>SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8.1 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
@@ -33,7 +34,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">VANGUARD <b>v1.8</b></span>
+    <span class="build-version">VANGUARD <b>v1.8.1</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -319,11 +320,13 @@
     <div class="joystick-base"><div id="joystickKnob" class="joystick-knob"></div></div>
     <span>MOVE</span>
    </div>
+   <div class="combat-actions" id="combatActions">
    <button id="abilityButton" type="button" class="ability-button" aria-label="Cast champion active ability"><span id="abilityTouchIcon">✧</span><small id="abilityTouchStatus">POWER</small></button>
    <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small id="dashTouchStatus">DASH</small></button>
+   </div>
   </div>
   <div class="warbound-credit" aria-hidden="true">POWERED BY ZEVRO <span>✧</span> PROXIMUS ARCHIVES</div>
  </main>
 </div>
-<script type="module" src="./game.js"></script>
+<script type="module" src="./game.js?v=1.8.1"></script>
 </body></html>

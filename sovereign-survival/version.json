@@ -1,7 +1,7 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "codename": "MOBILE VANGUARD",
   "channel": "stable",
   "release_date": "2026-11-27",
@@ -9,6 +9,7 @@
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
+    "Mobile control hotfix: disjoint grid regions for joystick and right-hand combat buttons, touch/pointer/click fallback with cooldown deduplication, versioned entry module.",
     "Dash works from rest and locks a direction for the full burst; analog movement, multi-touch combat buttons, cooldown rings, safe-area aware portrait/landscape HUD, scrollable menus and reduced mobile rendering workload.",
     "Unique true Canvas2D weapon silhouettes for each actual playable champion: Void Warden wields twin curved crescent sickles, Frost Sentinel a crystalline glaive with shield, and Ember Reaver a broad cleaver with offhand fire dagger.",
     "Earn champion mastery by casting signature abilities three times during the same run. Third cast awakens a stronger combat form: Warden SUPERNOVA gains radius, knockback and damage; Sentinel ETERNAL WINTER gains barrier duration, freeze reach and 12 HP restoration; Reaver DRAGONFIRE gains a stronger wider slash and extended burning. Mastered casts have shorter cooldowns.",
@@ -19,5 +20,5 @@
     "Retains the complete v1.6 Armory, relics, achievements, cosmetics, rare shards, 3 champion abilities, weapon evolutions, v1.5 realm quests, phased bosses, saved records, independent offline PWA and PROXIMUS media."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.7.0"
+  "previous_version": "1.8.0"
 }

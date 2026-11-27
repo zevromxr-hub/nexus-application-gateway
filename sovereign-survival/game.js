@@ -50,7 +50,7 @@ function renderRecords(){
  $('recordRenown').textContent=progression.lifetimeRenown.toLocaleString();
 }
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
-const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
+const coarse=matchMedia('(pointer:coarse)').matches||matchMedia('(any-pointer:coarse)').matches||navigator.maxTouchPoints>0||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
 const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 document.body.classList.toggle('touch-device',coarse);
@@ -160,7 +160,7 @@ function handleEvents(){
   else if(ev.type==='aegisBlock'){sound('aegisBlock')}
   else if(ev.type==='bossEntrance'){sound('bossEntrance')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
-  else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type);if(ev.type==='dash')updateHud()}
+  else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type);if(ev.type==='dash'){frame.dataset.dashes=String(Number(frame.dataset.dashes||0)+1);updateHud()}}
   else if(['fire','bossAttack','upgrade','hexAttack','charge'].includes(ev.type))sound(ev.type);
  }
 }
@@ -457,7 +457,7 @@ function startRun(){
  game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,
   {...loadout,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
  records.runs++;persist();renderRecords();
- mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
+ mode='playing';frame.dataset.dashes='0';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
  lastTime=performance.now();lastHud=0;buildLoadout();setOverlay();updateHud();
  refreshCodexChampion();
@@ -514,7 +514,8 @@ function updateHud(){
  $('comboText').textContent=game.combo>1?'✦ '+game.combo+'× COMBO':'✧ BUILD YOUR COMBO';
  $('dashText').textContent=p.dashCooldown<=0?'➤ DASH READY':'➤ '+p.dashCooldown.toFixed(1)+'S';
  const dashReady=p.dashCooldown<=0;
- $('dashButton').disabled=!dashReady||mode!=='playing'||game.phase!=='running';
+ $('dashButton').disabled=mode!=='playing'||game.phase!=='running';
+ $('dashButton').setAttribute('aria-disabled',String(!dashReady));
  $('dashButton').style.setProperty('--charge',Math.min(1,Math.max(0,1-p.dashCooldown/p.dashBase))*100+'%');
  $('dashTouchStatus').textContent=dashReady?'DASH':p.dashCooldown.toFixed(1)+'s';
  const ability=ABILITIES[p.champion]||ABILITIES.warden;
@@ -623,8 +624,8 @@ function loop(now){
  if(!ctx)return;
  const dt=Math.min(.045,Math.max(0,(now-lastTime)/1000));lastTime=now;
  if(document.hidden)return;
- if(mode==='playing'&&game.phase==='running'){
-  advance(game,input(),dt);handleEvents();
+ if(mode==='playing'&&game.phase==='running'&&dt>0){
+   advance(game,input(),dt);handleEvents();
   if(game.phase==='upgrade')setOverlay();
  }
  const active=mode==='playing'&&game.phase==='running';
@@ -658,17 +659,24 @@ $('retryRun').addEventListener('click',startRun);
 $('resumeRun').addEventListener('click',pause);
 $('abandonRun').addEventListener('click',startRun);
 $('pauseButton').addEventListener('click',pause);
-function bindCombatButton(id,queue){
+function bindCombatButton(id,cooldown,queue){
  const button=$(id);
- const trigger=()=>{if(mode==='playing'&&game.phase==='running'&&!button.disabled)queue()};
+ let lastAccepted=-Infinity;
+ function trigger(e){
+  if(e.cancelable)e.preventDefault();
+  const now=performance.now();
+  if(mode!=='playing'||game.phase!=='running'||game.player[cooldown]>0||now-lastAccepted<350)return;
+  lastAccepted=now;queue();
+ }
+ button.addEventListener('touchstart',trigger,{passive:false});
  button.addEventListener('pointerdown',e=>{
-  if(e.button!==0)return;
-  e.preventDefault();trigger();
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  trigger(e);
  });
- button.addEventListener('click',e=>{if(e.detail===0)trigger()});
+ button.addEventListener('click',trigger);
 }
-bindCombatButton('dashButton',()=>{dashQueued=true});
-bindCombatButton('abilityButton',()=>{abilityQueued=true});
+bindCombatButton('dashButton','dashCooldown',()=>{dashQueued=true});
+bindCombatButton('abilityButton','abilityCooldown',()=>{abilityQueued=true});
 $('soundToggle').addEventListener('click',async()=>{
  if(soundOn){soundOn=false;$('soundToggle').textContent='♪ Sound Off';$('soundToggle').setAttribute('aria-pressed','false');return}
  const Audio=window.AudioContext||window.webkitAudioContext;
@@ -734,4 +742,4 @@ window.visualViewport?.addEventListener('resize',resize,{passive:true});
 if(typeof ResizeObserver==='function')new ResizeObserver(()=>resize()).observe(frame);
 renderRecords();refreshMenuLoadout();buildLoadout();refreshCodexChampion();setOverlay();resize();updateHud();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
 requestAnimationFrame(loop);
-if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./',updateViaCache:'none'}).catch(()=>{});

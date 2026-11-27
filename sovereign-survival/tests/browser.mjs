@@ -102,15 +102,27 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
    assert.equal(await page.locator('#joystickZone').isVisible(),true);
    assert.equal(await page.locator('#abilityButton').isVisible(),true,
     'iPhone must expose an accessible active-ability control');
-   await page.locator('#abilityButton').click();
-   await page.locator('#dashButton').click();
+   await page.locator('#abilityButton').tap();
+   for(const size of [{width:320,height:640},{width:390,height:844},{width:844,height:390},{width:390,height:844}]){
+     await page.setViewportSize(size);
+     const layout=await page.evaluate(()=>{
+      const j=document.querySelector('#joystickZone').getBoundingClientRect();
+      const a=document.querySelector('#abilityButton').getBoundingClientRect();
+      const d=document.querySelector('#dashButton').getBoundingClientRect();
+      const hit=(r,id)=>!!document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('#'+id);
+      return {separated:j.right<=a.left&&a.right<=d.left,inside:d.right<=innerWidth&&d.bottom<=innerHeight,hit:hit(d,'dashButton')&&hit(a,'abilityButton')&&hit(j,'joystickZone')};
+     });
+     assert.ok(layout.separated&&layout.inside&&layout.hit,JSON.stringify({size,layout}));
+    }
+    await page.locator('#dashButton').tap();
   }else{
    await page.keyboard.press('q');
    await page.keyboard.down('d');await page.waitForTimeout(280);await page.keyboard.up('d');
    await page.keyboard.press('Shift');
   }
   await page.waitForFunction(()=>!document.querySelector('#dashText')?.textContent.includes('READY'));
-   assert.equal(await page.locator('#dashButton').isDisabled(),true,'Stationary dash must activate and recharge');
+   assert.equal(await page.locator('#dashButton').getAttribute('aria-disabled'),'true','Stationary dash must activate and recharge');
+   assert.equal(await page.locator('#gameFrame').getAttribute('data-dashes'),'1','Exactly one real dash event must be emitted');
    await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
   assert.notEqual(await page.locator('#abilityStatus').textContent(),'READY');
   assert.equal(await page.locator('#masteryLabel').textContent(),'MASTERY 1 / 3',

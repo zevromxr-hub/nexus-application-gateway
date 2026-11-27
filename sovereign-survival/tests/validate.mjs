@@ -636,6 +636,9 @@ assert.ok(game.includes("window.addEventListener('keydown'"));
 assert.ok(game.includes("zone.addEventListener('pointerdown'"));
 assert.ok(game.includes("document.addEventListener('visibilitychange'"));
 assert.ok(game.includes("register('./sw.js'"));
+assert.ok(html.includes('game.js?v=1.8.1')&&worker.includes('game.js?v=1.8.1'));
+assert.ok(html.includes('id="combatActions"')&&read('touchfix-v1.8.1.css').includes('grid-template-columns'));
+assert.ok(game.includes("addEventListener('touchstart',trigger")&&game.includes("addEventListener('click',trigger"));
 assert.ok(css.includes('@media(pointer:coarse)'));
 const warbound=read('warbound-v1.1.css');
 assert.ok(warbound.includes('height:100dvh'),'Game must fill the mobile viewport');
@@ -647,8 +650,8 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.8.0');
-assert.equal(current.previous_version,'1.7.0');
+assert.equal(current.version,'1.8.1');
+assert.equal(current.previous_version,'1.8.0');
 assert.equal(current.codename,'MOBILE VANGUARD');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
@@ -660,7 +663,7 @@ assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual render
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
 assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-vanguard-v1.8'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-vanguard-v1.8.1'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
