@@ -28,7 +28,7 @@ body.warbound .touch-controls .ability-button{position:absolute;right:94px;botto
  gap:2px;border:2px solid #d6b0ffbf;border-radius:50%;color:#fff2ff;
  background:radial-gradient(circle at 35% 25%,#7e5796dc,#302049eb 67%,#13152eee);
  box-shadow:0 0 22px #a775df4b,inset 0 0 18px #a97de342;
- touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:11}
+ touch-action:manipulation;pointer-events:auto;-webkit-tap-highlight-color:transparent;z-index:11}
 body.warbound .touch-controls .ability-button span{font-family:Georgia,serif;font-size:35px;
  line-height:1;text-shadow:0 0 15px #e0b2ff}
 body.warbound .touch-controls .ability-button small{font-size:9px;letter-spacing:.12em;font-weight:950;color:#f8deff}
