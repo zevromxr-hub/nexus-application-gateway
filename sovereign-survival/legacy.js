@@ -4,7 +4,7 @@
  */
 export const LEGACY_KEY='proximus-sovereign-survival-legacy-v1';
 export const ACHIEVEMENTS=Object.freeze([
- {id:'first-blood',icon:'⚔',name:'NIGHT'S FIRST HUNTER',description:'Defeat 40 shadows across completed runs.',
+ {id:'first-blood',icon:'⚔',name:"NIGHT'S FIRST HUNTER",description:'Defeat 40 shadows across completed runs.',
   stat:'kills',target:40},
  {id:'survivor',icon:'✦',name:'CITADEL VETERAN',description:'Reach Wave 4 in a completed run.',
   stat:'bestWave',target:4},
