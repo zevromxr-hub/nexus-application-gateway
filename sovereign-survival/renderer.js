@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.5 REALM EXPEDITIONS — combat objects, portals, shrines and bosses.
+/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY — layered champion armor, combat poses and rare regalia.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
 import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js';
@@ -153,63 +153,176 @@ function enemy(c,e,s,quality){
  }
  c.restore();
 }
-function hero(c,p,s,quality){
- const t=s.time,r=16;
+function hero(c,p,s,quality='low',portrait=false){
  const frost=p.champion==='sentinel',ember=p.champion==='reaver';
- const aura=frost?'rgba(109,222,255,.21)':ember?'rgba(250,126,75,.22)':'rgba(166,97,245,.12)';
- const edge=frost?'#88e8fa':ember?'#fcb574':'#9b69df';
- const metal=frost?'#c8f2ff':ember?'#f9c1a0':'#c3a4ef';
- const mantle=frost?'#16364a':ember?'#482333':'#23143c';
+ const crowned=p.modelStyle==='crowned',eclipse=p.modelStyle==='eclipse';
+ const accent=frost?'#9ce9f5':ember?'#ffab69':'#bd92ff';
+ const edge=crowned?'#fff1bd':eclipse?'#b58be9':frost?'#9defff':ember?'#ffb37e':'#c7a5fd';
+ const metal=crowned?'#f2e5ce':eclipse?'#56547c':frost?'#adcbdc':ember?'#c89b86':'#aaa2c0';
+ const shade=crowned?'#7b6f72':eclipse?'#171a36':frost?'#28495d':ember?'#56353e':'#37304e';
+ const mantle=crowned?'#654e57':eclipse?'#17122d':frost?'#17334f':ember?'#441e2e':'#27183c';
+ const eye=crowned?'#ffecc1':frost?'#ddfcff':ember?'#ffe1a5':'#d9c7ff';
+ const move=clamp(p.moving||0,0,1),dash=p.dashTime>0;
+ const gait=Math.sin((p.stride||0)*1.3)*move,mirror=Math.cos((p.stride||0)*1.3)*move;
+ const swing=clamp(p.attackPulse||0,0,1),breath=Math.sin(s.time*2.4)*1.3;
+ const flare=quality!=='low';
  c.save();c.translate(p.x,p.y);
- if(p.dashTime>0){
-  // Short, inexpensive spectral afterimage for a responsive dash feel.
+ // Contact shadow anchors the character firmly to the arena floor.
+ c.beginPath();c.ellipse(4,21,32,18,0,0,TAU);c.fillStyle='rgba(0,0,0,.53)';c.fill();
+ if(dash){
   const a=p.angle+Math.PI/2;
-  line(c,[[-Math.cos(a)*14,-Math.sin(a)*14],
-   [-Math.cos(a)*76,-Math.sin(a)*76]],'rgba(118,232,255,.38)',16);
+  line(c,[[-Math.cos(a)*20,-Math.sin(a)*20],[-Math.cos(a)*83,-Math.sin(a)*83]],
+    'rgba(144,225,255,.38)',20);
  }
- if(quality!=='low')glow(c,0,0,p.dashTime>0?115:80,p.dashTime>0?'rgba(113,226,255,.22)':aura);
- circle(c,3,16,18,'rgba(0,0,0,.35)');
- const pulse=Math.sin(t*2.6)*2;
- ring(c,0,0,27+pulse,p.dashTime>0?'rgba(132,240,255,.8)':aura,p.dashTime>0?4:2);
+ if(flare)glow(c,0,-7,dash?112:76,
+  crowned?'rgba(255,218,145,.16)':eclipse?'rgba(145,99,244,.19)':
+  frost?'rgba(94,210,255,.14)':ember?'rgba(250,94,61,.15)':'rgba(150,90,245,.15)');
+ ring(c,0,0,30+Math.sin(s.time*2)*1.2,dash?'rgba(129,234,255,.75)':
+  crowned?'rgba(245,215,159,.43)':'rgba(169,139,223,.33)',dash?3:1.6);
  c.rotate(p.angle+Math.PI/2);
- polygon(c,[[-17,5],[-26,22],[0,17],[26,22],[17,5],[0,-14]],mantle,edge);
- polygon(c,[[-15,10],[0,29],[15,10],[0,1]],frost?'#276578':ember?'#8b3939':'#5a326e');
- polygon(c,[[-11,-9],[0,-21],[11,-9],[13,10],[0,13],[-13,10]],metal,'#ffe2a0');
- polygon(c,[[-9,-17],[0,-24],[9,-17],[7,-7],[-7,-7]],'#222136',frost?'#b4f4ff':ember?'#ffb580':'#84e7ef');
- circle(c,-4,-12,2,frost?'#d6ffff':ember?'#ffbd79':'#b8efff');
- circle(c,4,-12,2,frost?'#d6ffff':ember?'#ffbd79':'#b8efff');
- if(frost){
-  // Frost Sentinel's ice spires read clearly from a small mobile camera.
-  polygon(c,[[-20,-8],[-31,-22],[-16,-16]],'#70d8e6','#d7fbff');
-  polygon(c,[[20,-8],[31,-22],[16,-16]],'#70d8e6','#d7fbff');
- }else if(ember){
-  polygon(c,[[-14,13],[-17,24],[-4,14]],'#b65b42','#ffbe78');
-  polygon(c,[[14,13],[17,24],[4,14]],'#b65b42','#ffbe78');
+ // Animated cloak and asymmetrical cloth at the back create a strong silhouette.
+ const capeWave=Math.sin(s.time*2.5+gait)*4+(dash?9:0);
+ polygon(c,[[-19,-18],[-31,4],[-36,31],[-24,40+capeWave],[-5,32],
+  [5,33],[24,40-capeWave],[36,31],[31,4],[19,-18]],
+  mantle,edge);
+ polygon(c,[[-15,6],[-28,39+capeWave],[-13,35],[-4,13]],
+  eclipse?'#46345e':crowned?'#aa7283':frost?'#225879':ember?'#8d3a48':'#5e3d86');
+ polygon(c,[[15,6],[28,39-capeWave],[13,35],[4,13]],
+  eclipse?'#352959':crowned?'#b68e77':frost?'#2a587b':ember?'#79313e':'#45316b');
+ // Gait is visible even at phone dimensions; two independently moving greaves.
+ for(const side of [-1,1]){
+  const step=side*gait*5,heel=side*mirror*3;
+  polygon(c,[[side*6,11],[side*19,13],[side*20+heel,32+step],
+   [side*12+heel,39+step],[side*5,26]],shade,metal);
+  polygon(c,[[side*10+heel,26+step],[side*21+heel,29+step],
+   [side*24+heel,43+step],[side*10+heel,44+step]],metal,edge);
+  line(c,[[side*12+heel,34+step],[side*21+heel,35+step]],edge,1.5);
  }
- // Twin blades mounted on the gauntlets; a brief attack arc tracks fire cadence.
- line(c,[[-12,0],[-25,-24],[-23,-39]],frost?'#bdf8ff':ember?'#ffb16c':'#b2e8fb',3.6);
- line(c,[[12,0],[25,-24],[23,-39]],frost?'#d0f8ff':ember?'#ffd19d':'#d8affc',3.6);
- const slash=clamp(1-p.fireCooldown/p.rate,0,1);
- if(slash<.42){
-  c.beginPath();c.arc(0,-16,46,-Math.PI*.87,-Math.PI*.23);
-  c.strokeStyle='rgba(185,226,255,'+((.42-slash)*1.7)+')';
-  c.lineWidth=3;c.stroke();
+ // Outer pauldrons are heavy armor, rather than a flat triangle.
+ polygon(c,[[-21,-19],[-32,-24],[-41,-7],[-34,7],[-22,12],[-15,-2]],shade,edge);
+ polygon(c,[[21,-19],[32,-24],[41,-7],[34,7],[22,12],[15,-2]],shade,edge);
+ polygon(c,[[-23,-17],[-33,-17],[-35,-8],[-25,3]],metal,edge);
+ polygon(c,[[23,-17],[33,-17],[35,-8],[25,3]],metal,edge);
+ if(frost){
+  polygon(c,[[-34,-19],[-44,-40],[-29,-30],[-25,-9]],'#72b9d2','#e6ffff');
+  polygon(c,[[34,-19],[44,-40],[29,-30],[25,-9]],'#72b9d2','#e6ffff');
+ }else if(ember){
+  polygon(c,[[-33,-20],[-47,-31],[-40,-11],[-32,-4]],'#9e3937','#ffc07a');
+  polygon(c,[[33,-20],[47,-31],[40,-11],[32,-4]],'#9e3937','#ffc07a');
+ }else{
+  polygon(c,[[-30,-24],[-39,-32],[-27,-29]],'#503479',edge);
+  polygon(c,[[30,-24],[39,-32],[27,-29]],'#503479',edge);
+ }
+ // Segmented cuirass, chest sigil and carved waist plates.
+ polygon(c,[[-22,-20],[0,-29],[22,-20],[24,7],[14,25],[-14,25],[-24,7]],
+   '#171c2f',edge);
+ polygon(c,[[-19,-14],[0,-22],[19,-14],[17,5],[0,14],[-17,5]],metal,edge);
+ polygon(c,[[-17,-7],[0,-14],[17,-7],[14,4],[0,12],[-14,4]],
+   shade,edge);
+ polygon(c,[[-19,13],[0,19],[19,13],[16,29],[0,25],[-16,29]],shade,metal);
+ line(c,[[-18,11],[18,11]],edge,3);
+ circle(c,0,15,5,crowned?'#ffe9a9':accent);
+ polygon(c,[[0,-14],[8,-4],[0,8],[-8,-4]],accent,'#fff1d8');
+ circle(c,0,-4,3,'#fff6e9');
+ // A readable helmet with cheek guards, a visor and two sharp eye lenses.
+ polygon(c,[[-18,-29],[-13,-43],[0,-51],[13,-43],[18,-29],
+  [14,-12],[0,-9],[-14,-12]],
+  shade,edge);
+ polygon(c,[[-11,-39],[0,-48],[11,-39],[9,-28],[0,-33],[-9,-28]],
+   metal,edge);
+ polygon(c,[[-16,-25],[-7,-21],[-3,-17],[-12,-15]],shade,metal);
+ polygon(c,[[16,-25],[7,-21],[3,-17],[12,-15]],shade,metal);
+ polygon(c,[[-11,-31],[-3,-28],[-3,-24],[-13,-26]],eye);
+ polygon(c,[[11,-31],[3,-28],[3,-24],[13,-26]],eye);
+ polygon(c,[[0,-43],[5,-35],[0,-21],[-5,-35]],crowned?'#ffeb9a':accent);
+ if(crowned){
+  polygon(c,[[-19,-42],[-25,-62],[-9,-52],[0,-70],[9,-52],[25,-62],[19,-42]],
+   '#bda26d','#fff2c1');
+  for(const x of [-17,0,17])circle(c,x,x===0?-56:-49,2.6,'#fff5d0');
+ }else if(eclipse){
+  polygon(c,[[-18,-42],[-25,-57],[-8,-48],[0,-60],[8,-48],[25,-57],[18,-42]],
+   '#3c2b5d','#cba1ff');
+ }else if(frost){
+  polygon(c,[[-15,-44],[-30,-60],[-15,-54]],'#78deef','#edffff');
+  polygon(c,[[15,-44],[30,-60],[15,-54]],'#78deef','#edffff');
+ }else if(ember){
+  polygon(c,[[0,-48],[9,-65],[13,-49]],'#ff936a','#ffe1a0');
+  polygon(c,[[-14,-42],[-25,-53],[-17,-36]],'#a95948','#ffbd83');
+ }else{
+  polygon(c,[[-17,-42],[-20,-53],[-9,-46]],'#412b66',edge);
+  polygon(c,[[17,-42],[20,-53],[9,-46]],'#412b66',edge);
+ }
+ // The original tiny strokes become genuine articulated hands and swords.
+ for(const side of [-1,1]){
+  const armSwing=side*(swing*15)+(side*gait*3);
+  c.save();c.translate(side*27,-3);c.rotate(side*(.13+gait*.10+swing*.23));
+  polygon(c,[[side*-4,-5],[side*7,-11],[side*11,7+armSwing*.08],
+   [side*4,15+armSwing*.08],[side*-8,9]],shade,edge);
+  polygon(c,[[side*-3,8],[side*8,6],[side*12,17],[side*1,22]],metal,edge);
+  line(c,[[side*4,14],[side*4,-28]],'#231b38',8);
+  line(c,[[side*4,14],[side*4,-34]],edge,3);
+  polygon(c,[[side*4,-59],[side*9,-30],[side*4,-18],[side*-1,-30]],
+   frost?'#b9f4ff':ember?'#ffa76d':crowned?'#ffe7b1':'#b4abfb',edge);
+  polygon(c,[[side*4,-58],[side*6,-35],[side*4,-24]],'#f8fbff');
+  line(c,[[side*-6,-17],[side*14,-17]],edge,4);
+  circle(c,side*4,-17,4,crowned?'#ffe6a9':accent);
+  c.restore();
+ }
+ if(swing>.05){
+  const opacity=Math.min(.88,swing*.82);
+  c.beginPath();c.arc(0,-14,54,-Math.PI*.97,-Math.PI*.13);
+  c.strokeStyle=crowned?'rgba(255,225,156,'+opacity+')':
+   frost?'rgba(162,242,255,'+opacity+')':
+   ember?'rgba(255,165,106,'+opacity+')':'rgba(209,157,255,'+opacity+')';
+  c.lineWidth=3.5+swing*6;c.stroke();
+ }
+ // Visual rank crest and mantle highlights in the rarer outfits.
+ if(eclipse||crowned){
+  const col=crowned?'rgba(255,234,166,.9)':'rgba(200,148,255,.9)';
+  ring(c,0,-2,28,col,1.5);
+  for(const side of [-1,1])line(c,[[side*30,15],[side*30,26+gait*2]],col,2);
  }
  c.restore();
  if(p.barrierTime>0){
   const shimmer=.58+.18*Math.sin(s.time*6);
-  ring(c,p.x,p.y,41+Math.sin(s.time*5)*2,'rgba(153,245,255,'+shimmer+')',4);
-  ring(c,p.x,p.y,49,'rgba(184,246,255,.22)',2);
-  if(quality!=='low')glow(c,p.x,p.y,70,'rgba(101,228,251,.12)');
+  ring(c,p.x,p.y,47+Math.sin(s.time*5)*2,'rgba(153,245,255,'+shimmer+')',4);
+  ring(c,p.x,p.y,54,'rgba(184,246,255,.22)',2);
+  if(flare)glow(c,p.x,p.y,82,'rgba(101,228,251,.12)');
  }
- if(s.evolutions?.ward&&p.aegisCooldown<=0){
-  ring(c,p.x,p.y,30,'rgba(255,217,166,.5)',2);
+ if(s.evolutions?.ward&&p.aegisCooldown<=0)
+  ring(c,p.x,p.y,39,'rgba(255,217,166,.5)',2);
+ if(p.invulnerable>0)
+  ring(c,p.x,p.y,40+Math.min(1,p.invulnerable)*10,'rgba(123,239,255,.65)',2.6);
+ if(!portrait&&p.hp<p.maxHp){
+  c.fillStyle='#141022';c.fillRect(p.x-27,p.y-74,54,6);
+  c.fillStyle='#70f2b5';c.fillRect(p.x-27,p.y-74,54*clamp(p.hp/p.maxHp,0,1),6);
  }
- if(p.invulnerable>0)ring(c,p.x,p.y,22+Math.min(1,p.invulnerable)*12,'rgba(123,239,255,.7)',3);
- if(p.hp<p.maxHp){
-  c.fillStyle='#141022';c.fillRect(p.x-25,p.y-36,50,5);
-  c.fillStyle='#70f2b5';c.fillRect(p.x-25,p.y-36,50*clamp(p.hp/p.maxHp,0,1),5);
+}
+export function drawChampionPreview(canvas,champion='warden',style='standard'){
+ if(!canvas)return;
+ const ctx=canvas.getContext('2d');
+ if(!ctx)return;
+ const w=canvas.width,h=canvas.height;
+ ctx.save();ctx.clearRect(0,0,w,h);
+ const g=ctx.createRadialGradient(w*.5,h*.42,10,w*.5,h*.52,w*.66);
+ g.addColorStop(0,style==='crowned'?'#594b40':style==='eclipse'?'#35274c':'#24314c');
+ g.addColorStop(.65,'#14182a');g.addColorStop(1,'#090f19');
+ ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ for(let i=0;i<12;i++){
+  const a=i*TAU/12;
+  line(ctx,[[w*.5+Math.cos(a)*w*.23,h*.54+Math.sin(a)*w*.23],
+    [w*.5+Math.cos(a)*w*.29,h*.54+Math.sin(a)*w*.29]],
+    style==='crowned'?'rgba(255,223,169,.30)':'rgba(183,158,246,.26)',2);
  }
+ ring(ctx,w*.5,h*.54,w*.24,'rgba(189,173,228,.27)',2);
+ ctx.translate(w*.5,h*.56);
+ const k=Math.min(w/127,h/172);
+ ctx.scale(k,k);
+ hero(ctx,{x:0,y:0,champion,modelStyle:style,angle:-Math.PI/2,
+  hp:100,maxHp:100,fireCooldown:0,rate:.26,attackPulse:.05,
+  moving:0,stride:1.2,invulnerable:0,dashTime:0,barrierTime:0,
+  aegisCooldown:2}, {time:1.17,evolutions:{}},'high',true);
+ ctx.restore();
 }
 function projectile(c,b,hostile,quality){
  const hex=b.kind==='hexer',color=hostile?(hex?'#ff8dd6':'#ffab85'):b.storm?'#9af8ff':'#f0ceff';
@@ -456,7 +569,7 @@ export function drawArena(ctx,s,view,quality='auto'){
   if(fx.x<x-70||fx.x>x+w+70||fx.y<y-90||fx.y>y+h+70)continue;
   const alpha=clamp(fx.t*1.6,0,.8);
   if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance','wardHit','portalHit','portalDestroyed',
-   'expeditionComplete','seal','bossEnrage'].includes(fx.kind)){
+   'expeditionComplete','seal','bossEnrage','rareLoot'].includes(fx.kind)){
    drawAwakeningEffect(ctx,fx,quality);continue;
   }
   if(fx.kind==='number'){

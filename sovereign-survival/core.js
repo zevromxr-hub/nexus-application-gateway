@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.5 REALM EXPEDITIONS — authentic arena objectives and phased bosses.
+/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY — rare loot, combat animation and preserved realm objectives.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
 import {startingStats} from './progression.js';
@@ -62,13 +62,15 @@ export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
  const initial=startingStats(loadout);
  const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
-  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,expeditionsCompleted:0,expeditionsFailed:0,expeditionRenown:0,expedition:null,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
+  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,rareDrops:0,expeditionsCompleted:0,expeditionsFailed:0,expeditionRenown:0,expedition:null,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
    ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
-   shots:1,angle:-PI/2,blessingTime:0},
-  startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])]}};
+   shots:1,angle:-PI/2,blessingTime:0,stride:0,moving:0,attackPulse:0,shotSide:0,
+   modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard'},
+  startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])],
+    style:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard'}};
  spawnWave(game);
  return game;
 }
@@ -284,6 +286,14 @@ function hitEnemy(s,e,damage){
  const model=ENEMY_TYPES[e.kind],p=s.player;
  const reward=e.elite?2:1;
  s.score+=Math.round(model.score*reward*(1+Math.floor(s.combo/8)));s.kills++;
+ // Loot is deterministically generated from the run seed and earned only
+ // on real enemy deaths, then banked after defeat (never on retreat/restart).
+ const rare=isBoss(e)?(e.kind==='tyrant'||rng(s)<.50):e.elite&&rng(s)<.22;
+ if(rare){
+  s.rareDrops=Math.min(100,s.rareDrops+1);
+  s.effects.push({x:e.x,y:e.y,t:1.1,kind:'rareLoot',size:55});
+  s.events.push({type:'rareLoot',kind:e.kind,total:s.rareDrops});
+ }
  if(e.elite){s.eliteKills++;s.events.push({type:'eliteDefeated',kind:e.kind})}
  s.combo++;s.comboTime=4.2;s.bestCombo=Math.max(s.combo,s.bestCombo);
  p.hp=Math.min(p.maxHp,p.hp+p.leech);
@@ -352,7 +362,7 @@ function fire(s,aim){
   if(!closest)return;
   dir=Math.atan2(closest.y-p.y,closest.x-p.x);
  }
- p.angle=dir;p.fireCount++;
+ p.angle=dir;p.fireCount++;p.attackPulse=1;p.shotSide=1-p.shotSide;
  if(s.evolutions.blade&&p.fireCount%2===0){
   const radius=148,halfArc=1.05,damage=Math.round(p.damage*.9);
   for(const e of s.enemies){
@@ -402,8 +412,11 @@ export function advance(s,input={},dt=1/60){
  p.blessingTime=Math.max(0,p.blessingTime-dt);
  p.barrierTime=Math.max(0,p.barrierTime-dt);
  p.aegisCooldown=Math.max(0,p.aegisCooldown-dt);
+ p.attackPulse=Math.max(0,p.attackPulse-dt*6.5);
  const dx=clamp(finite(input.dx),-1,1),dy=clamp(finite(input.dy),-1,1),n=Math.hypot(dx,dy);
  const mx=n>0?dx/n:0,my=n>0?dy/n:0;
+ p.moving=Math.min(1,n);
+ if(n>.1)p.stride+=dt*(p.dashTime>0?27:12);
  if(input.dash&&p.dashCooldown<=0&&n>.1){
   p.dashTime=.18;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.25);
   s.events.push({type:'dash'});
@@ -583,7 +596,7 @@ export function advance(s,input={},dt=1/60){
 }
 export function runSummary(s){
  return {score:Math.max(0,Math.floor(s.score)),wave:s.wave,kills:s.kills,
-  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,
+  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,rareDrops:s.rareDrops||0,
   expeditionsCompleted:s.expeditionsCompleted||0,expeditionsFailed:s.expeditionsFailed||0,
   expeditionRenown:s.expeditionRenown||0,duration:Math.round(s.time),
   bestCombo:s.bestCombo,level:s.level,champion:s.player.champion};

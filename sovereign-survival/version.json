@@ -1,22 +1,22 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.5.0",
-  "codename": "REALM EXPEDITIONS",
+  "version": "1.6.0",
+  "codename": "SOVEREIGN LEGACY",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "Real objectives are generated for every wave based on its realm: defend a destructible wardstone, purge enemy-summoning portals, charge a Moonlight Shrine or activate two Void Seals.",
-    "Wardstone attackers can damage both the protected stone and nearby player; portals are auto-targetable and can be destroyed with ordinary attacks; shrines reward timed attack/speed blessings; the throne periodically pulses damage outside its telegraphed safe center.",
-    "Two distinct bosses every fourth wave: Void Monarch on Wave 4 and Void Tyrant on Wave 8, each with increased salvo complexity when entering the second phase; Void Tyrant is protected by linked Void Seals until both are awakened.",
-    "Optional realm objectives earn additional Renown at completed-run game-over, along with score; Hall of Legends tracks cumulative completed expeditions.",
-    "Two rare expedition/boss blueprint relics unlock after completing two realm quests or killing two realm bosses, and can then be forged and equipped using the original Armory.",
-    "Original Canvas2D runic objective graphics, health and charge meters, off-screen directional objective cues, boss-phase telegraphs, and accessible realm quest HUD for desktop and iPhone.",
-    "All prior v1.4 champion powers, weapon evolutions, enemy AI, Armory purchases, existing localStorage saves, PROXIMUS personal media and game-specific offline PWA cache boundaries preserved."
+    "Complete in-game character model overhaul: large layered procedural Canvas2D armor with helmet and eyes, articulated dual swords, shoulder plates, chest sigils, boots, cloaks, walking animation, dash trails, attack poses and champion-specific Frost, Ember and Void silhouettes.",
+    "New Sovereign Legacy menu and full-size character preview showing the real game model; new Codex model preview during battle.",
+    "Six claimable historical achievements: 40 defeats, reaching Wave 4, defeating three elites, defeating a realm boss, completing two expeditions, and earning 200 lifetime Renown; each yields one Eclipse Shard once.",
+    "Elite enemies have a seeded chance to drop rare Eclipse Shards; Void Monarch bosses have a higher chance and Void Tyrants guarantee a rare shard. Shards earned during a run are only banked when it ends in defeat.",
+    "Three armor styles (Warbound, Eclipse, Crowned). Eclipse and Crowned sets are unlocked through genuine achievement and boss requirements and then forged with shards; their appearance follows the selected champion into real battle without granting unfair stat bonuses.",
+    "New legacy localStorage key independent of original scores, Armory and personal PROXIMUS media. All old scores, relics, currencies, bosses, achievements eligibility, champion powers, weapon evolutions and four realm expeditions remain supported.",
+    "New offline-cached legacy UI, game-ready art, achievements, cosmetic wardrobe, rare loot animation and responsive iPhone layout without remote image dependencies."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.4.0"
+  "previous_version": "1.5.0"
 }
