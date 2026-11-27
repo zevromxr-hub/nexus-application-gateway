@@ -1,8 +1,11 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / NIGHTFALL v1.2
+/* PROXIMUS | SOVEREIGN SURVIVAL / ASCENSION ARMORY v1.3
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
 import {createRun,advance,chooseUpgrade,UPGRADES,runSummary,durationLabel,WORLD,arenaForWave} from './core.js';
 import {drawArena} from './renderer.js';
+import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
+ championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,
+ awardRun} from './progression.js';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
 const SAVE_KEY='proximus-sovereign-survival-v1';
@@ -16,7 +19,15 @@ const readRecords=()=>{
  }catch{return {best:0,bestWave:0,runs:0,kills:0,elites:0,bosses:0}}
 };
 let records=readRecords();
+const readProgress=()=>{
+ try{return normalizeProgress(JSON.parse(localStorage.getItem(PROGRESSION_KEY)||'{}'))}
+ catch{return normalizeProgress({})}
+};
+let progression=readProgress();
 const persist=()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(records))}catch{}};
+const persistProgress=()=>{
+ try{localStorage.setItem(PROGRESSION_KEY,JSON.stringify(progression))}catch{}
+};
 function renderRecords(){
  $('recordBest').textContent=records.best.toLocaleString();
  $('recordWave').textContent=String(records.bestWave);
@@ -24,6 +35,7 @@ function renderRecords(){
  $('recordKills').textContent=records.kills.toLocaleString();
  $('recordElites').textContent=records.elites.toLocaleString();
  $('recordBosses').textContent=records.bosses.toLocaleString();
+ $('recordRenown').textContent=progression.lifetimeRenown.toLocaleString();
 }
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
 const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
@@ -31,7 +43,7 @@ const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
 let dashQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
-const AUX_PAGES=Object.freeze(['records','guide','settings','warbook']);
+const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory']);
 function setOverlay(){
  document.body.dataset.gameView=mode;
  for(const [id,visible] of [
@@ -48,6 +60,8 @@ function setOverlay(){
 }
 function openAux(page){
  if(!AUX_PAGES.includes(page))return;
+ if(page==='armory'&&mode!=='menu')return;
+ if(page==='armory')renderArmory();
  if(mode==='playing'){
   if(game.phase==='upgrade')return;
   mode='paused';keys.clear();joystick.x=joystick.y=0;resetStick();
@@ -64,7 +78,7 @@ function closeAux(){
 }
 function returnToTitle(){
  mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;manual.active=false;
- resetStick();setOverlay();renderRecords();
+ resetStick();setOverlay();renderRecords();refreshMenuLoadout();
  $('startRun').focus({preventScroll:true});
 }
 function impact(type){
@@ -116,6 +130,114 @@ function handleEvents(){
   else if(['fire','bossAttack','upgrade','hexAttack','charge'].includes(ev.type))sound(ev.type);
  }
 }
+function armoryNode(tag,className,text){
+ const node=document.createElement(tag);
+ if(className)node.className=className;
+ if(text!==undefined)node.textContent=text;
+ return node;
+}
+function refreshMenuLoadout(){
+ const loadout=resolveLoadout(progression,records);
+ const champion=CHAMPIONS.find(c=>c.id===loadout.champion)||CHAMPIONS[0];
+ const relics=loadout.relics.map(id=>RELICS.find(r=>r.id===id)?.name).filter(Boolean);
+ $('menuLoadout').textContent=champion.icon+' '+champion.name.toUpperCase()+
+  ' · '+(relics.length?relics.join(' + '):'NO RELICS EQUIPPED');
+}
+function refreshCodexChampion(){
+ const id=game.startingLoadout?.champion||'warden';
+ const champion=CHAMPIONS.find(c=>c.id===id)||CHAMPIONS[0];
+ $('codexHeroIcon').textContent=champion.icon;
+ $('codexHeroName').textContent=champion.name.toUpperCase();
+ $('codexHeroBonus').textContent=champion.bonus;
+ const items=(game.startingLoadout?.relics||[])
+  .map(id=>RELICS.find(r=>r.id===id)).filter(Boolean);
+ $('codexRelics').textContent=items.length?
+  'EQUIPPED RELICS · '+items.map(r=>r.icon+' '+r.name).join(' · '):
+  'NO RELICS EQUIPPED';
+}
+function setArmoryFeedback(message){
+ $('armoryFeedback').textContent=message;
+}
+function applyArmoryChange(action,id){
+ let result;
+ if(action==='champion')result=chooseChampion(progression,id,records);
+ else if(action==='buy')result=purchaseRelic(progression,id);
+ else if(action==='toggle')result=toggleRelic(progression,id);
+ else return;
+ if(result.success){
+  progression=result.progress;
+  persistProgress();
+  refreshMenuLoadout();renderRecords();
+  sound('upgrade');
+ }
+ renderArmory();
+ setArmoryFeedback(result.reason);
+}
+function renderArmory(){
+ const loadout=resolveLoadout(progression,records);
+ const owned=progression.owned;
+ $('armoryRenown').textContent=progression.renown.toLocaleString();
+ $('championsUnlocked').textContent=CHAMPIONS.filter(c=>championUnlocked(c.id,records)).length+
+  ' / '+CHAMPIONS.length+' UNLOCKED';
+ $('relicSlots').textContent=loadout.relics.length+' / '+MAX_RELICS+' EQUIPPED';
+ const champions=$('championCards');champions.replaceChildren();
+ for(const item of CHAMPIONS){
+  const unlocked=championUnlocked(item.id,records);
+  const selected=loadout.champion===item.id;
+  const card=armoryNode('article','champion-card '+item.style+
+   (selected?' selected':'')+(unlocked?'':' locked'));
+  card.append(
+   armoryNode('span','state',selected?'✦ ACTIVE CHAMPION':unlocked?'AVAILABLE':'✧ LOCKED'),
+   armoryNode('div','champion-icon',item.icon),
+   armoryNode('h3','',item.name),
+   armoryNode('p','caption',item.description),
+   armoryNode('p','bonus',item.bonus)
+  );
+  if(!unlocked){
+   let remaining='';
+   if(item.id==='sentinel')remaining=' ('+Math.max(0,40-records.kills)+' defeats remaining)';
+   if(item.id==='reaver')remaining=' (Best wave '+records.bestWave+'/4)';
+   card.append(armoryNode('p','unlock',item.unlock+remaining));
+  }
+  const button=armoryNode('button','armory-action',selected?'✦ SELECTED':unlocked?'SELECT CHAMPION':'LOCKED');
+  button.type='button';button.disabled=!unlocked||selected;
+  button.setAttribute('aria-label',selected?item.name+' is selected':
+   unlocked?'Select '+item.name:'Locked: '+item.unlock);
+  if(unlocked&&!selected)button.addEventListener('click',()=>applyArmoryChange('champion',item.id));
+  card.append(button);champions.append(card);
+ }
+ const relics=$('relicCards');relics.replaceChildren();
+ for(const item of RELICS){
+  const forged=owned.includes(item.id),equipped=loadout.relics.includes(item.id);
+  const card=armoryNode('article','relic-card'+(equipped?' equipped':''));
+  const glyph=armoryNode('span','relic-glyph',item.icon);
+  const info=armoryNode('div','relic-info');
+  const heading=armoryNode('div','relic-heading');
+  heading.append(armoryNode('strong','',item.name),
+   armoryNode('small','',equipped?'✦ EQUIPPED':forged?'OWNED':item.rarity));
+  info.append(heading,armoryNode('p','relic-description',item.description),
+   armoryNode('p','relic-bonus',item.effect));
+  card.append(glyph,info);
+  let label='',action='buy',disabled=false;
+  if(!forged){
+   label='FORGE · '+item.cost+' RENOWN';
+   if(progression.renown<item.cost){
+    label='NEED '+(item.cost-progression.renown)+' MORE RENOWN';
+    disabled=true;
+   }
+  }else if(equipped){
+   label='✦ EQUIPPED · TAP TO REMOVE';action='toggle';
+  }else{
+   label='EQUIP RELIC';action='toggle';
+   if(loadout.relics.length>=MAX_RELICS){label='TWO SLOTS FULL';disabled=true}
+  }
+  const button=armoryNode('button','armory-action',label);
+  button.type='button';button.disabled=disabled;
+  button.setAttribute('aria-label',(forged?'Equip or remove ':'Forge ')+item.name+' — '+label);
+  if(!disabled)button.addEventListener('click',()=>applyArmoryChange(action,item.id));
+  card.append(button);relics.append(card);
+ }
+}
 function showUpgrades(){
  const wrap=$('upgradeOptions');wrap.replaceChildren();
  for(const [index,id] of game.options.entries()){
@@ -151,11 +273,14 @@ function buildLoadout(){
  }
 }
 function startRun(){
- auxPage=null;game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af);
+ auxPage=null;
+ const loadout=resolveLoadout(progression,records);
+ game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,loadout);
  records.runs++;persist();renderRecords();
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;manual.active=false;
  lastTime=performance.now();lastHud=0;buildLoadout();setOverlay();updateHud();
+ refreshCodexChampion();
  toast('✧ THE SHATTERED CITADEL · WAVE 1',2300);
  canvas.focus({preventScroll:true});
 }
@@ -167,7 +292,10 @@ function finishRun(){
  records.kills+=result.kills;
  records.elites+=result.eliteKills;
  records.bosses+=result.bossKills;
- persist();renderRecords();
+ const resultReward=awardRun(progression,result);
+ progression=resultReward.progress;
+ persist();persistProgress();renderRecords();refreshMenuLoadout();
+ $('runRenown').textContent='+'+resultReward.earned.toLocaleString()+' RENOWN';
  const wrap=$('endStats');wrap.replaceChildren();
  for(const [name,value] of [['SCORE',result.score.toLocaleString()],['WAVE',result.wave],
   ['DEFEATS',result.kills],['TIME',durationLabel(result.duration)],['LEVEL',result.level],
@@ -270,6 +398,7 @@ function loop(now){
  if(toastUntil&&now>toastUntil){$('messageToast').hidden=true;toastUntil=0}
 }
 $('startRun').addEventListener('click',startRun);
+$('menuArmory').addEventListener('click',()=>openAux('armory'));
 $('menuRecords').addEventListener('click',()=>openAux('records'));
 $('menuGuide').addEventListener('click',()=>openAux('guide'));
 $('menuSettings').addEventListener('click',()=>openAux('settings'));
@@ -342,6 +471,6 @@ function updatePointer(e){
 }
 window.addEventListener('resize',resize,{passive:true});
 if(typeof ResizeObserver==='function')new ResizeObserver(()=>resize()).observe(frame);
-renderRecords();buildLoadout();setOverlay();resize();updateHud();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
+renderRecords();refreshMenuLoadout();buildLoadout();refreshCodexChampion();setOverlay();resize();updateHud();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
 requestAnimationFrame(loop);
 if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});

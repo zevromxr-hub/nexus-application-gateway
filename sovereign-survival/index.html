@@ -13,11 +13,12 @@
 <link rel="stylesheet" href="./style.css">
 <link rel="stylesheet" href="./warbound-v1.1.css">
 <link rel="stylesheet" href="./nightfall-v1.2.css">
-<title>SOVEREIGN SURVIVAL — NIGHTFALL v1.2 | PROXIMUS</title>
+<link rel="stylesheet" href="./armory-v1.3.css">
+<title>SOVEREIGN SURVIVAL — ASCENSION ARMORY v1.3 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Nightfall game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Ascension Armory game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -27,7 +28,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">NIGHTFALL <b>v1.2</b></span>
+    <span class="build-version">ASCENSION <b>v1.3</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -63,14 +64,16 @@
     <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">N I G H T F A L L <span>✦</span> E D I T I O N</div>
-    <p class="title-lore">The citadel has fractured into four realms. Outmaneuver ranged sorcery, charging beasts and deadly rifts. Every fourth wave awakens the Monarch.</p>
+    <div class="game-edition">A S C E N S I O N <span>✦</span> E D I T I O N</div>
+    <p class="title-lore">Your battles now forge a legacy. Unlock sovereign champions, earn Renown, equip ancient relics and carry new power into every survival run.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
+     <button id="menuArmory" type="button"><span>⚒</span> ASCENSION ARMORY <small>CHAMPIONS / RELICS</small></button>
      <button id="menuRecords" type="button"><span>✦</span> HALL OF LEGENDS <small>RECORDS</small></button>
      <button id="menuGuide" type="button"><span>◇</span> HOW TO PLAY <small>CONTROLS</small></button>
      <button id="menuSettings" type="button"><span>⚙</span> GAME SETTINGS <small>AUDIO / DISPLAY</small></button>
     </nav>
+    <div id="menuLoadout" class="menu-loadout">✧ VOID WARDEN · NO RELICS EQUIPPED</div>
     <div class="menu-signature"><span>✧ PURE SINGLE PLAYER</span><span>OFFLINE-READY</span><span>POWERED BY ZEVRO</span></div>
    </div>
    <div class="title-side-art" aria-hidden="true"></div>
@@ -112,8 +115,27 @@
     <h2>YOUR LEGEND <em>ENDURES.</em></h2>
     <p>You fell in battle, but your legacy is written into the Hall of Legends.</p>
     <div id="endStats" class="end-stats" aria-label="Final score and run statistics"></div>
+    <div class="earned-renown"><span>✦ ASCENSION REWARD</span><strong id="runRenown">+0 RENOWN</strong>
+     <small>Earn Renown when a run ends. Spend it in the Armory.</small></div>
     <button id="retryRun" class="cta" type="button">⚔ RISE AGAIN</button>
     <button id="endMenu" class="secondary-action" type="button">⌂ RETURN TO TITLE</button>
+   </div>
+  </section>
+
+  <section class="overlay auxiliary-overlay armory-overlay" id="armoryOverlay" role="dialog" aria-modal="false" aria-label="Ascension Armory champions and relics" hidden>
+   <div class="overlay-panel auxiliary-panel armory-panel">
+    <div class="armory-heading">
+     <div><span class="eyebrow">⚒ SOVEREIGN FORGE</span><h2>ASCENSION <em>ARMORY.</em></h2>
+      <p>Forge a lasting legend. Your champion and relics shape every new run.</p></div>
+     <div class="renown-wallet" aria-live="polite"><small>✦ RENOWN BALANCE</small><strong id="armoryRenown">0</strong><span>EARNED THROUGH SURVIVAL</span></div>
+    </div>
+    <div class="armory-section-head"><span>01 / SELECT A CHAMPION</span><small id="championsUnlocked">1 / 3 UNLOCKED</small></div>
+    <div id="championCards" class="champion-cards" role="group" aria-label="Champion choices"></div>
+    <div class="armory-section-head"><span>02 / RELIC FORGE</span><small id="relicSlots">0 / 2 EQUIPPED</small></div>
+    <p class="armory-help">Spend Renown to forge a relic permanently, then equip up to two. Relics affect every run until you change them.</p>
+    <div id="relicCards" class="relic-cards" role="group" aria-label="Purchasable and equippable relics"></div>
+    <div id="armoryFeedback" class="armory-feedback" aria-live="polite">Complete survival runs to earn Renown and unlock new champions.</div>
+    <button class="cta auxBack" type="button">← RETURN TO TITLE MENU</button>
    </div>
   </section>
 
@@ -130,6 +152,7 @@
       <div><b id="recordKills">0</b><small>TOTAL DEFEATS</small></div>
       <div><b id="recordElites">0</b><small>ELITES DEFEATED</small></div>
       <div><b id="recordBosses">0</b><small>MONARCHS SLAIN</small></div>
+      <div><b id="recordRenown">0</b><small>LIFETIME RENOWN</small></div>
      </div>
     </div>
     <p class="archive-note">Records are stored only in this game's local browser storage. Clearing app data will erase them. No accounts or cloud sync required.</p>
@@ -149,6 +172,7 @@
      <div><span>05 / RIFT</span><h3>Leave the warning circle.</h3><p>Beginning on Wave 3, runic floor rifts warn with a bright expanding ring before releasing damage. Step outside their radius.</p></div>
      <div><span>06 / TELEGRAPH</span><h3>Read the enemy's attack.</h3><p>Hexers mark a line of fire. Ravagers aim before charging. The Void Monarch locks its volley angle before release—dodge across the path.</p></div>
     </div>
+    <p class="guide-progress">⚒ ASCENSION ARMORY — Earn Renown on completed runs. Select unlocked champions and equip up to two forged relics before battle. No account needed.</p>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
    </div>
   </section>
@@ -173,7 +197,9 @@
     <h2>YOUR <em>WARPATH.</em></h2>
     <div class="warbook-grid">
      <section class="side-card hero-card"><span class="eyebrow">YOUR CHAMPION</span>
-      <div class="hero-avatar" aria-hidden="true"><span>✧</span></div><h3>THE VOID WARDEN</h3>
+      <div class="hero-avatar" aria-hidden="true"><span id="codexHeroIcon">✧</span></div><h3 id="codexHeroName">THE VOID WARDEN</h3>
+      <p id="codexHeroBonus">Balanced health, damage and agility.</p>
+      <div id="codexRelics" class="codex-relics">NO RELICS EQUIPPED</div>
       <div class="hero-attributes">
        <div><small>POWER</small><strong id="powerStat">18</strong></div>
        <div><small>MOVE SPEED</small><strong id="speedStat">225</strong></div>

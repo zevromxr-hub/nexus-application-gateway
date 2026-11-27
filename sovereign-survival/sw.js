@@ -1,6 +1,6 @@
-/* SOVEREIGN SURVIVAL Genesis — static application shell only, never personal content. */
-const CACHE='proximus-sovereign-survival-nightfall-v1.2';
-const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./warbound-scene.svg','./game.js','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
+/* SOVEREIGN SURVIVAL Ascension — static application shell only, never personal content. */
+const CACHE='proximus-sovereign-survival-ascension-v1.3';
+const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./progression.js','./warbound-scene.svg','./game.js','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });

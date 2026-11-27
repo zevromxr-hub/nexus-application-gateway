@@ -1,0 +1,133 @@
+/* SOVEREIGN SURVIVAL v1.3 — ASCENSION ARMORY
+   A distinct in-game forge rather than an external dashboard.
+   Visual only; data and game logic live in progression.js. */
+body.warbound .menu-loadout{width:min(100%,410px);margin:11px 0 0;padding:9px 13px;
+ background:linear-gradient(90deg,rgba(62,42,77,.72),rgba(19,19,36,.6));border-left:2px solid #ecba8f;
+ text-align:left;letter-spacing:.12em;font-size:10px;font-weight:850;color:#efd6bd;
+ line-height:1.5;text-shadow:0 0 12px #000}
+body.warbound .title-menu>button#menuArmory{border-left-color:#dcb18b;
+ background:linear-gradient(95deg,rgba(98,56,87,.94),rgba(34,30,50,.83) 85%);
+ color:#ffeddf}
+body.warbound .title-menu>button#menuArmory>span:first-child{color:#ffd39b}
+body.warbound .armory-overlay{z-index:20;background:rgba(6,6,15,.91);backdrop-filter:blur(13px)}
+body.warbound .armory-panel{width:min(1050px,100%);max-height:calc(100dvh - 90px);
+ text-align:left;padding:clamp(20px,3.7vw,41px);
+ background:radial-gradient(ellipse at 78% 0%,#54375b4a,transparent 52%),
+ radial-gradient(ellipse at 5% 100%,#1e456249,transparent 60%),
+ linear-gradient(150deg,#20152f,#0d1324 72%,#1b1427)}
+body.warbound .armory-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;
+ margin-bottom:19px}
+body.warbound .armory-heading h2{margin:6px 0 8px;font-size:clamp(31px,4vw,57px)}
+body.warbound .armory-heading p{font-size:12px;max-width:520px;margin:5px 0}
+body.warbound .renown-wallet{min-width:170px;text-align:center;padding:12px 17px;
+ border:1px solid #f4d49d7c;background:radial-gradient(circle at 50% 35%,#855a5949,#17162bbf 76%);
+ box-shadow:inset 0 1px #f9daa52c,0 0 23px #d3a5750e}
+body.warbound .renown-wallet small{font-size:9px;color:#f5d2a1;letter-spacing:.13em;font-weight:900;display:block}
+body.warbound .renown-wallet strong{display:block;font-family:Georgia,serif;color:#ffe4b4;
+ font-size:40px;font-variant-numeric:tabular-nums;line-height:1.25;text-shadow:0 0 23px #d6a47c47}
+body.warbound .renown-wallet span{display:block;color:#c0afbf;font-size:8px;letter-spacing:.09em}
+body.warbound .armory-section-head{display:flex;justify-content:space-between;align-items:center;
+ gap:9px;min-height:36px;margin:17px 0 11px;padding-bottom:8px;border-bottom:1px solid #caa9ba5c;
+ color:#f1d4aa;font-size:11px;letter-spacing:.16em;font-weight:950}
+body.warbound .armory-section-head small{color:#cdb6da;font-size:9px;white-space:nowrap}
+body.warbound .champion-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+body.warbound .champion-card{position:relative;min-width:0;display:flex;flex-direction:column;
+ min-height:216px;padding:14px;border:1px solid #ad99c366;
+ background:radial-gradient(ellipse at 50% 19%,#5e469052,transparent 61%),linear-gradient(146deg,#2a233e,#0e182d);
+ box-shadow:inset 0 1px #fff2;transition:border-color .15s,transform .15s}
+body.warbound .champion-card.frost{background:radial-gradient(ellipse at 50% 19%,#5293a77b,transparent 65%),
+ linear-gradient(146deg,#183b4a,#0a1424);border-color:#95c8e66c}
+body.warbound .champion-card.ember{background:radial-gradient(ellipse at 50% 19%,#b5704870,transparent 65%),
+ linear-gradient(146deg,#492c33,#171021);border-color:#e6b3856c}
+body.warbound .champion-card.selected{border-color:#f5dcad;box-shadow:0 0 26px #e3a96922,inset 0 0 0 1px #edcbab66}
+body.warbound .champion-card.locked{filter:saturate(.62)}
+body.warbound .champion-card .state{font-size:9px;color:#f8d7ac;font-weight:900;letter-spacing:.11em;min-height:14px}
+body.warbound .champion-icon{display:flex;justify-content:center;align-items:center;height:65px;
+ font-family:Georgia,serif;font-size:58px;color:#e7d4fa;text-shadow:0 0 20px #ba80f7;
+ filter:drop-shadow(0 0 13px #9578d86b)}
+body.warbound .champion-card.frost .champion-icon{color:#c2f1ff;text-shadow:0 0 22px #72d2f9}
+body.warbound .champion-card.ember .champion-icon{color:#ffcc91;text-shadow:0 0 22px #f79a58}
+body.warbound .champion-card h3{font-family:Georgia,serif;font-weight:700;
+ font-size:21px;margin:4px 0 5px;line-height:1.1;color:#fff1e8;text-align:center}
+body.warbound .champion-card .caption{font-size:10px;line-height:1.48;color:#d8c6dd;text-align:center;margin:0 0 5px}
+body.warbound .champion-card .bonus{font-size:10px;line-height:1.5;color:#eacba8;margin:auto 0 11px;text-align:center}
+body.warbound .champion-card .unlock{font-size:9px;line-height:1.4;color:#efb5b9;text-align:center;margin:0 0 9px}
+body.warbound .armory-action{display:block;width:100%;min-height:38px;padding:8px 10px;
+ border:1px solid #d8b9d388;background:linear-gradient(100deg,#755179,#3d3765);
+ color:#fff4ed;border-radius:2px;font-size:10px;font-weight:900;letter-spacing:.09em}
+body.warbound .armory-action:hover:not(:disabled){filter:brightness(1.18);border-color:#f6deb2}
+body.warbound .armory-action:disabled{opacity:.64;cursor:default;background:#3030448a;border-color:#8e819a53}
+body.warbound .champion-card.selected .armory-action{background:#234b4c9c;border-color:#82e6dc7c;color:#c6fff3}
+body.warbound .armory-help{margin:5px 0 14px;color:#cfbfd7;font-size:11px;line-height:1.6}
+body.warbound .relic-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+body.warbound .relic-card{display:grid;grid-template-columns:52px minmax(0,1fr);column-gap:12px;row-gap:7px;
+ min-width:0;align-items:start;padding:12px;border:1px solid #b39dc459;
+ background:linear-gradient(110deg,#262038d8,#121b2fcf)}
+body.warbound .relic-card.equipped{border-color:#e1c48aa4;background:linear-gradient(115deg,#44314bc2,#122334ca)}
+body.warbound .relic-glyph{display:grid;place-items:center;width:52px;height:58px;
+ border:1px solid #dcc3df63;background:radial-gradient(circle,#6650816b,#151529);
+ font-size:35px;color:#dcb4ff;text-shadow:0 0 20px #b582ef}
+body.warbound .relic-card .relic-heading{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+body.warbound .relic-card .relic-heading strong{font-size:13px;color:#f4e8f8;line-height:1.35}
+body.warbound .relic-card .relic-heading small{font-size:8px;color:#ebc8a3;letter-spacing:.08em}
+body.warbound .relic-card .relic-description{font-size:10px;line-height:1.46;color:#c7bbd3;margin:4px 0}
+body.warbound .relic-card .relic-bonus{font-size:10px;color:#f0cc9d;margin:4px 0 0;font-weight:850}
+body.warbound .relic-card .armory-action{grid-column:1/-1;min-height:35px}
+body.warbound .armory-feedback{padding:9px 12px;margin:16px 0 8px;
+ border-left:2px solid #e8c18f;background:#171729b7;color:#d9c7df;
+ font-size:11px;line-height:1.5}
+body.warbound .armory-panel>.cta{margin-top:13px}
+body.warbound .earned-renown{margin:14px auto 18px;max-width:380px;text-align:center;
+ padding:12px 16px;border:1px solid #e9c18d88;
+ background:linear-gradient(110deg,#3a2944b8,#182538b8)}
+body.warbound .earned-renown span{display:block;color:#d9b994;font-size:10px;letter-spacing:.14em;font-weight:900}
+body.warbound .earned-renown strong{display:block;color:#ffdf9c;font-family:Georgia,serif;font-size:27px;margin:5px}
+body.warbound .earned-renown small{color:#d6c2d4;font-size:10px}
+body.warbound .guide-progress{padding:11px;border-left:2px solid #e7bd9c;
+ background:#272039aa;color:#ebd3cc;font-size:11px;line-height:1.5}
+body.warbound .codex-relics{margin:8px 0;padding:8px 5px;color:#eed6a2;
+ font-size:10px;font-weight:800;letter-spacing:.04em;line-height:1.6}
+body.warbound #codexHeroBonus{color:#d8c6e6;font-size:10px}
+body.warbound .warbook-panel .hero-card{min-height:0}
+body.warbound .warbook-panel .hero-avatar{margin-bottom:4px}
+body.warbound .record-milestones{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:680px){
+ body.warbound .armory-panel{padding:17px 11px;max-height:calc(100dvh - 80px)}
+ body.warbound .armory-heading{align-items:start;gap:8px;margin-bottom:9px}
+ body.warbound .armory-heading h2{font-size:clamp(27px,8vw,38px)}
+ body.warbound .armory-heading p{font-size:10px}
+ body.warbound .renown-wallet{min-width:99px;padding:8px 6px}
+ body.warbound .renown-wallet small{font-size:7px;letter-spacing:.06em}
+ body.warbound .renown-wallet strong{font-size:28px}
+ body.warbound .renown-wallet span{font-size:7px}
+ body.warbound .armory-section-head{margin:13px 0 8px;font-size:9px;letter-spacing:.09em}
+ body.warbound .armory-section-head small{font-size:8px}
+ body.warbound .champion-cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ body.warbound .champion-card{padding:8px 5px;min-height:215px}
+ body.warbound .champion-card .state{font-size:7px;letter-spacing:0}
+ body.warbound .champion-icon{height:48px;font-size:41px}
+ body.warbound .champion-card h3{font-size:14px;margin:3px 0}
+ body.warbound .champion-card .caption{font-size:9px}
+ body.warbound .champion-card .bonus{font-size:8px;margin:5px 0}
+ body.warbound .champion-card .unlock{font-size:8px}
+ body.warbound .armory-action{min-height:36px;font-size:8px;padding:6px 4px;letter-spacing:0}
+ body.warbound .armory-help{font-size:10px;margin:3px 0 10px}
+ body.warbound .relic-cards{grid-template-columns:1fr;gap:6px}
+ body.warbound .relic-card{grid-template-columns:41px minmax(0,1fr);gap:7px;padding:8px}
+ body.warbound .relic-glyph{width:41px;height:44px;font-size:28px}
+ body.warbound .relic-card .relic-heading strong{font-size:12px}
+ body.warbound .relic-card .relic-description{font-size:9px}
+ body.warbound .relic-card .relic-bonus{font-size:10px}
+ body.warbound .armory-feedback{font-size:10px}
+ body.warbound .menu-loadout{margin:8px auto 0;font-size:9px;max-width:355px;padding:7px 9px}
+ body.warbound .menu-signature{margin-top:9px}
+ body.warbound .title-menu>button#menuArmory{min-height:43px}
+ body.warbound .record-milestones{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-height:670px){
+ body.warbound .menu-loadout{display:none}
+ body.warbound .title-menu .title-start{margin-bottom:3px}
+ body.warbound .title-menu{gap:3px}
+ body.warbound .title-menu>button{min-height:36px;padding:7px 11px}
+ body.warbound .title-lore{line-height:1.4;margin:6px 0}
+}

@@ -1,23 +1,23 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.2.0",
-  "codename": "NIGHTFALL COMBAT",
+  "version": "1.3.0",
+  "codename": "ASCENSION ARMORY",
   "channel": "stable",
-  "release_date": "2026-11-26",
+  "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "New real Hexer ranged attacks with aimed warning and Ravager telegraphed dash-charge enemy behavior.",
-    "Rare elite enemies with additional health, damage and speed, golden crowns and double soul-energy rewards.",
-    "Four rotating fantasy arena palettes and runic environment details.",
-    "Dodgable rune-rift area hazards on odd waves beginning with Wave 3.",
-    "Monarch triple volley now locks the aim trajectory before the warning completes.",
-    "New attack, damage, dash and enemy death visual feedback; bounded Canvas2D rendering and iPhone-friendly effects.",
-    "Expanded Warden's Codex enemy bestiary and records for elite/boss defeats, migrating older saved records without resets.",
-    "Preserved Warbound main menu, all eight original upgrades, local records, offline PWA, and independent Proximus media storage."
+    "Three selectable champions: Void Warden starting character, Frost Sentinel unlocked after 40 total completed-run defeats, and Ember Reaver unlocked after reaching Wave 4 in a completed run.",
+    "Character choices grant real starting combat stats and visual character identities: Frost Sentinel defensive tank, Ember Reaver glass-cannon offense, and balanced Void Warden.",
+    "Renown currency earned on completed survival runs from score, enemies, elites, waves and boss defeats; no reward farming from abandoned runs.",
+    "Four permanent forgeable relics: Nightglass Edge, Moonwell Sigil, Phantom Spurs and Soul Chalice; two active relic loadout slots.",
+    "Full cinematic Ascension Armory screen with class preview cards, lock goals, forge purchases, equipment toggles and live Renown balance.",
+    "New run results with earned Renown and expanded Hall of Legends Renown lifetime total; Warden's Codex now shows selected champion and equipped relics.",
+    "Persistent independent localStorage progression and backward-compatible prior score/wave/kill records, no accounts or cloud access.",
+    "Warbound UI, Nightfall Hexers, Ravagers, elites, rifts and four realms, PWA offline play, iPhone controls and Proximus personal media are preserved."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.1.0"
+  "previous_version": "1.2.0"
 }
