@@ -1,7 +1,7 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion mastery and distinct armament visuals.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
-import {startingStats} from './progression.js';
+import {startingStats,RELICS,MAX_RELICS} from './progression.js?v=1.9.0';
 export const WORLD={width:2800,height:1900};
 export const UPGRADES=Object.freeze([
  {id:'barrage',name:'Arcane Barrage',icon:'✺',text:'Fire an additional blade of violet energy.',max:4},
@@ -11,7 +11,10 @@ export const UPGRADES=Object.freeze([
  {id:'tempo',name:'Storm Tempo',icon:'↯',text:'Fire 12% more frequently.',max:5},
  {id:'ward',name:'Runic Ward',icon:'◇',text:'Reduce incoming damage by 12%.',max:5},
  {id:'dash',name:'Shadowstep',icon:'➤',text:'Decrease dash cooldown by 15%.',max:4},
- {id:'soul',name:'Soul Reaver',icon:'❖',text:'Restore 3 health on each defeat.',max:4}
+ {id:'soul',name:'Soul Reaver',icon:'❖',text:'Restore 3 health on each defeat.',max:4},
+ {id:'tempest',name:'Chain Tempest',icon:'ϟ',text:'Every fifth / fourth / third volley strikes 2 / 3 / 4 nearby foes with lightning.',max:3},
+ {id:'riftstrike',name:'Riftstrike',icon:'✦',text:'Dash erupts in a damaging shockwave. Each rank increases reach and damage.',max:3},
+ {id:'dominion',name:'Soul Dominion',icon:'✵',text:'Each rank extends soul attraction by 65. Rank 3 restores 1 health per soul pickup.',max:3}
 ]);
 export const ABILITIES=Object.freeze({
  warden:{id:'nova',name:'ASTRAL NOVA',icon:'✧',cooldown:9,description:'Violet shockwave deals damage and knocks nearby enemies away.'},
@@ -80,6 +83,9 @@ export function createRun(seed=0x59ab7e,loadout={}){
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])],
     style:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
     weapon:['signature','astral','dominion'].includes(loadout.weapon)?loadout.weapon:'signature'}};
+ for(const id of [...new Set(Array.isArray(loadout.relics)?loadout.relics:[])].slice(0,MAX_RELICS)){
+  const power=RELICS.find(r=>r.id===id)?.power;if(power)game.ranks[power]=1;
+ }
  spawnWave(game);
  return game;
 }
@@ -260,6 +266,7 @@ export function chooseUpgrade(s,id){
 }
 export function offerUpgrade(s){
  const choices=UPGRADES.filter(u=>s.ranks[u.id]<u.max);
+ if(!choices.length)return;
  const selected=[];
  while(selected.length<3&&choices.length){
   const index=Math.floor(rng(s)*choices.length);
@@ -389,6 +396,16 @@ function fire(s,aim){
   dir=Math.atan2(closest.y-p.y,closest.x-p.x);
  }
  p.angle=dir;p.fireCount++;p.attackPulse=1;p.shotSide=1-p.shotSide;
+ const storm=s.ranks.tempest||0;
+ if(storm&&p.fireCount%(6-storm)===0){
+  const victims=s.enemies.filter(e=>e.hp>0&&(e.x-p.x)**2+(e.y-p.y)**2<=300**2)
+   .sort((a,b)=>((a.x-p.x)**2+(a.y-p.y)**2)-((b.x-p.x)**2+(b.y-p.y)**2)).slice(0,storm+1);
+  let origin={x:p.x,y:p.y};
+  for(const e of victims){
+   s.effects.push({x:origin.x,y:origin.y,x2:e.x,y2:e.y,t:.30,kind:'chainTempest',size:300});
+   hitEnemy(s,e,Math.max(1,Math.round(p.damage*(.55+.15*storm))));origin=e;
+  }
+ }
  if(s.evolutions.blade&&p.fireCount%2===0){
   const radius=148,halfArc=1.05,damage=Math.round(p.damage*.9);
   for(const e of s.enemies){
@@ -448,6 +465,13 @@ export function advance(s,input={},dt=1/60){
   p.dashX=moving?mx:p.moveX;p.dashY=moving?my:p.moveY;
   p.dashTime=.22;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.29);
   s.events.push({type:'dash'});
+  const rank=s.ranks.riftstrike||0;
+  if(rank){
+   const radius=90+rank*30;
+   for(const e of s.enemies)if(e.hp>0&&distance(e,p)<radius+e.rad)
+    hitEnemy(s,e,Math.round(p.damage*(.6+.45*rank)));
+   s.effects.push({x:p.x,y:p.y,t:.45,kind:'riftstrike',size:radius});
+  }
  }
  const dashing=p.dashTime>0;
  const vx=dashing?p.dashX:mx,vy=dashing?p.dashY:my;
@@ -606,9 +630,9 @@ export function advance(s,input={},dt=1/60){
  s.hostile=s.hostile.filter(x=>x.ttl>0);
  for(const orb of s.orbs){
   const dd=distance(orb,p);
-  if(dd<165){const v=Math.min(dd,Math.max(110,350/(dd/80+1)))*dt;
+  if(dd<165+65*(s.ranks.dominion||0)){const v=Math.min(dd,Math.max(110,350/(dd/80+1)))*dt;
    orb.x+=(p.x-orb.x)/(dd||1)*v;orb.y+=(p.y-orb.y)/(dd||1)*v}
-  if(dd<24){orb.collected=true;addXp(s,orb.value);s.events.push({type:'xp'})}
+  if(dd<24){orb.collected=true;if(s.ranks.dominion>=3)p.hp=Math.min(p.maxHp,p.hp+1);addXp(s,orb.value);s.events.push({type:'xp'})}
  }
  s.orbs=s.orbs.filter(o=>!o.collected);
  if(s.orbs.length>230)s.orbs=s.orbs.slice(-230);

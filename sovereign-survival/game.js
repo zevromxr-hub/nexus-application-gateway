@@ -1,11 +1,11 @@
 /* PROXIMUS | SOVEREIGN SURVIVAL / CHARACTER ASCENSION v1.7
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES} from './core.js';
-import {drawArena,drawChampionPreview} from './renderer.js';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES} from './core.js?v=1.9.0';
+import {drawArena,drawChampionPreview} from './renderer.js?v=1.9.0';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
- awardRun} from './progression.js';
+ awardRun} from './progression.js?v=1.9.0';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,normalizeLegacy,achievementProgress,
  claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia,
  WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js';
@@ -52,12 +52,14 @@ function renderRecords(){
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
 const coarse=matchMedia('(pointer:coarse)').matches||matchMedia('(any-pointer:coarse)').matches||navigator.maxTouchPoints>0||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
 const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderScale=1,renderCost=0,lastAdapt=0,drawDirty=true;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 document.body.classList.toggle('touch-device',coarse);
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
 let dashQueued=false,abilityQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
 const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy']);
 function setOverlay(){
+ drawDirty=true;
  document.body.dataset.gameView=mode;
  for(const [id,visible] of [
   ['menuOverlay',mode==='menu'],['pauseOverlay',mode==='paused'],
@@ -249,11 +251,12 @@ function renderArmory(){
   if(unlocked&&!selected)button.addEventListener('click',()=>applyArmoryChange('champion',item.id));
   card.append(button);champions.append(card);
  }
+ $('forgeProgress').textContent=RELICS.filter(r=>blueprintUnlocked(r,records)).length+' / '+RELICS.length+' BLUEPRINTS · '+owned.length+' FORGED';
  const relics=$('relicCards');relics.replaceChildren();
  for(const item of RELICS){
   const forged=owned.includes(item.id),equipped=loadout.relics.includes(item.id);
   const discovered=blueprintUnlocked(item,records);
-  const card=armoryNode('article','relic-card'+(equipped?' equipped':'')+(!discovered?' blueprint-locked':''));
+  const card=armoryNode('article','relic-card'+(equipped?' equipped':'')+(!discovered?' blueprint-locked':'')+(item.power?' power-relic':''));
   const glyph=armoryNode('span','relic-glyph',item.icon);
   const info=armoryNode('div','relic-info');
   const heading=armoryNode('div','relic-heading');
@@ -264,6 +267,8 @@ function renderArmory(){
   if(!discovered){
    const challenge=item.requiredExpeditions?
     Math.max(0,item.requiredExpeditions-records.expeditions)+' MORE REALM EXPEDITIONS':
+    item.requiredKills?Math.max(0,item.requiredKills-records.kills)+' MORE DEFEATS':
+    item.requiredWave?'REACH WAVE '+item.requiredWave+' · BEST '+records.bestWave:
     Math.max(0,item.requiredBosses-records.bosses)+' MORE BOSS DEFEATS';
    info.append(armoryNode('small','blueprint-status','BLUEPRINT LOCKED · '+challenge));
   }
@@ -610,10 +615,11 @@ function input(){
 function resize(){
  const rect=frame.getBoundingClientRect();
  width=Math.max(300,rect.width);height=Math.max(300,rect.height);
- const recommended=quality==='eco'||quality==='auto'&&lowPower?1.2:1.65;
- const maxPixels=quality==='cinema'?3600000:2000000;
+ const recommended=quality==='eco'?.85:quality==='auto'&&lowPower?1.12*renderScale:1.65;
+ const maxPixels=quality==='cinema'?3600000:lowPower?900000:2000000;
  const budget=Math.sqrt(maxPixels/Math.max(1,width*height));
- dpr=Math.max(.72,Math.min(devicePixelRatio||1,recommended,budget));
+ dpr=Math.max(.65,Math.min(devicePixelRatio||1,recommended,budget));
+ drawDirty=true;
  const rw=Math.round(width*dpr),rh=Math.round(height*dpr);
  if(canvas.width!==rw)canvas.width=rw;
  if(canvas.height!==rh)canvas.height=rh;
@@ -626,11 +632,13 @@ function loop(now){
  if(document.hidden)return;
  if(mode==='playing'&&game.phase==='running'&&dt>0){
    advance(game,input(),dt);handleEvents();
-  if(game.phase==='upgrade')setOverlay();
+  if(game.phase==='upgrade'){setOverlay();updateHud()}
  }
  const active=mode==='playing'&&game.phase==='running';
- const eco=quality==='eco'||quality==='auto'&&lowPower;
- if(active?(!eco||now-lastDraw>=30):(mode==='menu'?now-lastDraw>=50:now-lastDraw>200)){
+ const eco=quality==='eco';
+ if(active?(!eco||now-lastDraw>=30):drawDirty){
+  drawDirty=false;
+  const renderStart=performance.now();
   const drawDt=Math.min(.1,Math.max(dt,(now-lastDraw)/1000));
   lastDraw=now;
   const px=clamp(game.player.x-width/2,0,Math.max(0,WORLD.width-width));
@@ -640,8 +648,15 @@ function loop(now){
   ctx.setTransform(dpr,0,0,dpr,0,0);
   drawArena(ctx,game,{x:camera.x,y:camera.y,w:width,h:height},
     quality==='eco'||quality==='auto'&&lowPower?'low':'high');
+  if(active&&quality==='auto'&&lowPower){
+   renderCost=renderCost*.92+(performance.now()-renderStart)*.08;
+   if(now-lastAdapt>1800){lastAdapt=now;
+    const next=clamp(renderScale+(renderCost>13?-.10:renderCost<7?.05:0),.65,1);
+    if(next!==renderScale){renderScale=next;resize()}
+   }
+  }
  }
- if(now-lastHud>115){lastHud=now;updateHud()}
+ if(active&&now-lastHud>125){lastHud=now;updateHud()}
  if(toastUntil&&now>toastUntil){$('messageToast').hidden=true;toastUntil=0}
 }
 $('startRun').addEventListener('click',startRun);
@@ -688,7 +703,7 @@ $('soundToggle').addEventListener('click',async()=>{
 $('qualityToggle').addEventListener('click',()=>{
  quality=quality==='auto'?'eco':quality==='eco'?'cinema':'auto';
  $('qualityToggle').textContent=quality==='auto'?'◈ Auto':quality==='eco'?'◈ Eco':'✦ Cinema';
- resize();toast('VISUAL QUALITY · '+quality.toUpperCase(),1400);
+ renderScale=1;renderCost=0;resize();toast('VISUAL QUALITY · '+quality.toUpperCase(),1400);
 });
 $('fullscreenToggle').addEventListener('click',async()=>{
  try{if(document.fullscreenElement)await document.exitFullscreen();

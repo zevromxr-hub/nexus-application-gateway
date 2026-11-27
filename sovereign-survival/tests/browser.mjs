@@ -35,10 +35,12 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.ok(await page.locator('.champion-portrait-canvas').first().evaluate(el=>
    el.getContext('2d').getImageData(80,80,1,1).data[3]>0),
    'Champion preview should render real canvas pixels');
-  assert.equal(await page.locator('.relic-card').count(),6);
-  assert.equal(await page.locator('.relic-card.blueprint-locked').count(),2);
+  assert.equal(await page.locator('.relic-card').count(),9);
+  assert.equal(await page.locator('.relic-card.blueprint-locked').count(),5);
   assert.equal(await page.locator('#recordExpeditions').textContent(),'0');
   assert.equal(await page.locator('#armoryRenown').textContent(),'0');
+  assert.equal(await page.locator('.power-relic').count(),3);
+  assert.ok((await page.locator('#forgeProgress').textContent()).includes('4 / 9'));
   assert.equal(await page.locator('#championsUnlocked').textContent(),'1 / 3 UNLOCKED');
   assert.equal(await page.locator('.champion-card.selected').count(),1);
   assert.equal(await page.locator('#relicCards .armory-action').first().isDisabled(),true);

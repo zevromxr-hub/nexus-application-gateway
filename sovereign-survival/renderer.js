@@ -1,7 +1,7 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion-specific weapon silhouettes and mastery VFX.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
-import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js';
+import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js?v=1.9.0';
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const fract=n=>n-Math.floor(n);
@@ -68,6 +68,20 @@ function floor(c,s,view,quality){
    circle(c,px,py,1.5,rgba(arena.sigil,pulse.toFixed(3)));
   }
  }
+}
+let floorCache=null,floorRealm=null;
+function drawFloor(c,s,view,quality){
+ if(quality!=='low'||typeof document==='undefined'){floor(c,s,view,quality);return}
+ const realm=arenaForWave(s.wave).id;
+ if(!floorCache||floorRealm!==realm){
+  const surface=document.createElement('canvas');
+  surface.width=Math.ceil(WORLD.width/2);surface.height=Math.ceil(WORLD.height/2);
+  const g=surface.getContext('2d',{alpha:false});
+  if(!g){floor(c,s,view,quality);return}
+  g.scale(.5,.5);floor(g,s,{x:0,y:0,w:WORLD.width,h:WORLD.height},'low');
+  floorCache=surface;floorRealm=realm;
+ }
+ c.drawImage(floorCache,0,0,WORLD.width,WORLD.height);
 }
 function enemy(c,e,s,quality){
  const model=ENEMY_TYPES[e.kind],r=e.rad,health=e.hp/e.maxHp;
@@ -230,7 +244,7 @@ function hero(c,p,s,quality='low',portrait=false){
  // Contact shadow anchors the character firmly to the arena floor.
  c.beginPath();c.ellipse(4,21,32,18,0,0,TAU);c.fillStyle='rgba(0,0,0,.53)';c.fill();
  if(dash){
-  const a=p.angle+Math.PI/2;
+  const a=Math.atan2(p.dashY||0,p.dashX||0);
   line(c,[[-Math.cos(a)*20,-Math.sin(a)*20],[-Math.cos(a)*83,-Math.sin(a)*83]],
     'rgba(144,225,255,.38)',20);
  }
@@ -613,7 +627,7 @@ export function drawArena(ctx,s,view,quality='auto'){
  ctx.save();
  ctx.fillStyle='#050710';ctx.fillRect(0,0,w,h);
  ctx.translate(-x,-y);
- floor(ctx,s,view,quality);
+ drawFloor(ctx,s,view,quality);
  drawExpedition(ctx,s,view,quality);
  drawHazards(ctx,s,view,quality);
  for(const orb of s.orbs){
@@ -631,13 +645,24 @@ export function drawArena(ctx,s,view,quality='auto'){
  for(const b of s.shots)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,false,quality);
  for(const b of s.hostile)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,true,quality);
  for(const fx of s.effects){
-  if(fx.x<x-70||fx.x>x+w+70||fx.y<y-90||fx.y>y+h+70)continue;
+  if(fx.kind==='chainTempest'){
+   const alpha=clamp(fx.t/.30,0,1);
+   line(ctx,[[fx.x,fx.y],[(fx.x+fx.x2)/2+9,(fx.y+fx.y2)/2-14],[fx.x2,fx.y2]],'rgba(143,235,255,'+alpha+')',4);
+   continue;
+  }
+  const margin=Math.max(90,fx.size||0);
+  if(fx.x<x-margin||fx.x>x+w+margin||fx.y<y-margin||fx.y>y+h+margin)continue;
+  if(fx.kind==='riftstrike'){
+   const progress=1-clamp(fx.t/.45,0,1);
+   ring(ctx,fx.x,fx.y,20+progress*fx.size,'rgba(255,204,135,'+(1-progress)+')',5);continue;
+  }
   const alpha=clamp(fx.t*1.6,0,.8);
   if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance','wardHit','portalHit','portalDestroyed',
    'expeditionComplete','seal','bossEnrage','rareLoot','masteryAwaken'].includes(fx.kind)){
    drawAwakeningEffect(ctx,fx,quality);continue;
   }
   if(fx.kind==='number'){
+   if(quality==='low'&&s.effects.length>40)continue;
    ctx.save();ctx.font='bold 14px ui-sans-serif,system-ui,sans-serif';
    ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='rgba(8,8,23,.9)';
    const yy=fx.y-(.55-fx.t)*33;
@@ -677,7 +702,8 @@ export function drawArena(ctx,s,view,quality='auto'){
   ctx.rotate(-angle);ctx.translate(-tx,-ty);
  }
  ctx.restore();
- // Screen vignette and top cinematic shading.
+ // The CSS arena edge already shades low quality.
+ if(quality==='low')return;
  const vignette=ctx.createRadialGradient(w/2,h/2,Math.min(w,h)*.28,w/2,h/2,Math.max(w,h)*.8);
  vignette.addColorStop(0,'transparent');vignette.addColorStop(1,'rgba(0,0,10,.56)');
  ctx.fillStyle=vignette;ctx.fillRect(0,0,w,h);

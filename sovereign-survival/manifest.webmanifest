@@ -1,7 +1,7 @@
 {
-  "name": "Sovereign Survival | Mobile Vanguard",
+  "name": "Sovereign Survival | Combat Dominion",
   "short_name": "Sovereign",
-  "description": "Mobile Vanguard v1.8.1: separated touch controls, directional dash, champion mastery and offline arena survival.",
+  "description": "Combat Dominion v1.9: smoother mobile rendering, new combat powers and permanent Power Relics.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -164,7 +164,7 @@ assert.equal(PROGRESSION_KEY,'proximus-sovereign-survival-armory-v1');
 assert.deepEqual(blank,{version:1,renown:0,lifetimeRenown:0,
  champion:'warden',owned:[],equipped:[]});
 assert.equal(CHAMPIONS.length,3);
-assert.equal(RELICS.length,6);
+assert.equal(RELICS.length,9);
 assert.equal(MAX_RELICS,2);
 assert.equal(championUnlocked('warden',{}),true);
 assert.equal(championUnlocked('sentinel',{kills:39}),false);
@@ -614,6 +614,27 @@ assert.ok(originalFire.shots.some(b=>b.element==='reaver'&&b.weapon==='astral'),
  'Real projectiles must carry champion and weapon appearance metadata');
 assert.equal(masteryStatus(createRun(6741)).casts,0,
  'Mastery must reset naturally on each new run instead of altering saved progress');
+const stormRelic=RELICS.find(r=>r.id==='stormcore');
+assert.equal(blueprintUnlocked(stormRelic,{kills:74}),false);
+assert.equal(blueprintUnlocked(stormRelic,{kills:75}),true);
+const powerForge=purchaseRelic({renown:200},'stormcore',{kills:75});
+assert.equal(powerForge.success,true);
+assert.equal(powerForge.progress.renown,105);
+const powerEquip=toggleRelic(powerForge.progress,'stormcore');
+const powerRun=createRun(9070,resolveLoadout(powerEquip.progress,{kills:75}));
+assert.equal(powerRun.ranks.tempest,1);
+const riftPower=createRun(9071,{relics:['riftstep']});
+const victim=riftPower.enemies[0];victim.x=riftPower.player.x+65;victim.y=riftPower.player.y;victim.hp=900;victim.maxHp=900;
+riftPower.player.fireCooldown=999;advance(riftPower,{dash:true},1/60);
+assert.ok(victim.hp<900&&riftPower.effects.some(e=>e.kind==='riftstrike'));
+const tempestRun=createRun(9072,{relics:['stormcore']});tempestRun.player.fireCount=4;
+const foe=tempestRun.enemies[0];foe.x=tempestRun.player.x+100;foe.y=tempestRun.player.y;foe.hp=900;foe.maxHp=900;
+advance(tempestRun,{},1/60);
+assert.ok(foe.hp<900&&tempestRun.effects.some(e=>e.kind==='chainTempest'));
+const soulRun=createRun(9073,{relics:['soulstar']});
+soulRun.orbs=[{x:soulRun.player.x+200,y:soulRun.player.y,value:1,r:7}];
+const beforeSoul=soulRun.orbs[0].x;advance(soulRun,{},1/60);
+assert.ok(soulRun.orbs[0].x<beforeSoul);
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -636,7 +657,7 @@ assert.ok(game.includes("window.addEventListener('keydown'"));
 assert.ok(game.includes("zone.addEventListener('pointerdown'"));
 assert.ok(game.includes("document.addEventListener('visibilitychange'"));
 assert.ok(game.includes("register('./sw.js'"));
-assert.ok(html.includes('game.js?v=1.8.1')&&worker.includes('game.js?v=1.8.1'));
+assert.ok(html.includes('game.js?v=1.9.0')&&worker.includes('game.js?v=1.9.0'));
 assert.ok(html.includes('id="combatActions"')&&read('touchfix-v1.8.1.css').includes('grid-template-columns'));
 assert.ok(game.includes("addEventListener('touchstart',trigger")&&game.includes("addEventListener('click',trigger"));
 assert.ok(css.includes('@media(pointer:coarse)'));
@@ -650,9 +671,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.8.1');
-assert.equal(current.previous_version,'1.8.0');
-assert.equal(current.codename,'MOBILE VANGUARD');
+assert.equal(current.version,'1.9.0');
+assert.equal(current.previous_version,'1.8.1');
+assert.equal(current.codename,'COMBAT DOMINION');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -662,8 +683,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-vanguard-v1.8.1'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — COMBAT DOMINION v1.9'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-dominion-v1.9'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));

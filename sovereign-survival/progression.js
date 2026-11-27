@@ -34,7 +34,13 @@ export const RELICS=Object.freeze([
   effect:'+15 starting vitality and +8% movement speed.'},
  {id:'voidheart',name:'Tyrant Heart',icon:'◆',cost:190,rarity:'BOSS BLUEPRINT',
   requiredBosses:2,description:'A crystal from the heart of two fallen realm bosses.',
-  effect:'Restore 5 additional vitality after each defeat.'}
+  effect:'Restore 5 additional vitality after each defeat.'},
+ {id:'stormcore',name:'Stormheart Core',icon:'ϟ',cost:95,rarity:'POWER RELIC',requiredKills:75,
+  description:'Hunt 75 foes across completed runs to discover this ancient lightning core.',effect:'Start each run with Chain Tempest rank 1.',power:'tempest'},
+ {id:'riftstep',name:'Riftstep Sigil',icon:'✦',cost:145,rarity:'POWER RELIC',requiredWave:4,
+  description:'Reach wave 4 in a completed run to discover the rift sigil.',effect:'Start each run with Riftstrike rank 1.',power:'riftstrike'},
+ {id:'soulstar',name:'Soulstar Prism',icon:'✵',cost:175,rarity:'POWER RELIC',requiredBosses:1,
+  description:'Defeat a realm boss to discover the soul prism.',effect:'Start each run with Soul Dominion rank 1.',power:'dominion'}
 ]);
 export const MAX_RELICS=2;
 const safeInt=(value)=>Number.isFinite(value)?Math.max(0,Math.min(1000000000,Math.floor(value))):0;
@@ -66,7 +72,9 @@ export function chooseChampion(progress,id,records={}){
 export function blueprintUnlocked(item,records={}){
  if(!item)return false;
  return (!item.requiredExpeditions||safeInt(records.expeditions)>=item.requiredExpeditions)&&
-  (!item.requiredBosses||safeInt(records.bosses)>=item.requiredBosses);
+  (!item.requiredBosses||safeInt(records.bosses)>=item.requiredBosses)&&
+  (!item.requiredKills||safeInt(records.kills)>=item.requiredKills)&&
+  (!item.requiredWave||safeInt(records.bestWave)>=item.requiredWave);
 }
 export function purchaseRelic(progress,id,records={}){
  const p=normalizeProgress(progress),item=RELICS.find(r=>r.id===id);
