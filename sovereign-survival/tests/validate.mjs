@@ -1,3 +1,4 @@
+import {rollGear,bankGear,changeGear,trainTalent,gearLoadout} from '../treasury.js';
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION: distinct weapon models, champion mastery and saved appearances */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -657,7 +658,7 @@ assert.ok(game.includes("window.addEventListener('keydown'"));
 assert.ok(game.includes("zone.addEventListener('pointerdown'"));
 assert.ok(game.includes("document.addEventListener('visibilitychange'"));
 assert.ok(game.includes("register('./sw.js'"));
-assert.ok(html.includes('game.js?v=2.0.0')&&worker.includes('game.js?v=2.0.0'));
+assert.ok(html.includes('game.js?v=2.1.0')&&worker.includes('game.js?v=2.1.0'));
 assert.ok(html.includes('id="combatActions"')&&read('touchfix-v1.8.1.css').includes('grid-template-columns'));
 assert.ok(game.includes("addEventListener('touchstart',trigger")&&game.includes("addEventListener('click',trigger"));
 assert.ok(css.includes('@media(pointer:coarse)'));
@@ -671,9 +672,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'2.0.0');
-assert.equal(current.previous_version,'1.9.0');
-assert.equal(current.codename,'ETERNAL DOMINION');
+assert.equal(current.version,'2.1.0');
+assert.equal(current.previous_version,'2.0.0');
+assert.equal(current.codename,'LEGENDARY TREASURY');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -683,8 +684,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — ETERNAL DOMINION v2.0'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-eternal-v2.0'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — LEGENDARY TREASURY v2.1'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-treasury-v2.1'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
@@ -785,3 +786,16 @@ const orbitVictim=orbitRun.enemies[0];orbitVictim.x=orbitRun.player.x+60;orbitVi
 orbitRun.player.fireCooldown=99;advance(orbitRun,{},1/60);assert.ok(orbitVictim.hp<900);
 const corruptionRun=createRun(2079);corruptionRun.wave=12;corruptionRun.player.idleTime=5;
 advance(corruptionRun,{},1/60);assert.ok(corruptionRun.player.hp<corruptionRun.player.maxHp);
+
+const chestRun=createRun(778);chestRun.wave=3;chestRun.enemies=[];spawnWave(chestRun);
+const chestBoss=chestRun.enemies.find(isBoss);chestBoss.hp=1;chestBoss.x=chestRun.player.x+20;chestBoss.y=chestRun.player.y;
+chestRun.player.ultimate=100;activateUltimate(chestRun);
+assert.ok(chestRun.chests.some(q=>q.boss&&q.item.rarity!=='common'));
+advance(chestRun,{},1/60);assert.ok(chestRun.gearDrops.length>0);
+const treasuryItem=rollGear(42,20,true);
+const treasuryBank=bankGear({},[treasuryItem,treasuryItem]);assert.equal(treasuryBank.earned,1);
+const treasuryEquip=changeGear(treasuryBank.state,'equip',treasuryItem.id);assert.ok(treasuryEquip.ok);
+assert.equal(gearLoadout(treasuryEquip.state).gear.length,1);
+assert.equal(changeGear(treasuryEquip.state,'salvage',treasuryItem.id).ok,false);
+const treasuryTraining=trainTalent({...treasuryEquip.state,dust:50},'warden',{bestWave:55});
+assert.ok(treasuryTraining.ok);assert.equal(treasuryTraining.state.talents.warden,1);

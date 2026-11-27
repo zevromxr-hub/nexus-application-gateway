@@ -22,7 +22,8 @@
 <link rel="stylesheet" href="./touchfix-v1.8.1.css">
 <link rel="stylesheet" href="./dominion-v1.9.css">
 <link rel="stylesheet" href="./eternal-v2.0.css">
-<title>SOVEREIGN SURVIVAL — ETERNAL DOMINION v2.0 | PROXIMUS</title>
+<link rel="stylesheet" href="./treasury-v2.1.css">
+<title>SOVEREIGN SURVIVAL — LEGENDARY TREASURY v2.1 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
@@ -36,7 +37,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">ETERNAL <b>v2.0</b></span>
+    <span class="build-version">TREASURY <b>v2.1</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -59,7 +60,7 @@
   </div>
   <div class="arena-boss" id="bossBar" hidden><span id="bossName">✦ VOID MONARCH</span><div class="meter"><div id="bossFill"></div></div></div>
   <div id="messageToast" class="message-toast" role="status" aria-live="polite" hidden></div>
-  <div id="rareHud" class="rare-hud" aria-live="off">◆ <span id="rareCount">0</span> ECLIPSE SHARDS</div>
+  <div id="rareHud" class="rare-hud" aria-live="off">◆ <span id="rareCount">0</span> SHARDS · <span id="gearLootCount">0 GEAR</span></div>
   <div class="arena-bottom">
    <span class="arena-time" id="timerText">0:00</span>
    <span id="comboText">✧ BUILD YOUR COMBO</span>
@@ -94,11 +95,12 @@
     <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">C H A M P I O N <span>✦</span> A S C E N S I O N</div>
-    <p class="title-lore">Three champions. Three signature weapon forms. Unleash your skill three times to awaken its next form, forge personalized arms, and claim your place in the legend.</p>
+    <div class="game-edition">L E G E N D A R Y <span>✦</span> T R E A S U R Y</div>
+    <p class="title-lore">Hunt the realm bosses. Claim their legendary treasures. Forge your champion's equipment and ascend through the darkness.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
      <button id="menuArmory" type="button"><span>⚒</span> ASCENSION ARMORY <small>CHAMPIONS / RELICS</small></button>
+     <button id="menuTreasury" type="button"><span>◆</span> LEGENDARY TREASURY <small>GEAR / TALENTS</small></button>
      <button id="menuLegacy" type="button"><span>♛</span> SOVEREIGN LEGACY <small>ACHIEVEMENTS / ARMOR</small></button>
      <button id="menuRecords" type="button"><span>✦</span> HALL OF LEGENDS <small>RECORDS</small></button>
      <button id="menuGuide" type="button"><span>◇</span> HOW TO PLAY <small>CONTROLS</small></button>
@@ -145,7 +147,8 @@
     <span class="eyebrow">THE CITADEL CLAIMED ANOTHER SOUL</span>
     <h2>YOUR LEGEND <em>ENDURES.</em></h2>
     <p>You fell in battle, but your legacy is written into the Hall of Legends.</p>
-    <div id="endStats" class="end-stats" aria-label="Final score and run statistics"></div>
+    <div class="gear-earned">TREASURES BANKED <strong id="endGear">+0 ITEMS</strong></div>
+     <div id="endStats" class="end-stats" aria-label="Final score and run statistics"></div>
     <div class="rare-earned">◆ RARE ECLIPSE SHARDS BANKED <strong id="endRareDrops">+0</strong>
      <small>Find them from elite enemies and realm bosses. Spend them on cosmetic armor in Sovereign Legacy.</small></div>
     <div class="expedition-end-reward">✦ EXPEDITION RENOWN EARNED <strong id="endExpeditionRenown">+0</strong>
@@ -157,7 +160,16 @@
    </div>
   </section>
 
-  <section class="overlay auxiliary-overlay armory-overlay" id="armoryOverlay" role="dialog" aria-modal="false" aria-label="Ascension Armory champions and relics" hidden>
+  <section class="overlay auxiliary-overlay" id="treasuryOverlay" role="dialog" aria-label="Legendary Treasury" hidden>
+ <div class="overlay-panel auxiliary-panel treasury-panel">
+  <div class="treasury-heading"><span class="eyebrow">◆ THE LOOT VAULT</span><h2>LEGENDARY <em>TREASURY.</em></h2><p>Equip three gear pieces alongside your two relics. Salvage unwanted items and reforge favorites.</p><div class="treasury-wallet"><strong id="treasuryDust">0 DUST</strong><small id="treasuryCount">0 / 100 ITEMS</small></div></div>
+  <div id="gearSlots" class="gear-slots"></div>
+  <h3>CHAMPION TALENTS</h3><p>Permanent training, unlocked by completed wave milestones. Each talent affects its own champion.</p><div id="talentCards" class="talent-cards"></div>
+  <h3>RECOVERED EQUIPMENT</h3><div id="gearCards" class="gear-cards"></div>
+  <p id="treasuryFeedback" aria-live="polite"></p><button class="cta auxBack" type="button">← RETURN TO TITLE MENU</button>
+ </div>
+ </section>
+ <section class="overlay auxiliary-overlay armory-overlay" id="armoryOverlay" role="dialog" aria-modal="false" aria-label="Ascension Armory champions and relics" hidden>
    <div class="overlay-panel auxiliary-panel armory-panel">
     <div class="armory-heading">
      <div><span class="eyebrow">⚒ SOVEREIGN FORGE</span><h2>ASCENSION <em>ARMORY.</em></h2>
@@ -251,7 +263,8 @@
     <p class="guide-progress">✦ CHAMPION AWAKENING — Press <strong>Q</strong> on PC or tap the <strong>POWER</strong> rune on iPhone to cast your champion ability. Every ability has its own cooldown. Reach Rank 3 in Bloodsteel Edge, Arcane Barrage or Runic Ward to evolve your weapons and defense.</p>
     <p class="guide-progress">♛ SOVEREIGN LEGACY — Open the Legacy hall from the title menu to claim achievements, view the complete champion model and forge purely cosmetic armor and weapon finishes. Elites and bosses occasionally drop Eclipse Shards, which are banked when a run ends in defeat.</p>
     <p class="guide-progress">✦ CHARACTER ASCENSION — Cast your champion's active ability three times within the same run to awaken its stronger form: Warden Supernova, Sentinel Eternal Winter, or Reaver Dragonfire. Weapon skins are cosmetic; mastery is earned during battle and resets for each new run.</p>
-    <p class="guide-progress">☀ ETERNAL DOMINION — Cast Power, dash and defeat foes to charge an Ultimate. Tap ULT or press E at 100%. Four new rankable powers and four relics expand your builds. Unlock Nightmare at wave 12 and Eternal at wave 30. From wave 12, keep moving to resist corruption.</p>
+    <p class="guide-progress">◆ LEGENDARY TREASURY — Move near glowing chests dropped by bosses and some elites. Collected gear banks on defeat; equip, salvage and reforge it in the Treasury. Train permanent champion talents using forge dust.</p>
+     <p class="guide-progress">☀ ETERNAL DOMINION — Cast Power, dash and defeat foes to charge an Ultimate. Tap ULT or press E at 100%. Four new rankable powers and four relics expand your builds. Unlock Nightmare at wave 12 and Eternal at wave 30. From wave 12, keep moving to resist corruption.</p>
      <p class="guide-progress">ϟ COMBAT DOMINION — Level up to discover Chain Tempest, Riftstrike and Soul Dominion. Unlock and forge their permanent Power Relics in the Armory to begin future runs with rank 1. Auto mode prioritizes smooth combat; use Eco for lower battery usage.</p>
      <p class="guide-progress">◈ REALM EXPEDITIONS — Shattered Citadel: defend the Wardstone. Ashen Rift: destroy two portals with your attacks. Moonlit Ruins: stand near the shrine until the ritual charges. Void Throne: stand at both seals to weaken the Void Tyrant, then dodge the dangerous outer-arena pulse. Objectives grant bonus Renown on run completion.</p>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
@@ -337,5 +350,5 @@
   <div class="warbound-credit" aria-hidden="true">POWERED BY ZEVRO <span>✧</span> PROXIMUS ARCHIVES</div>
  </main>
 </div>
-<script type="module" src="./game.js?v=2.0.0"></script>
+<script type="module" src="./game.js?v=2.1.0"></script>
 </body></html>

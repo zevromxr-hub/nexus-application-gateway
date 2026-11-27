@@ -1,7 +1,7 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion-specific weapon silhouettes and mastery VFX.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
-import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js?v=2.0.0';
+import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js?v=2.1.0';
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const fract=n=>n-Math.floor(n);
@@ -24,6 +24,13 @@ function floor(c,s,view,quality){
  const gr=c.createRadialGradient(WORLD.width/2,WORLD.height/2,40,WORLD.width/2,WORLD.height/2,1250);
  gr.addColorStop(0,rgba(arena.glow,.24));gr.addColorStop(.5,rgba(arena.mist,.14));gr.addColorStop(1,rgba(arena.glow,.02));
  c.fillStyle=gr;c.fillRect(x,y,w,h);
+ // Hand-laid stone slabs, engraved borders and fractured masonry are baked into the mobile floor cache.
+ for(let j=Math.floor(y/96);j<=Math.ceil((y+h)/96);j++)for(let i=Math.floor(x/96);i<=Math.ceil((x+w)/96);i++){
+  const k=hash(i*217+j*137),xx=i*96,yy=j*96;
+  c.fillStyle=rgba(arena.sigil,.025+k*.055);c.fillRect(xx+3,yy+3,90,90);
+  line(c,[[xx+3,yy+92],[xx+3,yy+3],[xx+92,yy+3]],rgba(arena.sigil,.12),2);
+  if(k>.78)line(c,[[xx+12,yy+7],[xx+43,yy+41],[xx+34,yy+62],[xx+76,yy+89]],rgba(arena.glow,.35),2);
+ }
  const size=96,l=Math.floor(x/size)*size,r=Math.ceil((x+w)/size)*size,
   top=Math.floor(y/size)*size,bottom=Math.ceil((y+h)/size)*size;
  c.beginPath();for(let i=l;i<=r;i+=size){c.moveTo(i,top);c.lineTo(i,bottom)}
@@ -48,6 +55,9 @@ function floor(c,s,view,quality){
   line(c,[[cx+Math.cos(a)*406,cy+Math.sin(a)*406],
    [cx+Math.cos(a)*441,cy+Math.sin(a)*441]],rgba(arena.sigil,.2),2);
  }
+ // Radial cathedral mosaic and gilded rune inlays.
+ ring(c,cx,cy,360,rgba(arena.sigil,.32),3);ring(c,cx,cy,368,rgba(arena.glow,.28),8);
+ for(let i=0;i<24;i++){const a=i*TAU/24,xx=cx+Math.cos(a)*360,yy=cy+Math.sin(a)*360;c.save();c.translate(xx,yy);c.rotate(a);polygon(c,[[-10,0],[0,-6],[10,0],[0,6]],rgba(arena.sigil,.38),rgba(arena.glow,.6));c.restore()}
  // Clearly visible walls at arena boundaries.
  c.strokeStyle=rgba(arena.sigil,.56);c.lineWidth=14;c.strokeRect(8,8,WORLD.width-16,WORLD.height-16);
  c.strokeStyle=rgba(arena.glow,.2);c.lineWidth=3;c.strokeRect(22,22,WORLD.width-44,WORLD.height-44);
@@ -56,6 +66,7 @@ function floor(c,s,view,quality){
   const px=160+hash(i*311+5)*2480,py=160+hash(i*571+3)*1570;
   if(px<x-120||px>x+w+120||py<y-120||py>y+h+120)continue;
   const radius=20+(i%3)*12;
+  c.save();c.translate(px,py);polygon(c,[[-24,17],[-29,-5],[0,-26],[29,-5],[24,17]],'#14192a',rgba(arena.sigil,.35));polygon(c,[[-9,2],[0,-20],[9,2],[0,13]],rgba(arena.glow,.65),rgba(arena.sigil,.8));c.restore();
   ring(c,px,py,radius,rgba(arena.sigil,.09),2);
   line(c,[[px-radius*.6,py],[px,py-radius*.9],[px+radius*.6,py],[px,py+radius*.9],[px-radius*.6,py]],
    rgba(arena.glow,.11),2);
@@ -71,14 +82,15 @@ function floor(c,s,view,quality){
 }
 let floorCache=null,floorRealm=null;
 function drawFloor(c,s,view,quality){
- if(quality!=='low'||typeof document==='undefined'){floor(c,s,view,quality);return}
- const realm=arenaForWave(s.wave).id;
+ if(typeof document==='undefined'){floor(c,s,view,quality);return}
+ const realm=arenaForWave(s.wave).id+'-'+quality;
  if(!floorCache||floorRealm!==realm){
+  const scale=quality==='low'?.5:.75;
   const surface=document.createElement('canvas');
-  surface.width=Math.ceil(WORLD.width/2);surface.height=Math.ceil(WORLD.height/2);
+  surface.width=Math.ceil(WORLD.width*scale);surface.height=Math.ceil(WORLD.height*scale);
   const g=surface.getContext('2d',{alpha:false});
   if(!g){floor(c,s,view,quality);return}
-  g.scale(.5,.5);floor(g,s,{x:0,y:0,w:WORLD.width,h:WORLD.height},'low');
+  g.scale(scale,scale);floor(g,s,{x:0,y:0,w:WORLD.width,h:WORLD.height},'low');
   floorCache=surface;floorRealm=realm;
  }
  c.drawImage(floorCache,0,0,WORLD.width,WORLD.height);
@@ -630,6 +642,14 @@ export function drawArena(ctx,s,view,quality='auto'){
  drawFloor(ctx,s,view,quality);
  drawExpedition(ctx,s,view,quality);
  drawHazards(ctx,s,view,quality);
+ for(const chest of s.chests||[]){
+  if(chest.x<x-50||chest.x>x+w+50||chest.y<y-65||chest.y>y+h+50)continue;
+  const color={common:'#bfcbd7',rare:'#70c8ff',epic:'#d09aff',legendary:'#ffd27a'}[chest.item.rarity]||'#fff';
+  const pulse=.65+.25*Math.sin(s.time*4);ctx.save();ctx.translate(chest.x,chest.y);
+  ring(ctx,0,0,32,rgba(color,pulse),2);line(ctx,[[0,-62],[0,-18]],rgba(color,.65),3);
+  polygon(ctx,[[-17,-8],[-12,-19],[12,-19],[17,-8],[17,10],[-17,10]],'#1b1930',color);
+  line(ctx,[[-17,-5],[17,-5]],color,2);polygon(ctx,[[-4,-7],[4,-7],[4,2],[-4,2]],color);ctx.restore();
+ }
  for(const orb of s.orbs){
   if(orb.x<x-20||orb.x>x+w+20||orb.y<y-20||orb.y>y+h+20)continue;
   if(quality!=='low')glow(ctx,orb.x,orb.y,22,'rgba(108,247,214,.2)');

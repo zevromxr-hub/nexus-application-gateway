@@ -1,14 +1,15 @@
 /* PROXIMUS | SOVEREIGN SURVIVAL / CHARACTER ASCENSION v1.7
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES,ULTIMATES} from './core.js?v=2.0.0';
-import {drawArena,drawChampionPreview} from './renderer.js?v=2.0.0';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES,ULTIMATES} from './core.js?v=2.1.0';
+import {drawArena,drawChampionPreview} from './renderer.js?v=2.1.0';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
- awardRun,DIFFICULTIES,resolveDifficulty} from './progression.js?v=2.0.0';
+ awardRun,DIFFICULTIES,resolveDifficulty} from './progression.js?v=2.1.0';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,normalizeLegacy,achievementProgress,
  claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia,
- WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js?v=2.0.0';
+ WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js?v=2.1.0';
+import {TREASURY_KEY,GEAR_SLOTS,RARITIES,TALENTS,normalizeTreasury,gearName,gearDescription,gearPower,reforgeCost,salvageValue,bankGear,changeGear,trainTalent,gearLoadout} from './treasury.js?v=2.1.0';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
 const SAVE_KEY='proximus-sovereign-survival-v1';
@@ -34,6 +35,8 @@ const readLegacy=()=>{
  catch{return normalizeLegacy({})}
 };
 let legacy=readLegacy();
+let treasury=normalizeTreasury();try{treasury=normalizeTreasury(JSON.parse(localStorage.getItem(TREASURY_KEY)||'{}'))}catch{}
+function persistTreasury(){try{localStorage.setItem(TREASURY_KEY,JSON.stringify(treasury))}catch{}}
 const persistLegacy=()=>{
  try{localStorage.setItem(LEGACY_KEY,JSON.stringify(legacy))}catch{}
 };
@@ -59,7 +62,7 @@ let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastH
 document.body.classList.toggle('touch-device',coarse);
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
 let dashQueued=false,abilityQueued=false,ultimateQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
-const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy']);
+const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy','treasury']);
 function setOverlay(){
  drawDirty=true;
  document.body.dataset.gameView=mode;
@@ -78,9 +81,10 @@ function setOverlay(){
 }
 function openAux(page){
  if(!AUX_PAGES.includes(page))return;
- if((page==='armory'||page==='legacy')&&mode!=='menu')return;
+ if((page==='armory'||page==='legacy'||page==='treasury')&&mode!=='menu')return;
  if(page==='armory')renderArmory();
  if(page==='legacy')renderLegacy();
+ if(page==='treasury')renderTreasury();
  if(mode==='playing'){
   if(game.phase==='upgrade')return;
   mode='paused';keys.clear();joystick.x=joystick.y=0;resetStick();
@@ -150,6 +154,7 @@ function handleEvents(){
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
   else if(ev.type==='bossDefeated'){toast('✦ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' DEFEATED',3300);sound('bossDefeated')}
   else if(ev.type==='eliteDefeated'){sound('eliteDefeated')}
+  else if(ev.type==='gearLoot'){toast('◆ '+ev.item.rarity.toUpperCase()+' '+gearName(ev.item).toUpperCase()+' ACQUIRED',2300);sound('rareLoot')}
   else if(ev.type==='rareLoot'){toast('◆ RARE ECLIPSE SHARD DISCOVERED',2100);sound('rareLoot')}
   else if(ev.type==='bossEnraged'){toast('☄ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' · PHASE TWO',2800);sound('bossEnraged')}
   else if(ev.type==='expeditionComplete'){toast('✦ '+ev.objective+' COMPLETE · +'+ev.renown+' RENOWN',3000);sound('expeditionComplete')}
@@ -303,6 +308,43 @@ function renderArmory(){
   button.setAttribute('aria-label',(forged?'Equip or remove ':'Forge ')+item.name+' — '+label);
   if(!disabled)button.addEventListener('click',()=>applyArmoryChange(action,item.id));
   card.append(button);relics.append(card);
+ }
+}
+function renderTreasury(message='Collect gear chests from bosses and elites. Bank collected equipment when defeated.'){
+ $('treasuryDust').textContent=treasury.dust+' DUST';
+ $('treasuryCount').textContent=treasury.items.length+' / 100 ITEMS';
+ $('treasuryFeedback').textContent=message;
+ const slots=$('gearSlots');slots.replaceChildren();
+ for(const slot of GEAR_SLOTS){
+  const q=treasury.items.find(x=>x.id===treasury.equipped[slot]);
+  const card=armoryNode('div','gear-slot'+(q?' rarity-'+q.rarity:''));
+  card.append(armoryNode('small','',slot.toUpperCase()),armoryNode('strong','',q?gearName(q):'EMPTY'),armoryNode('small','',q?gearDescription(q):'Discover equipment'));
+  slots.append(card);
+ }
+ const grid=$('gearCards');grid.replaceChildren();
+ const items=[...treasury.items].sort((a,b)=>RARITIES.indexOf(b.rarity)-RARITIES.indexOf(a.rarity)||gearPower(b)-gearPower(a));
+ if(!items.length)grid.append(armoryNode('p','gear-empty','No gear yet. Defeat your first boss and collect its glowing chest.'));
+ for(const q of items){
+  const active=treasury.equipped[q.slot]===q.id,card=armoryNode('article','gear-card rarity-'+q.rarity+(active?' equipped':''));
+  const glyph=armoryNode('span','gear-glyph',q.slot==='weapon'?'⚔':q.slot==='armor'?'⛨':'✦');
+  const info=armoryNode('div','gear-info');info.append(armoryNode('small','',q.rarity.toUpperCase()+' · TIER '+q.tier+' · +'+q.rank),armoryNode('strong','',gearName(q)),armoryNode('p','',gearDescription(q)));
+  if(q.rarity==='legendary')info.append(armoryNode('p','legendary-effect',q.slot==='weapon'?'Every fifth volley: +50% damage':q.slot==='armor'?'Negate one hit every 20 seconds':'+1 ultimate charge per defeat'));
+  const buttons=armoryNode('div','gear-actions');
+  for(const [action,label,disabled] of [['equip',active?'UNEQUIP':'EQUIP',false],['reforge',q.rank>=5?'MAX RANK':'REFORGE '+reforgeCost(q),q.rank>=5||treasury.dust<reforgeCost(q)],['salvage','SALVAGE +'+salvageValue(q),active]]){
+   const b=armoryNode('button','',label);b.type='button';b.disabled=disabled;
+   b.addEventListener('click',()=>{const r=changeGear(treasury,action,q.id);if(r.ok){treasury=r.state;persistTreasury();refreshMenuLoadout()}renderTreasury(r.message)});
+   buttons.append(b);
+  }
+  card.append(glyph,info,buttons);grid.append(card);
+ }
+ const talents=$('talentCards');talents.replaceChildren();
+ for(const t of TALENTS){
+  const rank=treasury.talents[t.id],cost=10+rank*5,required=(rank+1)*4,card=armoryNode('article','gear-talent');
+  card.append(armoryNode('strong','',t.name),armoryNode('p','',t.desc+' · '+rank+'/5'));
+  const b=armoryNode('button','',rank>=5?'MASTERED':'TRAIN · '+cost+' DUST · WAVE '+required);b.type='button';
+  b.disabled=rank>=5||records.bestWave<required||treasury.dust<cost;
+  b.addEventListener('click',()=>{const r=trainTalent(treasury,t.id,records);if(r.ok){treasury=r.state;persistTreasury()}renderTreasury(r.message)});
+  card.append(b);talents.append(card);
  }
 }
 function renderLegacy(){
@@ -471,7 +513,7 @@ function startRun(){
  auxPage=null;
  const loadout=resolveLoadout(progression,records);
  game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,
-  {...loadout,difficulty:resolveDifficulty(selectedDifficulty,records).id,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
+  {...loadout,...gearLoadout(treasury),difficulty:resolveDifficulty(selectedDifficulty,records).id,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
  records.runs++;persist();renderRecords();
  mode='playing';frame.dataset.dashes='0';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;ultimateQueued=false;manual.active=false;
@@ -483,6 +525,7 @@ function startRun(){
 function finishRun(){
  if(mode==='ended')return;
  const result=runSummary(game);mode='ended';
+ const bank=bankGear(treasury,result.gearDrops);treasury=bank.state;persistTreasury();$('endGear').textContent='+'+bank.earned+' ITEMS'+(bank.overflow?' · +'+bank.overflow+' DUST':'');
  records.best=Math.max(records.best,result.score);
  records.bestWave=Math.max(records.bestWave,result.wave);
  records.kills+=result.kills;
@@ -529,6 +572,7 @@ function updateHud(){
  $('ultimateButton').textContent=ultReady?'☀ ULTIMATE READY':'☀ ULT '+charge+'%';
  $('corruptionHud').hidden=game.wave<12||p.idleTime<2||mode!=='playing';
  $('corruptionHud').textContent=p.idleTime>=5?'CORRUPTION · MOVE NOW':'CORRUPTION · KEEP MOVING';
+ $('gearLootCount').textContent=game.gearDrops.length+' GEAR';
  $('healthText').textContent=Math.ceil(p.hp)+' / '+p.maxHp;
  $('hpFill').style.width=100*clamp(p.hp/p.maxHp,0,1)+'%';
  $('levelText').textContent=game.level;
@@ -684,6 +728,7 @@ function loop(now){
 }
 $('startRun').addEventListener('click',startRun);
 $('menuArmory').addEventListener('click',()=>openAux('armory'));
+$('menuTreasury').addEventListener('click',()=>openAux('treasury'));
 $('menuLegacy').addEventListener('click',()=>openAux('legacy'));
 $('menuRecords').addEventListener('click',()=>openAux('records'));
 $('menuGuide').addEventListener('click',()=>openAux('guide'));

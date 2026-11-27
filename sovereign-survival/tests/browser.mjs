@@ -27,6 +27,11 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   }));
   assert.ok(Math.abs(viewport.height-viewport.available)<4,'The battlefield must fill the visible screen');
   assert.ok(viewport.width>=380,'The arena should fill the available screen width');
+  await page.locator('#menuTreasury').click();
+  assert.equal(await page.locator('#treasuryOverlay').isVisible(),true);
+  assert.equal(await page.locator('.gear-slot').count(),3);
+  assert.equal(await page.locator('.gear-talent').count(),3);
+  await page.locator('#treasuryOverlay .auxBack').click();
   await page.locator('#menuArmory').click();
   assert.equal(await page.locator('#armoryOverlay').isVisible(),true);
   assert.equal(await page.locator('.champion-card').count(),3);
@@ -54,7 +59,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
    'All three weapon cosmetic finishes must have real buttons');
   assert.equal(await page.locator('#weaponCards .weapon-card.equipped').count(),1);
   assert.equal(await page.locator('#legacyWeaponName').textContent(),'CHAMPION SIGNATURE');
-  assert.equal(await page.locator('#achievementCards .achievement-card').count(),6,
+  assert.equal(await page.locator('#achievementCards .achievement-card').count(),10,
    'Ten fully tracked achievements should exist');
   assert.equal(await page.locator('#legacyShards').textContent(),'0');
   assert.equal(await page.locator('#legacyArmorLabel').textContent(),'WARBOUND ARMOR');
@@ -179,7 +184,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#achievementCards .achievement-card.eligible button').first().click();
   await page.locator('#achievementCards .achievement-card.eligible button').first().click();
   assert.equal(await page.locator('#legacyShards').textContent(),'2');
-  assert.equal(await page.locator('#legacyClaims').textContent(),'2 / 6 ACHIEVEMENTS CLAIMED');
+  assert.equal(await page.locator('#legacyClaims').textContent(),'2 / 10 ACHIEVEMENTS CLAIMED');
   const eclipse=page.locator('#regaliaCards .regalia-card').nth(1);
   assert.equal(await eclipse.locator('button').isEnabled(),true);
   await eclipse.locator('button').click();

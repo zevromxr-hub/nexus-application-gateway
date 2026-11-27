@@ -1,7 +1,8 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion mastery and distinct armament visuals.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
-import {startingStats,RELICS,MAX_RELICS,DIFFICULTIES} from './progression.js?v=2.0.0';
+import {rollGear,applyGear} from './treasury.js?v=2.1.0';
+import {startingStats,RELICS,MAX_RELICS,DIFFICULTIES} from './progression.js?v=2.1.0';
 export const WORLD={width:2800,height:1900};
 export const UPGRADES=Object.freeze([
  {id:'barrage',name:'Arcane Barrage',icon:'✺',text:'Fire an additional blade of violet energy.',max:4},
@@ -78,16 +79,16 @@ export function rng(state){
 }
 export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
- const initial=startingStats(loadout);
+ const initial=applyGear(startingStats(loadout),loadout);
  const difficulty=DIFFICULTIES.find(d=>d.id===loadout.difficulty)||DIFFICULTIES[0];
  const game={difficulty:difficulty.id,seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
   bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,rareDrops:0,expeditionsCompleted:0,expeditionsFailed:0,expeditionRenown:0,expedition:null,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
-  intermission:0,nextId:1,
+  intermission:0,nextId:1,chests:[],gearDrops:[],lootSeed:seedValue,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
    ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,dashX:0,dashY:0,moveX:0,moveY:-1,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
    shots:1,angle:-PI/2,blessingTime:0,stride:0,moving:0,attackPulse:0,shotSide:0,
-   masteryCasts:0,masteryAwakened:false,ultimate:0,orbitTimer:0,idleTime:0,idlePulse:0,
+   gearGuardCooldown:0,masteryCasts:0,masteryAwakened:false,ultimate:0,orbitTimer:0,idleTime:0,idlePulse:0,
    modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
    weaponSkin:['signature','astral','dominion'].includes(loadout.weapon)?loadout.weapon:'signature'},
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])],
@@ -326,9 +327,13 @@ function hitEnemy(s,e,damage){
  if(e.elite){s.eliteKills++;s.events.push({type:'eliteDefeated',kind:e.kind})}
  s.combo++;s.comboTime=4.2;s.bestCombo=Math.max(s.combo,s.bestCombo);
  p.hp=Math.min(p.maxHp,p.hp+p.leech);
- p.ultimate=Math.min(100,p.ultimate+(isBoss(e)?12:e.elite?3:1));
+ p.ultimate=Math.min(100,p.ultimate+(isBoss(e)?12:e.elite?3:1)+(p.chargeGear?1:0));
  s.orbs.push({x:e.x,y:e.y,value:model.xp*reward,r:5+Math.min(5,model.xp/9)});
  s.effects.push({x:e.x,y:e.y,t:.55,kind:'death',size:e.rad*(e.elite?1.9:1)});
+ if(isBoss(e)||e.elite&&((e.id+s.lootSeed)>>>0)%3===0){
+  const seed=(Math.imul(s.lootSeed,1664525)+Math.imul(e.id,1013904223))|0;
+  if(s.chests.length<32)s.chests.push({x:e.x,y:e.y,item:rollGear(seed,s.wave,isBoss(e),s.difficulty),boss:isBoss(e)});
+ }
  if(isBoss(e)){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave,kind:e.kind})}
  s.events.push({type:'kill',kind:e.kind});
 }
@@ -449,7 +454,7 @@ function fire(s,aim){
   const offset=(i-(p.shots-1)/2)*.125,angle=dir+offset,speed=640;
   s.shots.push({x:p.x+Math.cos(angle)*22,y:p.y+Math.sin(angle)*22,
    vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,
-   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)*(p.fireCount%4===0?1+.25*s.ranks.execution:1)),
+   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)*(p.fireCount%4===0?1+.25*s.ranks.execution:1)*(p.critGear&&p.fireCount%5===0?1.5:1)),
    frost:p.fireCount%4===0?s.ranks.frostbrand:0,
    element:p.champion,weapon:p.weaponSkin,split:Boolean(s.evolutions.barrage)});
  }
@@ -458,6 +463,7 @@ function fire(s,aim){
 function harmPlayer(s,amount){
  const p=s.player;
  if(p.invulnerable>0||s.phase!=='running')return;
+ if(p.guardGear&&p.gearGuardCooldown<=0){p.gearGuardCooldown=20;p.invulnerable=.6;s.effects.push({x:p.x,y:p.y,t:.65,kind:'aegis',size:70});return}
  if(s.evolutions.ward&&p.aegisCooldown<=0){
   p.aegisCooldown=15;p.invulnerable=Math.max(p.invulnerable,.9);
   s.effects.push({x:p.x,y:p.y,t:.85,kind:'aegis',size:85});
@@ -487,6 +493,7 @@ export function advance(s,input={},dt=1/60){
  p.blessingTime=Math.max(0,p.blessingTime-dt);
  p.barrierTime=Math.max(0,p.barrierTime-dt);
  p.aegisCooldown=Math.max(0,p.aegisCooldown-dt);
+ p.gearGuardCooldown=Math.max(0,p.gearGuardCooldown-dt);
  p.attackPulse=Math.max(0,p.attackPulse-dt*6.5);
  const dx=clamp(finite(input.dx),-1,1),dy=clamp(finite(input.dy),-1,1),n=Math.hypot(dx,dy);
  const moving=n>.12;
@@ -682,6 +689,14 @@ export function advance(s,input={},dt=1/60){
   if(dd<24){orb.collected=true;if(s.ranks.dominion>=3)p.hp=Math.min(p.maxHp,p.hp+1);addXp(s,orb.value);s.events.push({type:'xp'})}
  }
  s.orbs=s.orbs.filter(o=>!o.collected);
+ for(const chest of s.chests){
+  if(distance(chest,p)>55)continue;
+  chest.collected=true;
+  if(s.gearDrops.length<100){s.gearDrops.push(chest.item);s.events.push({type:'gearLoot',item:chest.item});}
+  s.effects.push({x:chest.x,y:chest.y,t:.8,kind:'rareLoot',size:80});
+ }
+ s.chests=s.chests.filter(q=>!q.collected);
+
  if(s.orbs.length>230)s.orbs=s.orbs.slice(-230);
  for(const fx of s.effects)fx.t-=dt;
  s.effects=s.effects.filter(x=>x.t>0).slice(-140);
@@ -702,7 +717,7 @@ export function runSummary(s){
   eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,rareDrops:s.rareDrops||0,
   expeditionsCompleted:s.expeditionsCompleted||0,expeditionsFailed:s.expeditionsFailed||0,
   expeditionRenown:s.expeditionRenown||0,duration:Math.round(s.time),
-  bestCombo:s.bestCombo,level:s.level,champion:s.player.champion,difficulty:s.difficulty};
+  bestCombo:s.bestCombo,level:s.level,champion:s.player.champion,difficulty:s.difficulty,gearDrops:s.gearDrops.slice()};
 }
 export function durationLabel(seconds){
  const n=Math.max(0,Math.floor(finite(seconds))),m=Math.floor(n/60),s=n%60;

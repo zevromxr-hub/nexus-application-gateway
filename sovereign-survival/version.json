@@ -1,14 +1,15 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "2.0.0",
-  "codename": "ETERNAL DOMINION",
+  "version": "2.1.0",
+  "codename": "LEGENDARY TREASURY",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
+    "Randomized gear chests from bosses and selected elites; 3 equipment slots, 4 rarities, 12 base item names, variable rolls and tiers, legendary combat effects, salvage/reforge, persistent champion talents, and upgraded cached realm masonry and loot visuals.",
     "Four new rankable powers, three charged champion ultimates, four milestone-gated Power Relics, four additional achievements, Nightmare and Eternal contracts, and late-wave corruption pressure.",
     "Three rankable run powers: Chain Tempest lightning, Riftstrike dash shockwaves, Soul Dominion attraction and healing; three permanent milestone-gated Power Relics start runs at rank 1.",
     "Auto removes mobile 30 FPS cap, adapts pixel density, caches static low-quality arena, stops hidden menu rendering, retains Eco mode and improves power relic styling.",
@@ -23,5 +24,5 @@
     "Retains the complete v1.6 Armory, relics, achievements, cosmetics, rare shards, 3 champion abilities, weapon evolutions, v1.5 realm quests, phased bosses, saved records, independent offline PWA and PROXIMUS media."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.9.0"
+  "previous_version": "2.0.0"
 }

@@ -1,0 +1,29 @@
+/* Legendary Treasury: loot-centric visual treatment without modifying touch hit areas. */
+body.warbound .treasury-panel{width:min(850px,100%);max-height:calc(100dvh - 105px);overflow:auto;text-align:left;padding:clamp(12px,3vw,30px)}
+body.warbound .treasury-heading{background:radial-gradient(ellipse at top right,#4b345c,transparent 65%),linear-gradient(135deg,#24223a,#0d1226);padding:16px;border:1px solid #d4b18377;border-radius:9px;margin-bottom:12px}
+body.warbound .treasury-wallet{display:flex;justify-content:space-between;color:#ffdda1;font-size:13px;align-items:center}
+body.warbound .gear-slots,body.warbound .talent-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 18px}
+body.warbound .gear-slot,body.warbound .gear-talent{border:1px solid #9f84bf88;border-radius:7px;padding:10px;background:#16172c;min-width:0}
+body.warbound .gear-slot{display:grid;gap:7px;border-color:var(--loot,#897b9c)}
+body.warbound .gear-slot small{font-size:9px;color:#c7bbd9}
+body.warbound .gear-slot strong,body.warbound .gear-card strong{color:var(--loot,#ded3f5);overflow-wrap:anywhere}
+body.warbound .gear-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+body.warbound .gear-card{display:grid;grid-template-columns:44px 1fr;gap:8px;padding:11px;background:linear-gradient(140deg,#292139,#101628);border:1px solid var(--loot,#897b9c);border-radius:8px;min-width:0}
+body.warbound .rarity-common{--loot:#bdcbd9}body.warbound .rarity-rare{--loot:#7acbff}body.warbound .rarity-epic{--loot:#d39dff}body.warbound .rarity-legendary{--loot:#ffd27a}
+body.warbound .gear-glyph{font-size:28px;color:var(--loot);text-align:center;align-self:center}
+body.warbound .gear-info{display:grid;gap:4px;min-width:0}body.warbound .gear-info small{font-size:9px;color:var(--loot)}
+body.warbound .gear-info p,body.warbound .gear-talent p{font-size:11px;margin:0;color:#c5bdd8}
+body.warbound .gear-info .legendary-effect{color:#f7d99e}
+body.warbound .gear-actions{grid-column:1/-1;display:flex;gap:5px;flex-wrap:wrap}
+body.warbound .gear-actions button,body.warbound .gear-talent button{min-height:40px;padding:6px 8px;background:#29223f;border:1px solid #a595bd77;border-radius:5px;font-size:10px;color:#eee4fa;flex:1}
+body.warbound .gear-actions button:disabled,body.warbound .gear-talent button:disabled{opacity:.42}
+body.warbound .gear-card.equipped{box-shadow:inset 0 0 0 1px var(--loot)}
+body.warbound .gear-earned{padding:10px;border:1px solid #f0c97888;color:#f3d99e;font-size:11px}
+body.warbound .gear-earned strong{margin-left:8px}
+body.warbound .title-menu{gap:4px}
+body.warbound .title-menu #menuTreasury{border-color:#cda66a66;color:#ffe2b0;background:linear-gradient(100deg,#49304a,#191a30)}
+body.warbound .health-box,body.warbound .xp-box{border-color:#bc9ad47a}
+@media(max-width:680px){body.warbound .gear-cards,body.warbound .talent-cards{grid-template-columns:1fr}body.warbound .gear-slot{padding:8px 5px}body.warbound .gear-slot strong{font-size:11px}body.warbound .title-menu>button{min-height:39px}body.warbound .treasury-panel{max-height:calc(100dvh - 90px - env(safe-area-inset-bottom))}}
+
+/* Keep the seven-button title usable on short displays. */
+@media(max-height:720px){body.warbound .title-frame{max-height:100%;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}body.warbound .title-menu>button{min-height:38px}}
