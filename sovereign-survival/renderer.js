@@ -1,7 +1,7 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion-specific weapon silhouettes and mastery VFX.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
-import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js?v=1.9.0';
+import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js?v=2.0.0';
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const fract=n=>n-Math.floor(n);
@@ -645,6 +645,12 @@ export function drawArena(ctx,s,view,quality='auto'){
  for(const b of s.shots)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,false,quality);
  for(const b of s.hostile)if(b.x>x-50&&b.x<x+w+50&&b.y>y-50&&b.y<y+h+50)projectile(ctx,b,true,quality);
  for(const fx of s.effects){
+  if(fx.kind==='ultimate'||fx.kind==='corruption'){
+   const t=clamp(fx.t/(fx.kind==='ultimate'?1:.65),0,1),r=fx.size*(1-t*.75);
+   const rgb=fx.kind==='corruption'?'255,87,113':fx.champion==='sentinel'?'135,237,255':fx.champion==='reaver'?'255,154,86':'217,170,255';
+   ring(ctx,fx.x,fx.y,r,'rgba('+rgb+','+t+')',6);
+   ring(ctx,fx.x,fx.y,r*.72,'rgba('+rgb+','+t*.65+')',3);continue;
+  }
   if(fx.kind==='chainTempest'){
    const alpha=clamp(fx.t/.30,0,1);
    line(ctx,[[fx.x,fx.y],[(fx.x+fx.x2)/2+9,(fx.y+fx.y2)/2-14],[fx.x2,fx.y2]],'rgba(143,235,255,'+alpha+')',4);
@@ -681,6 +687,15 @@ export function drawArena(ctx,s,view,quality='auto'){
     const angle=i*TAU/sparks+fx.x*.02,dist=r*.75;
     circle(ctx,fx.x+Math.cos(angle)*dist,fx.y+Math.sin(angle)*dist,2.3,color);
    }
+  }
+ }
+ if(s.ranks.orbit){
+  const p=s.player,rank=s.ranks.orbit,r=92+rank*9;
+  ring(ctx,p.x,p.y,r,'rgba(188,167,255,.15)',1);
+  for(let i=0;i<rank+1;i++){
+   const a=s.time*2.5+i*TAU/(rank+1),bx=p.x+Math.cos(a)*r,by=p.y+Math.sin(a)*r;
+   ctx.save();ctx.translate(bx,by);ctx.rotate(a+Math.PI/2);
+   polygon(ctx,[[-5,12],[0,-17],[6,12],[0,6]],'#ae9aff','#e9e1ff');ctx.restore();
   }
  }
  hero(ctx,s.player,s,quality);

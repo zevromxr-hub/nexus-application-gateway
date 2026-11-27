@@ -1,7 +1,7 @@
 {
-  "name": "Sovereign Survival | Combat Dominion",
+  "name": "Sovereign Survival | Eternal Dominion",
   "short_name": "Sovereign",
-  "description": "Combat Dominion v1.9: smoother mobile rendering, new combat powers and permanent Power Relics.",
+  "description": "Eternal Dominion v2.0: champion ultimates, expanded powers, relics and difficulty contracts.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

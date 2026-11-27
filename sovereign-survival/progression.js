@@ -40,8 +40,20 @@ export const RELICS=Object.freeze([
  {id:'riftstep',name:'Riftstep Sigil',icon:'✦',cost:145,rarity:'POWER RELIC',requiredWave:4,
   description:'Reach wave 4 in a completed run to discover the rift sigil.',effect:'Start each run with Riftstrike rank 1.',power:'riftstrike'},
  {id:'soulstar',name:'Soulstar Prism',icon:'✵',cost:175,rarity:'POWER RELIC',requiredBosses:1,
-  description:'Defeat a realm boss to discover the soul prism.',effect:'Start each run with Soul Dominion rank 1.',power:'dominion'}
+  description:'Defeat a realm boss to discover the soul prism.',effect:'Start each run with Soul Dominion rank 1.',power:'dominion'},
+ {id:'starblade',name:'Astral Blade Matrix',icon:'✶',cost:240,rarity:'POWER RELIC',requiredWave:8,description:'Reach wave 8 in a completed run.',effect:'Start with Orbiting Blades rank 1.',power:'orbit'},
+ {id:'bloodcrown',name:'Blood Crown',icon:'♛',cost:300,rarity:'POWER RELIC',requiredKills:300,description:'Defeat 300 enemies across completed runs.',effect:'Start with Executioner rank 1.',power:'execution'},
+ {id:'wintercore',name:'Winterheart Crystal',icon:'❄',cost:350,rarity:'POWER RELIC',requiredBosses:4,description:'Defeat four realm bosses.',effect:'Start with Frostbrand rank 1.',power:'frostbrand'},
+ {id:'godseal',name:'Eternal Godseal',icon:'☀',cost:450,rarity:'POWER RELIC',requiredWave:20,description:'Reach wave 20 in a completed run.',effect:'Start with Ascendant Focus rank 1.',power:'focus'}
 ]);
+export const DIFFICULTIES=Object.freeze([
+ {id:'normal',name:'Vanguard',wave:0,hp:1,damage:1,reward:1},
+ {id:'nightmare',name:'Nightmare',wave:12,hp:1.45,damage:1.35,reward:1.35},
+ {id:'eternal',name:'Eternal',wave:30,hp:2.1,damage:1.7,reward:1.7}
+]);
+export function resolveDifficulty(id,records={}){
+ return DIFFICULTIES.find(d=>d.id===id&&(records.bestWave||0)>=d.wave)||DIFFICULTIES[0];
+}
 export const MAX_RELICS=2;
 const safeInt=(value)=>Number.isFinite(value)?Math.max(0,Math.min(1000000000,Math.floor(value))):0;
 export function freshProgress(){

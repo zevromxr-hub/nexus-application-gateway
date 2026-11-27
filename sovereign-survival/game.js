@@ -1,14 +1,14 @@
 /* PROXIMUS | SOVEREIGN SURVIVAL / CHARACTER ASCENSION v1.7
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES} from './core.js?v=1.9.0';
-import {drawArena,drawChampionPreview} from './renderer.js?v=1.9.0';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES,ULTIMATES} from './core.js?v=2.0.0';
+import {drawArena,drawChampionPreview} from './renderer.js?v=2.0.0';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
- awardRun} from './progression.js?v=1.9.0';
+ awardRun,DIFFICULTIES,resolveDifficulty} from './progression.js?v=2.0.0';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,normalizeLegacy,achievementProgress,
  claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia,
- WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js';
+ WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js?v=2.0.0';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
 const SAVE_KEY='proximus-sovereign-survival-v1';
@@ -27,6 +27,8 @@ const readProgress=()=>{
  catch{return normalizeProgress({})}
 };
 let progression=readProgress();
+let selectedDifficulty='normal';try{selectedDifficulty=localStorage.getItem('proximus-sovereign-difficulty-v1')||'normal'}catch{}
+selectedDifficulty=resolveDifficulty(selectedDifficulty,records).id;
 const readLegacy=()=>{
  try{return normalizeLegacy(JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}'))}
  catch{return normalizeLegacy({})}
@@ -56,7 +58,7 @@ let renderScale=1,renderCost=0,lastAdapt=0,drawDirty=true;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 document.body.classList.toggle('touch-device',coarse);
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
-let dashQueued=false,abilityQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
+let dashQueued=false,abilityQueued=false,ultimateQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
 const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy']);
 function setOverlay(){
  drawDirty=true;
@@ -94,7 +96,7 @@ function closeAux(){
  next?.focus({preventScroll:true});
 }
 function returnToTitle(){
- mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
+ mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;dashQueued=false;abilityQueued=false;ultimateQueued=false;manual.active=false;
  resetStick();setOverlay();renderRecords();refreshMenuLoadout();
  $('startRun').focus({preventScroll:true});
 }
@@ -159,6 +161,7 @@ function handleEvents(){
    toast('✦ '+abilityName+(ev.mastered?' ASCENDED':' UNLEASHED'),ev.mastered?2000:1150);
    sound(ev.id);
   }
+  else if(ev.type==='ultimate'){toast('☀ '+ev.name+' UNLEASHED',2600);sound('masteryAwakened');updateHud()}
   else if(ev.type==='aegisBlock'){sound('aegisBlock')}
   else if(ev.type==='bossEntrance'){sound('bossEntrance')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
@@ -252,6 +255,14 @@ function renderArmory(){
   card.append(button);champions.append(card);
  }
  $('forgeProgress').textContent=RELICS.filter(r=>blueprintUnlocked(r,records)).length+' / '+RELICS.length+' BLUEPRINTS · '+owned.length+' FORGED';
+ const tiers=$('difficultyCards');tiers.replaceChildren();
+ for(const d of DIFFICULTIES){
+  const unlocked=resolveDifficulty(d.id,records).id===d.id;
+  const btn=armoryNode('button','difficulty-choice'+(selectedDifficulty===d.id?' selected':''),d.name.toUpperCase()+' · '+(unlocked?Math.round(d.reward*100)+'% RENOWN':'WAVE '+d.wave));
+  btn.type='button';btn.disabled=!unlocked;btn.setAttribute('aria-pressed',String(selectedDifficulty===d.id));
+  btn.addEventListener('click',()=>{selectedDifficulty=d.id;try{localStorage.setItem('proximus-sovereign-difficulty-v1',d.id)}catch{}renderArmory()});
+  tiers.append(btn);
+ }
  const relics=$('relicCards');relics.replaceChildren();
  for(const item of RELICS){
   const forged=owned.includes(item.id),equipped=loadout.relics.includes(item.id);
@@ -460,10 +471,10 @@ function startRun(){
  auxPage=null;
  const loadout=resolveLoadout(progression,records);
  game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,
-  {...loadout,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
+  {...loadout,difficulty:resolveDifficulty(selectedDifficulty,records).id,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
  records.runs++;persist();renderRecords();
  mode='playing';frame.dataset.dashes='0';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
- keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
+ keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;ultimateQueued=false;manual.active=false;
  lastTime=performance.now();lastHud=0;buildLoadout();setOverlay();updateHud();
  refreshCodexChampion();
  toast('✧ THE SHATTERED CITADEL · WAVE 1',2300);
@@ -481,7 +492,8 @@ function finishRun(){
  const shardReward=bankRareDrops(legacy,result);
  legacy=shardReward.legacy;
  const resultReward=awardRun(progression,result);
- progression=resultReward.progress;
+ const bonus=Math.round(resultReward.earned*((DIFFICULTIES.find(d=>d.id===result.difficulty)?.reward||1)-1));
+ resultReward.earned+=bonus;progression=resultReward.progress;progression.renown+=bonus;progression.lifetimeRenown+=bonus;
  persist();persistProgress();persistLegacy();renderRecords();refreshMenuLoadout();
  $('runRenown').textContent='+'+resultReward.earned.toLocaleString()+' RENOWN';
  $('endRareDrops').textContent='+'+shardReward.earned+' SHARDS';
@@ -506,6 +518,17 @@ function pause(){
 }
 function updateHud(){
  const p=game.player;
+ const ult=ULTIMATES[p.champion]||ULTIMATES.warden;
+ const charge=Math.floor(p.ultimate||0),ultReady=charge>=100;
+ $('ultimateName').textContent=ult.name;
+ $('ultimateStatus').textContent=ultReady?'READY':charge+'%';
+ $('ultimateFill').style.width=charge+'%';
+ $('ultimateButton').disabled=mode!=='playing'||game.phase!=='running';
+ $('ultimateButton').setAttribute('aria-disabled',String(!ultReady));
+ $('ultimateButton').setAttribute('aria-label',ult.name+' '+charge+' percent');
+ $('ultimateButton').textContent=ultReady?'☀ ULTIMATE READY':'☀ ULT '+charge+'%';
+ $('corruptionHud').hidden=game.wave<12||p.idleTime<2||mode!=='playing';
+ $('corruptionHud').textContent=p.idleTime>=5?'CORRUPTION · MOVE NOW':'CORRUPTION · KEEP MOVING';
  $('healthText').textContent=Math.ceil(p.hp)+' / '+p.maxHp;
  $('hpFill').style.width=100*clamp(p.hp/p.maxHp,0,1)+'%';
  $('levelText').textContent=game.level;
@@ -538,7 +561,7 @@ function updateHud(){
  const ready=p.abilityCooldown<=0;
  $('abilityButton').disabled=!ready||mode!=='playing'||game.phase!=='running';
  $('abilityTouchStatus').textContent=ready?'POWER':p.abilityCooldown.toFixed(1)+'s';
- $('abilityButton').style.setProperty('--charge',Math.min(1,Math.max(0,1-p.abilityCooldown/(ability.cooldown*(mastery.awakened?.85:1))))*100+'%');
+ $('abilityButton').style.setProperty('--charge',Math.min(1,Math.max(0,1-p.abilityCooldown/(ability.cooldown*(mastery.awakened?.85:1)*(1-.08*game.ranks.focus))))*100+'%');
  $('abilityButton').setAttribute('aria-label',(ready?'Cast ':'Recharging ')+ability.name+
   (ready?'':' in '+p.abilityCooldown.toFixed(1)+' seconds'));
  $('abilityHud').setAttribute('aria-busy',String(!ready));
@@ -592,7 +615,7 @@ function resetStick(){
 function clearInput(){
  const zone=$('joystickZone'),id=joystick.pointer;
  joystick.pointer=null;joystick.x=joystick.y=0;
- keys.clear();dashQueued=false;abilityQueued=false;manual.active=false;resetStick();
+ keys.clear();dashQueued=false;abilityQueued=false;ultimateQueued=false;manual.active=false;resetStick();
  if(id!==null&&zone.hasPointerCapture?.(id))zone.releasePointerCapture(id);
 }
 function setStick(e){
@@ -608,9 +631,9 @@ function input(){
  const x=Number(keys.has('d')||keys.has('arrowright'))-Number(keys.has('a')||keys.has('arrowleft'));
  const y=Number(keys.has('s')||keys.has('arrowdown'))-Number(keys.has('w')||keys.has('arrowup'));
  const dx=joystick.pointer===null?x:joystick.x,dy=joystick.pointer===null?y:joystick.y;
- const result={dx,dy,dash:dashQueued,ability:abilityQueued,
+ const result={dx,dy,dash:dashQueued,ability:abilityQueued,ultimate:ultimateQueued,
   aim:manual.active?{x:manual.x,y:manual.y}:null};
- dashQueued=false;abilityQueued=false;return result;
+ dashQueued=false;abilityQueued=false;ultimateQueued=false;return result;
 }
 function resize(){
  const rect=frame.getBoundingClientRect();
@@ -680,7 +703,7 @@ function bindCombatButton(id,cooldown,queue){
  function trigger(e){
   if(e.cancelable)e.preventDefault();
   const now=performance.now();
-  if(mode!=='playing'||game.phase!=='running'||game.player[cooldown]>0||now-lastAccepted<350)return;
+  if(mode!=='playing'||game.phase!=='running'||(cooldown==='ultimate'?game.player.ultimate<100:game.player[cooldown]>0)||now-lastAccepted<350)return;
   lastAccepted=now;queue();
  }
  button.addEventListener('touchstart',trigger,{passive:false});
@@ -692,6 +715,7 @@ function bindCombatButton(id,cooldown,queue){
 }
 bindCombatButton('dashButton','dashCooldown',()=>{dashQueued=true});
 bindCombatButton('abilityButton','abilityCooldown',()=>{abilityQueued=true});
+bindCombatButton('ultimateButton','ultimate',()=>{ultimateQueued=true});
 $('soundToggle').addEventListener('click',async()=>{
  if(soundOn){soundOn=false;$('soundToggle').textContent='♪ Sound Off';$('soundToggle').setAttribute('aria-pressed','false');return}
  const Audio=window.AudioContext||window.webkitAudioContext;
@@ -720,6 +744,7 @@ window.addEventListener('keydown',e=>{
  if(k==='q'&&mode==='playing'&&game.phase==='running'&&!e.repeat){
   e.preventDefault();if(game.player.abilityCooldown<=0)abilityQueued=true;
  }
+ if(k==='e'&&mode==='playing'&&game.phase==='running'&&!e.repeat){e.preventDefault();if(game.player.ultimate>=100)ultimateQueued=true}
  if((k===' '||k==='p'||k==='escape')&&mode!=='menu'&&mode!=='ended'){
   if(k===' '||k==='p'||k==='escape')e.preventDefault();
   if(!e.repeat&&game.phase!=='upgrade')pause();

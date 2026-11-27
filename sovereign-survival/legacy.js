@@ -15,7 +15,11 @@ export const ACHIEVEMENTS=Object.freeze([
  {id:'expeditions',icon:'◈',name:'REALM WAYFINDER',description:'Complete 2 realm expeditions across completed runs.',
   stat:'expeditions',target:2},
  {id:'renown',icon:'✧',name:'LEGEND FORGED',description:'Earn 200 lifetime Renown.',
-  stat:'lifetimeRenown',target:200}
+  stat:'lifetimeRenown',target:200},
+ {id:'nightmare-veteran',icon:'☽',name:'NIGHTMARE VETERAN',description:'Reach wave 12 in a completed run.',stat:'bestWave',target:12},
+ {id:'eternal-veteran',icon:'☀',name:'ETERNAL CONQUEROR',description:'Reach wave 30 in a completed run.',stat:'bestWave',target:30},
+ {id:'slayer-500',icon:'⚔',name:'LEGION BREAKER',description:'Defeat 500 foes across completed runs.',stat:'kills',target:500},
+ {id:'boss-10',icon:'♛',name:'GODSLAYER',description:'Defeat 10 realm bosses.',stat:'bosses',target:10}
 ]);
 export const REGALIA=Object.freeze([
  {id:'standard',icon:'✧',name:'WARBOUND ARMOR',type:'ORIGINAL',cost:0,

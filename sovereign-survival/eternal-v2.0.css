@@ -1,0 +1,21 @@
+/* ETERNAL DOMINION — separate action strip, keeps working joystick and dash geometry. */
+body.warbound .ultimate-hud{position:absolute;right:20px;bottom:244px;width:166px;padding:8px 10px;background:#131125e8;border:1px solid #d4b17c88;border-radius:8px;color:#f4d59b;font-size:10px;z-index:5;pointer-events:none}
+body.warbound .ultimate-hud strong{float:right}body.warbound .ultimate-hud small{font-size:8px;color:#b7a6cc}
+body.warbound .ultimate-track{height:5px;background:#453953;margin:5px 0;overflow:hidden;border-radius:4px}
+body.warbound .ultimate-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#a88dfa,#f6d99c)}
+body.warbound:not([data-game-view="playing"]) .ultimate-hud{display:none}
+body.warbound .corruption-hud{position:absolute;top:38%;left:50%;transform:translateX(-50%);padding:8px;background:#411829d9;color:#ffd1d7;border:1px solid #ef7599;z-index:7;font-size:10px;white-space:nowrap;pointer-events:none}
+body.warbound .difficulty-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0}
+body.warbound .difficulty-choice{padding:10px 4px;min-height:48px;border:1px solid #a58ec76b;background:#17172f;border-radius:7px;color:#dfd5f4;font-size:10px;font-weight:800}
+body.warbound .difficulty-choice.selected{border-color:#f4ce85;color:#ffe2a7}
+body.warbound .difficulty-choice:disabled{opacity:.4}
+#touchControls #combatActions{position:relative}
+#touchControls #combatActions #ultimateButton{position:absolute;inset:auto 0 calc(100% + 7px) auto;width:100%;height:44px;max-width:174px;aspect-ratio:auto;border:1px solid #f4d296b0;border-radius:12px;background:#28203de8;color:#ffe6b5;font-size:11px;font-weight:900;pointer-events:auto;touch-action:none}
+#touchControls #combatActions #ultimateButton[aria-disabled="true"]{opacity:.62}
+body.warbound.touch-device .ultimate-hud{display:none}
+
+/* Give the new ultimate strip a full hit area below the ability status. */
+body.warbound.touch-device .ability-hud{bottom:calc(214px + env(safe-area-inset-bottom))}
+@media(orientation:landscape) and (max-height:520px){
+ body.warbound.touch-device .ability-hud{bottom:calc(166px + env(safe-area-inset-bottom))}
+}

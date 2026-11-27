@@ -1,14 +1,15 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.9.0",
-  "codename": "COMBAT DOMINION",
+  "version": "2.0.0",
+  "codename": "ETERNAL DOMINION",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
+    "Four new rankable powers, three charged champion ultimates, four milestone-gated Power Relics, four additional achievements, Nightmare and Eternal contracts, and late-wave corruption pressure.",
     "Three rankable run powers: Chain Tempest lightning, Riftstrike dash shockwaves, Soul Dominion attraction and healing; three permanent milestone-gated Power Relics start runs at rank 1.",
     "Auto removes mobile 30 FPS cap, adapts pixel density, caches static low-quality arena, stops hidden menu rendering, retains Eco mode and improves power relic styling.",
     "Mobile control hotfix: disjoint grid regions for joystick and right-hand combat buttons, touch/pointer/click fallback with cooldown deduplication, versioned entry module.",
@@ -22,5 +23,5 @@
     "Retains the complete v1.6 Armory, relics, achievements, cosmetics, rare shards, 3 champion abilities, weapon evolutions, v1.5 realm quests, phased bosses, saved records, independent offline PWA and PROXIMUS media."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.8.1"
+  "previous_version": "1.9.0"
 }

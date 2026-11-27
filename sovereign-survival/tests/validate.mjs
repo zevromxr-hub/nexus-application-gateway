@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,activateAbility,evolutionActive,ENEMY_TYPES,WORLD,ARENAS,EXPEDITIONS,expeditionStatus,isBoss,arenaForWave,runSummary,durationLabel,MASTERIES,MASTERY_CASTS,masteryStatus} from '../core.js';
+import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,activateAbility,evolutionActive,ENEMY_TYPES,WORLD,ARENAS,EXPEDITIONS,expeditionStatus,isBoss,arenaForWave,runSummary,durationLabel,MASTERIES,MASTERY_CASTS,masteryStatus,activateUltimate} from '../core.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
- startingStats,renownReward,awardRun} from '../progression.js';
+ startingStats,renownReward,awardRun,resolveDifficulty} from '../progression.js';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,freshLegacy,normalizeLegacy,
  achievementProgress,claimAchievement,bankRareDrops,styleEligible,unlockRegalia,
  equipRegalia,resolveRegalia,WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from '../legacy.js';
@@ -164,7 +164,7 @@ assert.equal(PROGRESSION_KEY,'proximus-sovereign-survival-armory-v1');
 assert.deepEqual(blank,{version:1,renown:0,lifetimeRenown:0,
  champion:'warden',owned:[],equipped:[]});
 assert.equal(CHAMPIONS.length,3);
-assert.equal(RELICS.length,9);
+assert.equal(RELICS.length,13);
 assert.equal(MAX_RELICS,2);
 assert.equal(championUnlocked('warden',{}),true);
 assert.equal(championUnlocked('sentinel',{kills:39}),false);
@@ -423,7 +423,7 @@ const questReward=renownReward({score:1700,wave:4,kills:20,expeditionRenown:62})
 assert.equal(questReward-baseReward,62,'Completed quests pay real bonus Renown on run defeat');
 // v1.6 SOVEREIGN LEGACY — cosmetic loadouts cannot alter champion stats.
 assert.equal(LEGACY_KEY,'proximus-sovereign-survival-legacy-v1');
-assert.equal(ACHIEVEMENTS.length,6);
+assert.equal(ACHIEVEMENTS.length,10);
 assert.equal(REGALIA.length,3);
 const l0=freshLegacy();
 assert.equal(l0.equippedStyle,'standard');
@@ -657,7 +657,7 @@ assert.ok(game.includes("window.addEventListener('keydown'"));
 assert.ok(game.includes("zone.addEventListener('pointerdown'"));
 assert.ok(game.includes("document.addEventListener('visibilitychange'"));
 assert.ok(game.includes("register('./sw.js'"));
-assert.ok(html.includes('game.js?v=1.9.0')&&worker.includes('game.js?v=1.9.0'));
+assert.ok(html.includes('game.js?v=2.0.0')&&worker.includes('game.js?v=2.0.0'));
 assert.ok(html.includes('id="combatActions"')&&read('touchfix-v1.8.1.css').includes('grid-template-columns'));
 assert.ok(game.includes("addEventListener('touchstart',trigger")&&game.includes("addEventListener('click',trigger"));
 assert.ok(css.includes('@media(pointer:coarse)'));
@@ -671,9 +671,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.9.0');
-assert.equal(current.previous_version,'1.8.1');
-assert.equal(current.codename,'COMBAT DOMINION');
+assert.equal(current.version,'2.0.0');
+assert.equal(current.previous_version,'1.9.0');
+assert.equal(current.codename,'ETERNAL DOMINION');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -683,8 +683,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — COMBAT DOMINION v1.9'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-dominion-v1.9'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — ETERNAL DOMINION v2.0'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-eternal-v2.0'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
@@ -735,7 +735,7 @@ assert.ok(game.includes("persistProgress();"));
 assert.ok(game.includes("function renderArmory()"));
 assert.ok(game.includes("ability:abilityQueued"),'Ability must reach actual engine input');
 assert.ok(game.includes("k==='q'"),'PC Q shortcut must be implemented');
-assert.ok(game.includes("$('abilityButton').addEventListener('click'"),'Mobile ability button must be functional');
+assert.ok(game.includes("bindCombatButton('abilityButton'"),'Mobile ability button must be functional');
 assert.ok(read('renderer.js').includes('drawAwakeningEffect('),'Renderer must show champion abilities');
 assert.ok(read('renderer.js').includes('e.burnTime>0'),'Burn status must be visible');
 assert.ok(read('renderer.js').includes('p.barrierTime>0'),'Bulwark must be visible');
@@ -766,3 +766,22 @@ for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
 console.log('PASS Sovereign Survival Character Ascension v1.7: three stronger mastered powers, forged weapon cosmetic designs, saved look migration, real character VFX, prior game and PWA');
+
+assert.equal(UPGRADES.length,15);
+assert.equal(resolveDifficulty('eternal',{bestWave:29}).id,'normal');
+assert.equal(resolveDifficulty('eternal',{bestWave:55}).id,'eternal');
+assert.ok(createRun(55,{difficulty:'eternal'}).enemies[0].hp>createRun(55).enemies[0].hp);
+for(const champion of ['warden','sentinel','reaver']){
+ const ult=createRun(2077,{champion}),e=ult.enemies[0];
+ assert.equal(activateUltimate(ult),false);
+ ult.player.ultimate=100;e.x=ult.player.x+80;e.y=ult.player.y;e.hp=e.maxHp=900;
+ assert.equal(activateUltimate(ult),true);assert.ok(e.hp<900);
+ assert.ok(ult.player.ultimate<100);
+ if(champion==='sentinel')assert.equal(e.frozenFor,4);
+ if(champion==='reaver')assert.equal(e.burnTime,5);
+}
+const orbitRun=createRun(2078,{relics:['starblade']});
+const orbitVictim=orbitRun.enemies[0];orbitVictim.x=orbitRun.player.x+60;orbitVictim.y=orbitRun.player.y;orbitVictim.hp=orbitVictim.maxHp=900;
+orbitRun.player.fireCooldown=99;advance(orbitRun,{},1/60);assert.ok(orbitVictim.hp<900);
+const corruptionRun=createRun(2079);corruptionRun.wave=12;corruptionRun.player.idleTime=5;
+advance(corruptionRun,{},1/60);assert.ok(corruptionRun.player.hp<corruptionRun.player.maxHp);

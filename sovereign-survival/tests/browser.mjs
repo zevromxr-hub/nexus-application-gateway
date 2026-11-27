@@ -35,12 +35,12 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.ok(await page.locator('.champion-portrait-canvas').first().evaluate(el=>
    el.getContext('2d').getImageData(80,80,1,1).data[3]>0),
    'Champion preview should render real canvas pixels');
-  assert.equal(await page.locator('.relic-card').count(),9);
-  assert.equal(await page.locator('.relic-card.blueprint-locked').count(),5);
+  assert.equal(await page.locator('.relic-card').count(),13);
+  assert.equal(await page.locator('.relic-card.blueprint-locked').count(),9);
   assert.equal(await page.locator('#recordExpeditions').textContent(),'0');
   assert.equal(await page.locator('#armoryRenown').textContent(),'0');
-  assert.equal(await page.locator('.power-relic').count(),3);
-  assert.ok((await page.locator('#forgeProgress').textContent()).includes('4 / 9'));
+  assert.equal(await page.locator('.power-relic').count(),7);
+  assert.ok((await page.locator('#forgeProgress').textContent()).includes('4 / 13'));
   assert.equal(await page.locator('#championsUnlocked').textContent(),'1 / 3 UNLOCKED');
   assert.equal(await page.locator('.champion-card.selected').count(),1);
   assert.equal(await page.locator('#relicCards .armory-action').first().isDisabled(),true);
@@ -55,7 +55,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#weaponCards .weapon-card.equipped').count(),1);
   assert.equal(await page.locator('#legacyWeaponName').textContent(),'CHAMPION SIGNATURE');
   assert.equal(await page.locator('#achievementCards .achievement-card').count(),6,
-   'Six fully tracked achievements should exist');
+   'Ten fully tracked achievements should exist');
   assert.equal(await page.locator('#legacyShards').textContent(),'0');
   assert.equal(await page.locator('#legacyArmorLabel').textContent(),'WARBOUND ARMOR');
   assert.equal(await page.locator('#legacyChampionName').textContent(),'VOID WARDEN');
@@ -111,8 +111,9 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
       const j=document.querySelector('#joystickZone').getBoundingClientRect();
       const a=document.querySelector('#abilityButton').getBoundingClientRect();
       const d=document.querySelector('#dashButton').getBoundingClientRect();
+       const u=document.querySelector('#ultimateButton').getBoundingClientRect();
       const hit=(r,id)=>!!document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)?.closest('#'+id);
-      return {separated:j.right<=a.left&&a.right<=d.left,inside:d.right<=innerWidth&&d.bottom<=innerHeight,hit:hit(d,'dashButton')&&hit(a,'abilityButton')&&hit(j,'joystickZone')};
+      return {separated:j.right<=a.left&&a.right<=d.left&&j.right<=u.left&&u.bottom<=Math.min(a.top,d.top),inside:d.right<=innerWidth&&d.bottom<=innerHeight,hit:hit(d,'dashButton')&&hit(a,'abilityButton')&&hit(j,'joystickZone')&&hit(u,'ultimateButton')};
      });
      assert.ok(layout.separated&&layout.inside&&layout.hit,JSON.stringify({size,layout}));
     }

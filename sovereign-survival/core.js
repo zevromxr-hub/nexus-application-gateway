@@ -1,7 +1,7 @@
 /* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion mastery and distinct armament visuals.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
-import {startingStats,RELICS,MAX_RELICS} from './progression.js?v=1.9.0';
+import {startingStats,RELICS,MAX_RELICS,DIFFICULTIES} from './progression.js?v=2.0.0';
 export const WORLD={width:2800,height:1900};
 export const UPGRADES=Object.freeze([
  {id:'barrage',name:'Arcane Barrage',icon:'✺',text:'Fire an additional blade of violet energy.',max:4},
@@ -14,7 +14,11 @@ export const UPGRADES=Object.freeze([
  {id:'soul',name:'Soul Reaver',icon:'❖',text:'Restore 3 health on each defeat.',max:4},
  {id:'tempest',name:'Chain Tempest',icon:'ϟ',text:'Every fifth / fourth / third volley strikes 2 / 3 / 4 nearby foes with lightning.',max:3},
  {id:'riftstrike',name:'Riftstrike',icon:'✦',text:'Dash erupts in a damaging shockwave. Each rank increases reach and damage.',max:3},
- {id:'dominion',name:'Soul Dominion',icon:'✵',text:'Each rank extends soul attraction by 65. Rank 3 restores 1 health per soul pickup.',max:3}
+ {id:'dominion',name:'Soul Dominion',icon:'✵',text:'Each rank extends soul attraction by 65. Rank 3 restores 1 health per soul pickup.',max:3},
+ {id:'orbit',name:'Orbiting Blades',icon:'✶',text:'Rotating blades strike nearby foes every 0.6s; more damage per rank.',max:4},
+ {id:'execution',name:'Executioner',icon:'♛',text:'Every fourth volley deals 25% more damage per rank.',max:4},
+ {id:'frostbrand',name:'Frostbrand',icon:'❄',text:'Every fourth volley briefly freezes foes. Higher ranks extend freeze.',max:3},
+ {id:'focus',name:'Ascendant Focus',icon:'☀',text:'Each rank reduces active ability recharge by 8% and boosts ultimate charge.',max:4}
 ]);
 export const ABILITIES=Object.freeze({
  warden:{id:'nova',name:'ASTRAL NOVA',icon:'✧',cooldown:9,description:'Violet shockwave deals damage and knocks nearby enemies away.'},
@@ -25,6 +29,11 @@ export const MASTERIES=Object.freeze({
  warden:{name:'SUPERNOVA',description:'Nova expands to 290 range, hits harder and shoves enemies farther.'},
  sentinel:{name:'ETERNAL WINTER',description:'Longer ice barrier, wider freeze and 12 HP restoration.'},
  reaver:{name:'DRAGONFIRE',description:'Wider fiery cleave, stronger strike and longer burning.'}
+});
+export const ULTIMATES=Object.freeze({
+ warden:{name:'VOID APOCALYPSE',icon:'✦',radius:380},
+ sentinel:{name:'ABSOLUTE ZERO',icon:'❄',radius:340},
+ reaver:{name:'INFERNO ECLIPSE',icon:'☀',radius:350}
 });
 export const MASTERY_CASTS=3;
 export const EVOLUTIONS=Object.freeze([
@@ -70,14 +79,15 @@ export function rng(state){
 export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
  const initial=startingStats(loadout);
- const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
+ const difficulty=DIFFICULTIES.find(d=>d.id===loadout.difficulty)||DIFFICULTIES[0];
+ const game={difficulty:difficulty.id,seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
   bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,rareDrops:0,expeditionsCompleted:0,expeditionsFailed:0,expeditionRenown:0,expedition:null,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
    ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,dashX:0,dashY:0,moveX:0,moveY:-1,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
    shots:1,angle:-PI/2,blessingTime:0,stride:0,moving:0,attackPulse:0,shotSide:0,
-   masteryCasts:0,masteryAwakened:false,
+   masteryCasts:0,masteryAwakened:false,ultimate:0,orbitTimer:0,idleTime:0,idlePulse:0,
    modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
    weaponSkin:['signature','astral','dominion'].includes(loadout.weapon)?loadout.weapon:'signature'},
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])],
@@ -93,10 +103,12 @@ function newEnemy(s,kind,wave,index=0){
  const model=ENEMY_TYPES[kind];
  const angle=rng(s)*PI*2,range=485+rng(s)*240;
  const elite=!['monarch','tyrant'].includes(kind)&&wave>=3&&rng(s)<Math.min(.17,.075+wave*.007);
- const hp=Math.round(model.hp*(1+(wave-1)*(isBoss({kind})?.32:.18))*(elite?1.8:1));
+ const difficulty=DIFFICULTIES.find(d=>d.id===s.difficulty)||DIFFICULTIES[0];
+ const endgame=1+Math.min(3,Math.max(0,wave-12)*.045);
+ const hp=Math.round(model.hp*(1+(wave-1)*(isBoss({kind})?.32:.18))*(elite?1.8:1)*difficulty.hp*endgame);
  return {id:s.nextId++,kind,elite,x:clamp(s.player.x+Math.cos(angle)*range,65,WORLD.width-65),
   y:clamp(s.player.y+Math.sin(angle)*range,65,WORLD.height-65),hp,maxHp:hp,
-  speed:model.speed*(1+Math.min(wave,16)*.018)*(elite?1.1:1),damage:Math.round(model.damage*(elite?1.28:1)),rad:model.rad*(elite?1.14:1),
+  speed:model.speed*(1+Math.min(wave,16)*.018)*(elite?1.1:1),damage:Math.round(model.damage*(elite?1.28:1)*difficulty.damage*(1+Math.min(2,Math.max(0,wave-12)*.035))),rad:model.rad*(elite?1.14:1),
   attack:.45+rng(s)*.4,shoot:1.4+rng(s),wobble:rng(s)*PI*2,phase:index*.36,
   bossPhase:1,boss:false,siege:false,aimAngle:0,aimLocked:false,flash:0,frozenFor:0,burnTime:0,burnTick:0,burnDamage:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
   chargeCooldown:2+rng(s)*.9};
@@ -276,12 +288,13 @@ export function offerUpgrade(s){
 }
 function addXp(s,value){
  s.xp+=value;
- if(s.xp>=s.nextXP){
+ if(s.phase==='running'&&s.xp>=s.nextXP){
   s.xp-=s.nextXP;s.level++;s.nextXP=Math.round(20+Math.pow(s.level,1.28)*11);
   offerUpgrade(s);
  }
 }
 function hitEnemy(s,e,damage){
+ if(e.hp<=0)return;
  // Void Tyrant's armor is genuinely linked to the two local Void Seals.
  if(e.kind==='tyrant'&&s.expedition?.type==='seals'&&s.expedition.status==='active')
   damage=Math.max(1,Math.round(damage*.57));
@@ -313,6 +326,7 @@ function hitEnemy(s,e,damage){
  if(e.elite){s.eliteKills++;s.events.push({type:'eliteDefeated',kind:e.kind})}
  s.combo++;s.comboTime=4.2;s.bestCombo=Math.max(s.combo,s.bestCombo);
  p.hp=Math.min(p.maxHp,p.hp+p.leech);
+ p.ultimate=Math.min(100,p.ultimate+(isBoss(e)?12:e.elite?3:1));
  s.orbs.push({x:e.x,y:e.y,value:model.xp*reward,r:5+Math.min(5,model.xp/9)});
  s.effects.push({x:e.x,y:e.y,t:.55,kind:'death',size:e.rad*(e.elite?1.9:1)});
  if(isBoss(e)){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave,kind:e.kind})}
@@ -336,7 +350,8 @@ export function activateAbility(s){
   s.effects.push({x:p.x,y:p.y,t:1.1,kind:'masteryAwaken',size:115});
  }
  const mastered=p.masteryAwakened;
- p.abilityCooldown=mastered?Math.round(ability.cooldown*.85*10)/10:ability.cooldown;
+ p.abilityCooldown=(mastered?Math.round(ability.cooldown*.85*10)/10:ability.cooldown)*(1-.08*s.ranks.focus);
+ p.ultimate=Math.min(100,p.ultimate+18+3*s.ranks.focus);
  if(ability.id==='nova'){
   const radius=mastered?290:230,damage=Math.round(p.damage*(mastered?2.8:2.2));
   for(const e of s.enemies){
@@ -374,6 +389,21 @@ export function activateAbility(s){
  }
  s.events.push({type:'ability',id:ability.id,name:ability.name,mastered,casts:p.masteryCasts});
  return true;
+}
+export function activateUltimate(s){
+ const p=s.player,ult=ULTIMATES[p.champion]||ULTIMATES.warden;
+ if(s.phase!=='running'||p.ultimate<100)return false;
+ p.ultimate=0;
+ for(const e of s.enemies){
+  if(e.hp<=0||distance(e,p)>ult.radius+e.rad)continue;
+  if(p.champion==='sentinel')e.frozenFor=Math.max(e.frozenFor||0,4);
+  if(p.champion==='reaver'){e.burnTime=Math.max(e.burnTime||0,5);e.burnDamage=Math.max(e.burnDamage||0,Math.round(p.damage*.8));e.burnTick=0}
+  hitEnemy(s,e,Math.round(p.damage*(p.champion==='warden'?5.5:p.champion==='sentinel'?3:4.5)));
+ }
+ if(p.champion==='sentinel'){p.hp=Math.min(p.maxHp,p.hp+Math.round(p.maxHp*.25));p.barrierTime=4;p.invulnerable=Math.max(p.invulnerable,4)}
+ else p.invulnerable=Math.max(p.invulnerable,1);
+ s.effects.push({x:p.x,y:p.y,t:1,kind:'ultimate',size:ult.radius,champion:p.champion});
+ s.events.push({type:'ultimate',name:ult.name});return true;
 }
 export function evolutionActive(s,id){return Boolean(s.evolutions?.[id])}
 function fire(s,aim){
@@ -419,7 +449,8 @@ function fire(s,aim){
   const offset=(i-(p.shots-1)/2)*.125,angle=dir+offset,speed=640;
   s.shots.push({x:p.x+Math.cos(angle)*22,y:p.y+Math.sin(angle)*22,
    vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,
-   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)),
+   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)*(p.fireCount%4===0?1+.25*s.ranks.execution:1)),
+   frost:p.fireCount%4===0?s.ranks.frostbrand:0,
    element:p.champion,weapon:p.weaponSkin,split:Boolean(s.evolutions.barrage)});
  }
  s.events.push({type:'fire'});
@@ -464,7 +495,7 @@ export function advance(s,input={},dt=1/60){
  if(input.dash&&p.dashCooldown<=0){
   p.dashX=moving?mx:p.moveX;p.dashY=moving?my:p.moveY;
   p.dashTime=.22;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.29);
-  s.events.push({type:'dash'});
+  s.events.push({type:'dash'});p.ultimate=Math.min(100,p.ultimate+5);
   const rank=s.ranks.riftstrike||0;
   if(rank){
    const radius=90+rank*30;
@@ -478,10 +509,26 @@ export function advance(s,input={},dt=1/60){
  p.moving=dashing?1:Math.min(1,moving?n:0);
  if(dashing||moving)p.stride+=dt*(dashing?27:12);
  if(input.ability)activateAbility(s);
+ if(input.ultimate)activateUltimate(s);
  const spd=p.speed*(dashing?3.5:Math.min(1,moving?n:0))*(p.blessingTime>0?1.08:1);
  p.x=clamp(p.x+vx*spd*dt,40,WORLD.width-40);
  p.y=clamp(p.y+vy*spd*dt,40,WORLD.height-40);
  if((dashing||moving)&&p.fireCooldown>0)p.angle=Math.atan2(vy,vx);
+ if(s.wave>=12){
+  p.idleTime=clamp(p.idleTime+(moving||dashing?-dt*2:dt),0,8);
+  p.idlePulse=Math.max(0,p.idlePulse-dt);
+  if(p.idleTime>=5&&p.idlePulse<=0){
+   p.idlePulse=2.2;harmPlayer(s,Math.round(p.maxHp*.16));
+   s.effects.push({x:p.x,y:p.y,t:.65,kind:'corruption',size:96});
+  }
+ }
+ const orbit=s.ranks.orbit||0;
+ p.orbitTimer=Math.max(0,p.orbitTimer-dt);
+ if(orbit&&p.orbitTimer<=0){
+  p.orbitTimer=.6;
+  for(const e of s.enemies)if(e.hp>0&&distance(e,p)<=92+orbit*9+e.rad)
+   hitEnemy(s,e,Math.round(p.damage*(.35+.18*orbit)));
+ }
  if(p.fireCooldown<=0){
   fire(s,input.aim);
   p.fireCooldown=Math.max(.1,p.rate);
@@ -593,7 +640,7 @@ export function advance(s,input={},dt=1/60){
    const rad=b.r+e.rad;
    if((e.x-b.x)**2+(e.y-b.y)**2<rad**2){
     if(b.ignoreId===e.id&&b.ignoreTime>0)continue;
-    b.ttl=0;hitEnemy(s,e,b.damage);
+    b.ttl=0;if(b.frost)e.frozenFor=Math.max(e.frozenFor||0,.25+.25*b.frost);hitEnemy(s,e,b.damage);
     if(b.split){
      const base=Math.atan2(b.vy,b.vx);
      for(const angle of [base-.56,base+.56])
@@ -655,7 +702,7 @@ export function runSummary(s){
   eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,rareDrops:s.rareDrops||0,
   expeditionsCompleted:s.expeditionsCompleted||0,expeditionsFailed:s.expeditionsFailed||0,
   expeditionRenown:s.expeditionRenown||0,duration:Math.round(s.time),
-  bestCombo:s.bestCombo,level:s.level,champion:s.player.champion};
+  bestCombo:s.bestCombo,level:s.level,champion:s.player.champion,difficulty:s.difficulty};
 }
 export function durationLabel(seconds){
  const n=Math.max(0,Math.floor(finite(seconds))),m=Math.floor(n/60),s=n%60;

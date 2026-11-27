@@ -1,6 +1,6 @@
 /* SOVEREIGN SURVIVAL Character Ascension — static application shell only, never personal content. */
-const CACHE='proximus-sovereign-survival-dominion-v1.9';
-const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./ascension-v1.7.css','./vanguard-v1.8.css','./touchfix-v1.8.1.css','./dominion-v1.9.css','./legacy.js','./progression.js','./warbound-scene.svg','./game.js','./game.js?v=1.9.0','./core.js','./core.js?v=1.9.0','./renderer.js','./renderer.js?v=1.9.0','./progression.js?v=1.9.0','./manifest.webmanifest','./icon.svg'];
+const CACHE='proximus-sovereign-survival-eternal-v2.0';
+const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./ascension-v1.7.css','./vanguard-v1.8.css','./touchfix-v1.8.1.css','./dominion-v1.9.css','./eternal-v2.0.css','./legacy.js','./legacy.js?v=2.0.0','./progression.js','./warbound-scene.svg','./game.js','./game.js?v=2.0.0','./core.js','./core.js?v=2.0.0','./renderer.js','./renderer.js?v=2.0.0','./progression.js?v=2.0.0','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL.map(path=>new Request(new URL(path,self.registration.scope),{cache:'reload'})))).then(()=>self.skipWaiting()));
 });
