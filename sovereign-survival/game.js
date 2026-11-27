@@ -1,7 +1,7 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / ASCENSION ARMORY v1.3
+/* PROXIMUS | SOVEREIGN SURVIVAL / CHAMPION AWAKENING v1.4
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,runSummary,durationLabel,WORLD,arenaForWave} from './core.js';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave} from './core.js';
 import {drawArena} from './renderer.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,
@@ -42,7 +42,7 @@ const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android
 const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
-let dashQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
+let dashQueued=false,abilityQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
 const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory']);
 function setOverlay(){
  document.body.dataset.gameView=mode;
@@ -77,7 +77,7 @@ function closeAux(){
  next?.focus({preventScroll:true});
 }
 function returnToTitle(){
- mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;manual.active=false;
+ mode='menu';auxPage=null;keys.clear();joystick.x=joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
  resetStick();setOverlay();renderRecords();refreshMenuLoadout();
  $('startRun').focus({preventScroll:true});
 }
@@ -102,6 +102,8 @@ function sound(type){
   waveClear:[400,710,.18,'sine'],bossDefeated:[330,880,.5,'sine'],
   bossAttack:[140,210,.18,'sawtooth'],hexAttack:[540,260,.16,'triangle'],
   charge:[180,440,.20,'sawtooth'],eliteDefeated:[420,900,.25,'sine'],
+  nova:[280,790,.32,'sine'],bulwark:[640,260,.34,'sine'],cleave:[190,730,.23,'sawtooth'],
+  evolution:[490,1100,.36,'triangle'],aegisBlock:[560,140,.20,'sine'],bossEntrance:[100,300,.32,'sawtooth'],
   gameover:[190,75,.5,'triangle']};
  const n=notes[type];if(!n)return;
  try{
@@ -125,6 +127,9 @@ function handleEvents(){
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
   else if(ev.type==='bossDefeated'){toast('✦ VOID MONARCH DEFEATED · GLORY EARNED',3300);sound('bossDefeated')}
   else if(ev.type==='eliteDefeated'){sound('eliteDefeated')}
+  else if(ev.type==='ability'){toast('✦ '+ev.name+' UNLEASHED',1150);sound(ev.id)}
+  else if(ev.type==='aegisBlock'){sound('aegisBlock')}
+  else if(ev.type==='bossEntrance'){sound('bossEntrance')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
   else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type)}
   else if(['fire','bossAttack','upgrade','hexAttack','charge'].includes(ev.type))sound(ev.type);
@@ -247,6 +252,13 @@ function showUpgrades(){
   const icon=document.createElement('span');icon.className='glyph';icon.textContent=u.icon;
   const title=document.createElement('strong');title.textContent=u.name;
   const description=document.createElement('small');description.textContent=u.text+'  ·  Rank '+(game.ranks[id]+1)+'/'+u.max;
+  const evolution=EVOLUTIONS.find(e=>e.id===id);
+  if(evolution&&game.ranks[id]<evolution.rank){
+   const extra=document.createElement('span');extra.className='evolution-unlock';
+   extra.textContent=game.ranks[id]+1===evolution.rank?'✦ EVOLVES INTO '+evolution.name:
+    'EVOLUTION AT RANK '+evolution.rank+' · '+evolution.name;
+   description.append(extra);
+  }
   button.setAttribute('aria-label',u.name+', rank '+(game.ranks[id]+1)+'. '+u.text);
   button.append(num,icon,title,description);
   button.addEventListener('click',()=>applyUpgrade(id));
@@ -255,12 +267,26 @@ function showUpgrades(){
  setOverlay();
 }
 function applyUpgrade(id){
+ const wasEvolved=Boolean(game.evolutions[id]);
  if(chooseUpgrade(game,id)){
-  setOverlay();sound('upgrade');buildLoadout();updateHud();toast('✧ POWER ACQUIRED · '+UPGRADES.find(u=>u.id===id).name);
+  const evolved=EVOLUTIONS.find(e=>e.id===id&&game.evolutions[id]&&!wasEvolved);
+  setOverlay();sound(evolved?'evolution':'upgrade');buildLoadout();updateHud();
+  toast(evolved?'✦ WEAPON AWAKENED · '+evolved.name:
+   '✧ POWER ACQUIRED · '+UPGRADES.find(u=>u.id===id).name,evolved?3600:2300);
   canvas.focus({preventScroll:true});
  }
 }
 function buildLoadout(){
+ const evolutions=$('evolutionList');evolutions.replaceChildren();
+ for(const entry of EVOLUTIONS){
+  const active=Boolean(game.evolutions[entry.id]);
+  const el=document.createElement('div');el.className='evolution-entry'+(active?'':' pending');
+  const title=document.createElement('strong');title.textContent=entry.icon+' '+entry.name;
+  const note=document.createElement('small');
+  note.textContent=active?'✦ AWAKENED · '+entry.description:
+   'RANK '+game.ranks[entry.id]+'/'+entry.rank+' · '+entry.description;
+  el.append(title,note);evolutions.append(el);
+ }
  const wrap=$('buildList');wrap.replaceChildren();const selected=UPGRADES.filter(u=>game.ranks[u.id]>0);
  $('upgradeCount').textContent=selected.reduce((n,u)=>n+game.ranks[u.id],0)+' UPGRADES';
  if(!selected.length){const p=document.createElement('p');p.textContent='Defeat shadows, collect soul orbs, and choose your next power.';wrap.append(p);return}
@@ -278,7 +304,7 @@ function startRun(){
  game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,loadout);
  records.runs++;persist();renderRecords();
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
- keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;manual.active=false;
+ keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
  lastTime=performance.now();lastHud=0;buildLoadout();setOverlay();updateHud();
  refreshCodexChampion();
  toast('✧ THE SHATTERED CITADEL · WAVE 1',2300);
@@ -325,6 +351,16 @@ function updateHud(){
  $('comboText').textContent=game.combo>1?'✦ '+game.combo+'× COMBO':'✧ BUILD YOUR COMBO';
  $('dashText').textContent=p.dashCooldown<=0?'➤ DASH READY':'➤ '+p.dashCooldown.toFixed(1)+'S';
  $('dashButton').disabled=p.dashCooldown>.1||mode!=='playing'||game.phase!=='running';
+ const ability=ABILITIES[p.champion]||ABILITIES.warden;
+ $('abilityName').textContent=ability.name;
+ $('abilityStatus').textContent=p.abilityCooldown>0?p.abilityCooldown.toFixed(1)+' SEC':'READY';
+ $('abilityTouchIcon').textContent=ability.icon;
+ const ready=p.abilityCooldown<=0;
+ $('abilityButton').disabled=!ready||mode!=='playing'||game.phase!=='running';
+ $('abilityButton').setAttribute('aria-label',(ready?'Cast ':'Recharging ')+ability.name+
+  (ready?'':' in '+p.abilityCooldown.toFixed(1)+' seconds'));
+ $('abilityHud').setAttribute('aria-busy',String(!ready));
+ $('abilityFill').style.height=(100*(1-Math.max(0,p.abilityCooldown)/ability.cooldown)).toFixed(1)+'%';
  $('powerStat').textContent=p.damage;
  $('speedStat').textContent=p.speed;
  $('armorStat').textContent=Math.round(p.damageReduction*100)+'%';
@@ -360,8 +396,9 @@ function input(){
  const x=Number(keys.has('d')||keys.has('arrowright'))-Number(keys.has('a')||keys.has('arrowleft'));
  const y=Number(keys.has('s')||keys.has('arrowdown'))-Number(keys.has('w')||keys.has('arrowup'));
  const dx=joystick.pointer===null?x:joystick.x,dy=joystick.pointer===null?y:joystick.y;
- const result={dx,dy,dash:dashQueued,aim:manual.active?{x:manual.x,y:manual.y}:null};
- dashQueued=false;return result;
+ const result={dx,dy,dash:dashQueued,ability:abilityQueued,
+  aim:manual.active?{x:manual.x,y:manual.y}:null};
+ dashQueued=false;abilityQueued=false;return result;
 }
 function resize(){
  const rect=frame.getBoundingClientRect();
@@ -412,6 +449,9 @@ $('resumeRun').addEventListener('click',pause);
 $('abandonRun').addEventListener('click',startRun);
 $('pauseButton').addEventListener('click',pause);
 $('dashButton').addEventListener('click',()=>{if(mode==='playing')dashQueued=true});
+$('abilityButton').addEventListener('click',()=>{
+ if(mode==='playing'&&game.phase==='running'&&game.player.abilityCooldown<=0)abilityQueued=true;
+});
 $('soundToggle').addEventListener('click',async()=>{
  if(soundOn){soundOn=false;$('soundToggle').textContent='♪ Sound Off';$('soundToggle').setAttribute('aria-pressed','false');return}
  const Audio=window.AudioContext||window.webkitAudioContext;
@@ -437,6 +477,9 @@ window.addEventListener('keydown',e=>{
  if(auxPage){if(k==='escape'){e.preventDefault();closeAux()}return}
  if(moveKeys.has(k)){keys.add(k);if(mode==='playing')e.preventDefault()}
  if((k==='shift')&&mode==='playing'){e.preventDefault();dashQueued=true}
+ if(k==='q'&&mode==='playing'&&game.phase==='running'&&!e.repeat){
+  e.preventDefault();if(game.player.abilityCooldown<=0)abilityQueued=true;
+ }
  if((k===' '||k==='p'||k==='escape')&&mode!=='menu'&&mode!=='ended'){
   if(k===' '||k==='p'||k==='escape')e.preventDefault();
   if(!e.repeat&&game.phase!=='upgrade')pause();

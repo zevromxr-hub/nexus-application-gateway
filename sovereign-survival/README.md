@@ -1,3 +1,43 @@
+# SOVEREIGN SURVIVAL v1.4 — CHAMPION AWAKENING
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+v1.4 expands the real, deterministic combat engine. The three playable champions no longer simply have different statistics: each now has an active signature combat ability. Upgraded weapons also evolve to behave differently in battle.
+
+## Playable champion abilities
+
+| Champion | Active power | Combat behavior | Cooldown |
+| --- | --- | --- | --- |
+| Void Warden | **Astral Nova** ✧ | Violet radial blast damages and knocks nearby enemies back | 9 s |
+| Frost Sentinel | **Glacial Bulwark** ❄ | Freeze nearby enemies for 2.1 seconds and become invulnerable for 2.35 seconds | 13 s |
+| Ember Reaver | **Infernal Cleave** ⚔ | Directional fiery slash applies immediate damage plus burning ticks | 8 s |
+
+Use **Q** on PC. On iPhone, tap the dedicated **POWER** rune near the dash control. The compact ability HUD displays the selected skill, cooldown and readiness. All powers work offline and are implemented directly in the game's deterministic combat simulation.
+
+## Weapon evolutions
+
+Three existing temporary skill upgrade paths now awaken an automatic additional effect when reaching Rank 3 **within the current run**:
+
+- **Bloodsteel Edge → Sovereign Blades:** every second volley includes an additional wide close-range slash that hits nearby opponents.
+- **Arcane Barrage → Celestial Storm:** an original blade impact splits into two smaller projectiles. Child projectiles do not split again.
+- **Runic Ward → Immortal Aegis:** negate one incoming hit, then wait 15 seconds for the shield to recharge.
+
+These evolutions add to the normal rank bonuses. They are not purchased through Renown: they must be earned by collecting soul energy and selecting upgrades during each run. The Warden's Codex now displays their progress.
+
+## Combat and visual effects
+
+The canvas displays unique radial blasts, fiery arcs, crystalline freeze patterns, temporary barriers, burning enemies, split projectiles, Aegis protection and a new Void Monarch entrance effect. Effects use the existing Canvas2D loop with reduced complexity in Eco / Auto mobile mode and respect reduced-motion settings where practical.
+
+## Preserve your account-free progress
+
+The v1.4 update keeps both existing save keys: `proximus-sovereign-survival-v1` (high scores, kills and waves) and `proximus-sovereign-survival-armory-v1` (Renown, characters, forged/equipped relics). Character and relic bonuses still affect actual gameplay; completed runs still award Renown.
+
+The service worker is scoped strictly to `sovereign-survival/`. No updates to PROXIMUS Asset Alchemist's personal videos, OPFS, local media, or creative studios. Do not uninstall the existing PWA or clear website data.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL v1.3.0 — ASCENSION ARMORY
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/

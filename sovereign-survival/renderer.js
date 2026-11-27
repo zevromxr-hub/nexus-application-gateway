@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.3 ASCENSION ARMORY — vector combat and champion palettes.
+/* SOVEREIGN SURVIVAL v1.4 CHAMPION AWAKENING — vector combat, active power and evolution effects.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
 import {WORLD,ENEMY_TYPES,arenaForWave} from './core.js';
@@ -120,6 +120,23 @@ function enemy(c,e,s,quality){
  if(e.flash>0){
   ring(c,0,0,r+5,'rgba(255,246,226,'+clamp(e.flash*5,0,.95)+')',3);
  }
+ if(e.frozenFor>0){
+  ring(c,0,0,r+8,'rgba(155,243,255,.83)',3);
+  for(let i=0;i<4;i++){
+   const a=i*TAU/4+s.time*.35;
+   line(c,[[Math.cos(a)*(r-3),Math.sin(a)*(r-3)],
+     [Math.cos(a)*(r+12),Math.sin(a)*(r+12)]],'rgba(210,252,255,.9)',2);
+  }
+ }
+ if(e.burnTime>0){
+  ring(c,0,0,r+7,'rgba(255,143,76,'+clamp(.3+e.burnTime*.18,.3,.85)+')',2.3);
+  if(quality!=='low'){
+   for(let i=0;i<3;i++){
+    const a=i*TAU/3+s.time*2.4;
+    circle(c,Math.cos(a)*(r+7),Math.sin(a)*(r+7)-4,2.8,'rgba(255,192,88,.85)');
+   }
+  }
+ }
  c.restore();
 }
 function hero(c,p,s,quality){
@@ -165,18 +182,76 @@ function hero(c,p,s,quality){
   c.lineWidth=3;c.stroke();
  }
  c.restore();
- if(p.invulnerable>0)ring(c,p.x,p.y,22+p.invulnerable*12,'rgba(123,239,255,.7)',3);
+ if(p.barrierTime>0){
+  const shimmer=.58+.18*Math.sin(s.time*6);
+  ring(c,p.x,p.y,41+Math.sin(s.time*5)*2,'rgba(153,245,255,'+shimmer+')',4);
+  ring(c,p.x,p.y,49,'rgba(184,246,255,.22)',2);
+  if(quality!=='low')glow(c,p.x,p.y,70,'rgba(101,228,251,.12)');
+ }
+ if(s.evolutions?.ward&&p.aegisCooldown<=0){
+  ring(c,p.x,p.y,30,'rgba(255,217,166,.5)',2);
+ }
+ if(p.invulnerable>0)ring(c,p.x,p.y,22+Math.min(1,p.invulnerable)*12,'rgba(123,239,255,.7)',3);
  if(p.hp<p.maxHp){
   c.fillStyle='#141022';c.fillRect(p.x-25,p.y-36,50,5);
   c.fillStyle='#70f2b5';c.fillRect(p.x-25,p.y-36,50*clamp(p.hp/p.maxHp,0,1),5);
  }
 }
 function projectile(c,b,hostile,quality){
- const hex=b.kind==='hexer',color=hostile?(hex?'#ff8dd6':'#ffab85'):'#f0ceff';
+ const hex=b.kind==='hexer',color=hostile?(hex?'#ff8dd6':'#ffab85'):b.storm?'#9af8ff':'#f0ceff';
  if(quality!=='low')glow(c,b.x,b.y,22,hostile?(hex?'rgba(233,82,191,.24)':'rgba(255,111,106,.24)'):'rgba(162,118,255,.21)');
  line(c,[[b.x-b.vx*.022,b.y-b.vy*.022],[b.x,b.y]],
-  hostile?(hex?'rgba(245,138,237,.8)':'rgba(255,121,88,.75)'):'rgba(125,208,253,.65)',hostile?5:4);
+  hostile?(hex?'rgba(245,138,237,.8)':'rgba(255,121,88,.75)'):
+   b.storm?'rgba(114,240,255,.9)':'rgba(125,208,253,.65)',hostile?5:4);
  circle(c,b.x,b.y,b.r,color);
+}
+function drawAwakeningEffect(c,fx,quality){
+ const t=fx.t,small=quality==='low',r=fx.size||85;
+ if(fx.kind==='nova'){
+  const progress=1-clamp(t/.65,0,1),radius=25+progress*r;
+  ring(c,fx.x,fx.y,radius,'rgba(202,146,255,'+(1-progress)*.87+')',9-progress*5);
+  if(!small)glow(c,fx.x,fx.y,radius*.85,'rgba(138,84,240,'+(1-progress)*.15+')');
+  for(let i=0;i<(small?4:9);i++){
+   const a=i*TAU/(small?4:9)+progress*.4;
+   line(c,[[fx.x+Math.cos(a)*radius*.72,fx.y+Math.sin(a)*radius*.72],
+    [fx.x+Math.cos(a)*radius*1.18,fx.y+Math.sin(a)*radius*1.18]],
+    'rgba(219,188,255,'+(1-progress)*.72+')',3);
+  }
+ }else if(fx.kind==='freeze'){
+  const progress=1-clamp(t/.75,0,1),radius=30+progress*r;
+  ring(c,fx.x,fx.y,radius,'rgba(151,240,255,'+(1-progress)*.85+')',6);
+  for(let i=0;i<(small?6:12);i++){
+   const a=i*TAU/(small?6:12);
+   line(c,[[fx.x+Math.cos(a)*radius*.48,fx.y+Math.sin(a)*radius*.48],
+    [fx.x+Math.cos(a)*radius,fx.y+Math.sin(a)*radius]],
+    'rgba(214,251,255,'+(1-progress)*.69+')',3);
+  }
+ }else if(fx.kind==='cleave'||fx.kind==='sovereignSlash'){
+  const isFire=fx.kind==='cleave',duration=isFire?.42:.3;
+  const progress=clamp(1-t/duration,0,1),a=fx.angle||0;
+  c.save();c.translate(fx.x,fx.y);
+  c.beginPath();c.arc(0,0,r*(.65+progress*.4),a-1.08,a+1.08);
+  c.strokeStyle=isFire?'rgba(255,158,81,'+(1-progress)*.95+')':
+   'rgba(191,234,255,'+(1-progress)*.93+')';
+  c.lineWidth=isFire?19-progress*10:10-progress*6;c.stroke();
+  if(!small){
+   c.beginPath();c.arc(0,0,r*(.4+progress*.35),a-.98,a+.98);
+   c.strokeStyle=isFire?'rgba(255,233,158,'+(1-progress)*.61+')':
+    'rgba(218,209,255,'+(1-progress)*.60+')';
+   c.lineWidth=4;c.stroke();
+  }
+  c.restore();
+ }else{
+  const duration=fx.kind==='bossEntrance'?1.45:fx.kind==='evolution'?1.1:
+   fx.kind==='aegis'?.85:.35;
+  const progress=clamp(1-t/duration,0,1);
+  const color=fx.kind==='storm'?'rgba(123,235,255,':
+   fx.kind==='bossEntrance'?'rgba(255,110,151,':'rgba(255,217,151,';
+  ring(c,fx.x,fx.y,24+progress*r,color+((1-progress)*.9)+')',5-progress*2);
+  if((fx.kind==='evolution'||fx.kind==='bossEntrance')&&!small){
+   ring(c,fx.x,fx.y,38+progress*r*.6,color+((1-progress)*.58)+')',2.5);
+  }
+ }
 }
 function warnAttack(c,e,quality){
  if(e.kind==='monarch'||e.kind==='hexer'){
@@ -258,6 +333,9 @@ export function drawArena(ctx,s,view,quality='auto'){
  for(const fx of s.effects){
   if(fx.x<x-70||fx.x>x+w+70||fx.y<y-90||fx.y>y+h+70)continue;
   const alpha=clamp(fx.t*1.6,0,.8);
+  if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance'].includes(fx.kind)){
+   drawAwakeningEffect(ctx,fx,quality);continue;
+  }
   if(fx.kind==='number'){
    ctx.save();ctx.font='bold 14px ui-sans-serif,system-ui,sans-serif';
    ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='rgba(8,8,23,.9)';

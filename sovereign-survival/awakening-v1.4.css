@@ -1,0 +1,76 @@
+/* PROXIMUS | SOVEREIGN SURVIVAL v1.4 — CHAMPION AWAKENING
+ * Game-native cooldown HUD and optional iPhone POWER rune; zero remote assets.
+ */
+body.warbound .ability-hud{position:absolute;z-index:5;right:clamp(15px,2vw,29px);
+ bottom:max(68px,env(safe-area-inset-bottom) + 56px);width:220px;
+ display:flex;align-items:center;gap:11px;min-height:55px;padding:8px 11px;
+ border:1px solid #bd9cc16c;border-left:3px solid #e8bb8f;border-radius:2px;
+ background:linear-gradient(105deg,#24192edc,#12172bdc);box-shadow:0 8px 28px #000a;
+ pointer-events:none}
+body.warbound .ability-key{width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;
+ border:1px solid #dfbad77a;box-shadow:inset 0 0 12px #a776d832;
+ font-family:Georgia,serif;font-size:20px;color:#f1dcff;font-weight:bold;
+ line-height:1;letter-spacing:0}
+body.warbound .ability-key small{font-family:system-ui,sans-serif;font-size:7px;letter-spacing:.08em;
+ font-weight:800;margin-top:-9px;color:#cbb0d8}
+body.warbound .ability-hud-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+body.warbound .ability-hud-copy strong{font-size:10px;white-space:nowrap;overflow:hidden;
+ text-overflow:ellipsis;letter-spacing:.11em;color:#f3d7f6}
+body.warbound .ability-hud-copy small{font-size:10px;letter-spacing:.15em;font-weight:900;color:#b7f3dc}
+body.warbound .ability-hud[aria-busy="true"] .ability-hud-copy small{color:#e3c0b3}
+body.warbound .ability-hud-meter{width:5px;height:40px;flex-shrink:0;border:1px solid #d1b9d456;
+ background:#0a0d1a;overflow:hidden;display:flex;align-items:end}
+body.warbound #abilityFill{display:block;width:100%;height:100%;background:linear-gradient(0deg,#b685de,#79d5ed)}
+body.warbound[data-game-view="menu"] .ability-hud,
+body.warbound[data-game-view="ended"] .ability-hud{visibility:hidden}
+body.warbound .touch-controls .ability-button{position:absolute;right:94px;bottom:16px;
+ width:82px;height:82px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:2px;border:2px solid #d6b0ffbf;border-radius:50%;color:#fff2ff;
+ background:radial-gradient(circle at 35% 25%,#7e5796dc,#302049eb 67%,#13152eee);
+ box-shadow:0 0 22px #a775df4b,inset 0 0 18px #a97de342;
+ touch-action:manipulation;-webkit-tap-highlight-color:transparent;z-index:11}
+body.warbound .touch-controls .ability-button span{font-family:Georgia,serif;font-size:35px;
+ line-height:1;text-shadow:0 0 15px #e0b2ff}
+body.warbound .touch-controls .ability-button small{font-size:9px;letter-spacing:.12em;font-weight:950;color:#f8deff}
+body.warbound .touch-controls .ability-button:not(:disabled):active{transform:scale(.94);
+ box-shadow:0 0 40px #b97df6ad}
+body.warbound .touch-controls .ability-button:disabled{filter:saturate(.38);opacity:.67}
+body.warbound .evolution-codex{margin-top:16px;border-top:1px solid #c5a8d86b;padding:13px 2px 3px}
+body.warbound .evolution-codex>p{font-size:10px;line-height:1.6;margin:6px 0 10px;color:#cbb6dc}
+body.warbound .evolution-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+body.warbound .evolution-entry{border:1px solid #e5be8e88;
+ background:linear-gradient(115deg,#563b54b0,#202a3bb0);
+ padding:10px 7px;text-align:center;color:#f6dfbb;font-size:10px;line-height:1.35;
+ font-weight:900}
+body.warbound .evolution-entry small{display:block;margin-top:4px;color:#dfc9df;font-size:9px;line-height:1.4}
+body.warbound .evolution-entry.pending{border-color:#a8a0b14a;background:#111728b3;color:#a99cad}
+body.warbound .evolution-entry.pending small{color:#9996ac}
+body.warbound .upgrade-choice .evolution-unlock{display:block;margin-top:7px;
+ color:#f3cea2;font-size:9px;line-height:1.4;font-weight:850}
+body.warbound .game-frame.ability-impact{box-shadow:inset 0 0 120px rgba(174,105,247,.2)}
+body.warbound .arena-boss{border-color:#e9acbd99}
+@media(max-width:680px){
+ body.warbound .ability-hud{bottom:max(190px,env(safe-area-inset-bottom) + 175px);right:9px;
+ width:155px;min-height:45px;padding:7px;gap:6px;box-shadow:0 4px 13px #000a}
+ body.warbound .ability-key{width:31px;height:31px;font-size:17px}
+ body.warbound .ability-key small{font-size:6px}
+ body.warbound .ability-hud-copy strong{font-size:8px;letter-spacing:.05em}
+ body.warbound .ability-hud-copy small{font-size:9px}
+ body.warbound .ability-hud-meter{height:34px}
+ body.warbound .touch-controls .ability-button{width:66px;height:66px;right:79px;bottom:16px}
+ body.warbound .touch-controls .ability-button span{font-size:28px}
+ body.warbound .touch-controls .ability-button small{font-size:8px}
+ body.warbound .evolution-list{grid-template-columns:1fr;gap:5px}
+ body.warbound .evolution-entry{padding:7px}
+}
+@media(max-width:370px){
+ body.warbound .ability-hud{right:5px;bottom:max(162px,env(safe-area-inset-bottom) + 145px);
+ width:145px;padding:5px}
+ body.warbound .touch-controls .ability-button{width:60px;height:60px;right:70px;bottom:18px}
+}
+@media(max-height:670px) and (max-width:680px){
+ body.warbound .ability-hud{bottom:max(147px,env(safe-area-inset-bottom) + 140px)}
+}
+@media(prefers-reduced-motion:reduce){
+ body.warbound .touch-controls .ability-button{transition:none!important}
+}
