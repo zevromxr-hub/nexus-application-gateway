@@ -1,10 +1,10 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / CHAMPION AWAKENING v1.4
+/* PROXIMUS | SOVEREIGN SURVIVAL / REALM EXPEDITIONS v1.5
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave} from './core.js';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss} from './core.js';
 import {drawArena} from './renderer.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
- championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,
+ championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
  awardRun} from './progression.js';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
@@ -15,8 +15,8 @@ const readRecords=()=>{
   const x=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}');
   const number=k=>Number.isFinite(x[k])?clamp(Math.floor(x[k]),0,1000000000):0;
   return {best:number('best'),bestWave:number('bestWave'),runs:number('runs'),
-    kills:number('kills'),elites:number('elites'),bosses:number('bosses')};
- }catch{return {best:0,bestWave:0,runs:0,kills:0,elites:0,bosses:0}}
+    kills:number('kills'),elites:number('elites'),bosses:number('bosses'),expeditions:number('expeditions')};
+ }catch{return {best:0,bestWave:0,runs:0,kills:0,elites:0,bosses:0,expeditions:0}}
 };
 let records=readRecords();
 const readProgress=()=>{
@@ -35,6 +35,7 @@ function renderRecords(){
  $('recordKills').textContent=records.kills.toLocaleString();
  $('recordElites').textContent=records.elites.toLocaleString();
  $('recordBosses').textContent=records.bosses.toLocaleString();
+ $('recordExpeditions').textContent=records.expeditions.toLocaleString();
  $('recordRenown').textContent=progression.lifetimeRenown.toLocaleString();
 }
 let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
@@ -104,6 +105,8 @@ function sound(type){
   charge:[180,440,.20,'sawtooth'],eliteDefeated:[420,900,.25,'sine'],
   nova:[280,790,.32,'sine'],bulwark:[640,260,.34,'sine'],cleave:[190,730,.23,'sawtooth'],
   evolution:[490,1100,.36,'triangle'],aegisBlock:[560,140,.20,'sine'],bossEntrance:[100,300,.32,'sawtooth'],
+  expeditionComplete:[580,1060,.34,'sine'],expeditionFailed:[220,110,.21,'triangle'],
+  bossEnraged:[120,430,.33,'sawtooth'],portalDestroyed:[360,920,.25,'triangle'],sealActivated:[480,950,.28,'sine'],
   gameover:[190,75,.5,'triangle']};
  const n=notes[type];if(!n)return;
  try{
@@ -119,14 +122,18 @@ function handleEvents(){
  for(const ev of game.events){
   if(ev.type==='wave'){
    const arena=arenaForWave(ev.wave);
-   toast(ev.boss?'☄ VOID MONARCH · '+arena.name:
-    '✧ WAVE '+ev.wave+' · '+arena.name+(ev.hazards?' · RIFTS ACTIVE':''),3100);
+   toast(ev.boss?'☄ '+(ev.wave%8===0?'VOID TYRANT':'VOID MONARCH')+' · '+arena.name:
+    '✧ WAVE '+ev.wave+' · '+arena.name+' · '+ev.objective,3100);
    sound('wave');
   }
   else if(ev.type==='level'){showUpgrades();sound('level')}
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
-  else if(ev.type==='bossDefeated'){toast('✦ VOID MONARCH DEFEATED · GLORY EARNED',3300);sound('bossDefeated')}
+  else if(ev.type==='bossDefeated'){toast('✦ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' DEFEATED',3300);sound('bossDefeated')}
   else if(ev.type==='eliteDefeated'){sound('eliteDefeated')}
+  else if(ev.type==='bossEnraged'){toast('☄ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' · PHASE TWO',2800);sound('bossEnraged')}
+  else if(ev.type==='expeditionComplete'){toast('✦ '+ev.objective+' COMPLETE · +'+ev.renown+' RENOWN',3000);sound('expeditionComplete')}
+  else if(ev.type==='expeditionFailed'){toast('◇ '+ev.objective+' LOST · SURVIVE THE NEXT WAVE',2700);sound('expeditionFailed')}
+  else if(ev.type==='portalDestroyed'||ev.type==='sealActivated'){sound(ev.type)}
   else if(ev.type==='ability'){toast('✦ '+ev.name+' UNLEASHED',1150);sound(ev.id)}
   else if(ev.type==='aegisBlock'){sound('aegisBlock')}
   else if(ev.type==='bossEntrance'){sound('bossEntrance')}
@@ -166,7 +173,7 @@ function setArmoryFeedback(message){
 function applyArmoryChange(action,id){
  let result;
  if(action==='champion')result=chooseChampion(progression,id,records);
- else if(action==='buy')result=purchaseRelic(progression,id);
+ else if(action==='buy')result=purchaseRelic(progression,id,records);
  else if(action==='toggle')result=toggleRelic(progression,id);
  else return;
  if(result.success){
@@ -214,7 +221,8 @@ function renderArmory(){
  const relics=$('relicCards');relics.replaceChildren();
  for(const item of RELICS){
   const forged=owned.includes(item.id),equipped=loadout.relics.includes(item.id);
-  const card=armoryNode('article','relic-card'+(equipped?' equipped':''));
+  const discovered=blueprintUnlocked(item,records);
+  const card=armoryNode('article','relic-card'+(equipped?' equipped':'')+(!discovered?' blueprint-locked':''));
   const glyph=armoryNode('span','relic-glyph',item.icon);
   const info=armoryNode('div','relic-info');
   const heading=armoryNode('div','relic-heading');
@@ -222,11 +230,18 @@ function renderArmory(){
    armoryNode('small','',equipped?'✦ EQUIPPED':forged?'OWNED':item.rarity));
   info.append(heading,armoryNode('p','relic-description',item.description),
    armoryNode('p','relic-bonus',item.effect));
+  if(!discovered){
+   const challenge=item.requiredExpeditions?
+    Math.max(0,item.requiredExpeditions-records.expeditions)+' MORE REALM EXPEDITIONS':
+    Math.max(0,item.requiredBosses-records.bosses)+' MORE BOSS DEFEATS';
+   info.append(armoryNode('small','blueprint-status','BLUEPRINT LOCKED · '+challenge));
+  }
   card.append(glyph,info);
   let label='',action='buy',disabled=false;
   if(!forged){
    label='FORGE · '+item.cost+' RENOWN';
-   if(progression.renown<item.cost){
+   if(!discovered){label='BLUEPRINT NOT DISCOVERED';disabled=true}
+   else if(progression.renown<item.cost){
     label='NEED '+(item.cost-progression.renown)+' MORE RENOWN';
     disabled=true;
    }
@@ -318,14 +333,19 @@ function finishRun(){
  records.kills+=result.kills;
  records.elites+=result.eliteKills;
  records.bosses+=result.bossKills;
+ records.expeditions+=result.expeditionsCompleted;
  const resultReward=awardRun(progression,result);
  progression=resultReward.progress;
  persist();persistProgress();renderRecords();refreshMenuLoadout();
  $('runRenown').textContent='+'+resultReward.earned.toLocaleString()+' RENOWN';
+ $('endExpeditionRenown').textContent='+'+result.expeditionRenown.toLocaleString();
+ $('endExpeditionProgress').textContent=result.expeditionsCompleted+' EXPEDITIONS COMPLETED · '+
+  result.expeditionsFailed+' FAILED';
  const wrap=$('endStats');wrap.replaceChildren();
  for(const [name,value] of [['SCORE',result.score.toLocaleString()],['WAVE',result.wave],
   ['DEFEATS',result.kills],['TIME',durationLabel(result.duration)],['LEVEL',result.level],
-  ['ELITES',result.eliteKills],['BOSSES',result.bossKills],['BEST COMBO',result.bestCombo]]){
+  ['ELITES',result.eliteKills],['BOSSES',result.bossKills],['REALM QUESTS',result.expeditionsCompleted],
+  ['BEST COMBO',result.bestCombo]]){
   const el=document.createElement('div'),num=document.createElement('strong'),label=document.createElement('span');
   num.textContent=String(value);label.textContent=name;el.append(num,label);wrap.append(el);
  }
@@ -364,15 +384,37 @@ function updateHud(){
  $('powerStat').textContent=p.damage;
  $('speedStat').textContent=p.speed;
  $('armorStat').textContent=Math.round(p.damageReduction*100)+'%';
- const boss=game.enemies.find(e=>e.kind==='monarch');
+ const boss=game.enemies.find(isBoss);
+ document.body.dataset.boss=String(Boolean(boss));
  $('bossBar').hidden=!boss;
- if(boss)$('bossFill').style.width=100*clamp(boss.hp/boss.maxHp,0,1)+'%';
+ $('bossBar').dataset.phase=String(boss?.bossPhase||1);
+ if(boss){
+  $('bossFill').style.width=100*clamp(boss.hp/boss.maxHp,0,1)+'%';
+  $('bossName').textContent='✦ '+(boss.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+
+   (boss.bossPhase===2?' · ENRAGED':'');
+ }
  const next=Math.ceil(Math.max(1,game.wave)/4)*4;
- $('bossWaveHint').textContent=boss?'BOSS ACTIVE / WAVE '+game.wave:'BOSS AT WAVE '+next;
+ $('bossWaveHint').textContent=boss?'BOSS ACTIVE / WAVE '+game.wave:
+  'NEXT BOSS AT WAVE '+next;
  $('waveProgress').style.width=(boss?100:(game.wave%4)/4*100)+'%';
- $('objectiveTitle').textContent=boss?'VOID MONARCH — ACTIVE':next===4?'THE VOID MONARCH':'ANOTHER MONARCH RISES';
- $('objectiveDescription').textContent=boss?'Evade its ranged volleys and attack from a safe angle.':
-  'Face the towering monarch every fourth wave. Claim its soul to empower your ascension.';
+ const quest=expeditionStatus(game);
+ $('objectiveTitle').textContent=quest?quest.name:'THE REALM WAITS';
+ $('objectiveDescription').textContent=quest?quest.description:'Complete the expedition for additional Renown.';
+ const questHud=$('expeditionHud');
+ questHud.hidden=!quest||mode==='menu'||mode==='ended';
+ if(quest){
+  questHud.dataset.status=quest.status;
+  $('expeditionIcon').textContent=game.expedition.icon;
+  $('expeditionName').textContent=quest.name;
+  $('expeditionReward').textContent='+'+quest.reward+' R';
+  $('expeditionDescription').textContent=quest.description;
+  $('expeditionFill').style.width=(quest.progress*100).toFixed(1)+'%';
+  $('expeditionDetail').textContent=quest.detail;
+  $('expeditionState').textContent=quest.status==='complete'?'COMPLETE':
+   quest.status==='failed'?'FAILED':'ACTIVE';
+ }
+ $('blessingBanner').hidden=game.player.blessingTime<=0||mode==='menu'||mode==='ended';
+ $('blessingSeconds').textContent=Math.ceil(game.player.blessingTime)+'S';
  const arena=arenaForWave(game.wave);
  document.body.dataset.realm=arena.id;
  $('stageLabel').textContent=mode==='menu'?'THE SHATTERED CITADEL':

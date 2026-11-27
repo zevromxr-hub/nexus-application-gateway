@@ -1,0 +1,87 @@
+/* PROXIMUS | SOVEREIGN SURVIVAL v1.5 — REALM EXPEDITIONS
+ * One in-game quest compass; no new web services or expensive media.
+ */
+body.warbound .expedition-hud{position:absolute;z-index:5;left:clamp(12px,2vw,27px);
+ top:clamp(175px,24vh,212px);width:min(276px,36vw);display:block;
+ padding:12px 14px 10px;background:linear-gradient(135deg,#151d32ed,#20182beb);
+ box-shadow:inset 0 1px #f7dfbd29,0 12px 30px #0009;
+ border:1px solid #d4b49281;border-left:3px solid #e6bb83;pointer-events:none;
+ font-family:system-ui,sans-serif;color:#eedfe8}
+body.warbound .expedition-hud[hidden],body.warbound .blessing-banner[hidden]{display:none!important}
+body.warbound .expedition-hud-heading{display:flex;gap:9px;align-items:center;min-width:0}
+body.warbound .expedition-hud-icon{display:grid;place-items:center;flex-shrink:0;
+ width:36px;height:36px;font-family:Georgia,serif;font-size:29px;
+ color:#ffddad;text-shadow:0 0 16px #e7a66c;
+ border:1px solid #c6a7b256;background:radial-gradient(circle,#664261aa,#182238)}
+body.warbound .expedition-hud-heading>div{min-width:0;flex:1}
+body.warbound .expedition-hud-heading small{display:block;font-size:8px;
+ color:#dbc6be;font-weight:950;letter-spacing:.12em}
+body.warbound .expedition-hud-heading strong{display:block;margin-top:3px;font-size:11px;
+ font-weight:950;letter-spacing:.06em;color:#fff0dc;line-height:1.4}
+body.warbound .expedition-hud-heading b{font-size:9px;color:#f9d39d;
+ white-space:nowrap;letter-spacing:.07em}
+body.warbound .expedition-hud p{margin:9px 0 10px;font-size:10px;
+ line-height:1.53;color:#dbcdd7}
+body.warbound .expedition-hud-progress{width:100%;height:5px;
+ background:#0e1524;border:1px solid #d1b6ad4a}
+body.warbound #expeditionFill{display:block;height:100%;width:0;
+ background:linear-gradient(90deg,#8d83db,#f8d5a1)}
+body.warbound .expedition-hud-foot{display:flex;justify-content:space-between;
+ gap:8px;margin-top:7px;font-size:9px;letter-spacing:.08em;font-weight:900;
+ color:#c7c0dc}
+body.warbound .expedition-hud-foot small:last-child{color:#f0cc94}
+body.warbound .expedition-hud[data-status="complete"]{border-left-color:#88ecba}
+body.warbound .expedition-hud[data-status="complete"] #expeditionFill{background:#87f7be}
+body.warbound .expedition-hud[data-status="complete"] .expedition-hud-foot small:last-child{color:#a4ffcc}
+body.warbound .expedition-hud[data-status="failed"]{border-left-color:#ed94a5}
+body.warbound .expedition-hud[data-status="failed"] .expedition-hud-foot small:last-child{color:#f9acb5}
+body.warbound .blessing-banner{position:absolute;z-index:5;top:clamp(330px,42vh,404px);
+ left:clamp(12px,2vw,27px);padding:8px 11px;background:#112c39c9;
+ border-left:2px solid #94f1ef;color:#cbf8fc;
+ font-size:10px;letter-spacing:.08em;font-weight:900;pointer-events:none}
+body.warbound .blessing-banner strong{color:white;margin-left:9px}
+body.warbound .expedition-end-reward{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+ margin:4px auto 12px;gap:8px;font-size:10px;letter-spacing:.1em;
+ color:#f3d1a8;font-weight:900}
+body.warbound .expedition-end-reward strong{font-size:17px;color:#d0ffec}
+body.warbound .expedition-end-reward small{flex-basis:100%;color:#d3bbd8}
+body.warbound .relic-card .blueprint-status{display:block;margin-top:7px;
+ font-size:9px;color:#ffcaac;font-weight:850;line-height:1.4}
+body.warbound .relic-card.blueprint-locked{border-color:#dba5a55c}
+body.warbound .bestiary-entry .foe-icon.tyrant{color:#cbb3ff;text-shadow:0 0 11px #8658ea}
+body.warbound .record-milestones{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* On narrow iPhones, a boss takes precedence over quest text. Keep the
+   objective and progress visible without covering the centered boss bar. */
+@media(max-width:680px){
+ body.warbound[data-boss="true"] .expedition-hud{top:clamp(250px,30vh,275px);
+  padding-top:6px;padding-bottom:6px}
+ body.warbound[data-boss="true"] .expedition-hud p{display:none}
+ body.warbound[data-boss="true"] .expedition-hud-progress{margin-top:6px}
+}
+body.warbound .arena-boss[data-phase="2"]{border-color:#f8cbf6;
+ box-shadow:0 0 24px #a75aff38,0 12px 33px #000b}
+@media(max-width:680px){
+ body.warbound .expedition-hud{left:9px;top:clamp(153px,20vh,191px);
+  width:min(206px,54vw);padding:8px 9px 8px;box-shadow:0 5px 14px #000b}
+ body.warbound .expedition-hud-heading{gap:6px}
+ body.warbound .expedition-hud-icon{width:26px;height:26px;font-size:20px}
+ body.warbound .expedition-hud-heading small{font-size:7px;letter-spacing:.02em}
+ body.warbound .expedition-hud-heading strong{font-size:9px;line-height:1.2}
+ body.warbound .expedition-hud-heading b{font-size:8px}
+ body.warbound .expedition-hud p{font-size:9px;line-height:1.4;margin:6px 0 7px}
+ body.warbound .expedition-hud-foot{font-size:8px;letter-spacing:0}
+ body.warbound .blessing-banner{left:9px;top:290px;font-size:8px}
+ body.warbound .record-milestones{grid-template-columns:repeat(4,minmax(0,1fr))}
+ body.warbound .record-milestones>div{padding:8px 3px}
+ body.warbound .record-milestones b{font-size:clamp(16px,5vw,22px)}
+ body.warbound .record-milestones small{font-size:7px}
+ body.warbound .expedition-end-reward{font-size:8px}
+}
+@media(max-width:370px){
+ body.warbound .expedition-hud{top:151px;width:min(180px,51vw);padding:6px}
+ body.warbound .expedition-hud-heading strong{font-size:8px}
+}
+@media(max-height:670px){
+ body.warbound .expedition-hud{top:140px}
+ body.warbound .blessing-banner{top:264px}
+}

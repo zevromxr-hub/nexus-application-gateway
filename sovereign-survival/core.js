@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.4 CHAMPION AWAKENING — deterministic active abilities and evolutions.
+/* SOVEREIGN SURVIVAL v1.5 REALM EXPEDITIONS — authentic arena objectives and phased bosses.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
 import {startingStats} from './progression.js';
@@ -29,7 +29,8 @@ export const ENEMY_TYPES=Object.freeze({
  brute:{hp:90,speed:62,damage:17,rad:23,xp:12,color:'#f7b16a',score:260},
  hexer:{hp:40,speed:82,damage:10,rad:18,xp:10,color:'#ef87b5',score:220},
  ravager:{hp:62,speed:95,damage:16,rad:20,xp:11,color:'#ffba68',score:270},
- monarch:{hp:660,speed:75,damage:22,rad:43,xp:54,color:'#ff777b',score:2200}
+ monarch:{hp:660,speed:75,damage:22,rad:43,xp:54,color:'#ff777b',score:2200},
+ tyrant:{hp:850,speed:92,damage:26,rad:48,xp:70,color:'#a788ff',score:2750}
 });
 const PI=Math.PI,clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const length=(x,y)=>Math.hypot(x,y)||1;
@@ -41,6 +42,17 @@ export const ARENAS=Object.freeze([
  {id:'throne',name:'THE VOID THRONE',short:'VOID THRONE',floor:'#110a20',glow:'#9753a6',sigil:'#e2a7ff',mist:'#573565'}
 ]);
 export function arenaForWave(wave){return ARENAS[Math.floor((Math.max(1,wave)-1)/2)%ARENAS.length];}
+export const EXPEDITIONS=Object.freeze({
+ sanctum:{type:'wardstone',name:'WARDSTONE DEFENSE',icon:'◈',
+  description:'Keep the wardstone alive until the wave ends.',reward:24},
+ ember:{type:'portals',name:'RIFT PURGE',icon:'⊗',
+  description:'Destroy both portals before they summon more shadows.',reward:32},
+ moon:{type:'shrine',name:'MOONLIGHT RITUAL',icon:'☾',
+  description:'Stand inside the moon shrine to charge its blessing.',reward:28},
+ throne:{type:'seals',name:'VOID SEALS',icon:'✧',
+  description:'Stand near both seals to weaken the Void Tyrant.',reward:42}
+});
+export const isBoss=e=>e.kind==='monarch'||e.kind==='tyrant';
 export const finite=(n,d=0)=>Number.isFinite(n)?n:d;
 export function rng(state){
  let x=state.seed|0;x^=x<<13;x^=x>>>17;x^=x<<5;state.seed=x|0;
@@ -50,12 +62,12 @@ export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
  const initial=startingStats(loadout);
  const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
-  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
+  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,expeditionsCompleted:0,expeditionsFailed:0,expeditionRenown:0,expedition:null,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
    ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
-   shots:1,angle:-PI/2},
+   shots:1,angle:-PI/2,blessingTime:0},
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])]}};
  spawnWave(game);
  return game;
@@ -63,13 +75,13 @@ export function createRun(seed=0x59ab7e,loadout={}){
 function newEnemy(s,kind,wave,index=0){
  const model=ENEMY_TYPES[kind];
  const angle=rng(s)*PI*2,range=485+rng(s)*240;
- const elite=kind!=='monarch'&&wave>=3&&rng(s)<Math.min(.17,.075+wave*.007);
- const hp=Math.round(model.hp*(1+(wave-1)*(kind==='monarch'?.32:.18))*(elite?1.8:1));
+ const elite=!['monarch','tyrant'].includes(kind)&&wave>=3&&rng(s)<Math.min(.17,.075+wave*.007);
+ const hp=Math.round(model.hp*(1+(wave-1)*(isBoss({kind})?.32:.18))*(elite?1.8:1));
  return {id:s.nextId++,kind,elite,x:clamp(s.player.x+Math.cos(angle)*range,65,WORLD.width-65),
   y:clamp(s.player.y+Math.sin(angle)*range,65,WORLD.height-65),hp,maxHp:hp,
   speed:model.speed*(1+Math.min(wave,16)*.018)*(elite?1.1:1),damage:Math.round(model.damage*(elite?1.28:1)),rad:model.rad*(elite?1.14:1),
   attack:.45+rng(s)*.4,shoot:1.4+rng(s),wobble:rng(s)*PI*2,phase:index*.36,
-  aimAngle:0,aimLocked:false,flash:0,frozenFor:0,burnTime:0,burnTick:0,burnDamage:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
+  bossPhase:1,boss:false,siege:false,aimAngle:0,aimLocked:false,flash:0,frozenFor:0,burnTime:0,burnTick:0,burnDamage:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
   chargeCooldown:2+rng(s)*.9};
 }
 function newHazard(s,index){
@@ -78,28 +90,137 @@ function newHazard(s,index){
   y:clamp(p.y+Math.sin(a)*dist,100,WORLD.height-100),radius:54+(index%2)*11,
   timer:rng(s)*.3,period:4.8,telegraph:1.35,active:.82,damage:12+s.wave*1.6};
 }
+function createExpedition(s){
+ const arena=arenaForWave(s.wave),meta=EXPEDITIONS[arena.id],p=s.player;
+ const base={type:meta.type,realm:arena.id,name:meta.name,description:meta.description,
+  icon:meta.icon,reward:meta.reward+Math.floor(s.wave/4)*5,status:'active',
+  progress:0,total:1,items:[],timer:0};
+ if(base.type==='wardstone'){
+  base.target={x:clamp(p.x+165,110,WORLD.width-110),y:clamp(p.y-58,110,WORLD.height-110),
+   hp:125+Math.max(0,s.wave-1)*9,maxHp:125+Math.max(0,s.wave-1)*9,r:38};
+ }else if(base.type==='portals'){
+  base.total=2;
+  for(const [dx,dy] of [[-190,-150],[230,120]])
+   base.items.push({x:clamp(p.x+dx,110,WORLD.width-110),
+    y:clamp(p.y+dy,110,WORLD.height-110),hp:86+s.wave*5,maxHp:86+s.wave*5,
+    r:31,active:true,spawnTimer:4.1+rng(s)*1.3});
+ }else if(base.type==='shrine'){
+  base.total=5.2;
+  base.target={x:clamp(p.x+165,100,WORLD.width-100),
+   y:clamp(p.y-80,100,WORLD.height-100),r:95};
+ }else if(base.type==='seals'){
+  base.total=2;
+  for(const [dx,dy] of [[-220,-165],[235,150]])
+   base.items.push({x:clamp(p.x+dx,110,WORLD.width-110),
+    y:clamp(p.y+dy,110,WORLD.height-110),r:94,charge:0,done:false});
+  base.surge={timer:0,period:5.7,telegraph:1.45,active:.65,radius:170};
+ }
+ return base;
+}
+function finishExpedition(s,success){
+ const obj=s.expedition;
+ if(!obj||obj.status!=='active')return;
+ obj.status=success?'complete':'failed';
+ if(success){
+  s.expeditionsCompleted++;
+  s.expeditionRenown+=obj.reward;
+  s.score+=obj.reward*65;
+  if(obj.type==='shrine'){
+   s.player.blessingTime=Math.max(s.player.blessingTime,35);
+   s.player.hp=Math.min(s.player.maxHp,s.player.hp+18);
+  }
+  s.effects.push({x:s.player.x,y:s.player.y,t:1.1,kind:'expeditionComplete',size:110});
+ }else s.expeditionsFailed++;
+ s.events.push({type:success?'expeditionComplete':'expeditionFailed',
+  objective:obj.name,realm:obj.realm,renown:success?obj.reward:0});
+}
+export function expeditionStatus(s){
+ const obj=s.expedition;
+ if(!obj)return null;
+ const details={
+  wardstone:()=>Math.max(0,Math.ceil(obj.target.hp))+' / '+obj.target.maxHp+' WARD HP',
+  portals:()=>obj.items.filter(q=>q.active).length+' PORTALS REMAIN',
+  shrine:()=>Math.floor(obj.progress/obj.total*100)+'% CHARGED',
+  seals:()=>obj.items.filter(q=>q.done).length+' / 2 SEALS AWAKENED'
+ };
+ return {realm:obj.realm,type:obj.type,name:obj.name,description:obj.description,
+  status:obj.status,progress:obj.type==='wardstone'?Math.min(1,Math.max(0,obj.target.hp/obj.target.maxHp)):Math.min(1,obj.progress/obj.total),detail:details[obj.type](),
+  reward:obj.reward};
+}
+function updateExpedition(s,dt){
+ const obj=s.expedition;
+ if(!obj||obj.status!=='active')return;
+ const p=s.player;
+ if(obj.type==='wardstone'){
+  if(obj.target.hp<=0){obj.target.hp=0;finishExpedition(s,false)}
+ }else if(obj.type==='portals'){
+  for(const portal of obj.items){
+   if(!portal.active)continue;
+   portal.spawnTimer-=dt;
+   if(portal.spawnTimer<=0){
+    portal.spawnTimer=3.9+rng(s)*1.4;
+    if(s.enemies.filter(e=>e.hp>0).length<53){
+     const e=newEnemy(s,s.wave>=5?'stalker':'wraith',s.wave,33);
+     e.x=portal.x+(rng(s)-.5)*65;e.y=portal.y+(rng(s)-.5)*65;
+     s.enemies.push(e);s.events.push({type:'portalSpawn'});
+    }
+   }
+  }
+  obj.progress=obj.items.filter(q=>!q.active).length;
+  if(obj.progress>=obj.total)finishExpedition(s,true);
+ }else if(obj.type==='shrine'){
+  if(distance(p,obj.target)<obj.target.r-11){
+   obj.progress=Math.min(obj.total,obj.progress+dt);
+   if(obj.progress>=obj.total)finishExpedition(s,true);
+  }
+ }else if(obj.type==='seals'){
+  for(const seal of obj.items){
+   if(seal.done)continue;
+   if(distance(p,seal)<seal.r-14)seal.charge=Math.min(2.2,seal.charge+dt);
+   if(seal.charge>=2.2){
+    seal.done=true;obj.progress++;
+    s.effects.push({x:seal.x,y:seal.y,t:.8,kind:'seal',size:95});
+    s.events.push({type:'sealActivated'});
+   }
+  }
+  if(obj.progress>=obj.total)finishExpedition(s,true);
+  if(obj.status==='active'){
+   const surge=obj.surge;
+   surge.timer=(surge.timer+dt)%surge.period;
+   if(surge.timer>=surge.telegraph&&surge.timer<surge.telegraph+surge.active){
+    // This dangerous pulse targets the outer arena. Move toward the central
+    // dais to avoid the attack; the telegraph is drawn in the renderer.
+    if(distance(p,{x:WORLD.width/2,y:WORLD.height/2})>surge.radius)harmPlayer(s,15+s.wave*1.2);
+   }
+  }
+ }
+}
 export function spawnWave(s){
  if(s.phase==='gameover')return;
  s.wave++;
  s.hazards=[];
+ s.expedition=createExpedition(s);
  const count=Math.min(40,6+s.wave*3),
   pool=s.wave<2?['wraith']:s.wave<3?['wraith','stalker']:
    s.wave<5?['wraith','stalker','brute','hexer']:['wraith','stalker','brute','hexer','ravager'];
  for(let i=0;i<count;i++){
   const kind=s.wave>=5&&i===1?'ravager':s.wave>=3&&i===0?'hexer':pool[Math.floor(rng(s)*pool.length)];
-  s.enemies.push(newEnemy(s,kind,s.wave,i));
+  const enemy=newEnemy(s,kind,s.wave,i);
+  enemy.siege=s.expedition.type==='wardstone'&&i%4===0&&['wraith','brute','ravager'].includes(kind);
+  s.enemies.push(enemy);
  }
  if(s.wave%4===0){
-  const boss=newEnemy(s,'monarch',s.wave,99);
+  const boss=newEnemy(s,s.wave%8===0?'tyrant':'monarch',s.wave,99);
+  boss.boss=true;boss.shoot=1.4;boss.siege=false;
   s.enemies.push(boss);
   s.effects.push({x:boss.x,y:boss.y,t:1.45,kind:'bossEntrance',size:boss.rad+22});
-  s.events.push({type:'bossEntrance',wave:s.wave});
+  s.events.push({type:'bossEntrance',wave:s.wave,kind:boss.kind});
  }
  if(s.wave>=3&&s.wave%2===1){
   for(let i=0;i<Math.min(4,1+Math.floor(s.wave/3));i++)s.hazards.push(newHazard(s,i));
  }
  s.events.push({type:'wave',wave:s.wave,boss:s.wave%4===0,arena:arenaForWave(s.wave).id,
-  hazards:s.hazards.length});
+  hazards:s.hazards.length,objective:s.expedition.name});
 }
 export function chooseUpgrade(s,id){
  if(s.phase!=='upgrade'||!s.options.includes(id))return false;
@@ -143,7 +264,19 @@ function addXp(s,value){
  }
 }
 function hitEnemy(s,e,damage){
+ // Void Tyrant's armor is genuinely linked to the two local Void Seals.
+ if(e.kind==='tyrant'&&s.expedition?.type==='seals'&&s.expedition.status==='active')
+  damage=Math.max(1,Math.round(damage*.57));
  e.hp-=damage;e.flash=.13;
+ if(isBoss(e)&&e.hp>0&&e.bossPhase===1&&e.hp/e.maxHp<=.55){
+  e.bossPhase=2;
+  e.shoot=Math.min(e.shoot,1.25);
+  s.events.push({type:'bossEnraged',kind:e.kind,wave:s.wave});
+  s.effects.push({x:e.x,y:e.y,t:1.1,kind:'bossEnrage',size:140});
+  if(e.kind==='tyrant')s.hazards.push({id:s.nextId++,kind:'bossPulse',
+   x:e.x,y:e.y,radius:143,timer:0,period:7.3,telegraph:1.4,active:.70,
+   damage:19+s.wave*1.2});
+ }
  s.effects.push({x:e.x,y:e.y,t:.24,kind:'impact',size:e.rad});
  if(s.effects.length<135)s.effects.push({x:e.x+(rng(s)-.5)*14,y:e.y-e.rad-8,
   t:.55,kind:'number',size:0,value:Math.ceil(damage)});
@@ -156,7 +289,7 @@ function hitEnemy(s,e,damage){
  p.hp=Math.min(p.maxHp,p.hp+p.leech);
  s.orbs.push({x:e.x,y:e.y,value:model.xp*reward,r:5+Math.min(5,model.xp/9)});
  s.effects.push({x:e.x,y:e.y,t:.55,kind:'death',size:e.rad*(e.elite?1.9:1)});
- if(e.kind==='monarch'){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave})}
+ if(isBoss(e)){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave,kind:e.kind})}
  s.events.push({type:'kill',kind:e.kind});
 }
 export function activateAbility(s){
@@ -202,6 +335,8 @@ export function activateAbility(s){
 export function evolutionActive(s,id){return Boolean(s.evolutions?.[id])}
 function fire(s,aim){
  const p=s.player,targets=s.enemies.filter(e=>e.hp>0);
+ if(s.expedition?.type==='portals'&&s.expedition.status==='active')
+  targets.push(...s.expedition.items.filter(q=>q.active));
  if(!targets.length)return;
  let dir=null;
  if(aim&&Number.isFinite(aim.x)&&Number.isFinite(aim.y)){
@@ -230,7 +365,8 @@ function fire(s,aim){
  for(let i=0;i<p.shots;i++){
   const offset=(i-(p.shots-1)/2)*.125,angle=dir+offset,speed=640;
   s.shots.push({x:p.x+Math.cos(angle)*22,y:p.y+Math.sin(angle)*22,
-   vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,damage:p.damage,split:Boolean(s.evolutions.barrage)});
+   vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,
+   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)),split:Boolean(s.evolutions.barrage)});
  }
  s.events.push({type:'fire'});
 }
@@ -263,6 +399,7 @@ export function advance(s,input={},dt=1/60){
  p.fireCooldown-=dt;
  p.dashTime=Math.max(0,p.dashTime-dt);
  p.abilityCooldown=Math.max(0,p.abilityCooldown-dt);
+ p.blessingTime=Math.max(0,p.blessingTime-dt);
  p.barrierTime=Math.max(0,p.barrierTime-dt);
  p.aegisCooldown=Math.max(0,p.aegisCooldown-dt);
  const dx=clamp(finite(input.dx),-1,1),dy=clamp(finite(input.dy),-1,1),n=Math.hypot(dx,dy);
@@ -272,7 +409,7 @@ export function advance(s,input={},dt=1/60){
   s.events.push({type:'dash'});
  }
  if(input.ability)activateAbility(s);
- const spd=p.speed*(p.dashTime>0?3.5:1);
+ const spd=p.speed*(p.dashTime>0?3.5:1)*(p.blessingTime>0?1.08:1);
  p.x=clamp(p.x+mx*spd*dt,40,WORLD.width-40);
  p.y=clamp(p.y+my*spd*dt,40,WORLD.height-40);
  if(n>.12&&p.fireCooldown>0)p.angle=Math.atan2(my,mx);
@@ -296,7 +433,9 @@ export function advance(s,input={},dt=1/60){
    e.flash=Math.max(0,e.flash-dt);
    continue;
   }
-  const vx=p.x-e.x,vy=p.y-e.y,dist=length(vx,vy);
+  const siegeTarget=e.siege&&s.expedition?.type==='wardstone'&&s.expedition.status==='active'&&distance(e,p)>e.rad+21?
+   s.expedition.target:p;
+  const vx=siegeTarget.x-e.x,vy=siegeTarget.y-e.y,dist=length(vx,vy);
   e.attack-=dt;e.shoot-=dt;e.flash=Math.max(0,e.flash-dt);
   e.chargeCooldown=Math.max(0,e.chargeCooldown-dt);
   let moveX=vx/dist,moveY=vy/dist,moveSpeed=e.speed;
@@ -329,29 +468,35 @@ export function advance(s,input={},dt=1/60){
   e.x=clamp(e.x+moveX*moveSpeed*dt,30,WORLD.width-30);
   e.y=clamp(e.y+moveY*moveSpeed*dt,30,WORLD.height-30);
   if(dist<e.rad+18&&e.attack<=0){
-   harmPlayer(s,e.damage+(e.kind==='ravager'&&e.chargeActive>0?5:0));
-   e.attack=e.kind==='monarch'?1.15:.9;
+   if(e.siege&&siegeTarget!==p){
+    s.expedition.target.hp=Math.max(0,s.expedition.target.hp-e.damage);
+    s.effects.push({x:siegeTarget.x,y:siegeTarget.y,t:.38,kind:'wardHit',size:48});
+    s.events.push({type:'wardHit'});
+   }else harmPlayer(s,e.damage+(e.kind==='ravager'&&e.chargeActive>0?5:0));
+   e.attack=isBoss(e)?1.15:.9;
   }
-  const isCaster=e.kind==='hexer'||e.kind==='monarch';
-  const maxRange=e.kind==='monarch'?890:770;
-  const windup=e.kind==='monarch'?.78:.58;
+  const isCaster=e.kind==='hexer'||isBoss(e);
+  const maxRange=isBoss(e)?890:770;
+  const windup=isBoss(e)?.78:.58;
   if(isCaster&&dist<maxRange){
    if(e.shoot<=windup&&!e.aimLocked){
     e.aimAngle=Math.atan2(vy,vx);e.aimLocked=true;
     s.events.push({type:'castWarning',kind:e.kind});
    }
    if(e.shoot<=0){
-    const spread=e.kind==='monarch'?[-.22,0,.22]:[0];
+    const spread=e.kind==='tyrant'?
+     (e.bossPhase===2?[-.6,-.3,0,.3,.6]:[-.32,0,.32]):
+     e.kind==='monarch'?(e.bossPhase===2?[-.45,-.22,0,.22,.45]:[-.22,0,.22]):[0];
     for(const off of spread){
      const angle=e.aimAngle+off;
-     const speed=e.kind==='monarch'?240:205;
+     const speed=isBoss(e)?(e.bossPhase===2?295:240):205;
      s.hostile.push({x:e.x,y:e.y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,
-      damage:e.kind==='monarch'?12:9,r:e.kind==='monarch'?8:7,
-      ttl:e.kind==='monarch'?3:3.3,kind:e.kind});
+      damage:isBoss(e)?(e.bossPhase===2?16:12):9,r:isBoss(e)?8:7,
+      ttl:isBoss(e)?3:3.3,kind:e.kind});
     }
-    e.shoot=(e.kind==='monarch'?2.5:2.8)+rng(s)*.35;
+    e.shoot=(isBoss(e)?(e.bossPhase===2?1.85:2.5):2.8)+rng(s)*.35;
     e.aimLocked=false;
-    s.events.push({type:e.kind==='monarch'?'bossAttack':'hexAttack',kind:e.kind});
+    s.events.push({type:isBoss(e)?'bossAttack':'hexAttack',kind:e.kind});
    }
   }else if(isCaster){
    // Prevent a spell from firing without warning as an enemy enters range.
@@ -359,6 +504,7 @@ export function advance(s,input={},dt=1/60){
    e.aimLocked=false;
   }
  }
+ updateExpedition(s,dt);
  // Rifts activate only after a clear circular warning and then cool down.
  // Damage uses the same single-hit invulnerability logic as enemy contact.
  for(const h of s.hazards){
@@ -390,6 +536,20 @@ export function advance(s,input={},dt=1/60){
     break;
    }
   }
+  if(b.ttl>0&&s.expedition?.type==='portals'&&s.expedition.status==='active'){
+   for(const portal of s.expedition.items){
+    if(!portal.active)continue;
+    if(distance(portal,b)>=portal.r+b.r)continue;
+    portal.hp-=b.damage;b.ttl=0;
+    s.effects.push({x:portal.x,y:portal.y,t:.3,kind:'portalHit',size:portal.r});
+    if(portal.hp<=0){
+     portal.active=false;portal.hp=0;
+     s.events.push({type:'portalDestroyed'});
+     s.effects.push({x:portal.x,y:portal.y,t:.8,kind:'portalDestroyed',size:80});
+    }
+    break;
+   }
+  }
  }
  s.shots=s.shots.filter(x=>x.ttl>0).concat(splitShots.slice(0,36));
  if(s.shots.length>130)s.shots=s.shots.slice(-130);
@@ -411,14 +571,21 @@ export function advance(s,input={},dt=1/60){
  s.effects=s.effects.filter(x=>x.t>0).slice(-140);
  if(s.phase!=='running')return;
  if(!s.enemies.length){
-  if(s.intermission===0){s.intermission=2.6;s.events.push({type:'waveClear',wave:s.wave})}
+  if(s.intermission===0){
+   s.intermission=2.6;s.events.push({type:'waveClear',wave:s.wave});
+   if(s.expedition?.status==='active'){
+    finishExpedition(s,s.expedition.type==='wardstone'&&s.expedition.target.hp>0);
+   }
+  }
   s.intermission-=dt;
   if(s.intermission<=0){s.intermission=0;spawnWave(s)}
  }else s.intermission=0;
 }
 export function runSummary(s){
  return {score:Math.max(0,Math.floor(s.score)),wave:s.wave,kills:s.kills,
-  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,duration:Math.round(s.time),
+  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,
+  expeditionsCompleted:s.expeditionsCompleted||0,expeditionsFailed:s.expeditionsFailed||0,
+  expeditionRenown:s.expeditionRenown||0,duration:Math.round(s.time),
   bestCombo:s.bestCombo,level:s.level,champion:s.player.champion};
 }
 export function durationLabel(seconds){

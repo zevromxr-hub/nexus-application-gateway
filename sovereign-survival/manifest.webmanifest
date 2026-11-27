@@ -1,7 +1,7 @@
 {
-  "name": "Sovereign Survival | Champion Awakening",
+  "name": "Sovereign Survival | Realm Expeditions",
   "short_name": "Sovereign",
-  "description": "Champion Awakening v1.4: three playable champions with true active abilities, evolved weapons, and offline fantasy combat.",
+  "description": "Realm Expeditions v1.5: four playable arena objectives, phased bosses, rare forgeable relic blueprints, and offline fantasy combat.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

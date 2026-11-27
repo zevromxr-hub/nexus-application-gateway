@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.4: champion active abilities, Q/touch parity, Armory and game controls */
+/* SOVEREIGN SURVIVAL v1.5: real quest HUD, expedition blueprints, old records and mobile gameplay */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-webkit',webkit,true]]){
@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.goto('http://127.0.0.1:4173/sovereign-survival/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
-  assert.match(await page.title(),/CHAMPION AWAKENING v1\.4/);
+  assert.match(await page.title(),/REALM EXPEDITIONS v1\.5/);
   await page.waitForFunction(()=>document.body.dataset.realm==='sanctum',null,{timeout:10000});
   assert.equal(await page.locator('body').getAttribute('data-realm'),'sanctum');
   assert.equal(await page.locator('#recordElites').textContent(),'0');
@@ -30,7 +30,9 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#menuArmory').click();
   assert.equal(await page.locator('#armoryOverlay').isVisible(),true);
   assert.equal(await page.locator('.champion-card').count(),3);
-  assert.equal(await page.locator('.relic-card').count(),4);
+  assert.equal(await page.locator('.relic-card').count(),6);
+  assert.equal(await page.locator('.relic-card.blueprint-locked').count(),2);
+  assert.equal(await page.locator('#recordExpeditions').textContent(),'0');
   assert.equal(await page.locator('#armoryRenown').textContent(),'0');
   assert.equal(await page.locator('#championsUnlocked').textContent(),'1 / 3 UNLOCKED');
   assert.equal(await page.locator('.champion-card.selected').count(),1);
@@ -56,6 +58,12 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#startRun').click();
   assert.equal(await page.locator('#menuOverlay').isVisible(),false);
   assert.equal(await page.locator('#waveText').textContent(),'01');
+  assert.equal(await page.locator('#expeditionHud').isVisible(),true,
+   'A genuine realm objective must be visible while playing');
+  assert.equal(await page.locator('#expeditionName').textContent(),'WARDSTONE DEFENSE');
+  assert.ok((await page.locator('#expeditionDescription').textContent()).includes('wardstone'));
+  assert.equal(await page.locator('#expeditionState').textContent(),'ACTIVE');
+  assert.equal(await page.locator('#bossBar').isVisible(),false);
   assert.equal(await page.locator('#riftCount').isVisible(),false,'Rift UI stays hidden before rifts exist');
   assert.equal(await page.locator('#abilityName').textContent(),'ASTRAL NOVA');
   assert.equal(await page.locator('#abilityStatus').textContent(),'READY');
@@ -82,7 +90,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#warbookOverlay').isVisible(),true,'The in-run Codex replaces the side dashboard');
   assert.equal(await page.locator('#buildList').count(),1,'Original upgrade list is preserved in Codex');
   assert.equal(await page.locator('#evolutionList .evolution-entry').count(),3,'Three genuine evolutions are represented in Codex');
-  assert.equal(await page.locator('.bestiary-entry').count(),6,'All six enemy archetypes are visible in Codex');
+  assert.equal(await page.locator('.bestiary-entry').count(),7,'All seven enemy and boss archetypes are represented in Codex');
   assert.ok((await page.locator('#warbookOverlay').textContent()).includes('RAVAGER'));
   await page.locator('#warbookOverlay .auxBack').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),true);
@@ -115,6 +123,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#recordKills').textContent(),'321');
   assert.equal(await page.locator('#recordElites').textContent(),'0','New values default without resetting older records');
   assert.equal(await page.locator('#recordBosses').textContent(),'0');
+  assert.equal(await page.locator('#recordExpeditions').textContent(),'0','Legacy records have zero completed expeditions');
   assert.equal(await page.locator('#recordRenown').textContent(),'0');
   await page.locator('#recordsOverlay .auxBack').click();
   // Simulate a legitimate earned account in local storage, then use the real
@@ -169,7 +178,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#powerStat').textContent(),'22',
    'Nightglass must increase actual starting attack damage');
   assert.deepEqual(errors,[],'No client runtime exceptions');
-  console.log('PASS '+name+' v1.4 Q/touch abilities, champion skill cooldowns, evolutions codex, Armory, controls and local records');
+  console.log('PASS '+name+' v1.5 quest HUD, blueprint locks, Q/touch powers, Armory persistence, boss codex, controls and legacy records');
  }catch(e){
   await page.screenshot({path:'/tmp/sovereign-survival-'+name+'.png',fullPage:false}).catch(()=>{});
   throw new Error(name+' '+(e.stack||e.message)+'; page errors: '+errors.join(' | '));

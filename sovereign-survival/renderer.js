@@ -1,7 +1,7 @@
-/* SOVEREIGN SURVIVAL v1.4 CHAMPION AWAKENING — vector combat, active power and evolution effects.
+/* SOVEREIGN SURVIVAL v1.5 REALM EXPEDITIONS — combat objects, portals, shrines and bosses.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
-import {WORLD,ENEMY_TYPES,arenaForWave} from './core.js';
+import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js';
 const TAU=Math.PI*2;
 const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
 const fract=n=>n-Math.floor(n);
@@ -75,7 +75,21 @@ function enemy(c,e,s,quality){
  circle(c,3,r*.85,r*.88,'rgba(0,0,0,.33)');
  if(quality!=='low')glow(c,0,-5,r*2.6,e.kind==='monarch'?'rgba(255,79,103,.13)':e.kind==='stalker'?'rgba(55,232,237,.11)':'rgba(168,99,254,.10)');
  c.rotate(Math.sin(s.time*3+e.wobble)*.085);
- if(e.kind==='monarch'){
+ if(e.kind==='tyrant'){
+  ring(c,0,0,68,'rgba(162,128,255,.40)',3);
+  for(let k=0;k<10;k++){
+   const a=k*TAU/10-s.time*(e.bossPhase===2?.34:.14);
+   line(c,[[Math.cos(a)*53,Math.sin(a)*53],[Math.cos(a)*69,Math.sin(a)*69]],
+    e.bossPhase===2?'#ffb4ff':'#a78eff',2.7);
+  }
+  polygon(c,[[0,-62],[29,-42],[47,-6],[35,31],[0,48],[-35,31],[-47,-6],[-29,-42]],
+   e.bossPhase===2?'#512452':'#241c52','#bba4ff');
+  polygon(c,[[-46,-34],[-55,-63],[-19,-48],[0,-76],[19,-48],[55,-63],[46,-34]],
+   '#6c4eaa','#e1c3ff');
+  polygon(c,[[-25,-15],[0,-36],[25,-15],[21,23],[0,35],[-21,23]],'#271a43','#cbb7ff');
+  circle(c,-9,-7,4,'#f6e8ff');circle(c,9,-7,4,'#f6e8ff');
+  ring(c,0,12,12,e.bossPhase===2?'#ff9fae':'#bda0ff',3);
+ }else if(e.kind==='monarch'){
   ring(c,0,0,58,'rgba(255,124,126,.32)',3);
   for(let k=0;k<8;k++){
    const a=k*TAU/8+s.time*.15;
@@ -107,9 +121,9 @@ function enemy(c,e,s,quality){
   polygon(c,[[0,-r*1.24],[r*.8,-r*.5],[r,8],[0,r*1.15],[-r,8],[-r*.8,-r*.5]],'#35214f','#b98af4');
   line(c,[[-r*.48,-2],[-3,1],[0,5],[3,1],[r*.48,-2]],'#dcbeff',2);
  }
- if(health<.99||e.kind==='monarch'||e.elite){
+ if(health<.99||isBoss(e)||e.elite){
   const w=r*2.2;c.fillStyle='#080816';c.fillRect(-w/2,-r-19,w,5);
-  c.fillStyle=e.kind==='monarch'?'#ff9a85':e.elite?'#f8d68c':'#75e3f5';
+  c.fillStyle=e.kind==='tyrant'?'#bd9bff':e.kind==='monarch'?'#ff9a85':e.elite?'#f8d68c':'#75e3f5';
   c.fillRect(-w/2,-r-19,w*clamp(health,0,1),5);
  }
  if(e.elite){
@@ -254,23 +268,26 @@ function drawAwakeningEffect(c,fx,quality){
  }
 }
 function warnAttack(c,e,quality){
- if(e.kind==='monarch'||e.kind==='hexer'){
-  const window=e.kind==='monarch'?.78:.58;
+ if(isBoss(e)||e.kind==='hexer'){
+  const window=isBoss(e)?.78:.58;
   if(!(e.aimLocked&&e.shoot>0&&e.shoot<window))return;
   const fraction=1-e.shoot/window;
   c.save();c.translate(e.x,e.y);c.rotate(e.aimAngle);
-  const spread=e.kind==='monarch'?[-.22,0,.22]:[0],max=e.kind==='monarch'?570:400;
+  const spread=e.kind==='tyrant'?
+   (e.bossPhase===2?[-.6,-.3,0,.3,.6]:[-.32,0,.32]):
+   e.kind==='monarch'?(e.bossPhase===2?[-.45,-.22,0,.22,.45]:[-.22,0,.22]):[0],
+   max=isBoss(e)?570:400;
   for(const a of spread){
    const w=9+fraction*12,alpha=.15+fraction*.55;
    const y=Math.tan(a)*max;
    polygon(c,[[e.rad,0],[max,y-w],[max,y+w]],e.kind==='hexer'?
      'rgba(236,116,217,'+alpha*.12+')':'rgba(255,116,120,'+alpha*.13+')');
    line(c,[[e.rad,0],[max,y]],e.kind==='hexer'?'rgba(255,133,223,'+alpha+')':
-    'rgba(255,116,131,'+alpha+')',1.5+fraction*2);
+    e.kind==='tyrant'?'rgba(193,143,255,'+alpha+')':'rgba(255,116,131,'+alpha+')',1.5+fraction*2);
   }
-  if(quality!=='low')glow(c,0,0,e.rad*2,e.kind==='hexer'?'rgba(235,84,192,.12)':'rgba(235,84,105,.12)');
-  ring(c,0,0,e.rad+8+fraction*20,e.kind==='hexer'?
-   'rgba(253,127,212,.7)':'rgba(252,107,124,.7)',2.5);
+  if(quality!=='low')glow(c,0,0,e.rad*2,e.kind==='hexer'?'rgba(235,84,192,.12)':e.kind==='tyrant'?'rgba(155,98,245,.16)':'rgba(235,84,105,.12)');
+  ring(c,0,0,e.rad+8+fraction*20,e.kind==='hexer'? 'rgba(253,127,212,.7)':e.kind==='tyrant'?
+   'rgba(205,167,255,.8)':'rgba(252,107,124,.7)',2.5);
   c.restore();
  }
  if(e.kind==='ravager'&&e.chargeWindup>0){
@@ -309,12 +326,117 @@ function drawHazards(c,s,view,quality){
   line(c,[[h.x+13,h.y-13],[h.x-13,h.y+13]],rgba(color,a+.25),3);
  }
 }
+function objectiveObject(c,x,y,r,glowColor,quality){
+ if(quality!=='low')glow(c,x,y,r*2.0,glowColor);
+ circle(c,x+3,y+8,r*.95,'rgba(0,0,0,.4)');
+ ring(c,x,y,r,glowColor,2.4);
+ for(let i=0;i<8;i++){
+  const a=i*TAU/8;
+  line(c,[[x+Math.cos(a)*r*.79,y+Math.sin(a)*r*.79],
+   [x+Math.cos(a)*r*.99,y+Math.sin(a)*r*.99]],glowColor,2);
+ }
+}
+function drawExpedition(c,s,view,quality){
+ const obj=s.expedition;if(!obj)return;
+ const p=s.player;
+ if(obj.type==='wardstone'){
+  const stone=obj.target,x=stone.x,y=stone.y;
+  if(x<view.x-100||x>view.x+view.w+100||y<view.y-100||y>view.y+view.h+100)return;
+  const glowColor=obj.status==='failed'?'rgba(255,101,129,.65)':'rgba(138,242,210,.66)';
+  objectiveObject(c,x,y,49,glowColor,quality);
+  polygon(c,[[x-28,y+21],[x-24,y-21],[x,y-56],[x+24,y-21],[x+28,y+21],[x,y+40]],
+   obj.status==='failed'?'#542434':'#214f56','#c4fff1');
+  polygon(c,[[x-10,y],[x,y-31],[x+10,y],[x,y+19]],'#b4faff','#f4f5ff');
+  c.fillStyle='#070f19';c.fillRect(x-41,y-76,82,7);
+  c.fillStyle='#90f2cc';c.fillRect(x-41,y-76,82*clamp(stone.hp/stone.maxHp,0,1),7);
+ }else if(obj.type==='portals'){
+  for(const portal of obj.items){
+   if(!portal.active)continue;
+   const x=portal.x,y=portal.y;
+   if(x<view.x-90||x>view.x+view.w+90||y<view.y-90||y>view.y+view.h+90)continue;
+   const pulse=Math.sin(s.time*2+portal.x)*3;
+   objectiveObject(c,x,y,44+pulse,'rgba(245,110,166,.58)',quality);
+   c.save();c.translate(x,y);
+   c.beginPath();c.ellipse(0,0,25,40,.16,0,TAU);
+   c.fillStyle='#50192e';c.fill();c.strokeStyle='#ff9cb8';c.lineWidth=4;c.stroke();
+   ring(c,0,0,13+pulse*.5,'rgba(255,165,109,.75)',2);
+   c.restore();
+   c.fillStyle='#0b1021';c.fillRect(x-37,y-58,74,6);
+   c.fillStyle='#ff9fba';c.fillRect(x-37,y-58,74*clamp(portal.hp/portal.maxHp,0,1),6);
+  }
+ }else if(obj.type==='shrine'){
+  const x=obj.target.x,y=obj.target.y,r=obj.target.r,charged=obj.status==='complete';
+  if(x<view.x-r||x>view.x+view.w+r||y<view.y-r||y>view.y+view.h+r)return;
+  circle(c,x,y,r,'rgba(95,202,244,.075)');
+  ring(c,x,y,r,'rgba(153,235,255,.55)',3);
+  c.beginPath();c.arc(x,y,r-8,-Math.PI/2,-Math.PI/2+TAU*clamp(obj.progress/obj.total,0,1));
+  c.lineWidth=7;c.strokeStyle='#bffcff';c.stroke();
+  objectiveObject(c,x,y,29,'rgba(137,228,255,.66)',quality);
+  polygon(c,[[x-18,y+18],[x-12,y-10],[x,y-26],[x+12,y-10],[x+18,y+18],[x,y+10]],
+   charged?'#539b9c':'#234977','#d1fbff');
+  circle(c,x,y-4,7,'#d5fcff');
+ }else if(obj.type==='seals'){
+  for(const seal of obj.items){
+   const x=seal.x,y=seal.y,r=seal.r;
+   if(x<view.x-r||x>view.x+view.w+r||y<view.y-r||y>view.y+view.h+r)continue;
+   circle(c,x,y,r,'rgba(129,100,237,.055)');
+   ring(c,x,y,r,seal.done?'rgba(131,252,210,.75)':'rgba(188,141,255,.57)',3);
+   c.beginPath();c.arc(x,y,r-7,-Math.PI/2,-Math.PI/2+TAU*clamp(seal.charge/2.2,0,1));
+   c.lineWidth=6;c.strokeStyle=seal.done?'#97ffdc':'#dfbbff';c.stroke();
+   objectiveObject(c,x,y,24,seal.done?'rgba(110,242,184,.74)':'rgba(185,128,255,.76)',quality);
+   polygon(c,[[x,y-28],[x+19,y],[x,y+28],[x-19,y]],
+    seal.done?'#307a65':'#49316b',seal.done?'#b0ffeb':'#ead5ff');
+  }
+  // The pulsing throne is unsafe outside its inner dais. Ring colors
+  // change along with the real harmful window in updateExpedition().
+  if(obj.status==='active'){
+   const surge=obj.surge,phase=surge.timer%surge.period;
+   const danger=phase>=surge.telegraph&&phase<surge.telegraph+surge.active;
+   const preparing=phase<surge.telegraph;
+   const cx=WORLD.width/2,cy=WORLD.height/2;
+   if(cx+surge.radius>view.x&&cx-surge.radius<view.x+view.w&&
+    cy+surge.radius>view.y&&cy-surge.radius<view.y+view.h){
+    ring(c,cx,cy,surge.radius,danger?'rgba(255,117,159,.96)':
+     preparing?'rgba(247,182,255,.78)':'rgba(188,163,245,.23)',danger?7:3);
+    if(preparing){
+     c.beginPath();c.arc(cx,cy,surge.radius-8,-Math.PI/2,
+      -Math.PI/2+TAU*clamp(phase/surge.telegraph,0,1));
+     c.strokeStyle='#f8ddff';c.lineWidth=5;c.stroke();
+    }
+   }
+  }
+ }
+}
+function drawObjectiveCompass(c,s,view){
+ const obj=s.expedition;
+ if(!obj||obj.status!=='active')return;
+ const items=obj.type==='portals'?obj.items.filter(q=>q.active):
+  obj.type==='seals'?obj.items.filter(q=>!q.done):
+  obj.target?[obj.target]:[];
+ c.save();
+ for(const q of items){
+  const px=q.x-view.x,py=q.y-view.y;
+  if(px>38&&px<view.w-38&&py>104&&py<view.h-45)continue;
+  const dx=px-view.w/2,dy=py-view.h/2;
+  const limitX=view.w/2-31,limitTop=Math.max(112,view.h*.13),limitBottom=view.h-43;
+  const factor=Math.min(limitX/Math.max(1,Math.abs(dx)),
+   (dy<0?(view.h/2-limitTop):(limitBottom-view.h/2))/Math.max(1,Math.abs(dy)));
+  const x=clamp(view.w/2+dx*factor,24,view.w-24);
+  const y=clamp(view.h/2+dy*factor,limitTop,limitBottom);
+  const a=Math.atan2(dy,dx);
+  c.translate(x,y);c.rotate(a);
+  polygon(c,[[12,0],[-6,-8],[-3,0],[-6,8]],'#f6d4a4','#49314d');
+  c.rotate(-a);c.translate(-x,-y);
+ }
+ c.restore();
+}
 export function drawArena(ctx,s,view,quality='auto'){
  const {w,h,x,y}=view;if(!w||!h)return;
  ctx.save();
  ctx.fillStyle='#050710';ctx.fillRect(0,0,w,h);
  ctx.translate(-x,-y);
  floor(ctx,s,view,quality);
+ drawExpedition(ctx,s,view,quality);
  drawHazards(ctx,s,view,quality);
  for(const orb of s.orbs){
   if(orb.x<x-20||orb.x>x+w+20||orb.y<y-20||orb.y>y+h+20)continue;
@@ -333,7 +455,8 @@ export function drawArena(ctx,s,view,quality='auto'){
  for(const fx of s.effects){
   if(fx.x<x-70||fx.x>x+w+70||fx.y<y-90||fx.y>y+h+70)continue;
   const alpha=clamp(fx.t*1.6,0,.8);
-  if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance'].includes(fx.kind)){
+  if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance','wardHit','portalHit','portalDestroyed',
+   'expeditionComplete','seal','bossEnrage'].includes(fx.kind)){
    drawAwakeningEffect(ctx,fx,quality);continue;
   }
   if(fx.kind==='number'){
@@ -359,6 +482,7 @@ export function drawArena(ctx,s,view,quality='auto'){
  }
  hero(ctx,s.player,s,quality);
  ctx.restore();
+ drawObjectiveCompass(ctx,s,view);
  // Off-screen enemy direction keeps combat discoverable on large arenas.
  const p=s.player,nears=s.enemies.filter(e=>e.hp>0).sort((a,b)=>
   ((a.x-p.x)**2+(a.y-p.y)**2)-((b.x-p.x)**2+(b.y-p.y)**2)).slice(0,3);
@@ -371,7 +495,7 @@ export function drawArena(ctx,s,view,quality='auto'){
   const tx=cx+dx*scale,ty=cy+dy*scale,angle=Math.atan2(dy,dx);
   ctx.translate(tx,ty);ctx.rotate(angle);
   polygon(ctx,[[11,0],[-7,-6],[-5,0],[-7,6]],
-   e.kind==='monarch'?'#ff9498':'rgba(199,172,255,.84)');
+   isBoss(e)?'#ff9498':'rgba(199,172,255,.84)');
   ctx.rotate(-angle);ctx.translate(-tx,-ty);
  }
  ctx.restore();
