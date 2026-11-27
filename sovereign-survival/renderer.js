@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL — vector combat and four themed arenas.
+/* SOVEREIGN SURVIVAL v1.3 ASCENSION ARMORY — vector combat and champion palettes.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
 import {WORLD,ENEMY_TYPES,arenaForWave} from './core.js';
@@ -123,26 +123,41 @@ function enemy(c,e,s,quality){
  c.restore();
 }
 function hero(c,p,s,quality){
- const t=s.time,r=16;c.save();c.translate(p.x,p.y);
+ const t=s.time,r=16;
+ const frost=p.champion==='sentinel',ember=p.champion==='reaver';
+ const aura=frost?'rgba(109,222,255,.21)':ember?'rgba(250,126,75,.22)':'rgba(166,97,245,.12)';
+ const edge=frost?'#88e8fa':ember?'#fcb574':'#9b69df';
+ const metal=frost?'#c8f2ff':ember?'#f9c1a0':'#c3a4ef';
+ const mantle=frost?'#16364a':ember?'#482333':'#23143c';
+ c.save();c.translate(p.x,p.y);
  if(p.dashTime>0){
   // Short, inexpensive spectral afterimage for a responsive dash feel.
   const a=p.angle+Math.PI/2;
   line(c,[[-Math.cos(a)*14,-Math.sin(a)*14],
    [-Math.cos(a)*76,-Math.sin(a)*76]],'rgba(118,232,255,.38)',16);
  }
- if(quality!=='low')glow(c,0,0,p.dashTime>0?115:80,p.dashTime>0?'rgba(113,226,255,.22)':'rgba(166,97,245,.12)');
+ if(quality!=='low')glow(c,0,0,p.dashTime>0?115:80,p.dashTime>0?'rgba(113,226,255,.22)':aura);
  circle(c,3,16,18,'rgba(0,0,0,.35)');
  const pulse=Math.sin(t*2.6)*2;
- ring(c,0,0,27+pulse,p.dashTime>0?'rgba(132,240,255,.8)':'rgba(164,143,248,.36)',p.dashTime>0?4:2);
+ ring(c,0,0,27+pulse,p.dashTime>0?'rgba(132,240,255,.8)':aura,p.dashTime>0?4:2);
  c.rotate(p.angle+Math.PI/2);
- polygon(c,[[-17,5],[-26,22],[0,17],[26,22],[17,5],[0,-14]],'#23143c','#9b69df');
- polygon(c,[[-15,10],[0,29],[15,10],[0,1]],'#5a326e');
- polygon(c,[[-11,-9],[0,-21],[11,-9],[13,10],[0,13],[-13,10]],'#c3a4ef','#ffe2a0');
- polygon(c,[[-9,-17],[0,-24],[9,-17],[7,-7],[-7,-7]],'#222136','#84e7ef');
- circle(c,-4,-12,2,'#b8efff');circle(c,4,-12,2,'#b8efff');
+ polygon(c,[[-17,5],[-26,22],[0,17],[26,22],[17,5],[0,-14]],mantle,edge);
+ polygon(c,[[-15,10],[0,29],[15,10],[0,1]],frost?'#276578':ember?'#8b3939':'#5a326e');
+ polygon(c,[[-11,-9],[0,-21],[11,-9],[13,10],[0,13],[-13,10]],metal,'#ffe2a0');
+ polygon(c,[[-9,-17],[0,-24],[9,-17],[7,-7],[-7,-7]],'#222136',frost?'#b4f4ff':ember?'#ffb580':'#84e7ef');
+ circle(c,-4,-12,2,frost?'#d6ffff':ember?'#ffbd79':'#b8efff');
+ circle(c,4,-12,2,frost?'#d6ffff':ember?'#ffbd79':'#b8efff');
+ if(frost){
+  // Frost Sentinel's ice spires read clearly from a small mobile camera.
+  polygon(c,[[-20,-8],[-31,-22],[-16,-16]],'#70d8e6','#d7fbff');
+  polygon(c,[[20,-8],[31,-22],[16,-16]],'#70d8e6','#d7fbff');
+ }else if(ember){
+  polygon(c,[[-14,13],[-17,24],[-4,14]],'#b65b42','#ffbe78');
+  polygon(c,[[14,13],[17,24],[4,14]],'#b65b42','#ffbe78');
+ }
  // Twin blades mounted on the gauntlets; a brief attack arc tracks fire cadence.
- line(c,[[-12,0],[-25,-24],[-23,-39]],'#b2e8fb',3.6);
- line(c,[[12,0],[25,-24],[23,-39]],'#d8affc',3.6);
+ line(c,[[-12,0],[-25,-24],[-23,-39]],frost?'#bdf8ff':ember?'#ffb16c':'#b2e8fb',3.6);
+ line(c,[[12,0],[25,-24],[23,-39]],frost?'#d0f8ff':ember?'#ffd19d':'#d8affc',3.6);
  const slash=clamp(1-p.fireCooldown/p.rate,0,1);
  if(slash<.42){
   c.beginPath();c.arc(0,-16,46,-Math.PI*.87,-Math.PI*.23);

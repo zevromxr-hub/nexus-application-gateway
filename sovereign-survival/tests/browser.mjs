@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL: real combat UI in desktop Chromium and mobile WebKit */
+/* SOVEREIGN SURVIVAL v1.3 ASCENSION: armory, legacy records and real game controls on desktop and iPhone WebKit */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-webkit',webkit,true]]){
@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.goto('http://127.0.0.1:4173/sovereign-survival/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
-  assert.match(await page.title(),/NIGHTFALL v1\.2/);
+  assert.match(await page.title(),/ASCENSION ARMORY v1\.3/);
   await page.waitForFunction(()=>document.body.dataset.realm==='sanctum',null,{timeout:10000});
   assert.equal(await page.locator('body').getAttribute('data-realm'),'sanctum');
   assert.equal(await page.locator('#recordElites').textContent(),'0');
@@ -27,6 +27,16 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   }));
   assert.ok(Math.abs(viewport.height-viewport.available)<4,'The battlefield must fill the visible screen');
   assert.ok(viewport.width>=380,'The arena should fill the available screen width');
+  await page.locator('#menuArmory').click();
+  assert.equal(await page.locator('#armoryOverlay').isVisible(),true);
+  assert.equal(await page.locator('.champion-card').count(),3);
+  assert.equal(await page.locator('.relic-card').count(),4);
+  assert.equal(await page.locator('#armoryRenown').textContent(),'0');
+  assert.equal(await page.locator('#championsUnlocked').textContent(),'1 / 3 UNLOCKED');
+  assert.equal(await page.locator('.champion-card.selected').count(),1);
+  assert.equal(await page.locator('#relicCards .armory-action').first().isDisabled(),true);
+  await page.locator('#armoryOverlay .auxBack').click();
+  assert.equal(await page.locator('#menuOverlay').isVisible(),true);
   await page.locator('#menuRecords').click();
   assert.equal(await page.locator('#recordsOverlay').isVisible(),true,'Hall of Legends opens from main menu');
   assert.equal(await page.locator('#recordRuns').textContent(),'0');
@@ -95,10 +105,58 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#recordKills').textContent(),'321');
   assert.equal(await page.locator('#recordElites').textContent(),'0','New values default without resetting older records');
   assert.equal(await page.locator('#recordBosses').textContent(),'0');
+  assert.equal(await page.locator('#recordRenown').textContent(),'0');
+  await page.locator('#recordsOverlay .auxBack').click();
+  // Simulate a legitimate earned account in local storage, then use the real
+  // Armory UI to select/unlock/forge/equip. Each action persists across reload.
+  await page.evaluate(()=>{
+   localStorage.setItem('proximus-sovereign-survival-armory-v1',JSON.stringify({
+    version:1,renown:300,lifetimeRenown:300,champion:'warden',owned:[],equipped:[]
+   }));
+  });
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('#menuArmory').click();
+  assert.equal(await page.locator('#armoryRenown').textContent(),'300');
+  assert.equal(await page.locator('#championsUnlocked').textContent(),'3 / 3 UNLOCKED');
+  await page.locator('.champion-card.frost .armory-action').click();
+  assert.equal(await page.locator('.champion-card.frost.selected').count(),1);
+  await page.locator('.relic-card').nth(0).locator('.armory-action').click(); // Nightglass, 45
+  assert.equal(await page.locator('#armoryRenown').textContent(),'255');
+  await page.locator('.relic-card').nth(0).locator('.armory-action').click(); // Equip
+  await page.locator('.relic-card').nth(1).locator('.armory-action').click(); // Moonwell, 65
+  await page.locator('.relic-card').nth(1).locator('.armory-action').click(); // Equip
+  assert.equal(await page.locator('#relicSlots').textContent(),'2 / 2 EQUIPPED');
+  assert.equal(await page.locator('#armoryRenown').textContent(),'190');
+  assert.equal(await page.locator('.relic-card.equipped').count(),2);
+  // Slot capacity prevents EQUIPPING more than two relics, not FORGING more.
+  const third=page.locator('.relic-card').nth(2).locator('.armory-action');
+  assert.equal(await third.isDisabled(),false,'A third relic may still be forged');
+  await third.click(); // Phantom Spurs (80), now owned
+  assert.equal(await page.locator('#armoryRenown').textContent(),'110');
+  assert.equal(await page.locator('.relic-card').nth(2).locator('.armory-action').isDisabled(),
+   true,'Third forged relic cannot be equipped until a slot is freed');
+  await page.locator('#armoryOverlay .auxBack').click();
+  assert.ok((await page.locator('#menuLoadout').textContent()).includes('FROST SENTINEL'));
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('#menuArmory').click();
+  assert.equal(await page.locator('#armoryRenown').textContent(),'110');
+  assert.equal(await page.locator('.champion-card.frost.selected').count(),1);
+  assert.equal(await page.locator('.relic-card.equipped').count(),2);
+  await page.locator('#armoryOverlay .auxBack').click();
+  await page.locator('#startRun').click();
+  assert.equal(await page.locator('#healthText').textContent(),'155 / 155',
+   'Frost Sentinel and Moonwell Sigil must modify actual starting HP');
+  await page.locator('#pauseButton').click();
+  await page.locator('#pauseWarbook').click();
+  assert.equal(await page.locator('#codexHeroName').textContent(),'FROST SENTINEL');
+  assert.ok((await page.locator('#codexRelics').textContent()).includes('Nightglass Edge'));
+  assert.ok((await page.locator('#codexRelics').textContent()).includes('Moonwell Sigil'));
+  assert.equal(await page.locator('#powerStat').textContent(),'22',
+   'Nightglass must increase actual starting attack damage');
   assert.deepEqual(errors,[],'No client runtime exceptions');
   console.log('PASS '+name+' gameplay startup, controls, pause/restart and local records');
  }catch(e){
   await page.screenshot({path:'/tmp/sovereign-survival-'+name+'.png',fullPage:false}).catch(()=>{});
-  throw new Error(name+' '+e.message+'; page errors: '+errors.join(' | '));
+  throw new Error(name+' '+(e.stack||e.message)+'; page errors: '+errors.join(' | '));
  }finally{await context.close();await browser.close()}
 }

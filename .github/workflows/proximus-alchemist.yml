@@ -21,7 +21,9 @@ jobs:
       - name: Validate all client modules, release metadata and UI controls
         run: node alchemist/tests/validate.mjs
   browser-visual:
-    runs-on: ubuntu-latest
+    # Pin the browser runner: Ubuntu 26.04's external Microsoft apt repository
+    # can return HTTP 403 before Playwright browser tests even start.
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4

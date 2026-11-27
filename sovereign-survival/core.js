@@ -1,6 +1,7 @@
-/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL — deterministic dependency-free combat engine.
+/* SOVEREIGN SURVIVAL v1.3 ASCENSION ARMORY — deterministic combat engine.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
+import {startingStats} from './progression.js';
 export const WORLD={width:2800,height:1900};
 export const UPGRADES=Object.freeze([
  {id:'barrage',name:'Arcane Barrage',icon:'✺',text:'Fire an additional blade of violet energy.',max:4},
@@ -35,15 +36,17 @@ export function rng(state){
  let x=state.seed|0;x^=x<<13;x^=x>>>17;x^=x<<5;state.seed=x|0;
  return (x>>>0)/4294967296;
 }
-export function createRun(seed=0x59ab7e){
+export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
+ const initial=startingStats(loadout);
  const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
   bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
-  player:{x:WORLD.width/2,y:WORLD.height/2,hp:100,maxHp:100,speed:225,damage:18,
-   fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,shots:1,rate:0.26,damageReduction:0,
-   dashBase:4.6,leech:0,angle:-PI/2}};
+  player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
+   ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,
+   shots:1,angle:-PI/2},
+  startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])]}};
  spawnWave(game);
  return game;
 }
@@ -305,7 +308,8 @@ export function advance(s,input={},dt=1/60){
 }
 export function runSummary(s){
  return {score:Math.max(0,Math.floor(s.score)),wave:s.wave,kills:s.kills,
-  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,duration:Math.round(s.time),bestCombo:s.bestCombo,level:s.level};
+  eliteKills:s.eliteKills||0,bossKills:s.bossKills||0,duration:Math.round(s.time),
+  bestCombo:s.bestCombo,level:s.level,champion:s.player.champion};
 }
 export function durationLabel(seconds){
  const n=Math.max(0,Math.floor(finite(seconds))),m=Math.floor(n/60),s=n%60;

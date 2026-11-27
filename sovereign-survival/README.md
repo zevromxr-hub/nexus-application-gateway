@@ -1,3 +1,52 @@
+# SOVEREIGN SURVIVAL v1.3.0 — ASCENSION ARMORY
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+Sovereign Survival now has a genuine, offline **meta-progression loop**. Your completed battles earn Renown, which you can spend on permanent relics that modify the next run. Class unlocks give you a reason to push deeper into the enemy waves.
+
+## Champions
+
+| Champion | How to unlock | What changes |
+| --- | --- | --- |
+| **Void Warden** ✧ | Free from the start | Balanced HP, damage, movement and attack rate |
+| **Frost Sentinel** ❄ | 40 total defeats from completed runs | +30 maximum health, 10% damage reduction, 8% slower movement |
+| **Ember Reaver** ⚔ | Reach Wave 4 in a completed run | +25% base damage, 10% faster attacks, -20 maximum health |
+
+Choose your champion from **Ascension Armory** in the main menu before starting a run. Their different silhouettes and armor colors appear directly in combat.
+
+## Relic Forge
+
+Each relic is unlocked through a one-time Renown purchase. You can equip **up to two** at a time and change them freely between runs.
+
+| Relic | Cost | In-game passive |
+| --- | ---: | --- |
+| **Nightglass Edge** | 45 Renown | +20% starting damage |
+| **Moonwell Sigil** | 65 Renown | +25 maximum health |
+| **Phantom Spurs** | 80 Renown | +13% base movement speed |
+| **Soul Chalice** | 110 Renown | Restore +2 health after each enemy defeat |
+
+A full loadout applies automatically as soon as a new game begins. Relics are distinct from temporary level-up powers: the latter still reset every run.
+
+## Renown and rewards
+
+Renown is earned only when a run **ends in defeat**. Its amount depends on score, waves reached, enemies defeated, elite kills and boss victories. Renown is displayed in the Game Over results and stored on this device. Restarting/abandoning an active run yields no Renown, so choose when to leave.
+
+The **Hall of Legends** also shows lifetime Renown earned, while your prior best score, best wave, run count and defeats are preserved.
+
+## Mobile, storage and privacy
+
+The Armory is designed for PC and iPhone, scrolling within its own game screen. No new account, service, engine, remote sprite sheet or always-on animation is required. Champion and relic selections live in a dedicated `proximus-sovereign-survival-armory-v1` localStorage record while high scores remain in the existing `proximus-sovereign-survival-v1` record. No access to PROXIMUS Asset Alchemist's video data or OPFS storage.
+
+Do not uninstall your existing Home Screen installations or clear website data in order to update. Once online, the standalone PWA caches the new Armory resources for future offline use.
+
+## Verification
+
+Engine tests validate class unlocks, stats, relic purchase affordability, double-purchase prevention, equipment slot limit, run rewards, saving/reloading and older save compatibility. Browser tests exercise the actual Armory and start a modified class+relic run in emulated iPhone WebKit and desktop Chromium. The pre-existing game and PROXIMUS media regression suites also run.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL v1.2 — NIGHTFALL COMBAT
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/

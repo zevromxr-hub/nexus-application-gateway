@@ -1,9 +1,12 @@
-/* SOVEREIGN SURVIVAL v1.2 NIGHTFALL: combat AI, hazards, upgrades, visuals and offline safety */
+/* SOVEREIGN SURVIVAL v1.3 ASCENSION: permanent progression, combat AI, privacy and PWA */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ENEMY_TYPES,WORLD,ARENAS,arenaForWave,runSummary,durationLabel} from '../core.js';
+import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
+ championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,
+ startingStats,renownReward,awardRun} from '../progression.js';
 const root=path.resolve(import.meta.dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const initial=createRun(12345),again=createRun(12345);
@@ -135,6 +138,76 @@ assert.ok(elite.orbs.some(o=>o.value===ENEMY_TYPES.wraith.xp*2));
 assert.equal(runSummary(elite).eliteKills,1);
 assert.equal(runSummary(elite).bossKills,0);
 
+// Ascension Armory is a real, persistent progression layer, not a menu mockup.
+const blank=normalizeProgress(null);
+assert.equal(PROGRESSION_KEY,'proximus-sovereign-survival-armory-v1');
+assert.deepEqual(blank,{version:1,renown:0,lifetimeRenown:0,
+ champion:'warden',owned:[],equipped:[]});
+assert.equal(CHAMPIONS.length,3);
+assert.equal(RELICS.length,4);
+assert.equal(MAX_RELICS,2);
+assert.equal(championUnlocked('warden',{}),true);
+assert.equal(championUnlocked('sentinel',{kills:39}),false);
+assert.equal(championUnlocked('sentinel',{kills:40}),true);
+assert.equal(championUnlocked('reaver',{bestWave:3}),false);
+assert.equal(championUnlocked('reaver',{bestWave:4}),true);
+assert.equal(chooseChampion(blank,'sentinel',{kills:39}).success,false,'Locked champion cannot be selected');
+const sentinelSelection=chooseChampion(blank,'sentinel',{kills:40});
+assert.equal(sentinelSelection.success,true);
+const defaultRun=createRun(1234),sentinelRun=createRun(1234,{champion:'sentinel',relics:[]});
+assert.equal(defaultRun.player.hp,100);
+assert.equal(sentinelRun.player.hp,130);
+assert.equal(sentinelRun.player.maxHp,130);
+assert.ok(sentinelRun.player.speed<defaultRun.player.speed);
+assert.ok(sentinelRun.player.damageReduction>0);
+const reaverRun=createRun(1234,{champion:'reaver'});
+assert.equal(reaverRun.player.hp,80);
+assert.ok(reaverRun.player.damage>defaultRun.player.damage);
+assert.ok(reaverRun.player.rate<defaultRun.player.rate);
+const reward=renownReward({score:1500,wave:4,kills:35,eliteKills:2,bossKills:1});
+assert.ok(reward>10);
+const firstAward=awardRun(blank,{score:1500,wave:4,kills:35,eliteKills:2,bossKills:1});
+assert.equal(firstAward.earned,reward);
+assert.equal(firstAward.progress.renown,reward);
+assert.equal(blank.renown,0,'Previous immutable state is not mutated');
+assert.equal(firstAward.progress.lifetimeRenown,reward);
+const rich=normalizeProgress({renown:500,lifetimeRenown:600,owned:[],equipped:[]});
+const forge=purchaseRelic(rich,'nightglass');
+assert.equal(forge.success,true);
+assert.equal(forge.progress.renown,455);
+assert.deepEqual(forge.progress.owned,['nightglass']);
+assert.equal(purchaseRelic(forge.progress,'nightglass').success,false,'Purchased relic is not double-billed');
+assert.equal(purchaseRelic(blank,'nightglass').success,false,'Insufficient Renown blocks purchase');
+assert.equal(toggleRelic(blank,'nightglass').success,false,'Unowned relics cannot be equipped');
+const firstEquip=toggleRelic(forge.progress,'nightglass');
+assert.equal(firstEquip.success,true);
+assert.deepEqual(firstEquip.progress.equipped,['nightglass']);
+const moonForge=purchaseRelic(firstEquip.progress,'moonwell');
+const secondEquip=toggleRelic(moonForge.progress,'moonwell');
+assert.equal(secondEquip.success,true);
+assert.equal(secondEquip.progress.equipped.length,2);
+const phantomForge=purchaseRelic(secondEquip.progress,'phantom');
+assert.equal(toggleRelic(phantomForge.progress,'phantom').success,false,'Only two slots allowed');
+const unequipped=toggleRelic(phantomForge.progress,'nightglass');
+assert.equal(unequipped.success,true);
+assert.deepEqual(unequipped.progress.equipped,['moonwell']);
+assert.deepEqual(normalizeProgress({owned:['nightglass','nightglass','bogus'],
+ equipped:['bogus','nightglass','nightglass'],champion:'invalid',renown:-500}).equipped,
+ ['nightglass'],'Save data must be sanitized');
+assert.equal(resolveLoadout({champion:'reaver',owned:[],equipped:[]},{bestWave:3}).champion,
+ 'warden','Old/invalid locked selections fall back safely');
+assert.equal(resolveLoadout(sentinelSelection.progress,{kills:40}).champion,'sentinel');
+const armoryRun=createRun(789,{champion:'sentinel',relics:['nightglass','moonwell']});
+assert.equal(armoryRun.player.hp,155);
+assert.ok(armoryRun.player.damage>defaultRun.player.damage);
+assert.deepEqual(armoryRun.startingLoadout.relics,['nightglass','moonwell']);
+const speedy=createRun(789,{champion:'warden',relics:['phantom','chalice']});
+assert.ok(speedy.player.speed>defaultRun.player.speed);
+assert.equal(speedy.player.leech,2);
+assert.equal(runSummary(armoryRun).champion,'sentinel');
+assert.deepEqual(JSON.parse(JSON.stringify(firstEquip.progress)),firstEquip.progress,
+ 'Armory data must round-trip through localStorage serialization');
+
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -142,7 +215,7 @@ advance(doomed,{},1/60);
 assert.equal(doomed.phase,'gameover','Player can lose the game');
 assert.equal(runSummary(doomed).score,0);
 assert.equal(durationLabel(125),'2:05');
-for(const file of ['core.js','renderer.js','game.js','sw.js']){
+for(const file of ['core.js','renderer.js','game.js','progression.js','sw.js']){
  const r=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8'});
  assert.equal(r.status,0,file+': '+r.stderr);
 }
@@ -168,9 +241,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.2.0');
-assert.equal(current.previous_version,'1.1.0');
-assert.equal(current.codename,'NIGHTFALL COMBAT');
+assert.equal(current.version,'1.3.0');
+assert.equal(current.previous_version,'1.2.0');
+assert.equal(current.codename,'ASCENSION ARMORY');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -180,18 +253,31 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — NIGHTFALL v1.2'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-nightfall-v1.2'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — ASCENSION ARMORY v1.3'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-ascension-v1.3'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
 assert.ok(game.includes('records.elites+=result.eliteKills'));
 assert.ok(game.includes('records.bosses+=result.bossKills'));
+assert.ok(game.includes("resolveLoadout(progression,records)"));
+assert.ok(game.includes("const resultReward=awardRun(progression,result)"));
+assert.ok(game.includes("persistProgress();"));
+assert.ok(game.includes("function renderArmory()"));
+assert.ok(game.includes("function applyArmoryChange("));
+assert.ok(read('renderer.js').includes("p.champion==='sentinel'"));
+assert.ok(read('renderer.js').includes("p.champion==='reaver'"));
+for(const id of ['armoryOverlay','menuArmory','championCards','relicCards','armoryRenown',
+ 'armoryFeedback','relicSlots','championsUnlocked','codexHeroName','codexHeroIcon',
+ 'codexRelics','menuLoadout','runRenown','recordRenown']){
+ assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
+}
+assert.ok(read('armory-v1.3.css').includes('.champion-cards'));
 assert.ok(game.includes("document.body.dataset.realm=arena.id"));
 const nightfallStyle=read('nightfall-v1.2.css');
 assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
 assert.ok(nightfallStyle.includes('.bestiary-grid'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css']){
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
@@ -200,4 +286,4 @@ for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival Nightfall v1.2: Hexer, Ravager, elites, rifts, locked boss telegraphs, four arenas, local records, mobile PWA isolation');
+console.log('PASS Sovereign Survival Ascension v1.3: progression, unlocks, relic forge, 2-slot equipment, gameplay buffs, Nightfall combat, privacy and offline PWA');
