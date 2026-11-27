@@ -15,11 +15,12 @@
 <link rel="stylesheet" href="./nightfall-v1.2.css">
 <link rel="stylesheet" href="./armory-v1.3.css">
 <link rel="stylesheet" href="./awakening-v1.4.css">
-<title>SOVEREIGN SURVIVAL — CHAMPION AWAKENING v1.4 | PROXIMUS</title>
+<link rel="stylesheet" href="./expeditions-v1.5.css">
+<title>SOVEREIGN SURVIVAL — REALM EXPEDITIONS v1.5 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Champion Awakening game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Realm Expeditions game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -29,7 +30,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">AWAKENING <b>v1.4</b></span>
+    <span class="build-version">EXPEDITIONS <b>v1.5</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -50,7 +51,7 @@
     <div><small>SCORE</small><b id="scoreText">0</b></div>
    </div>
   </div>
-  <div class="arena-boss" id="bossBar" hidden><span>✦ VOID MONARCH</span><div class="meter"><div id="bossFill"></div></div></div>
+  <div class="arena-boss" id="bossBar" hidden><span id="bossName">✦ VOID MONARCH</span><div class="meter"><div id="bossFill"></div></div></div>
   <div id="messageToast" class="message-toast" role="status" aria-live="polite" hidden></div>
   <div class="arena-bottom">
    <span class="arena-time" id="timerText">0:00</span>
@@ -63,6 +64,18 @@
    <span id="abilityMeter" class="ability-hud-meter"><span id="abilityFill"></span></span>
   </div>
   <div class="rift-hud" id="riftCount" hidden>✧ NO RIFTS</div>
+  <section id="expeditionHud" class="expedition-hud" aria-label="Current realm expedition" aria-live="off" hidden>
+   <div class="expedition-hud-heading">
+    <span id="expeditionIcon" class="expedition-hud-icon">◈</span>
+    <div><small>REALM EXPEDITION</small><strong id="expeditionName">WARDSTONE DEFENSE</strong></div>
+    <b id="expeditionReward">+24 R</b>
+   </div>
+   <p id="expeditionDescription">Keep the wardstone alive until the wave ends.</p>
+   <div class="expedition-hud-progress"><div id="expeditionFill"></div></div>
+   <div class="expedition-hud-foot"><small id="expeditionDetail">125 / 125 WARD HP</small>
+    <small id="expeditionState">ACTIVE</small></div>
+  </section>
+  <div id="blessingBanner" class="blessing-banner" hidden>☾ MOONLIGHT BLESSING <strong id="blessingSeconds">0S</strong></div>
 
   <section class="overlay warbound-title-screen" id="menuOverlay" role="dialog" aria-modal="false" aria-label="Sovereign Survival main menu">
    <div class="title-atmosphere" aria-hidden="true"></div>
@@ -70,8 +83,8 @@
     <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">A W A K E N I N G <span>✦</span> E D I T I O N</div>
-    <p class="title-lore">Three champions. Three devastating powers. Awaken evolving weapons, confront the Monarch and forge a legend that survives every battle.</p>
+    <div class="game-edition">R E A L M <span>✦</span> E X P E D I T I O N S</div>
+    <p class="title-lore">Four dangerous realms, four real objectives, and two fearsome bosses. Protect, purge, awaken and conquer to earn Renown and forge rare relic blueprints.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
      <button id="menuArmory" type="button"><span>⚒</span> ASCENSION ARMORY <small>CHAMPIONS / RELICS</small></button>
@@ -121,6 +134,8 @@
     <h2>YOUR LEGEND <em>ENDURES.</em></h2>
     <p>You fell in battle, but your legacy is written into the Hall of Legends.</p>
     <div id="endStats" class="end-stats" aria-label="Final score and run statistics"></div>
+    <div class="expedition-end-reward">✦ EXPEDITION RENOWN EARNED <strong id="endExpeditionRenown">+0</strong>
+     <small id="endExpeditionProgress">0 EXPEDITIONS COMPLETED</small></div>
     <div class="earned-renown"><span>✦ ASCENSION REWARD</span><strong id="runRenown">+0 RENOWN</strong>
      <small>Earn Renown when a run ends. Spend it in the Armory.</small></div>
     <button id="retryRun" class="cta" type="button">⚔ RISE AGAIN</button>
@@ -137,8 +152,8 @@
     </div>
     <div class="armory-section-head"><span>01 / SELECT A CHAMPION</span><small id="championsUnlocked">1 / 3 UNLOCKED</small></div>
     <div id="championCards" class="champion-cards" role="group" aria-label="Champion choices"></div>
-    <div class="armory-section-head"><span>02 / RELIC FORGE</span><small id="relicSlots">0 / 2 EQUIPPED</small></div>
-    <p class="armory-help">Spend Renown to forge a relic permanently, then equip up to two. Relics affect every run until you change them.</p>
+    <div class="armory-section-head"><span>02 / RELIC FORGE + REALM BLUEPRINTS</span><small id="relicSlots">0 / 2 EQUIPPED</small></div>
+    <p class="armory-help">Spend Renown to forge permanent relics and equip up to two. Complete realm expeditions or defeat bosses to discover rare blueprints.</p>
     <div id="relicCards" class="relic-cards" role="group" aria-label="Purchasable and equippable relics"></div>
     <div id="armoryFeedback" class="armory-feedback" aria-live="polite">Complete survival runs to earn Renown and unlock new champions.</div>
     <button class="cta auxBack" type="button">← RETURN TO TITLE MENU</button>
@@ -157,7 +172,8 @@
       <div><b id="recordRuns">0</b><small>RUNS BEGUN</small></div>
       <div><b id="recordKills">0</b><small>TOTAL DEFEATS</small></div>
       <div><b id="recordElites">0</b><small>ELITES DEFEATED</small></div>
-      <div><b id="recordBosses">0</b><small>MONARCHS SLAIN</small></div>
+      <div><b id="recordBosses">0</b><small>REALM BOSSES SLAIN</small></div>
+      <div><b id="recordExpeditions">0</b><small>EXPEDITIONS COMPLETED</small></div>
       <div><b id="recordRenown">0</b><small>LIFETIME RENOWN</small></div>
      </div>
     </div>
@@ -180,6 +196,7 @@
     </div>
     <p class="guide-progress">⚒ ASCENSION ARMORY — Earn Renown on completed runs. Select unlocked champions and equip up to two forged relics before battle. No account needed.</p>
     <p class="guide-progress">✦ CHAMPION AWAKENING — Press <strong>Q</strong> on PC or tap the <strong>POWER</strong> rune on iPhone to cast your champion ability. Every ability has its own cooldown. Reach Rank 3 in Bloodsteel Edge, Arcane Barrage or Runic Ward to evolve your weapons and defense.</p>
+    <p class="guide-progress">◈ REALM EXPEDITIONS — Shattered Citadel: defend the Wardstone. Ashen Rift: destroy two portals with your attacks. Moonlit Ruins: stand near the shrine until the ritual charges. Void Throne: stand at both seals to weaken the Void Tyrant, then dodge the dangerous outer-arena pulse. Objectives grant bonus Renown on run completion.</p>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
    </div>
   </section>
@@ -213,9 +230,9 @@
        <div><small>ARMOR</small><strong id="armorStat">0%</strong></div>
       </div>
      </section>
-     <section class="side-card objective-card"><span class="eyebrow">THE NEXT CHALLENGE</span>
-      <h3 id="objectiveTitle">THE VOID MONARCH</h3>
-      <p id="objectiveDescription">A boss emerges every fourth wave.</p>
+     <section class="side-card objective-card"><span class="eyebrow">CURRENT REALM QUEST</span>
+      <h3 id="objectiveTitle">WARDSTONE DEFENSE</h3>
+      <p id="objectiveDescription">Defend the wardstone while fighting your first wave.</p>
       <div class="boss-progress"><span id="bossWaveHint">BOSS AT WAVE 4</span><div class="meter"><div id="waveProgress"></div></div></div>
      </section>
      <section class="side-card upgrades-card"><div class="side-heading"><span class="eyebrow">YOUR POWERS</span><strong id="upgradeCount">0 UPGRADES</strong></div>
@@ -227,7 +244,7 @@
      </section>
     </div>
     <div class="bestiary">
-     <span class="eyebrow">✦ ENEMIES OF THE NIGHTFALL</span>
+     <span class="eyebrow">✦ ENEMIES OF THE NIGHTFALL & REALM BOSSES</span>
      <p class="bestiary-intro">These threats behave differently. Read their tells instead of only outrunning them.</p>
      <div class="bestiary-grid">
       <div class="bestiary-entry"><span class="foe-icon wraith">✦</span><div><strong>WRAITH</strong><small>Fast melee swarm — keep moving.</small></div></div>
@@ -235,7 +252,8 @@
       <div class="bestiary-entry"><span class="foe-icon brute">◆</span><div><strong>BRUTE</strong><small>Heavy health and contact damage — focus fire.</small></div></div>
       <div class="bestiary-entry"><span class="foe-icon hexer">✳</span><div><strong>HEXER</strong><small>Ranged sorcery from Wave 3 — dodge its locked beam.</small></div></div>
       <div class="bestiary-entry"><span class="foe-icon ravager">➤</span><div><strong>RAVAGER</strong><small>Charging attacker from Wave 5 — escape its marked lane.</small></div></div>
-      <div class="bestiary-entry"><span class="foe-icon monarch">♛</span><div><strong>VOID MONARCH</strong><small>Boss every 4 waves — dodge the three locked bolts.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon monarch">♛</span><div><strong>VOID MONARCH</strong><small>Ashen Rift boss on Wave 4 — enters a five-bolt second phase.</small></div></div>
+      <div class="bestiary-entry"><span class="foe-icon tyrant">◆</span><div><strong>VOID TYRANT</strong><small>Void Throne boss on Wave 8 — aggressive five-shot phase with danger pulses and an armor link to the seals.</small></div></div>
      </div>
      <div class="bestiary-legend"><span>♛ GOLD CROWN = ELITE FOE · DOUBLE SOUL REWARD</span><span>⊗ GLOWING RIFT CIRCLE = INCOMING AREA DAMAGE</span></div>
     </div>

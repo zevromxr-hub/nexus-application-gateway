@@ -1,21 +1,22 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.4.0",
-  "codename": "CHAMPION AWAKENING",
+  "version": "1.5.0",
+  "codename": "REALM EXPEDITIONS",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "Each champion has a real cooldown-based active combat power triggered by keyboard Q or an iPhone POWER rune: Void Warden Astral Nova, Frost Sentinel Glacial Bulwark, and Ember Reaver Infernal Cleave.",
-    "Astral Nova damages and knocks back nearby enemies; Bulwark freezes surrounding enemies and grants temporary invulnerability; Infernal Cleave delivers directional area damage and burning damage-over-time.",
-    "Three permanent-within-run upgrade evolutions at Rank 3: Sovereign Blades sweeping attacks, Celestial Storm splitting projectiles, and Immortal Aegis blocking periodic incoming hits.",
-    "New skill-ready/cooldown HUD, accessible touch skill control, timed hero defenses, frozen/burning enemy status graphics, and evolved attack/impact effects.",
-    "Boss spawning gains a timed entrance effect; the Warden's Codex shows evolution progress and the guide explains abilities.",
-    "Retains v1.3 Armory, champions, forgeable relics, Renown, all scores, mobile controls, Nightfall enemies, offline PWA and independent personal-media storage."
+    "Real objectives are generated for every wave based on its realm: defend a destructible wardstone, purge enemy-summoning portals, charge a Moonlight Shrine or activate two Void Seals.",
+    "Wardstone attackers can damage both the protected stone and nearby player; portals are auto-targetable and can be destroyed with ordinary attacks; shrines reward timed attack/speed blessings; the throne periodically pulses damage outside its telegraphed safe center.",
+    "Two distinct bosses every fourth wave: Void Monarch on Wave 4 and Void Tyrant on Wave 8, each with increased salvo complexity when entering the second phase; Void Tyrant is protected by linked Void Seals until both are awakened.",
+    "Optional realm objectives earn additional Renown at completed-run game-over, along with score; Hall of Legends tracks cumulative completed expeditions.",
+    "Two rare expedition/boss blueprint relics unlock after completing two realm quests or killing two realm bosses, and can then be forged and equipped using the original Armory.",
+    "Original Canvas2D runic objective graphics, health and charge meters, off-screen directional objective cues, boss-phase telegraphs, and accessible realm quest HUD for desktop and iPhone.",
+    "All prior v1.4 champion powers, weapon evolutions, enemy AI, Armory purchases, existing localStorage saves, PROXIMUS personal media and game-specific offline PWA cache boundaries preserved."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.3.0"
+  "previous_version": "1.4.0"
 }

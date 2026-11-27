@@ -28,7 +28,13 @@ export const RELICS=Object.freeze([
   effect:'+13% base movement speed.'},
  {id:'chalice',name:'Soul Chalice',icon:'❖',cost:110,rarity:'RELIC',
   description:'A vessel that drinks back a fragment of every defeated foe.',
-  effect:'Restore 2 additional vitality after each defeat.'}
+  effect:'Restore 2 additional vitality after each defeat.'},
+ {id:'wardlight',name:'Wardlight Crest',icon:'✹',cost:135,rarity:'EXPEDITION BLUEPRINT',
+  requiredExpeditions:2,description:'A restored wardstone shard; awarded after two successful realm expeditions.',
+  effect:'+15 starting vitality and +8% movement speed.'},
+ {id:'voidheart',name:'Tyrant Heart',icon:'◆',cost:190,rarity:'BOSS BLUEPRINT',
+  requiredBosses:2,description:'A crystal from the heart of two fallen realm bosses.',
+  effect:'Restore 5 additional vitality after each defeat.'}
 ]);
 export const MAX_RELICS=2;
 const safeInt=(value)=>Number.isFinite(value)?Math.max(0,Math.min(1000000000,Math.floor(value))):0;
@@ -57,10 +63,17 @@ export function chooseChampion(progress,id,records={}){
  if(!championUnlocked(id,records))return {progress:p,success:false,reason:'Complete this champion’s unlock challenge first.'};
  return {progress:{...p,champion:id},success:true,reason:'Champion equipped.'};
 }
-export function purchaseRelic(progress,id){
+export function blueprintUnlocked(item,records={}){
+ if(!item)return false;
+ return (!item.requiredExpeditions||safeInt(records.expeditions)>=item.requiredExpeditions)&&
+  (!item.requiredBosses||safeInt(records.bosses)>=item.requiredBosses);
+}
+export function purchaseRelic(progress,id,records={}){
  const p=normalizeProgress(progress),item=RELICS.find(r=>r.id===id);
  if(!item)return {progress:p,success:false,reason:'Unknown relic.'};
  if(p.owned.includes(id))return {progress:p,success:false,reason:'Already forged.'};
+ if(!blueprintUnlocked(item,records))
+  return {progress:p,success:false,reason:'Complete the blueprint challenge first.'};
  if(p.renown<item.cost)return {progress:p,success:false,reason:'Not enough Renown.'};
  return {progress:{...p,renown:p.renown-item.cost,owned:[...p.owned,id]},
   success:true,reason:'Relic forged! Equip it to use its power.'};
@@ -94,6 +107,8 @@ export function startingStats(loadout={}){
   case 'moonwell':stats.maxHp+=25;break;
   case 'phantom':stats.speed=Math.round(stats.speed*1.13);break;
   case 'chalice':stats.leech+=2;break;
+  case 'wardlight':stats.maxHp+=15;stats.speed=Math.round(stats.speed*1.08);break;
+  case 'voidheart':stats.leech+=5;break;
   }
  }
  return {...stats,champion};
@@ -102,8 +117,9 @@ export function renownReward(summary={}){
  // Only awarded on a completed run; abandoning/restarting is not rewarded.
  const score=safeInt(summary.score),wave=safeInt(summary.wave),kills=safeInt(summary.kills);
  const elites=safeInt(summary.eliteKills),bosses=safeInt(summary.bossKills);
+ const expeditionBonus=Math.min(800,safeInt(summary.expeditionRenown));
  return Math.min(4000,Math.round(6+Math.floor(score/350)+Math.min(wave,250)*3+
-  Math.min(kills,1000)*.5+Math.min(elites,100)*7+Math.min(bosses,40)*24));
+  Math.min(kills,1000)*.5+Math.min(elites,100)*7+Math.min(bosses,40)*24+expeditionBonus));
 }
 export function awardRun(progress,summary={}){
  const p=normalizeProgress(progress),amount=renownReward(summary);

@@ -1,3 +1,39 @@
+# SOVEREIGN SURVIVAL v1.5 — REALM EXPEDITIONS
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+The arenas now contain **real, optional combat objectives**, not static location cards. Every wave generates an expedition with its own geometry, interaction, completion state and Renown reward. The HUD tells you what matters, and in-world waypoints show you where to go. Objectives award bonus Renown after the survival run eventually ends; leaving/restarting early does not bank unfinished rewards.
+
+## Four interactive realms
+
+| Realm | Active objective | What the player does |
+| --- | --- | --- |
+| **Shattered Citadel** (Waves 1–2, recurring every 8 waves) | **Wardstone Defense** | Protect a real destructible Wardstone. Siege attackers target it but can still damage a nearby player. Survive and clear the wave with the stone intact to claim victory. |
+| **Ashen Rift** (Waves 3–4) | **Rift Purge** | Two portals have health bars; your normal projectiles can auto-target and destroy them. Living portals periodically summon additional enemies (with a safe spawn cap). |
+| **Moonlit Ruins** (Waves 5–6) | **Moonlight Ritual** | Stay within a marked shrine radius for about five seconds. Completing the ritual heals the player and grants a **35-second Moonlight Blessing** that improves movement and attack damage. |
+| **Void Throne** (Waves 7–8) | **Void Seals** | Stand near two marked sigils to activate them. Each completes after a short charge. Active seals protect the Wave 8 Void Tyrant until awakened. Watch the timed central safe circle: outside it, the throne periodically deals damage. |
+
+Expedition objectives are optional for wave progression; failing one never soft-locks the game. Quests reset each wave. Completed expeditions award score and a bonus Renown allocation; failed objectives award no expedition bonus.
+
+## Boss encounters and phases
+
+The **Void Monarch** remains on Waves 4, 12, 20, etc. The **Void Tyrant** makes its first appearance on Wave 8, returning on Waves 16, 24, etc. The Tyrant has a distinct purple armored silhouette and more health. Both bosses aim ranged attacks along visible locked telegraphs, then become enraged at about **55% health**, releasing five-projectile volleys at faster intervals. The Tyrant additionally creates a real damaging radial attack on entering its second phase; clearing the Void Seals removes its extra armor before the fight.
+
+## Rare forgeable blueprints
+
+- **Wardlight Crest** — first complete **2 realm expeditions** across finished runs, then forge for **135 Renown**. Grants +15 maximum HP and +8% base movement speed.
+- **Tyrant Heart** — first defeat **2 realm bosses** across finished runs, then forge for **190 Renown**. Restores 5 additional HP after each enemy defeat.
+
+Both are permanently owned once forged, and count toward the existing **two equipped relic slots**. Older purchased relics, champion choices and balance remain untouched. The Hall of Legends now also tracks completed expeditions. Existing saves safely default the new expedition count to zero.
+
+## Play, performance and privacy
+
+All real effects are drawn with the existing Canvas2D engine, with a reduced-complexity Eco path and simple world-marker rendering. PC still uses WASD, Shift and Q; iPhone retains the joystick, DASH and POWER rune. All new graphics and gameplay files are cached inside the standalone `sovereign-survival/` service-worker scope, not the PROXIMUS Asset Alchemist media vault. Do not uninstall your Home Screen app or clear website data to update.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL v1.4 — CHAMPION AWAKENING
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
