@@ -1,15 +1,15 @@
-/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY: animated character, cosmetic wardrobe, achievements and loot */
+/* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION: distinct weapon models, champion mastery and saved appearances */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,activateAbility,evolutionActive,ENEMY_TYPES,WORLD,ARENAS,EXPEDITIONS,expeditionStatus,isBoss,arenaForWave,runSummary,durationLabel} from '../core.js';
+import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,activateAbility,evolutionActive,ENEMY_TYPES,WORLD,ARENAS,EXPEDITIONS,expeditionStatus,isBoss,arenaForWave,runSummary,durationLabel,MASTERIES,MASTERY_CASTS,masteryStatus} from '../core.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
  startingStats,renownReward,awardRun} from '../progression.js';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,freshLegacy,normalizeLegacy,
  achievementProgress,claimAchievement,bankRareDrops,styleEligible,unlockRegalia,
- equipRegalia,resolveRegalia} from '../legacy.js';
+ equipRegalia,resolveRegalia,WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from '../legacy.js';
 const root=path.resolve(import.meta.dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const initial=createRun(12345),again=createRun(12345);
@@ -496,6 +496,107 @@ assert.ok(dropBoss.events.some(e=>e.type==='rareLoot'));
 assert.equal(runSummary(dropBoss).rareDrops,1);
 assert.equal(bankRareDrops(l0,runSummary(dropBoss)).legacy.shards,1);
 assert.ok(dropBoss.effects.some(e=>e.kind==='rareLoot'),'Rare loot needs a visible effect');
+// v1.7 CHARACTER ASCENSION — truly different weapons and combat mastery.
+assert.equal(Object.keys(MASTERIES).length,3);
+assert.equal(MASTERY_CASTS,3);
+assert.equal(WEAPON_STYLES.length,3);
+assert.deepEqual(WEAPON_STYLES.map(x=>x.id),['signature','astral','dominion']);
+assert.deepEqual(normalizeLegacy({claimed:['boss']}).ownedWeapons,['signature'],
+ 'v1.6 Legacy saves must receive a default owned signature weapon');
+assert.equal(resolveWeapon(normalizeLegacy({ownedWeapons:['fake'],equippedWeapon:'fake'})),'signature',
+ 'Unsafe/unowned weapon skins must fall back to original');
+assert.equal(weaponEligible(l0,'astral',{expeditions:1}),false);
+assert.equal(weaponEligible(l0,'astral',{expeditions:2}),true);
+assert.equal(unlockWeapon(l0,'astral',{expeditions:2}).success,false,
+ 'Eligible but broke players cannot forge a weapon');
+const arming=unlockWeapon({...l0,shards:5},'astral',{expeditions:2});
+assert.equal(arming.success,true);
+assert.equal(arming.legacy.shards,3);
+assert.equal(arming.legacy.ownedWeapons.includes('astral'),true);
+assert.equal(unlockWeapon(arming.legacy,'astral',{expeditions:2}).success,false,
+ 'Weapon forge must not duplicate owned items');
+assert.equal(equipWeapon(l0,'astral').success,false,'Unowned weapon cannot be equipped');
+const starArms=equipWeapon(arming.legacy,'astral');
+assert.equal(resolveWeapon(starArms.legacy),'astral');
+assert.equal(starArms.legacy.equippedStyle,'standard','Weapon selection must not clear armor');
+assert.equal(styleEligible(starArms.legacy,'standard'),true);
+assert.equal(weaponEligible(secondClaim.legacy,'dominion',{bosses:0}),false);
+assert.equal(weaponEligible(secondClaim.legacy,'dominion',{bosses:1}),true);
+const dominion=unlockWeapon({...secondClaim.legacy,shards:5},'dominion',{bosses:1});
+assert.equal(dominion.success,true);
+assert.equal(equipWeapon(dominion.legacy,'dominion').legacy.equippedWeapon,'dominion');
+
+const ascensionOriginal=createRun(6701,{champion:'sentinel',style:'eclipse',weapon:'signature'});
+const ascensionSkinned=createRun(6701,{champion:'sentinel',style:'eclipse',weapon:'dominion'});
+assert.equal(ascensionSkinned.player.weaponSkin,'dominion');
+assert.equal(ascensionSkinned.startingLoadout.weapon,'dominion');
+assert.equal(ascensionSkinned.player.modelStyle,'eclipse');
+assert.equal(ascensionSkinned.player.hp,ascensionOriginal.player.hp);
+assert.equal(ascensionSkinned.player.damage,ascensionOriginal.player.damage);
+assert.equal(ascensionSkinned.player.speed,ascensionOriginal.player.speed);
+assert.deepEqual(ascensionSkinned.enemies,ascensionOriginal.enemies,
+ 'Weapon cosmetics must not affect deterministic enemy spawn');
+assert.equal(createRun(6702,{weapon:'invalid'}).player.weaponSkin,'signature');
+
+function forceAscension(champion,seed){
+ const run=createRun(seed,{champion});
+ run.enemies=[];run.player.fireCooldown=999;
+ assert.equal(masteryStatus(run).casts,0);
+ for(let i=0;i<2;i++){
+  assert.equal(activateAbility(run),true);
+  assert.equal(run.player.masteryAwakened,false,'Mastery should not start before three casts');
+  assert.equal(run.player.masteryCasts,i+1);
+  run.player.abilityCooldown=0;
+ }
+ return run;
+}
+const supernova=forceAscension('warden',6710);
+const farVoid={...createRun(6711).enemies[0],
+ x:supernova.player.x+265,y:supernova.player.y,rad:15,hp:700,maxHp:700};
+supernova.enemies=[farVoid];
+assert.equal(activateAbility(supernova),true);
+assert.equal(supernova.player.masteryAwakened,true);
+assert.equal(masteryStatus(supernova).name,'SUPERNOVA');
+assert.equal(masteryStatus(supernova).casts,3);
+assert.ok(farVoid.hp<700,'Mastered Nova must reach an enemy outside the original blast range');
+assert.ok(farVoid.x>supernova.player.x+400,'Mastered Nova has stronger actual knockback');
+assert.ok(supernova.player.abilityCooldown<9,'Mastery reduces real ability cooldown');
+assert.ok(supernova.events.some(e=>e.type==='masteryAwakened'),'Mastery emits a visible event');
+assert.ok(supernova.effects.some(e=>e.kind==='masteryAwaken'));
+assert.equal(activateAbility(supernova),false,'Mastered power respects cooldown');
+
+const eternal=forceAscension('sentinel',6720);
+eternal.player.hp=50;
+const farFrost={...createRun(6721).enemies[0],
+ x:eternal.player.x+278,y:eternal.player.y,rad:15,hp:900,maxHp:900,
+ frozenFor:0};
+eternal.enemies=[farFrost];
+activateAbility(eternal);
+assert.equal(masteryStatus(eternal).name,'ETERNAL WINTER');
+assert.equal(eternal.player.hp,62,'Mastered ice barrier heals exactly 12 HP');
+assert.ok(eternal.player.barrierTime>3,'Mastered frost defense is longer');
+assert.ok(farFrost.frozenFor>=2.9,'Mastered freeze extends to more distant enemies');
+
+const dragonfire=forceAscension('reaver',6730);
+dragonfire.player.angle=0;
+const farEmber={...createRun(6731).enemies[0],
+ x:dragonfire.player.x+270,y:dragonfire.player.y,rad:15,
+ hp:900,maxHp:900,burnTime:0,burnDamage:0};
+dragonfire.enemies=[farEmber];
+activateAbility(dragonfire);
+assert.equal(masteryStatus(dragonfire).name,'DRAGONFIRE');
+assert.ok(farEmber.hp<900,'Ascended cleave strikes targets beyond original radius');
+assert.ok(farEmber.burnTime>4,'Dragonfire inflicts a longer real burn');
+assert.ok(farEmber.burnDamage>=Math.round(dragonfire.player.damage*.7));
+
+const originalFire=createRun(6740,{champion:'reaver',weapon:'astral'});
+const visibleTarget=originalFire.enemies[0];visibleTarget.x=originalFire.player.x+100;
+visibleTarget.y=originalFire.player.y;originalFire.enemies=[visibleTarget];
+advance(originalFire,{},1/60);
+assert.ok(originalFire.shots.some(b=>b.element==='reaver'&&b.weapon==='astral'),
+ 'Real projectiles must carry champion and weapon appearance metadata');
+assert.equal(masteryStatus(createRun(6741)).casts,0,
+ 'Mastery must reset naturally on each new run instead of altering saved progress');
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -529,9 +630,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.6.0');
-assert.equal(current.previous_version,'1.5.0');
-assert.equal(current.codename,'SOVEREIGN LEGACY');
+assert.equal(current.version,'1.7.0');
+assert.equal(current.previous_version,'1.6.0');
+assert.equal(current.codename,'CHARACTER ASCENSION');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -541,8 +642,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — SOVEREIGN LEGACY v1.6'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-legacy-v1.6'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — CHARACTER ASCENSION v1.7'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-ascension-v1.7'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
@@ -552,6 +653,13 @@ assert.ok(game.includes('records.expeditions+=result.expeditionsCompleted'));
 assert.ok(game.includes('bankRareDrops(legacy,result)'), 'Drops only bank after genuine defeat');
 assert.ok(game.includes("persistLegacy();"),'New legacy data must persist independently');
 assert.ok(game.includes('style:resolveRegalia(legacy)'),'Cosmetic appearance must enter actual combat simulation');
+assert.ok(game.includes('weapon:resolveWeapon(legacy)'),'Forged weapon must enter the real game');
+assert.ok(game.includes('function renderLegacy()'));
+assert.ok(game.includes('masteryStatus(game)'),'Mastery progress must reach in-game HUD');
+assert.ok(read('renderer.js').includes('function drawChampionArmament('));
+assert.ok(read('renderer.js').includes("champion==='sentinel'")&&
+ read('renderer.js').includes("champion==='reaver'"),
+ 'Champion-specific actual in-game weapons must be implemented');
 assert.ok(game.includes('function renderLegacy()'),'Legacy wardrobe needs real interactive UI');
 assert.ok(read('renderer.js').includes('drawChampionPreview('));
 assert.ok(read('renderer.js').includes('const gait=Math.sin('),
@@ -560,7 +668,9 @@ assert.ok(read('renderer.js').includes('c.rotate(p.angle+Math.PI/2)'),
  'Procedural armor must follow player direction');
 assert.ok(read('renderer.js').includes('if(crowned)')&&read('renderer.js').includes('if(frost)'),
  'Visual armor must have distinct champion and legendary silhouettes');
-for(const id of ['menuLegacy','legacyOverlay','legacyChampionCanvas','legacyChampionName',
+for(const id of ['weaponCards','legacyWeaponName','codexWeaponName','codexMastery',
+ 'masteryFill','masteryLabel',
+ 'menuLegacy','legacyOverlay','legacyChampionCanvas','legacyChampionName',
  'legacyArmorLabel','regaliaCards','achievementCards','legacyFeedback','legacyShards',
  'legacyClaims','legacyUnlockedCount','endRareDrops','rareCount','rareHud',
  'codexChampionCanvas','codexArmorName']){
@@ -605,7 +715,7 @@ assert.ok(game.includes("document.body.dataset.realm=arena.id"));
 const nightfallStyle=read('nightfall-v1.2.css');
 assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
 assert.ok(nightfallStyle.includes('.bestiary-grid'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css','legacy-v1.6.css']){
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css','legacy-v1.6.css','ascension-v1.7.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
@@ -614,4 +724,4 @@ for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival Legacy v1.6: detailed animated models, cosmetic loadouts, original achievements, rare drops, wardrobe economy, previous realms and independent PWA');
+console.log('PASS Sovereign Survival Character Ascension v1.7: three stronger mastered powers, forged weapon cosmetic designs, saved look migration, real character VFX, prior game and PWA');

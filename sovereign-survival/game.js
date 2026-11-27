@@ -1,13 +1,14 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / SOVEREIGN LEGACY v1.6
+/* PROXIMUS | SOVEREIGN SURVIVAL / CHARACTER ASCENSION v1.7
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
-import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss} from './core.js';
+import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss,masteryStatus,MASTERIES} from './core.js';
 import {drawArena,drawChampionPreview} from './renderer.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
  awardRun} from './progression.js';
 import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,normalizeLegacy,achievementProgress,
- claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia} from './legacy.js';
+ claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia,
+ WEAPON_STYLES,weaponEligible,unlockWeapon,equipWeapon,resolveWeapon} from './legacy.js';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
 const SAVE_KEY='proximus-sovereign-survival-v1';
@@ -116,7 +117,8 @@ function sound(type){
   charge:[180,440,.20,'sawtooth'],eliteDefeated:[420,900,.25,'sine'],
   nova:[280,790,.32,'sine'],bulwark:[640,260,.34,'sine'],cleave:[190,730,.23,'sawtooth'],
   evolution:[490,1100,.36,'triangle'],aegisBlock:[560,140,.20,'sine'],
-  rareLoot:[470,980,.30,'triangle'],bossEntrance:[100,300,.32,'sawtooth'],
+  rareLoot:[470,980,.30,'triangle'],
+  masteryAwakened:[280,990,.45,'sine'],bossEntrance:[100,300,.32,'sawtooth'],
   expeditionComplete:[580,1060,.34,'sine'],expeditionFailed:[220,110,.21,'triangle'],
   bossEnraged:[120,430,.33,'sawtooth'],portalDestroyed:[360,920,.25,'triangle'],sealActivated:[480,950,.28,'sine'],
   gameover:[190,75,.5,'triangle']};
@@ -147,7 +149,12 @@ function handleEvents(){
   else if(ev.type==='expeditionComplete'){toast('✦ '+ev.objective+' COMPLETE · +'+ev.renown+' RENOWN',3000);sound('expeditionComplete')}
   else if(ev.type==='expeditionFailed'){toast('◇ '+ev.objective+' LOST · SURVIVE THE NEXT WAVE',2700);sound('expeditionFailed')}
   else if(ev.type==='portalDestroyed'||ev.type==='sealActivated'){sound(ev.type)}
-  else if(ev.type==='ability'){toast('✦ '+ev.name+' UNLEASHED',1150);sound(ev.id)}
+  else if(ev.type==='masteryAwakened'){sound('masteryAwakened')}
+  else if(ev.type==='ability'){
+   const abilityName=ev.mastered?(MASTERIES[game.player.champion]?.name||ev.name):ev.name;
+   toast('✦ '+abilityName+(ev.mastered?' ASCENDED':' UNLEASHED'),ev.mastered?2000:1150);
+   sound(ev.id);
+  }
   else if(ev.type==='aegisBlock'){sound('aegisBlock')}
   else if(ev.type==='bossEntrance'){sound('bossEntrance')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
@@ -180,7 +187,9 @@ function refreshCodexChampion(){
   'EQUIPPED RELICS · '+items.map(r=>r.icon+' '+r.name).join(' · '):
   'NO RELICS EQUIPPED';
  $('codexArmorName').textContent=(REGALIA.find(r=>r.id===(game.startingLoadout?.style||'standard'))||REGALIA[0]).name.toUpperCase();
- drawChampionPreview($('codexChampionCanvas'),id,game.startingLoadout?.style||'standard');
+ const weapon=game.startingLoadout?.weapon||'signature';
+ $('codexWeaponName').textContent=(WEAPON_STYLES.find(w=>w.id===weapon)||WEAPON_STYLES[0]).name.toUpperCase();
+ drawChampionPreview($('codexChampionCanvas'),id,game.startingLoadout?.style||'standard',weapon);
 }
 function setArmoryFeedback(message){
  $('armoryFeedback').textContent=message;
@@ -213,9 +222,14 @@ function renderArmory(){
   const selected=loadout.champion===item.id;
   const card=armoryNode('article','champion-card '+item.style+
    (selected?' selected':'')+(unlocked?'':' locked'));
+  const portrait=document.createElement('canvas');
+  portrait.className='champion-portrait-canvas';portrait.width=160;portrait.height=164;
+  portrait.setAttribute('role','img');
+  portrait.setAttribute('aria-label',item.name+' equipped character model preview');
+  drawChampionPreview(portrait,item.id,resolveRegalia(legacy),resolveWeapon(legacy));
   card.append(
    armoryNode('span','state',selected?'✦ ACTIVE CHAMPION':unlocked?'AVAILABLE':'✧ LOCKED'),
-   armoryNode('div','champion-icon',item.icon),
+   portrait,
    armoryNode('h3','',item.name),
    armoryNode('p','caption',item.description),
    armoryNode('p','bonus',item.bonus)
@@ -275,8 +289,9 @@ function renderArmory(){
 }
 function renderLegacy(){
  const look=resolveLoadout(progression,records);
- const style=resolveRegalia(legacy);
+ const style=resolveRegalia(legacy),weapon=resolveWeapon(legacy);
  const selected=REGALIA.find(item=>item.id===style)||REGALIA[0];
+ const selectedWeapon=WEAPON_STYLES.find(item=>item.id===weapon)||WEAPON_STYLES[0];
  const champ=CHAMPIONS.find(item=>item.id===look.champion)||CHAMPIONS[0];
  $('legacyShards').textContent=legacy.shards.toLocaleString();
  $('legacyClaims').textContent=legacy.claimed.length+' / '+ACHIEVEMENTS.length+' ACHIEVEMENTS CLAIMED';
@@ -284,7 +299,8 @@ function renderLegacy(){
   ' / '+ACHIEVEMENTS.length+' ELIGIBLE';
  $('legacyChampionName').textContent=champ.name.toUpperCase();
  $('legacyArmorLabel').textContent=selected.name.toUpperCase();
- drawChampionPreview($('legacyChampionCanvas'),champ.id,style);
+ $('legacyWeaponName').textContent=selectedWeapon.name.toUpperCase();
+ drawChampionPreview($('legacyChampionCanvas'),champ.id,style,weapon);
  const wardrobe=$('regaliaCards');wardrobe.replaceChildren();
  for(const item of REGALIA){
   const owned=legacy.ownedStyles.includes(item.id),equipped=item.id===style;
@@ -313,6 +329,36 @@ function renderLegacy(){
   if(!disabled)button.addEventListener('click',()=>changeLegacy(action,item.id));
   card.append(glyph,name,rarity,desc,button);wardrobe.append(card);
  }
+ const weapons=$('weaponCards');weapons.replaceChildren();
+ for(const item of WEAPON_STYLES){
+  const owned=legacy.ownedWeapons.includes(item.id),equipped=item.id===weapon;
+  const eligible=weaponEligible(legacy,item.id,records);
+  const card=armoryNode('article','weapon-card'+(equipped?' equipped':'')+(owned||eligible?'':' locked'));
+  const glyph=armoryNode('span','weapon-glyph',item.icon);
+  const heading=armoryNode('h3','',item.name);
+  const tier=armoryNode('small','',item.type);
+  const description=armoryNode('p','',item.description);
+  let label='EQUIP WEAPON',disabled=false,action='weaponEquip';
+  if(equipped){label='✦ EQUIPPED';disabled=true}
+  else if(!owned){
+   action='weaponBuy';
+   if(!eligible){
+    const parts=[];
+    if(item.expeditions)parts.push(Math.max(0,item.expeditions-records.expeditions)+' QUESTS');
+    if(item.bosses)parts.push(Math.max(0,item.bosses-records.bosses)+' BOSSES');
+    if(item.achievements)parts.push(Math.max(0,item.achievements-legacy.claimed.length)+' CLAIMS');
+    label=parts.filter(x=>!x.startsWith('0 ')).join(' · ')+' REQUIRED';
+    disabled=true;
+   }else if(legacy.shards<item.cost){
+    label='NEED '+(item.cost-legacy.shards)+' SHARDS';disabled=true;
+   }else label='FORGE · '+item.cost+' SHARDS';
+  }
+  const button=armoryNode('button','',label);
+  button.type='button';button.disabled=disabled;
+  button.setAttribute('aria-label',label+' '+item.name);
+  if(!disabled)button.addEventListener('click',()=>changeLegacy(action,item.id));
+  card.append(glyph,heading,tier,description,button);weapons.append(card);
+ }
  const achievements=$('achievementCards');achievements.replaceChildren();
  for(const a of ACHIEVEMENTS){
   const task=achievementProgress(a,records,progression);
@@ -339,6 +385,8 @@ function changeLegacy(action,id){
  if(action==='claim')result=claimAchievement(legacy,id,records,progression);
  else if(action==='unlock')result=unlockRegalia(legacy,id,records);
  else if(action==='equip')result=equipRegalia(legacy,id);
+ else if(action==='weaponBuy')result=unlockWeapon(legacy,id,records);
+ else if(action==='weaponEquip')result=equipWeapon(legacy,id);
  else return;
  if(result.success){
   legacy=result.legacy;persistLegacy();sound('upgrade');
@@ -405,7 +453,7 @@ function startRun(){
  auxPage=null;
  const loadout=resolveLoadout(progression,records);
  game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,
-  {...loadout,style:resolveRegalia(legacy)});
+  {...loadout,style:resolveRegalia(legacy),weapon:resolveWeapon(legacy)});
  records.runs++;persist();renderRecords();
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
@@ -465,6 +513,14 @@ function updateHud(){
  $('dashText').textContent=p.dashCooldown<=0?'➤ DASH READY':'➤ '+p.dashCooldown.toFixed(1)+'S';
  $('dashButton').disabled=p.dashCooldown>.1||mode!=='playing'||game.phase!=='running';
  const ability=ABILITIES[p.champion]||ABILITIES.warden;
+ const mastery=masteryStatus(game);
+ $('abilityHud').dataset.mastered=String(mastery.awakened);
+ $('masteryLabel').textContent=mastery.awakened?mastery.name+' AWAKENED':
+  'MASTERY '+mastery.casts+' / '+mastery.required;
+ $('masteryFill').style.width=(100*mastery.casts/mastery.required).toFixed(0)+'%';
+ $('codexMastery').textContent=mastery.awakened?
+  '✦ '+mastery.name+' · ASCENDED':'ABILITY MASTERY · '+mastery.casts+' / '+mastery.required;
+ $('codexMastery').classList.toggle('mastered',mastery.awakened);
  $('abilityName').textContent=ability.name;
  $('abilityStatus').textContent=p.abilityCooldown>0?p.abilityCooldown.toFixed(1)+' SEC':'READY';
  $('abilityTouchIcon').textContent=ability.icon;

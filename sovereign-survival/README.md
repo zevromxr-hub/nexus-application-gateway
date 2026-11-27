@@ -1,3 +1,48 @@
+# SOVEREIGN SURVIVAL v1.7 — CHARACTER ASCENSION
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+This release develops the playable game model and combat, not another static configuration dashboard.
+
+## Champion-specific weapons in actual battles
+
+- **Void Warden:** pair of curved crescent void sickles with runic blades, animated on alternate attacking arms
+- **Frost Sentinel:** unmistakable crystalline glaive in one hand, layered protective diamond shield in the other
+- **Ember Reaver:** a huge chipped fire cleaver with an aggressive offhand flame dagger
+
+This replaces the old visually identical twin-sword weapon design. Weapons point toward attacks, react to the existing swing poses and remain distinct at mobile resolutions. Normal projectiles inherit the champion's ice, ember or violet color; the two forgeable appearances also affect the actual weapon material and projectile appearance.
+
+## Actual new gameplay: Ascended champion abilities
+
+Every cast of your active ability (keyboard **Q** or iPhone **POWER**) counts toward that champion's mastery. On the **third cast in the same survival run**, the ability **ascends immediately** and gains a genuinely stronger effect for the rest of that run:
+
+| Champion | Mastered power | Actual upgraded simulation behavior |
+| --- | --- | --- |
+| Void Warden | **SUPERNOVA** | Nova blast reaches up to 290 base radius (230 previously), stronger damage and farther knockback |
+| Frost Sentinel | **ETERNAL WINTER** | 3.25s protection, 2.9s freeze duration in a larger area, restores 12 HP |
+| Ember Reaver | **DRAGONFIRE** | Larger cleave arc/range, improved immediate damage and 4.25s burning |
+All mastery variants recharge about **15% faster**. Mastery is **earned each run**, resets on a fresh run, and never uses or drains your permanent Renown. The skill HUD shows your progress (0/3, 1/3, 2/3, awakened) and a distinct mastery banner when unlocked. The Warden's Codex reflects your real status. Eco mode retains readable shapes without adding expensive extra visual layers.
+
+## A real armory / forge, not icon-only menus
+
+The three Armory champion cards now show the **actual game-rendered character model**, with your equipped armor and weapon finish, instead of tiny icon placeholders. The Sovereign Legacy wardrobe and in-run Codex display the same combination.
+
+From **Sovereign Legacy → Signature Armaments**, choose:
+
+| Visual-only weapon skin | Requirements | Eclipse Shards |
+| --- | --- | --- |
+| **Champion Signature** | Free from the beginning | 0 |
+| **Astral Forged** | Complete 2 realm expeditions across finished runs | 2 |
+| **Dominion Fang** | Defeat 1 realm boss and claim 2 achievements | 3 |
+
+Your forged weapon appears **on the actual playable character**. Weapon skins are cosmetics and do not alter damage, HP, reach, speed or drop rate. They share the existing Eclipse Shard economy, but ownership and the selected weapon persist separately from armor. Older v1.6 Legacy saves automatically receive the original signature weapon and retain their armor, claimed achievements and all shards.
+
+All changes remain contained within `sovereign-survival/`, except for updated launcher wording in `alchemist/index.html`. The original game and Armory save keys are untouched, along with Asset Alchemist's IndexedDB/OPFS video and personal media.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL v1.6 — SOVEREIGN LEGACY
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/

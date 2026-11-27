@@ -17,11 +17,12 @@
 <link rel="stylesheet" href="./awakening-v1.4.css">
 <link rel="stylesheet" href="./expeditions-v1.5.css">
 <link rel="stylesheet" href="./legacy-v1.6.css">
-<title>SOVEREIGN SURVIVAL — SOVEREIGN LEGACY v1.6 | PROXIMUS</title>
+<link rel="stylesheet" href="./ascension-v1.7.css">
+<title>SOVEREIGN SURVIVAL — CHARACTER ASCENSION v1.7 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Sovereign Legacy game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Character Ascension game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -31,7 +32,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">LEGACY <b>v1.6</b></span>
+    <span class="build-version">ASCENSION <b>v1.7</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -64,6 +65,8 @@
    <span class="ability-key">Q <small>SKILL</small></span>
    <span class="ability-hud-copy"><strong id="abilityName">ASTRAL NOVA</strong><small id="abilityStatus">READY</small></span>
    <span id="abilityMeter" class="ability-hud-meter"><span id="abilityFill"></span></span>
+   <span class="ascension-meter"><span id="masteryLabel">MASTERY 0 / 3</span>
+    <span class="ascension-track"><span id="masteryFill"></span></span></span>
   </div>
   <div class="rift-hud" id="riftCount" hidden>✧ NO RIFTS</div>
   <section id="expeditionHud" class="expedition-hud" aria-label="Current realm expedition" aria-live="off" hidden>
@@ -85,8 +88,8 @@
     <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">S O V E R E I G N <span>✦</span> L E G A C Y</div>
-    <p class="title-lore">Reforged champions with living armor, flowing cloaks and legendary blades. Claim achievements, recover rare Eclipse Shards and forge your own sovereign appearance.</p>
+    <div class="game-edition">C H A M P I O N <span>✦</span> A S C E N S I O N</div>
+    <p class="title-lore">Three champions. Three signature weapon forms. Unleash your skill three times to awaken its next form, forge personalized arms, and claim your place in the legend.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
      <button id="menuArmory" type="button"><span>⚒</span> ASCENSION ARMORY <small>CHAMPIONS / RELICS</small></button>
@@ -181,16 +184,20 @@
        aria-label="Full armor preview of your selected champion"></canvas>
       <span class="legacy-portrait-name" id="legacyChampionName">VOID WARDEN</span>
       <span class="legacy-portrait-label" id="legacyArmorLabel">WARBOUND ARMOR</span>
+      <span class="legacy-weapon-label" id="legacyWeaponName">CHAMPION SIGNATURE</span>
      </div>
      <div class="legacy-wardrobe">
       <div class="legacy-subhead">01 / CHOOSE YOUR ARMOR <small>COSMETIC ONLY · ZERO STAT ADVANTAGE</small></div>
       <p>Every champion has a newly reforged default battle model. Unlock rarer suits with achievements
        and Eclipse Shards. Armor appearance changes the actual playable character, not just this preview.</p>
       <div id="regaliaCards" class="regalia-cards" role="group" aria-label="Forged cosmetic armor appearances"></div>
-      <p class="legacy-feedback" id="legacyFeedback" aria-live="polite">Complete battles and claim achievements to forge armor.</p>
+      <div class="legacy-subhead weapon-section-head">02 / SIGNATURE ARMAMENTS <small>REAL GAME MODEL · COSMETIC ONLY</small></div>
+      <p>Every champion has different weapons. Forge additional finishes with Eclipse Shards; your chosen weapon appearance follows you into battle.</p>
+      <div id="weaponCards" class="weapon-cards" role="group" aria-label="Equippable weapon appearances"></div>
+      <p class="legacy-feedback" id="legacyFeedback" aria-live="polite">Complete battles and claim achievements to forge armor and weapons.</p>
      </div>
     </div>
-    <div class="legacy-subhead">02 / ACHIEVEMENT CHRONICLE <small id="legacyUnlockedCount">0 / 6 ELIGIBLE</small></div>
+    <div class="legacy-subhead">03 / ACHIEVEMENT CHRONICLE <small id="legacyUnlockedCount">0 / 6 ELIGIBLE</small></div>
     <p class="legacy-subcopy">Previously earned scores and boss victories count. Each achievement
      can be claimed once for one Eclipse Shard. Rare drops are banked only when a run ends in defeat.</p>
     <div id="achievementCards" class="achievement-cards" role="group" aria-label="Claimable survival achievements"></div>
@@ -234,7 +241,8 @@
     </div>
     <p class="guide-progress">⚒ ASCENSION ARMORY — Earn Renown on completed runs. Select unlocked champions and equip up to two forged relics before battle. No account needed.</p>
     <p class="guide-progress">✦ CHAMPION AWAKENING — Press <strong>Q</strong> on PC or tap the <strong>POWER</strong> rune on iPhone to cast your champion ability. Every ability has its own cooldown. Reach Rank 3 in Bloodsteel Edge, Arcane Barrage or Runic Ward to evolve your weapons and defense.</p>
-    <p class="guide-progress">♛ SOVEREIGN LEGACY — Open the Legacy hall from the title menu to claim achievements, view the complete champion model and forge purely cosmetic armor. Elites and bosses occasionally drop Eclipse Shards, which are banked when a run ends in defeat.</p>
+    <p class="guide-progress">♛ SOVEREIGN LEGACY — Open the Legacy hall from the title menu to claim achievements, view the complete champion model and forge purely cosmetic armor and weapon finishes. Elites and bosses occasionally drop Eclipse Shards, which are banked when a run ends in defeat.</p>
+    <p class="guide-progress">✦ CHARACTER ASCENSION — Cast your champion's active ability three times within the same run to awaken its stronger form: Warden Supernova, Sentinel Eternal Winter, or Reaver Dragonfire. Weapon skins are cosmetic; mastery is earned during battle and resets for each new run.</p>
     <p class="guide-progress">◈ REALM EXPEDITIONS — Shattered Citadel: defend the Wardstone. Ashen Rift: destroy two portals with your attacks. Moonlit Ruins: stand near the shrine until the ritual charges. Void Throne: stand at both seals to weaken the Void Tyrant, then dodge the dangerous outer-arena pulse. Objectives grant bonus Renown on run completion.</p>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
    </div>
@@ -263,7 +271,9 @@
       <div class="hero-avatar" aria-hidden="true"><span id="codexHeroIcon">✧</span></div>
       <canvas class="codex-model" id="codexChampionCanvas" width="170" height="180"
        role="img" aria-label="Your champion's current armor appearance"></canvas>
-      <div class="codex-regalia-label" id="codexArmorName">WARBOUND ARMOR</div><h3 id="codexHeroName">THE VOID WARDEN</h3>
+      <div class="codex-regalia-label" id="codexArmorName">WARBOUND ARMOR</div>
+      <div class="codex-regalia-label" id="codexWeaponName">CHAMPION SIGNATURE</div>
+      <div id="codexMastery" class="codex-mastery">ABILITY MASTERY · 0 / 3</div><h3 id="codexHeroName">THE VOID WARDEN</h3>
       <p id="codexHeroBonus">Balanced health, damage and agility.</p>
       <div id="codexRelics" class="codex-relics">NO RELICS EQUIPPED</div>
       <div class="hero-attributes">

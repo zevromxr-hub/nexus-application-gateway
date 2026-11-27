@@ -1,6 +1,6 @@
-/* SOVEREIGN SURVIVAL Sovereign Legacy — static application shell only, never personal content. */
-const CACHE='proximus-sovereign-survival-legacy-v1.6';
-const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./legacy.js','./progression.js','./warbound-scene.svg','./game.js','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
+/* SOVEREIGN SURVIVAL Character Ascension — static application shell only, never personal content. */
+const CACHE='proximus-sovereign-survival-ascension-v1.7';
+const SHELL=['./','./index.html','./style.css','./warbound-v1.1.css','./nightfall-v1.2.css','./armory-v1.3.css','./awakening-v1.4.css','./expeditions-v1.5.css','./legacy-v1.6.css','./ascension-v1.7.css','./legacy.js','./progression.js','./warbound-scene.svg','./game.js','./core.js','./renderer.js','./manifest.webmanifest','./icon.svg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });

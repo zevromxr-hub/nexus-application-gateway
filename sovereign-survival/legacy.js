@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.6 — SOVEREIGN LEGACY
+/* SOVEREIGN SURVIVAL v1.7 — CHARACTER ASCENSION
  * Self-contained achievements, rare loot, visual-only armor regalia.
  * This never reads or writes other applications' media vaults.
  */
@@ -25,9 +25,20 @@ export const REGALIA=Object.freeze([
  {id:'crowned',icon:'♛',name:'SOVEREIGN REGALIA',type:'LEGENDARY · 4 ACHIEVEMENTS',cost:4,
   achievements:4,bosses:2,description:'Ivory-gold ceremonial plate, royal mantle and a radiant crown. Purely cosmetic.'}
 ]);
+export const WEAPON_STYLES=Object.freeze([
+ {id:'signature',name:'CHAMPION SIGNATURE',icon:'⚔',cost:0,
+  type:'ORIGINAL WEAPONRY',description:'Void crescent blades, Frost glaive and shield, or Ember cleaver. Free with every champion.'},
+ {id:'astral',name:'ASTRAL FORGED',icon:'✧',cost:2,expeditions:2,
+  type:'RARE · 2 EXPEDITIONS',
+  description:'Radiant ice-blue starmetal with celestial glyphs. Requires two completed realm quests.'},
+ {id:'dominion',name:'DOMINION FANG',icon:'◆',cost:3,bosses:1,achievements:2,
+  type:'EPIC · 1 BOSS + 2 ACHIEVEMENTS',
+  description:'Spiked ruby-darkened war arms with a glowing crimson core. Requires a boss victory and two claimed achievements.'}
+]);
 const safeInt=n=>Number.isFinite(n)?Math.max(0,Math.min(1000000000,Math.floor(n))):0;
 export function freshLegacy(){
- return {version:1,shards:0,lifetimeShards:0,claimed:[],ownedStyles:['standard'],equippedStyle:'standard'};
+ return {version:1,shards:0,lifetimeShards:0,claimed:[],ownedStyles:['standard'],equippedStyle:'standard',
+  ownedWeapons:['signature'],equippedWeapon:'signature'};
 }
 export function normalizeLegacy(raw){
  const p=raw&&typeof raw==='object'&&!Array.isArray(raw)?raw:{};
@@ -38,9 +49,13 @@ export function normalizeLegacy(raw){
  const ownedStyles=['standard',...[...new Set(Array.isArray(p.ownedStyles)?p.ownedStyles:[])]
   .filter(id=>validStyles.has(id)&&id!=='standard')];
  const equippedStyle=ownedStyles.includes(p.equippedStyle)?p.equippedStyle:'standard';
+ const validWeapons=new Set(WEAPON_STYLES.map(r=>r.id));
+ const ownedWeapons=['signature',...[...new Set(Array.isArray(p.ownedWeapons)?p.ownedWeapons:[])]
+  .filter(id=>validWeapons.has(id)&&id!=='signature')];
+ const equippedWeapon=ownedWeapons.includes(p.equippedWeapon)?p.equippedWeapon:'signature';
  const shards=safeInt(p.shards);
  return {version:1,shards,lifetimeShards:Math.max(shards,safeInt(p.lifetimeShards)),
-  claimed,ownedStyles,equippedStyle};
+  claimed,ownedStyles,equippedStyle,ownedWeapons,equippedWeapon};
 }
 export function achievementProgress(achievement,records={},progress={}){
  const raw=achievement.stat==='lifetimeRenown'?progress?.lifetimeRenown:records?.[achievement.stat];
@@ -89,4 +104,35 @@ export function equipRegalia(legacy,style){
 }
 export function resolveRegalia(legacy){
  return normalizeLegacy(legacy).equippedStyle;
+}
+
+export function weaponEligible(legacy,id,records={}){
+ const state=normalizeLegacy(legacy),item=WEAPON_STYLES.find(x=>x.id===id);
+ if(!item)return false;
+ return state.claimed.length>=(item.achievements||0)&&
+  safeInt(records.bosses)>=(item.bosses||0)&&
+  safeInt(records.expeditions)>=(item.expeditions||0);
+}
+export function unlockWeapon(legacy,id,records={}){
+ const state=normalizeLegacy(legacy),item=WEAPON_STYLES.find(x=>x.id===id);
+ if(!item)return {success:false,reason:'Unknown weapon appearance.',legacy:state};
+ if(state.ownedWeapons.includes(id))
+  return {success:false,reason:'Weapon appearance already owned.',legacy:state};
+ if(!weaponEligible(state,id,records))
+  return {success:false,reason:'Complete the weapon unlock challenge first.',legacy:state};
+ if(state.shards<item.cost)
+  return {success:false,reason:'Not enough Eclipse Shards.',legacy:state};
+ return {success:true,reason:item.name+' forged. Equip it for your next battle.',
+  legacy:{...state,shards:state.shards-item.cost,
+   ownedWeapons:[...state.ownedWeapons,id]}};
+}
+export function equipWeapon(legacy,id){
+ const state=normalizeLegacy(legacy);
+ if(!state.ownedWeapons.includes(id))
+  return {success:false,reason:'Forge this weapon appearance before equipping.',legacy:state};
+ return {success:true,reason:'Equipped '+id.toUpperCase()+' weapon appearance.',
+  legacy:{...state,equippedWeapon:id}};
+}
+export function resolveWeapon(legacy){
+ return normalizeLegacy(legacy).equippedWeapon;
 }
