@@ -151,6 +151,6 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   console.log('PASS '+name+' gameplay startup, controls, pause/restart and local records');
  }catch(e){
   await page.screenshot({path:'/tmp/sovereign-survival-'+name+'.png',fullPage:false}).catch(()=>{});
-  throw new Error(name+' '+e.message+'; page errors: '+errors.join(' | '));
+  throw new Error(name+' '+(e.stack||e.message)+'; page errors: '+errors.join(' | '));
  }finally{await context.close();await browser.close()}
 }
