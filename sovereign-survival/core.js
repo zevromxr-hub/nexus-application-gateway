@@ -72,7 +72,7 @@ export function createRun(seed=0x59ab7e,loadout={}){
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
-   ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
+   ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,dashX:0,dashY:0,moveX:0,moveY:-1,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
    shots:1,angle:-PI/2,blessingTime:0,stride:0,moving:0,attackPulse:0,shotSide:0,
    masteryCasts:0,masteryAwakened:false,
    modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
@@ -441,18 +441,23 @@ export function advance(s,input={},dt=1/60){
  p.aegisCooldown=Math.max(0,p.aegisCooldown-dt);
  p.attackPulse=Math.max(0,p.attackPulse-dt*6.5);
  const dx=clamp(finite(input.dx),-1,1),dy=clamp(finite(input.dy),-1,1),n=Math.hypot(dx,dy);
- const mx=n>0?dx/n:0,my=n>0?dy/n:0;
- p.moving=Math.min(1,n);
- if(n>.1)p.stride+=dt*(p.dashTime>0?27:12);
- if(input.dash&&p.dashCooldown<=0&&n>.1){
-  p.dashTime=.18;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.25);
+ const moving=n>.12;
+ const mx=moving?dx/n:0,my=moving?dy/n:0;
+ if(moving){p.moveX=mx;p.moveY=my}
+ if(input.dash&&p.dashCooldown<=0){
+  p.dashX=moving?mx:p.moveX;p.dashY=moving?my:p.moveY;
+  p.dashTime=.22;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.29);
   s.events.push({type:'dash'});
  }
+ const dashing=p.dashTime>0;
+ const vx=dashing?p.dashX:mx,vy=dashing?p.dashY:my;
+ p.moving=dashing?1:Math.min(1,moving?n:0);
+ if(dashing||moving)p.stride+=dt*(dashing?27:12);
  if(input.ability)activateAbility(s);
- const spd=p.speed*(p.dashTime>0?3.5:1)*(p.blessingTime>0?1.08:1);
- p.x=clamp(p.x+mx*spd*dt,40,WORLD.width-40);
- p.y=clamp(p.y+my*spd*dt,40,WORLD.height-40);
- if(n>.12&&p.fireCooldown>0)p.angle=Math.atan2(my,mx);
+ const spd=p.speed*(dashing?3.5:Math.min(1,moving?n:0))*(p.blessingTime>0?1.08:1);
+ p.x=clamp(p.x+vx*spd*dt,40,WORLD.width-40);
+ p.y=clamp(p.y+vy*spd*dt,40,WORLD.height-40);
+ if((dashing||moving)&&p.fireCooldown>0)p.angle=Math.atan2(vy,vx);
  if(p.fireCooldown<=0){
   fire(s,input.aim);
   p.fireCooldown=Math.max(.1,p.rate);

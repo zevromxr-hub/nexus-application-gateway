@@ -1,0 +1,60 @@
+/* MOBILE VANGUARD — safe-area touch layout, without changing the desktop HUD. */
+body.warbound .game-frame{touch-action:auto}
+body.warbound .overlay{touch-action:pan-y;-webkit-overflow-scrolling:touch}
+body.warbound .overlay-panel{touch-action:pan-y}
+body.warbound .touch-controls[hidden]{display:none!important}
+body.warbound .touch-controls button{touch-action:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;user-select:none;position:absolute;overflow:hidden}
+body.warbound .touch-controls button::before{content:"";position:absolute;inset:3px;border-radius:50%;background:conic-gradient(from 0deg,#c9f6ff var(--charge,100%),#24263b 0);opacity:.7;pointer-events:none;mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 0)}
+body.warbound .touch-controls button:disabled{opacity:.76}
+body.warbound .touch-controls button:not(:disabled):active{transform:scale(.94)}
+body.warbound .touch-controls button small{font-variant-numeric:tabular-nums;font-size:10px}
+body.warbound.touch-device .game-chrome{padding-top:max(7px,env(safe-area-inset-top))}
+body.warbound.touch-device .game-hud{top:calc(58px + env(safe-area-inset-top));left:max(9px,env(safe-area-inset-left));right:max(9px,env(safe-area-inset-right))}
+body.warbound.touch-device .overlay{padding-top:calc(64px + env(safe-area-inset-top));padding-left:max(13px,env(safe-area-inset-left));padding-right:max(13px,env(safe-area-inset-right));backdrop-filter:none}
+body.warbound.touch-device .overlay-panel{max-height:calc(100dvh - 88px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow-y:auto}
+body.warbound.touch-device .chrome-button{min-height:44px}
+body.warbound.touch-device .touch-controls{display:flex;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(42px + env(safe-area-inset-bottom));height:124px;align-items:end}
+body.warbound.touch-device .joystick-zone{width:126px;height:124px}
+body.warbound.touch-device .joystick-base{width:104px;height:104px}
+body.warbound.touch-device .dash-button{right:0;bottom:0;width:82px;height:82px}
+body.warbound.touch-device .touch-controls .ability-button{right:94px;bottom:14px;width:72px;height:72px}
+body.warbound.touch-device .ability-hud{right:max(12px,env(safe-area-inset-right));bottom:calc(166px + env(safe-area-inset-bottom));width:166px;min-height:42px;padding:6px;gap:5px}
+body.warbound.touch-device .ascension-meter{top:calc(100% + 3px);min-height:17px;padding:2px 4px}
+body.warbound.touch-device .arena-bottom{bottom:calc(10px + env(safe-area-inset-bottom));left:max(9px,env(safe-area-inset-left));right:max(9px,env(safe-area-inset-right));font-size:9px}
+@media(max-width:680px){
+ body.warbound.touch-device .expedition-hud{top:calc(142px + env(safe-area-inset-top))}
+ body.warbound.touch-device .arena-boss{top:calc(146px + env(safe-area-inset-top))}
+ body.warbound.touch-device[data-boss="true"] .expedition-hud{top:calc(210px + env(safe-area-inset-top))}
+ body.warbound.touch-device .expedition-hud p{display:none}
+ body.warbound.touch-device .expedition-hud-progress{margin-top:7px}
+ body.warbound.touch-device .blessing-banner{top:calc(240px + env(safe-area-inset-top))}
+ body.warbound.touch-device .joystick-zone{width:112px}
+}
+@media(max-width:350px){
+ body.warbound.touch-device .dash-button{width:70px;height:70px}
+ body.warbound.touch-device .touch-controls .ability-button{width:62px;height:62px;right:78px}
+}
+@media(orientation:landscape) and (max-height:520px){
+ body.warbound.touch-device .game-chrome{min-height:44px}
+ body.warbound.touch-device .game-hud{top:calc(49px + env(safe-area-inset-top))}
+ body.warbound.touch-device .hud-main .meter{margin-top:4px}
+ body.warbound.touch-device .hud-right b{font-size:20px}
+ body.warbound.touch-device .hud-right .wave-display b{font-size:25px}
+ body.warbound.touch-device .touch-controls{bottom:calc(30px + env(safe-area-inset-bottom));height:108px}
+ body.warbound.touch-device .joystick-zone{height:108px;width:110px}
+ body.warbound.touch-device .joystick-base{width:86px;height:86px}
+ body.warbound.touch-device .joystick-knob{width:42px;height:42px}
+ body.warbound.touch-device .dash-button{width:70px;height:70px}
+ body.warbound.touch-device .touch-controls .ability-button{width:62px;height:62px;right:82px;bottom:8px}
+ body.warbound.touch-device .ability-hud{bottom:calc(115px + env(safe-area-inset-bottom));width:150px;min-height:36px}
+ body.warbound.touch-device .ability-key{width:26px;height:26px}
+ body.warbound.touch-device .ability-hud-meter{height:27px}
+ body.warbound.touch-device .expedition-hud{top:calc(108px + env(safe-area-inset-top));left:max(9px,env(safe-area-inset-left));width:164px;padding:5px 7px}
+ body.warbound.touch-device .expedition-hud p{display:none}
+ body.warbound.touch-device .expedition-hud-icon{width:23px;height:23px;font-size:16px}
+ body.warbound.touch-device .expedition-hud-progress{margin-top:5px}
+ body.warbound.touch-device .arena-boss{top:calc(100px + env(safe-area-inset-top));left:30%;right:30%;padding:5px}
+ body.warbound.touch-device .blessing-banner{top:calc(180px + env(safe-area-inset-top));left:max(9px,env(safe-area-inset-left))}
+ body.warbound.touch-device .warbound-title-screen{align-items:flex-start}
+ body.warbound.touch-device .title-frame{margin:auto 0}
+}

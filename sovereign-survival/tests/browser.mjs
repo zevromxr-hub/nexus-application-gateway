@@ -109,7 +109,9 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
    await page.keyboard.down('d');await page.waitForTimeout(280);await page.keyboard.up('d');
    await page.keyboard.press('Shift');
   }
-  await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
+  await page.waitForFunction(()=>!document.querySelector('#dashText')?.textContent.includes('READY'));
+   assert.equal(await page.locator('#dashButton').isDisabled(),true,'Stationary dash must activate and recharge');
+   await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
   assert.notEqual(await page.locator('#abilityStatus').textContent(),'READY');
   assert.equal(await page.locator('#masteryLabel').textContent(),'MASTERY 1 / 3',
    'A genuine active ability cast increases mastery progress in the game HUD');

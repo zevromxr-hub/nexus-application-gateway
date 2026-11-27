@@ -53,6 +53,7 @@ let game=createRun(0x41a2b9),mode='menu',quality='auto',soundOn=false;
 const coarse=matchMedia('(pointer:coarse)').matches||/mobile|iphone|ipad|android/i.test(navigator.userAgent);
 const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
+document.body.classList.toggle('touch-device',coarse);
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
 let dashQueued=false,abilityQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
 const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy']);
@@ -66,6 +67,7 @@ function setOverlay(){
  $('pauseButton').disabled=mode==='menu'||mode==='ended'||Boolean(auxPage);
  $('pauseButton').textContent=mode==='paused'?'▶ Resume':'Ⅱ Pause';
  $('touchControls').hidden=mode!=='playing'||game.phase!=='running'||Boolean(auxPage);
+ if($('touchControls').hidden)clearInput();
  for(const button of document.querySelectorAll('.auxBack'))
   button.textContent=auxReturn==='paused'?'← RETURN TO PAUSE MENU':
    auxReturn==='ended'?'← RETURN TO RESULTS':'← BACK TO TITLE MENU';
@@ -158,7 +160,7 @@ function handleEvents(){
   else if(ev.type==='aegisBlock'){sound('aegisBlock')}
   else if(ev.type==='bossEntrance'){sound('bossEntrance')}
   else if(ev.type==='gameover'){finishRun();sound('gameover')}
-  else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type)}
+  else if(ev.type==='hurt'||ev.type==='dash'){impact(ev.type);sound(ev.type);if(ev.type==='dash')updateHud()}
   else if(['fire','bossAttack','upgrade','hexAttack','charge'].includes(ev.type))sound(ev.type);
  }
 }
@@ -511,7 +513,10 @@ function updateHud(){
  $('timerText').textContent=durationLabel(game.time);
  $('comboText').textContent=game.combo>1?'✦ '+game.combo+'× COMBO':'✧ BUILD YOUR COMBO';
  $('dashText').textContent=p.dashCooldown<=0?'➤ DASH READY':'➤ '+p.dashCooldown.toFixed(1)+'S';
- $('dashButton').disabled=p.dashCooldown>.1||mode!=='playing'||game.phase!=='running';
+ const dashReady=p.dashCooldown<=0;
+ $('dashButton').disabled=!dashReady||mode!=='playing'||game.phase!=='running';
+ $('dashButton').style.setProperty('--charge',Math.min(1,Math.max(0,1-p.dashCooldown/p.dashBase))*100+'%');
+ $('dashTouchStatus').textContent=dashReady?'DASH':p.dashCooldown.toFixed(1)+'s';
  const ability=ABILITIES[p.champion]||ABILITIES.warden;
  const mastery=masteryStatus(game);
  $('abilityHud').dataset.mastered=String(mastery.awakened);
@@ -526,6 +531,8 @@ function updateHud(){
  $('abilityTouchIcon').textContent=ability.icon;
  const ready=p.abilityCooldown<=0;
  $('abilityButton').disabled=!ready||mode!=='playing'||game.phase!=='running';
+ $('abilityTouchStatus').textContent=ready?'POWER':p.abilityCooldown.toFixed(1)+'s';
+ $('abilityButton').style.setProperty('--charge',Math.min(1,Math.max(0,1-p.abilityCooldown/(ability.cooldown*(mastery.awakened?.85:1))))*100+'%');
  $('abilityButton').setAttribute('aria-label',(ready?'Cast ':'Recharging ')+ability.name+
   (ready?'':' in '+p.abilityCooldown.toFixed(1)+' seconds'));
  $('abilityHud').setAttribute('aria-busy',String(!ready));
@@ -576,12 +583,20 @@ function updateHud(){
 function resetStick(){
  $('joystickKnob').style.transform='translate(-50%, -50%)';
 }
+function clearInput(){
+ const zone=$('joystickZone'),id=joystick.pointer;
+ joystick.pointer=null;joystick.x=joystick.y=0;
+ keys.clear();dashQueued=false;abilityQueued=false;manual.active=false;resetStick();
+ if(id!==null&&zone.hasPointerCapture?.(id))zone.releasePointerCapture(id);
+}
 function setStick(e){
  const r=$('joystickZone').querySelector('.joystick-base').getBoundingClientRect();
- let x=(e.clientX-(r.left+r.width/2))/43,y=(e.clientY-(r.top+r.height/2))/43;
- const d=Math.hypot(x,y);if(d>1){x/=d;y/=d}
+ const radius=Math.max(20,r.width*.38);
+ let x=(e.clientX-(r.left+r.width/2))/radius,y=(e.clientY-(r.top+r.height/2))/radius;
+ const d=Math.hypot(x,y),strength=Math.max(0,Math.min(1,(d-.12)/.88));
+ if(d>0){x=x/d*strength;y=y/d*strength}else{x=y=0}
  joystick.x=x;joystick.y=y;
- $('joystickKnob').style.transform='translate(-50%, -50%) translate('+(x*36).toFixed(1)+'px,'+(y*36).toFixed(1)+'px)';
+ $('joystickKnob').style.transform='translate(-50%, -50%) translate('+(x*radius*.8).toFixed(1)+'px,'+(y*radius*.8).toFixed(1)+'px)';
 }
 function input(){
  const x=Number(keys.has('d')||keys.has('arrowright'))-Number(keys.has('a')||keys.has('arrowleft'));
@@ -612,11 +627,14 @@ function loop(now){
   advance(game,input(),dt);handleEvents();
   if(game.phase==='upgrade')setOverlay();
  }
- if(mode==='playing'||mode==='menu'||now-lastDraw>200){
+ const active=mode==='playing'&&game.phase==='running';
+ const eco=quality==='eco'||quality==='auto'&&lowPower;
+ if(active?(!eco||now-lastDraw>=30):(mode==='menu'?now-lastDraw>=50:now-lastDraw>200)){
+  const drawDt=Math.min(.1,Math.max(dt,(now-lastDraw)/1000));
   lastDraw=now;
   const px=clamp(game.player.x-width/2,0,Math.max(0,WORLD.width-width));
   const py=clamp(game.player.y-height/2,0,Math.max(0,WORLD.height-height));
-  const speed=mode==='menu'?1:Math.min(1,dt*8);
+  const speed=mode==='menu'?1:Math.min(1,drawDt*8);
   camera.x+=(px-camera.x)*speed;camera.y+=(py-camera.y)*speed;
   ctx.setTransform(dpr,0,0,dpr,0,0);
   drawArena(ctx,game,{x:camera.x,y:camera.y,w:width,h:height},
@@ -640,10 +658,17 @@ $('retryRun').addEventListener('click',startRun);
 $('resumeRun').addEventListener('click',pause);
 $('abandonRun').addEventListener('click',startRun);
 $('pauseButton').addEventListener('click',pause);
-$('dashButton').addEventListener('click',()=>{if(mode==='playing')dashQueued=true});
-$('abilityButton').addEventListener('click',()=>{
- if(mode==='playing'&&game.phase==='running'&&game.player.abilityCooldown<=0)abilityQueued=true;
-});
+function bindCombatButton(id,queue){
+ const button=$(id);
+ const trigger=()=>{if(mode==='playing'&&game.phase==='running'&&!button.disabled)queue()};
+ button.addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  e.preventDefault();trigger();
+ });
+ button.addEventListener('click',e=>{if(e.detail===0)trigger()});
+}
+bindCombatButton('dashButton',()=>{dashQueued=true});
+bindCombatButton('abilityButton',()=>{abilityQueued=true});
 $('soundToggle').addEventListener('click',async()=>{
  if(soundOn){soundOn=false;$('soundToggle').textContent='♪ Sound Off';$('soundToggle').setAttribute('aria-pressed','false');return}
  const Audio=window.AudioContext||window.webkitAudioContext;
@@ -668,7 +693,7 @@ window.addEventListener('keydown',e=>{
  const k=e.key.toLowerCase();
  if(auxPage){if(k==='escape'){e.preventDefault();closeAux()}return}
  if(moveKeys.has(k)){keys.add(k);if(mode==='playing')e.preventDefault()}
- if((k==='shift')&&mode==='playing'){e.preventDefault();dashQueued=true}
+ if(k==='shift'&&mode==='playing'&&game.phase==='running'){e.preventDefault();if(!e.repeat)dashQueued=true}
  if(k==='q'&&mode==='playing'&&game.phase==='running'&&!e.repeat){
   e.preventDefault();if(game.player.abilityCooldown<=0)abilityQueued=true;
  }
@@ -686,13 +711,13 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&mode==='pl
 const zone=$('joystickZone');
 zone.addEventListener('pointerdown',e=>{
  if(mode!=='playing'||game.phase!=='running'||joystick.pointer!==null)return;
- joystick.pointer=e.pointerId;zone.setPointerCapture(e.pointerId);setStick(e);e.preventDefault();
+ joystick.pointer=e.pointerId;try{zone.setPointerCapture(e.pointerId)}catch{}setStick(e);e.preventDefault();
 });
 zone.addEventListener('pointermove',e=>{if(e.pointerId===joystick.pointer){setStick(e);e.preventDefault()}});
 function releaseStick(e){
  if(e.pointerId!==joystick.pointer)return;joystick.pointer=null;joystick.x=joystick.y=0;resetStick();
 }
-zone.addEventListener('pointerup',releaseStick);zone.addEventListener('pointercancel',releaseStick);
+zone.addEventListener('pointerup',releaseStick);zone.addEventListener('pointercancel',releaseStick);zone.addEventListener('lostpointercapture',releaseStick);
 canvas.addEventListener('pointerdown',e=>{
  if(e.pointerType==='touch'||mode!=='playing'||game.phase!=='running')return;
  manual.active=true;updatePointer(e);canvas.setPointerCapture(e.pointerId);
@@ -705,6 +730,7 @@ function updatePointer(e){
  manual.x=camera.x+e.clientX-r.left;manual.y=camera.y+e.clientY-r.top;
 }
 window.addEventListener('resize',resize,{passive:true});
+window.visualViewport?.addEventListener('resize',resize,{passive:true});
 if(typeof ResizeObserver==='function')new ResizeObserver(()=>resize()).observe(frame);
 renderRecords();refreshMenuLoadout();buildLoadout();refreshCodexChampion();setOverlay();resize();updateHud();camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
 requestAnimationFrame(loop);

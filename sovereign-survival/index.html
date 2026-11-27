@@ -18,11 +18,12 @@
 <link rel="stylesheet" href="./expeditions-v1.5.css">
 <link rel="stylesheet" href="./legacy-v1.6.css">
 <link rel="stylesheet" href="./ascension-v1.7.css">
-<title>SOVEREIGN SURVIVAL — CHARACTER ASCENSION v1.7 | PROXIMUS</title>
+<link rel="stylesheet" href="./vanguard-v1.8.css">
+<title>SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Character Ascension game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Mobile Vanguard game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -32,7 +33,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">ASCENSION <b>v1.7</b></span>
+    <span class="build-version">VANGUARD <b>v1.8</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -234,7 +235,7 @@
     <div class="guide-grid">
      <div><span>01 / MOVE</span><h3>Never stop moving.</h3><p>PC: WASD or Arrow keys. iPhone: drag the joystick on the lower left.</p></div>
      <div><span>02 / ATTACK</span><h3>Your blades seek prey.</h3><p>Attacks auto-target nearby enemies. On PC you may also hold the mouse to aim.</p></div>
-     <div><span>03 / EVADE</span><h3>Dash through danger.</h3><p>Press Shift on PC or tap the right-hand dash rune on iPhone. Watch its cooldown.</p></div>
+     <div><span>03 / EVADE</span><h3>Dash through danger.</h3><p>Press Shift on PC or tap DASH on iPhone, even while standing still. Dash follows your current or last movement direction and continues if you release the stick. Watch the cooldown ring.</p></div>
      <div><span>04 / ASCEND</span><h3>Harvest soul energy.</h3><p>Collect glowing orbs to level up, then choose one of three powers. Every fourth wave brings a boss.</p></div>
      <div><span>05 / RIFT</span><h3>Leave the warning circle.</h3><p>Beginning on Wave 3, runic floor rifts warn with a bright expanding ring before releasing damage. Step outside their radius.</p></div>
      <div><span>06 / TELEGRAPH</span><h3>Read the enemy's attack.</h3><p>Hexers mark a line of fire. Ravagers aim before charging. The Void Monarch locks its volley angle before release—dodge across the path.</p></div>
@@ -318,8 +319,8 @@
     <div class="joystick-base"><div id="joystickKnob" class="joystick-knob"></div></div>
     <span>MOVE</span>
    </div>
-   <button id="abilityButton" type="button" class="ability-button" aria-label="Cast champion active ability"><span id="abilityTouchIcon">✧</span><small>POWER</small></button>
-   <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small>DASH</small></button>
+   <button id="abilityButton" type="button" class="ability-button" aria-label="Cast champion active ability"><span id="abilityTouchIcon">✧</span><small id="abilityTouchStatus">POWER</small></button>
+   <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small id="dashTouchStatus">DASH</small></button>
   </div>
   <div class="warbound-credit" aria-hidden="true">POWERED BY ZEVRO <span>✧</span> PROXIMUS ARCHIVES</div>
  </main>

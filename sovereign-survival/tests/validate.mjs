@@ -30,6 +30,23 @@ assert.ok(p.dashCooldown>0&&p.dashTime>0&&p.invulnerable>0);
 const previous=p.dashCooldown;
 advance(dash,{dx:1,dy:0,dash:true},1/60);
 assert.ok(p.dashCooldown<previous,'Dash cannot be retriggered before cooldown');
+const stationary=createRun(9001),sp=stationary.player;
+const startY=sp.y;
+advance(stationary,{dash:true},1/60);
+assert.ok(sp.y<startY&&sp.dashCooldown>0&&sp.invulnerable>0);
+const nextY=sp.y,oldX=sp.x;
+advance(stationary,{dx:1},1/60);
+assert.ok(sp.y<nextY&&sp.x===oldX,'Dash direction remains locked after stick reversal');
+const directed=createRun(9002),dp=directed.player;
+advance(directed,{dx:1},1/60);
+const beforeDash=dp.x;
+advance(directed,{dash:true},1/60);
+const afterDash=dp.x;
+advance(directed,{},1/60);
+assert.ok(afterDash>beforeDash&&dp.x>afterDash,'Released stick must not cancel dash');
+const analog=createRun(9003),ax=analog.player.x;
+advance(analog,{dx:.5},1/60);
+assert.ok(analog.player.x-ax<analog.player.speed/60,'Analog input controls movement speed');
 const action=createRun(35);
 const target=action.enemies[0];
 target.hp=1;target.maxHp=1;target.x=action.player.x+50;target.y=action.player.y;
@@ -630,9 +647,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.7.0');
-assert.equal(current.previous_version,'1.6.0');
-assert.equal(current.codename,'CHARACTER ASCENSION');
+assert.equal(current.version,'1.8.0');
+assert.equal(current.previous_version,'1.7.0');
+assert.equal(current.codename,'MOBILE VANGUARD');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -642,8 +659,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — CHARACTER ASCENSION v1.7'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-ascension-v1.7'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — MOBILE VANGUARD v1.8'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-vanguard-v1.8'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
@@ -715,7 +732,7 @@ assert.ok(game.includes("document.body.dataset.realm=arena.id"));
 const nightfallStyle=read('nightfall-v1.2.css');
 assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
 assert.ok(nightfallStyle.includes('.bestiary-grid'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css','legacy-v1.6.css','ascension-v1.7.css']){
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css','legacy-v1.6.css','ascension-v1.7.css','vanguard-v1.8.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
