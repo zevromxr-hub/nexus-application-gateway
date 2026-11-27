@@ -1,22 +1,22 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.6.0",
-  "codename": "SOVEREIGN LEGACY",
+  "version": "1.7.0",
+  "codename": "CHARACTER ASCENSION",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "Complete in-game character model overhaul: large layered procedural Canvas2D armor with helmet and eyes, articulated dual swords, shoulder plates, chest sigils, boots, cloaks, walking animation, dash trails, attack poses and champion-specific Frost, Ember and Void silhouettes.",
-    "New Sovereign Legacy menu and full-size character preview showing the real game model; new Codex model preview during battle.",
-    "Six claimable historical achievements: 40 defeats, reaching Wave 4, defeating three elites, defeating a realm boss, completing two expeditions, and earning 200 lifetime Renown; each yields one Eclipse Shard once.",
-    "Elite enemies have a seeded chance to drop rare Eclipse Shards; Void Monarch bosses have a higher chance and Void Tyrants guarantee a rare shard. Shards earned during a run are only banked when it ends in defeat.",
-    "Three armor styles (Warbound, Eclipse, Crowned). Eclipse and Crowned sets are unlocked through genuine achievement and boss requirements and then forged with shards; their appearance follows the selected champion into real battle without granting unfair stat bonuses.",
-    "New legacy localStorage key independent of original scores, Armory and personal PROXIMUS media. All old scores, relics, currencies, bosses, achievements eligibility, champion powers, weapon evolutions and four realm expeditions remain supported.",
-    "New offline-cached legacy UI, game-ready art, achievements, cosmetic wardrobe, rare loot animation and responsive iPhone layout without remote image dependencies."
+    "Unique true Canvas2D weapon silhouettes for each actual playable champion: Void Warden wields twin curved crescent sickles, Frost Sentinel a crystalline glaive with shield, and Ember Reaver a broad cleaver with offhand fire dagger.",
+    "Earn champion mastery by casting signature abilities three times during the same run. Third cast awakens a stronger combat form: Warden SUPERNOVA gains radius, knockback and damage; Sentinel ETERNAL WINTER gains barrier duration, freeze reach and 12 HP restoration; Reaver DRAGONFIRE gains a stronger wider slash and extended burning. Mastered casts have shorter cooldowns.",
+    "Mastery progress appears in the existing Q/touch POWER HUD and in-run Warden Codex; a character aura and mastery effect render within the current Canvas2D engine, with Eco mode protecting mobile responsiveness.",
+    "Additional forgeable cosmetic weapon appearances ASTRAL FORGED (two completed expeditions + two Eclipse Shards) and DOMINION FANG (boss defeat + two claimed achievements + three shards); always free CHAMPION SIGNATURE weapons. Real weapon shapes and projectile colors reflect selection; no stat bonuses.",
+    "Legacy cosmetics extend the existing independent localStorage key with ownedWeapons/equippedWeapon, preserving existing armor sets, shards and achievement claims and safely defaulting older saves to signature weapon.",
+    "The Armory's three champion choices display live model previews rendered by the exact game engine; the Legacy wardrobe and Codex previews show the actual forged armor and weapon combination.",
+    "Retains the complete v1.6 Armory, relics, achievements, cosmetics, rare shards, 3 champion abilities, weapon evolutions, v1.5 realm quests, phased bosses, saved records, independent offline PWA and PROXIMUS media."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.5.0"
+  "previous_version": "1.6.0"
 }

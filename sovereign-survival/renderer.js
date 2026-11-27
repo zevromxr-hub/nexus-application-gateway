@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY — layered champion armor, combat poses and rare regalia.
+/* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion-specific weapon silhouettes and mastery VFX.
  * A single canvas and zero texture downloads keep iPhone CPU/memory bounded.
  */
 import {WORLD,ENEMY_TYPES,arenaForWave,isBoss} from './core.js';
@@ -153,6 +153,66 @@ function enemy(c,e,s,quality){
  }
  c.restore();
 }
+function drawChampionArmament(c,p,side,edge,metal,accent){
+ const champion=p.champion||'warden',weapon=p.weaponSkin||'signature';
+ const moon=weapon==='astral',fang=weapon==='dominion';
+ const blade=moon?'#bafaff':fang?'#ff807c':edge;
+ const core=moon?'#6ba4ed':fang?'#772a47':metal;
+ const highlight=moon?'#f5ffff':fang?'#ffd7af':accent;
+ if(champion==='sentinel'&&side<0){
+  // Shield-bearing sentinel: a layered diamond buckler replaces the second sword.
+  polygon(c,[[-3,-47],[-19,-29],[-15,-7],[-3,6],[11,-8],[14,-30]],
+   core,blade);
+  polygon(c,[[-3,-40],[-11,-25],[-9,-14],[-3,-5],[6,-15],[7,-28]],
+   '#244960',highlight);
+  polygon(c,[[-3,-38],[3,-21],[-3,-8],[-9,-21]],highlight);
+  if(fang)polygon(c,[[-21,-32],[-31,-47],[-17,-36]],'#6c2331',blade);
+ }else if(champion==='sentinel'){
+  // A long crystalline glaive and narrow spearhead, held over the shoulder.
+  line(c,[[4,17],[4,-64]],core,6);
+  line(c,[[4,17],[4,-64]],blade,2);
+  polygon(c,[[4,-85],[16,-60],[4,-41],[-8,-60]],highlight,blade);
+  polygon(c,[[4,-85],[8,-59],[4,-49]],'#ffffff');
+  polygon(c,[[-7,-53],[-16,-69],[-10,-44]],core,blade);
+  polygon(c,[[15,-53],[23,-69],[18,-44]],core,blade);
+ }else if(champion==='reaver'&&side>0){
+  // A broad slashing cleaver with chipped flame teeth.
+  line(c,[[4,17],[4,-49]],'#40252a',9);
+  line(c,[[4,18],[4,-54]],blade,3);
+  polygon(c,[[-6,-79],[20,-72],[25,-45],[11,-29],[4,-39],[-9,-53]],
+   core,highlight);
+  polygon(c,[[-7,-75],[4,-87],[9,-74]],highlight,blade);
+  polygon(c,[[13,-69],[29,-83],[23,-55]],highlight,blade);
+  line(c,[[5,-68],[16,-56],[11,-41]],blade,3);
+ }else if(champion==='reaver'){
+  // Offhand flame dagger deliberately differs from the main cleaver.
+  line(c,[[4,15],[4,-31]],'#492322',7);
+  polygon(c,[[4,-67],[15,-42],[4,-27],[-7,-42]],core,blade);
+  polygon(c,[[4,-66],[8,-47],[4,-36]],highlight);
+  if(fang)polygon(c,[[12,-37],[23,-52],[14,-29]],'#a02f38',blade);
+ }else{
+  // Void Warden: dual inward-curved crescent sickles.
+  line(c,[[4,17],[4,-30]],'#21192e',8);
+  line(c,[[4,17],[4,-32]],blade,3);
+  polygon(c,[[4,-32],[side*11,-44],[side*23,-68],
+    [side*17,-86],[side*24,-56],[side*14,-37]],core,blade);
+  polygon(c,[[side*10,-40],[side*21,-64],[side*18,-78],
+    [side*27,-63],[side*20,-41]],highlight,blade);
+  polygon(c,[[4,-31],[side*17,-44],[side*9,-27]],'#f0defd');
+ }
+ // Unique inlaid arcane marks carry across all champions, all skins.
+ line(c,[[-8,-18],[17,-18]],blade,4);
+ circle(c,4,-18,4,highlight);
+ if(fang){
+  for(let i=0;i<2;i++){
+   const y=-28-i*15;
+   polygon(c,[[side*5,y],[side*18,y-8],[side*14,y+6]],'#8e2b40',blade);
+  }
+ }else if(moon){
+  circle(c,4,-39,3,'#eeffff');
+  line(c,[[1,-34],[7,-44]],'#f4ffff',2);
+ }
+}
 function hero(c,p,s,quality='low',portrait=false){
  const frost=p.champion==='sentinel',ember=p.champion==='reaver';
  const crowned=p.modelStyle==='crowned',eclipse=p.modelStyle==='eclipse';
@@ -255,17 +315,11 @@ function hero(c,p,s,quality='low',portrait=false){
  // The original tiny strokes become genuine articulated hands and swords.
  for(const side of [-1,1]){
   const armSwing=side*(swing*15)+(side*gait*3);
-  c.save();c.translate(side*27,-3);c.rotate(side*(.13+gait*.10+swing*.23));
+  c.save();c.translate(side*27,-3);c.rotate(side*(.13+gait*.10+swing*(side===(p.shotSide?1:-1)?0.50:0.15)));
   polygon(c,[[side*-4,-5],[side*7,-11],[side*11,7+armSwing*.08],
    [side*4,15+armSwing*.08],[side*-8,9]],shade,edge);
   polygon(c,[[side*-3,8],[side*8,6],[side*12,17],[side*1,22]],metal,edge);
-  line(c,[[side*4,14],[side*4,-28]],'#231b38',8);
-  line(c,[[side*4,14],[side*4,-34]],edge,3);
-  polygon(c,[[side*4,-59],[side*9,-30],[side*4,-18],[side*-1,-30]],
-   frost?'#b9f4ff':ember?'#ffa76d':crowned?'#ffe7b1':'#b4abfb',edge);
-  polygon(c,[[side*4,-58],[side*6,-35],[side*4,-24]],'#f8fbff');
-  line(c,[[side*-6,-17],[side*14,-17]],edge,4);
-  circle(c,side*4,-17,4,crowned?'#ffe6a9':accent);
+  drawChampionArmament(c,p,side,edge,metal,accent);
   c.restore();
  }
  if(swing>.05){
@@ -275,6 +329,11 @@ function hero(c,p,s,quality='low',portrait=false){
    frost?'rgba(162,242,255,'+opacity+')':
    ember?'rgba(255,165,106,'+opacity+')':'rgba(209,157,255,'+opacity+')';
   c.lineWidth=3.5+swing*6;c.stroke();
+ }
+ if(p.masteryAwakened){
+  const masterColor=frost?'rgba(133,235,255,.92)':ember?'rgba(255,145,86,.9)':'rgba(218,167,255,.9)';
+  ring(c,0,-12,55+Math.sin(s.time*4)*3,masterColor,2.4);
+  if(flare)ring(c,0,-12,61,masterColor,1);
  }
  // Visual rank crest and mantle highlights in the rarer outfits.
  if(eclipse||crowned){
@@ -298,7 +357,7 @@ function hero(c,p,s,quality='low',portrait=false){
   c.fillStyle='#70f2b5';c.fillRect(p.x-27,p.y-74,54*clamp(p.hp/p.maxHp,0,1),6);
  }
 }
-export function drawChampionPreview(canvas,champion='warden',style='standard'){
+export function drawChampionPreview(canvas,champion='warden',style='standard',weapon='signature'){
  if(!canvas)return;
  const ctx=canvas.getContext('2d');
  if(!ctx)return;
@@ -318,18 +377,24 @@ export function drawChampionPreview(canvas,champion='warden',style='standard'){
  ctx.translate(w*.5,h*.56);
  const k=Math.min(w/127,h/172);
  ctx.scale(k,k);
- hero(ctx,{x:0,y:0,champion,modelStyle:style,angle:-Math.PI/2,
+ hero(ctx,{x:0,y:0,champion,modelStyle:style,weaponSkin:weapon,angle:-Math.PI/2,
   hp:100,maxHp:100,fireCooldown:0,rate:.26,attackPulse:.05,
   moving:0,stride:1.2,invulnerable:0,dashTime:0,barrierTime:0,
   aegisCooldown:2}, {time:1.17,evolutions:{}},'high',true);
  ctx.restore();
 }
 function projectile(c,b,hostile,quality){
- const hex=b.kind==='hexer',color=hostile?(hex?'#ff8dd6':'#ffab85'):b.storm?'#9af8ff':'#f0ceff';
+ const hex=b.kind==='hexer';
+ const color=hostile?(hex?'#ff8dd6':'#ffab85'):
+  b.storm?'#9af8ff':b.weapon==='astral'?'#d9fdff':
+  b.weapon==='dominion'?'#ffb1a0':b.element==='sentinel'?'#a7ecff':
+  b.element==='reaver'?'#ffc07d':'#dfb8ff';
  if(quality!=='low')glow(c,b.x,b.y,22,hostile?(hex?'rgba(233,82,191,.24)':'rgba(255,111,106,.24)'):'rgba(162,118,255,.21)');
  line(c,[[b.x-b.vx*.022,b.y-b.vy*.022],[b.x,b.y]],
   hostile?(hex?'rgba(245,138,237,.8)':'rgba(255,121,88,.75)'):
-   b.storm?'rgba(114,240,255,.9)':'rgba(125,208,253,.65)',hostile?5:4);
+   b.storm?'rgba(114,240,255,.9)':b.element==='reaver'?
+   'rgba(255,139,91,.85)':b.element==='sentinel'?
+   'rgba(116,218,250,.82)':'rgba(183,137,255,.75)',hostile?5:4);
  circle(c,b.x,b.y,b.r,color);
 }
 function drawAwakeningEffect(c,fx,quality){
@@ -369,13 +434,13 @@ function drawAwakeningEffect(c,fx,quality){
   }
   c.restore();
  }else{
-  const duration=fx.kind==='bossEntrance'?1.45:fx.kind==='evolution'?1.1:
+  const duration=fx.kind==='bossEntrance'?1.45:fx.kind==='evolution'||fx.kind==='masteryAwaken'?1.1:
    fx.kind==='aegis'?.85:.35;
   const progress=clamp(1-t/duration,0,1);
   const color=fx.kind==='storm'?'rgba(123,235,255,':
    fx.kind==='bossEntrance'?'rgba(255,110,151,':'rgba(255,217,151,';
   ring(c,fx.x,fx.y,24+progress*r,color+((1-progress)*.9)+')',5-progress*2);
-  if((fx.kind==='evolution'||fx.kind==='bossEntrance')&&!small){
+  if((fx.kind==='evolution'||fx.kind==='bossEntrance'||fx.kind==='masteryAwaken')&&!small){
    ring(c,fx.x,fx.y,38+progress*r*.6,color+((1-progress)*.58)+')',2.5);
   }
  }
@@ -569,7 +634,7 @@ export function drawArena(ctx,s,view,quality='auto'){
   if(fx.x<x-70||fx.x>x+w+70||fx.y<y-90||fx.y>y+h+70)continue;
   const alpha=clamp(fx.t*1.6,0,.8);
   if(['nova','freeze','cleave','sovereignSlash','aegis','storm','evolution','bossEntrance','wardHit','portalHit','portalDestroyed',
-   'expeditionComplete','seal','bossEnrage','rareLoot'].includes(fx.kind)){
+   'expeditionComplete','seal','bossEnrage','rareLoot','masteryAwaken'].includes(fx.kind)){
    drawAwakeningEffect(ctx,fx,quality);continue;
   }
   if(fx.kind==='number'){

@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.6: real animated armor models, interactive legacy, old saves and mobile gameplay */
+/* SOVEREIGN SURVIVAL v1.7: mastered combat powers, distinctive weapon designs, earned skins and iPhone controls */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-webkit',webkit,true]]){
@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.goto('http://127.0.0.1:4173/sovereign-survival/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
-  assert.match(await page.title(),/SOVEREIGN LEGACY v1\.6/);
+  assert.match(await page.title(),/CHARACTER ASCENSION v1\.7/);
   await page.waitForFunction(()=>document.body.dataset.realm==='sanctum',null,{timeout:10000});
   assert.equal(await page.locator('body').getAttribute('data-realm'),'sanctum');
   assert.equal(await page.locator('#recordElites').textContent(),'0');
@@ -30,6 +30,11 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#menuArmory').click();
   assert.equal(await page.locator('#armoryOverlay').isVisible(),true);
   assert.equal(await page.locator('.champion-card').count(),3);
+  assert.equal(await page.locator('.champion-portrait-canvas').count(),3,
+   'The Armory must display actual rendered champion models');
+  assert.ok(await page.locator('.champion-portrait-canvas').first().evaluate(el=>
+   el.getContext('2d').getImageData(80,80,1,1).data[3]>0),
+   'Champion preview should render real canvas pixels');
   assert.equal(await page.locator('.relic-card').count(),6);
   assert.equal(await page.locator('.relic-card.blueprint-locked').count(),2);
   assert.equal(await page.locator('#recordExpeditions').textContent(),'0');
@@ -43,6 +48,10 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#legacyOverlay').isVisible(),true);
   assert.equal(await page.locator('#regaliaCards .regalia-card').count(),3,
    'All three visual armor appearances should exist');
+  assert.equal(await page.locator('#weaponCards .weapon-card').count(),3,
+   'All three weapon cosmetic finishes must have real buttons');
+  assert.equal(await page.locator('#weaponCards .weapon-card.equipped').count(),1);
+  assert.equal(await page.locator('#legacyWeaponName').textContent(),'CHAMPION SIGNATURE');
   assert.equal(await page.locator('#achievementCards .achievement-card').count(),6,
    'Six fully tracked achievements should exist');
   assert.equal(await page.locator('#legacyShards').textContent(),'0');
@@ -84,6 +93,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#bossBar').isVisible(),false);
   assert.equal(await page.locator('#riftCount').isVisible(),false,'Rift UI stays hidden before rifts exist');
   assert.equal(await page.locator('#abilityName').textContent(),'ASTRAL NOVA');
+  assert.equal(await page.locator('#masteryLabel').textContent(),'MASTERY 0 / 3');
   assert.equal(await page.locator('#abilityStatus').textContent(),'READY');
   await page.waitForTimeout(550);
   assert.ok((await page.locator('#stageLabel').textContent()).includes('WAVE 1'));
@@ -101,6 +111,8 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   }
   await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
   assert.notEqual(await page.locator('#abilityStatus').textContent(),'READY');
+  assert.equal(await page.locator('#masteryLabel').textContent(),'MASTERY 1 / 3',
+   'A genuine active ability cast increases mastery progress in the game HUD');
   assert.equal(await page.locator('#abilityButton').isDisabled(),true,'Cooldown prevents double casting');
   await page.locator('#pauseButton').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),true);
@@ -162,6 +174,38 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.notEqual(defaultArmorRender,eclipseRender,'Forged armor must visibly change actual canvas model');
   const savedLook=await page.evaluate(()=>JSON.parse(localStorage.getItem('proximus-sovereign-survival-legacy-v1')));
   assert.equal(savedLook.equippedStyle,'eclipse','Visual armor selection must persist locally');
+  assert.equal(savedLook.equippedWeapon,'signature',
+   'Existing Legacy data should migrate a free original weapon');
+  await page.locator('#legacyOverlay .auxBack').click();
+  // Use the same preserved historical records to exercise legitimate
+  // expedition eligibility and an earned shard balance for the weapon forge.
+  await page.evaluate(()=>{
+   const recordKey='proximus-sovereign-survival-v1';
+   const record=JSON.parse(localStorage.getItem(recordKey));
+   record.expeditions=2;localStorage.setItem(recordKey,JSON.stringify(record));
+   const legacyKey='proximus-sovereign-survival-legacy-v1';
+   const saved=JSON.parse(localStorage.getItem(legacyKey));
+   saved.shards=4;saved.lifetimeShards=Math.max(saved.lifetimeShards||0,4);
+   localStorage.setItem(legacyKey,JSON.stringify(saved));
+  });
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.locator('#menuLegacy').click();
+  assert.equal(await page.locator('#legacyArmorLabel').textContent(),'ECLIPSE RAIMENT');
+  assert.equal(await page.locator('#legacyWeaponName').textContent(),'CHAMPION SIGNATURE');
+  const beforeWeapon=await page.locator('#legacyChampionCanvas').evaluate(el=>el.toDataURL());
+  const starforged=page.locator('#weaponCards .weapon-card').nth(1);
+  assert.equal(await starforged.locator('button').isEnabled(),true);
+  await starforged.locator('button').click();
+  assert.equal(await page.locator('#legacyShards').textContent(),'2');
+  await page.locator('#weaponCards .weapon-card').nth(1).locator('button').click();
+  assert.equal(await page.locator('#legacyWeaponName').textContent(),'ASTRAL FORGED');
+  assert.equal(await page.locator('#weaponCards .weapon-card.equipped').count(),1);
+  const afterWeapon=await page.locator('#legacyChampionCanvas').evaluate(el=>el.toDataURL());
+  assert.notEqual(beforeWeapon,afterWeapon,
+   'The forged weapon must change actual canvas geometry, not only label text');
+  const chosen=await page.evaluate(()=>JSON.parse(localStorage.getItem('proximus-sovereign-survival-legacy-v1')));
+  assert.equal(chosen.equippedWeapon,'astral','Weapon appearance must persist separately from armor');
+  assert.equal(chosen.equippedStyle,'eclipse','Forging a weapon cannot reset purchased armor');
   await page.locator('#legacyOverlay .auxBack').click();
   // Simulate a legitimate earned account in local storage, then use the real
   // Armory UI to select/unlock/forge/equip. Each action persists across reload.
@@ -174,6 +218,8 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#menuLegacy').click();
   assert.equal(await page.locator('#legacyArmorLabel').textContent(),'ECLIPSE RAIMENT',
    'Armor appearance and claims must persist over reload');
+  assert.equal(await page.locator('#legacyWeaponName').textContent(),'ASTRAL FORGED',
+   'Forged weapon appearance must persist over reload');
   assert.equal(await page.locator('#legacyClaims').textContent(),'2 / 6 ACHIEVEMENTS CLAIMED');
   await page.locator('#legacyOverlay .auxBack').click();
   await page.locator('#menuArmory').click();
@@ -219,13 +265,17 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.ok((await page.locator('#codexRelics').textContent()).includes('Moonwell Sigil'));
   assert.equal(await page.locator('#codexArmorName').textContent(),'ECLIPSE RAIMENT',
    'The actual Frost Sentinel run must inherit the previously forged armor');
+  assert.equal(await page.locator('#codexWeaponName').textContent(),'ASTRAL FORGED',
+   'Actual Frost Sentinel gameplay must inherit the same forged weapon');
+  assert.ok((await page.locator('#codexMastery').textContent()).includes('1 / 3'),
+   'Codex records the real champion ability mastery progress');
   assert.ok(await page.locator('#codexChampionCanvas').evaluate(el=>
    el.getContext('2d').getImageData(80,95,1,1).data[3]>0),
    'The Warden Codex shows the fully drawn playable armor, not only an emoji');
   assert.equal(await page.locator('#powerStat').textContent(),'22',
    'Nightglass must increase actual starting attack damage');
   assert.deepEqual(errors,[],'No client runtime exceptions');
-  console.log('PASS '+name+' v1.6 legacy wardrobe, actual armor preview, achievements, forgings, saved style in Frost runs, Q/touch, existing Armory and quests');
+  console.log('PASS '+name+' v1.7 mastered HUD, character-specific weapon forge, actual weapon preview, saved look in Frost combat, legacy and PWA regressions');
  }catch(e){
   await page.screenshot({path:'/tmp/sovereign-survival-'+name+'.png',fullPage:false}).catch(()=>{});
   throw new Error(name+' '+(e.stack||e.message)+'; page errors: '+errors.join(' | '));

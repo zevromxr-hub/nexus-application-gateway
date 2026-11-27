@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY — rare loot, combat animation and preserved realm objectives.
+/* SOVEREIGN SURVIVAL v1.7 CHARACTER ASCENSION — champion mastery and distinct armament visuals.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
 import {startingStats} from './progression.js';
@@ -18,6 +18,12 @@ export const ABILITIES=Object.freeze({
  sentinel:{id:'bulwark',name:'GLACIAL BULWARK',icon:'❄',cooldown:13,description:'Become briefly invulnerable and freeze nearby enemies.'},
  reaver:{id:'cleave',name:'INFERNAL CLEAVE',icon:'⚔',cooldown:8,description:'A wide fiery slash scorches enemies with damage over time.'}
 });
+export const MASTERIES=Object.freeze({
+ warden:{name:'SUPERNOVA',description:'Nova expands to 290 range, hits harder and shoves enemies farther.'},
+ sentinel:{name:'ETERNAL WINTER',description:'Longer ice barrier, wider freeze and 12 HP restoration.'},
+ reaver:{name:'DRAGONFIRE',description:'Wider fiery cleave, stronger strike and longer burning.'}
+});
+export const MASTERY_CASTS=3;
 export const EVOLUTIONS=Object.freeze([
  {id:'blade',rank:3,name:'SOVEREIGN BLADES',icon:'⚔',description:'Regular attacks gain a sweeping close-range cleave.'},
  {id:'barrage',rank:3,name:'CELESTIAL STORM',icon:'✺',description:'Striking blades split into two secondary projectiles.'},
@@ -68,9 +74,12 @@ export function createRun(seed=0x59ab7e,loadout={}){
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
    ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
    shots:1,angle:-PI/2,blessingTime:0,stride:0,moving:0,attackPulse:0,shotSide:0,
-   modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard'},
+   masteryCasts:0,masteryAwakened:false,
+   modelStyle:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
+   weaponSkin:['signature','astral','dominion'].includes(loadout.weapon)?loadout.weapon:'signature'},
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])],
-    style:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard'}};
+    style:['standard','eclipse','crowned'].includes(loadout.style)?loadout.style:'standard',
+    weapon:['signature','astral','dominion'].includes(loadout.weapon)?loadout.weapon:'signature'}};
  spawnWave(game);
  return game;
 }
@@ -302,44 +311,61 @@ function hitEnemy(s,e,damage){
  if(isBoss(e)){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave,kind:e.kind})}
  s.events.push({type:'kill',kind:e.kind});
 }
+export function masteryStatus(s){
+ const p=s.player,mastery=MASTERIES[p.champion]||MASTERIES.warden;
+ return {name:mastery.name,description:mastery.description,
+  casts:Math.min(MASTERY_CASTS,p.masteryCasts||0),required:MASTERY_CASTS,
+  awakened:Boolean(p.masteryAwakened)};
+}
 export function activateAbility(s){
  if(s.phase!=='running')return false;
  const p=s.player,ability=ABILITIES[p.champion]||ABILITIES.warden;
  if(p.abilityCooldown>0)return false;
- p.abilityCooldown=ability.cooldown;
+ p.masteryCasts=(p.masteryCasts||0)+1;
+ if(p.masteryCasts>=MASTERY_CASTS&&!p.masteryAwakened){
+  p.masteryAwakened=true;
+  s.events.push({type:'masteryAwakened',champion:p.champion,
+   name:(MASTERIES[p.champion]||MASTERIES.warden).name});
+  s.effects.push({x:p.x,y:p.y,t:1.1,kind:'masteryAwaken',size:115});
+ }
+ const mastered=p.masteryAwakened;
+ p.abilityCooldown=mastered?Math.round(ability.cooldown*.85*10)/10:ability.cooldown;
  if(ability.id==='nova'){
-  const radius=230,damage=Math.round(p.damage*2.2);
+  const radius=mastered?290:230,damage=Math.round(p.damage*(mastered?2.8:2.2));
   for(const e of s.enemies){
    if(e.hp<=0)continue;
    const dx=e.x-p.x,dy=e.y-p.y,d=length(dx,dy);
    if(d>radius+e.rad)continue;
-   e.x=clamp(e.x+dx/d*125,30,WORLD.width-30);
-   e.y=clamp(e.y+dy/d*125,30,WORLD.height-30);
+   e.x=clamp(e.x+dx/d*(mastered?165:125),30,WORLD.width-30);
+   e.y=clamp(e.y+dy/d*(mastered?165:125),30,WORLD.height-30);
    hitEnemy(s,e,damage);
   }
-  s.effects.push({x:p.x,y:p.y,t:.65,kind:'nova',size:radius});
+  s.effects.push({x:p.x,y:p.y,t:.65,kind:'nova',size:radius,mastered});
  }else if(ability.id==='bulwark'){
-  p.barrierTime=2.35;p.invulnerable=Math.max(p.invulnerable,2.35);
+  const duration=mastered?3.25:2.35;
+  p.barrierTime=duration;p.invulnerable=Math.max(p.invulnerable,duration);
+  if(mastered)p.hp=Math.min(p.maxHp,p.hp+12);
   for(const e of s.enemies){
    if(e.hp<=0)continue;
-   if(distance(e,p)<245+e.rad)e.frozenFor=Math.max(e.frozenFor||0,2.1);
+   if(distance(e,p)<(mastered?290:245)+e.rad)
+    e.frozenFor=Math.max(e.frozenFor||0,mastered?2.9:2.1);
   }
-  s.effects.push({x:p.x,y:p.y,t:.75,kind:'freeze',size:240});
+  s.effects.push({x:p.x,y:p.y,t:.75,kind:'freeze',size:mastered?285:240,mastered});
  }else{
-  const arc=1.08,rad=240,angle=p.angle;
+  const arc=mastered?1.22:1.08,rad=mastered?295:240,angle=p.angle;
   for(const e of s.enemies){
    if(e.hp<=0)continue;
    const dx=e.x-p.x,dy=e.y-p.y,d=length(dx,dy);
    const delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-angle),Math.cos(Math.atan2(dy,dx)-angle));
    if(d>rad+e.rad||Math.abs(delta)>arc)continue;
-   e.burnTime=Math.max(e.burnTime||0,3);
-   e.burnDamage=Math.max(e.burnDamage||0,Math.max(6,Math.round(p.damage*.55)));
+   e.burnTime=Math.max(e.burnTime||0,mastered?4.25:3);
+   e.burnDamage=Math.max(e.burnDamage||0,Math.max(6,Math.round(p.damage*(mastered?.7:.55))));
    e.burnTick=0;
-   hitEnemy(s,e,Math.round(p.damage*1.7));
+   hitEnemy(s,e,Math.round(p.damage*(mastered?2.2:1.7)));
   }
-  s.effects.push({x:p.x,y:p.y,t:.42,kind:'cleave',size:rad,angle});
+  s.effects.push({x:p.x,y:p.y,t:.42,kind:'cleave',size:rad,angle,mastered});
  }
- s.events.push({type:'ability',id:ability.id,name:ability.name});
+ s.events.push({type:'ability',id:ability.id,name:ability.name,mastered,casts:p.masteryCasts});
  return true;
 }
 export function evolutionActive(s,id){return Boolean(s.evolutions?.[id])}
@@ -376,7 +402,8 @@ function fire(s,aim){
   const offset=(i-(p.shots-1)/2)*.125,angle=dir+offset,speed=640;
   s.shots.push({x:p.x+Math.cos(angle)*22,y:p.y+Math.sin(angle)*22,
    vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,
-   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)),split:Boolean(s.evolutions.barrage)});
+   damage:Math.round(p.damage*(p.blessingTime>0?1.2:1)),
+   element:p.champion,weapon:p.weaponSkin,split:Boolean(s.evolutions.barrage)});
  }
  s.events.push({type:'fire'});
 }

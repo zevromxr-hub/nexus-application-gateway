@@ -1,7 +1,7 @@
 {
-  "name": "Sovereign Survival | Sovereign Legacy",
+  "name": "Sovereign Survival | Character Ascension",
   "short_name": "Sovereign",
-  "description": "Sovereign Legacy v1.6: entirely reforged animated champion armor, rare cosmetic regalia, claimable achievements, Eclipse Shards and full offline battle mechanics.",
+  "description": "Character Ascension v1.7: champions with distinct live weapon forms, earned awakened active abilities, cosmetic forged weapons, true character previews and offline arena survival.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
