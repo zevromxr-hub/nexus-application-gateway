@@ -1,11 +1,13 @@
-/* PROXIMUS | SOVEREIGN SURVIVAL / REALM EXPEDITIONS v1.5
+/* PROXIMUS | SOVEREIGN SURVIVAL / SOVEREIGN LEGACY v1.6
  * One deterministic Canvas2D engine, zero remote services, local record only.
  */
 import {createRun,advance,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,runSummary,durationLabel,WORLD,arenaForWave,expeditionStatus,isBoss} from './core.js';
-import {drawArena} from './renderer.js';
+import {drawArena,drawChampionPreview} from './renderer.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
  awardRun} from './progression.js';
+import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,normalizeLegacy,achievementProgress,
+ claimAchievement,bankRareDrops,styleEligible,unlockRegalia,equipRegalia,resolveRegalia} from './legacy.js';
 const $=id=>document.getElementById(id);
 const canvas=$('arenaCanvas'),frame=$('gameFrame'),ctx=canvas.getContext('2d',{alpha:false});
 const SAVE_KEY='proximus-sovereign-survival-v1';
@@ -24,6 +26,14 @@ const readProgress=()=>{
  catch{return normalizeProgress({})}
 };
 let progression=readProgress();
+const readLegacy=()=>{
+ try{return normalizeLegacy(JSON.parse(localStorage.getItem(LEGACY_KEY)||'{}'))}
+ catch{return normalizeLegacy({})}
+};
+let legacy=readLegacy();
+const persistLegacy=()=>{
+ try{localStorage.setItem(LEGACY_KEY,JSON.stringify(legacy))}catch{}
+};
 const persist=()=>{try{localStorage.setItem(SAVE_KEY,JSON.stringify(records))}catch{}};
 const persistProgress=()=>{
  try{localStorage.setItem(PROGRESSION_KEY,JSON.stringify(progression))}catch{}
@@ -44,7 +54,7 @@ const lowPower=coarse||matchMedia('(prefers-reduced-motion: reduce)').matches;
 let dpr=1,width=960,height=590,camera={x:0,y:0},lastTime=performance.now(),lastHud=0,lastDraw=0,toastUntil=0;
 const keys=new Set(),joystick={x:0,y:0,pointer:null},manual={active:false,x:0,y:0};
 let dashQueued=false,abilityQueued=false,audio=null,latestFire=0,auxPage=null,auxReturn='menu',impactTimer=0;
-const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory']);
+const AUX_PAGES=Object.freeze(['records','guide','settings','warbook','armory','legacy']);
 function setOverlay(){
  document.body.dataset.gameView=mode;
  for(const [id,visible] of [
@@ -61,8 +71,9 @@ function setOverlay(){
 }
 function openAux(page){
  if(!AUX_PAGES.includes(page))return;
- if(page==='armory'&&mode!=='menu')return;
+ if((page==='armory'||page==='legacy')&&mode!=='menu')return;
  if(page==='armory')renderArmory();
+ if(page==='legacy')renderLegacy();
  if(mode==='playing'){
   if(game.phase==='upgrade')return;
   mode='paused';keys.clear();joystick.x=joystick.y=0;resetStick();
@@ -104,7 +115,8 @@ function sound(type){
   bossAttack:[140,210,.18,'sawtooth'],hexAttack:[540,260,.16,'triangle'],
   charge:[180,440,.20,'sawtooth'],eliteDefeated:[420,900,.25,'sine'],
   nova:[280,790,.32,'sine'],bulwark:[640,260,.34,'sine'],cleave:[190,730,.23,'sawtooth'],
-  evolution:[490,1100,.36,'triangle'],aegisBlock:[560,140,.20,'sine'],bossEntrance:[100,300,.32,'sawtooth'],
+  evolution:[490,1100,.36,'triangle'],aegisBlock:[560,140,.20,'sine'],
+  rareLoot:[470,980,.30,'triangle'],bossEntrance:[100,300,.32,'sawtooth'],
   expeditionComplete:[580,1060,.34,'sine'],expeditionFailed:[220,110,.21,'triangle'],
   bossEnraged:[120,430,.33,'sawtooth'],portalDestroyed:[360,920,.25,'triangle'],sealActivated:[480,950,.28,'sine'],
   gameover:[190,75,.5,'triangle']};
@@ -130,6 +142,7 @@ function handleEvents(){
   else if(ev.type==='waveClear'){toast('✦ WAVE '+ev.wave+' CLEARED · STAND READY',2200);sound('waveClear')}
   else if(ev.type==='bossDefeated'){toast('✦ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' DEFEATED',3300);sound('bossDefeated')}
   else if(ev.type==='eliteDefeated'){sound('eliteDefeated')}
+  else if(ev.type==='rareLoot'){toast('◆ RARE ECLIPSE SHARD DISCOVERED',2100);sound('rareLoot')}
   else if(ev.type==='bossEnraged'){toast('☄ '+(ev.kind==='tyrant'?'VOID TYRANT':'VOID MONARCH')+' · PHASE TWO',2800);sound('bossEnraged')}
   else if(ev.type==='expeditionComplete'){toast('✦ '+ev.objective+' COMPLETE · +'+ev.renown+' RENOWN',3000);sound('expeditionComplete')}
   else if(ev.type==='expeditionFailed'){toast('◇ '+ev.objective+' LOST · SURVIVE THE NEXT WAVE',2700);sound('expeditionFailed')}
@@ -166,6 +179,8 @@ function refreshCodexChampion(){
  $('codexRelics').textContent=items.length?
   'EQUIPPED RELICS · '+items.map(r=>r.icon+' '+r.name).join(' · '):
   'NO RELICS EQUIPPED';
+ $('codexArmorName').textContent=(REGALIA.find(r=>r.id===(game.startingLoadout?.style||'standard'))||REGALIA[0]).name.toUpperCase();
+ drawChampionPreview($('codexChampionCanvas'),id,game.startingLoadout?.style||'standard');
 }
 function setArmoryFeedback(message){
  $('armoryFeedback').textContent=message;
@@ -258,6 +273,79 @@ function renderArmory(){
   card.append(button);relics.append(card);
  }
 }
+function renderLegacy(){
+ const look=resolveLoadout(progression,records);
+ const style=resolveRegalia(legacy);
+ const selected=REGALIA.find(item=>item.id===style)||REGALIA[0];
+ const champ=CHAMPIONS.find(item=>item.id===look.champion)||CHAMPIONS[0];
+ $('legacyShards').textContent=legacy.shards.toLocaleString();
+ $('legacyClaims').textContent=legacy.claimed.length+' / '+ACHIEVEMENTS.length+' ACHIEVEMENTS CLAIMED';
+ $('legacyUnlockedCount').textContent=ACHIEVEMENTS.filter(a=>achievementProgress(a,records,progression).complete).length+
+  ' / '+ACHIEVEMENTS.length+' ELIGIBLE';
+ $('legacyChampionName').textContent=champ.name.toUpperCase();
+ $('legacyArmorLabel').textContent=selected.name.toUpperCase();
+ drawChampionPreview($('legacyChampionCanvas'),champ.id,style);
+ const wardrobe=$('regaliaCards');wardrobe.replaceChildren();
+ for(const item of REGALIA){
+  const owned=legacy.ownedStyles.includes(item.id),equipped=item.id===style;
+  const eligible=styleEligible(legacy,item.id,records);
+  const card=armoryNode('article','regalia-card'+(equipped?' equipped':'')+(eligible||owned?'':' locked'));
+  const glyph=armoryNode('span','regalia-glyph',item.icon);
+  const name=armoryNode('h3','',item.name);
+  const rarity=armoryNode('small','',item.type);
+  const desc=armoryNode('p','',item.description);
+  let label='EQUIP LOOK',disabled=false,action='equip';
+  if(equipped){label='✦ EQUIPPED';disabled=true}
+  else if(!owned){
+   action='unlock';
+   if(!eligible){
+    const achievements=Math.max(0,(item.achievements||0)-legacy.claimed.length);
+    const bosses=Math.max(0,(item.bosses||0)-records.bosses);
+    label=(achievements?achievements+' ACHIEVEMENTS ':'')+(bosses?bosses+' BOSSES':'');
+    label=label.trim()+' REQUIRED';disabled=true;
+   }else if(legacy.shards<item.cost){
+    label='NEED '+(item.cost-legacy.shards)+' SHARDS';disabled=true;
+   }else label='FORGE · '+item.cost+' SHARDS';
+  }
+  const button=armoryNode('button','',label);
+  button.type='button';button.disabled=disabled;
+  button.setAttribute('aria-label',label+' '+item.name);
+  if(!disabled)button.addEventListener('click',()=>changeLegacy(action,item.id));
+  card.append(glyph,name,rarity,desc,button);wardrobe.append(card);
+ }
+ const achievements=$('achievementCards');achievements.replaceChildren();
+ for(const a of ACHIEVEMENTS){
+  const task=achievementProgress(a,records,progression);
+  const claimed=legacy.claimed.includes(a.id);
+  const card=armoryNode('article','achievement-card'+(claimed?' claimed':task.complete?' eligible':''));
+  const heading=armoryNode('div','achievement-title');
+  heading.append(armoryNode('span','',a.icon),armoryNode('strong','',a.name));
+  const description=armoryNode('p','',a.description);
+  const progressBar=armoryNode('div','achievement-progress');
+  const fill=armoryNode('span','');fill.style.width=task.percentage+'%';
+  progressBar.append(fill);
+  const stats=armoryNode('small','',Math.min(task.achieved,task.required)+' / '+task.required);
+  const button=armoryNode('button','',claimed?'✦ CLAIMED':
+   task.complete?'CLAIM +1 SHARD':'LOCKED');
+  button.type='button';button.disabled=claimed||!task.complete;
+  button.setAttribute('aria-label',a.name+' '+button.textContent);
+  if(!button.disabled)button.addEventListener('click',()=>changeLegacy('claim',a.id));
+  card.append(heading,description,progressBar,stats,button);
+  achievements.append(card);
+ }
+}
+function changeLegacy(action,id){
+ let result;
+ if(action==='claim')result=claimAchievement(legacy,id,records,progression);
+ else if(action==='unlock')result=unlockRegalia(legacy,id,records);
+ else if(action==='equip')result=equipRegalia(legacy,id);
+ else return;
+ if(result.success){
+  legacy=result.legacy;persistLegacy();sound('upgrade');
+ }
+ renderLegacy();
+ $('legacyFeedback').textContent=result.reason;
+}
 function showUpgrades(){
  const wrap=$('upgradeOptions');wrap.replaceChildren();
  for(const [index,id] of game.options.entries()){
@@ -316,7 +404,8 @@ function buildLoadout(){
 function startRun(){
  auxPage=null;
  const loadout=resolveLoadout(progression,records);
- game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,loadout);
+ game=createRun(((Date.now()^Math.floor(Math.random()*0xffffffff))|0)||0x31af,
+  {...loadout,style:resolveRegalia(legacy)});
  records.runs++;persist();renderRecords();
  mode='playing';camera.x=game.player.x-width/2;camera.y=game.player.y-height/2;
  keys.clear();joystick.x=0;joystick.y=0;dashQueued=false;abilityQueued=false;manual.active=false;
@@ -334,10 +423,13 @@ function finishRun(){
  records.elites+=result.eliteKills;
  records.bosses+=result.bossKills;
  records.expeditions+=result.expeditionsCompleted;
+ const shardReward=bankRareDrops(legacy,result);
+ legacy=shardReward.legacy;
  const resultReward=awardRun(progression,result);
  progression=resultReward.progress;
- persist();persistProgress();renderRecords();refreshMenuLoadout();
+ persist();persistProgress();persistLegacy();renderRecords();refreshMenuLoadout();
  $('runRenown').textContent='+'+resultReward.earned.toLocaleString()+' RENOWN';
+ $('endRareDrops').textContent='+'+shardReward.earned+' SHARDS';
  $('endExpeditionRenown').textContent='+'+result.expeditionRenown.toLocaleString();
  $('endExpeditionProgress').textContent=result.expeditionsCompleted+' EXPEDITIONS COMPLETED · '+
   result.expeditionsFailed+' FAILED';
@@ -366,6 +458,7 @@ function updateHud(){
  $('xpFill').style.width=100*clamp(game.xp/game.nextXP,0,1)+'%';
  $('waveText').textContent=String(game.wave).padStart(2,'0');
  $('killText').textContent=String(game.kills);
+ $('rareCount').textContent=String(game.rareDrops||0);
  $('scoreText').textContent=game.score.toLocaleString();
  $('timerText').textContent=durationLabel(game.time);
  $('comboText').textContent=game.combo>1?'✦ '+game.combo+'× COMBO':'✧ BUILD YOUR COMBO';
@@ -478,6 +571,7 @@ function loop(now){
 }
 $('startRun').addEventListener('click',startRun);
 $('menuArmory').addEventListener('click',()=>openAux('armory'));
+$('menuLegacy').addEventListener('click',()=>openAux('legacy'));
 $('menuRecords').addEventListener('click',()=>openAux('records'));
 $('menuGuide').addEventListener('click',()=>openAux('guide'));
 $('menuSettings').addEventListener('click',()=>openAux('settings'));

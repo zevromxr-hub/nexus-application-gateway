@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.5 EXPEDITIONS: interactive quests, phased bosses, relic blueprints and offline safety */
+/* SOVEREIGN SURVIVAL v1.6 SOVEREIGN LEGACY: animated character, cosmetic wardrobe, achievements and loot */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -7,6 +7,9 @@ import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,blueprintUnlocked,
  startingStats,renownReward,awardRun} from '../progression.js';
+import {LEGACY_KEY,ACHIEVEMENTS,REGALIA,freshLegacy,normalizeLegacy,
+ achievementProgress,claimAchievement,bankRareDrops,styleEligible,unlockRegalia,
+ equipRegalia,resolveRegalia} from '../legacy.js';
 const root=path.resolve(import.meta.dirname,'..');
 const read=name=>fs.readFileSync(path.join(root,name),'utf8');
 const initial=createRun(12345),again=createRun(12345);
@@ -401,6 +404,98 @@ assert.equal(createRun(8052,{relics:['voidheart']}).player.leech,5);
 const baseReward=renownReward({score:1700,wave:4,kills:20});
 const questReward=renownReward({score:1700,wave:4,kills:20,expeditionRenown:62});
 assert.equal(questReward-baseReward,62,'Completed quests pay real bonus Renown on run defeat');
+// v1.6 SOVEREIGN LEGACY — cosmetic loadouts cannot alter champion stats.
+assert.equal(LEGACY_KEY,'proximus-sovereign-survival-legacy-v1');
+assert.equal(ACHIEVEMENTS.length,6);
+assert.equal(REGALIA.length,3);
+const l0=freshLegacy();
+assert.equal(l0.equippedStyle,'standard');
+assert.equal(l0.shards,0);
+assert.deepEqual(l0.ownedStyles,['standard']);
+assert.equal(normalizeLegacy({ownedStyles:['fake','standard','eclipse'],
+ equippedStyle:'fake',shards:-40}).equippedStyle,'standard');
+const oldAchievements={kills:41,bestWave:5,elites:5,bosses:2,expeditions:3};
+assert.equal(achievementProgress(ACHIEVEMENTS[0],oldAchievements).complete,true,
+ 'Legacy achievements must recognize existing v1.5 records');
+assert.equal(achievementProgress(ACHIEVEMENTS[5],oldAchievements,{lifetimeRenown:230}).complete,true);
+assert.equal(claimAchievement(l0,'boss',{bosses:0}).success,false);
+const firstClaim=claimAchievement(l0,'first-blood',oldAchievements);
+assert.equal(firstClaim.success,true);
+assert.equal(firstClaim.legacy.shards,1);
+assert.equal(claimAchievement(firstClaim.legacy,'first-blood',oldAchievements).success,false,
+ 'One-time achievements cannot be duplicated');
+const secondClaim=claimAchievement(firstClaim.legacy,'survivor',oldAchievements);
+assert.equal(secondClaim.legacy.shards,2);
+assert.equal(styleEligible(secondClaim.legacy,'eclipse',oldAchievements),true);
+assert.equal(unlockRegalia(l0,'eclipse',oldAchievements).success,false,
+ 'Visual armor requires claimed achievements');
+const forgedLook=unlockRegalia(secondClaim.legacy,'eclipse',oldAchievements);
+assert.equal(forgedLook.success,true);
+assert.equal(forgedLook.legacy.shards,0);
+assert.deepEqual(forgedLook.legacy.ownedStyles,['standard','eclipse']);
+assert.equal(equipRegalia(l0,'eclipse').success,false,
+ 'Unowned armor appearances cannot be equipped');
+const equippedLook=equipRegalia(forgedLook.legacy,'eclipse');
+assert.equal(equippedLook.success,true);
+assert.equal(resolveRegalia(equippedLook.legacy),'eclipse');
+assert.equal(normalizeLegacy(equippedLook.legacy).equippedStyle,'eclipse');
+assert.equal(styleEligible(secondClaim.legacy,'crowned',{bosses:2}),false,
+ 'Legendary crown must require more claimed achievements');
+let crownClaims=secondClaim.legacy;
+for(const id of ['elites','boss'])crownClaims=claimAchievement(crownClaims,id,oldAchievements).legacy;
+assert.equal(styleEligible(crownClaims,'crowned',oldAchievements),true);
+assert.equal(unlockRegalia(crownClaims,'crowned',{bosses:1}).success,false,
+ 'The crown also needs two historical boss defeats');
+const crownForge=unlockRegalia(crownClaims,'crowned',oldAchievements);
+assert.equal(crownForge.success,true);
+assert.equal(crownForge.legacy.shards,0);
+assert.equal(equipRegalia(crownForge.legacy,'crowned').legacy.equippedStyle,'crowned');
+const shards=bankRareDrops(l0,{rareDrops:3});
+assert.equal(shards.earned,3);
+assert.equal(shards.legacy.shards,3);
+assert.equal(shards.legacy.lifetimeShards,3);
+assert.equal(l0.shards,0,'Awarding end-of-run loot cannot mutate existing storage state');
+const normalCharacter=createRun(1801,{champion:'sentinel',style:'standard'});
+const ornateCharacter=createRun(1801,{champion:'sentinel',style:'crowned'});
+assert.equal(ornateCharacter.player.modelStyle,'crowned');
+assert.equal(ornateCharacter.startingLoadout.style,'crowned');
+assert.equal(ornateCharacter.player.hp,normalCharacter.player.hp,
+ 'Cosmetic armor must not alter player health');
+assert.equal(ornateCharacter.player.damage,normalCharacter.player.damage,
+ 'Cosmetic armor must not alter player attack');
+assert.equal(ornateCharacter.player.speed,normalCharacter.player.speed,
+ 'Cosmetic armor must not alter movement speed');
+assert.deepEqual(ornateCharacter.enemies,normalCharacter.enemies,
+ 'Cosmetic armor must not change seeded combat');
+assert.equal(createRun(1802,{style:'malformed'}).player.modelStyle,'standard');
+assert.equal(normalCharacter.player.attackPulse,0);
+assert.equal(normalCharacter.player.stride,0);
+advance(normalCharacter,{dx:1,dy:0},1/30);
+assert.ok(normalCharacter.player.stride>0,'Walking drives real procedural footstep animation');
+assert.equal(normalCharacter.player.moving,1);
+const attackModel=createRun(1803);
+attackModel.enemies=[{...attackModel.enemies[0],x:attackModel.player.x+110,
+ y:attackModel.player.y,attack:100,speed:0}];
+advance(attackModel,{},1/60);
+assert.equal(attackModel.player.attackPulse,1,'Sword attacks trigger a real pose pulse');
+assert.ok(attackModel.player.fireCount>0);
+
+const dropBoss=createRun(1804);
+for(let i=0;i<7;i++)spawnWave(dropBoss); // Wave 8 guarantees a shard on real Tyrant defeat
+const lootTyrant=dropBoss.enemies.find(e=>e.kind==='tyrant');
+assert.ok(lootTyrant);
+lootTyrant.hp=1;lootTyrant.x=dropBoss.player.x+68;lootTyrant.y=dropBoss.player.y;
+lootTyrant.attack=100;lootTyrant.shoot=100;lootTyrant.speed=0;
+dropBoss.player.invulnerable=100;dropBoss.player.fireCooldown=999;
+dropBoss.enemies=[lootTyrant];dropBoss.hazards=[];
+dropBoss.shots.push({x:lootTyrant.x,y:lootTyrant.y,
+ vx:0,vy:0,r:8,ttl:1,damage:80,split:false});
+advance(dropBoss,{},1/60);
+assert.equal(dropBoss.rareDrops,1,'Defeating the Void Tyrant yields a guaranteed rare shard');
+assert.ok(dropBoss.events.some(e=>e.type==='rareLoot'));
+assert.equal(runSummary(dropBoss).rareDrops,1);
+assert.equal(bankRareDrops(l0,runSummary(dropBoss)).legacy.shards,1);
+assert.ok(dropBoss.effects.some(e=>e.kind==='rareLoot'),'Rare loot needs a visible effect');
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -408,7 +503,7 @@ advance(doomed,{},1/60);
 assert.equal(doomed.phase,'gameover','Player can lose the game');
 assert.equal(runSummary(doomed).score,0);
 assert.equal(durationLabel(125),'2:05');
-for(const file of ['core.js','renderer.js','game.js','progression.js','sw.js']){
+for(const file of ['core.js','renderer.js','game.js','progression.js','legacy.js','sw.js']){
  const r=spawnSync(process.execPath,['--check',path.join(root,file)],{encoding:'utf8'});
  assert.equal(r.status,0,file+': '+r.stderr);
 }
@@ -434,9 +529,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.5.0');
-assert.equal(current.previous_version,'1.4.0');
-assert.equal(current.codename,'REALM EXPEDITIONS');
+assert.equal(current.version,'1.6.0');
+assert.equal(current.previous_version,'1.5.0');
+assert.equal(current.codename,'SOVEREIGN LEGACY');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -446,14 +541,31 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — REALM EXPEDITIONS v1.5'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-expeditions-v1.5'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — SOVEREIGN LEGACY v1.6'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-legacy-v1.6'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
 assert.ok(game.includes('records.elites+=result.eliteKills'));
 assert.ok(game.includes('records.bosses+=result.bossKills'));
 assert.ok(game.includes('records.expeditions+=result.expeditionsCompleted'));
+assert.ok(game.includes('bankRareDrops(legacy,result)'), 'Drops only bank after genuine defeat');
+assert.ok(game.includes("persistLegacy();"),'New legacy data must persist independently');
+assert.ok(game.includes('style:resolveRegalia(legacy)'),'Cosmetic appearance must enter actual combat simulation');
+assert.ok(game.includes('function renderLegacy()'),'Legacy wardrobe needs real interactive UI');
+assert.ok(read('renderer.js').includes('drawChampionPreview('));
+assert.ok(read('renderer.js').includes('const gait=Math.sin('),
+ 'The playable model must animate legs from the combat simulation');
+assert.ok(read('renderer.js').includes('c.rotate(p.angle+Math.PI/2)'),
+ 'Procedural armor must follow player direction');
+assert.ok(read('renderer.js').includes('if(crowned)')&&read('renderer.js').includes('if(frost)'),
+ 'Visual armor must have distinct champion and legendary silhouettes');
+for(const id of ['menuLegacy','legacyOverlay','legacyChampionCanvas','legacyChampionName',
+ 'legacyArmorLabel','regaliaCards','achievementCards','legacyFeedback','legacyShards',
+ 'legacyClaims','legacyUnlockedCount','endRareDrops','rareCount','rareHud',
+ 'codexChampionCanvas','codexArmorName']){
+ assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
+}
 assert.ok(game.includes('expeditionStatus(game)'));
 assert.ok(read('renderer.js').includes('drawExpedition(ctx,s,view,quality)'),
  'Four world objectives must have genuine arena artwork');
@@ -493,13 +605,13 @@ assert.ok(game.includes("document.body.dataset.realm=arena.id"));
 const nightfallStyle=read('nightfall-v1.2.css');
 assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
 assert.ok(nightfallStyle.includes('.bestiary-grid'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css']){
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css','expeditions-v1.5.css','legacy-v1.6.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
 assert.ok(css.includes('safe-area')||html.includes('viewport-fit=cover'));
-for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','manifest.webmanifest','icon.svg'])
+for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','legacy.js','manifest.webmanifest','icon.svg'])
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival Realm Expeditions v1.5: real ward/portal/shrine/seal objectives, quest Renown, two boss phases, unlockable blueprints, saved progress and isolated PWA');
+console.log('PASS Sovereign Survival Legacy v1.6: detailed animated models, cosmetic loadouts, original achievements, rare drops, wardrobe economy, previous realms and independent PWA');

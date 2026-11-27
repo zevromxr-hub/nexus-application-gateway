@@ -1,7 +1,7 @@
 {
-  "name": "Sovereign Survival | Realm Expeditions",
+  "name": "Sovereign Survival | Sovereign Legacy",
   "short_name": "Sovereign",
-  "description": "Realm Expeditions v1.5: four playable arena objectives, phased bosses, rare forgeable relic blueprints, and offline fantasy combat.",
+  "description": "Sovereign Legacy v1.6: entirely reforged animated champion armor, rare cosmetic regalia, claimable achievements, Eclipse Shards and full offline battle mechanics.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

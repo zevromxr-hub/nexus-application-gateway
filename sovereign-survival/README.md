@@ -1,3 +1,43 @@
+# SOVEREIGN SURVIVAL v1.6 — SOVEREIGN LEGACY
+
+**Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
+
+This update replaces the original tiny basic top-down warrior sprite with a **completely hand-authored procedural Canvas2D battle character**, while adding a useful long-term Legacy progression loop. These are real live game models, not photos, static character cards or remote images.
+
+## Reforged playable hero model
+
+All three existing champions now have larger, higher-detail layered silhouettes: flowing capes, carved boots/greaves, separate shoulder plates and armored gauntlets, articulated twin swords, gemstone chest insignia, helmets/visors with luminous eyes, champion-specific horns and ornamentation. A natural step cycle animates the legs when moving and dashing; each real weapon volley drives short sword and slash poses; the hero faces its attack and movement directions. Frost Sentinel, Ember Reaver and Void Warden have distinct color schemes and details. Eco mode removes heavy glows while retaining the shape. **This replaces the in-game hero**, not only a menu icon.
+
+## The Sovereign Legacy
+
+From the title menu, open **♛ SOVEREIGN LEGACY**. It includes a large rendered 2D preview of your currently selected champion, three armor appearances and six historical achievements. The Codex also displays the armor currently used by that real battle run.
+
+| Armor appearance | Unlock requirement | Cosmetic forge cost |
+| --- | --- | --- |
+| **Warbound Armor** | Always available | Free |
+| **Eclipse Raiment** | Claim 2 achievements | 2 Eclipse Shards |
+| **Sovereign Regalia** | Claim 4 achievements and defeat 2 bosses | 4 Eclipse Shards |
+
+Armor styles are **visual only** and work with any unlocked champion, preserving all existing health, speed, damage and equipped relics. Forged styles and the equipped style persist between sessions.
+
+### Six real achievements
+
+**Night's First Hunter:** 40 cumulative defeats; **Citadel Veteran:** reach Wave 4; **Crown Breaker:** 3 elite kills; **Monarch Slayer:** a boss defeat; **Realm Wayfinder:** 2 completed expeditions; **Legend Forged:** earn 200 lifetime Renown.
+
+Previously stored stats satisfy achievements immediately when you qualify. Click **Claim +1 Shard** once for each achievement. Claims are idempotent and persist independently in `proximus-sovereign-survival-legacy-v1`.
+
+### Rare drops
+
+Rare **Eclipse Shards** have a deterministic 22% chance to drop from defeated elite monsters, 50% chance from the Void Monarch, and a guaranteed drop from the Void Tyrant. Shards appear visibly in the battlefield and on the rare counter. Like Renown, the drops are banked *only on genuine defeat*, not on a premature restart or return to the title. Forging armor consumes stored shards.
+
+### Scope and safety
+
+The original saved records key `proximus-sovereign-survival-v1` and Armory key `proximus-sovereign-survival-armory-v1` are preserved as-is. The legacy achievements and outfits use their **own game-only localStorage key**, while game-only offline assets and cache remain scoped to `sovereign-survival/`. No update reads, resets or changes user-created videos or PROXIMUS Asset Alchemist IndexedDB/OPFS media. Do not remove your Home Screen app or clear its website storage to update.
+
+**POWERED BY ZEVRO | PROXIMUS ARCHIVES**
+
+---
+
 # SOVEREIGN SURVIVAL v1.5 — REALM EXPEDITIONS
 
 **Play:** https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/
