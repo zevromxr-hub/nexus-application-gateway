@@ -14,11 +14,12 @@
 <link rel="stylesheet" href="./warbound-v1.1.css">
 <link rel="stylesheet" href="./nightfall-v1.2.css">
 <link rel="stylesheet" href="./armory-v1.3.css">
-<title>SOVEREIGN SURVIVAL — ASCENSION ARMORY v1.3 | PROXIMUS</title>
+<link rel="stylesheet" href="./awakening-v1.4.css">
+<title>SOVEREIGN SURVIVAL — CHAMPION AWAKENING v1.4 | PROXIMUS</title>
 </head>
 <body class="warbound" data-game-view="menu">
 <div class="game-app">
- <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Ascension Armory game">
+ <main class="game-frame" id="gameFrame" aria-label="Sovereign Survival Champion Awakening game">
   <canvas id="arenaCanvas" width="960" height="590" tabindex="0" role="img" aria-label="Playable fantasy arena. Use WASD or arrow keys to move; attacks automatically target nearby enemies."></canvas>
   <div class="arena-edge" aria-hidden="true"></div>
   <header class="game-chrome">
@@ -28,7 +29,7 @@
    </a>
    <div class="game-chrome-center" id="stageLabel">THE SHATTERED CITADEL</div>
    <div class="game-chrome-actions">
-    <span class="build-version">ASCENSION <b>v1.3</b></span>
+    <span class="build-version">AWAKENING <b>v1.4</b></span>
     <button id="pauseButton" class="chrome-button" type="button" aria-label="Pause or resume game" disabled>Ⅱ Pause</button>
    </div>
   </header>
@@ -56,6 +57,11 @@
    <span id="comboText">✧ BUILD YOUR COMBO</span>
    <span id="dashText">➤ DASH READY</span>
   </div>
+  <div id="abilityHud" class="ability-hud" aria-live="off">
+   <span class="ability-key">Q <small>SKILL</small></span>
+   <span class="ability-hud-copy"><strong id="abilityName">ASTRAL NOVA</strong><small id="abilityStatus">READY</small></span>
+   <span id="abilityMeter" class="ability-hud-meter"><span id="abilityFill"></span></span>
+  </div>
   <div class="rift-hud" id="riftCount" hidden>✧ NO RIFTS</div>
 
   <section class="overlay warbound-title-screen" id="menuOverlay" role="dialog" aria-modal="false" aria-label="Sovereign Survival main menu">
@@ -64,8 +70,8 @@
     <div class="title-brow"><span class="title-brow-diamond">✧</span> PROXIMUS GAMES <i></i> THE NIGHTFALL CHRONICLES</div>
     <div class="title-crest" aria-hidden="true"><span>✧</span></div>
     <h1 class="game-wordmark"><span>SOVEREIGN</span><em>SURVIVAL</em></h1>
-    <div class="game-edition">A S C E N S I O N <span>✦</span> E D I T I O N</div>
-    <p class="title-lore">Your battles now forge a legacy. Unlock sovereign champions, earn Renown, equip ancient relics and carry new power into every survival run.</p>
+    <div class="game-edition">A W A K E N I N G <span>✦</span> E D I T I O N</div>
+    <p class="title-lore">Three champions. Three devastating powers. Awaken evolving weapons, confront the Monarch and forge a legend that survives every battle.</p>
     <nav class="title-menu" aria-label="Main game menu">
      <button id="startRun" class="title-start" type="button"><span class="button-symbol">⚔</span><span>ENTER THE CITADEL<small>BEGIN A NEW SURVIVAL RUN</small></span><span class="button-caret">›</span></button>
      <button id="menuArmory" type="button"><span>⚒</span> ASCENSION ARMORY <small>CHAMPIONS / RELICS</small></button>
@@ -173,6 +179,7 @@
      <div><span>06 / TELEGRAPH</span><h3>Read the enemy's attack.</h3><p>Hexers mark a line of fire. Ravagers aim before charging. The Void Monarch locks its volley angle before release—dodge across the path.</p></div>
     </div>
     <p class="guide-progress">⚒ ASCENSION ARMORY — Earn Renown on completed runs. Select unlocked champions and equip up to two forged relics before battle. No account needed.</p>
+    <p class="guide-progress">✦ CHAMPION AWAKENING — Press <strong>Q</strong> on PC or tap the <strong>POWER</strong> rune on iPhone to cast your champion ability. Every ability has its own cooldown. Reach Rank 3 in Bloodsteel Edge, Arcane Barrage or Runic Ward to evolve your weapons and defense.</p>
     <button class="cta auxBack" type="button">← BACK TO GAME MENU</button>
    </div>
   </section>
@@ -213,6 +220,10 @@
      </section>
      <section class="side-card upgrades-card"><div class="side-heading"><span class="eyebrow">YOUR POWERS</span><strong id="upgradeCount">0 UPGRADES</strong></div>
       <div id="buildList" class="build-list"><p>Collect soul energy to earn your first power.</p></div>
+      <div class="evolution-codex"><span class="eyebrow">✦ WEAPON EVOLUTIONS</span>
+       <p>Reach Rank 3 in Bloodsteel Edge, Arcane Barrage or Runic Ward to awaken their powers automatically.</p>
+       <div id="evolutionList" class="evolution-list">NO WEAPON EVOLUTIONS YET</div>
+      </div>
      </section>
     </div>
     <div class="bestiary">
@@ -232,11 +243,12 @@
    </div>
   </section>
 
-  <div id="touchControls" class="touch-controls" aria-label="Touch movement and dash controls" hidden>
+  <div id="touchControls" class="touch-controls" aria-label="Touch movement, active ability and dash controls" hidden>
    <div id="joystickZone" class="joystick-zone" aria-label="Drag to move">
     <div class="joystick-base"><div id="joystickKnob" class="joystick-knob"></div></div>
     <span>MOVE</span>
    </div>
+   <button id="abilityButton" type="button" class="ability-button" aria-label="Cast champion active ability"><span id="abilityTouchIcon">✧</span><small>POWER</small></button>
    <button id="dashButton" type="button" class="dash-button" aria-label="Dash to avoid enemies"><span>➤</span><small>DASH</small></button>
   </div>
   <div class="warbound-credit" aria-hidden="true">POWERED BY ZEVRO <span>✧</span> PROXIMUS ARCHIVES</div>

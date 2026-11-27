@@ -1,9 +1,9 @@
-/* SOVEREIGN SURVIVAL v1.3 ASCENSION: permanent progression, combat AI, privacy and PWA */
+/* SOVEREIGN SURVIVAL v1.4 AWAKENING: active abilities, weapon evolution, old progression and offline safety */
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ENEMY_TYPES,WORLD,ARENAS,arenaForWave,runSummary,durationLabel} from '../core.js';
+import {createRun,advance,spawnWave,chooseUpgrade,UPGRADES,ABILITIES,EVOLUTIONS,activateAbility,evolutionActive,ENEMY_TYPES,WORLD,ARENAS,arenaForWave,runSummary,durationLabel} from '../core.js';
 import {PROGRESSION_KEY,CHAMPIONS,RELICS,MAX_RELICS,normalizeProgress,
  championUnlocked,chooseChampion,purchaseRelic,toggleRelic,resolveLoadout,
  startingStats,renownReward,awardRun} from '../progression.js';
@@ -208,6 +208,87 @@ assert.equal(runSummary(armoryRun).champion,'sentinel');
 assert.deepEqual(JSON.parse(JSON.stringify(firstEquip.progress)),firstEquip.progress,
  'Armory data must round-trip through localStorage serialization');
 
+// v1.4 champion abilities operate in the original simulation and respect
+// game phase/cooldown; effects are not substituted for combat damage.
+assert.equal(Object.keys(ABILITIES).length,3);
+assert.deepEqual(EVOLUTIONS.map(e=>e.id),['blade','barrage','ward']);
+for(const c of CHAMPIONS)assert.ok(ABILITIES[c.id]?.cooldown>0);
+const nova=createRun(102,{champion:'warden'});
+const nEnemy=nova.enemies[0];nEnemy.x=nova.player.x+90;nEnemy.y=nova.player.y;
+nEnemy.hp=nEnemy.maxHp=400;nEnemy.speed=0;nEnemy.attack=100;nEnemy.shoot=100;
+nova.enemies=[nEnemy];nova.player.fireCooldown=999;
+const nX=nEnemy.x,nHP=nEnemy.hp;
+advance(nova,{ability:true},1/60);
+assert.ok(nEnemy.x>nX+80,'Astral Nova must knock enemies away');
+assert.ok(nEnemy.hp<nHP,'Astral Nova must deal actual damage');
+assert.ok(nova.player.abilityCooldown>8,'Astral Nova cooldown starts immediately');
+assert.equal(nova.events.some(e=>e.type==='ability'&&e.id==='nova'),true);
+assert.equal(activateAbility(nova),false,'Cannot cast twice while on cooldown');
+nova.phase='upgrade';nova.player.abilityCooldown=0;
+assert.equal(activateAbility(nova),false,'Cannot cast powers while choosing an upgrade');
+
+const glacial=createRun(103,{champion:'sentinel'});
+const fEnemy=glacial.enemies[0];fEnemy.x=glacial.player.x+65;fEnemy.y=glacial.player.y;
+fEnemy.attack=0;fEnemy.shoot=0;fEnemy.speed=100;glacial.enemies=[fEnemy];
+glacial.player.fireCooldown=999;
+advance(glacial,{ability:true},1/60);
+assert.ok(glacial.player.barrierTime>2,'Bulwark activates a timed protective barrier');
+assert.ok(fEnemy.frozenFor>2,'Nearby enemies receive an actual freeze');
+const frozenX=fEnemy.x;
+for(let i=0;i<9;i++)advance(glacial,{},1/60);
+assert.equal(fEnemy.x,frozenX,'Frozen enemies cannot move toward player');
+const glacialHP=glacial.player.hp;
+glacial.hostile.push({x:glacial.player.x,y:glacial.player.y,vx:0,vy:0,r:12,ttl:1,damage:60,kind:'hexer'});
+advance(glacial,{},1/60);
+assert.equal(glacial.player.hp,glacialHP,'Bulwark protects from genuine hostile projectile damage');
+
+const ember=createRun(104,{champion:'reaver'});
+const eEnemy=ember.enemies[0];eEnemy.x=ember.player.x+115;eEnemy.y=ember.player.y;
+eEnemy.hp=eEnemy.maxHp=500;eEnemy.attack=100;eEnemy.shoot=100;eEnemy.speed=0;
+ember.enemies=[eEnemy];ember.player.angle=0;ember.player.fireCooldown=999;
+const emberHP=eEnemy.hp;
+advance(ember,{ability:true},1/60);
+assert.ok(eEnemy.hp<emberHP,'Infernal Cleave deals immediate directional damage');
+assert.ok(eEnemy.burnTime>2.9,'Infernal Cleave ignites enemies');
+const afterSlash=eEnemy.hp;
+for(let i=0;i<35;i++)advance(ember,{},1/60);
+assert.ok(eEnemy.hp<afterSlash,'Burning damage actually ticks over time');
+assert.equal(ember.player.abilityCooldown>0,true);
+
+function evolve(id,seed){
+ const run=createRun(seed);
+ for(let i=0;i<3;i++){
+  run.phase='upgrade';run.options=[id];
+  assert.equal(chooseUpgrade(run,id),true,'Evolution ranks must remain normal upgrade selections');
+ }
+ assert.equal(evolutionActive(run,id),true,'Rank 3 awakens '+id);
+ assert.ok(run.events.some(e=>e.type==='evolution'&&e.id===id));
+ return run;
+}
+const blades=evolve('blade',501),tgt=blades.enemies[0];
+tgt.x=blades.player.x+103;tgt.y=blades.player.y;tgt.hp=tgt.maxHp=999;
+tgt.speed=0;tgt.attack=100;tgt.shoot=100;blades.enemies=[tgt];
+blades.player.fireCooldown=0;
+advance(blades,{},1/60);blades.player.fireCooldown=0;advance(blades,{},1/60);
+assert.ok(blades.effects.some(e=>e.kind==='sovereignSlash'),'Sovereign Blades must create a real sweeping attack');
+assert.ok(tgt.hp<tgt.maxHp,'Sovereign Blades must damage targets');
+const storm=evolve('barrage',502),stormTarget=storm.enemies[0];
+stormTarget.x=storm.player.x+80;stormTarget.y=storm.player.y;stormTarget.hp=stormTarget.maxHp=900;
+stormTarget.speed=0;stormTarget.attack=100;stormTarget.shoot=100;storm.enemies=[stormTarget];
+for(let i=0;i<14;i++)advance(storm,{},1/60);
+assert.ok(storm.shots.some(b=>b.storm),'Celestial Storm splits impact projectiles into actual child shots');
+assert.ok(storm.shots.some(b=>b.storm&&b.split===false),'Child shots must not recursively explode');
+const aegis=evolve('ward',503),attacker=aegis.enemies[0];
+attacker.x=aegis.player.x;attacker.y=aegis.player.y;attacker.attack=0;attacker.shoot=100;
+attacker.speed=0;aegis.enemies=[attacker];aegis.player.fireCooldown=999;
+const shieldHP=aegis.player.hp;
+advance(aegis,{},1/60);
+assert.equal(aegis.player.hp,shieldHP,'Immortal Aegis must absorb first incoming hit');
+assert.ok(aegis.player.aegisCooldown>14,'Aegis must have a meaningful defensive cooldown');
+aegis.player.invulnerable=0;attacker.attack=0;
+advance(aegis,{},1/60);
+assert.ok(aegis.player.hp<shieldHP,'Aegis cannot block a second hit during cooldown');
+assert.equal(evolutionActive(createRun(504),'ward'),false,'Evolutions are temporary per run');
 const doomed=createRun(17);
 doomed.player.hp=1;doomed.player.invulnerable=0;
 doomed.enemies=[{...doomed.enemies[0],x:doomed.player.x,y:doomed.player.y,attack:0}];
@@ -241,9 +322,9 @@ for(const id of ['menuRecords','menuGuide','menuSettings','recordsOverlay','guid
  'settingsOverlay','warbookOverlay','pauseWarbook','pauseSettings','retreatToMenu','endMenu','recordKills'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear once');
 const current=JSON.parse(read('version.json'));
-assert.equal(current.version,'1.3.0');
-assert.equal(current.previous_version,'1.2.0');
-assert.equal(current.codename,'ASCENSION ARMORY');
+assert.equal(current.version,'1.4.0');
+assert.equal(current.previous_version,'1.3.0');
+assert.equal(current.codename,'CHAMPION AWAKENING');
 assert.ok(game.includes('function openAux('));
 assert.ok(game.includes('document.body.dataset.gameView=mode'));
 assert.ok(game.includes('auxReturn'));
@@ -253,8 +334,8 @@ assert.ok(read('renderer.js').includes('drawHazards(ctx,s,view,quality)'), 'Real
 assert.ok(read('renderer.js').includes("e.kind==='hexer'"), 'Hexer visual rendering must be distinctive');
 assert.ok(read('renderer.js').includes("e.kind==='ravager'"), 'Ravager visual rendering must be distinctive');
 assert.ok(read('index.html').includes('warbound-v1.1.css'));
-assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — ASCENSION ARMORY v1.3'));
-assert.ok(read('sw.js').includes('proximus-sovereign-survival-ascension-v1.3'));
+assert.ok(read('index.html').includes('SOVEREIGN SURVIVAL — CHAMPION AWAKENING v1.4'));
+assert.ok(read('sw.js').includes('proximus-sovereign-survival-awakening-v1.4'));
 for(const id of ['riftCount','recordElites','recordBosses'])
  assert.equal(html.split('id="'+id+'"').length,2,id+' must appear exactly once');
 assert.ok(html.includes('ENEMIES OF THE NIGHTFALL')&&html.includes('RAVAGER'));
@@ -264,6 +345,16 @@ assert.ok(game.includes("resolveLoadout(progression,records)"));
 assert.ok(game.includes("const resultReward=awardRun(progression,result)"));
 assert.ok(game.includes("persistProgress();"));
 assert.ok(game.includes("function renderArmory()"));
+assert.ok(game.includes("ability:abilityQueued"),'Ability must reach actual engine input');
+assert.ok(game.includes("k==='q'"),'PC Q shortcut must be implemented');
+assert.ok(game.includes("$('abilityButton').addEventListener('click'"),'Mobile ability button must be functional');
+assert.ok(read('renderer.js').includes('drawAwakeningEffect('),'Renderer must show champion abilities');
+assert.ok(read('renderer.js').includes('e.burnTime>0'),'Burn status must be visible');
+assert.ok(read('renderer.js').includes('p.barrierTime>0'),'Bulwark must be visible');
+for(const id of ['abilityHud','abilityName','abilityStatus','abilityButton','abilityTouchIcon',
+ 'abilityMeter','abilityFill','evolutionList']){
+ assert.equal(html.split('id="'+id+'"').length,2,id+' is missing or duplicated');
+}
 assert.ok(game.includes("function applyArmoryChange("));
 assert.ok(read('renderer.js').includes("p.champion==='sentinel'"));
 assert.ok(read('renderer.js').includes("p.champion==='reaver'"));
@@ -277,7 +368,7 @@ assert.ok(game.includes("document.body.dataset.realm=arena.id"));
 const nightfallStyle=read('nightfall-v1.2.css');
 assert.ok(nightfallStyle.includes('[data-realm="ember"]'));
 assert.ok(nightfallStyle.includes('.bestiary-grid'));
-for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css']){
+for(const file of ['warbound-v1.1.css','warbound-scene.svg','nightfall-v1.2.css','armory-v1.3.css','awakening-v1.4.css']){
  assert.ok(worker.includes("'./"+file+"'"),'Offline shell must cache '+file);
  assert.ok(fs.statSync(path.join(root,file)).size>3000,'Real visual asset missing: '+file);
 }
@@ -286,4 +377,4 @@ for(const asset of ['index.html','style.css','core.js','renderer.js','game.js','
  assert.ok(worker.includes("'./"+asset+"'"),'Offline shell missing '+asset);
 assert.ok(!game.includes('fetch(')&&!game.includes('XMLHttpRequest('),'Gameplay must not require remote services');
 assert.ok(!worker.includes('alchemist/video-vault'),'Offline scope must never cache Proximus personal media');
-console.log('PASS Sovereign Survival Ascension v1.3: progression, unlocks, relic forge, 2-slot equipment, gameplay buffs, Nightfall combat, privacy and offline PWA');
+console.log('PASS Sovereign Survival Awakening v1.4: three active abilities, Q/touch controls, weapon evolutions, combat/status damage, armory saves, offline PWA');

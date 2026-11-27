@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.3 ASCENSION ARMORY — deterministic combat engine.
+/* SOVEREIGN SURVIVAL v1.4 CHAMPION AWAKENING — deterministic active abilities and evolutions.
  * Browser I/O is outside this module. All timers and movement use clamped dt.
  */
 import {startingStats} from './progression.js';
@@ -12,6 +12,16 @@ export const UPGRADES=Object.freeze([
  {id:'ward',name:'Runic Ward',icon:'◇',text:'Reduce incoming damage by 12%.',max:5},
  {id:'dash',name:'Shadowstep',icon:'➤',text:'Decrease dash cooldown by 15%.',max:4},
  {id:'soul',name:'Soul Reaver',icon:'❖',text:'Restore 3 health on each defeat.',max:4}
+]);
+export const ABILITIES=Object.freeze({
+ warden:{id:'nova',name:'ASTRAL NOVA',icon:'✧',cooldown:9,description:'Violet shockwave deals damage and knocks nearby enemies away.'},
+ sentinel:{id:'bulwark',name:'GLACIAL BULWARK',icon:'❄',cooldown:13,description:'Become briefly invulnerable and freeze nearby enemies.'},
+ reaver:{id:'cleave',name:'INFERNAL CLEAVE',icon:'⚔',cooldown:8,description:'A wide fiery slash scorches enemies with damage over time.'}
+});
+export const EVOLUTIONS=Object.freeze([
+ {id:'blade',rank:3,name:'SOVEREIGN BLADES',icon:'⚔',description:'Regular attacks gain a sweeping close-range cleave.'},
+ {id:'barrage',rank:3,name:'CELESTIAL STORM',icon:'✺',description:'Striking blades split into two secondary projectiles.'},
+ {id:'ward',rank:3,name:'IMMORTAL AEGIS',icon:'◇',description:'Automatically negate one incoming hit every 15 seconds.'}
 ]);
 export const ENEMY_TYPES=Object.freeze({
  wraith:{hp:28,speed:96,damage:10,rad:15,xp:5,color:'#bc86f7',score:100},
@@ -40,11 +50,11 @@ export function createRun(seed=0x59ab7e,loadout={}){
  const seedValue=(Number(seed)|0)||0x59ab7e;
  const initial=startingStats(loadout);
  const game={seed:seedValue,phase:'running',time:0,wave:0,level:1,xp:0,nextXP:20,score:0,kills:0,
-  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
+  bestCombo:0,combo:0,comboTime:0,eliteKills:0,bossKills:0,evolutions:{},options:[],enemies:[],shots:[],hostile:[],orbs:[],effects:[],events:[],hazards:[],
   intermission:0,nextId:1,
   ranks:Object.fromEntries(UPGRADES.map(u=>[u.id,0])),
   player:{x:WORLD.width/2,y:WORLD.height/2,hp:initial.maxHp,
-   ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,
+   ...initial,fireCooldown:0,dashCooldown:0,dashTime:0,invulnerable:0,abilityCooldown:0,barrierTime:0,aegisCooldown:0,fireCount:0,
    shots:1,angle:-PI/2},
   startingLoadout:{champion:initial.champion,relics:[...(loadout.relics||[])]}};
  spawnWave(game);
@@ -59,7 +69,7 @@ function newEnemy(s,kind,wave,index=0){
   y:clamp(s.player.y+Math.sin(angle)*range,65,WORLD.height-65),hp,maxHp:hp,
   speed:model.speed*(1+Math.min(wave,16)*.018)*(elite?1.1:1),damage:Math.round(model.damage*(elite?1.28:1)),rad:model.rad*(elite?1.14:1),
   attack:.45+rng(s)*.4,shoot:1.4+rng(s),wobble:rng(s)*PI*2,phase:index*.36,
-  aimAngle:0,aimLocked:false,flash:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
+  aimAngle:0,aimLocked:false,flash:0,frozenFor:0,burnTime:0,burnTick:0,burnDamage:0,chargeWindup:0,chargeActive:0,chargeAngle:0,
   chargeCooldown:2+rng(s)*.9};
 }
 function newHazard(s,index){
@@ -79,7 +89,12 @@ export function spawnWave(s){
   const kind=s.wave>=5&&i===1?'ravager':s.wave>=3&&i===0?'hexer':pool[Math.floor(rng(s)*pool.length)];
   s.enemies.push(newEnemy(s,kind,s.wave,i));
  }
- if(s.wave%4===0)s.enemies.push(newEnemy(s,'monarch',s.wave,99));
+ if(s.wave%4===0){
+  const boss=newEnemy(s,'monarch',s.wave,99);
+  s.enemies.push(boss);
+  s.effects.push({x:boss.x,y:boss.y,t:1.45,kind:'bossEntrance',size:boss.rad+22});
+  s.events.push({type:'bossEntrance',wave:s.wave});
+ }
  if(s.wave>=3&&s.wave%2===1){
   for(let i=0;i<Math.min(4,1+Math.floor(s.wave/3));i++)s.hazards.push(newHazard(s,i));
  }
@@ -101,6 +116,13 @@ export function chooseUpgrade(s,id){
  case 'ward':p.damageReduction=1-Math.pow(.88,s.ranks[id]);break;
  case 'dash':p.dashBase=Math.max(1.7,p.dashBase*.85);break;
  case 'soul':p.leech+=3;break;
+ }
+ const evolution=EVOLUTIONS.find(e=>e.id===id&&s.ranks[id]>=e.rank);
+ if(evolution&&!s.evolutions[id]){
+  s.evolutions[id]=true;
+  s.effects.push({x:p.x,y:p.y,t:1.1,kind:'evolution',size:90});
+  s.events.push({type:'evolution',id:evolution.id,name:evolution.name});
+  if(id==='ward')p.aegisCooldown=0;
  }
  s.phase='running';s.options=[];s.events.push({type:'upgrade',id});return true;
 }
@@ -137,6 +159,47 @@ function hitEnemy(s,e,damage){
  if(e.kind==='monarch'){s.bossKills++;s.events.push({type:'bossDefeated',wave:s.wave})}
  s.events.push({type:'kill',kind:e.kind});
 }
+export function activateAbility(s){
+ if(s.phase!=='running')return false;
+ const p=s.player,ability=ABILITIES[p.champion]||ABILITIES.warden;
+ if(p.abilityCooldown>0)return false;
+ p.abilityCooldown=ability.cooldown;
+ if(ability.id==='nova'){
+  const radius=230,damage=Math.round(p.damage*2.2);
+  for(const e of s.enemies){
+   if(e.hp<=0)continue;
+   const dx=e.x-p.x,dy=e.y-p.y,d=length(dx,dy);
+   if(d>radius+e.rad)continue;
+   e.x=clamp(e.x+dx/d*125,30,WORLD.width-30);
+   e.y=clamp(e.y+dy/d*125,30,WORLD.height-30);
+   hitEnemy(s,e,damage);
+  }
+  s.effects.push({x:p.x,y:p.y,t:.65,kind:'nova',size:radius});
+ }else if(ability.id==='bulwark'){
+  p.barrierTime=2.35;p.invulnerable=Math.max(p.invulnerable,2.35);
+  for(const e of s.enemies){
+   if(e.hp<=0)continue;
+   if(distance(e,p)<245+e.rad)e.frozenFor=Math.max(e.frozenFor||0,2.1);
+  }
+  s.effects.push({x:p.x,y:p.y,t:.75,kind:'freeze',size:240});
+ }else{
+  const arc=1.08,rad=240,angle=p.angle;
+  for(const e of s.enemies){
+   if(e.hp<=0)continue;
+   const dx=e.x-p.x,dy=e.y-p.y,d=length(dx,dy);
+   const delta=Math.atan2(Math.sin(Math.atan2(dy,dx)-angle),Math.cos(Math.atan2(dy,dx)-angle));
+   if(d>rad+e.rad||Math.abs(delta)>arc)continue;
+   e.burnTime=Math.max(e.burnTime||0,3);
+   e.burnDamage=Math.max(e.burnDamage||0,Math.max(6,Math.round(p.damage*.55)));
+   e.burnTick=0;
+   hitEnemy(s,e,Math.round(p.damage*1.7));
+  }
+  s.effects.push({x:p.x,y:p.y,t:.42,kind:'cleave',size:rad,angle});
+ }
+ s.events.push({type:'ability',id:ability.id,name:ability.name});
+ return true;
+}
+export function evolutionActive(s,id){return Boolean(s.evolutions?.[id])}
 function fire(s,aim){
  const p=s.player,targets=s.enemies.filter(e=>e.hp>0);
  if(!targets.length)return;
@@ -154,17 +217,32 @@ function fire(s,aim){
   if(!closest)return;
   dir=Math.atan2(closest.y-p.y,closest.x-p.x);
  }
- p.angle=dir;
+ p.angle=dir;p.fireCount++;
+ if(s.evolutions.blade&&p.fireCount%2===0){
+  const radius=148,halfArc=1.05,damage=Math.round(p.damage*.9);
+  for(const e of s.enemies){
+   const dx=e.x-p.x,dy=e.y-p.y,d=length(dx,dy);
+   const difference=Math.atan2(Math.sin(Math.atan2(dy,dx)-dir),Math.cos(Math.atan2(dy,dx)-dir));
+   if(e.hp>0&&d<radius+e.rad&&Math.abs(difference)<halfArc)hitEnemy(s,e,damage);
+  }
+  s.effects.push({x:p.x,y:p.y,t:.30,kind:'sovereignSlash',size:radius,angle:dir});
+ }
  for(let i=0;i<p.shots;i++){
   const offset=(i-(p.shots-1)/2)*.125,angle=dir+offset,speed=640;
   s.shots.push({x:p.x+Math.cos(angle)*22,y:p.y+Math.sin(angle)*22,
-   vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,damage:p.damage});
+   vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:5.5,ttl:1.10,damage:p.damage,split:Boolean(s.evolutions.barrage)});
  }
  s.events.push({type:'fire'});
 }
 function harmPlayer(s,amount){
  const p=s.player;
  if(p.invulnerable>0||s.phase!=='running')return;
+ if(s.evolutions.ward&&p.aegisCooldown<=0){
+  p.aegisCooldown=15;p.invulnerable=Math.max(p.invulnerable,.9);
+  s.effects.push({x:p.x,y:p.y,t:.85,kind:'aegis',size:85});
+  s.events.push({type:'aegisBlock'});
+  return;
+ }
  p.hp=Math.max(0,p.hp-Math.max(1,Math.round(amount*(1-p.damageReduction))));
  p.invulnerable=.62;s.combo=0;s.comboTime=0;
  s.events.push({type:'hurt'});
@@ -184,12 +262,16 @@ export function advance(s,input={},dt=1/60){
  p.dashCooldown=Math.max(0,p.dashCooldown-dt);
  p.fireCooldown-=dt;
  p.dashTime=Math.max(0,p.dashTime-dt);
+ p.abilityCooldown=Math.max(0,p.abilityCooldown-dt);
+ p.barrierTime=Math.max(0,p.barrierTime-dt);
+ p.aegisCooldown=Math.max(0,p.aegisCooldown-dt);
  const dx=clamp(finite(input.dx),-1,1),dy=clamp(finite(input.dy),-1,1),n=Math.hypot(dx,dy);
  const mx=n>0?dx/n:0,my=n>0?dy/n:0;
  if(input.dash&&p.dashCooldown<=0&&n>.1){
   p.dashTime=.18;p.dashCooldown=p.dashBase;p.invulnerable=Math.max(p.invulnerable,.25);
   s.events.push({type:'dash'});
  }
+ if(input.ability)activateAbility(s);
  const spd=p.speed*(p.dashTime>0?3.5:1);
  p.x=clamp(p.x+mx*spd*dt,40,WORLD.width-40);
  p.y=clamp(p.y+my*spd*dt,40,WORLD.height-40);
@@ -200,6 +282,20 @@ export function advance(s,input={},dt=1/60){
  }
  for(const e of s.enemies){
   if(e.hp<=0)continue;
+  if(e.burnTime>0){
+   e.burnTime=Math.max(0,e.burnTime-dt);
+   e.burnTick=(e.burnTick||0)-dt;
+   if(e.burnTick<=0){
+    e.burnTick=.42;
+    hitEnemy(s,e,e.burnDamage||6);
+    if(e.hp<=0)continue;
+   }
+  }
+  if(e.frozenFor>0){
+   e.frozenFor=Math.max(0,e.frozenFor-dt);
+   e.flash=Math.max(0,e.flash-dt);
+   continue;
+  }
   const vx=p.x-e.x,vy=p.y-e.y,dist=length(vx,vy);
   e.attack-=dt;e.shoot-=dt;e.flash=Math.max(0,e.flash-dt);
   e.chargeCooldown=Math.max(0,e.chargeCooldown-dt);
@@ -272,16 +368,30 @@ export function advance(s,input={},dt=1/60){
   }
  }
  if(s.hostile.length>90)s.hostile=s.hostile.slice(-90);
+ const splitShots=[];
  for(const b of s.shots){
   b.x+=b.vx*dt;b.y+=b.vy*dt;b.ttl-=dt;
+  if(b.ignoreTime>0)b.ignoreTime=Math.max(0,b.ignoreTime-dt);
   if(b.ttl<=0)continue;
   for(const e of s.enemies){
    if(e.hp<=0)continue;
    const rad=b.r+e.rad;
-   if((e.x-b.x)**2+(e.y-b.y)**2<rad**2){b.ttl=0;hitEnemy(s,e,b.damage);break}
+   if((e.x-b.x)**2+(e.y-b.y)**2<rad**2){
+    if(b.ignoreId===e.id&&b.ignoreTime>0)continue;
+    b.ttl=0;hitEnemy(s,e,b.damage);
+    if(b.split){
+     const base=Math.atan2(b.vy,b.vx);
+     for(const angle of [base-.56,base+.56])
+      splitShots.push({x:b.x,y:b.y,vx:Math.cos(angle)*540,vy:Math.sin(angle)*540,
+       r:4.4,ttl:.7,damage:Math.max(2,Math.round(b.damage*.58)),
+       split:false,storm:true,ignoreId:e.id,ignoreTime:.13});
+     s.effects.push({x:b.x,y:b.y,t:.35,kind:'storm',size:44});
+    }
+    break;
+   }
   }
  }
- s.shots=s.shots.filter(x=>x.ttl>0);
+ s.shots=s.shots.filter(x=>x.ttl>0).concat(splitShots.slice(0,36));
  if(s.shots.length>130)s.shots=s.shots.slice(-130);
  s.enemies=s.enemies.filter(x=>x.hp>0);
  for(const b of s.hostile){

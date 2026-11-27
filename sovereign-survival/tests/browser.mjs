@@ -1,4 +1,4 @@
-/* SOVEREIGN SURVIVAL v1.3 ASCENSION: armory, legacy records and real game controls on desktop and iPhone WebKit */
+/* SOVEREIGN SURVIVAL v1.4: champion active abilities, Q/touch parity, Armory and game controls */
 import assert from 'node:assert/strict';
 import {chromium,webkit} from 'playwright';
 for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-webkit',webkit,true]]){
@@ -11,7 +11,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.goto('http://127.0.0.1:4173/sovereign-survival/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('#startRun').waitFor({state:'visible',timeout:18000});
   assert.equal(await page.locator('#menuOverlay').isVisible(),true);
-  assert.match(await page.title(),/ASCENSION ARMORY v1\.3/);
+  assert.match(await page.title(),/CHAMPION AWAKENING v1\.4/);
   await page.waitForFunction(()=>document.body.dataset.realm==='sanctum',null,{timeout:10000});
   assert.equal(await page.locator('body').getAttribute('data-realm'),'sanctum');
   assert.equal(await page.locator('#recordElites').textContent(),'0');
@@ -57,21 +57,31 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#menuOverlay').isVisible(),false);
   assert.equal(await page.locator('#waveText').textContent(),'01');
   assert.equal(await page.locator('#riftCount').isVisible(),false,'Rift UI stays hidden before rifts exist');
+  assert.equal(await page.locator('#abilityName').textContent(),'ASTRAL NOVA');
+  assert.equal(await page.locator('#abilityStatus').textContent(),'READY');
   await page.waitForTimeout(550);
   assert.ok((await page.locator('#stageLabel').textContent()).includes('WAVE 1'));
   assert.ok((await page.locator('#qualityToggle').textContent()).includes('Eco'));
   if(mobile){
    assert.equal(await page.locator('#joystickZone').isVisible(),true);
+   assert.equal(await page.locator('#abilityButton').isVisible(),true,
+    'iPhone must expose an accessible active-ability control');
+   await page.locator('#abilityButton').click();
    await page.locator('#dashButton').click();
   }else{
+   await page.keyboard.press('q');
    await page.keyboard.down('d');await page.waitForTimeout(280);await page.keyboard.up('d');
    await page.keyboard.press('Shift');
   }
+  await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
+  assert.notEqual(await page.locator('#abilityStatus').textContent(),'READY');
+  assert.equal(await page.locator('#abilityButton').isDisabled(),true,'Cooldown prevents double casting');
   await page.locator('#pauseButton').click();
   assert.equal(await page.locator('#pauseOverlay').isVisible(),true);
   await page.locator('#pauseWarbook').click();
   assert.equal(await page.locator('#warbookOverlay').isVisible(),true,'The in-run Codex replaces the side dashboard');
   assert.equal(await page.locator('#buildList').count(),1,'Original upgrade list is preserved in Codex');
+  assert.equal(await page.locator('#evolutionList .evolution-entry').count(),3,'Three genuine evolutions are represented in Codex');
   assert.equal(await page.locator('.bestiary-entry').count(),6,'All six enemy archetypes are visible in Codex');
   assert.ok((await page.locator('#warbookOverlay').textContent()).includes('RAVAGER'));
   await page.locator('#warbookOverlay .auxBack').click();
@@ -146,6 +156,11 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   await page.locator('#startRun').click();
   assert.equal(await page.locator('#healthText').textContent(),'155 / 155',
    'Frost Sentinel and Moonwell Sigil must modify actual starting HP');
+  assert.equal(await page.locator('#abilityName').textContent(),'GLACIAL BULWARK');
+  assert.equal(await page.locator('#abilityStatus').textContent(),'READY');
+  if(mobile)await page.locator('#abilityButton').click();
+  else await page.keyboard.press('q');
+  await page.waitForFunction(()=>document.querySelector('#abilityHud')?.getAttribute('aria-busy')==='true');
   await page.locator('#pauseButton').click();
   await page.locator('#pauseWarbook').click();
   assert.equal(await page.locator('#codexHeroName').textContent(),'FROST SENTINEL');
@@ -154,7 +169,7 @@ for(const [name,engine,mobile] of [['desktop-chromium',chromium,false],['iphone-
   assert.equal(await page.locator('#powerStat').textContent(),'22',
    'Nightglass must increase actual starting attack damage');
   assert.deepEqual(errors,[],'No client runtime exceptions');
-  console.log('PASS '+name+' gameplay startup, controls, pause/restart and local records');
+  console.log('PASS '+name+' v1.4 Q/touch abilities, champion skill cooldowns, evolutions codex, Armory, controls and local records');
  }catch(e){
   await page.screenshot({path:'/tmp/sovereign-survival-'+name+'.png',fullPage:false}).catch(()=>{});
   throw new Error(name+' '+(e.stack||e.message)+'; page errors: '+errors.join(' | '));

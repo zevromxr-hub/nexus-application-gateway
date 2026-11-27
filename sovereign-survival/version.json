@@ -1,23 +1,21 @@
 {
   "brand": "PROXIMUS",
   "product": "SOVEREIGN SURVIVAL",
-  "version": "1.3.0",
-  "codename": "ASCENSION ARMORY",
+  "version": "1.4.0",
+  "codename": "CHAMPION AWAKENING",
   "channel": "stable",
   "release_date": "2026-11-27",
   "mode": "standalone single-player offline-ready PWA",
   "studio_count": 1,
   "website": "https://zevromxr-hub.github.io/nexus-application-gateway/sovereign-survival/",
   "features": [
-    "Three selectable champions: Void Warden starting character, Frost Sentinel unlocked after 40 total completed-run defeats, and Ember Reaver unlocked after reaching Wave 4 in a completed run.",
-    "Character choices grant real starting combat stats and visual character identities: Frost Sentinel defensive tank, Ember Reaver glass-cannon offense, and balanced Void Warden.",
-    "Renown currency earned on completed survival runs from score, enemies, elites, waves and boss defeats; no reward farming from abandoned runs.",
-    "Four permanent forgeable relics: Nightglass Edge, Moonwell Sigil, Phantom Spurs and Soul Chalice; two active relic loadout slots.",
-    "Full cinematic Ascension Armory screen with class preview cards, lock goals, forge purchases, equipment toggles and live Renown balance.",
-    "New run results with earned Renown and expanded Hall of Legends Renown lifetime total; Warden's Codex now shows selected champion and equipped relics.",
-    "Persistent independent localStorage progression and backward-compatible prior score/wave/kill records, no accounts or cloud access.",
-    "Warbound UI, Nightfall Hexers, Ravagers, elites, rifts and four realms, PWA offline play, iPhone controls and Proximus personal media are preserved."
+    "Each champion has a real cooldown-based active combat power triggered by keyboard Q or an iPhone POWER rune: Void Warden Astral Nova, Frost Sentinel Glacial Bulwark, and Ember Reaver Infernal Cleave.",
+    "Astral Nova damages and knocks back nearby enemies; Bulwark freezes surrounding enemies and grants temporary invulnerability; Infernal Cleave delivers directional area damage and burning damage-over-time.",
+    "Three permanent-within-run upgrade evolutions at Rank 3: Sovereign Blades sweeping attacks, Celestial Storm splitting projectiles, and Immortal Aegis blocking periodic incoming hits.",
+    "New skill-ready/cooldown HUD, accessible touch skill control, timed hero defenses, frozen/burning enemy status graphics, and evolved attack/impact effects.",
+    "Boss spawning gains a timed entrance effect; the Warden's Codex shows evolution progress and the guide explains abilities.",
+    "Retains v1.3 Armory, champions, forgeable relics, Renown, all scores, mobile controls, Nightfall enemies, offline PWA and independent personal-media storage."
   ],
   "privacy": "Scores only in this game's localStorage; no access to Asset Alchemist video files.",
-  "previous_version": "1.2.0"
+  "previous_version": "1.3.0"
 }
